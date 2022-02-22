@@ -25,29 +25,28 @@ namespace HatTrick.DbEx.MsSql.Expression
     public partial class Int64CharIndexFunctionExpression :
         CharIndexFunctionExpression<long>,
         Int64Element,
-        AnyInt64Element,
         IEquatable<Int64CharIndexFunctionExpression>
     {
         #region constructors
-        public Int64CharIndexFunctionExpression(StringElement pattern, StringElement expression) : base(pattern, expression)
+        public Int64CharIndexFunctionExpression(AnyElement<string> pattern, AnyElement<string> expression) : base(pattern, expression)
         {
 
         }
 
-        public Int64CharIndexFunctionExpression(StringElement pattern, StringElement expression, Int64Element startSearchPosition) : base(pattern, expression, startSearchPosition)
+        public Int64CharIndexFunctionExpression(AnyElement<string> pattern, AnyElement<string> expression, AnyElement<long> startSearchPosition) : base(pattern, expression, startSearchPosition)
         {
 
         }
 
-        public Int64CharIndexFunctionExpression(StringElement pattern, StringElement expression, Int32Element startSearchPosition) : base(pattern, expression, startSearchPosition)
+        public Int64CharIndexFunctionExpression(AnyElement<string> pattern, AnyElement<string> expression, AnyElement<int> startSearchPosition) : base(pattern, expression, startSearchPosition)
         {
 
         }
         #endregion
 
         #region as
-        public Int64Element As(string alias)
-            => new Int64SelectExpression(this).As(alias);
+        public AnyElement<long> As(string alias)
+            => new SelectExpression<long>(this).As(alias);
         #endregion
 
         #region equals

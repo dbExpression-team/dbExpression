@@ -25,7 +25,37 @@ namespace HatTrick.DbEx.Sql.Expression
         where TValue : IComparable
     {
         #region constructors
-        protected NullableDateAddFunctionExpression(DatePartsExpression datePart, IExpressionElement value, IExpressionElement expression)
+        protected NullableDateAddFunctionExpression(DatePartsExpression datePart, AnyElement<int?> value, AnyElement<DateTime> expression)
+            : base(datePart, value, expression, typeof(TNullableValue))
+        {
+
+        }
+
+        protected NullableDateAddFunctionExpression(DatePartsExpression datePart, AnyElement<int> value, AnyElement<DateTime?> expression)
+            : base(datePart, value, expression, typeof(TNullableValue))
+        {
+
+        }
+
+        protected NullableDateAddFunctionExpression(DatePartsExpression datePart, AnyElement<int?> value, AnyElement<DateTime?> expression)
+            : base(datePart, value, expression, typeof(TNullableValue))
+        {
+
+        }
+
+        protected NullableDateAddFunctionExpression(DatePartsExpression datePart, AnyElement<int?> value, AnyElement<DateTimeOffset> expression)
+            : base(datePart, value, expression, typeof(TNullableValue))
+        {
+
+        }
+
+        protected NullableDateAddFunctionExpression(DatePartsExpression datePart, AnyElement<int> value, AnyElement<DateTimeOffset?> expression)
+            : base(datePart, value, expression, typeof(TNullableValue))
+        {
+
+        }
+
+        protected NullableDateAddFunctionExpression(DatePartsExpression datePart, AnyElement<int?> value, AnyElement<DateTimeOffset?> expression)
             : base(datePart, value, expression, typeof(TNullableValue))
         {
 

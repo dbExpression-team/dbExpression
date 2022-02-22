@@ -24,7 +24,6 @@ namespace HatTrick.DbEx.Sql.Expression
         NullableFieldExpression<TEnum,TEnum?>,
         INullableEnumExpressionMediator<TEnum>,
         NullableEnumElement<TEnum>,
-        AnyEnumElement<TEnum>,
         IEquatable<NullableFieldExpression<TEnum,TEnum?>>
         where TEnum : struct, Enum, IComparable
     {
@@ -33,10 +32,6 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
-        #endregion
-
-        #region as
-        public abstract NullableEnumElement<TEnum> As(string alias);
         #endregion
 
         #region equals

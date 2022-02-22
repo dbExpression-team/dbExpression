@@ -23,19 +23,18 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class Int32CeilingFunctionExpression :
         CeilingFunctionExpression<int>,
         Int32Element,
-        AnyInt32Element,
         IEquatable<Int32CeilingFunctionExpression>
     {
         #region constructors
-        public Int32CeilingFunctionExpression(Int32Element expression) : base(expression)
+        public Int32CeilingFunctionExpression(AnyElement<int> expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public Int32Element As(string alias)
-            => new Int32SelectExpression(this).As(alias);
+        public AnyElement<int> As(string alias)
+            => new SelectExpression<int>(this).As(alias);
         #endregion
 
         #region equals

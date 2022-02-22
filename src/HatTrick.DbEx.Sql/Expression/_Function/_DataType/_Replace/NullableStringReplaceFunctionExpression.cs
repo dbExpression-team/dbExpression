@@ -23,16 +23,15 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableStringReplaceFunctionExpression :
         NullableReplaceFunctionExpression<string,string>,
         NullableStringElement,
-        AnyStringElement,
         IEquatable<NullableStringReplaceFunctionExpression>
     {
         #region constructors
-        public NullableStringReplaceFunctionExpression(NullableStringElement expression, StringElement pattern, StringElement replacement) : base(expression, pattern, replacement)
+        public NullableStringReplaceFunctionExpression(NullableStringElement expression, AnyElement<string> pattern, AnyElement<string> replacement) : base(expression, pattern, replacement)
         {
 
         }
 
-        public NullableStringReplaceFunctionExpression(NullableStringElement expression, NullableStringElement pattern, StringElement replacement) : base(expression, pattern, replacement)
+        public NullableStringReplaceFunctionExpression(NullableStringElement expression, NullableStringElement pattern, AnyElement<string> replacement) : base(expression, pattern, replacement)
         {
 
         }
@@ -42,15 +41,15 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
 
-        public NullableStringReplaceFunctionExpression(NullableStringElement expression, StringElement pattern, NullableStringElement replacement) : base(expression, pattern, replacement)
+        public NullableStringReplaceFunctionExpression(NullableStringElement expression, AnyElement<string> pattern, NullableStringElement replacement) : base(expression, pattern, replacement)
         {
 
         }
         #endregion
 
         #region as
-        public NullableStringElement As(string alias)
-            => new NullableStringSelectExpression(this).As(alias);
+        public  AnyElement<string> As(string alias)
+            => new SelectExpression<string>(this).As(alias);
         #endregion
 
         #region like

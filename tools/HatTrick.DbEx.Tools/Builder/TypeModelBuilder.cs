@@ -104,8 +104,8 @@ namespace HatTrick.DbEx.Tools.Builder
             if (TypeModelFactories.ContainsKey(clrTypeOverride))
                 return TypeModelFactories[clrTypeOverride](isNullable);
 
-            var nullableTypeModel = new TypeModel(clrTypeOverride, clrTypeOverride, true, isEnum, clrTypeOverride.Contains("[]"));
-            var typeModel = new TypeModel(clrTypeOverride, clrTypeOverride, false, isEnum, clrTypeOverride.Contains("[]"));
+            var nullableTypeModel = new TypeModel(clrTypeOverride, clrTypeOverride, true, isEnum, clrTypeOverride.Contains("[]"), Type.GetType(clrTypeOverride, false) == null);
+            var typeModel = new TypeModel(clrTypeOverride, clrTypeOverride, false, isEnum, clrTypeOverride.Contains("[]"), Type.GetType(clrTypeOverride, false) == null);
             TypeModelFactories.Add(clrTypeOverride, _isNullable => _isNullable ? nullableTypeModel : typeModel);
 
             return TypeModelFactories[clrTypeOverride](isNullable);
@@ -163,6 +163,11 @@ namespace HatTrick.DbEx.Tools.Builder
                 default:
                     throw new NotImplementedException($"The sql database type {sqlType} is not compatible with dbExpression.");
             }
+        }
+
+        private static bool IsUserDefinedType(string clrTypeOverride)
+        {
+            return Type.GetType(clrTypeOverride, false) != null;
         }
     }
 }

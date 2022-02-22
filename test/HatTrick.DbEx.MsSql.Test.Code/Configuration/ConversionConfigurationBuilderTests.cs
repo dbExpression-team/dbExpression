@@ -52,7 +52,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
         public void Does_configuration_of_a_type_converter_override_using_generic_method_succeed(int version)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version, builder => builder.Conversions.UseDefaultFactory(x => x.OverrideForType<int>().Use<NoOpValueConverter>()));
+            var config = ConfigureForMsSqlVersion(version, builder => builder.Conversions.UseDefaultFactory(x => x.OverrideForValueType<int>().Use<NoOpValueConverter>()));
 
             //when
             var matchingType = config.ValueConverterFactory is IValueConverterFactory;
@@ -66,7 +66,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
         public void Does_configuration_of_type_using_generic_method_return_correct_converter_of_a_type_converter_override(int version)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version, builder => builder.Conversions.UseDefaultFactory(x => x.OverrideForType<int>().Use<NoOpValueConverter>()));
+            var config = ConfigureForMsSqlVersion(version, builder => builder.Conversions.UseDefaultFactory(x => x.OverrideForValueType<int>().Use<NoOpValueConverter>()));
             var converter = config.ValueConverterFactory.CreateConverter<int>();
 
             //when & then
@@ -79,7 +79,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
         public void Does_configuration_of_a_type_converter_override_using_instance_method_succeed(int version)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version, builder => builder.Conversions.UseDefaultFactory(x => x.OverrideForType<int>().Use(new NoOpValueConverter())));
+            var config = ConfigureForMsSqlVersion(version, builder => builder.Conversions.UseDefaultFactory(x => x.OverrideForValueType<int>().Use(new NoOpValueConverter())));
 
             //when
             var matchingType = config.ValueConverterFactory is IValueConverterFactory;
@@ -93,7 +93,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
         public void Does_configuration_of_a_type_using_instance_method_return_correct_converter_of_a_type_converter_override(int version)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version, builder => builder.Conversions.UseDefaultFactory(x => x.OverrideForType<int>().Use(new NoOpValueConverter())));
+            var config = ConfigureForMsSqlVersion(version, builder => builder.Conversions.UseDefaultFactory(x => x.OverrideForValueType<int>().Use(new NoOpValueConverter())));
             var converter = config.ValueConverterFactory.CreateConverter<int>();
 
             //when & then

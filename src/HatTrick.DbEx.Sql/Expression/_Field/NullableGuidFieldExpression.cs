@@ -23,7 +23,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public abstract partial class NullableGuidFieldExpression : 
         NullableFieldExpression<Guid,Guid?>,
         NullableGuidElement,
-        AnyGuidElement,
         IEquatable<NullableGuidFieldExpression>
     {
         #region constructors
@@ -31,10 +30,6 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
-        #endregion
-
-        #region as
-        public abstract NullableGuidElement As(string alias);
         #endregion
 
         #region equals

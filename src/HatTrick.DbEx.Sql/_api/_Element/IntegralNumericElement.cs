@@ -16,10 +16,12 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
+using HatTrick.DbEx.Sql.Expression;
+
 namespace HatTrick.DbEx.Sql
 {
 #pragma warning disable IDE1006 // Naming Styles
-    public interface IntegralNumericElement : AnyElement
+    public interface IntegralNumericElement : IExpressionElement
 #pragma warning restore IDE1006 // Naming Styles
     {
 

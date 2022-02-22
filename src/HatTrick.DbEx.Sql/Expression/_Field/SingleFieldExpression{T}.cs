@@ -32,11 +32,6 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public override SingleElement As(string alias)
-            => new SingleSelectExpression(this).As(alias);
-        #endregion
-
         #region equals
         public bool Equals(SingleFieldExpression<TEntity> obj)
             => obj is SingleFieldExpression<TEntity> && base.Equals(obj);

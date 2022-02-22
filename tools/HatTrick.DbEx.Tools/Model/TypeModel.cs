@@ -26,8 +26,9 @@
         public bool IsNullable { get; private set; }
         public bool IsArray { get; private set; }
         public bool IsEnum { get; private set; }
+        public bool IsUserDefinedType { get; private set; }
 
-        public TypeModel(string typeName, string alias, bool isNullable, bool isEnum = false, bool isArray = false)
+        public TypeModel(string typeName, string alias, bool isNullable, bool isEnum = false, bool isArray = false, bool isUserDefinedType = false)
         {
             TypeName = typeName;
             Alias = alias;
@@ -35,6 +36,7 @@
             IsNullable = isNullable;
             IsEnum = isEnum;
             IsArray = isArray;
+            IsUserDefinedType = isUserDefinedType;
         }
     }
 }

@@ -32,11 +32,6 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public override ByteArrayElement As(string alias)
-            => new ByteArraySelectExpression(this).As(alias);
-        #endregion
-
         #region in value set
         public override FilterExpressionSet In(params byte[][] value) => value is object ? new FilterExpressionSet(new FilterExpression<bool>(this, new LiteralExpression<byte[][]>(value, this), FilterExpressionOperator.None)) : null;
         public override FilterExpressionSet In(IEnumerable<byte[]> value) => value is object ? new FilterExpressionSet(new FilterExpression<bool>(this, new LiteralExpression<IEnumerable<byte[]>>(value, this), FilterExpressionOperator.None)) : null;

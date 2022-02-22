@@ -23,19 +23,18 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class DateTimeMaximumFunctionExpression :
         MaximumFunctionExpression<DateTime>,
         DateTimeElement,
-        AnyDateTimeElement,
         IEquatable<DateTimeMaximumFunctionExpression>
     {
         #region constructors
-        public DateTimeMaximumFunctionExpression(DateTimeElement expression) : base(expression)
+        public DateTimeMaximumFunctionExpression(AnyElement<DateTime> expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public DateTimeElement As(string alias)
-            => new DateTimeSelectExpression(this).As(alias);
+        public AnyElement<DateTime> As(string alias)
+            => new SelectExpression<DateTime>(this).As(alias);
         #endregion
 
         #region distinct

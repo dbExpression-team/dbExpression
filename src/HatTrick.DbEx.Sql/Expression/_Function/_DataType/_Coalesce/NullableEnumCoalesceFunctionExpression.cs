@@ -25,24 +25,23 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableEnumCoalesceFunctionExpression<TEnum> :
         NullableCoalesceFunctionExpression<TEnum,TEnum?>,
         NullableEnumElement<TEnum>,
-        AnyEnumElement<TEnum>,
         IEquatable<NullableEnumCoalesceFunctionExpression<TEnum>>
         where TEnum : struct, Enum, IComparable
     {
         #region constructors
-        public NullableEnumCoalesceFunctionExpression(IList<AnyEnumElement<TEnum>> expressions) 
+        public NullableEnumCoalesceFunctionExpression(IList<NullableEnumElement<TEnum>> expressions) 
             : base(expressions)
         {
 
         }
 
-        public NullableEnumCoalesceFunctionExpression(IList<AnyEnumElement<TEnum>> expressions, EnumElement<TEnum> termination) 
+        public NullableEnumCoalesceFunctionExpression(IList<NullableEnumElement<TEnum>> expressions, AnyElement<TEnum> termination) 
             : base(expressions?.Concat(new IExpressionElement[1] { termination }))
         {
 
         }
 
-        public NullableEnumCoalesceFunctionExpression(IList<AnyEnumElement<TEnum>> expressions, NullableEnumElement<TEnum> termination) 
+        public NullableEnumCoalesceFunctionExpression(IList<NullableEnumElement<TEnum>> expressions, AnyElement<TEnum?> termination) 
             : base(expressions?.Concat(new IExpressionElement[1] { termination }))
         {
 
@@ -50,8 +49,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public NullableEnumElement<TEnum> As(string alias)
-            => new NullableEnumSelectExpression<TEnum>(this).As(alias);
+        public AnyElement<TEnum?> As(string alias)
+            => new SelectExpression<TEnum?>(this).As(alias);
         #endregion
 
         #region equals

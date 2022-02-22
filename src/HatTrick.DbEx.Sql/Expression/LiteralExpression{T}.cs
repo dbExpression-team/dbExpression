@@ -22,6 +22,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public class LiteralExpression<TValue> : LiteralExpression,
         IExpressionElement<TValue>,
+        AnyElement<TValue>,
         IEquatable<LiteralExpression<TValue>>
     {
         #region constructors
@@ -44,6 +45,17 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
+        #endregion
+
+        #region as
+        public AnyElement<TValue> As(string alias)
+            => new SelectExpression<TValue>(this).As(alias);
+        #endregion
+
+        #region order by
+        OrderByExpression AnyElement.Asc => new OrderByExpression(this, OrderExpressionDirection.ASC);
+
+        OrderByExpression AnyElement.Desc => new OrderByExpression(this, OrderExpressionDirection.DESC);
         #endregion
 
         #region equals

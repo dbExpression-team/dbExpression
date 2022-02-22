@@ -27,5 +27,4 @@ namespace HatTrick.DbEx.Sql
         OrderByExpression Asc { get; }
         OrderByExpression Desc { get; }
     }
-
 }

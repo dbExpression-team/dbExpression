@@ -23,11 +23,10 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableDateTimeOffsetMinimumFunctionExpression :
         NullableMinimumFunctionExpression<DateTimeOffset,DateTimeOffset?>,
         NullableDateTimeOffsetElement,
-        AnyDateTimeOffsetElement,
         IEquatable<NullableDateTimeOffsetMinimumFunctionExpression>
     {
         #region constructors
-        public NullableDateTimeOffsetMinimumFunctionExpression(NullableDateTimeOffsetElement expression) 
+        public NullableDateTimeOffsetMinimumFunctionExpression(AnyElement<DateTimeOffset?> expression) 
             : base(expression)
         {
 
@@ -35,8 +34,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public NullableDateTimeOffsetElement As(string alias)
-            => new NullableDateTimeOffsetSelectExpression(this).As(alias);
+        public AnyElement<DateTimeOffset?> As(string alias)
+            => new SelectExpression<DateTimeOffset?>(this).As(alias);
         #endregion
 
         #region distinct

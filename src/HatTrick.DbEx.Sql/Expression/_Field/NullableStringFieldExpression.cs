@@ -23,7 +23,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public abstract partial class NullableStringFieldExpression :
         FieldExpression<string>,
         NullableStringElement,
-        AnyStringElement,
         IEquatable<NullableStringFieldExpression>
     {
         #region constructors
@@ -31,10 +30,6 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
-        #endregion
-
-        #region as
-        public abstract NullableStringElement As(string alias);
         #endregion
 
         #region like

@@ -30,7 +30,7 @@ namespace HatTrick.DbEx.MsSql.Builder
     public class MsSqlQueryExpressionBuilderFactory
     {
         #region select one
-        public SelectEntity<TEntity> CreateSelectEntityBuilder<TEntity>(RuntimeSqlDatabaseConfiguration configuration)
+        public virtual SelectEntity<TEntity> CreateSelectEntityBuilder<TEntity>(RuntimeSqlDatabaseConfiguration configuration)
             where TEntity : class, IDbEntity, new()
         {
             var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
@@ -38,7 +38,7 @@ namespace HatTrick.DbEx.MsSql.Builder
             return new SelectEntityQueryExpressionBuilder<TEntity>(configuration, expression);
         }
 
-        public SelectDynamic CreateSelectDynamicBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement field1, AnyElement field2, params AnyElement[] fields)
+        public virtual SelectDynamic CreateSelectDynamicBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement field1, AnyElement field2, params AnyElement[] fields)
         {
             var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
             var expressions = new List<SelectExpression>(fields.Length + 2)
@@ -52,14 +52,14 @@ namespace HatTrick.DbEx.MsSql.Builder
             return new SelectDynamicSelectQueryExpressionBuilder(configuration, expression);
         }
 
-        public SelectDynamic CreateSelectDynamicBuilder(RuntimeSqlDatabaseConfiguration configuration, IEnumerable<AnyElement> fields)
+        public virtual SelectDynamic CreateSelectDynamicBuilder(RuntimeSqlDatabaseConfiguration configuration, IEnumerable<AnyElement> fields)
         {
             var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
             expression.Select = new SelectExpressionSet(fields.Select(field => field?.ToSelectExpression(configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(field))));
             return new SelectDynamicSelectQueryExpressionBuilder(configuration, expression);
         }
 
-        public SelectValue<TEnum> CreateSelectValueBuilder<TEnum>(RuntimeSqlDatabaseConfiguration configuration, EnumElement<TEnum> field)
+        public virtual SelectValue<TEnum> CreateSelectValueBuilder<TEnum>(RuntimeSqlDatabaseConfiguration configuration, AnyElement<TEnum> field)
             where TEnum : struct, Enum, IComparable
         {
             var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
@@ -68,7 +68,7 @@ namespace HatTrick.DbEx.MsSql.Builder
             return new SelectValueSelectQueryExpressionBuilder<TEnum>(configuration, expression);
         }
 
-        public SelectValue<TEnum?> CreateSelectValueBuilder<TEnum>(RuntimeSqlDatabaseConfiguration configuration, NullableEnumElement<TEnum> field)
+        public virtual SelectValue<TEnum?> CreateSelectValueBuilder<TEnum>(RuntimeSqlDatabaseConfiguration configuration, AnyElement<TEnum?> field)
             where TEnum : struct, Enum, IComparable
         {
             var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
@@ -77,91 +77,85 @@ namespace HatTrick.DbEx.MsSql.Builder
             return new SelectValueSelectQueryExpressionBuilder<TEnum?>(configuration, expression);
         }
 
-        public SelectValue<object> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyObjectElement field)
+        public virtual SelectValue<object> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<object> field)
             => CreateSelectValueBuilder<object>(configuration, field);
 
-        public SelectValue<bool> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, BooleanElement field)
+        public virtual SelectValue<bool> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<bool> field)
             => CreateSelectValueBuilder<bool>(configuration, field);
 
-        public SelectValue<bool?> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableBooleanElement field)
+        public virtual SelectValue<bool?> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<bool?> field)
             => CreateSelectValueBuilder<bool?>(configuration, field);
 
-        public SelectValue<byte> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, ByteElement field)
+        public virtual SelectValue<byte> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<byte> field)
             => CreateSelectValueBuilder<byte>(configuration, field);
 
-        public SelectValue<byte?> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableByteElement field)
+        public virtual SelectValue<byte?> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<byte?> field)
             => CreateSelectValueBuilder<byte?>(configuration, field);
 
-        public SelectValue<byte[]> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, ByteArrayElement field)
+        public virtual SelectValue<byte[]> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<byte[]> field)
             => CreateSelectValueBuilder<byte[]>(configuration, field);
 
-        public SelectValue<byte[]> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableByteArrayElement field)
-            => CreateSelectValueBuilder<byte[]>(configuration, field);
-
-        public SelectValue<DateTime> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, DateTimeElement field)
+        public virtual SelectValue<DateTime> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<DateTime> field)
             => CreateSelectValueBuilder<DateTime>(configuration, field);
 
-        public SelectValue<DateTime?> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableDateTimeElement field)
+        public virtual SelectValue<DateTime?> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<DateTime?> field)
             => CreateSelectValueBuilder<DateTime?>(configuration, field);
 
-        public SelectValue<DateTimeOffset> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, DateTimeOffsetElement field)
+        public virtual SelectValue<DateTimeOffset> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<DateTimeOffset> field)
             => CreateSelectValueBuilder<DateTimeOffset>(configuration, field);
 
-        public SelectValue<DateTimeOffset?> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableDateTimeOffsetElement field)
+        public virtual SelectValue<DateTimeOffset?> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<DateTimeOffset?> field)
             => CreateSelectValueBuilder<DateTimeOffset?>(configuration, field);
 
-        public SelectValue<decimal> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, DecimalElement field)
+        public virtual SelectValue<decimal> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<decimal> field)
             => CreateSelectValueBuilder<decimal>(configuration, field);
 
-        public SelectValue<decimal?> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableDecimalElement field)
+        public virtual SelectValue<decimal?> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<decimal?> field)
             => CreateSelectValueBuilder<decimal?>(configuration, field);
 
-        public SelectValue<double> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, DoubleElement field)
+        public virtual SelectValue<double> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<double> field)
             => CreateSelectValueBuilder<double>(configuration, field);
 
-        public SelectValue<double?> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableDoubleElement field)
+        public virtual SelectValue<double?> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<double?> field)
             => CreateSelectValueBuilder<double?>(configuration, field);
 
-        public SelectValue<Guid> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, GuidElement field)
+        public virtual SelectValue<Guid> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<Guid> field)
             => CreateSelectValueBuilder<Guid>(configuration, field);
 
-        public SelectValue<Guid?> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableGuidElement field)
+        public virtual SelectValue<Guid?> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<Guid?> field)
             => CreateSelectValueBuilder<Guid?>(configuration, field);
 
-        public SelectValue<short> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, Int16Element field)
+        public virtual SelectValue<short> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<short> field)
             => CreateSelectValueBuilder<short>(configuration, field);
 
-        public SelectValue<short?> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableInt16Element field)
+        public virtual SelectValue<short?> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<short?> field)
             => CreateSelectValueBuilder<short?>(configuration, field);
 
-        public SelectValue<int> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, Int32Element field)
+        public virtual SelectValue<int> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<int> field)
             => CreateSelectValueBuilder<int>(configuration, field);
 
-        public SelectValue<int?> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableInt32Element field)
+        public virtual SelectValue<int?> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<int?> field)
             => CreateSelectValueBuilder<int?>(configuration, field);
 
-        public SelectValue<long> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, Int64Element field)
+        public virtual SelectValue<long> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<long> field)
             => CreateSelectValueBuilder<long>(configuration, field);
 
-        public SelectValue<long?> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableInt64Element field)
+        public virtual SelectValue<long?> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<long?> field)
             => CreateSelectValueBuilder<long?>(configuration, field);
 
-        public SelectValue<float> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, SingleElement field)
+        public virtual SelectValue<float> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<float> field)
             => CreateSelectValueBuilder<float>(configuration, field);
 
-        public SelectValue<float?> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableSingleElement field)
+        public virtual SelectValue<float?> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<float?> field)
             => CreateSelectValueBuilder<float?>(configuration, field);
 
-        public SelectValue<string> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, StringElement field)
+        public virtual SelectValue<string> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<string> field)
             => CreateSelectValueBuilder<string>(configuration, field);
 
-        public SelectValue<string> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableStringElement field)
-            => CreateSelectValueBuilder<string>(configuration, field);
- 
-        public SelectValue<TimeSpan> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, TimeSpanElement field)
+        public virtual SelectValue<TimeSpan> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<TimeSpan> field)
             => CreateSelectValueBuilder<TimeSpan>(configuration, field);
 
-        public SelectValue<TimeSpan?> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableTimeSpanElement field)
+        public virtual SelectValue<TimeSpan?> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<TimeSpan?> field)
             => CreateSelectValueBuilder<TimeSpan?>(configuration, field);
 
         private SelectValue<TValue> CreateSelectValueBuilder<TValue>(RuntimeSqlDatabaseConfiguration configuration, AnyElement field)
@@ -174,14 +168,14 @@ namespace HatTrick.DbEx.MsSql.Builder
         #endregion
 
         #region select many
-        public SelectEntities<TEntity> CreateSelectEntitiesBuilder<TEntity>(RuntimeSqlDatabaseConfiguration configuration)
+        public virtual SelectEntities<TEntity> CreateSelectEntitiesBuilder<TEntity>(RuntimeSqlDatabaseConfiguration configuration)
             where TEntity : class, IDbEntity, new()
         {
             var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
             return new SelectEntitiesSelectQueryExpressionBuilder<TEntity>(configuration, expression);
         }
 
-        public SelectDynamics CreateSelectDynamicsBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement field1, AnyElement field2, params AnyElement[] fields)
+        public virtual SelectDynamics CreateSelectDynamicsBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement field1, AnyElement field2, params AnyElement[] fields)
         {
             var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
             var expressions = new List<SelectExpression>(fields.Length + 2)
@@ -194,14 +188,14 @@ namespace HatTrick.DbEx.MsSql.Builder
             return new SelectDynamicsSelectQueryExpressionBuilder(configuration, expression);
         }
 
-        public SelectDynamics CreateSelectDynamicsBuilder(RuntimeSqlDatabaseConfiguration configuration, IEnumerable<AnyElement> fields)
+        public virtual SelectDynamics CreateSelectDynamicsBuilder(RuntimeSqlDatabaseConfiguration configuration, IEnumerable<AnyElement> fields)
         {
             var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
             expression.Select = new SelectExpressionSet(fields.Select(field => field?.ToSelectExpression(configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(field))));
             return new SelectDynamicsSelectQueryExpressionBuilder(configuration, expression);
         }
 
-        public SelectValues<TEnum> CreateSelectValuesBuilder<TEnum>(RuntimeSqlDatabaseConfiguration configuration, EnumElement<TEnum> field)
+        public virtual SelectValues<TEnum> CreateSelectValuesBuilder<TEnum>(RuntimeSqlDatabaseConfiguration configuration, AnyElement<TEnum> field)
             where TEnum : struct, Enum, IComparable
         {
             var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
@@ -209,7 +203,7 @@ namespace HatTrick.DbEx.MsSql.Builder
             return new SelectValuesSelectQueryExpressionBuilder<TEnum>(configuration, expression);
         }
 
-        public SelectValues<TEnum?> CreateSelectValuesBuilder<TEnum>(RuntimeSqlDatabaseConfiguration configuration, NullableEnumElement<TEnum> field)
+        public virtual SelectValues<TEnum?> CreateSelectValuesBuilder<TEnum>(RuntimeSqlDatabaseConfiguration configuration, AnyElement<TEnum?> field)
             where TEnum : struct, Enum, IComparable
         {
             var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
@@ -217,95 +211,86 @@ namespace HatTrick.DbEx.MsSql.Builder
             return new SelectValuesSelectQueryExpressionBuilder<TEnum?>(configuration, expression);
         }
 
-        public SelectValues<object> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyObjectElement field)
+        public virtual SelectValues<object> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<object> field)
             => CreateSelectValuesBuilder<object>(configuration, field);
 
-        public SelectValues<bool> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, BooleanElement field)
+        public virtual SelectValues<bool> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<bool> field)
             => CreateSelectValuesBuilder<bool>(configuration, field);
 
-        public SelectValues<bool?> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableBooleanElement field)
+        public virtual SelectValues<bool?> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<bool?> field)
             => CreateSelectValuesBuilder<bool?>(configuration, field);
 
-        public SelectValues<byte> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, ByteElement field)
+        public virtual SelectValues<byte> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<byte> field)
             => CreateSelectValuesBuilder<byte>(configuration, field);
 
-        public SelectValues<byte?> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableByteElement field)
+        public virtual SelectValues<byte?> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<byte?> field)
             => CreateSelectValuesBuilder<byte?>(configuration, field);
 
-        public SelectValues<byte[]> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, ByteArrayElement field)
+        public virtual SelectValues<byte[]> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<byte[]> field)
             => CreateSelectValuesBuilder<byte[]>(configuration, field);
 
-        public SelectValues<byte[]> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableByteArrayElement field)
-            => CreateSelectValuesBuilder<byte[]>(configuration, field);
-
-        public SelectValues<DateTime> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, DateTimeElement field)
+        public virtual SelectValues<DateTime> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<DateTime> field)
             => CreateSelectValuesBuilder<DateTime>(configuration, field);
 
-        public SelectValues<DateTime?> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableDateTimeElement field)
+        public virtual SelectValues<DateTime?> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<DateTime?> field)
             => CreateSelectValuesBuilder<DateTime?>(configuration, field);
 
-        public SelectValues<DateTimeOffset> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, DateTimeOffsetElement field)
+        public virtual SelectValues<DateTimeOffset> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<DateTimeOffset> field)
             => CreateSelectValuesBuilder<DateTimeOffset>(configuration, field);
 
-        public SelectValues<DateTimeOffset?> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableDateTimeOffsetElement field)
+        public virtual SelectValues<DateTimeOffset?> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<DateTimeOffset?> field)
             => CreateSelectValuesBuilder<DateTimeOffset?>(configuration, field);
 
-        public SelectValues<decimal> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, DecimalElement field)
+        public virtual SelectValues<decimal> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<decimal> field)
             => CreateSelectValuesBuilder<decimal>(configuration, field);
 
-        public SelectValues<decimal?> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableDecimalElement field)
+        public virtual SelectValues<decimal?> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<decimal?> field)
             => CreateSelectValuesBuilder<decimal?>(configuration, field);
 
-        public SelectValues<double> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, DoubleElement field)
+        public virtual SelectValues<double> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<double> field)
             => CreateSelectValuesBuilder<double>(configuration, field);
 
-        public SelectValues<double?> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableDoubleElement field)
+        public virtual SelectValues<double?> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<double?> field)
             => CreateSelectValuesBuilder<double?>(configuration, field);
 
-        public SelectValues<Guid> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, GuidElement field)
+        public virtual SelectValues<Guid> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<Guid> field)
             => CreateSelectValuesBuilder<Guid>(configuration, field);
 
-        public SelectValues<Guid?> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableGuidElement field)
+        public virtual SelectValues<Guid?> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<Guid?> field)
             => CreateSelectValuesBuilder<Guid?>(configuration, field);
 
-        public SelectValues<short> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, Int16Element field)
+        public virtual SelectValues<short> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<short> field)
             => CreateSelectValuesBuilder<short>(configuration, field);
 
-        public SelectValues<short?> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableInt16Element field)
+        public virtual SelectValues<short?> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<short?> field)
             => CreateSelectValuesBuilder<short?>(configuration, field);
 
-        public SelectValues<int> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, Int32Element field)
+        public virtual SelectValues<int> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<int> field)
             => CreateSelectValuesBuilder<int>(configuration, field);
 
-        public SelectValues<int?> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableInt32Element field)
+        public virtual SelectValues<int?> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<int?> field)
             => CreateSelectValuesBuilder<int?>(configuration, field);
 
-        public SelectValues<long> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, Int64Element field)
+        public virtual SelectValues<long> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<long> field)
             => CreateSelectValuesBuilder<long>(configuration, field);
 
-        public SelectValues<long?> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableInt64Element field)
+        public virtual SelectValues<long?> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<long?> field)
             => CreateSelectValuesBuilder<long?>(configuration, field);
 
-        public SelectValues<float> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, SingleElement field)
+        public virtual SelectValues<float> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<float> field)
             => CreateSelectValuesBuilder<float>(configuration, field);
 
-        public SelectValues<float?> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableSingleElement field)
+        public virtual SelectValues<float?> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<float?> field)
             => CreateSelectValuesBuilder<float?>(configuration, field);
 
-        public SelectValues<string> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, StringElement field)
+        public virtual SelectValues<string> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<string> field)
             => CreateSelectValuesBuilder<string>(configuration, field);
 
-        public SelectValues<string> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableStringElement field)
-            => CreateSelectValuesBuilder<string>(configuration, field);
-
-        public SelectValues<TimeSpan> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, TimeSpanElement field)
+        public virtual SelectValues<TimeSpan> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<TimeSpan> field)
             => CreateSelectValuesBuilder<TimeSpan>(configuration, field);
 
-        public SelectValues<TimeSpan?> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableTimeSpanElement field)
+        public virtual SelectValues<TimeSpan?> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<TimeSpan?> field)
             => CreateSelectValuesBuilder<TimeSpan?>(configuration, field);
-
-        public SelectValues<object> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, ObjectElement field)
-            => CreateSelectValuesBuilder<object>(configuration, field);
 
         private SelectValues<TValue> CreateSelectValuesBuilder<TValue>(RuntimeSqlDatabaseConfiguration configuration, AnyElement field)
         {
@@ -316,7 +301,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         #endregion
 
         #region update
-        public UpdateEntities CreateUpdateExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, EntityFieldAssignment assignment, params EntityFieldAssignment[] assignments)
+        public virtual UpdateEntities CreateUpdateExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, EntityFieldAssignment assignment, params EntityFieldAssignment[] assignments)
         {
             var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<UpdateQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
             expression.Assign = new AssignmentExpressionSet(
@@ -329,7 +314,7 @@ namespace HatTrick.DbEx.MsSql.Builder
             return new UpdateQueryExpressionBuilder(configuration, expression);
         }
 
-        public UpdateEntities CreateUpdateExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, IEnumerable<EntityFieldAssignment> assignments)
+        public virtual UpdateEntities CreateUpdateExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, IEnumerable<EntityFieldAssignment> assignments)
         {
             var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<UpdateQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
             expression.Assign = new AssignmentExpressionSet((assignments ?? throw new ArgumentNullException(nameof(assignments))).Select(x => x as AssignmentExpression ?? throw new DbExpressionException($"Expected all {nameof(assignments)} to be assignable to {typeof(AssignmentExpression)}.")));
@@ -338,7 +323,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         #endregion
 
         #region delete
-        public DeleteEntities CreateDeleteExpressionBulder(RuntimeSqlDatabaseConfiguration configuration)
+        public virtual DeleteEntities CreateDeleteExpressionBulder(RuntimeSqlDatabaseConfiguration configuration)
         {
             var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<DeleteQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
             return new DeleteQueryExpressionBuilder(configuration, expression);
@@ -346,11 +331,11 @@ namespace HatTrick.DbEx.MsSql.Builder
         #endregion
 
         #region insert
-        public InsertEntity<TEntity> CreateInsertExpressionBuilder<TEntity>(RuntimeSqlDatabaseConfiguration configuration, TEntity instance)
+        public virtual InsertEntity<TEntity> CreateInsertExpressionBuilder<TEntity>(RuntimeSqlDatabaseConfiguration configuration, TEntity instance)
             where TEntity : class, IDbEntity
             => new MsSqlInsertQueryExpressionBuilder<TEntity>(configuration, (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<InsertQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression."), new List<TEntity> { instance ?? throw new ArgumentNullException(nameof(instance)) });
 
-        public InsertEntities<TEntity> CreateInsertExpressionBuilder<TEntity>(RuntimeSqlDatabaseConfiguration configuration, TEntity entity, params TEntity[] entities)
+        public virtual InsertEntities<TEntity> CreateInsertExpressionBuilder<TEntity>(RuntimeSqlDatabaseConfiguration configuration, TEntity entity, params TEntity[] entities)
             where TEntity : class, IDbEntity
             => new MsSqlInsertQueryExpressionBuilder<TEntity>(
                 configuration, 
@@ -358,13 +343,13 @@ namespace HatTrick.DbEx.MsSql.Builder
                 new List<TEntity>(entities.Length + 1) { entity }.Concat(entities)
             );
 
-        public InsertEntities<TEntity> CreateInsertExpressionBuilder<TEntity>(RuntimeSqlDatabaseConfiguration configuration, IEnumerable<TEntity> instances)
+        public virtual InsertEntities<TEntity> CreateInsertExpressionBuilder<TEntity>(RuntimeSqlDatabaseConfiguration configuration, IEnumerable<TEntity> instances)
             where TEntity : class, IDbEntity
             => new MsSqlInsertQueryExpressionBuilder<TEntity>(configuration, (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<InsertQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression."), instances ?? throw new ArgumentNullException(nameof(instances)));
         #endregion
 
         #region stored procedure
-        public StoredProcedureContinuation CreateStoredProcedureBuilder(RuntimeSqlDatabaseConfiguration configuration, StoredProcedureExpression entity)
+        public virtual StoredProcedureContinuation CreateStoredProcedureBuilder(RuntimeSqlDatabaseConfiguration configuration, StoredProcedureExpression entity)
         {
             var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<StoredProcedureQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
             return new StoredProcedureQueryExpressionBuilder(configuration, expression, entity);

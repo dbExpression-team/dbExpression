@@ -25,24 +25,23 @@ namespace HatTrick.DbEx.MsSql.Expression
     public partial class DecimalRoundFunctionExpression :
         RoundFunctionExpression<decimal>,
         DecimalElement,
-        AnyDecimalElement,
         IEquatable<DecimalRoundFunctionExpression>
     {
         #region constructors
-        public DecimalRoundFunctionExpression(DecimalElement expression, IntegralNumericElement length) : base(expression, length)
+        public DecimalRoundFunctionExpression(AnyElement<decimal> expression, IntegralNumericElement length) : base(expression, length)
         {
 
         }
 
-        public DecimalRoundFunctionExpression(DecimalElement expression, IntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
+        public DecimalRoundFunctionExpression(AnyElement<decimal> expression, IntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
         {
 
         }
         #endregion
 
         #region as
-        public DecimalElement As(string alias)
-            => new DecimalSelectExpression(this).As(alias);
+        public AnyElement<decimal> As(string alias)
+            => new SelectExpression<decimal>(this).As(alias);
         #endregion
 
         #region equals

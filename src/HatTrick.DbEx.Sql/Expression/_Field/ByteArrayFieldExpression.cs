@@ -23,17 +23,12 @@ namespace HatTrick.DbEx.Sql.Expression
     public abstract class ByteArrayFieldExpression : 
         FieldExpression<byte[]>,
         ByteArrayElement,
-        AnyByteArrayElement,
         IEquatable<ByteArrayFieldExpression>
     {
         #region constructors
         protected ByteArrayFieldExpression(string identifier, string name, EntityExpression entity) : base(identifier, name, typeof(byte[]), entity)
         {
         }
-        #endregion
-
-        #region as
-        public abstract ByteArrayElement As(string alias);
         #endregion
 
         #region equals

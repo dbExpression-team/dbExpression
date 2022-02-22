@@ -83,8 +83,7 @@ namespace HatTrick.DbEx.Sql
 
             try
             {
-                var update = context.Expression as UpdateQueryExpression;
-                if (update is null)
+                if (!(context.Expression is UpdateQueryExpression update))
                     return false;
 
                 var entity = update.BaseEntity as IExpressionListProvider<FieldExpression>;
@@ -123,8 +122,7 @@ namespace HatTrick.DbEx.Sql
 
             try
             {
-                var update = context.Expression as UpdateQueryExpression;
-                if (update is null)
+                if (!(context.Expression is UpdateQueryExpression update))
                     return false;
 
                 var entity = update.BaseEntity as IExpressionListProvider<FieldExpression>;

@@ -23,34 +23,33 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class Int32DateDiffFunctionExpression :
         DateDiffFunctionExpression<int>,
         Int32Element,
-        AnyInt32Element,
         IEquatable<Int32DateDiffFunctionExpression>
     {
         #region constructors
-        public Int32DateDiffFunctionExpression(DatePartsExpression datePart, DateTimeElement startDate, DateTimeElement endDate) : base(datePart, startDate, endDate)
+        public Int32DateDiffFunctionExpression(DatePartsExpression datePart, AnyElement<DateTime> startDate, AnyElement<DateTime> endDate) : base(datePart, startDate, endDate)
         {
 
         }
 
-        public Int32DateDiffFunctionExpression(DatePartsExpression datePart, DateTimeElement startDate, DateTimeOffsetElement endDate) : base(datePart, startDate, endDate)
+        public Int32DateDiffFunctionExpression(DatePartsExpression datePart, AnyElement<DateTime> startDate, AnyElement<DateTimeOffset> endDate) : base(datePart, startDate, endDate)
         {
 
         }
 
-        public Int32DateDiffFunctionExpression(DatePartsExpression datePart, DateTimeOffsetElement startDate, DateTimeElement endDate) : base(datePart, startDate, endDate)
+        public Int32DateDiffFunctionExpression(DatePartsExpression datePart, AnyElement<DateTimeOffset> startDate, AnyElement<DateTime> endDate) : base(datePart, startDate, endDate)
         {
 
         }
 
-        public Int32DateDiffFunctionExpression(DatePartsExpression datePart, DateTimeOffsetElement startDate, DateTimeOffsetElement endDate) : base(datePart, startDate, endDate)
+        public Int32DateDiffFunctionExpression(DatePartsExpression datePart, AnyElement<DateTimeOffset> startDate, AnyElement<DateTimeOffset> endDate) : base(datePart, startDate, endDate)
         {
 
         }
         #endregion
 
         #region as
-        public Int32Element As(string alias)
-            => new Int32SelectExpression(this).As(alias);
+        public AnyElement<int> As(string alias)
+            => new SelectExpression<int>(this).As(alias);
         #endregion
 
         #region equals

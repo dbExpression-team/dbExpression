@@ -23,19 +23,18 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class TimeSpanMaximumFunctionExpression :
         MaximumFunctionExpression<TimeSpan>,
         TimeSpanElement,
-        AnyTimeSpanElement,
         IEquatable<TimeSpanMaximumFunctionExpression>
     {
         #region constructors
-        public TimeSpanMaximumFunctionExpression(TimeSpanElement expression) : base(expression)
+        public TimeSpanMaximumFunctionExpression(AnyElement<TimeSpan> expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public TimeSpanElement As(string alias)
-            => new TimeSpanSelectExpression(this).As(alias);
+        public AnyElement<TimeSpan> As(string alias)
+            => new SelectExpression<TimeSpan>(this).As(alias);
         #endregion
 
         #region distinct

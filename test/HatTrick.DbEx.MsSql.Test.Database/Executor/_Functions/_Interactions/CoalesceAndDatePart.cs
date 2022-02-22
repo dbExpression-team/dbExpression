@@ -4,6 +4,7 @@ using FluentAssertions;
 using HatTrick.DbEx.MsSql.Expression;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
+using System;
 using System.Collections.Generic;
 using Xunit;
 
@@ -21,11 +22,11 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(
-                    db.fx.DatePart(DateParts.Day, db.fx.Coalesce(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate))
+                    db.fx.DatePart(DateParts.Day, db.fx.Coalesce<DateTime>(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate))
                 ).From(dbo.Purchase);
 
             //when               
-            IList<int?> results = exp.Execute();
+            IList<int> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);
@@ -39,7 +40,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(
-                    db.fx.Coalesce(db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate), db.fx.DatePart(DateParts.Year, dbo.Purchase.ExpectedDeliveryDate), 1)
+                    db.fx.Coalesce<int>(db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate), db.fx.DatePart(DateParts.Year, dbo.Purchase.ExpectedDeliveryDate), 1)
                 ).From(dbo.Purchase);
 
             //when               
@@ -57,7 +58,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(
-                    db.fx.Coalesce(db.fx.DatePart(DateParts.Day, dbo.Purchase.ShipDate), db.fx.DatePart(DateParts.Year, dbo.Purchase.ExpectedDeliveryDate), 1)
+                    db.fx.Coalesce<int>(db.fx.DatePart(DateParts.Day, dbo.Purchase.ShipDate), db.fx.DatePart(DateParts.Year, dbo.Purchase.ExpectedDeliveryDate), 1)
                 ).From(dbo.Purchase);
 
             //when               
@@ -75,7 +76,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(
-                    db.fx.DatePart(DateParts.Day, db.fx.Coalesce(dbo.Purchase.ShipDate, dbo.Purchase.ExpectedDeliveryDate))
+                    db.fx.DatePart(DateParts.Day, db.fx.Coalesce<DateTime?>(dbo.Purchase.ShipDate, dbo.Purchase.ExpectedDeliveryDate))
                 ).From(dbo.Purchase);
 
             //when               

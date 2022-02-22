@@ -23,19 +23,18 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class StringLeftFunctionExpression :
         LeftFunctionExpression<string>,
         StringElement,
-        AnyStringElement,
         IEquatable<StringLeftFunctionExpression>
     {
         #region constructors
-        public StringLeftFunctionExpression(StringElement expression, Int32Element characterCount) : base(expression, characterCount)
+        public StringLeftFunctionExpression(AnyElement<string> expression, AnyElement<int> characterCount) : base(expression, characterCount)
         {
 
         }
         #endregion
 
         #region as
-        public StringElement As(string alias)
-            => new StringSelectExpression(this).As(alias);
+        public AnyElement<string> As(string alias)
+            => new SelectExpression<string>(this).As(alias);
         #endregion
 
         #region equals

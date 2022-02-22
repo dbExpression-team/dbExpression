@@ -23,11 +23,10 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableGuidMaximumFunctionExpression :
         NullableMaximumFunctionExpression<Guid,Guid?>,
         NullableGuidElement,
-        AnyGuidElement,
         IEquatable<NullableGuidMaximumFunctionExpression>
     {
         #region constructors
-        public NullableGuidMaximumFunctionExpression(NullableGuidElement expression) 
+        public NullableGuidMaximumFunctionExpression(AnyElement<Guid?> expression) 
             : base(expression)
         {
 
@@ -35,8 +34,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public NullableGuidElement As(string alias)
-            => new NullableGuidSelectExpression(this).As(alias);
+        public AnyElement<Guid?> As(string alias)
+            => new SelectExpression<Guid?>(this).As(alias);
         #endregion
 
         #region distinct

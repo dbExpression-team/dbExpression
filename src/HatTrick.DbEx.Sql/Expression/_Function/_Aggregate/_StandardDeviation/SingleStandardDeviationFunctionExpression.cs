@@ -23,49 +23,48 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class SingleStandardDeviationFunctionExpression :
         StandardDeviationFunctionExpression<float>,
         SingleElement,
-        AnySingleElement,
         IEquatable<SingleStandardDeviationFunctionExpression>
     {
         #region constructors
-        public SingleStandardDeviationFunctionExpression(ByteElement expression) : base(expression)
+        public SingleStandardDeviationFunctionExpression(AnyElement<byte> expression) : base(expression)
         {
 
         }
 
-        public SingleStandardDeviationFunctionExpression(Int16Element expression) : base(expression)
+        public SingleStandardDeviationFunctionExpression(AnyElement<short> expression) : base(expression)
         {
 
         }
 
-        public SingleStandardDeviationFunctionExpression(Int32Element expression) : base(expression)
+        public SingleStandardDeviationFunctionExpression(AnyElement<int> expression) : base(expression)
         {
 
         }
 
-        public SingleStandardDeviationFunctionExpression(Int64Element expression) : base(expression)
+        public SingleStandardDeviationFunctionExpression(AnyElement<long> expression) : base(expression)
         {
 
         }
 
-        public SingleStandardDeviationFunctionExpression(DoubleElement expression) : base(expression)
+        public SingleStandardDeviationFunctionExpression(AnyElement<double> expression) : base(expression)
         {
 
         }
 
-        public SingleStandardDeviationFunctionExpression(DecimalElement expression) : base(expression)
+        public SingleStandardDeviationFunctionExpression(AnyElement<decimal> expression) : base(expression)
         {
 
         }
 
-        public SingleStandardDeviationFunctionExpression(SingleElement expression) : base(expression)
+        public SingleStandardDeviationFunctionExpression(AnyElement<float> expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public SingleElement As(string alias)
-            => new SingleSelectExpression(this).As(alias);
+        public AnyElement<float> As(string alias)
+            => new SelectExpression<float>(this).As(alias);
         #endregion
 
         #region distinct

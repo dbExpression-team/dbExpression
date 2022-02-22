@@ -23,35 +23,22 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableDateTimeOffsetDateAddFunctionExpression :
         NullableDateAddFunctionExpression<DateTimeOffset,DateTimeOffset?>,
         NullableDateTimeOffsetElement,
-        AnyDateTimeOffsetElement,
         IEquatable<NullableDateTimeOffsetDateAddFunctionExpression>
     {
         #region constructors
-        public NullableDateTimeOffsetDateAddFunctionExpression(DatePartsExpression datePart, Int32Element value, NullableDateTimeOffsetElement expression)
+        public NullableDateTimeOffsetDateAddFunctionExpression(DatePartsExpression datePart, AnyElement<int> value, AnyElement<DateTimeOffset?> expression)
             : base(datePart, value, expression)
         {
 
         }
 
-        public NullableDateTimeOffsetDateAddFunctionExpression(DatePartsExpression datePart, NullableInt32Element value, NullableDateTimeOffsetElement expression)
+        public NullableDateTimeOffsetDateAddFunctionExpression(DatePartsExpression datePart, AnyElement<int?> value, AnyElement<DateTimeOffset> expression)
             : base(datePart, value, expression)
         {
 
         }
 
-        public NullableDateTimeOffsetDateAddFunctionExpression(DatePartsExpression datePart, NullableInt32Element value, DateTimeOffsetElement expression)
-            : base(datePart, value, expression)
-        {
-
-        }
-
-        public NullableDateTimeOffsetDateAddFunctionExpression(DatePartsExpression datePart, AnyObjectElement value, NullableDateTimeOffsetElement expression)
-            : base(datePart, value, expression)
-        {
-
-        }
-
-        public NullableDateTimeOffsetDateAddFunctionExpression(DatePartsExpression datePart, AnyObjectElement value, DateTimeOffsetElement expression)
+        public NullableDateTimeOffsetDateAddFunctionExpression(DatePartsExpression datePart, AnyElement<int?> value, AnyElement<DateTimeOffset?> expression)
             : base(datePart, value, expression)
         {
 
@@ -59,8 +46,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public NullableDateTimeOffsetElement As(string alias)
-            => new NullableDateTimeOffsetSelectExpression(this).As(alias);
+        public AnyElement<DateTimeOffset?> As(string alias)
+            => new SelectExpression<DateTimeOffset?>(this).As(alias);
         #endregion
 
         #region equals

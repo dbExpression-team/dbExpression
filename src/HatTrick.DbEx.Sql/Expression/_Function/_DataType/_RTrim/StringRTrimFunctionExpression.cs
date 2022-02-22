@@ -23,24 +23,18 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class StringRTrimFunctionExpression :
         RTrimFunctionExpression<string>,
         StringElement,
-        AnyStringElement,
         IEquatable<StringRTrimFunctionExpression>
     {
         #region constructors
-        public StringRTrimFunctionExpression(StringElement expression) : base(expression)
-        {
-
-        }
-
-        public StringRTrimFunctionExpression(AnyObjectElement expression) : base(expression)
+        public StringRTrimFunctionExpression(AnyElement<string> expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public StringElement As(string alias)
-            => new StringSelectExpression(this).As(alias);
+        public AnyElement<string> As(string alias)
+            => new SelectExpression<string>(this).As(alias);
         #endregion
 
         #region like

@@ -72,6 +72,14 @@
 		},
 		{
 			"apply": {
+				"clrType": "HatTrick.DbEx.MsSql.Test.ProductDescription",
+				"to": {
+					"path": "dbo.Product.Description"
+				}
+			}
+		},
+		{
+			"apply": {
 				"clrType": "DbEx.Data.PaymentMethodType",
 				"to": {
 					"path": "dbo.Purchase.PaymentMethodType"

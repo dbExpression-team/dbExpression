@@ -356,7 +356,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             int purchaseCount = 3;  //any person making 3 or more purchases (in a calendar year are considered VIP customers
 
             IList<object> values = db.SelectMany(
-                db.fx.Coalesce(dbex.Alias<int>("vips", "PurchaseCount"), dbex.Alias<int>("not_vips", "PurchaseCount"), 1).As("PurchaseCount")
+                db.fx.Coalesce(dbex.Alias<int>("vips", "PurchaseCount"), dbex.Alias<int>("not_vips", "PurchaseCount"), 1).As("PurchaseCount") //HERE: if use generic on Coalesce, As doesn't work....
             )
             .From(dbo.Person)
             .LeftJoin(
@@ -459,7 +459,6 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
 
         [Theory]
-        [Trait("Operation", "SUBQUERY")]
         [Trait("Operation", "LEFT JOIN")]
         [MsSqlVersions.AllVersions]
         public void Can_alias_result_in_correct_conversion_for_nullable_enum_using_custom_mapping(int version)
@@ -488,7 +487,6 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         }
 
         [Theory]
-        [Trait("Operation", "SUBQUERY")]
         [Trait("Operation", "LEFT JOIN")]
         [MsSqlVersions.AllVersions]
         public void Can_alias_result_in_correct_conversion_for_nullable_enum_using_standard_mapping(int version)
@@ -508,6 +506,46 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //then
             ((AddressType?)values.foo).Should().NotBeNull();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_alias_result_in_correct_conversion_for_nullable_int_using_standard_mapping(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //when
+            var value = db.SelectOne(
+                dbex.Alias<int?>("samePerson", nameof(dbo.Person.CreditLimit))
+            )
+            .From(dbo.Person)
+            .InnerJoin(dbo.Person.As("samePerson")).On(dbo.Person.Id == ("samePerson", nameof(dbo.Person.Id)))
+            .Where(dbo.Person.CreditLimit == DBNull.Value)
+            .Execute();
+
+            //then
+            value.Should().BeNull();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_alias_result_in_correct_conversion_for_int_using_standard_mapping(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //when
+            var value = db.SelectOne(
+                dbex.Alias<int>("samePerson", nameof(dbo.Person.CreditLimit))
+            )
+            .From(dbo.Person)
+            .InnerJoin(dbo.Person.As("samePerson")).On(dbo.Person.Id == ("samePerson", nameof(dbo.Person.Id)))
+            .Where(dbo.Person.CreditLimit != DBNull.Value)
+            .Execute();
+
+            //then
+            value.Should().BeGreaterThan(0);
         }
     }
 }

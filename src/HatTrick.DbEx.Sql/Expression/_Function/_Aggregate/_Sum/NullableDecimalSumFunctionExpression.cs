@@ -23,19 +23,18 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableDecimalSumFunctionExpression :
         NullableSumFunctionExpression<decimal,decimal?>,
         NullableDecimalElement,
-        AnyDecimalElement,
         IEquatable<NullableDecimalSumFunctionExpression>
     {
         #region constructors
-        public NullableDecimalSumFunctionExpression(NullableDecimalElement expression) : base(expression)
+        public NullableDecimalSumFunctionExpression(AnyElement<decimal?> expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public NullableDecimalElement As(string alias)
-            => new NullableDecimalSelectExpression(this).As(alias);
+        public AnyElement<decimal?> As(string alias)
+            => new SelectExpression<decimal?>(this).As(alias);
         #endregion
 
         #region distinct

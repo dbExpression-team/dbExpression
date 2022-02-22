@@ -95,7 +95,7 @@ namespace DbEx.dboData
         public virtual int Id { get; set; }
         public virtual DbEx.Data.ProductCategoryType? ProductCategoryType { get; set; }
         public virtual string Name { get; set; }
-        public virtual string Description { get; set; }
+        public virtual HatTrick.DbEx.MsSql.Test.ProductDescription Description { get; set; }
         public virtual double ListPrice { get; set; }
         public virtual double Price { get; set; }
         public virtual int Quantity { get; set; }
@@ -161,6 +161,49 @@ namespace DbEx.dboData
 
         #region constructor
         public PurchaseLine()
+        {
+        }
+        #endregion
+    }
+    #endregion
+
+    #region unit test
+    public partial class UnitTest : IDbEntity
+    {
+        #region interface
+        public virtual int Id { get; set; }
+        public virtual bool Boolean { get; set; }
+        public virtual bool? NullableBoolean { get; set; }
+        public virtual byte Byte { get; set; }
+        public virtual byte? NullableByte { get; set; }
+        public virtual byte[] ByteArray { get; set; }
+        public virtual byte[] NullableByteArray { get; set; }
+        public virtual DateTime DateTime { get; set; }
+        public virtual DateTime? NullableDateTime { get; set; }
+        public virtual DateTimeOffset DateTimeOffset { get; set; }
+        public virtual DateTimeOffset? NullableDateTimeOffset { get; set; }
+        public virtual decimal Decimal { get; set; }
+        public virtual decimal? NullableDecimal { get; set; }
+        public virtual double Double { get; set; }
+        public virtual double? NullableDouble { get; set; }
+        public virtual Guid Guid { get; set; }
+        public virtual Guid? NullableGuid { get; set; }
+        public virtual short Int16 { get; set; }
+        public virtual short? NullableInt16 { get; set; }
+        public virtual int Int32 { get; set; }
+        public virtual int? NullableInt32 { get; set; }
+        public virtual long Int64 { get; set; }
+        public virtual long? NullableInt64 { get; set; }
+        public virtual float Single { get; set; }
+        public virtual float? NullableSingle { get; set; }
+        public virtual string String { get; set; }
+        public virtual string NullableString { get; set; }
+        public virtual TimeSpan? TimeSpan { get; set; }
+        public virtual TimeSpan? NullableTimeSpan { get; set; }
+        #endregion
+
+        #region constructor
+        public UnitTest()
         {
         }
         #endregion

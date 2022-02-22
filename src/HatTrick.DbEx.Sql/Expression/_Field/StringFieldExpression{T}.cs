@@ -37,11 +37,6 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public override StringElement As(string alias)
-            => new StringSelectExpression(this).As(alias);
-        #endregion
-
         #region equals
         public bool Equals(StringFieldExpression<TEntity> obj)
             => obj is StringFieldExpression<TEntity> && base.Equals(obj);

@@ -32,11 +32,6 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public override NullableSingleElement As(string alias)
-            => new NullableSingleSelectExpression(this).As(alias);
-        #endregion
-
         #region equals
         public bool Equals(NullableSingleFieldExpression<TEntity> obj)
             => obj is NullableSingleFieldExpression<TEntity> && base.Equals(obj);

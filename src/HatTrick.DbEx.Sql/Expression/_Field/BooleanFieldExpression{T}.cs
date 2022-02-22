@@ -32,11 +32,6 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public override BooleanElement As(string alias)
-            => new BooleanSelectExpression(this).As(alias);
-        #endregion
-
         #region equals
         public bool Equals(BooleanFieldExpression<TEntity> obj)
             => obj is BooleanFieldExpression<TEntity> && base.Equals(obj);

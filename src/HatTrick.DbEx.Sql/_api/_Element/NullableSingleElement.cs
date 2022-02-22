@@ -19,9 +19,9 @@
 ﻿namespace HatTrick.DbEx.Sql
 {
 #pragma warning disable IDE1006 // Naming Styles
-    public interface NullableSingleElement : AnyElement
+    public interface NullableSingleElement : AnyElement<float?>
 #pragma warning restore IDE1006 // Naming Styles
     {
-        NullableSingleElement As(string alias);
+
     }
 }

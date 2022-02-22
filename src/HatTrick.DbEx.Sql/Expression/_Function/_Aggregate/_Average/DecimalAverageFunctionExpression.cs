@@ -23,19 +23,18 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class DecimalAverageFunctionExpression :
         AverageFunctionExpression<decimal>,
         DecimalElement,
-        AnyDecimalElement,
         IEquatable<DecimalAverageFunctionExpression>
     {
         #region constructors
-        public DecimalAverageFunctionExpression(DecimalElement expression) : base(expression)
+        public DecimalAverageFunctionExpression(AnyElement<decimal> expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public DecimalElement As(string alias)
-            => new DecimalSelectExpression(this).As(alias);
+        public AnyElement<decimal> As(string alias)
+            => new SelectExpression<decimal>(this).As(alias);
         #endregion
 
         #region distinct

@@ -1,4 +1,5 @@
-﻿using DbEx.DataService;
+﻿using DbEx.Data;
+using DbEx.DataService;
 using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
@@ -20,7 +21,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(
-                    db.fx.Coalesce(db.fx.Avg(dbo.Person.CreditLimit), 1)
+                    db.fx.Coalesce<int>(db.fx.Avg(dbo.Person.CreditLimit), 1)
                 ).From(dbo.Person);
 
             //when               
@@ -39,7 +40,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(
-                    db.fx.Coalesce(db.fx.Avg(dbo.Person.CreditLimit), dbo.Person.CreditLimit)
+                    db.fx.Coalesce<int?>(db.fx.Avg(dbo.Person.CreditLimit), dbo.Person.CreditLimit)
                 ).From(dbo.Person)
                 .GroupBy(dbo.Person.CreditLimit);
 
@@ -59,7 +60,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(
-                    db.fx.Coalesce(db.fx.Avg(dbo.Person.CreditLimit), dbo.Person.Id)
+                    db.fx.Coalesce<int?>(db.fx.Avg(dbo.Person.CreditLimit), dbo.Person.Id)
                 ).From(dbo.Person)
                 .GroupBy(dbo.Person.Id);
 
@@ -78,7 +79,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(
-                    db.fx.Avg(db.fx.Coalesce(dbo.Person.CreditLimit, dbo.Person.CreditLimit))
+                    db.fx.Avg(db.fx.Coalesce<int?>(dbo.Person.CreditLimit, dbo.Person.CreditLimit))
                 ).From(dbo.Person);
 
             //when               

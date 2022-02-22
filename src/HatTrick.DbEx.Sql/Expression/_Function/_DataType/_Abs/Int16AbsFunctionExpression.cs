@@ -23,19 +23,18 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class Int16AbsFunctionExpression :
         AbsFunctionExpression<short>,
         Int16Element,
-        AnyInt16Element,
         IEquatable<Int16AbsFunctionExpression>
     {
         #region constructors
-        public Int16AbsFunctionExpression(Int16Element expression) : base(expression)
+        public Int16AbsFunctionExpression(AnyElement<short> expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public Int16Element As(string alias)
-            => new Int16SelectExpression(this).As(alias);
+        public AnyElement<short> As(string alias)
+            => new SelectExpression<short>(this).As(alias);
         #endregion
 
         #region distinct

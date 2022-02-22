@@ -32,11 +32,6 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public override NullableTimeSpanElement As(string alias)
-            => new NullableTimeSpanSelectExpression(this).As(alias);
-        #endregion
-
         #region equals
         public bool Equals(NullableTimeSpanFieldExpression<TEntity> obj)
             => obj is NullableTimeSpanFieldExpression<TEntity> && base.Equals(obj);

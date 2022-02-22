@@ -20,24 +20,24 @@
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public abstract class LeftFunctionExpression : ConversionFunctionExpression,
+    public abstract class LeftFunctionExpression : DataTypeFunctionExpression,
         IExpressionProvider<IExpressionElement>,
-        IExpressionProvider<Int32Element>,
+        IExpressionProvider<AnyElement<int>>,
         IEquatable<LeftFunctionExpression>
     {
         #region internals
         private readonly IExpressionElement expression;
-        private readonly Int32Element characterCount;
+        private readonly AnyElement<int> characterCount;
         #endregion
 
         #region interface
         IExpressionElement IExpressionProvider<IExpressionElement>.Expression => expression;
-        Int32Element IExpressionProvider<Int32Element>.Expression => characterCount;
+        AnyElement<int> IExpressionProvider<AnyElement<int>>.Expression => characterCount;
         #endregion
 
         #region constructors
-        protected LeftFunctionExpression(IExpressionElement expression, Int32Element characterCount, Type convertToType)
-            : base(convertToType)
+        protected LeftFunctionExpression(IExpressionElement expression, AnyElement<int> characterCount, Type declaredType)
+            : base(declaredType)
         {
             this.expression = expression ?? throw new ArgumentNullException(nameof(expression));
             this.characterCount = characterCount ?? throw new ArgumentNullException(nameof(characterCount));

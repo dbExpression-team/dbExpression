@@ -23,7 +23,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class EnumExpressionMediator<TEnum> :
         ExpressionMediator<TEnum>,
         EnumElement<TEnum>,
-        AnyEnumElement<TEnum>,
         IEquatable<EnumExpressionMediator<TEnum>>
         where TEnum : struct, Enum, IComparable
     {
@@ -46,8 +45,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public EnumElement<TEnum> As(string alias)
-            => new EnumSelectExpression<TEnum>(this).As(alias);
+        public AnyElement<TEnum> As(string alias)
+            => new SelectExpression<TEnum>(this).As(alias);
         #endregion
 
         #region order

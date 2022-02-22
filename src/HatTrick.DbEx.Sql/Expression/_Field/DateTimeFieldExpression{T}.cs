@@ -32,11 +32,6 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public override DateTimeElement As(string alias)
-            => new DateTimeSelectExpression(this).As(alias);
-        #endregion
-
         #region equals
         public bool Equals(DateTimeFieldExpression<TEntity> obj)
             => obj is DateTimeFieldExpression<TEntity> && base.Equals(obj);

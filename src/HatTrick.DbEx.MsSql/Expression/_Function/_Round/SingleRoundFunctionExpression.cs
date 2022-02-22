@@ -25,24 +25,23 @@ namespace HatTrick.DbEx.MsSql.Expression
     public partial class SingleRoundFunctionExpression :
         RoundFunctionExpression<float>,
         SingleElement,
-        AnySingleElement,
         IEquatable<SingleRoundFunctionExpression>
     {
         #region constructors
-        public SingleRoundFunctionExpression(SingleElement expression, IntegralNumericElement length) : base(expression, length)
+        public SingleRoundFunctionExpression(AnyElement<float> expression, IntegralNumericElement length) : base(expression, length)
         {
 
         }
 
-        public SingleRoundFunctionExpression(SingleElement expression, IntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
+        public SingleRoundFunctionExpression(AnyElement<float> expression, IntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
         {
 
         }
         #endregion
 
         #region as
-        public SingleElement As(string alias)
-            => new SingleSelectExpression(this).As(alias);
+        public AnyElement<float> As(string alias)
+            => new SelectExpression<float>(this).As(alias);
         #endregion
 
         #region equals

@@ -131,7 +131,7 @@ namespace NetCoreConsoleApp
 					dbo.Person.FirstName,
 					dbo.Person.LastName,
 					db.fx.IsNull(dbo.Purchase.OrderNumber, string.Empty).As("OrderNumber"),
-					db.fx.IsNull(dbo.Purchase.TotalPurchaseAmount, 0.0).As("TotalPurchaseAmount")
+					db.fx.IsNull(dbex.Coerce(dbo.Purchase.TotalPurchaseAmount), 0.0).As("TotalPurchaseAmount")
 				)
 				.From(dbo.Person)
 				.FullJoin(dbo.Purchase).On(dbo.Purchase.PersonId == dbo.Person.Id)

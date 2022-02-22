@@ -23,29 +23,28 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableInt32SumFunctionExpression :
         NullableSumFunctionExpression<int,int?>,
         NullableInt32Element,
-        AnyInt32Element,
         IEquatable<NullableInt32SumFunctionExpression>
     {
         #region constructors
-        public NullableInt32SumFunctionExpression(NullableByteElement expression) : base(expression)
+        public NullableInt32SumFunctionExpression(AnyElement<byte?> expression) : base(expression)
         {
 
         }
 
-        public NullableInt32SumFunctionExpression(NullableInt16Element expression) : base(expression)
+        public NullableInt32SumFunctionExpression(AnyElement<short?> expression) : base(expression)
         {
 
         }
 
-        public NullableInt32SumFunctionExpression(NullableInt32Element expression) : base(expression)
+        public NullableInt32SumFunctionExpression(AnyElement<int?> expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public NullableInt32Element As(string alias)
-            => new NullableInt32SelectExpression(this).As(alias);
+        public AnyElement<int?> As(string alias)
+            => new SelectExpression<int?>(this).As(alias);
         #endregion
 
         #region distinct

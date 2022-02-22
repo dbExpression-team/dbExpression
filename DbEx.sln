@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29001.49
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{E797F978-C42D-491C-B5A4-4DEADB7342A3}"
 EndProject
@@ -45,7 +45,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "mssql", "mssql", "{75E3DA0E-D0C7-4F69-9546-BBE33D3EDEDB}"
 	ProjectSection(SolutionItems) = preProject
 		build\mssql\.env = build\mssql\.env
-		build\mssql\azure-pipelines-test-template.yml = build\mssql\azure-pipelines-test-template.yml
 		build\mssql\create-database.sql = build\mssql\create-database.sql
 		build\mssql\create-docker-config.ps1 = build\mssql\create-docker-config.ps1
 		build\mssql\docker-compose.yml = build\mssql\docker-compose.yml

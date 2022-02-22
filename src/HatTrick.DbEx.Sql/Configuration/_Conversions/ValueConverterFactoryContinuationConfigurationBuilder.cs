@@ -36,13 +36,18 @@ namespace HatTrick.DbEx.Sql.Configuration
         #endregion
 
         #region methods
-        public IValueTypeValueConverterConfigurationBuilder<TValue> OverrideForType<TValue>()
+        public IValueTypeValueConverterConfigurationBuilder<TValue> OverrideForValueType<TValue>()
             where TValue : struct, IComparable
             => new ValueTypeValueConverterConfigurationBuilder<TValue>(this, factory);
 
         public IEnumTypeValueConverterConfigurationBuilder<TEnum> OverrideForEnumType<TEnum>()
             where TEnum : struct, Enum, IComparable
             => new EnumTypeValueConverterConfigurationBuilder<TEnum>(this, factory);
+
+        public IReferenceTypeValueConverterConfigurationBuilder<TType> OverrideForReferenceType<TType>() 
+            where TType : class
+            => new ReferenceTypeValueConverterConfigurationBuilder<TType>(this, factory);
+
         #endregion
     }
 }

@@ -23,11 +23,10 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableSingleCastFunctionExpression :
         NullableCastFunctionExpression<float,float?>,
         NullableSingleElement,
-        AnySingleElement,
         IEquatable<NullableSingleCastFunctionExpression>
     {
         #region constructors
-        public NullableSingleCastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType)
+        public NullableSingleCastFunctionExpression(AnyElement expression, DbTypeExpression convertToDbType)
             : base(expression, convertToDbType)
         {
 
@@ -35,8 +34,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public NullableSingleElement As(string alias)
-            => new NullableSingleSelectExpression(this).As(alias);
+        public AnyElement<float?> As(string alias)
+            => new SelectExpression<float?>(this).As(alias);
         #endregion
 
         #region equals

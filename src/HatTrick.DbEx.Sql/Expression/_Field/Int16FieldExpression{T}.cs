@@ -32,11 +32,6 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public override Int16Element As(string alias)
-            => new Int16SelectExpression(this).As(alias);
-        #endregion
-
         #region equals
         public bool Equals(Int16FieldExpression<TEntity> obj)
             => obj is Int16FieldExpression<TEntity> && base.Equals(obj);

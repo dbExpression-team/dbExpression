@@ -22,13 +22,19 @@ using System.Collections.Generic;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class NullableFieldExpression<TValue,TNullableValue> : FieldExpression,
-        IExpressionElement<TValue,TNullableValue>
+        IExpressionElement<TValue,TNullableValue>,
+        AnyElement<TNullableValue>
     {
         #region constructors
         protected NullableFieldExpression(string identifier, string name, EntityExpression entity) : base(identifier, name, typeof(TNullableValue), entity)
         {
 
         }
+        #endregion
+
+        #region as
+        public AnyElement<TNullableValue> As(string alias)
+            => new SelectExpression<TNullableValue>(this).As(alias);
         #endregion
 
         #region in value set

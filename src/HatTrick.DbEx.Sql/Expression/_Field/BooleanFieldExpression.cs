@@ -23,7 +23,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public abstract partial class BooleanFieldExpression : 
         FieldExpression<bool>,
         BooleanElement,
-        AnyBooleanElement,
         IEquatable<BooleanFieldExpression>
     {
         #region constructors
@@ -31,10 +30,6 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
-        #endregion
-
-        #region as
-        public abstract BooleanElement As(string alias);
         #endregion
 
         #region equals

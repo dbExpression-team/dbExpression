@@ -25,44 +25,43 @@ namespace HatTrick.DbEx.MsSql.Expression
     public partial class NullableInt64RoundFunctionExpression :
         NullableRoundFunctionExpression<long,long?>,
         NullableInt64Element,
-        AnyInt64Element,
         IEquatable<NullableInt64RoundFunctionExpression>
     {
         #region constructors
-        public NullableInt64RoundFunctionExpression(NullableInt64Element expression, IntegralNumericElement length) : base(expression, length)
+        public NullableInt64RoundFunctionExpression(AnyElement<long?> expression, IntegralNumericElement length) : base(expression, length)
         {
 
         }
 
-        public NullableInt64RoundFunctionExpression(NullableInt64Element expression, IntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
+        public NullableInt64RoundFunctionExpression(AnyElement<long?> expression, IntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
         {
 
         }
 
-        public NullableInt64RoundFunctionExpression(NullableInt64Element expression, NullableIntegralNumericElement length) : base(expression, length)
+        public NullableInt64RoundFunctionExpression(AnyElement<long?> expression, NullableIntegralNumericElement length) : base(expression, length)
         {
 
         }
 
-        public NullableInt64RoundFunctionExpression(NullableInt64Element expression, NullableIntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
+        public NullableInt64RoundFunctionExpression(AnyElement<long?> expression, NullableIntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
         {
 
         }
 
-        public NullableInt64RoundFunctionExpression(NullableInt64Element expression, IntegralNumericElement length, NullableIntegralNumericElement function) : base(expression, length, function)
+        public NullableInt64RoundFunctionExpression(AnyElement<long?> expression, IntegralNumericElement length, NullableIntegralNumericElement function) : base(expression, length, function)
         {
 
         }
 
-        public NullableInt64RoundFunctionExpression(NullableInt64Element expression, NullableIntegralNumericElement length, NullableIntegralNumericElement function) : base(expression, length, function)
+        public NullableInt64RoundFunctionExpression(AnyElement<long?> expression, NullableIntegralNumericElement length, NullableIntegralNumericElement function) : base(expression, length, function)
         {
 
         }
         #endregion
 
         #region as
-        public NullableInt64Element As(string alias)
-             => new NullableInt64SelectExpression(this).As(alias);
+        public AnyElement<long?> As(string alias)
+             => new SelectExpression<long?>(this).As(alias);
         #endregion
 
         #region equals

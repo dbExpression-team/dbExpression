@@ -23,19 +23,18 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class TimeSpanIsNullFunctionExpression :
         IsNullFunctionExpression<TimeSpan>,
         TimeSpanElement,
-        AnyTimeSpanElement,
         IEquatable<TimeSpanIsNullFunctionExpression>
     {
         #region constructors
-        public TimeSpanIsNullFunctionExpression(AnyTimeSpanElement expression, TimeSpanElement value) : base(expression, value)
+        public TimeSpanIsNullFunctionExpression(AnyElement<TimeSpan?> expression, AnyElement<TimeSpan> value) : base(expression, value)
         {
 
         }
         #endregion
 
         #region as
-        public TimeSpanElement As(string alias)
-            => new TimeSpanSelectExpression(this).As(alias);
+        public AnyElement<TimeSpan> As(string alias)
+            => new SelectExpression<TimeSpan>(this).As(alias);
         #endregion
 
         #region equals

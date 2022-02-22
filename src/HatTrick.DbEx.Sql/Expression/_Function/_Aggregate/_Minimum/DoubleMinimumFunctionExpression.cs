@@ -23,19 +23,18 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class DoubleMinimumFunctionExpression :
         MinimumFunctionExpression<double>,
         DoubleElement,
-        AnyDoubleElement, 
         IEquatable<DoubleMinimumFunctionExpression>
     {
         #region constructors
-        public DoubleMinimumFunctionExpression(DoubleElement expression) : base(expression)
+        public DoubleMinimumFunctionExpression(AnyElement<double> expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public DoubleElement As(string alias)
-            => new DoubleSelectExpression(this).As(alias);
+        public AnyElement<double> As(string alias)
+            => new SelectExpression<double>(this).As(alias);
         #endregion
 
         #region distinct

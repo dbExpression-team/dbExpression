@@ -39,12 +39,8 @@
             {?var :applyComma = false}
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
                 {#each $.Columns}
-                {#if !$.FieldExpression.Type.IsEnum}
-                {+#if :applyComma},{/if}new {+#if $.Column.IsNullable}Nullable{/if}{$.FieldExpression.Type.TypeName}SelectExpression({$.FieldExpression.Name})
-                {/if}
-                {#if $.FieldExpression.Type.IsEnum}
-                {+#if :applyComma},{/if}new {+#if $.Column.IsNullable}Nullable{/if}EnumSelectExpression<{$.FieldExpression.Type.TypeName}>({$.FieldExpression.Name})
-                {/if}
+                {?var:selectExpressionTypeName = ($) => BuildSelectExpressionTypeName}
+                {+#if :applyComma},{/if}new {:selectExpressionTypeName}({$.FieldExpression.Name})
                 {? :applyComma = true}
 				{/each}
             ));
@@ -59,13 +55,9 @@
             string aliased = null;
 
             {#each $.Columns}
+            {?var:selectExpressionTypeName = ($) => BuildSelectExpressionTypeName}
             aliased = alias(nameof({$.FieldExpression.Name}));
-            {#if !$.FieldExpression.Type.IsEnum}
-            set &= aliased != nameof({$.FieldExpression.Name}) ? new {+#if $.Column.IsNullable}Nullable{/if}{$.FieldExpression.Type.TypeName}SelectExpression({$.FieldExpression.Name}).As(aliased) as {+#if $.Column.IsNullable}Nullable{/if}{$.FieldExpression.Type.TypeName}SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof({$.FieldExpression.Name}));
-			{/if}
-            {#if $.FieldExpression.Type.IsEnum}
-            set &= aliased != nameof({$.FieldExpression.Name}) ? new {+#if $.Column.IsNullable}Nullable{/if}EnumSelectExpression<{$.FieldExpression.Type.TypeName}>({$.FieldExpression.Name}).As(aliased) as {+#if $.Column.IsNullable}Nullable{/if}EnumSelectExpression<{$.FieldExpression.Type.TypeName}> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof({$.FieldExpression.Name}));
-            {/if}
+            set &= aliased != nameof({$.FieldExpression.Name}) ? new {:selectExpressionTypeName}({$.FieldExpression.Name}).As(aliased) as {:selectExpressionTypeName} : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof({$.FieldExpression.Name}));
 
             {/each}
             return set;

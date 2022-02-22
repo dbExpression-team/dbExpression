@@ -23,7 +23,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableTimeSpanExpressionMediator :
         NullableExpressionMediator<TimeSpan,TimeSpan?>,
         NullableTimeSpanElement,
-        AnyTimeSpanElement,
         IEquatable<NullableTimeSpanExpressionMediator>
     {
         #region constructors
@@ -41,8 +40,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public NullableTimeSpanElement As(string alias)
-            => new NullableTimeSpanSelectExpression(this).As(alias);
+        public AnyElement<TimeSpan?> As(string alias)
+            => new SelectExpression<TimeSpan?>(this).As(alias);
         #endregion
 
         #region equals

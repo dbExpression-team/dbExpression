@@ -80,12 +80,12 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="EnumElement{TEnum}" />
+        /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />
         ///, for example "dbo.Person.GenderType"
         /// </param>
         /// <returns><see cref="Sql.SelectValue{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
-        public static SelectValue<TEnum> SelectOne<TEnum>(EnumElement<TEnum> element)
+        public static SelectValue<TEnum> SelectOne<TEnum>(AnyElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
             => expressionBuilderFactory.CreateSelectValueBuilder<TEnum>(configuration, element);
 
@@ -95,12 +95,12 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableEnumElement{TEnum}" />
+        /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />?
         ///, for example "dbo.Address.AddressType"
         /// </param>
         /// <returns><see cref="SelectValue{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
-        public static SelectValue<TEnum?> SelectOne<TEnum>(NullableEnumElement<TEnum> element)
+        public static SelectValue<TEnum?> SelectOne<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable
             => expressionBuilderFactory.CreateSelectValueBuilder<TEnum>(configuration, element);
 
@@ -110,11 +110,11 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyObjectElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Object}" />?
         ///, for example "dbo.Person.GenderType"
         /// </param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<object> SelectOne(AnyObjectElement element)
+        public static SelectValue<object> SelectOne(AnyElement<object> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -123,10 +123,10 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="BooleanElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<bool> SelectOne(BooleanElement element)
+        public static SelectValue<bool> SelectOne(AnyElement<bool> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -135,10 +135,10 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableBooleanElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />?
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<bool?> SelectOne(NullableBooleanElement element)
+        public static SelectValue<bool?> SelectOne(AnyElement<bool?> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -147,10 +147,10 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="ByteElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<byte> SelectOne(ByteElement element)
+        public static SelectValue<byte> SelectOne(AnyElement<byte> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -159,10 +159,10 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableByteElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />?
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<byte?> SelectOne(NullableByteElement element)
+        public static SelectValue<byte?> SelectOne(AnyElement<byte?> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -171,23 +171,11 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="ByteArrayElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         ///, for example "dbo.Product.Image" or "db.fx.IsNull(dbo.Product.Image, new byte[0])"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<byte[]> SelectOne(ByteArrayElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
-
-        /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[]? value.
-        /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
-        /// </para>
-        /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableByteArrayElement" />
-        ///</param>
-        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<byte[]> SelectOne(NullableByteArrayElement element)
+        public static SelectValue<byte[]> SelectOne(AnyElement<byte[]> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -196,11 +184,11 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="DateTimeElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />
         ///, for example "dbo.Address.DateCreated", "db.fx.DateAdd(DateParts.Year, 1, dbo.Address.DateCreated) or "db.fx.IsNull(dbo.Address.DateCreated, DateTime.Now)"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<DateTime> SelectOne(DateTimeElement element)
+        public static SelectValue<DateTime> SelectOne(AnyElement<DateTime> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -209,11 +197,11 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableDateTimeElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />?
         ///, for example "dbo.Person.BirthDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.BirthDate)
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<DateTime?> SelectOne(NullableDateTimeElement field)
+        public static SelectValue<DateTime?> SelectOne(AnyElement<DateTime?> field)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, field);
 
         /// <summary>
@@ -222,11 +210,11 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="DateTimeOffsetElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />
         ///, for example "dbo.Person.RegistrationDate", "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.RegistrationDate)" or "db.fx.IsNull(dbo.Person.RegistrationDate, DateTimeOffset.Now)"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<DateTimeOffset> SelectOne(DateTimeOffsetElement element)
+        public static SelectValue<DateTimeOffset> SelectOne(AnyElement<DateTimeOffset> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -235,11 +223,11 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableDateTimeOffsetElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />?
         ///, for example "dbo.Person.LastLoginDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.LastLoginDate)" 
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<DateTimeOffset?> SelectOne(NullableDateTimeOffsetElement element)
+        public static SelectValue<DateTimeOffset?> SelectOne(AnyElement<DateTimeOffset?> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -248,11 +236,11 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="DecimalElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />
         ///, for example "dbo.Product.ShippingWeight" or "db.fx.IsNull(dbo.Product.ShippingWeight, decimal.MinValue)"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<decimal> SelectOne(DecimalElement element)
+        public static SelectValue<decimal> SelectOne(AnyElement<decimal> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -261,11 +249,11 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableDecimalElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />?
         ///, for example "dbo.Product.Height" or "db.fx.Min(dbo.Product.Height)"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<decimal?> SelectOne(NullableDecimalElement element)
+        public static SelectValue<decimal?> SelectOne(AnyElement<decimal?> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -274,11 +262,11 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="DoubleElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Double}" />
         ///, for example "dbo.Product.ListPrice" or "db.fx.IsNull(dbo.Product.ListPrice, double.MinValue)"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<double> SelectOne(DoubleElement element)
+        public static SelectValue<double> SelectOne(AnyElement<double> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -287,11 +275,11 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableDoubleElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Double}" />?
         ///, for example "dbo.PersonTotalPurchasesView.TotalAmount" or "db.fx.Min(dbo.PersonTotalPurchasesView.TotalAmount)"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<double?> SelectOne(NullableDoubleElement element)
+        public static SelectValue<double?> SelectOne(AnyElement<double?> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -300,10 +288,10 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="GuidElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<Guid> SelectOne(GuidElement element)
+        public static SelectValue<Guid> SelectOne(AnyElement<Guid> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -312,11 +300,11 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableGuidElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />?
         ///, for example "dbo.Purchase.TrackingIdentifier"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<Guid?> SelectOne(NullableGuidElement element)
+        public static SelectValue<Guid?> SelectOne(AnyElement<Guid?> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -325,10 +313,10 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="Int16Element" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<short> SelectOne(Int16Element element)
+        public static SelectValue<short> SelectOne(AnyElement<short> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -337,10 +325,10 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableInt16Element" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />?
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<short?> SelectOne(NullableInt16Element element)
+        public static SelectValue<short?> SelectOne(AnyElement<short?> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -349,11 +337,11 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="Int32Element" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />?
         ///, for example "dbo.Address.Id" or "db.fx.Avg(dbo.Address.Id)"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<int> SelectOne(Int32Element element)
+        public static SelectValue<int> SelectOne(AnyElement<int> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -362,11 +350,11 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableInt32Element" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />?
         ///, for example "dbo.Person.CreditLimit" or "db.fx.Avg(dbo.Person.CreditLimit)"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<int?> SelectOne(NullableInt32Element element)
+        public static SelectValue<int?> SelectOne(AnyElement<int?> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -375,10 +363,10 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="Int64Element" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<long> SelectOne(Int64Element element)
+        public static SelectValue<long> SelectOne(AnyElement<long> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -387,10 +375,10 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableInt64Element" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />?
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<long?> SelectOne(NullableInt64Element element)
+        public static SelectValue<long?> SelectOne(AnyElement<long?> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -399,10 +387,10 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="SingleElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Single}" />
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<float> SelectOne(SingleElement element)
+        public static SelectValue<float> SelectOne(AnyElement<float> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -411,10 +399,10 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableSingleElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Single}" />?
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<float?> SelectOne(NullableSingleElement element)
+        public static SelectValue<float?> SelectOne(AnyElement<float?> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -423,23 +411,11 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="StringElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{String}" />
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<string> SelectOne(StringElement element) 
-            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
-
-        /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <see cref="string" /> value.
-        /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
-        /// </para>
-        /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableStringElement" />
-        ///</param>
-        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<string> SelectOne(NullableStringElement element)
+        public static SelectValue<string> SelectOne(AnyElement<string> element) 
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -448,10 +424,10 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="TimeSpanElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<TimeSpan> SelectOne(TimeSpanElement element)
+        public static SelectValue<TimeSpan> SelectOne(AnyElement<TimeSpan> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -460,11 +436,11 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableTimeSpanElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />?
         ///, for example "dbo.Product.ValidStartTimeOfDayForPurchase"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<TimeSpan?> SelectOne(NullableTimeSpanElement element)
+        public static SelectValue<TimeSpan?> SelectOne(AnyElement<TimeSpan?> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -527,11 +503,11 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="EnumElement{TEnum}" />
+        /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />
         ///, for example "dbo.Person.GenderType"
         /// </param>
         /// <returns><see cref="SelectValues{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
-        public static SelectValues<TEnum> SelectMany<TEnum>(EnumElement<TEnum> element)
+        public static SelectValues<TEnum> SelectMany<TEnum>(AnyElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
             => expressionBuilderFactory.CreateSelectValuesBuilder<TEnum>(configuration, element);
 
@@ -541,11 +517,11 @@ namespace ServerSideBlazorApp.DataService
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
-        /// <param name="element">An expression of type <see cref="NullableEnumElement{TEnum}" />
+        /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />?
         ///, for example "dbo.Address.AddressType"
         /// </param>
         /// <returns><see cref="SelectValues{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<TEnum?> SelectMany<TEnum>(NullableEnumElement<TEnum> element)
+        public static SelectValues<TEnum?> SelectMany<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable
             => expressionBuilderFactory.CreateSelectValuesBuilder<TEnum>(configuration, element);
 
@@ -555,11 +531,11 @@ namespace ServerSideBlazorApp.DataService
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
-        /// <param name="element">An expression of type <see cref="AnyObjectElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Object}" />
         ///, for example "db.fx.Coalesce(dbo.Person.CreditLimit, dbo.Address.Line1)"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<object> SelectMany(AnyObjectElement element)
+        public static SelectValues<object> SelectMany(AnyElement<object> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -568,10 +544,10 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="BooleanElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<bool> SelectMany(BooleanElement element)
+        public static SelectValues<bool> SelectMany(AnyElement<bool> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -580,10 +556,10 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableBooleanElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />?
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<bool?> SelectMany(NullableBooleanElement element)
+        public static SelectValues<bool?> SelectMany(AnyElement<bool?> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -592,10 +568,10 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="ByteElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<byte> SelectMany(ByteElement element)
+        public static SelectValues<byte> SelectMany(AnyElement<byte> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -604,10 +580,10 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableByteElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />?
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<byte?> SelectMany(NullableByteElement element)
+        public static SelectValues<byte?> SelectMany(AnyElement<byte?> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -616,23 +592,11 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="ByteArrayElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         ///, for example "dbo.Product.Image" or "db.fx.IsNull(dbo.Product.Image, new byte[0])"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<byte[]> SelectMany(ByteArrayElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
-
-        /// <summary>
-        /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[]? values.
-        /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
-        /// </para>
-        /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableByteArrayElement" />
-        ///</param>
-        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<byte[]> SelectMany(NullableByteArrayElement element)
+        public static SelectValues<byte[]> SelectMany(AnyElement<byte[]> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -641,11 +605,11 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="DateTimeElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />
         ///, for example "dbo.Address.DateCreated", "db.fx.DateAdd(DateParts.Year, 1, dbo.Address.DateCreated) or "db.fx.IsNull(dbo.Address.DateCreated, DateTime.Now)"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<DateTime> SelectMany(DateTimeElement element)
+        public static SelectValues<DateTime> SelectMany(AnyElement<DateTime> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -654,11 +618,11 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableDateTimeElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />?
         ///, for example "dbo.Person.BirthDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.BirthDate)
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<DateTime?> SelectMany(NullableDateTimeElement element)
+        public static SelectValues<DateTime?> SelectMany(AnyElement<DateTime?> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -667,11 +631,11 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="DateTimeOffsetElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />
         ///, for example "dbo.Person.RegistrationDate", "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.RegistrationDate)" or "db.fx.IsNull(dbo.Person.RegistrationDate, DateTimeOffset.Now)"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<DateTimeOffset> SelectMany(DateTimeOffsetElement element)
+        public static SelectValues<DateTimeOffset> SelectMany(AnyElement<DateTimeOffset> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -680,11 +644,11 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableDateTimeOffsetElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />?
         ///, for example "dbo.Person.LastLoginDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.LastLoginDate)" 
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<DateTimeOffset?> SelectMany(NullableDateTimeOffsetElement element)
+        public static SelectValues<DateTimeOffset?> SelectMany(AnyElement<DateTimeOffset?> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -693,11 +657,11 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="DecimalElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />
         ///, for example "dbo.Product.ShippingWeight" or "db.fx.IsNull(dbo.Product.ShippingWeight, decimal.MinValue)"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<decimal> SelectMany(DecimalElement element)
+        public static SelectValues<decimal> SelectMany(AnyElement<decimal> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -706,11 +670,11 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableDecimalElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />?
         ///, for example "dbo.Product.Height"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<decimal?> SelectMany(NullableDecimalElement element)
+        public static SelectValues<decimal?> SelectMany(AnyElement<decimal?> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -719,11 +683,11 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="DoubleElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Double}" />
         ///, for example "dbo.Product.ListPrice" or "db.fx.IsNull(dbo.Product.ListPrice, double.MinValue)"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<double> SelectMany(DoubleElement element)
+        public static SelectValues<double> SelectMany(AnyElement<double> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -732,11 +696,11 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableDoubleElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Double}" />?
         ///, for example "dbo.PersonTotalPurchasesView.TotalAmount"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<double?> SelectMany(NullableDoubleElement element)
+        public static SelectValues<double?> SelectMany(AnyElement<double?> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -745,10 +709,10 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="GuidElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<Guid> SelectMany(GuidElement element)
+        public static SelectValues<Guid> SelectMany(AnyElement<Guid> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -757,11 +721,11 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableGuidElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />?
         ///, for example "dbo.Purchase.TrackingIdentifier"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<Guid?> SelectMany(NullableGuidElement element)
+        public static SelectValues<Guid?> SelectMany(AnyElement<Guid?> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -770,10 +734,10 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="Int16Element" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<short> SelectMany(Int16Element element)
+        public static SelectValues<short> SelectMany(AnyElement<short> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -782,10 +746,10 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableInt16Element" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />?
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<short?> SelectMany(NullableInt16Element element)
+        public static SelectValues<short?> SelectMany(AnyElement<short?> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -794,11 +758,11 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="Int32Element" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />
         ///, for example "dbo.Address.Id"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<int> SelectMany(Int32Element element)
+        public static SelectValues<int> SelectMany(AnyElement<int> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -807,11 +771,11 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableInt32Element" />
-        ///, for example "dbo.:column.Entity.Name}.Id"
+        /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />?
+        ///, for example "dbo.:column.Entity.Name}.CreditLimit"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<int?> SelectMany(NullableInt32Element element)
+        public static SelectValues<int?> SelectMany(AnyElement<int?> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -820,10 +784,10 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="Int64Element" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<long> SelectMany(Int64Element element)
+        public static SelectValues<long> SelectMany(AnyElement<long> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -832,10 +796,10 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableInt64Element" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />?
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<long?> SelectMany(NullableInt64Element element)
+        public static SelectValues<long?> SelectMany(AnyElement<long?> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -844,10 +808,10 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="SingleElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Single}" />
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<float> SelectMany(SingleElement element)
+        public static SelectValues<float> SelectMany(AnyElement<float> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -856,10 +820,10 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableSingleElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Single}" />?
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<float?> SelectMany(NullableSingleElement element)
+        public static SelectValues<float?> SelectMany(AnyElement<float?> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -868,23 +832,11 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="StringElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{String}" />
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<string> SelectMany(StringElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
-
-        /// <summary>
-        /// Start constructing a sql SELECT query expression for a list of <see cref="string" /> values.
-        /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
-        /// </para>
-        /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableStringElement" />
-        ///</param>
-        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<string> SelectMany(NullableStringElement element)
+        public static SelectValues<string> SelectMany(AnyElement<string> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -893,10 +845,10 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="TimeSpanElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<TimeSpan> SelectMany(TimeSpanElement element)
+        public static SelectValues<TimeSpan> SelectMany(AnyElement<TimeSpan> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -905,11 +857,11 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableTimeSpanElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />?
         ///, for example "dbo.Product.ValidStartTimeOfDayForPurchase"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<TimeSpan?> SelectMany(NullableTimeSpanElement element)
+        public static SelectValues<TimeSpan?> SelectMany(AnyElement<TimeSpan?> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -1461,9 +1413,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region interface
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.IdField"/> representing the "dbo.Address.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -1483,9 +1436,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly IdField Id;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.AddressTypeField"/> representing the "dbo.Address.AddressType" column in the database, 
         /// with a .NET type of <see cref="ServerSideBlazorApp.Data.AddressType"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.AddressTypeField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyEnumElement{ServerSideBlazorApp.Data.AddressType}Element"/> or <see cref="HatTrick.DbEx.Sql.NullableEnumElement{ServerSideBlazorApp.Data.AddressType}Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{ServerSideBlazorApp.Data.AddressType}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -1502,9 +1456,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly AddressTypeField AddressType;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.Line1Field"/> representing the "dbo.Address.Line1" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.Line1Field"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -1521,9 +1476,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly Line1Field Line1;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.Line2Field"/> representing the "dbo.Address.Line2" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.Line2Field"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -1540,9 +1496,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly Line2Field Line2;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.CityField"/> representing the "dbo.Address.City" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.CityField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -1559,9 +1516,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly CityField City;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.StateField"/> representing the "dbo.Address.State" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.StateField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -1578,9 +1536,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly StateField State;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.ZipField"/> representing the "dbo.Address.Zip" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.ZipField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -1597,9 +1556,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly ZipField Zip;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.DateCreatedField"/> representing the "dbo.Address.DateCreated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.DateCreatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -1619,9 +1579,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly DateCreatedField DateCreated;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.DateUpdatedField"/> representing the "dbo.Address.DateUpdated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.DateUpdatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -1673,15 +1634,15 @@ namespace ServerSideBlazorApp.dboDataService
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new Int32SelectExpression(Id)
-                ,new NullableEnumSelectExpression<ServerSideBlazorApp.Data.AddressType>(AddressType)
-                ,new StringSelectExpression(Line1)
-                ,new NullableStringSelectExpression(Line2)
-                ,new StringSelectExpression(City)
-                ,new StringSelectExpression(State)
-                ,new StringSelectExpression(Zip)
-                ,new DateTimeSelectExpression(DateCreated)
-                ,new DateTimeSelectExpression(DateUpdated)
+                new SelectExpression<int>(Id)
+                ,new SelectExpression<ServerSideBlazorApp.Data.AddressType?>(AddressType)
+                ,new SelectExpression<string>(Line1)
+                ,new SelectExpression<string>(Line2)
+                ,new SelectExpression<string>(City)
+                ,new SelectExpression<string>(State)
+                ,new SelectExpression<string>(Zip)
+                ,new SelectExpression<DateTime>(DateCreated)
+                ,new SelectExpression<DateTime>(DateUpdated)
             ));
         }
 
@@ -1694,31 +1655,31 @@ namespace ServerSideBlazorApp.dboDataService
             string aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new Int32SelectExpression(Id).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
 
             aliased = alias(nameof(AddressType));
-            set &= aliased != nameof(AddressType) ? new NullableEnumSelectExpression<ServerSideBlazorApp.Data.AddressType>(AddressType).As(aliased) as NullableEnumSelectExpression<ServerSideBlazorApp.Data.AddressType> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(AddressType));
+            set &= aliased != nameof(AddressType) ? new SelectExpression<ServerSideBlazorApp.Data.AddressType?>(AddressType).As(aliased) as SelectExpression<ServerSideBlazorApp.Data.AddressType?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(AddressType));
 
             aliased = alias(nameof(Line1));
-            set &= aliased != nameof(Line1) ? new StringSelectExpression(Line1).As(aliased) as StringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Line1));
+            set &= aliased != nameof(Line1) ? new SelectExpression<string>(Line1).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Line1));
 
             aliased = alias(nameof(Line2));
-            set &= aliased != nameof(Line2) ? new NullableStringSelectExpression(Line2).As(aliased) as NullableStringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Line2));
+            set &= aliased != nameof(Line2) ? new SelectExpression<string>(Line2).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Line2));
 
             aliased = alias(nameof(City));
-            set &= aliased != nameof(City) ? new StringSelectExpression(City).As(aliased) as StringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(City));
+            set &= aliased != nameof(City) ? new SelectExpression<string>(City).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(City));
 
             aliased = alias(nameof(State));
-            set &= aliased != nameof(State) ? new StringSelectExpression(State).As(aliased) as StringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(State));
+            set &= aliased != nameof(State) ? new SelectExpression<string>(State).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(State));
 
             aliased = alias(nameof(Zip));
-            set &= aliased != nameof(Zip) ? new StringSelectExpression(Zip).As(aliased) as StringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Zip));
+            set &= aliased != nameof(Zip) ? new SelectExpression<string>(Zip).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Zip));
 
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new DateTimeSelectExpression(DateCreated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
 
             aliased = alias(nameof(DateUpdated));
-            set &= aliased != nameof(DateUpdated) ? new DateTimeSelectExpression(DateUpdated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
+            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
 
             return set;
         }
@@ -1773,20 +1734,13 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             #endregion
         }
         #endregion
 
         #region address type field expression
-        public partial class AddressTypeField : NullableEnumFieldExpression<Address, ServerSideBlazorApp.Data.AddressType>
+        public partial class AddressTypeField : NullableEnumFieldExpression<Address,ServerSideBlazorApp.Data.AddressType>
         {
             #region constructors
             public AddressTypeField(string identifier, string name, AddressEntity entity) : base(identifier, name, entity)
@@ -1795,18 +1749,11 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override NullableEnumElement<ServerSideBlazorApp.Data.AddressType> As(string alias)
-            {
-                return new NullableEnumSelectExpression<ServerSideBlazorApp.Data.AddressType>(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(ServerSideBlazorApp.Data.AddressType value) => new AssignmentExpression(this, new LiteralExpression<ServerSideBlazorApp.Data.AddressType>(value, this));
-            public AssignmentExpression Set(EnumElement<ServerSideBlazorApp.Data.AddressType> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<ServerSideBlazorApp.Data.AddressType> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(ServerSideBlazorApp.Data.AddressType? value) => new AssignmentExpression(this, new LiteralExpression<ServerSideBlazorApp.Data.AddressType?>(value, this));
-            public AssignmentExpression Set(NullableEnumElement<ServerSideBlazorApp.Data.AddressType> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<ServerSideBlazorApp.Data.AddressType?> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<ServerSideBlazorApp.Data.AddressType>(value, this));
             #endregion
         }
@@ -1822,16 +1769,9 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override StringElement As(string alias)
-            {
-                return new StringSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -1846,17 +1786,9 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override NullableStringElement As(string alias)
-            {
-                return new NullableStringSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(NullableStringElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             #endregion
         }
@@ -1872,16 +1804,9 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override StringElement As(string alias)
-            {
-                return new StringSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -1896,16 +1821,9 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override StringElement As(string alias)
-            {
-                return new StringSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -1920,16 +1838,9 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override StringElement As(string alias)
-            {
-                return new StringSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -1941,13 +1852,6 @@ namespace ServerSideBlazorApp.dboDataService
             public DateCreatedField(string identifier, string name, AddressEntity entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
             }
             #endregion
 
@@ -1963,13 +1867,6 @@ namespace ServerSideBlazorApp.dboDataService
             public DateUpdatedField(string identifier, string name, AddressEntity entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
             }
             #endregion
 
@@ -1990,9 +1887,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region interface
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.IdField"/> representing the "dbo.Person.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2012,9 +1910,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly IdField Id;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.FirstNameField"/> representing the "dbo.Person.FirstName" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.FirstNameField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2031,9 +1930,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly FirstNameField FirstName;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.LastNameField"/> representing the "dbo.Person.LastName" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.LastNameField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2050,9 +1950,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly LastNameField LastName;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.BirthDateField"/> representing the "dbo.Person.BirthDate" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.BirthDateField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.NullableDateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2069,9 +1970,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly BirthDateField BirthDate;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.GenderTypeField"/> representing the "dbo.Person.GenderType" column in the database, 
         /// with a .NET type of <see cref="ServerSideBlazorApp.Data.GenderType"/>.  The <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.GenderTypeField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyEnumElement{ServerSideBlazorApp.Data.GenderType}Element"/> or <see cref="HatTrick.DbEx.Sql.EnumElement{ServerSideBlazorApp.Data.GenderType}Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{ServerSideBlazorApp.Data.GenderType}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2088,9 +1990,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly GenderTypeField GenderType;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.CreditLimitField"/> representing the "dbo.Person.CreditLimit" column in the database, 
         /// with a .NET type of <see cref="int"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.CreditLimitField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.NullableInt32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2107,9 +2010,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly CreditLimitField CreditLimit;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.YearOfLastCreditLimitReviewField"/> representing the "dbo.Person.YearOfLastCreditLimitReview" column in the database, 
         /// with a .NET type of <see cref="int"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.YearOfLastCreditLimitReviewField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.NullableInt32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2126,9 +2030,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly YearOfLastCreditLimitReviewField YearOfLastCreditLimitReview;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.RegistrationDateField"/> representing the "dbo.Person.RegistrationDate" column in the database, 
         /// with a .NET type of <see cref="DateTimeOffset"/>.  The <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.RegistrationDateField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeOffsetElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeOffsetElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTimeOffset}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2148,9 +2053,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly RegistrationDateField RegistrationDate;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.LastLoginDateField"/> representing the "dbo.Person.LastLoginDate" column in the database, 
         /// with a .NET type of <see cref="DateTimeOffset"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.LastLoginDateField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeOffsetElement"/> or <see cref="HatTrick.DbEx.Sql.NullableDateTimeOffsetElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTimeOffset}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2167,9 +2073,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly LastLoginDateField LastLoginDate;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.DateCreatedField"/> representing the "dbo.Person.DateCreated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.DateCreatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2189,9 +2096,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly DateCreatedField DateCreated;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.DateUpdatedField"/> representing the "dbo.Person.DateUpdated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.DateUpdatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2245,17 +2153,17 @@ namespace ServerSideBlazorApp.dboDataService
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new Int32SelectExpression(Id)
-                ,new StringSelectExpression(FirstName)
-                ,new StringSelectExpression(LastName)
-                ,new NullableDateTimeSelectExpression(BirthDate)
-                ,new EnumSelectExpression<ServerSideBlazorApp.Data.GenderType>(GenderType)
-                ,new NullableInt32SelectExpression(CreditLimit)
-                ,new NullableInt32SelectExpression(YearOfLastCreditLimitReview)
-                ,new DateTimeOffsetSelectExpression(RegistrationDate)
-                ,new NullableDateTimeOffsetSelectExpression(LastLoginDate)
-                ,new DateTimeSelectExpression(DateCreated)
-                ,new DateTimeSelectExpression(DateUpdated)
+                new SelectExpression<int>(Id)
+                ,new SelectExpression<string>(FirstName)
+                ,new SelectExpression<string>(LastName)
+                ,new SelectExpression<DateTime?>(BirthDate)
+                ,new SelectExpression<ServerSideBlazorApp.Data.GenderType>(GenderType)
+                ,new SelectExpression<int?>(CreditLimit)
+                ,new SelectExpression<int?>(YearOfLastCreditLimitReview)
+                ,new SelectExpression<DateTimeOffset>(RegistrationDate)
+                ,new SelectExpression<DateTimeOffset?>(LastLoginDate)
+                ,new SelectExpression<DateTime>(DateCreated)
+                ,new SelectExpression<DateTime>(DateUpdated)
             ));
         }
 
@@ -2268,37 +2176,37 @@ namespace ServerSideBlazorApp.dboDataService
             string aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new Int32SelectExpression(Id).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
 
             aliased = alias(nameof(FirstName));
-            set &= aliased != nameof(FirstName) ? new StringSelectExpression(FirstName).As(aliased) as StringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(FirstName));
+            set &= aliased != nameof(FirstName) ? new SelectExpression<string>(FirstName).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(FirstName));
 
             aliased = alias(nameof(LastName));
-            set &= aliased != nameof(LastName) ? new StringSelectExpression(LastName).As(aliased) as StringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(LastName));
+            set &= aliased != nameof(LastName) ? new SelectExpression<string>(LastName).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(LastName));
 
             aliased = alias(nameof(BirthDate));
-            set &= aliased != nameof(BirthDate) ? new NullableDateTimeSelectExpression(BirthDate).As(aliased) as NullableDateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(BirthDate));
+            set &= aliased != nameof(BirthDate) ? new SelectExpression<DateTime?>(BirthDate).As(aliased) as SelectExpression<DateTime?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(BirthDate));
 
             aliased = alias(nameof(GenderType));
-            set &= aliased != nameof(GenderType) ? new EnumSelectExpression<ServerSideBlazorApp.Data.GenderType>(GenderType).As(aliased) as EnumSelectExpression<ServerSideBlazorApp.Data.GenderType> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(GenderType));
+            set &= aliased != nameof(GenderType) ? new SelectExpression<ServerSideBlazorApp.Data.GenderType>(GenderType).As(aliased) as SelectExpression<ServerSideBlazorApp.Data.GenderType> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(GenderType));
 
             aliased = alias(nameof(CreditLimit));
-            set &= aliased != nameof(CreditLimit) ? new NullableInt32SelectExpression(CreditLimit).As(aliased) as NullableInt32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(CreditLimit));
+            set &= aliased != nameof(CreditLimit) ? new SelectExpression<int?>(CreditLimit).As(aliased) as SelectExpression<int?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(CreditLimit));
 
             aliased = alias(nameof(YearOfLastCreditLimitReview));
-            set &= aliased != nameof(YearOfLastCreditLimitReview) ? new NullableInt32SelectExpression(YearOfLastCreditLimitReview).As(aliased) as NullableInt32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(YearOfLastCreditLimitReview));
+            set &= aliased != nameof(YearOfLastCreditLimitReview) ? new SelectExpression<int?>(YearOfLastCreditLimitReview).As(aliased) as SelectExpression<int?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(YearOfLastCreditLimitReview));
 
             aliased = alias(nameof(RegistrationDate));
-            set &= aliased != nameof(RegistrationDate) ? new DateTimeOffsetSelectExpression(RegistrationDate).As(aliased) as DateTimeOffsetSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(RegistrationDate));
+            set &= aliased != nameof(RegistrationDate) ? new SelectExpression<DateTimeOffset>(RegistrationDate).As(aliased) as SelectExpression<DateTimeOffset> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(RegistrationDate));
 
             aliased = alias(nameof(LastLoginDate));
-            set &= aliased != nameof(LastLoginDate) ? new NullableDateTimeOffsetSelectExpression(LastLoginDate).As(aliased) as NullableDateTimeOffsetSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(LastLoginDate));
+            set &= aliased != nameof(LastLoginDate) ? new SelectExpression<DateTimeOffset?>(LastLoginDate).As(aliased) as SelectExpression<DateTimeOffset?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(LastLoginDate));
 
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new DateTimeSelectExpression(DateCreated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
 
             aliased = alias(nameof(DateUpdated));
-            set &= aliased != nameof(DateUpdated) ? new DateTimeSelectExpression(DateUpdated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
+            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
 
             return set;
         }
@@ -2359,13 +2267,6 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             #endregion
         }
@@ -2381,16 +2282,9 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override StringElement As(string alias)
-            {
-                return new StringSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2405,16 +2299,9 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override StringElement As(string alias)
-            {
-                return new StringSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2429,25 +2316,18 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override NullableDateTimeElement As(string alias)
-            {
-                return new NullableDateTimeSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
-            public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DateTime? value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value, this));
-            public AssignmentExpression Set(NullableDateTimeElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<DateTime?> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
             #endregion
         }
         #endregion
 
         #region gender type field expression
-        public partial class GenderTypeField : EnumFieldExpression<Customer, ServerSideBlazorApp.Data.GenderType>
+        public partial class GenderTypeField : EnumFieldExpression<Customer,ServerSideBlazorApp.Data.GenderType>
         {
             #region constructors
             public GenderTypeField(string identifier, string name, CustomerEntity entity) : base(identifier, name, entity)
@@ -2456,16 +2336,9 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override EnumElement<ServerSideBlazorApp.Data.GenderType> As(string alias)
-            {
-                return new EnumSelectExpression<ServerSideBlazorApp.Data.GenderType>(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(ServerSideBlazorApp.Data.GenderType value) => new AssignmentExpression(this, new LiteralExpression<ServerSideBlazorApp.Data.GenderType>(value, this));
-            public AssignmentExpression Set(EnumElement<ServerSideBlazorApp.Data.GenderType> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<ServerSideBlazorApp.Data.GenderType> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2480,18 +2353,11 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override NullableInt32Element As(string alias)
-            {
-                return new NullableInt32SelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
-            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(int? value) => new AssignmentExpression(this, new LiteralExpression<int?>(value, this));
-            public AssignmentExpression Set(NullableInt32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<int?> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             #endregion
         }
@@ -2507,18 +2373,11 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override NullableInt32Element As(string alias)
-            {
-                return new NullableInt32SelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
-            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(int? value) => new AssignmentExpression(this, new LiteralExpression<int?>(value, this));
-            public AssignmentExpression Set(NullableInt32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<int?> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             #endregion
         }
@@ -2534,16 +2393,9 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override DateTimeOffsetElement As(string alias)
-            {
-                return new DateTimeOffsetSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(DateTimeOffset value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset>(value, this));
-            public AssignmentExpression Set(DateTimeOffsetElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<DateTimeOffset> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2558,18 +2410,11 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override NullableDateTimeOffsetElement As(string alias)
-            {
-                return new NullableDateTimeOffsetSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(DateTimeOffset value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset>(value, this));
-            public AssignmentExpression Set(DateTimeOffsetElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<DateTimeOffset> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DateTimeOffset? value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset?>(value, this));
-            public AssignmentExpression Set(NullableDateTimeOffsetElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<DateTimeOffset?> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset>(value, this));
             #endregion
         }
@@ -2585,13 +2430,6 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             #endregion
         }
@@ -2604,13 +2442,6 @@ namespace ServerSideBlazorApp.dboDataService
             public DateUpdatedField(string identifier, string name, CustomerEntity entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
             }
             #endregion
 
@@ -2631,9 +2462,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region interface
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerAddressEntity.IdField"/> representing the "dbo.Person_Address.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.CustomerAddressEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2653,9 +2485,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly IdField Id;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerAddressEntity.CustomerIdField"/> representing the "dbo.Person_Address.PersonId" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.CustomerAddressEntity.CustomerIdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2672,9 +2505,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly CustomerIdField CustomerId;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerAddressEntity.AddressIdField"/> representing the "dbo.Person_Address.AddressId" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.CustomerAddressEntity.AddressIdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2691,9 +2525,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly AddressIdField AddressId;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerAddressEntity.DateCreatedField"/> representing the "dbo.Person_Address.DateCreated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="ServerSideBlazorApp.dboDataService.CustomerAddressEntity.DateCreatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2740,10 +2575,10 @@ namespace ServerSideBlazorApp.dboDataService
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new Int32SelectExpression(Id)
-                ,new Int32SelectExpression(CustomerId)
-                ,new Int32SelectExpression(AddressId)
-                ,new DateTimeSelectExpression(DateCreated)
+                new SelectExpression<int>(Id)
+                ,new SelectExpression<int>(CustomerId)
+                ,new SelectExpression<int>(AddressId)
+                ,new SelectExpression<DateTime>(DateCreated)
             ));
         }
 
@@ -2756,16 +2591,16 @@ namespace ServerSideBlazorApp.dboDataService
             string aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new Int32SelectExpression(Id).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
 
             aliased = alias(nameof(CustomerId));
-            set &= aliased != nameof(CustomerId) ? new Int32SelectExpression(CustomerId).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(CustomerId));
+            set &= aliased != nameof(CustomerId) ? new SelectExpression<int>(CustomerId).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(CustomerId));
 
             aliased = alias(nameof(AddressId));
-            set &= aliased != nameof(AddressId) ? new Int32SelectExpression(AddressId).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(AddressId));
+            set &= aliased != nameof(AddressId) ? new SelectExpression<int>(AddressId).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(AddressId));
 
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new DateTimeSelectExpression(DateCreated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
 
             return set;
         }
@@ -2807,13 +2642,6 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             #endregion
         }
@@ -2829,16 +2657,9 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
-            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2853,16 +2674,9 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
-            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2874,13 +2688,6 @@ namespace ServerSideBlazorApp.dboDataService
             public DateCreatedField(string identifier, string name, CustomerAddressEntity entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
             }
             #endregion
 
@@ -2901,9 +2708,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region interface
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.IdField"/> representing the "dbo.Product.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2923,9 +2731,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly IdField Id;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.ProductCategoryTypeField"/> representing the "dbo.Product.ProductCategoryType" column in the database, 
         /// with a .NET type of <see cref="ServerSideBlazorApp.Data.ProductCategoryType"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.ProductCategoryTypeField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyEnumElement{ServerSideBlazorApp.Data.ProductCategoryType}Element"/> or <see cref="HatTrick.DbEx.Sql.NullableEnumElement{ServerSideBlazorApp.Data.ProductCategoryType}Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{ServerSideBlazorApp.Data.ProductCategoryType}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2942,9 +2751,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly ProductCategoryTypeField ProductCategoryType;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.NameField"/> representing the "dbo.Product.Name" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.NameField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2961,9 +2771,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly NameField Name;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.DescriptionField"/> representing the "dbo.Product.Description" column in the database, 
-        /// with a .NET type of <see cref="string"/>.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.DescriptionField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// with a .NET type of <see cref="ServerSideBlazorApp.Data.ProductDescription"/>.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.DescriptionField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{ServerSideBlazorApp.Data.ProductDescription}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2980,9 +2791,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly DescriptionField Description;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.ListPriceField"/> representing the "dbo.Product.ListPrice" column in the database, 
         /// with a .NET type of <see cref="double"/>.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.ListPriceField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDoubleElement"/> or <see cref="HatTrick.DbEx.Sql.DoubleElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Double}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2999,9 +2811,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly ListPriceField ListPrice;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.PriceField"/> representing the "dbo.Product.Price" column in the database, 
         /// with a .NET type of <see cref="double"/>.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.PriceField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDoubleElement"/> or <see cref="HatTrick.DbEx.Sql.DoubleElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Double}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3018,9 +2831,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly PriceField Price;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.QuantityField"/> representing the "dbo.Product.Quantity" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.QuantityField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3037,9 +2851,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly QuantityField Quantity;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.ImageField"/> representing the "dbo.Product.Image" column in the database, 
         /// with a .NET type of <see cref="byte"/>[].  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.ImageField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyByteArrayElement"/> or <see cref="HatTrick.DbEx.Sql.ByteArrayElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{ByteArray}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3056,9 +2871,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly ImageField Image;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.HeightField"/> representing the "dbo.Product.Height" column in the database, 
         /// with a .NET type of <see cref="decimal"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.HeightField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDecimalElement"/> or <see cref="HatTrick.DbEx.Sql.NullableDecimalElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Decimal}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3075,9 +2891,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly HeightField Height;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.WidthField"/> representing the "dbo.Product.Width" column in the database, 
         /// with a .NET type of <see cref="decimal"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.WidthField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDecimalElement"/> or <see cref="HatTrick.DbEx.Sql.NullableDecimalElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Decimal}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3094,9 +2911,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly WidthField Width;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.DepthField"/> representing the "dbo.Product.Depth" column in the database, 
         /// with a .NET type of <see cref="decimal"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.DepthField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDecimalElement"/> or <see cref="HatTrick.DbEx.Sql.NullableDecimalElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Decimal}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3113,9 +2931,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly DepthField Depth;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.WeightField"/> representing the "dbo.Product.Weight" column in the database, 
         /// with a .NET type of <see cref="decimal"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.WeightField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDecimalElement"/> or <see cref="HatTrick.DbEx.Sql.NullableDecimalElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Decimal}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3132,9 +2951,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly WeightField Weight;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.ShippingWeightField"/> representing the "dbo.Product.ShippingWeight" column in the database, 
         /// with a .NET type of <see cref="decimal"/>.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.ShippingWeightField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDecimalElement"/> or <see cref="HatTrick.DbEx.Sql.DecimalElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Decimal}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3151,9 +2971,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly ShippingWeightField ShippingWeight;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.ValidStartTimeOfDayForPurchaseField"/> representing the "dbo.Product.ValidStartTimeOfDayForPurchase" column in the database, 
         /// with a .NET type of <see cref="TimeSpan"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.ValidStartTimeOfDayForPurchaseField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyTimeSpanElement"/> or <see cref="HatTrick.DbEx.Sql.NullableTimeSpanElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{TimeSpan}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3170,9 +2991,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly ValidStartTimeOfDayForPurchaseField ValidStartTimeOfDayForPurchase;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.ValidEndTimeOfDayForPurchaseField"/> representing the "dbo.Product.ValidEndTimeOfDayForPurchase" column in the database, 
         /// with a .NET type of <see cref="TimeSpan"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.ValidEndTimeOfDayForPurchaseField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyTimeSpanElement"/> or <see cref="HatTrick.DbEx.Sql.NullableTimeSpanElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{TimeSpan}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3189,9 +3011,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly ValidEndTimeOfDayForPurchaseField ValidEndTimeOfDayForPurchase;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.DateCreatedField"/> representing the "dbo.Product.DateCreated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.DateCreatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3211,9 +3034,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly DateCreatedField DateCreated;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.DateUpdatedField"/> representing the "dbo.Product.DateUpdated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.DateUpdatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3273,23 +3097,23 @@ namespace ServerSideBlazorApp.dboDataService
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new Int32SelectExpression(Id)
-                ,new NullableEnumSelectExpression<ServerSideBlazorApp.Data.ProductCategoryType>(ProductCategoryType)
-                ,new StringSelectExpression(Name)
-                ,new NullableStringSelectExpression(Description)
-                ,new DoubleSelectExpression(ListPrice)
-                ,new DoubleSelectExpression(Price)
-                ,new Int32SelectExpression(Quantity)
-                ,new NullableByteArraySelectExpression(Image)
-                ,new NullableDecimalSelectExpression(Height)
-                ,new NullableDecimalSelectExpression(Width)
-                ,new NullableDecimalSelectExpression(Depth)
-                ,new NullableDecimalSelectExpression(Weight)
-                ,new DecimalSelectExpression(ShippingWeight)
-                ,new NullableTimeSpanSelectExpression(ValidStartTimeOfDayForPurchase)
-                ,new NullableTimeSpanSelectExpression(ValidEndTimeOfDayForPurchase)
-                ,new DateTimeSelectExpression(DateCreated)
-                ,new DateTimeSelectExpression(DateUpdated)
+                new SelectExpression<int>(Id)
+                ,new SelectExpression<ServerSideBlazorApp.Data.ProductCategoryType?>(ProductCategoryType)
+                ,new SelectExpression<string>(Name)
+                ,new SelectExpression<ServerSideBlazorApp.Data.ProductDescription>(Description)
+                ,new SelectExpression<double>(ListPrice)
+                ,new SelectExpression<double>(Price)
+                ,new SelectExpression<int>(Quantity)
+                ,new SelectExpression<byte[]>(Image)
+                ,new SelectExpression<decimal?>(Height)
+                ,new SelectExpression<decimal?>(Width)
+                ,new SelectExpression<decimal?>(Depth)
+                ,new SelectExpression<decimal?>(Weight)
+                ,new SelectExpression<decimal>(ShippingWeight)
+                ,new SelectExpression<TimeSpan?>(ValidStartTimeOfDayForPurchase)
+                ,new SelectExpression<TimeSpan?>(ValidEndTimeOfDayForPurchase)
+                ,new SelectExpression<DateTime>(DateCreated)
+                ,new SelectExpression<DateTime>(DateUpdated)
             ));
         }
 
@@ -3302,55 +3126,55 @@ namespace ServerSideBlazorApp.dboDataService
             string aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new Int32SelectExpression(Id).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
 
             aliased = alias(nameof(ProductCategoryType));
-            set &= aliased != nameof(ProductCategoryType) ? new NullableEnumSelectExpression<ServerSideBlazorApp.Data.ProductCategoryType>(ProductCategoryType).As(aliased) as NullableEnumSelectExpression<ServerSideBlazorApp.Data.ProductCategoryType> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ProductCategoryType));
+            set &= aliased != nameof(ProductCategoryType) ? new SelectExpression<ServerSideBlazorApp.Data.ProductCategoryType?>(ProductCategoryType).As(aliased) as SelectExpression<ServerSideBlazorApp.Data.ProductCategoryType?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ProductCategoryType));
 
             aliased = alias(nameof(Name));
-            set &= aliased != nameof(Name) ? new StringSelectExpression(Name).As(aliased) as StringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Name));
+            set &= aliased != nameof(Name) ? new SelectExpression<string>(Name).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Name));
 
             aliased = alias(nameof(Description));
-            set &= aliased != nameof(Description) ? new NullableStringSelectExpression(Description).As(aliased) as NullableStringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Description));
+            set &= aliased != nameof(Description) ? new SelectExpression<ServerSideBlazorApp.Data.ProductDescription>(Description).As(aliased) as SelectExpression<ServerSideBlazorApp.Data.ProductDescription> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Description));
 
             aliased = alias(nameof(ListPrice));
-            set &= aliased != nameof(ListPrice) ? new DoubleSelectExpression(ListPrice).As(aliased) as DoubleSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ListPrice));
+            set &= aliased != nameof(ListPrice) ? new SelectExpression<double>(ListPrice).As(aliased) as SelectExpression<double> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ListPrice));
 
             aliased = alias(nameof(Price));
-            set &= aliased != nameof(Price) ? new DoubleSelectExpression(Price).As(aliased) as DoubleSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Price));
+            set &= aliased != nameof(Price) ? new SelectExpression<double>(Price).As(aliased) as SelectExpression<double> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Price));
 
             aliased = alias(nameof(Quantity));
-            set &= aliased != nameof(Quantity) ? new Int32SelectExpression(Quantity).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Quantity));
+            set &= aliased != nameof(Quantity) ? new SelectExpression<int>(Quantity).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Quantity));
 
             aliased = alias(nameof(Image));
-            set &= aliased != nameof(Image) ? new NullableByteArraySelectExpression(Image).As(aliased) as NullableByteArraySelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Image));
+            set &= aliased != nameof(Image) ? new SelectExpression<byte[]>(Image).As(aliased) as SelectExpression<byte[]> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Image));
 
             aliased = alias(nameof(Height));
-            set &= aliased != nameof(Height) ? new NullableDecimalSelectExpression(Height).As(aliased) as NullableDecimalSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Height));
+            set &= aliased != nameof(Height) ? new SelectExpression<decimal?>(Height).As(aliased) as SelectExpression<decimal?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Height));
 
             aliased = alias(nameof(Width));
-            set &= aliased != nameof(Width) ? new NullableDecimalSelectExpression(Width).As(aliased) as NullableDecimalSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Width));
+            set &= aliased != nameof(Width) ? new SelectExpression<decimal?>(Width).As(aliased) as SelectExpression<decimal?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Width));
 
             aliased = alias(nameof(Depth));
-            set &= aliased != nameof(Depth) ? new NullableDecimalSelectExpression(Depth).As(aliased) as NullableDecimalSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Depth));
+            set &= aliased != nameof(Depth) ? new SelectExpression<decimal?>(Depth).As(aliased) as SelectExpression<decimal?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Depth));
 
             aliased = alias(nameof(Weight));
-            set &= aliased != nameof(Weight) ? new NullableDecimalSelectExpression(Weight).As(aliased) as NullableDecimalSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Weight));
+            set &= aliased != nameof(Weight) ? new SelectExpression<decimal?>(Weight).As(aliased) as SelectExpression<decimal?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Weight));
 
             aliased = alias(nameof(ShippingWeight));
-            set &= aliased != nameof(ShippingWeight) ? new DecimalSelectExpression(ShippingWeight).As(aliased) as DecimalSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ShippingWeight));
+            set &= aliased != nameof(ShippingWeight) ? new SelectExpression<decimal>(ShippingWeight).As(aliased) as SelectExpression<decimal> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ShippingWeight));
 
             aliased = alias(nameof(ValidStartTimeOfDayForPurchase));
-            set &= aliased != nameof(ValidStartTimeOfDayForPurchase) ? new NullableTimeSpanSelectExpression(ValidStartTimeOfDayForPurchase).As(aliased) as NullableTimeSpanSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ValidStartTimeOfDayForPurchase));
+            set &= aliased != nameof(ValidStartTimeOfDayForPurchase) ? new SelectExpression<TimeSpan?>(ValidStartTimeOfDayForPurchase).As(aliased) as SelectExpression<TimeSpan?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ValidStartTimeOfDayForPurchase));
 
             aliased = alias(nameof(ValidEndTimeOfDayForPurchase));
-            set &= aliased != nameof(ValidEndTimeOfDayForPurchase) ? new NullableTimeSpanSelectExpression(ValidEndTimeOfDayForPurchase).As(aliased) as NullableTimeSpanSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ValidEndTimeOfDayForPurchase));
+            set &= aliased != nameof(ValidEndTimeOfDayForPurchase) ? new SelectExpression<TimeSpan?>(ValidEndTimeOfDayForPurchase).As(aliased) as SelectExpression<TimeSpan?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ValidEndTimeOfDayForPurchase));
 
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new DateTimeSelectExpression(DateCreated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
 
             aliased = alias(nameof(DateUpdated));
-            set &= aliased != nameof(DateUpdated) ? new DateTimeSelectExpression(DateUpdated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
+            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
 
             return set;
         }
@@ -3360,7 +3184,7 @@ namespace ServerSideBlazorApp.dboDataService
             return new InsertExpressionSet<Product>(product 
                 ,new InsertExpression<ServerSideBlazorApp.Data.ProductCategoryType?>(product.ProductCategoryType, ProductCategoryType)
                 ,new InsertExpression<string>(product.Name, Name)
-                ,new InsertExpression<string>(product.Description, Description)
+                ,new InsertExpression<ServerSideBlazorApp.Data.ProductDescription>(product.Description, Description)
                 ,new InsertExpression<double>(product.ListPrice, ListPrice)
                 ,new InsertExpression<double>(product.Price, Price)
                 ,new InsertExpression<int>(product.Quantity, Quantity)
@@ -3401,7 +3225,7 @@ namespace ServerSideBlazorApp.dboDataService
             product.Id = reader.ReadField().GetValue<int>();
             product.ProductCategoryType = reader.ReadField().GetValue<ServerSideBlazorApp.Data.ProductCategoryType?>();
             product.Name = reader.ReadField().GetValue<string>();
-            product.Description = reader.ReadField().GetValue<string>();
+            product.Description = reader.ReadField().GetValue<ServerSideBlazorApp.Data.ProductDescription>();
             product.ListPrice = reader.ReadField().GetValue<double>();
             product.Price = reader.ReadField().GetValue<double>();
             product.Quantity = reader.ReadField().GetValue<int>();
@@ -3429,20 +3253,13 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             #endregion
         }
         #endregion
 
         #region product category type field expression
-        public partial class ProductCategoryTypeField : NullableEnumFieldExpression<Product, ServerSideBlazorApp.Data.ProductCategoryType>
+        public partial class ProductCategoryTypeField : NullableEnumFieldExpression<Product,ServerSideBlazorApp.Data.ProductCategoryType>
         {
             #region constructors
             public ProductCategoryTypeField(string identifier, string name, ProductEntity entity) : base(identifier, name, entity)
@@ -3451,18 +3268,11 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override NullableEnumElement<ServerSideBlazorApp.Data.ProductCategoryType> As(string alias)
-            {
-                return new NullableEnumSelectExpression<ServerSideBlazorApp.Data.ProductCategoryType>(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(ServerSideBlazorApp.Data.ProductCategoryType value) => new AssignmentExpression(this, new LiteralExpression<ServerSideBlazorApp.Data.ProductCategoryType>(value, this));
-            public AssignmentExpression Set(EnumElement<ServerSideBlazorApp.Data.ProductCategoryType> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<ServerSideBlazorApp.Data.ProductCategoryType> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(ServerSideBlazorApp.Data.ProductCategoryType? value) => new AssignmentExpression(this, new LiteralExpression<ServerSideBlazorApp.Data.ProductCategoryType?>(value, this));
-            public AssignmentExpression Set(NullableEnumElement<ServerSideBlazorApp.Data.ProductCategoryType> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<ServerSideBlazorApp.Data.ProductCategoryType?> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<ServerSideBlazorApp.Data.ProductCategoryType>(value, this));
             #endregion
         }
@@ -3478,22 +3288,15 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override StringElement As(string alias)
-            {
-                return new StringSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
 
         #region description field expression
-        public partial class DescriptionField : NullableStringFieldExpression<Product>
+        public partial class DescriptionField : ObjectFieldExpression<Product,ServerSideBlazorApp.Data.ProductDescription>
         {
             #region constructors
             public DescriptionField(string identifier, string name, ProductEntity entity) : base(identifier, name, entity)
@@ -3502,18 +3305,10 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override NullableStringElement As(string alias)
-            {
-                return new NullableStringSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
-            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(NullableStringElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(ServerSideBlazorApp.Data.ProductDescription value) => new AssignmentExpression(this, new LiteralExpression<ServerSideBlazorApp.Data.ProductDescription>(value, this));
+            public AssignmentExpression Set(AnyElement<ServerSideBlazorApp.Data.ProductDescription> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<ServerSideBlazorApp.Data.ProductDescription>(value, this));
             #endregion
         }
         #endregion
@@ -3528,16 +3323,9 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override DoubleElement As(string alias)
-            {
-                return new DoubleSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(double value) => new AssignmentExpression(this, new LiteralExpression<double>(value, this));
-            public AssignmentExpression Set(DoubleElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<double> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3552,16 +3340,9 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override DoubleElement As(string alias)
-            {
-                return new DoubleSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(double value) => new AssignmentExpression(this, new LiteralExpression<double>(value, this));
-            public AssignmentExpression Set(DoubleElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<double> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3576,16 +3357,9 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
-            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3600,17 +3374,9 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override NullableByteArrayElement As(string alias)
-            {
-                return new NullableByteArraySelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(byte[] value) => new AssignmentExpression(this, new LiteralExpression<byte[]>(value, this));
-            public AssignmentExpression Set(ByteArrayElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(NullableByteArrayElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<byte[]> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<byte[]>(value, this));
             #endregion
         }
@@ -3626,18 +3392,11 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override NullableDecimalElement As(string alias)
-            {
-                return new NullableDecimalSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
-            public AssignmentExpression Set(DecimalElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<decimal> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
-            public AssignmentExpression Set(NullableDecimalElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<decimal?> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
             #endregion
         }
@@ -3653,18 +3412,11 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override NullableDecimalElement As(string alias)
-            {
-                return new NullableDecimalSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
-            public AssignmentExpression Set(DecimalElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<decimal> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
-            public AssignmentExpression Set(NullableDecimalElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<decimal?> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
             #endregion
         }
@@ -3680,18 +3432,11 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override NullableDecimalElement As(string alias)
-            {
-                return new NullableDecimalSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
-            public AssignmentExpression Set(DecimalElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<decimal> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
-            public AssignmentExpression Set(NullableDecimalElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<decimal?> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
             #endregion
         }
@@ -3707,18 +3452,11 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override NullableDecimalElement As(string alias)
-            {
-                return new NullableDecimalSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
-            public AssignmentExpression Set(DecimalElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<decimal> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
-            public AssignmentExpression Set(NullableDecimalElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<decimal?> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
             #endregion
         }
@@ -3734,16 +3472,9 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override DecimalElement As(string alias)
-            {
-                return new DecimalSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
-            public AssignmentExpression Set(DecimalElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<decimal> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3758,18 +3489,11 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override NullableTimeSpanElement As(string alias)
-            {
-                return new NullableTimeSpanSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(TimeSpan value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan>(value, this));
-            public AssignmentExpression Set(TimeSpanElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<TimeSpan> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(TimeSpan? value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan?>(value, this));
-            public AssignmentExpression Set(NullableTimeSpanElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<TimeSpan?> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan>(value, this));
             #endregion
         }
@@ -3785,18 +3509,11 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override NullableTimeSpanElement As(string alias)
-            {
-                return new NullableTimeSpanSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(TimeSpan value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan>(value, this));
-            public AssignmentExpression Set(TimeSpanElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<TimeSpan> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(TimeSpan? value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan?>(value, this));
-            public AssignmentExpression Set(NullableTimeSpanElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<TimeSpan?> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan>(value, this));
             #endregion
         }
@@ -3812,13 +3529,6 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             #endregion
         }
@@ -3831,13 +3541,6 @@ namespace ServerSideBlazorApp.dboDataService
             public DateUpdatedField(string identifier, string name, ProductEntity entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
             }
             #endregion
 
@@ -3858,9 +3561,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region interface
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.IdField"/> representing the "dbo.Purchase.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3880,9 +3584,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly IdField Id;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.CustomerIdField"/> representing the "dbo.Purchase.PersonId" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.CustomerIdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3899,9 +3604,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly CustomerIdField CustomerId;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.OrderNumberField"/> representing the "dbo.Purchase.OrderNumber" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.OrderNumberField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3918,9 +3624,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly OrderNumberField OrderNumber;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.TotalPurchaseQuantityField"/> representing the "dbo.Purchase.TotalPurchaseQuantity" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.TotalPurchaseQuantityField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3937,9 +3644,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly TotalPurchaseQuantityField TotalPurchaseQuantity;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.TotalPurchaseAmountField"/> representing the "dbo.Purchase.TotalPurchaseAmount" column in the database, 
         /// with a .NET type of <see cref="double"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.TotalPurchaseAmountField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDoubleElement"/> or <see cref="HatTrick.DbEx.Sql.DoubleElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Double}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3956,9 +3664,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly TotalPurchaseAmountField TotalPurchaseAmount;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.PurchaseDateField"/> representing the "dbo.Purchase.PurchaseDate" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.PurchaseDateField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3975,9 +3684,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly PurchaseDateField PurchaseDate;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.ShipDateField"/> representing the "dbo.Purchase.ShipDate" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.ShipDateField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.NullableDateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3994,9 +3704,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly ShipDateField ShipDate;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.ExpectedDeliveryDateField"/> representing the "dbo.Purchase.ExpectedDeliveryDate" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.ExpectedDeliveryDateField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.NullableDateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4013,9 +3724,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly ExpectedDeliveryDateField ExpectedDeliveryDate;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.TrackingIdentifierField"/> representing the "dbo.Purchase.TrackingIdentifier" column in the database, 
         /// with a .NET type of <see cref="Guid"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.TrackingIdentifierField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyGuidElement"/> or <see cref="HatTrick.DbEx.Sql.NullableGuidElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Guid}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4032,9 +3744,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly TrackingIdentifierField TrackingIdentifier;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.PaymentMethodTypeField"/> representing the "dbo.Purchase.PaymentMethodType" column in the database, 
         /// with a .NET type of <see cref="ServerSideBlazorApp.Data.PaymentMethodType"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.PaymentMethodTypeField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyEnumElement{ServerSideBlazorApp.Data.PaymentMethodType}Element"/> or <see cref="HatTrick.DbEx.Sql.EnumElement{ServerSideBlazorApp.Data.PaymentMethodType}Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{ServerSideBlazorApp.Data.PaymentMethodType}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4051,9 +3764,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly PaymentMethodTypeField PaymentMethodType;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.PaymentSourceTypeField"/> representing the "dbo.Purchase.PaymentSourceType" column in the database, 
         /// with a .NET type of <see cref="ServerSideBlazorApp.Data.PaymentSourceType"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.PaymentSourceTypeField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyEnumElement{ServerSideBlazorApp.Data.PaymentSourceType}Element"/> or <see cref="HatTrick.DbEx.Sql.NullableEnumElement{ServerSideBlazorApp.Data.PaymentSourceType}Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{ServerSideBlazorApp.Data.PaymentSourceType}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4070,9 +3784,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly PaymentSourceTypeField PaymentSourceType;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.DateCreatedField"/> representing the "dbo.Purchase.DateCreated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.DateCreatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4092,9 +3807,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly DateCreatedField DateCreated;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.DateUpdatedField"/> representing the "dbo.Purchase.DateUpdated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.DateUpdatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4150,19 +3866,19 @@ namespace ServerSideBlazorApp.dboDataService
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new Int32SelectExpression(Id)
-                ,new Int32SelectExpression(CustomerId)
-                ,new StringSelectExpression(OrderNumber)
-                ,new Int32SelectExpression(TotalPurchaseQuantity)
-                ,new DoubleSelectExpression(TotalPurchaseAmount)
-                ,new DateTimeSelectExpression(PurchaseDate)
-                ,new NullableDateTimeSelectExpression(ShipDate)
-                ,new NullableDateTimeSelectExpression(ExpectedDeliveryDate)
-                ,new NullableGuidSelectExpression(TrackingIdentifier)
-                ,new EnumSelectExpression<ServerSideBlazorApp.Data.PaymentMethodType>(PaymentMethodType)
-                ,new NullableEnumSelectExpression<ServerSideBlazorApp.Data.PaymentSourceType>(PaymentSourceType)
-                ,new DateTimeSelectExpression(DateCreated)
-                ,new DateTimeSelectExpression(DateUpdated)
+                new SelectExpression<int>(Id)
+                ,new SelectExpression<int>(CustomerId)
+                ,new SelectExpression<string>(OrderNumber)
+                ,new SelectExpression<int>(TotalPurchaseQuantity)
+                ,new SelectExpression<double>(TotalPurchaseAmount)
+                ,new SelectExpression<DateTime>(PurchaseDate)
+                ,new SelectExpression<DateTime?>(ShipDate)
+                ,new SelectExpression<DateTime?>(ExpectedDeliveryDate)
+                ,new SelectExpression<Guid?>(TrackingIdentifier)
+                ,new SelectExpression<ServerSideBlazorApp.Data.PaymentMethodType>(PaymentMethodType)
+                ,new SelectExpression<ServerSideBlazorApp.Data.PaymentSourceType?>(PaymentSourceType)
+                ,new SelectExpression<DateTime>(DateCreated)
+                ,new SelectExpression<DateTime>(DateUpdated)
             ));
         }
 
@@ -4175,43 +3891,43 @@ namespace ServerSideBlazorApp.dboDataService
             string aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new Int32SelectExpression(Id).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
 
             aliased = alias(nameof(CustomerId));
-            set &= aliased != nameof(CustomerId) ? new Int32SelectExpression(CustomerId).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(CustomerId));
+            set &= aliased != nameof(CustomerId) ? new SelectExpression<int>(CustomerId).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(CustomerId));
 
             aliased = alias(nameof(OrderNumber));
-            set &= aliased != nameof(OrderNumber) ? new StringSelectExpression(OrderNumber).As(aliased) as StringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(OrderNumber));
+            set &= aliased != nameof(OrderNumber) ? new SelectExpression<string>(OrderNumber).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(OrderNumber));
 
             aliased = alias(nameof(TotalPurchaseQuantity));
-            set &= aliased != nameof(TotalPurchaseQuantity) ? new Int32SelectExpression(TotalPurchaseQuantity).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TotalPurchaseQuantity));
+            set &= aliased != nameof(TotalPurchaseQuantity) ? new SelectExpression<int>(TotalPurchaseQuantity).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TotalPurchaseQuantity));
 
             aliased = alias(nameof(TotalPurchaseAmount));
-            set &= aliased != nameof(TotalPurchaseAmount) ? new DoubleSelectExpression(TotalPurchaseAmount).As(aliased) as DoubleSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TotalPurchaseAmount));
+            set &= aliased != nameof(TotalPurchaseAmount) ? new SelectExpression<double>(TotalPurchaseAmount).As(aliased) as SelectExpression<double> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TotalPurchaseAmount));
 
             aliased = alias(nameof(PurchaseDate));
-            set &= aliased != nameof(PurchaseDate) ? new DateTimeSelectExpression(PurchaseDate).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PurchaseDate));
+            set &= aliased != nameof(PurchaseDate) ? new SelectExpression<DateTime>(PurchaseDate).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PurchaseDate));
 
             aliased = alias(nameof(ShipDate));
-            set &= aliased != nameof(ShipDate) ? new NullableDateTimeSelectExpression(ShipDate).As(aliased) as NullableDateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ShipDate));
+            set &= aliased != nameof(ShipDate) ? new SelectExpression<DateTime?>(ShipDate).As(aliased) as SelectExpression<DateTime?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ShipDate));
 
             aliased = alias(nameof(ExpectedDeliveryDate));
-            set &= aliased != nameof(ExpectedDeliveryDate) ? new NullableDateTimeSelectExpression(ExpectedDeliveryDate).As(aliased) as NullableDateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ExpectedDeliveryDate));
+            set &= aliased != nameof(ExpectedDeliveryDate) ? new SelectExpression<DateTime?>(ExpectedDeliveryDate).As(aliased) as SelectExpression<DateTime?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ExpectedDeliveryDate));
 
             aliased = alias(nameof(TrackingIdentifier));
-            set &= aliased != nameof(TrackingIdentifier) ? new NullableGuidSelectExpression(TrackingIdentifier).As(aliased) as NullableGuidSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TrackingIdentifier));
+            set &= aliased != nameof(TrackingIdentifier) ? new SelectExpression<Guid?>(TrackingIdentifier).As(aliased) as SelectExpression<Guid?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TrackingIdentifier));
 
             aliased = alias(nameof(PaymentMethodType));
-            set &= aliased != nameof(PaymentMethodType) ? new EnumSelectExpression<ServerSideBlazorApp.Data.PaymentMethodType>(PaymentMethodType).As(aliased) as EnumSelectExpression<ServerSideBlazorApp.Data.PaymentMethodType> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PaymentMethodType));
+            set &= aliased != nameof(PaymentMethodType) ? new SelectExpression<ServerSideBlazorApp.Data.PaymentMethodType>(PaymentMethodType).As(aliased) as SelectExpression<ServerSideBlazorApp.Data.PaymentMethodType> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PaymentMethodType));
 
             aliased = alias(nameof(PaymentSourceType));
-            set &= aliased != nameof(PaymentSourceType) ? new NullableEnumSelectExpression<ServerSideBlazorApp.Data.PaymentSourceType>(PaymentSourceType).As(aliased) as NullableEnumSelectExpression<ServerSideBlazorApp.Data.PaymentSourceType> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PaymentSourceType));
+            set &= aliased != nameof(PaymentSourceType) ? new SelectExpression<ServerSideBlazorApp.Data.PaymentSourceType?>(PaymentSourceType).As(aliased) as SelectExpression<ServerSideBlazorApp.Data.PaymentSourceType?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PaymentSourceType));
 
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new DateTimeSelectExpression(DateCreated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
 
             aliased = alias(nameof(DateUpdated));
-            set &= aliased != nameof(DateUpdated) ? new DateTimeSelectExpression(DateUpdated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
+            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
 
             return set;
         }
@@ -4278,13 +3994,6 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             #endregion
         }
@@ -4300,16 +4009,9 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
-            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4324,16 +4026,9 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override StringElement As(string alias)
-            {
-                return new StringSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4348,16 +4043,9 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
-            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4372,16 +4060,9 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override DoubleElement As(string alias)
-            {
-                return new DoubleSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(double value) => new AssignmentExpression(this, new LiteralExpression<double>(value, this));
-            public AssignmentExpression Set(DoubleElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<double> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4396,16 +4077,9 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
-            public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4420,18 +4094,11 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override NullableDateTimeElement As(string alias)
-            {
-                return new NullableDateTimeSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
-            public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DateTime? value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value, this));
-            public AssignmentExpression Set(NullableDateTimeElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<DateTime?> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
             #endregion
         }
@@ -4447,18 +4114,11 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override NullableDateTimeElement As(string alias)
-            {
-                return new NullableDateTimeSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
-            public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DateTime? value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value, this));
-            public AssignmentExpression Set(NullableDateTimeElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<DateTime?> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
             #endregion
         }
@@ -4474,25 +4134,18 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override NullableGuidElement As(string alias)
-            {
-                return new NullableGuidSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(Guid value) => new AssignmentExpression(this, new LiteralExpression<Guid>(value, this));
-            public AssignmentExpression Set(GuidElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<Guid> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(Guid? value) => new AssignmentExpression(this, new LiteralExpression<Guid?>(value, this));
-            public AssignmentExpression Set(NullableGuidElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<Guid?> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<Guid>(value, this));
             #endregion
         }
         #endregion
 
         #region payment method type field expression
-        public partial class PaymentMethodTypeField : EnumFieldExpression<Purchase, ServerSideBlazorApp.Data.PaymentMethodType>
+        public partial class PaymentMethodTypeField : EnumFieldExpression<Purchase,ServerSideBlazorApp.Data.PaymentMethodType>
         {
             #region constructors
             public PaymentMethodTypeField(string identifier, string name, PurchaseEntity entity) : base(identifier, name, entity)
@@ -4501,22 +4154,15 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override EnumElement<ServerSideBlazorApp.Data.PaymentMethodType> As(string alias)
-            {
-                return new EnumSelectExpression<ServerSideBlazorApp.Data.PaymentMethodType>(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(ServerSideBlazorApp.Data.PaymentMethodType value) => new AssignmentExpression(this, new LiteralExpression<ServerSideBlazorApp.Data.PaymentMethodType>(value, this));
-            public AssignmentExpression Set(EnumElement<ServerSideBlazorApp.Data.PaymentMethodType> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<ServerSideBlazorApp.Data.PaymentMethodType> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
 
         #region payment source type field expression
-        public partial class PaymentSourceTypeField : NullableEnumFieldExpression<Purchase, ServerSideBlazorApp.Data.PaymentSourceType>
+        public partial class PaymentSourceTypeField : NullableEnumFieldExpression<Purchase,ServerSideBlazorApp.Data.PaymentSourceType>
         {
             #region constructors
             public PaymentSourceTypeField(string identifier, string name, PurchaseEntity entity) : base(identifier, name, entity)
@@ -4525,18 +4171,11 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override NullableEnumElement<ServerSideBlazorApp.Data.PaymentSourceType> As(string alias)
-            {
-                return new NullableEnumSelectExpression<ServerSideBlazorApp.Data.PaymentSourceType>(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(ServerSideBlazorApp.Data.PaymentSourceType value) => new AssignmentExpression(this, new LiteralExpression<ServerSideBlazorApp.Data.PaymentSourceType>(value, this));
-            public AssignmentExpression Set(EnumElement<ServerSideBlazorApp.Data.PaymentSourceType> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<ServerSideBlazorApp.Data.PaymentSourceType> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(ServerSideBlazorApp.Data.PaymentSourceType? value) => new AssignmentExpression(this, new LiteralExpression<ServerSideBlazorApp.Data.PaymentSourceType?>(value, this));
-            public AssignmentExpression Set(NullableEnumElement<ServerSideBlazorApp.Data.PaymentSourceType> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<ServerSideBlazorApp.Data.PaymentSourceType?> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<ServerSideBlazorApp.Data.PaymentSourceType>(value, this));
             #endregion
         }
@@ -4552,13 +4191,6 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             #endregion
         }
@@ -4571,13 +4203,6 @@ namespace ServerSideBlazorApp.dboDataService
             public DateUpdatedField(string identifier, string name, PurchaseEntity entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
             }
             #endregion
 
@@ -4598,9 +4223,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region interface
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseLineEntity.IdField"/> representing the "dbo.PurchaseLine.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseLineEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4620,9 +4246,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly IdField Id;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseLineEntity.PurchaseIdField"/> representing the "dbo.PurchaseLine.PurchaseId" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseLineEntity.PurchaseIdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4639,9 +4266,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly PurchaseIdField PurchaseId;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseLineEntity.ProductIdField"/> representing the "dbo.PurchaseLine.ProductId" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseLineEntity.ProductIdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4658,9 +4286,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly ProductIdField ProductId;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseLineEntity.PurchasePriceField"/> representing the "dbo.PurchaseLine.PurchasePrice" column in the database, 
         /// with a .NET type of <see cref="decimal"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseLineEntity.PurchasePriceField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDecimalElement"/> or <see cref="HatTrick.DbEx.Sql.DecimalElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Decimal}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4677,9 +4306,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly PurchasePriceField PurchasePrice;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseLineEntity.QuantityField"/> representing the "dbo.PurchaseLine.Quantity" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseLineEntity.QuantityField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4696,9 +4326,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly QuantityField Quantity;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseLineEntity.DateCreatedField"/> representing the "dbo.PurchaseLine.DateCreated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseLineEntity.DateCreatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4718,9 +4349,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly DateCreatedField DateCreated;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseLineEntity.DateUpdatedField"/> representing the "dbo.PurchaseLine.DateUpdated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseLineEntity.DateUpdatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4770,13 +4402,13 @@ namespace ServerSideBlazorApp.dboDataService
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new Int32SelectExpression(Id)
-                ,new Int32SelectExpression(PurchaseId)
-                ,new Int32SelectExpression(ProductId)
-                ,new DecimalSelectExpression(PurchasePrice)
-                ,new Int32SelectExpression(Quantity)
-                ,new DateTimeSelectExpression(DateCreated)
-                ,new DateTimeSelectExpression(DateUpdated)
+                new SelectExpression<int>(Id)
+                ,new SelectExpression<int>(PurchaseId)
+                ,new SelectExpression<int>(ProductId)
+                ,new SelectExpression<decimal>(PurchasePrice)
+                ,new SelectExpression<int>(Quantity)
+                ,new SelectExpression<DateTime>(DateCreated)
+                ,new SelectExpression<DateTime>(DateUpdated)
             ));
         }
 
@@ -4789,25 +4421,25 @@ namespace ServerSideBlazorApp.dboDataService
             string aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new Int32SelectExpression(Id).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
 
             aliased = alias(nameof(PurchaseId));
-            set &= aliased != nameof(PurchaseId) ? new Int32SelectExpression(PurchaseId).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PurchaseId));
+            set &= aliased != nameof(PurchaseId) ? new SelectExpression<int>(PurchaseId).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PurchaseId));
 
             aliased = alias(nameof(ProductId));
-            set &= aliased != nameof(ProductId) ? new Int32SelectExpression(ProductId).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ProductId));
+            set &= aliased != nameof(ProductId) ? new SelectExpression<int>(ProductId).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ProductId));
 
             aliased = alias(nameof(PurchasePrice));
-            set &= aliased != nameof(PurchasePrice) ? new DecimalSelectExpression(PurchasePrice).As(aliased) as DecimalSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PurchasePrice));
+            set &= aliased != nameof(PurchasePrice) ? new SelectExpression<decimal>(PurchasePrice).As(aliased) as SelectExpression<decimal> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PurchasePrice));
 
             aliased = alias(nameof(Quantity));
-            set &= aliased != nameof(Quantity) ? new Int32SelectExpression(Quantity).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Quantity));
+            set &= aliased != nameof(Quantity) ? new SelectExpression<int>(Quantity).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Quantity));
 
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new DateTimeSelectExpression(DateCreated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
 
             aliased = alias(nameof(DateUpdated));
-            set &= aliased != nameof(DateUpdated) ? new DateTimeSelectExpression(DateUpdated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
+            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
 
             return set;
         }
@@ -4856,13 +4488,6 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             #endregion
         }
@@ -4878,16 +4503,9 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
-            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4902,16 +4520,9 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
-            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4926,16 +4537,9 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override DecimalElement As(string alias)
-            {
-                return new DecimalSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
-            public AssignmentExpression Set(DecimalElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<decimal> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4950,16 +4554,9 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
-            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4971,13 +4568,6 @@ namespace ServerSideBlazorApp.dboDataService
             public DateCreatedField(string identifier, string name, PurchaseLineEntity entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
             }
             #endregion
 
@@ -4993,13 +4583,6 @@ namespace ServerSideBlazorApp.dboDataService
             public DateUpdatedField(string identifier, string name, PurchaseLineEntity entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
             }
             #endregion
 
@@ -5020,9 +4603,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region interface
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PersonTotalPurchasesViewEntity.IdField"/> representing the "dbo.PersonTotalPurchasesView.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PersonTotalPurchasesViewEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5039,9 +4623,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly IdField Id;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PersonTotalPurchasesViewEntity.TotalAmountField"/> representing the "dbo.PersonTotalPurchasesView.TotalAmount" column in the database, 
         /// with a .NET type of <see cref="double"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.PersonTotalPurchasesViewEntity.TotalAmountField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDoubleElement"/> or <see cref="HatTrick.DbEx.Sql.NullableDoubleElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Double}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5058,9 +4643,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly TotalAmountField TotalAmount;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PersonTotalPurchasesViewEntity.TotalCountField"/> representing the "dbo.PersonTotalPurchasesView.TotalCount" column in the database, 
         /// with a .NET type of <see cref="int"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.PersonTotalPurchasesViewEntity.TotalCountField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.NullableInt32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5103,9 +4689,9 @@ namespace ServerSideBlazorApp.dboDataService
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new Int32SelectExpression(Id)
-                ,new NullableDoubleSelectExpression(TotalAmount)
-                ,new NullableInt32SelectExpression(TotalCount)
+                new SelectExpression<int>(Id)
+                ,new SelectExpression<double?>(TotalAmount)
+                ,new SelectExpression<int?>(TotalCount)
             ));
         }
 
@@ -5118,13 +4704,13 @@ namespace ServerSideBlazorApp.dboDataService
             string aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new Int32SelectExpression(Id).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
 
             aliased = alias(nameof(TotalAmount));
-            set &= aliased != nameof(TotalAmount) ? new NullableDoubleSelectExpression(TotalAmount).As(aliased) as NullableDoubleSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TotalAmount));
+            set &= aliased != nameof(TotalAmount) ? new SelectExpression<double?>(TotalAmount).As(aliased) as SelectExpression<double?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TotalAmount));
 
             aliased = alias(nameof(TotalCount));
-            set &= aliased != nameof(TotalCount) ? new NullableInt32SelectExpression(TotalCount).As(aliased) as NullableInt32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TotalCount));
+            set &= aliased != nameof(TotalCount) ? new SelectExpression<int?>(TotalCount).As(aliased) as SelectExpression<int?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TotalCount));
 
             return set;
         }
@@ -5161,13 +4747,6 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             #endregion
         }
@@ -5183,14 +4762,8 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override NullableDoubleElement As(string alias)
-            {
-                return new NullableDoubleSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<double>(value, this));
             #endregion
         }
         #endregion
@@ -5205,14 +4778,8 @@ namespace ServerSideBlazorApp.dboDataService
             }
             #endregion
 
-            #region as
-            public override NullableInt32Element As(string alias)
-            {
-                return new NullableInt32SelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             #endregion
         }
         #endregion
@@ -5744,9 +5311,10 @@ namespace ServerSideBlazorApp.secDataService
         #endregion
 
         #region interface
+
         /// <summary>A <see cref="ServerSideBlazorApp.secDataService.PersonEntity.IdField"/> representing the "sec.Person.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.secDataService.PersonEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5763,9 +5331,10 @@ namespace ServerSideBlazorApp.secDataService
         /// </summary>
         public readonly IdField Id;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.secDataService.PersonEntity.SSNField"/> representing the "sec.Person.SSN" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="ServerSideBlazorApp.secDataService.PersonEntity.SSNField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5782,9 +5351,10 @@ namespace ServerSideBlazorApp.secDataService
         /// </summary>
         public readonly SSNField SSN;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.secDataService.PersonEntity.DateCreatedField"/> representing the "sec.Person.DateCreated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="ServerSideBlazorApp.secDataService.PersonEntity.DateCreatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5804,9 +5374,10 @@ namespace ServerSideBlazorApp.secDataService
         /// </summary>
         public readonly DateCreatedField DateCreated;
 
+
         /// <summary>A <see cref="ServerSideBlazorApp.secDataService.PersonEntity.DateUpdatedField"/> representing the "sec.Person.DateUpdated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="ServerSideBlazorApp.secDataService.PersonEntity.DateUpdatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5853,10 +5424,10 @@ namespace ServerSideBlazorApp.secDataService
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new Int32SelectExpression(Id)
-                ,new StringSelectExpression(SSN)
-                ,new DateTimeSelectExpression(DateCreated)
-                ,new DateTimeSelectExpression(DateUpdated)
+                new SelectExpression<int>(Id)
+                ,new SelectExpression<string>(SSN)
+                ,new SelectExpression<DateTime>(DateCreated)
+                ,new SelectExpression<DateTime>(DateUpdated)
             ));
         }
 
@@ -5869,16 +5440,16 @@ namespace ServerSideBlazorApp.secDataService
             string aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new Int32SelectExpression(Id).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
 
             aliased = alias(nameof(SSN));
-            set &= aliased != nameof(SSN) ? new StringSelectExpression(SSN).As(aliased) as StringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(SSN));
+            set &= aliased != nameof(SSN) ? new SelectExpression<string>(SSN).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(SSN));
 
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new DateTimeSelectExpression(DateCreated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
 
             aliased = alias(nameof(DateUpdated));
-            set &= aliased != nameof(DateUpdated) ? new DateTimeSelectExpression(DateUpdated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
+            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
 
             return set;
         }
@@ -5920,16 +5491,9 @@ namespace ServerSideBlazorApp.secDataService
             }
             #endregion
 
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
-            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -5944,16 +5508,9 @@ namespace ServerSideBlazorApp.secDataService
             }
             #endregion
 
-            #region as
-            public override StringElement As(string alias)
-            {
-                return new StringSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -5965,13 +5522,6 @@ namespace ServerSideBlazorApp.secDataService
             public DateCreatedField(string identifier, string name, PersonEntity entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
             }
             #endregion
 
@@ -5987,13 +5537,6 @@ namespace ServerSideBlazorApp.secDataService
             public DateUpdatedField(string identifier, string name, PersonEntity entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
             }
             #endregion
 

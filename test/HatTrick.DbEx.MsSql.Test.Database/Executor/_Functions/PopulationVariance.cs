@@ -131,7 +131,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Operation", "SUBQUERY")]
-        public void Can_populationvariance_of_aliased_field_succeed(int version, double expected = 18.6667)
+        public void Can_populationvariance_of_aliased_field_succeed(int version, float expected = 18.6667f)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -148,7 +148,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             object result = exp.Execute();
 
             //then
-            result.Should().BeOfType<double>().Which.Should().BeApproximately(expected, 0.0001, "Rounding errors in population standard deviation");
+            result.Should().BeOfType<float>().Which.Should().BeApproximately(expected, 0.0001f, "Rounding errors in population standard deviation");
         }
     }
 }

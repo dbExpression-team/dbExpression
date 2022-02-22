@@ -23,19 +23,18 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class SingleCeilingFunctionExpression :
         CeilingFunctionExpression<float>,
         SingleElement,
-        AnySingleElement,
         IEquatable<SingleCeilingFunctionExpression>
     {
         #region constructors
-        public SingleCeilingFunctionExpression(SingleElement expression) : base(expression)
+        public SingleCeilingFunctionExpression(AnyElement<float> expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public SingleElement As(string alias)
-            => new SingleSelectExpression(this).As(alias);
+        public AnyElement<float> As(string alias)
+            => new SelectExpression<float>(this).As(alias);
         #endregion
 
         #region equals

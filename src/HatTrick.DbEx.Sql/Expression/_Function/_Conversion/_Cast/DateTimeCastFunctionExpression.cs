@@ -23,11 +23,10 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class DateTimeCastFunctionExpression :
         CastFunctionExpression<DateTime>,
         DateTimeElement,
-        AnyDateTimeElement,
         IEquatable<DateTimeCastFunctionExpression>
     {
         #region constructors
-        public DateTimeCastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType) 
+        public DateTimeCastFunctionExpression(AnyElement expression, DbTypeExpression convertToDbType) 
             : base(expression, convertToDbType)
         {
 
@@ -35,8 +34,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public DateTimeElement As(string alias)
-            => new DateTimeSelectExpression(this).As(alias);
+        public AnyElement<DateTime> As(string alias)
+            => new SelectExpression<DateTime>(this).As(alias);
         #endregion
 
         #region equals

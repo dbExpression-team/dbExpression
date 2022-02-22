@@ -23,11 +23,10 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableDecimalCastFunctionExpression :
         NullableCastFunctionExpression<decimal,decimal?>,
         NullableDecimalElement,
-        AnyDecimalElement,
         IEquatable<NullableDecimalCastFunctionExpression>
     {
         #region constructors
-        public NullableDecimalCastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType)
+        public NullableDecimalCastFunctionExpression(AnyElement expression, DbTypeExpression convertToDbType)
             : base(expression, convertToDbType)
         {
 
@@ -35,8 +34,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public NullableDecimalElement As(string alias)
-            => new NullableDecimalSelectExpression(this).As(alias);
+        public AnyElement<decimal?> As(string alias)
+            => new SelectExpression<decimal?>(this).As(alias);
         #endregion
 
         #region equals

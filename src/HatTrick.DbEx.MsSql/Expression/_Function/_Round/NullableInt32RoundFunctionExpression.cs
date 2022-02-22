@@ -25,44 +25,43 @@ namespace HatTrick.DbEx.MsSql.Expression
     public partial class NullableInt32RoundFunctionExpression :
         NullableRoundFunctionExpression<int,int?>,
         NullableInt32Element,
-        AnyInt32Element,
         IEquatable<NullableInt32RoundFunctionExpression>
     {
         #region constructors
-        public NullableInt32RoundFunctionExpression(NullableInt32Element expression, IntegralNumericElement length) : base(expression, length)
+        public NullableInt32RoundFunctionExpression(AnyElement<int?> expression, IntegralNumericElement length) : base(expression, length)
         {
 
         }
 
-        public NullableInt32RoundFunctionExpression(NullableInt32Element expression, IntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
+        public NullableInt32RoundFunctionExpression(AnyElement<int?> expression, IntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
         {
 
         }
 
-        public NullableInt32RoundFunctionExpression(NullableInt32Element expression, NullableIntegralNumericElement length) : base(expression, length)
+        public NullableInt32RoundFunctionExpression(AnyElement<int?> expression, NullableIntegralNumericElement length) : base(expression, length)
         {
 
         }
 
-        public NullableInt32RoundFunctionExpression(NullableInt32Element expression, NullableIntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
+        public NullableInt32RoundFunctionExpression(AnyElement<int?> expression, NullableIntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
         {
 
         }
 
-        public NullableInt32RoundFunctionExpression(NullableInt32Element expression, IntegralNumericElement length, NullableIntegralNumericElement function) : base(expression, length, function)
+        public NullableInt32RoundFunctionExpression(AnyElement<int?> expression, IntegralNumericElement length, NullableIntegralNumericElement function) : base(expression, length, function)
         {
 
         }
 
-        public NullableInt32RoundFunctionExpression(NullableInt32Element expression, NullableIntegralNumericElement length, NullableIntegralNumericElement function) : base(expression, length, function)
+        public NullableInt32RoundFunctionExpression(AnyElement<int?> expression, NullableIntegralNumericElement length, NullableIntegralNumericElement function) : base(expression, length, function)
         {
 
         }
         #endregion
 
         #region as
-        public NullableInt32Element As(string alias)
-            => new NullableInt32SelectExpression(this).As(alias);
+        public AnyElement<int?> As(string alias)
+            => new SelectExpression<int?>(this).As(alias);
         #endregion
 
         #region equals

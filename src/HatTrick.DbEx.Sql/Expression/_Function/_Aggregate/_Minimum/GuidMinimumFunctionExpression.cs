@@ -23,19 +23,18 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class GuidMinimumFunctionExpression :
         MinimumFunctionExpression<Guid>,
         GuidElement,
-        AnyGuidElement,
         IEquatable<GuidMinimumFunctionExpression>
     {
         #region constructors
-        public GuidMinimumFunctionExpression(GuidElement expression) : base(expression)
+        public GuidMinimumFunctionExpression(AnyElement<Guid> expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public GuidElement As(string alias)
-            => new GuidSelectExpression(this).As(alias);
+        public AnyElement<Guid> As(string alias)
+            => new SelectExpression<Guid>(this).As(alias);
         #endregion
 
         #region distinct

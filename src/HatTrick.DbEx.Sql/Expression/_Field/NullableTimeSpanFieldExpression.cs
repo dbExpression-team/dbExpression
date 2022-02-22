@@ -23,7 +23,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public abstract partial class NullableTimeSpanFieldExpression : 
         NullableFieldExpression<TimeSpan,TimeSpan?>,
         NullableTimeSpanElement,
-        AnyTimeSpanElement,
         IEquatable<NullableTimeSpanFieldExpression>
     {
         #region constructors
@@ -31,10 +30,6 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
-        #endregion
-
-        #region as
-        public abstract NullableTimeSpanElement As(string alias);
         #endregion
 
         #region equals

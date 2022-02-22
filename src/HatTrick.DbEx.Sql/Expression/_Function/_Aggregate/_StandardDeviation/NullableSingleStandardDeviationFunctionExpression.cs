@@ -23,49 +23,48 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableSingleStandardDeviationFunctionExpression :
         NullableStandardDeviationFunctionExpression<float,float?>,
         NullableSingleElement,
-        AnySingleElement,
         IEquatable<NullableSingleStandardDeviationFunctionExpression>
     {
         #region constructors
-        public NullableSingleStandardDeviationFunctionExpression(NullableByteElement expression) : base(expression)
+        public NullableSingleStandardDeviationFunctionExpression(AnyElement<byte?> expression) : base(expression)
         {
 
         }
         
-        public NullableSingleStandardDeviationFunctionExpression(NullableInt16Element expression) : base(expression)
+        public NullableSingleStandardDeviationFunctionExpression(AnyElement<short?> expression) : base(expression)
         {
 
         }
 
-        public NullableSingleStandardDeviationFunctionExpression(NullableInt32Element expression) : base(expression)
+        public NullableSingleStandardDeviationFunctionExpression(AnyElement<int?> expression) : base(expression)
         {
 
         }
 
-        public NullableSingleStandardDeviationFunctionExpression(NullableInt64Element expression) : base(expression)
+        public NullableSingleStandardDeviationFunctionExpression(AnyElement<long?> expression) : base(expression)
         {
 
         }
 
-        public NullableSingleStandardDeviationFunctionExpression(NullableDoubleElement expression) : base(expression)
+        public NullableSingleStandardDeviationFunctionExpression(AnyElement<double?> expression) : base(expression)
         {
 
         }
 
-        public NullableSingleStandardDeviationFunctionExpression(NullableDecimalElement expression) : base(expression)
+        public NullableSingleStandardDeviationFunctionExpression(AnyElement<decimal?> expression) : base(expression)
         {
 
         }
 
-        public NullableSingleStandardDeviationFunctionExpression(NullableSingleElement expression) : base(expression)
+        public NullableSingleStandardDeviationFunctionExpression(AnyElement<float?> expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public NullableSingleElement As(string alias)
-            => new NullableSingleSelectExpression(this).As(alias);
+        public AnyElement<float?> As(string alias)
+            => new SelectExpression<float?>(this).As(alias);
         #endregion
 
         #region distinct

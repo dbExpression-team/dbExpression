@@ -23,19 +23,18 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class DecimalMaximumFunctionExpression :
         MaximumFunctionExpression<decimal>,
         DecimalElement,
-        AnyDecimalElement,
         IEquatable<DecimalMaximumFunctionExpression>
     {
         #region constructors
-        public DecimalMaximumFunctionExpression(DecimalElement expression) : base(expression)
+        public DecimalMaximumFunctionExpression(AnyElement<decimal> expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public DecimalElement As(string alias)
-            => new DecimalSelectExpression(this).As(alias);
+        public AnyElement<decimal> As(string alias)
+            => new SelectExpression<decimal>(this).As(alias);
         #endregion
 
         #region distinct

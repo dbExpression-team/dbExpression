@@ -77,7 +77,7 @@ namespace ServerSideBlazorApp.dboData
         public virtual int Id { get; set; }
         public virtual ServerSideBlazorApp.Data.ProductCategoryType? ProductCategoryType { get; set; }
         public virtual string Name { get; set; }
-        public virtual string Description { get; set; }
+        public virtual ServerSideBlazorApp.Data.ProductDescription Description { get; set; }
         public virtual double ListPrice { get; set; }
         public virtual double Price { get; set; }
         public virtual int Quantity { get; set; }

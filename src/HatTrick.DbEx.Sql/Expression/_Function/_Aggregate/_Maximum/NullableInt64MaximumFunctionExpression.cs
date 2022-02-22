@@ -23,11 +23,10 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableInt64MaximumFunctionExpression :
         NullableMaximumFunctionExpression<long,long?>,
         NullableInt64Element,
-        AnyInt64Element,
         IEquatable<NullableInt64MaximumFunctionExpression>
     {
         #region constructors
-        public NullableInt64MaximumFunctionExpression(NullableInt64Element expression) 
+        public NullableInt64MaximumFunctionExpression(AnyElement<long?> expression) 
             : base(expression)
         {
 
@@ -35,8 +34,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public NullableInt64Element As(string alias)
-            => new NullableInt64SelectExpression(this).As(alias);
+        public AnyElement<long?> As(string alias)
+            => new SelectExpression<long?>(this).As(alias);
         #endregion
 
         #region distinct

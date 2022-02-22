@@ -24,7 +24,7 @@ namespace ServerSideBlazorApp.Service
     public class CustomerService
     {
         //dbExpression element to approximate a person's current age.  Stored as a variable as it's used more than once.
-        private static readonly NullableInt16Element currentAgeApproximation = db.fx.Cast(db.fx.Floor(db.fx.DateDiff(DateParts.Day, dbo.Customer.BirthDate, db.fx.GetUtcDate()) / 365.25)).AsSmallInt();
+        private static readonly AnyElement<short?> currentAgeApproximation = db.fx.Cast(db.fx.Floor(db.fx.DateDiff(DateParts.Day, dbo.Customer.BirthDate, db.fx.GetUtcDate()) / 365.25)).AsSmallInt();
 
         #region customer summary
         //variable to hold dbExpression select elements.  Stored as a variable as it's used more than once and to demonstrate that select elements can be treated like most any other .NET object
@@ -104,7 +104,7 @@ namespace ServerSideBlazorApp.Service
         }
 
         private static CustomerSummaryModel MapToCustomerSummary(ISqlFieldReader row)
-            => new CustomerSummaryModel
+            => new ()
             {
                 Id = row.ReadField().GetValue<int>(),
                 Name = row.ReadField().GetValue<string>(),
@@ -121,7 +121,7 @@ namespace ServerSideBlazorApp.Service
         public async Task<CustomerDetailModel> GetCustomerDetailAsync(int customerId)
         {
             static AddressModel mapAddress(AddressType addressType, ISqlFieldReader sqlRow)
-                =>  new AddressModel
+                =>  new()
                 {
                     Type = addressType,
                     Line1 = sqlRow.ReadField().GetValue<string>(),
@@ -282,14 +282,14 @@ namespace ServerSideBlazorApp.Service
             }
         }
 
-        private async Task<Address> GetAddressAsync(int customerId, AddressType addressType)
+        private static async Task<Address> GetAddressAsync(int customerId, AddressType addressType)
             => await db.SelectOne<Address>()
                 .From(dbo.Address)
                 .InnerJoin(dbo.CustomerAddress).On(dbo.Address.Id == dbo.CustomerAddress.AddressId)
                 .Where(dbo.CustomerAddress.CustomerId == customerId & dbo.Address.AddressType == addressType)
                 .ExecuteAsync();
 
-        private async Task UpdateAddressAsync(Address persisted, Address @new)
+        private static async Task UpdateAddressAsync(Address persisted, Address @new)
         {
             //build a list of assignment expressions for the update statement based on the difference between the two Address instances.
             var assignments = dbex.BuildAssignmentsFor(dbo.Address).From(persisted).To(@new);
@@ -306,41 +306,39 @@ namespace ServerSideBlazorApp.Service
             }
         }
 
-        private async Task InsertAddressAsync(int customerId, Address address)
+        private static async Task InsertAddressAsync(int customerId, Address address)
         {
-            using (var conn = db.GetConnection())
+            using var conn = db.GetConnection();
+            conn.Open();
+            try
             {
-                conn.Open();
-                try
-                {
-                    //begin a transaction as data needs to be inserted in the address table and the mapping table between a customer and address
-                    conn.BeginTransaction();
+                //begin a transaction as data needs to be inserted in the address table and the mapping table between a customer and address
+                conn.BeginTransaction();
 
-                    //insert into Address table
-                    await db.Insert(address)
-                        .Into(dbo.Address)
-                        .ExecuteAsync(conn);
+                //insert into Address table
+                await db.Insert(address)
+                    .Into(dbo.Address)
+                    .ExecuteAsync(conn);
 
-                    //insert into mapping table
-                    await db.Insert(
-                            new CustomerAddress
-                            {
-                                CustomerId = customerId,
-                                AddressId = address.Id,
-                                DateCreated = DateTime.UtcNow
-                            }
-                        )
-                        .Into(dbo.CustomerAddress)
-                        .ExecuteAsync(conn);
+                //insert into mapping table
+                await db.Insert(
+                        new CustomerAddress
+                        {
+                            CustomerId = customerId,
+                            AddressId = address.Id,
+                            DateCreated = DateTime.UtcNow
+                        }
+                    )
+                    .Into(dbo.CustomerAddress)
+                    .ExecuteAsync(conn);
 
-                    //commit the transaction
-                    conn.CommitTransaction();
-                }
-                catch (Exception)
-                {
-                    conn.RollbackTransaction();
-                    throw;
-                }
+                //commit the transaction
+                conn.CommitTransaction();
+            }
+            catch (Exception)
+            {
+                conn.RollbackTransaction();
+                throw;
             }
         }
         #endregion

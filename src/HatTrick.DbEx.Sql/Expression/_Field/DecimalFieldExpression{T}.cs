@@ -32,11 +32,6 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public override DecimalElement As(string alias)
-            => new DecimalSelectExpression(this).As(alias);
-        #endregion
-
         #region equals
         public bool Equals(DecimalFieldExpression<TEntity> obj)
             => obj is DecimalFieldExpression<TEntity> && base.Equals(obj);

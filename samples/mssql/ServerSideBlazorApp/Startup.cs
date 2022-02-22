@@ -50,6 +50,13 @@ namespace ServerSideBlazorApp
                                 x.OverrideForEnumType<PaymentMethodType>().PersistAsString()
                                     .OverrideForEnumType<PaymentSourceType>().PersistAsString()
                             );
+
+                            //description for a product is stored as serialized json.  Note the clrType override in dbex.config.json that generates a property type of 'ServerSideBlazorApp.Data.ProductDescription'
+                            database.Conversions.UseDefaultFactory(x =>
+                                x.OverrideForReferenceType<ProductDescription>().Use(
+                                    pd => pd is null ? null : System.Text.Json.JsonSerializer.Serialize(pd), //serialize to json as it goes in to the database
+                                    o => string.IsNullOrWhiteSpace(o as string) ? default : System.Text.Json.JsonSerializer.Deserialize<ProductDescription>(o as string)) //deserialize to ProductDescription as it comes from the database
+                                );
                         });
                     }
                 );

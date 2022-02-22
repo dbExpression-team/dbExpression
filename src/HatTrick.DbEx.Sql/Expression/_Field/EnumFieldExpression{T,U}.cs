@@ -33,11 +33,6 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public override EnumElement<TEnum> As(string alias)
-            => new EnumSelectExpression<TEnum>(this).As(alias);
-        #endregion
-
         #region in value set
         public override FilterExpressionSet In(params TEnum[] value) => value is object ? new FilterExpressionSet(new FilterExpression<bool>(this, new InExpression<TEnum>(this, value), FilterExpressionOperator.None)) : null;
         public override FilterExpressionSet In(IEnumerable<TEnum> value) => value is object ? new FilterExpressionSet(new FilterExpression<bool>(this, new InExpression<TEnum>(this, value), FilterExpressionOperator.None)) : null;

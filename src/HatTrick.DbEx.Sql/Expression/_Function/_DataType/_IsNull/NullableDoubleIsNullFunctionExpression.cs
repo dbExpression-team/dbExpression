@@ -23,11 +23,10 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableDoubleIsNullFunctionExpression :
         NullableIsNullFunctionExpression<double,double?>,
         NullableDoubleElement,
-        AnyDoubleElement,
         IEquatable<NullableDoubleIsNullFunctionExpression>
     {
         #region constructors
-        public NullableDoubleIsNullFunctionExpression(AnyDoubleElement expression, NullableDoubleElement value)
+        public NullableDoubleIsNullFunctionExpression(AnyElement<double?> expression, AnyElement<double?> value)
             : base(expression, value)
         {
 
@@ -35,8 +34,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public NullableDoubleElement As(string alias)
-            => new NullableDoubleSelectExpression(this).As(alias);
+        public AnyElement<double?> As(string alias)
+            => new SelectExpression<double?>(this).As(alias);
         #endregion
 
         #region equals

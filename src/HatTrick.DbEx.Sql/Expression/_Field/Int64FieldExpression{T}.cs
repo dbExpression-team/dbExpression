@@ -32,11 +32,6 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public override Int64Element As(string alias)
-            => new Int64SelectExpression(this).As(alias);
-        #endregion
-
         #region equals
         public bool Equals(Int64FieldExpression<TEntity> obj)
             => obj is Int64FieldExpression<TEntity> && base.Equals(obj);

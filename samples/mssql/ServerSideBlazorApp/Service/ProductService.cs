@@ -95,24 +95,25 @@ namespace ServerSideBlazorApp.Service
                 )
                 .From(dbo.Product)
                 .Where(dbo.Product.Id == productId)
-                .ExecuteAsync(reader =>
-                    new ProductDetailModel
-                    {
-                        Id = reader.ReadField().GetValue<int>(),
-                        Category = reader.ReadField().GetValue<ProductCategoryType?>(),
-                        Name = reader.ReadField().GetValue<string>(),
-                        Description = reader.ReadField().GetValue<string>(),
-                        ListPrice = reader.ReadField().GetValue<double>(),
-                        Price = reader.ReadField().GetValue<double>(),
-                        QuantityOnHand = reader.ReadField().GetValue<int>(),
-                        Height = reader.ReadField().GetValue<decimal?>(),
-                        Width = reader.ReadField().GetValue<decimal?>(),
-                        Depth = reader.ReadField().GetValue<decimal?>(),
-                        Weight = reader.ReadField().GetValue<decimal?>(),
-                        ShippingWeight = reader.ReadField().GetValue<decimal>(),
-                        Image = Convert.ToBase64String(reader.ReadField().GetValue<byte[]>() ?? new byte[0])
-                    }
-                );
+                .ExecuteAsync(reader => {
+                    var model = new ProductDetailModel();
+                    model.Id = reader.ReadField().GetValue<int>();
+                    model.Category = reader.ReadField().GetValue<ProductCategoryType?>();
+                    model.Name = reader.ReadField().GetValue<string>();
+                    var description = reader.ReadField().GetValue<ProductDescription>();
+                    model.LongDescription = description.Long;
+                    model.ShortDescription = description.Short;
+                    model.ListPrice = reader.ReadField().GetValue<double>();
+                    model.Price = reader.ReadField().GetValue<double>();
+                    model.QuantityOnHand = reader.ReadField().GetValue<int>();
+                    model.Height = reader.ReadField().GetValue<decimal?>();
+                    model.Width = reader.ReadField().GetValue<decimal?>();
+                    model.Depth = reader.ReadField().GetValue<decimal?>();
+                    model.Weight = reader.ReadField().GetValue<decimal?>();
+                    model.ShippingWeight = reader.ReadField().GetValue<decimal>();
+                    model.Image = Convert.ToBase64String(reader.ReadField().GetValue<byte[]>() ?? new byte[0]);
+                    return model;
+                });
         }
 
         /// <summary>

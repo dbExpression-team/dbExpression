@@ -18,26 +18,26 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class EnumCoalesceFunctionExpression<TEnum> :
         CoalesceFunctionExpression<TEnum>,
         EnumElement<TEnum>,
-        AnyEnumElement<TEnum>,
         IEquatable<EnumCoalesceFunctionExpression<TEnum>>
         where TEnum : struct, Enum, IComparable
     {
         #region constructors
-        public EnumCoalesceFunctionExpression(IList<AnyEnumElement<TEnum>> expressions) : base(expressions)
+        public EnumCoalesceFunctionExpression(IList<EnumElement<TEnum>> expressions, AnyElement<TEnum> termination) : base(expressions.Concat(new AnyElement[1] { termination }).ToList())
         {
 
         }
-        #endregion
 
-        #region as
-        public EnumElement<TEnum> As(string alias)
-            => new EnumSelectExpression<TEnum>(this).As(alias);
+        public EnumCoalesceFunctionExpression(IList<NullableEnumElement<TEnum>> expressions, AnyElement<TEnum> termination) : base(expressions.Concat(new AnyElement[1] { termination }).ToList())
+        {
+
+        }
         #endregion
 
         #region equals

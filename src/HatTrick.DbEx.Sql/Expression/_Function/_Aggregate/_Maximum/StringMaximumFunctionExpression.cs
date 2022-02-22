@@ -23,19 +23,18 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class StringMaximumFunctionExpression :
         MaximumFunctionExpression<string>,
         StringElement,
-        AnyStringElement,
         IEquatable<StringMaximumFunctionExpression>
     {
         #region constructors
-        public StringMaximumFunctionExpression(StringElement expression) : base(expression)
+        public StringMaximumFunctionExpression(AnyElement<string> expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public StringElement As(string alias)
-            => new StringSelectExpression(this).As(alias);
+        public AnyElement<string> As(string alias)
+            => new SelectExpression<string>(this).As(alias);
         #endregion
 
         #region distinct

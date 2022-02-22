@@ -38,7 +38,7 @@ namespace HatTrick.DbEx.Sql.Converter
             if (value is null)
                 return default;
 
-            return (T)Convert.ChangeType(value, typeof(object));
+            return (T)value;
         }
     }
 }

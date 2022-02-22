@@ -52,7 +52,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public async Task Can_omit_setting_field_value_before_insert_assembly_event_when_inserting_an_entity_not_containing_the_field(int version, string expected = "XXX")
         {
             //given
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(dbo.Product.Description, expected)));
+            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(dbo.Product.Name, expected)));
             var person = new Person { FirstName = expected, LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow };
 
             //when
@@ -215,7 +215,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public async Task Can_omit_setting_field_values_before_insert_assembly_event_when_inserting_an_entity_not_containing_the_field_when_inserting_many(int version, string expected = "XXX")
         {
             //given
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(dbo.Product.Description, expected)));
+            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(dbo.Product.Name, expected)));
             var person1 = new Person { FirstName = expected, LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow };
             var person2 = new Person { FirstName = expected, LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow };
             var person3 = new Person { FirstName = expected, LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow };

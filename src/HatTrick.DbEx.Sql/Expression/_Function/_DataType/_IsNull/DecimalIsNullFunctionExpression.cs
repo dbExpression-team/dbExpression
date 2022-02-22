@@ -23,19 +23,18 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class DecimalIsNullFunctionExpression :
         IsNullFunctionExpression<decimal>,
         DecimalElement,
-        AnyDecimalElement,
         IEquatable<DecimalIsNullFunctionExpression>
     {
         #region constructors
-        public DecimalIsNullFunctionExpression(AnyDecimalElement expression, DecimalElement value) : base(expression, value)
+        public DecimalIsNullFunctionExpression(AnyElement<decimal?> expression, AnyElement<decimal> value) : base(expression, value)
         {
 
         }
         #endregion
 
         #region as
-        public DecimalElement As(string alias)
-            => new DecimalSelectExpression(this).As(alias);
+        public AnyElement<decimal> As(string alias)
+            => new SelectExpression<decimal>(this).As(alias);
         #endregion
 
         #region equals

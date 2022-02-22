@@ -7,6 +7,7 @@ using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 //using HatTrick.DbEx.MsSql.Expression;
@@ -104,6 +105,53 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //then
             person.Should().NotBeNull();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_select_dynamic_by_providing_list_of_any_element(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            dynamic person = await db.SelectOne(
+                    new List<AnyElement>() {
+                        dbo.Person.Id,
+                        dbo.Person.FirstName,
+                        dbo.Person.LastName,
+                        dbo.Person.CreditLimit
+                    }
+                )
+                .From(dbo.Person).ExecuteAsync();
+
+            //then
+            (person as object).Should().NotBeNull();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_select_dynamic_by_providing_list_of_any_element_and_additional_fields_as_params(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var person = await db.SelectOne(
+                    new List<AnyElement>() {
+                        dbo.Person.Id,
+                        dbo.Person.FirstName,
+                        dbo.Person.LastName,
+                        dbo.Person.CreditLimit
+                    },
+                    dbo.Person.BirthDate,
+                    dbo.Person.DateCreated,
+                    dbo.Person.DateUpdated
+                )
+                .From(dbo.Person).ExecuteAsync();
+
+            //then
+            (person as object).Should().NotBeNull();
+            ((int?)person.Id).Should().NotBeNull();
+            ((DateTime?)person.DateCreated).Should().NotBeNull();
         }
     }
 }

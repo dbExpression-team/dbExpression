@@ -23,7 +23,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public abstract partial class NullableDoubleFieldExpression : 
         NullableFieldExpression<double,double?>,
         NullableDoubleElement,
-        AnyDoubleElement,
         IEquatable<NullableDoubleFieldExpression>
     {
         #region constructors
@@ -31,10 +30,6 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
-        #endregion
-
-        #region as
-        public abstract NullableDoubleElement As(string alias);
         #endregion
 
         #region equals

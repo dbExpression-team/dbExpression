@@ -23,11 +23,10 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableDoubleMaximumFunctionExpression :
         NullableMaximumFunctionExpression<double,double?>,
         NullableDoubleElement,
-        AnyDoubleElement,
         IEquatable<NullableDoubleMaximumFunctionExpression>
     {
         #region constructors
-        public NullableDoubleMaximumFunctionExpression(NullableDoubleElement expression) 
+        public NullableDoubleMaximumFunctionExpression(AnyElement<double?> expression) 
             : base(expression)
         {
 
@@ -35,8 +34,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public NullableDoubleElement As(string alias)
-            => new NullableDoubleSelectExpression(this).As(alias);
+        public AnyElement<double?> As(string alias)
+            => new SelectExpression<double?>(this).As(alias);
         #endregion
 
         #region distinct

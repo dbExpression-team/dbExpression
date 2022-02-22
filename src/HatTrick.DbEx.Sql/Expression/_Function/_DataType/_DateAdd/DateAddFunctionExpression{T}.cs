@@ -25,7 +25,13 @@ namespace HatTrick.DbEx.Sql.Expression
         where TValue : IComparable
     {
         #region constructors
-        protected DateAddFunctionExpression(DatePartsExpression datePart, Int32Element value, IExpressionElement expression) 
+        protected DateAddFunctionExpression(DatePartsExpression datePart, AnyElement<int> value, AnyElement<DateTime> expression) 
+            : base(datePart, value, expression, typeof(TValue))
+        {
+
+        }
+
+        protected DateAddFunctionExpression(DatePartsExpression datePart, AnyElement<int> value, AnyElement<DateTimeOffset> expression)
             : base(datePart, value, expression, typeof(TValue))
         {
 

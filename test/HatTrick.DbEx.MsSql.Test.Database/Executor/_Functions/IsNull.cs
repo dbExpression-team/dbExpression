@@ -310,7 +310,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.IsNull(dbex.Alias<decimal>("lines", "PurchasePrice"), 0).As("alias")
+                    db.fx.IsNull(dbex.Alias<decimal?>("lines", "PurchasePrice"), 0).As("alias")
                 ).From(dbo.Purchase)
                 .LeftJoin(
                     db.SelectOne<PurchaseLine>()

@@ -24,13 +24,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IExpressionElement<TValue>
     {
         #region constructors
-        protected LeftFunctionExpression(StringElement expression, Int32Element characterCount)
-            : base(expression, characterCount, typeof(TValue))
-        {
-
-        }
-
-        protected LeftFunctionExpression(AnyObjectElement expression, Int32Element characterCount)
+        protected LeftFunctionExpression(AnyElement expression, AnyElement<int> characterCount)
             : base(expression, characterCount, typeof(TValue))
         {
 

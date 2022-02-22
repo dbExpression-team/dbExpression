@@ -22,7 +22,6 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class CurrentTimestampFunctionExpression : DataTypeFunctionExpression,
         IExpressionElement<DateTime>,
-        AnyDateTimeElement,
         DateTimeElement,
         IEquatable<CurrentTimestampFunctionExpression>
     {
@@ -36,8 +35,8 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region methods
         #region as
-        public DateTimeElement As(string alias)
-            => new DateTimeSelectExpression(this).As(alias);
+        public AnyElement<DateTime> As(string alias)
+            => new SelectExpression<DateTime>(this).As(alias);
         #endregion
 
         #region to string
