@@ -25,44 +25,43 @@ namespace HatTrick.DbEx.MsSql.Expression
     public partial class NullableDecimalRoundFunctionExpression :
         NullableRoundFunctionExpression<decimal,decimal?>,
         NullableDecimalElement,
-        AnyDecimalElement,
         IEquatable<NullableDecimalRoundFunctionExpression>
     {
         #region constructors
-        public NullableDecimalRoundFunctionExpression(NullableDecimalElement expression, IntegralNumericElement length) : base(expression, length)
+        public NullableDecimalRoundFunctionExpression(AnyElement<decimal?> expression, IntegralNumericElement length) : base(expression, length)
         {
 
         }
 
-        public NullableDecimalRoundFunctionExpression(NullableDecimalElement expression, IntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
+        public NullableDecimalRoundFunctionExpression(AnyElement<decimal?> expression, IntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
         {
 
         }
 
-        public NullableDecimalRoundFunctionExpression(NullableDecimalElement expression, NullableIntegralNumericElement length) : base(expression, length)
+        public NullableDecimalRoundFunctionExpression(AnyElement<decimal?> expression, NullableIntegralNumericElement length) : base(expression, length)
         {
 
         }
 
-        public NullableDecimalRoundFunctionExpression(NullableDecimalElement expression, NullableIntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
+        public NullableDecimalRoundFunctionExpression(AnyElement<decimal?> expression, NullableIntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
         {
 
         }
 
-        public NullableDecimalRoundFunctionExpression(NullableDecimalElement expression, IntegralNumericElement length, NullableIntegralNumericElement function) : base(expression, length, function)
+        public NullableDecimalRoundFunctionExpression(AnyElement<decimal?> expression, IntegralNumericElement length, NullableIntegralNumericElement function) : base(expression, length, function)
         {
 
         }
 
-        public NullableDecimalRoundFunctionExpression(NullableDecimalElement expression, NullableIntegralNumericElement length, NullableIntegralNumericElement function) : base(expression, length, function)
+        public NullableDecimalRoundFunctionExpression(AnyElement<decimal?> expression, NullableIntegralNumericElement length, NullableIntegralNumericElement function) : base(expression, length, function)
         {
 
         }
         #endregion
 
         #region as
-        public NullableDecimalElement As(string alias)
-            => new NullableDecimalSelectExpression(this).As(alias);
+        public AnyElement<decimal?> As(string alias)
+            => new SelectExpression<decimal?>(this).As(alias);
         #endregion
 
         #region equals

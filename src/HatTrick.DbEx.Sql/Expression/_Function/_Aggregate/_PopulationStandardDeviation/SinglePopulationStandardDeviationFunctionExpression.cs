@@ -23,47 +23,46 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class SinglePopulationStandardDeviationFunctionExpression :
         PopulationStandardDeviationFunctionExpression<float>,
         SingleElement,
-        AnySingleElement,
         IEquatable<SinglePopulationStandardDeviationFunctionExpression>
     {
         #region constructors
-        public SinglePopulationStandardDeviationFunctionExpression(ByteElement expression) : base(expression)
+        public SinglePopulationStandardDeviationFunctionExpression(AnyElement<byte> expression) : base(expression)
         {
 
         }
 
-        public SinglePopulationStandardDeviationFunctionExpression(Int16Element expression) : base(expression)
+        public SinglePopulationStandardDeviationFunctionExpression(AnyElement<short> expression) : base(expression)
         {
 
         }
-        public SinglePopulationStandardDeviationFunctionExpression(Int32Element expression) : base(expression)
+        public SinglePopulationStandardDeviationFunctionExpression(AnyElement<int> expression) : base(expression)
         {
         }
 
-        public SinglePopulationStandardDeviationFunctionExpression(Int64Element expression) : base(expression)
-        {
-
-        }
-
-        public SinglePopulationStandardDeviationFunctionExpression(DoubleElement expression) : base(expression)
+        public SinglePopulationStandardDeviationFunctionExpression(AnyElement<long> expression) : base(expression)
         {
 
         }
 
-        public SinglePopulationStandardDeviationFunctionExpression(DecimalElement expression) : base(expression)
+        public SinglePopulationStandardDeviationFunctionExpression(AnyElement<double> expression) : base(expression)
         {
 
         }
 
-        public SinglePopulationStandardDeviationFunctionExpression(SingleElement expression) : base(expression)
+        public SinglePopulationStandardDeviationFunctionExpression(AnyElement<decimal> expression) : base(expression)
+        {
+
+        }
+
+        public SinglePopulationStandardDeviationFunctionExpression(AnyElement<float> expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public SingleElement As(string alias)
-            => new SingleSelectExpression(this).As(alias);
+        public AnyElement<float> As(string alias)
+            => new SelectExpression<float>(this).As(alias);
         #endregion
 
         #region distinct

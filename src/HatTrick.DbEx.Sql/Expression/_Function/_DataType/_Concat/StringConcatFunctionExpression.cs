@@ -25,19 +25,18 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class StringConcatFunctionExpression :
         ConcatFunctionExpression<string>,
         StringElement,
-        AnyStringElement,
         IEquatable<StringConcatFunctionExpression>
     {
         #region constructors
-        public StringConcatFunctionExpression(IList<AnyElement> expressions) : base(expressions?.Cast<IExpressionElement>()?.ToList())
+        public StringConcatFunctionExpression(IList<AnyElement<string>> expressions) : base(expressions)
         {
 
         }
         #endregion
 
         #region as
-        public StringElement As(string alias)
-            => new StringSelectExpression(this).As(alias);
+        public AnyElement<string> As(string alias)
+            => new SelectExpression<string>(this).As(alias);
         #endregion
 
         #region like

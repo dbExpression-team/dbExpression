@@ -23,49 +23,48 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableSinglePopulationVarianceFunctionExpression :
         NullablePopulationVarianceFunctionExpression<float,float?>,
         NullableSingleElement,
-        AnySingleElement,
         IEquatable<NullableSinglePopulationVarianceFunctionExpression>
     {
         #region constructors
-        public NullableSinglePopulationVarianceFunctionExpression(NullableByteElement expression) : base(expression)
+        public NullableSinglePopulationVarianceFunctionExpression(AnyElement<byte?> expression) : base(expression)
         {
 
         }
 
-        public NullableSinglePopulationVarianceFunctionExpression(NullableInt16Element expression) : base(expression)
+        public NullableSinglePopulationVarianceFunctionExpression(AnyElement<short?> expression) : base(expression)
         {
 
         }
 
-        public NullableSinglePopulationVarianceFunctionExpression(NullableInt32Element expression) : base(expression)
+        public NullableSinglePopulationVarianceFunctionExpression(AnyElement<int?> expression) : base(expression)
         {
 
         }
 
-        public NullableSinglePopulationVarianceFunctionExpression(NullableInt64Element expression) : base(expression)
+        public NullableSinglePopulationVarianceFunctionExpression(AnyElement<long?> expression) : base(expression)
         {
 
         }
 
-        public NullableSinglePopulationVarianceFunctionExpression(NullableDoubleElement expression) : base(expression)
+        public NullableSinglePopulationVarianceFunctionExpression(AnyElement<double?> expression) : base(expression)
         {
 
         }
 
-        public NullableSinglePopulationVarianceFunctionExpression(NullableDecimalElement expression) : base(expression)
+        public NullableSinglePopulationVarianceFunctionExpression(AnyElement<decimal?> expression) : base(expression)
         {
 
         }
 
-        public NullableSinglePopulationVarianceFunctionExpression(NullableSingleElement expression) : base(expression)
+        public NullableSinglePopulationVarianceFunctionExpression(AnyElement<float?> expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public NullableSingleElement As(string alias)
-            => new NullableSingleSelectExpression(this).As(alias);
+        public AnyElement<float?> As(string alias)
+            => new SelectExpression<float?>(this).As(alias);
         #endregion
 
         #region distinct

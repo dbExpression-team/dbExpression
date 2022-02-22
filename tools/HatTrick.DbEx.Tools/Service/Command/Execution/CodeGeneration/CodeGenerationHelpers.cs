@@ -123,6 +123,13 @@ namespace HatTrick.DbEx.Tools.Service
         }
         #endregion
 
+        #region replace
+        public string Replace(string item1, string item2, string replace)
+        {
+            return item1?.Replace(item2 ?? string.Empty, replace ?? string.Empty);
+        }
+        #endregion
+
         #region resolve name
         public string ResolveName(INamedMeta namedMeta)
         {
@@ -247,6 +254,60 @@ namespace HatTrick.DbEx.Tools.Service
             var resources = new ResourceAccessor();
             var resource = resources.GetTemplatePartial(shortName);
             return resource.Value;
+        }
+        #endregion
+
+        #region BuildFieldExpressionTypeName
+        public string BuildFieldExpressionTypeName(ColumnPairModel model)
+        {
+            var name = "";
+            if (model.FieldExpression.Type.IsUserDefinedType && !model.FieldExpression.Type.IsEnum)
+            {
+                return $"ObjectFieldExpression<{model.FieldExpression.EntityExpression.Name},{model.FieldExpression.Type.TypeName}>";
+            }
+
+            if (model.Column.IsNullable)
+                name += "Nullable";
+
+            if (model.FieldExpression.Type.IsEnum)
+            {
+                name += "Enum";
+            }
+            else
+            {
+                name += model.FieldExpression.Type.TypeName;
+            }
+            name += "FieldExpression<";
+            name += model.FieldExpression.EntityExpression.Name;
+
+            if (model.FieldExpression.Type.IsEnum)
+            {
+                name += ",";
+                name += model.FieldExpression.Type.TypeName;
+            }
+            name += ">";
+
+            return name;
+        }
+        #endregion
+
+        #region BuildExpressionElementTypeName
+        public string BuildExpressionElementTypeName(ColumnPairModel model)
+        {
+            var fieldExpressionTypeName = "AnyElement<";
+            fieldExpressionTypeName += model.FieldExpression.Type.NullableAlias;
+            fieldExpressionTypeName += ">";
+            return fieldExpressionTypeName;
+        }
+        #endregion
+
+        #region BuildSelectExpressionTypeName
+        public string BuildSelectExpressionTypeName(ColumnPairModel model)
+        {
+            var fieldExpressionTypeName = "SelectExpression<";
+            fieldExpressionTypeName += model.FieldExpression.Type.NullableAlias;
+            fieldExpressionTypeName += ">";
+            return fieldExpressionTypeName;
         }
         #endregion
     }

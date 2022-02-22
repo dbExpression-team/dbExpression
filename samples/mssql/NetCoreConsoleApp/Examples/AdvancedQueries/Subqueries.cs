@@ -40,7 +40,7 @@ namespace NetCoreConsoleApp
 			var rpt = db.SelectMany(
 					dbo.Person.Id.As("PersonId"),
 					db.fx.Concat(dbo.Person.LastName, ", ", dbo.Person.FirstName).As("FullName"),
-					db.fx.IsNull(dbex.Alias<decimal>("t0", "TotalPurchaseAmount"), 0).As("TotalPurchaseAmount"),
+					db.fx.IsNull(dbex.Alias<decimal?>("t0", "TotalPurchaseAmount"), 0).As("TotalPurchaseAmount"),
 					dbo.Person.YearOfLastCreditLimitReview,
 					dbo.Person.CreditLimit
 				).From(dbo.Person)

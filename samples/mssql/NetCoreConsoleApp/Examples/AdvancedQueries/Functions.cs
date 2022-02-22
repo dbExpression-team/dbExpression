@@ -23,7 +23,7 @@ namespace NetCoreConsoleApp
 			string fullName = this.GetFullName(6);
 			IList<(int, int)> personIdCreditLimit = this.GetCreditLimitForPersonSet(1, 2, 3, 4, 5, 6, 8, 9, 10);
 			DateTimeOffset lastActivity = this.GetLastActivityTimestamp(5);
-			(double, double) maxAndMin = this.GetMaxAndMinPurchasesRoundedToNearestDollar(9);
+			(decimal, decimal) maxAndMin = this.GetMaxAndMinProductHeightsRoundedToNearestTenth(9);
 			this.SetYearOfLastCreditReviewToCurrentYear(5);
 			decimal avgPrice = this.GetAvgProductListPrice();
 			decimal? difference = this.GetAbsoluteDifferenceBetweenProductWidthAndHeight(1);
@@ -185,7 +185,7 @@ namespace NetCoreConsoleApp
 			//from dbo.Person
 			//where dbo.Person.Id = {personId});
 			DateTimeOffset? timestamp = db.SelectOne(
-					db.fx.Coalesce(
+					db.fx.Coalesce<DateTimeOffset?>(
 						dbo.Person.LastLoginDate, 
 						dbo.Person.RegistrationDate)
 					)
@@ -198,18 +198,22 @@ namespace NetCoreConsoleApp
 		#endregion
 
 		#region isnull, floor, ceiling
-		public (double, double) GetMaxAndMinPurchasesRoundedToNearestDollar(int personId)
+		public (decimal, decimal) GetMaxAndMinProductHeightsRoundedToNearestTenth(int personId)
 		{
 			//select
-			//ISNULL(CEILING(MAX(dbo.Purchase.TotalPurchaseAmount)), 0.0) as [Max],
-			//ISNULL(FLOOR(MIN(dbo.Purchase.TotalPurchaseAmount)), 0.0) as [Min]
-			//from dbo.Purchase
+			//ISNULL(CEILING(MAX(dbo.Person.CreditLimit)), 0) as [Max],
+			//ISNULL(FLOOR(MIN(dbo.Person.CreditLimit)), 0) as [Min]
+			//from dbo.Product
+			//inner join dbo.PurchaseLine on dbo.Product.Id = dbo.PurchaseLine.ProductId
+			//inner join dbo.Purchase on dbo.PurchaseLine.PurchaseId = dbo.Purchase.Id
 			//where dbo.Purchase.PersonId = {personId};
 			var result = db.SelectOne(
-					db.fx.IsNull(db.fx.Ceiling(db.fx.Max(dbo.Purchase.TotalPurchaseAmount)), 0.0).As("Max"),
-					db.fx.IsNull(db.fx.Floor(db.fx.Min(dbo.Purchase.TotalPurchaseAmount)), 0.0).As("Min")
+					db.fx.IsNull(db.fx.Ceiling(db.fx.Max(dbo.Product.Height)), 0.1m).As("Max"),
+					db.fx.IsNull(db.fx.Floor(db.fx.Min(dbo.Product.Height)), 0.1m).As("Min")
 					)
-				.From(dbo.Purchase)
+				.From(dbo.Product)
+				.InnerJoin(dbo.PurchaseLine).On(dbo.Product.Id == dbo.PurchaseLine.ProductId)
+				.InnerJoin(dbo.Purchase).On(dbo.PurchaseLine.PurchaseId == dbo.Purchase.Id)
 				.Where(dbo.Purchase.PersonId == personId)
 				.Execute();
 

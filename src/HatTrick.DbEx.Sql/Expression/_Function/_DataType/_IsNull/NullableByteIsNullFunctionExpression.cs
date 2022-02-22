@@ -23,11 +23,10 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableByteIsNullFunctionExpression :
         NullableIsNullFunctionExpression<byte,byte?>,
         NullableByteElement,
-        AnyByteElement,
         IEquatable<NullableByteIsNullFunctionExpression>
     {
         #region constructors
-        public NullableByteIsNullFunctionExpression(AnyByteElement expression, NullableByteElement value) 
+        public NullableByteIsNullFunctionExpression(AnyElement<byte?> expression, AnyElement<byte?> value) 
             : base(expression, value)
         {
 
@@ -35,8 +34,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public NullableByteElement As(string alias)
-            => new NullableByteSelectExpression(this).As(alias);
+        public AnyElement<byte?> As(string alias)
+            => new SelectExpression<byte?>(this).As(alias);
         #endregion
 
         #region equals

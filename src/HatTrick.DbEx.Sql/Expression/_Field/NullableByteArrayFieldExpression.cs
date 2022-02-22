@@ -24,7 +24,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public abstract partial class NullableByteArrayFieldExpression :
         FieldExpression<byte[]>,
         NullableByteArrayElement,
-        AnyByteArrayElement,
         IEquatable<NullableByteArrayFieldExpression>
     {
         #region constructors
@@ -32,10 +31,6 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
-        #endregion
-
-        #region as
-        public abstract NullableByteArrayElement As(string alias);
         #endregion
 
         #region equals

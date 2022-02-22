@@ -23,8 +23,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class ObjectCoalesceFunctionExpression :
         CoalesceFunctionExpression<object>,
-        ObjectElement,
-        AnyObjectElement,
+        ObjectElement<object>,
         IEquatable<ObjectCoalesceFunctionExpression>
     {
         #region constructors
@@ -32,11 +31,6 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
-        #endregion
-
-        #region as
-        public ObjectElement As(string alias)
-            => new ObjectSelectExpression(this).As(alias);
         #endregion
 
         #region equals

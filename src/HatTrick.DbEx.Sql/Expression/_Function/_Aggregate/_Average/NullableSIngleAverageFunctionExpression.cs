@@ -23,19 +23,18 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableSingleAverageFunctionExpression :
         NullableAverageFunctionExpression<float,float?>,
         NullableSingleElement,
-        AnySingleElement,
         IEquatable<NullableSingleAverageFunctionExpression>
     {
         #region constructors
-        public NullableSingleAverageFunctionExpression(NullableSingleElement expression) : base(expression)
+        public NullableSingleAverageFunctionExpression(AnyElement<float?> expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public NullableSingleElement As(string alias)
-            => new NullableSingleSelectExpression(this).As(alias);
+        public AnyElement<float?> As(string alias)
+            => new SelectExpression<float?>(this).As(alias);
         #endregion
 
         #region distinct

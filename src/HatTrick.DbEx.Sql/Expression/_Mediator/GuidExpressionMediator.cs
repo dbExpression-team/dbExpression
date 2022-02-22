@@ -23,7 +23,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class GuidExpressionMediator :
         ExpressionMediator<Guid>,
         GuidElement,
-        AnyGuidElement,
         IEquatable<GuidExpressionMediator>
     {
         #region constructors
@@ -41,8 +40,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public GuidElement As(string alias)
-            => new GuidSelectExpression(this).As(alias);
+        public AnyElement<Guid> As(string alias)
+            => new SelectExpression<Guid>(this).As(alias);
         #endregion
 
         #region equals

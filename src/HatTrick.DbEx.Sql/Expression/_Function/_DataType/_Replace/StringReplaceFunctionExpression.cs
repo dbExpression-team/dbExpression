@@ -23,19 +23,18 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class StringReplaceFunctionExpression :
         ReplaceFunctionExpression<string>,
         StringElement,
-        AnyStringElement,
         IEquatable<StringReplaceFunctionExpression>
     {
         #region constructors
-        public StringReplaceFunctionExpression(StringElement expression, StringElement pattern, StringElement replacement) : base(expression, pattern, replacement)
+        public StringReplaceFunctionExpression(AnyElement<string> expression, AnyElement<string> pattern, AnyElement<string> replacement) : base(expression, pattern, replacement)
         {
 
         }
         #endregion
 
         #region as
-        public StringElement As(string alias)
-            => new StringSelectExpression(this).As(alias);
+        public AnyElement<string> As(string alias)
+            => new SelectExpression<string>(this).As(alias);
         #endregion
 
         #region like

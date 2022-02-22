@@ -23,19 +23,18 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class Int64AverageFunctionExpression :
         AverageFunctionExpression<long>,
         Int64Element,
-        AnyInt64Element,
         IEquatable<Int64AverageFunctionExpression>
     {
         #region constructors
-        public Int64AverageFunctionExpression(Int64Element expression) : base(expression)
+        public Int64AverageFunctionExpression(AnyElement<long> expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public Int64Element As(string alias)
-            => new Int64SelectExpression(this).As(alias);
+        public AnyElement<long> As(string alias)
+            => new SelectExpression<long>(this).As(alias);
         #endregion
 
         #region distinct

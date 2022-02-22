@@ -23,19 +23,18 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class Int64LengthFunctionExpression :
         LengthFunctionExpression<long>,
         Int64Element,
-        AnyInt64Element,
         IEquatable<Int64LengthFunctionExpression>
     {
         #region constructors
-        public Int64LengthFunctionExpression(StringElement expression) : base(expression)
+        public Int64LengthFunctionExpression(AnyElement<string> expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public Int64Element As(string alias)
-            => new Int64SelectExpression(this).As(alias);
+        public AnyElement<long> As(string alias)
+            => new SelectExpression<long>(this).As(alias);
         #endregion
 
         #region equals

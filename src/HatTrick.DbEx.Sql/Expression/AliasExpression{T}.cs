@@ -21,8 +21,7 @@ using System;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class AliasExpression<T> : AliasExpression,
-        ObjectElement,
-        IExpressionElement<object>,
+        AnyElement<T>,
         IExpressionTypeProvider,
         IEquatable<AliasExpression<T>>
     {
@@ -49,8 +48,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public ObjectElement As(string alias)
-            => new ObjectSelectExpression(this).As(alias);
+        public AnyElement<T> As(string alias)
+            => new SelectExpression<T>(this, alias);
         #endregion
 
         #region equals
@@ -75,8 +74,7 @@ namespace HatTrick.DbEx.Sql.Expression
                 const int multiplier = 16777619;
 
                 int hash = @base;
-                hash = (hash * multiplier) ^ (TableAlias is object ? TableAlias.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ (FieldAlias is object ? FieldAlias.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ base.GetHashCode();
                 hash = (hash * multiplier) ^ declaredType.GetHashCode();
                 return hash;
             }

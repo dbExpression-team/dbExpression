@@ -35,7 +35,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        protected ConcatFunctionExpression(IList<IExpressionElement> expressions, Type declaredType) : base(declaredType)
+        protected ConcatFunctionExpression(IList<AnyElement<string>> expressions, Type declaredType) : base(declaredType)
         {
             this.expressions = expressions ?? throw new ArgumentNullException(nameof(expressions));
         }

@@ -25,12 +25,12 @@ namespace HatTrick.DbEx.Sql.Expression
         where TValue : IComparable
     {
         #region constructors
-        protected NullableReplaceFunctionExpression(NullableStringElement expression, StringElement pattern, StringElement replacement) : base(expression, pattern, replacement, typeof(TNullableValue))
+        protected NullableReplaceFunctionExpression(NullableStringElement expression, AnyElement<string> pattern, AnyElement<string> replacement) : base(expression, pattern, replacement, typeof(TNullableValue))
         {
 
         }
 
-        protected NullableReplaceFunctionExpression(NullableStringElement expression, NullableStringElement pattern, StringElement replacement) : base(expression, pattern, replacement, typeof(TNullableValue))
+        protected NullableReplaceFunctionExpression(NullableStringElement expression, NullableStringElement pattern, AnyElement<string> replacement) : base(expression, pattern, replacement, typeof(TNullableValue))
         {
 
         }
@@ -40,7 +40,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
 
-        protected NullableReplaceFunctionExpression(NullableStringElement expression, StringElement pattern, NullableStringElement replacement) : base(expression, pattern, replacement, typeof(TNullableValue))
+        protected NullableReplaceFunctionExpression(NullableStringElement expression, AnyElement<string> pattern, NullableStringElement replacement) : base(expression, pattern, replacement, typeof(TNullableValue))
         {
 
         }

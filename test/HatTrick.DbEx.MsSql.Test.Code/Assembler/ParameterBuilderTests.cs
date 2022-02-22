@@ -548,15 +548,15 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_a_parameter_for_product_description_create_correct_dbtype_and_size_for_filter_expression(int version)
+        public void Does_a_parameter_for_product_name_create_correct_dbtype_and_size_for_filter_expression(int version)
         {
             //given
             var database = ConfigureForMsSqlVersion(version);
             var builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, database.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>());
             var context = new AssemblyContext(database.AssemblerConfiguration);
-            string productDescription = "1234";
+            string productName = "1234";
 
-            var predicate = dbo.Product.Description == productDescription;
+            var predicate = dbo.Product.Name == productName;
 
             var appender = database.ExpressionElementAppenderFactory.CreateElementAppender(predicate);
 
@@ -566,10 +566,10 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             var meta = parameter.Metadata as ISqlFieldMetadata;
 
             //then
-            meta.DbType.Should().Be(SqlDbType.NVarChar);
-            parameter.Parameter.DbType.Should().Be(DbType.String);
+            meta.DbType.Should().Be(SqlDbType.VarChar);
+            parameter.Parameter.DbType.Should().Be(DbType.AnsiString);
             parameter.Parameter.Size.Should().Be(meta.Size);
-            parameter.Parameter.Value.Should().Be(productDescription);
+            parameter.Parameter.Value.Should().Be(productName);
         }
 
         [Theory]

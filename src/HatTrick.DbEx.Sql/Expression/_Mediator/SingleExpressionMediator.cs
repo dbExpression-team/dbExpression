@@ -23,7 +23,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class SingleExpressionMediator :
         ExpressionMediator<float>,
         SingleElement,
-        AnySingleElement,
         IEquatable<SingleExpressionMediator>
     {
         #region constructors
@@ -41,8 +40,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public SingleElement As(string alias)
-            => new SingleSelectExpression(this).As(alias);
+        public AnyElement<float> As(string alias)
+            => new SelectExpression<float>(this).As(alias);
         #endregion
 
         #region equals

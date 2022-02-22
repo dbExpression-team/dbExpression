@@ -25,11 +25,11 @@ namespace HatTrick.DbEx.MsSql.Builder
     public class MsSqlNullableCastFunctionExpressionBuilder : MsSqlNullableCast
     {
         #region internals
-        public IExpressionElement Expression { get; private set; }
+        public AnyElement Expression { get; private set; }
         #endregion
 
         #region constructors
-        public MsSqlNullableCastFunctionExpressionBuilder(IExpressionElement expression)
+        public MsSqlNullableCastFunctionExpressionBuilder(AnyElement expression)
         {
             Expression = expression;
         }

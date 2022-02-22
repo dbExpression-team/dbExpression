@@ -41,11 +41,11 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(
-                    db.fx.Coalesce(db.fx.Cast(dbo.Person.CreditLimit).AsInt(), dbo.Person.Id)
+                    db.fx.Coalesce<int>(db.fx.Cast(dbo.Person.CreditLimit).AsInt(), dbo.Person.Id)
                 ).From(dbo.Person);
 
             //when               
-            IList<int?> results = exp.Execute();
+            IList<int> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);
@@ -77,7 +77,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(
-                    db.fx.Coalesce(db.fx.Cast(dbo.Person.CreditLimit).AsInt(), (int?)null)
+                    db.fx.Coalesce<int?>(db.fx.Cast(dbo.Person.CreditLimit).AsInt(), (int?)null)
                 ).From(dbo.Person);
 
             //when               

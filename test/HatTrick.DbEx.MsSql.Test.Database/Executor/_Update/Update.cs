@@ -344,6 +344,29 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
+        public async Task Can_update_credit_limit_using_arithmetic_expression_with_literal(int version, int percent = 10, int anticipatedCount = 11)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //when
+            int affectedCount = await db.Update(
+                    dbo.Person.CreditLimit.Set(
+                            dbo.Person.CreditLimit + db.fx.Cast(
+                                 dbo.Person.CreditLimit * ((decimal)(percent + 0.0) / 100)
+                                ).AsInt()
+                        )
+                    )
+                .From(dbo.Person)
+                .Where(dbo.Person.CreditLimit == 10000)
+                .ExecuteAsync();
+
+            //then
+            affectedCount.Should().Be(anticipatedCount);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
         ///issue #283
         public async Task Can_update_records_using_a_select_subquery(int version)
         {

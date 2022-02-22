@@ -23,7 +23,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class ByteExpressionMediator :
         ExpressionMediator<byte>,
         ByteElement,
-        AnyByteElement,
         IEquatable<ByteExpressionMediator>
     {
         #region constructors
@@ -41,8 +40,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public ByteElement As(string alias)
-            => new ByteSelectExpression(this).As(alias);
+        public AnyElement<byte> As(string alias)
+            => new SelectExpression<byte>(this).As(alias);
         #endregion
 
         #region equals

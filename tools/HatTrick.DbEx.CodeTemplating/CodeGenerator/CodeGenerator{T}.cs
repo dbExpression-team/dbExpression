@@ -39,7 +39,7 @@ namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
             model.Namespace = @namespace;
             model.Type = typeModel;
 
-            if (typeModel is null || typeModel == TypeBuilder.Get<Guid>() || typeModel == TypeBuilder.Get<bool>()) //Guid and Boolean don't support arithmetic
+            if (typeModel is null || typeModel == TypeBuilder.Get<Guid>() || typeModel == TypeBuilder.Get<bool>() || typeModel == TypeBuilder.Get<object>()) //Guid, Boolean, and Object don't support arithmetic
             {
 
             }

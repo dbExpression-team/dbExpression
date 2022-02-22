@@ -23,7 +23,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableEnumExpressionMediator<TEnum> :
         NullableExpressionMediator<TEnum,TEnum?>,
         NullableEnumElement<TEnum>,
-        AnyEnumElement<TEnum>,
         IEquatable<NullableEnumExpressionMediator<TEnum>>
         where TEnum : struct, Enum, IComparable
     {
@@ -42,8 +41,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public NullableEnumElement<TEnum> As(string alias)
-            => new NullableEnumSelectExpression<TEnum>(this).As(alias);
+        public AnyElement<TEnum?> As(string alias)
+            => new SelectExpression<TEnum?>(this).As(alias);
         #endregion
 
         #region order

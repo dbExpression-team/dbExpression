@@ -32,11 +32,6 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public override TimeSpanElement As(string alias)
-            => new TimeSpanSelectExpression(this).As(alias);
-        #endregion
-
         #region equals
         public bool Equals(TimeSpanFieldExpression<TEntity> obj)
             => obj is TimeSpanFieldExpression<TEntity> && base.Equals(obj);

@@ -23,11 +23,76 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableInt32DateDiffFunctionExpression :
         NullableDateDiffFunctionExpression<int,int?>,
         NullableInt32Element,
-        AnyInt32Element,
         IEquatable<NullableInt32DateDiffFunctionExpression>
     {
         #region constructors
-        public NullableInt32DateDiffFunctionExpression(DatePartsExpression datePart, IExpressionElement startDate, IExpressionElement endDate) 
+        public NullableInt32DateDiffFunctionExpression(DatePartsExpression datePart, AnyElement<DateTime?> startDate, AnyElement<DateTime> endDate) 
+            : base(datePart, startDate, endDate)
+        {
+
+        }
+
+        public NullableInt32DateDiffFunctionExpression(DatePartsExpression datePart, AnyElement<DateTimeOffset?> startDate, AnyElement<DateTime> endDate)
+            : base(datePart, startDate, endDate)
+        {
+
+        }
+
+        public NullableInt32DateDiffFunctionExpression(DatePartsExpression datePart, AnyElement<DateTime?> startDate, AnyElement<DateTimeOffset> endDate)
+            : base(datePart, startDate, endDate)
+        {
+
+        }
+
+        public NullableInt32DateDiffFunctionExpression(DatePartsExpression datePart, AnyElement<DateTimeOffset?> startDate, AnyElement<DateTimeOffset> endDate)
+            : base(datePart, startDate, endDate)
+        {
+
+        }
+
+        public NullableInt32DateDiffFunctionExpression(DatePartsExpression datePart, AnyElement<DateTime> startDate, AnyElement<DateTime?> endDate)
+            : base(datePart, startDate, endDate)
+        {
+
+        }
+
+        public NullableInt32DateDiffFunctionExpression(DatePartsExpression datePart, AnyElement<DateTimeOffset> startDate, AnyElement<DateTime?> endDate)
+            : base(datePart, startDate, endDate)
+        {
+
+        }
+
+        public NullableInt32DateDiffFunctionExpression(DatePartsExpression datePart, AnyElement<DateTime> startDate, AnyElement<DateTimeOffset?> endDate)
+            : base(datePart, startDate, endDate)
+        {
+
+        }
+
+        public NullableInt32DateDiffFunctionExpression(DatePartsExpression datePart, AnyElement<DateTimeOffset> startDate, AnyElement<DateTimeOffset?> endDate)
+            : base(datePart, startDate, endDate)
+        {
+
+        }
+
+        public NullableInt32DateDiffFunctionExpression(DatePartsExpression datePart, AnyElement<DateTime?> startDate, AnyElement<DateTime?> endDate)
+            : base(datePart, startDate, endDate)
+        {
+
+        }
+
+        public NullableInt32DateDiffFunctionExpression(DatePartsExpression datePart, AnyElement<DateTimeOffset?> startDate, AnyElement<DateTime?> endDate)
+            : base(datePart, startDate, endDate)
+        {
+
+        }
+
+        public NullableInt32DateDiffFunctionExpression(DatePartsExpression datePart, AnyElement<DateTime?> startDate, AnyElement<DateTimeOffset?> endDate)
+            : base(datePart, startDate, endDate)
+        {
+
+        }
+
+        public NullableInt32DateDiffFunctionExpression(DatePartsExpression datePart, AnyElement<DateTimeOffset?> startDate, AnyElement<DateTimeOffset?> endDate)
             : base(datePart, startDate, endDate)
         {
 
@@ -35,8 +100,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public NullableInt32Element As(string alias)
-            => new NullableInt32SelectExpression(this).As(alias);
+        public AnyElement<int?> As(string alias)
+            => new SelectExpression<int?>(this).As(alias);
         #endregion
 
         #region equals

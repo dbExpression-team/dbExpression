@@ -416,6 +416,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //then
             persons.Should().HaveCount(expected);
         }
+
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Operation", "TOP")]
@@ -439,6 +440,51 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //then
             persons.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_select_dynamic_by_providing_list_of_any_element(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var persons = await db.SelectMany(
+                    new List<AnyElement>() {
+                        dbo.Person.Id,
+                        dbo.Person.FirstName,
+                        dbo.Person.LastName,
+                        dbo.Person.CreditLimit
+                    }
+                )
+                .From(dbo.Person).ExecuteAsync();
+
+            //then
+            persons.Should().HaveCount(50);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_select_dynamic_by_providing_list_of_any_element_and_additional_fields_as_params(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var persons = await db.SelectMany(
+                    new List<AnyElement>() {
+                        dbo.Person.Id,
+                        dbo.Person.FirstName,
+                        dbo.Person.LastName,
+                        dbo.Person.CreditLimit
+                    },
+                    dbo.Person.BirthDate,
+                    dbo.Person.DateCreated,
+                    dbo.Person.DateUpdated
+                )
+                .From(dbo.Person).ExecuteAsync();
+
+            //then
+            persons.Should().HaveCount(50);
         }
     }
 }

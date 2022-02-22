@@ -23,34 +23,33 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class StringSubstringFunctionExpression :
         SubstringFunctionExpression<string>,
         StringElement,
-        AnyStringElement,
         IEquatable<StringSubstringFunctionExpression>
     {
         #region constructors
-        public StringSubstringFunctionExpression(StringElement expression, Int32Element start, Int32Element length) : base(expression, start, length)
+        public StringSubstringFunctionExpression(AnyElement<string> expression, AnyElement<int> start, AnyElement<int> length) : base(expression, start, length)
         {
 
         }
 
-        public StringSubstringFunctionExpression(StringElement expression, Int32Element start, Int64Element length) : base(expression, start, length)
+        public StringSubstringFunctionExpression(AnyElement<string> expression, AnyElement<int> start, AnyElement<long> length) : base(expression, start, length)
         {
 
         }
 
-        public StringSubstringFunctionExpression(StringElement expression, Int64Element start, Int32Element length) : base(expression, start, length)
+        public StringSubstringFunctionExpression(AnyElement<string> expression, AnyElement<long> start, AnyElement<int> length) : base(expression, start, length)
         {
 
         }
 
-        public StringSubstringFunctionExpression(StringElement expression, Int64Element start, Int64Element length) : base(expression, start, length)
+        public StringSubstringFunctionExpression(AnyElement<string> expression, AnyElement<long> start, AnyElement<long> length) : base(expression, start, length)
         {
 
         }
         #endregion
 
         #region as
-        public StringElement As(string alias)
-            => new StringSelectExpression(this).As(alias);
+        public AnyElement<string> As(string alias)
+            => new SelectExpression<string>(this).As(alias);
         #endregion
 
         #region like

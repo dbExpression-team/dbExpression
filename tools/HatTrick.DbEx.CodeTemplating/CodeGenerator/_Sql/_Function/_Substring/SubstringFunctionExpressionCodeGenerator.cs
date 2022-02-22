@@ -22,7 +22,7 @@ namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
 
         public override void Generate(string templatePath, string outputSubdirectory)
         {
-            foreach (var @type in TypeBuilder.CreateBuilder().Add<string>().Add<object>().ToList())
+            foreach (var @type in TypeBuilder.CreateBuilder().Add<string>().ToList())
                 Generate(templatePath, outputSubdirectory, $"{@type.Name}{functionName}FunctionExpression.generated.cs", CreateModel("HatTrick.DbEx.Sql.Expression", @type));
         }
     }

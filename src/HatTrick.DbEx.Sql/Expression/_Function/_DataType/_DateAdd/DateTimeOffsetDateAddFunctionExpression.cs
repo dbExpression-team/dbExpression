@@ -23,11 +23,10 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class DateTimeOffsetDateAddFunctionExpression :
         DateAddFunctionExpression<DateTimeOffset>,
         DateTimeOffsetElement,
-        AnyDateTimeOffsetElement,
         IEquatable<DateTimeOffsetDateAddFunctionExpression>
     {
         #region constructors
-        public DateTimeOffsetDateAddFunctionExpression(DatePartsExpression datePart, Int32Element value, DateTimeOffsetElement expression)
+        public DateTimeOffsetDateAddFunctionExpression(DatePartsExpression datePart, AnyElement<int> value, AnyElement<DateTimeOffset> expression)
             : base(datePart, value, expression)
         {
 
@@ -35,8 +34,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public DateTimeOffsetElement As(string alias)
-            => new DateTimeOffsetSelectExpression(this).As(alias);
+        public AnyElement<DateTimeOffset> As(string alias)
+            => new SelectExpression<DateTimeOffset>(this).As(alias);
         #endregion
 
         #region equals

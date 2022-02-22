@@ -25,11 +25,10 @@ namespace HatTrick.DbEx.MsSql.Expression
     public partial class NullableInt64PatIndexFunctionExpression :
         NullablePatIndexFunctionExpression<long,long?>,
         NullableInt64Element,
-        AnyInt64Element,
         IEquatable<NullableInt64PatIndexFunctionExpression>
     {
         #region constructors
-        public NullableInt64PatIndexFunctionExpression(AnyStringElement pattern, NullableStringElement expression) 
+        public NullableInt64PatIndexFunctionExpression(AnyElement<string> pattern, NullableStringElement expression) 
             : base(pattern, expression)
         {
 
@@ -37,8 +36,8 @@ namespace HatTrick.DbEx.MsSql.Expression
         #endregion
 
         #region as
-        public NullableInt64Element As(string alias)
-            => new NullableInt64SelectExpression(this).As(alias);
+        public AnyElement<long?> As(string alias)
+            => new SelectExpression<long?>(this).As(alias);
         #endregion
 
         #region equals

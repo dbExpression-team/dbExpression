@@ -25,44 +25,43 @@ namespace HatTrick.DbEx.MsSql.Expression
     public partial class NullableDoubleRoundFunctionExpression :
         NullableRoundFunctionExpression<double,double?>,
         NullableDoubleElement,
-        AnyDoubleElement,
         IEquatable<NullableDoubleRoundFunctionExpression>
     {
         #region constructors
-        public NullableDoubleRoundFunctionExpression(NullableDoubleElement expression, IntegralNumericElement length) : base(expression, length)
+        public NullableDoubleRoundFunctionExpression(AnyElement<double?> expression, IntegralNumericElement length) : base(expression, length)
         {
 
         }
 
-        public NullableDoubleRoundFunctionExpression(NullableDoubleElement expression, IntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
+        public NullableDoubleRoundFunctionExpression(AnyElement<double?> expression, IntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
         {
 
         }
 
-        public NullableDoubleRoundFunctionExpression(NullableDoubleElement expression, NullableIntegralNumericElement length) : base(expression, length)
+        public NullableDoubleRoundFunctionExpression(AnyElement<double?> expression, NullableIntegralNumericElement length) : base(expression, length)
         {
 
         }
 
-        public NullableDoubleRoundFunctionExpression(NullableDoubleElement expression, NullableIntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
+        public NullableDoubleRoundFunctionExpression(AnyElement<double?> expression, NullableIntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
         {
 
         }
 
-        public NullableDoubleRoundFunctionExpression(NullableDoubleElement expression, IntegralNumericElement length, NullableIntegralNumericElement function) : base(expression, length, function)
+        public NullableDoubleRoundFunctionExpression(AnyElement<double?> expression, IntegralNumericElement length, NullableIntegralNumericElement function) : base(expression, length, function)
         {
 
         }
 
-        public NullableDoubleRoundFunctionExpression(NullableDoubleElement expression, NullableIntegralNumericElement length, NullableIntegralNumericElement function) : base(expression, length, function)
+        public NullableDoubleRoundFunctionExpression(AnyElement<double?> expression, NullableIntegralNumericElement length, NullableIntegralNumericElement function) : base(expression, length, function)
         {
 
         }
         #endregion
 
         #region as
-        public NullableDoubleElement As(string alias)
-            => new NullableDoubleSelectExpression(this).As(alias);
+        public AnyElement<double?> As(string alias)
+            => new SelectExpression<double?>(this).As(alias);
         #endregion
 
         #region equals

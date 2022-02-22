@@ -32,6 +32,13 @@
 		{
 			"apply": {
 				"ignore": true,
+				"to": { "path": "dbo.UnitTest" }
+
+			}
+		},
+		{
+			"apply": {
+				"ignore": true,
 				"to": { "path": "dbo.AccessAuditLog" }
 
 			}
@@ -73,6 +80,14 @@
 				"name": "CustomerId",
 				"to": {
 					"path": "dbo.Person_Address.PersonId"
+				}
+			}
+		},
+		{
+			"apply": {
+				"clrType": "ServerSideBlazorApp.Data.ProductDescription",
+				"to": {
+					"path": "dbo.Product.Description"
 				}
 			}
 		},

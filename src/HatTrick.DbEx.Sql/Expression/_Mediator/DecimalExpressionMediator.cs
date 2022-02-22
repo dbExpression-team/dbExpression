@@ -23,7 +23,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class DecimalExpressionMediator :
         ExpressionMediator<decimal>,
         DecimalElement,
-        AnyDecimalElement,
         IEquatable<DecimalExpressionMediator>
     {
         #region constructors
@@ -41,8 +40,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public DecimalElement As(string alias)
-            => new DecimalSelectExpression(this).As(alias);
+        public AnyElement<decimal> As(string alias)
+            => new SelectExpression<decimal>(this).As(alias);
         #endregion
 
         #region equals

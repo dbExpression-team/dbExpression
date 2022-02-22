@@ -80,12 +80,12 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="EnumElement{TEnum}" />
+        /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />
         ///, for example "dbo.Person.GenderType"
         /// </param>
         /// <returns><see cref="Sql.SelectValue{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
-        public static SelectValue<TEnum> SelectOne<TEnum>(EnumElement<TEnum> element)
+        public static SelectValue<TEnum> SelectOne<TEnum>(AnyElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
             => expressionBuilderFactory.CreateSelectValueBuilder<TEnum>(configuration, element);
 
@@ -95,12 +95,12 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableEnumElement{TEnum}" />
+        /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />?
         ///, for example "dbo.Address.AddressType"
         /// </param>
         /// <returns><see cref="SelectValue{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
-        public static SelectValue<TEnum?> SelectOne<TEnum>(NullableEnumElement<TEnum> element)
+        public static SelectValue<TEnum?> SelectOne<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable
             => expressionBuilderFactory.CreateSelectValueBuilder<TEnum>(configuration, element);
 
@@ -110,11 +110,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyObjectElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Object}" />?
         ///, for example "dbo.Person.GenderType"
         /// </param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<object> SelectOne(AnyObjectElement element)
+        public static SelectValue<object> SelectOne(AnyElement<object> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -123,10 +123,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="BooleanElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />
+        ///, for example "dbo.UnitTest.Boolean" or "db.fx.IsNull(dbo.UnitTest.Boolean, false)
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<bool> SelectOne(BooleanElement element)
+        public static SelectValue<bool> SelectOne(AnyElement<bool> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -135,10 +136,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableBooleanElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />?
+        ///, for example "dbo.UnitTest.NullableBoolean""
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<bool?> SelectOne(NullableBooleanElement element)
+        public static SelectValue<bool?> SelectOne(AnyElement<bool?> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -147,10 +149,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="ByteElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />
+        ///, for example "dbo.UnitTest.Byte" or "db.fx.IsNull(dbo.UnitTest.Byte, byte.MinValue)"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<byte> SelectOne(ByteElement element)
+        public static SelectValue<byte> SelectOne(AnyElement<byte> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -159,10 +162,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableByteElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />?
+        ///, for example "dbo.UnitTest.NullableByte"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<byte?> SelectOne(NullableByteElement element)
+        public static SelectValue<byte?> SelectOne(AnyElement<byte?> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -171,23 +175,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="ByteArrayElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         ///, for example "dbo.Product.Image" or "db.fx.IsNull(dbo.Product.Image, new byte[0])"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<byte[]> SelectOne(ByteArrayElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
-
-        /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[]? value.
-        /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
-        /// </para>
-        /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableByteArrayElement" />
-        ///</param>
-        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<byte[]> SelectOne(NullableByteArrayElement element)
+        public static SelectValue<byte[]> SelectOne(AnyElement<byte[]> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -196,11 +188,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="DateTimeElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />
         ///, for example "dbo.AccessAuditLog.DateCreated", "db.fx.DateAdd(DateParts.Year, 1, dbo.AccessAuditLog.DateCreated) or "db.fx.IsNull(dbo.AccessAuditLog.DateCreated, DateTime.Now)"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<DateTime> SelectOne(DateTimeElement element)
+        public static SelectValue<DateTime> SelectOne(AnyElement<DateTime> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -209,11 +201,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableDateTimeElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />?
         ///, for example "dbo.Person.BirthDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.BirthDate)
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<DateTime?> SelectOne(NullableDateTimeElement field)
+        public static SelectValue<DateTime?> SelectOne(AnyElement<DateTime?> field)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, field);
 
         /// <summary>
@@ -222,11 +214,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="DateTimeOffsetElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />
         ///, for example "dbo.Person.RegistrationDate", "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.RegistrationDate)" or "db.fx.IsNull(dbo.Person.RegistrationDate, DateTimeOffset.Now)"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<DateTimeOffset> SelectOne(DateTimeOffsetElement element)
+        public static SelectValue<DateTimeOffset> SelectOne(AnyElement<DateTimeOffset> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -235,11 +227,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableDateTimeOffsetElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />?
         ///, for example "dbo.Person.LastLoginDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.LastLoginDate)" 
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<DateTimeOffset?> SelectOne(NullableDateTimeOffsetElement element)
+        public static SelectValue<DateTimeOffset?> SelectOne(AnyElement<DateTimeOffset?> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -248,11 +240,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="DecimalElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />
         ///, for example "dbo.Product.ShippingWeight" or "db.fx.IsNull(dbo.Product.ShippingWeight, decimal.MinValue)"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<decimal> SelectOne(DecimalElement element)
+        public static SelectValue<decimal> SelectOne(AnyElement<decimal> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -261,11 +253,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableDecimalElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />?
         ///, for example "dbo.Product.Height" or "db.fx.Min(dbo.Product.Height)"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<decimal?> SelectOne(NullableDecimalElement element)
+        public static SelectValue<decimal?> SelectOne(AnyElement<decimal?> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -274,11 +266,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="DoubleElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Double}" />
         ///, for example "dbo.Product.ListPrice" or "db.fx.IsNull(dbo.Product.ListPrice, double.MinValue)"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<double> SelectOne(DoubleElement element)
+        public static SelectValue<double> SelectOne(AnyElement<double> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -287,11 +279,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableDoubleElement" />
-        ///, for example "dbo.PersonTotalPurchasesView.TotalAmount" or "db.fx.Min(dbo.PersonTotalPurchasesView.TotalAmount)"
+        /// <param name="element">An expression of type <see cref="AnyElement{Double}" />?
+        ///, for example "dbo.UnitTest.NullableDouble" or "db.fx.Min(dbo.UnitTest.NullableDouble)"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<double?> SelectOne(NullableDoubleElement element)
+        public static SelectValue<double?> SelectOne(AnyElement<double?> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -300,10 +292,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="GuidElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />
+        ///, for example "dbo.UnitTest.Guid" or "db.fx.IsNull(dbo.UnitTest.Guid, Guid.Empty)"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<Guid> SelectOne(GuidElement element)
+        public static SelectValue<Guid> SelectOne(AnyElement<Guid> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -312,11 +305,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableGuidElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />?
         ///, for example "dbo.Purchase.TrackingIdentifier"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<Guid?> SelectOne(NullableGuidElement element)
+        public static SelectValue<Guid?> SelectOne(AnyElement<Guid?> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -325,10 +318,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="Int16Element" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />
+        ///, for example "dbo.UnitTest.Int16" or "db.fx.IsNull(dbo.UnitTest.Int16, short.MinValue)"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<short> SelectOne(Int16Element element)
+        public static SelectValue<short> SelectOne(AnyElement<short> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -337,10 +331,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableInt16Element" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />?
+        ///, for example "dbo.UnitTest.NullableInt16" or "db.fx.Max(dbo.UnitTest.NullableInt16)"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<short?> SelectOne(NullableInt16Element element)
+        public static SelectValue<short?> SelectOne(AnyElement<short?> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -349,11 +344,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="Int32Element" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />?
         ///, for example "dbo.AccessAuditLog.Id" or "db.fx.Avg(dbo.AccessAuditLog.Id)"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<int> SelectOne(Int32Element element)
+        public static SelectValue<int> SelectOne(AnyElement<int> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -362,11 +357,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableInt32Element" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />?
         ///, for example "dbo.Person.CreditLimit" or "db.fx.Avg(dbo.Person.CreditLimit)"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<int?> SelectOne(NullableInt32Element element)
+        public static SelectValue<int?> SelectOne(AnyElement<int?> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -375,10 +370,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="Int64Element" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />
+        ///, for example "dbo.UnitTest.Int64" or "db.fx.IsNull(dbo.UnitTest.Int64, long.MinValue)"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<long> SelectOne(Int64Element element)
+        public static SelectValue<long> SelectOne(AnyElement<long> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -387,10 +383,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableInt64Element" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />?
+        ///, for example "dbo.UnitTest.NullableInt64" or "db.fx.Max(dbo.UnitTest.NullableInt64)"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<long?> SelectOne(NullableInt64Element element)
+        public static SelectValue<long?> SelectOne(AnyElement<long?> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -399,10 +396,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="SingleElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Single}" />
+        ///, for example "dbo.UnitTest.Single" or "db.fx.IsNull(dbo.UnitTest.Single, float.MinValue)"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<float> SelectOne(SingleElement element)
+        public static SelectValue<float> SelectOne(AnyElement<float> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -411,10 +409,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableSingleElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Single}" />?
+        ///, for example "dbo.UnitTest.NullableSingle" or "db.fx.Max(dbo.UnitTest.NullableSingle)"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<float?> SelectOne(NullableSingleElement element)
+        public static SelectValue<float?> SelectOne(AnyElement<float?> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -423,23 +422,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="StringElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{String}" />
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<string> SelectOne(StringElement element) 
-            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
-
-        /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <see cref="string" /> value.
-        /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
-        /// </para>
-        /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableStringElement" />
-        ///</param>
-        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<string> SelectOne(NullableStringElement element)
+        public static SelectValue<string> SelectOne(AnyElement<string> element) 
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -448,10 +435,10 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="TimeSpanElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<TimeSpan> SelectOne(TimeSpanElement element)
+        public static SelectValue<TimeSpan> SelectOne(AnyElement<TimeSpan> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -460,11 +447,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableTimeSpanElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />?
         ///, for example "dbo.Product.ValidStartTimeOfDayForPurchase"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<TimeSpan?> SelectOne(NullableTimeSpanElement element)
+        public static SelectValue<TimeSpan?> SelectOne(AnyElement<TimeSpan?> element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -527,11 +514,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="EnumElement{TEnum}" />
+        /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />
         ///, for example "dbo.Person.GenderType"
         /// </param>
         /// <returns><see cref="SelectValues{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
-        public static SelectValues<TEnum> SelectMany<TEnum>(EnumElement<TEnum> element)
+        public static SelectValues<TEnum> SelectMany<TEnum>(AnyElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
             => expressionBuilderFactory.CreateSelectValuesBuilder<TEnum>(configuration, element);
 
@@ -541,11 +528,11 @@ namespace DbEx.DataService
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
-        /// <param name="element">An expression of type <see cref="NullableEnumElement{TEnum}" />
+        /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />?
         ///, for example "dbo.Address.AddressType"
         /// </param>
         /// <returns><see cref="SelectValues{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<TEnum?> SelectMany<TEnum>(NullableEnumElement<TEnum> element)
+        public static SelectValues<TEnum?> SelectMany<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable
             => expressionBuilderFactory.CreateSelectValuesBuilder<TEnum>(configuration, element);
 
@@ -555,11 +542,11 @@ namespace DbEx.DataService
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
-        /// <param name="element">An expression of type <see cref="AnyObjectElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Object}" />
         ///, for example "db.fx.Coalesce(dbo.Person.CreditLimit, dbo.Address.Line1)"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<object> SelectMany(AnyObjectElement element)
+        public static SelectValues<object> SelectMany(AnyElement<object> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -568,10 +555,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="BooleanElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />
+        ///, for example "dbo.UnitTest.Boolean" or "db.fx.IsNull(dbo.UnitTest.Boolean, false)
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<bool> SelectMany(BooleanElement element)
+        public static SelectValues<bool> SelectMany(AnyElement<bool> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -580,10 +568,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableBooleanElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />?
+        ///, for example "dbo.UnitTest.NullableBoolean""
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<bool?> SelectMany(NullableBooleanElement element)
+        public static SelectValues<bool?> SelectMany(AnyElement<bool?> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -592,10 +581,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="ByteElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />
+        ///, for example "dbo.UnitTest.Byte" or "db.fx.IsNull(dbo.UnitTest.Byte, byte.MinValue)"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<byte> SelectMany(ByteElement element)
+        public static SelectValues<byte> SelectMany(AnyElement<byte> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -604,10 +594,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableByteElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />?
+        ///, for example "dbo.UnitTest.NullableByte"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<byte?> SelectMany(NullableByteElement element)
+        public static SelectValues<byte?> SelectMany(AnyElement<byte?> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -616,23 +607,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="ByteArrayElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         ///, for example "dbo.Product.Image" or "db.fx.IsNull(dbo.Product.Image, new byte[0])"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<byte[]> SelectMany(ByteArrayElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
-
-        /// <summary>
-        /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[]? values.
-        /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
-        /// </para>
-        /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableByteArrayElement" />
-        ///</param>
-        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<byte[]> SelectMany(NullableByteArrayElement element)
+        public static SelectValues<byte[]> SelectMany(AnyElement<byte[]> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -641,11 +620,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="DateTimeElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />
         ///, for example "dbo.AccessAuditLog.DateCreated", "db.fx.DateAdd(DateParts.Year, 1, dbo.AccessAuditLog.DateCreated) or "db.fx.IsNull(dbo.AccessAuditLog.DateCreated, DateTime.Now)"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<DateTime> SelectMany(DateTimeElement element)
+        public static SelectValues<DateTime> SelectMany(AnyElement<DateTime> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -654,11 +633,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableDateTimeElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />?
         ///, for example "dbo.Person.BirthDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.BirthDate)
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<DateTime?> SelectMany(NullableDateTimeElement element)
+        public static SelectValues<DateTime?> SelectMany(AnyElement<DateTime?> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -667,11 +646,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="DateTimeOffsetElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />
         ///, for example "dbo.Person.RegistrationDate", "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.RegistrationDate)" or "db.fx.IsNull(dbo.Person.RegistrationDate, DateTimeOffset.Now)"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<DateTimeOffset> SelectMany(DateTimeOffsetElement element)
+        public static SelectValues<DateTimeOffset> SelectMany(AnyElement<DateTimeOffset> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -680,11 +659,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableDateTimeOffsetElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />?
         ///, for example "dbo.Person.LastLoginDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.LastLoginDate)" 
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<DateTimeOffset?> SelectMany(NullableDateTimeOffsetElement element)
+        public static SelectValues<DateTimeOffset?> SelectMany(AnyElement<DateTimeOffset?> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -693,11 +672,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="DecimalElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />
         ///, for example "dbo.Product.ShippingWeight" or "db.fx.IsNull(dbo.Product.ShippingWeight, decimal.MinValue)"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<decimal> SelectMany(DecimalElement element)
+        public static SelectValues<decimal> SelectMany(AnyElement<decimal> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -706,11 +685,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableDecimalElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />?
         ///, for example "dbo.Product.Height"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<decimal?> SelectMany(NullableDecimalElement element)
+        public static SelectValues<decimal?> SelectMany(AnyElement<decimal?> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -719,11 +698,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="DoubleElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Double}" />
         ///, for example "dbo.Product.ListPrice" or "db.fx.IsNull(dbo.Product.ListPrice, double.MinValue)"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<double> SelectMany(DoubleElement element)
+        public static SelectValues<double> SelectMany(AnyElement<double> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -732,11 +711,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableDoubleElement" />
-        ///, for example "dbo.PersonTotalPurchasesView.TotalAmount"
+        /// <param name="element">An expression of type <see cref="AnyElement{Double}" />?
+        ///, for example "dbo.UnitTest.NullableDouble"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<double?> SelectMany(NullableDoubleElement element)
+        public static SelectValues<double?> SelectMany(AnyElement<double?> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -745,10 +724,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="GuidElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />
+        ///, for example "dbo.UnitTest.Guid" or "db.fx.IsNull(dbo.UnitTest.Guid, Guid.Empty)"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<Guid> SelectMany(GuidElement element)
+        public static SelectValues<Guid> SelectMany(AnyElement<Guid> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -757,11 +737,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableGuidElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />?
         ///, for example "dbo.Purchase.TrackingIdentifier"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<Guid?> SelectMany(NullableGuidElement element)
+        public static SelectValues<Guid?> SelectMany(AnyElement<Guid?> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -770,10 +750,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="Int16Element" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />
+        ///, for example "dbo.UnitTest.Int16" or "db.fx.IsNull(dbo.UnitTest.Int16, short.MinValue)"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<short> SelectMany(Int16Element element)
+        public static SelectValues<short> SelectMany(AnyElement<short> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -782,10 +763,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableInt16Element" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />?
+        ///, for example "dbo.UnitTest.NullableInt16"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<short?> SelectMany(NullableInt16Element element)
+        public static SelectValues<short?> SelectMany(AnyElement<short?> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -794,11 +776,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="Int32Element" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />
         ///, for example "dbo.AccessAuditLog.Id"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<int> SelectMany(Int32Element element)
+        public static SelectValues<int> SelectMany(AnyElement<int> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -807,11 +789,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableInt32Element" />
-        ///, for example "dbo.:column.Entity.Name}.Id"
+        /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />?
+        ///, for example "dbo.:column.Entity.Name}.CreditLimit"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<int?> SelectMany(NullableInt32Element element)
+        public static SelectValues<int?> SelectMany(AnyElement<int?> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -820,10 +802,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="Int64Element" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />
+        ///, for example "dbo.UnitTest.Int64" or "db.fx.IsNull(dbo.UnitTest.Int64, long.MinValue)"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<long> SelectMany(Int64Element element)
+        public static SelectValues<long> SelectMany(AnyElement<long> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -832,10 +815,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableInt64Element" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />?
+        ///, for example "dbo.UnitTest.NullableInt64"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<long?> SelectMany(NullableInt64Element element)
+        public static SelectValues<long?> SelectMany(AnyElement<long?> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -844,10 +828,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="SingleElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Single}" />
+        ///, for example "dbo.UnitTest.Single" or "db.fx.IsNull(dbo.UnitTest.Single, float.MinValue)"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<float> SelectMany(SingleElement element)
+        public static SelectValues<float> SelectMany(AnyElement<float> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -856,10 +841,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableSingleElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Single}" />?
+        ///, for example "dbo.UnitTest.NullableSingle"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<float?> SelectMany(NullableSingleElement element)
+        public static SelectValues<float?> SelectMany(AnyElement<float?> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -868,23 +854,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="StringElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{String}" />
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<string> SelectMany(StringElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
-
-        /// <summary>
-        /// Start constructing a sql SELECT query expression for a list of <see cref="string" /> values.
-        /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
-        /// </para>
-        /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableStringElement" />
-        ///</param>
-        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<string> SelectMany(NullableStringElement element)
+        public static SelectValues<string> SelectMany(AnyElement<string> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -893,10 +867,10 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="TimeSpanElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<TimeSpan> SelectMany(TimeSpanElement element)
+        public static SelectValues<TimeSpan> SelectMany(AnyElement<TimeSpan> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -905,11 +879,11 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableTimeSpanElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />?
         ///, for example "dbo.Product.ValidStartTimeOfDayForPurchase"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<TimeSpan?> SelectMany(NullableTimeSpanElement element)
+        public static SelectValues<TimeSpan?> SelectMany(AnyElement<TimeSpan?> element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -1417,6 +1391,7 @@ namespace DbEx.dboDataService
         public readonly ProductEntity Product;
         public readonly PurchaseEntity Purchase;
         public readonly PurchaseLineEntity PurchaseLine;
+        public readonly UnitTestEntity UnitTest;
         public readonly PersonTotalPurchasesViewEntity PersonTotalPurchasesView;
         #endregion
 
@@ -1430,6 +1405,7 @@ namespace DbEx.dboDataService
             Entities.Add($"{identifier}.Product", Product = new ProductEntity($"{identifier}.Product", "Product", this));
             Entities.Add($"{identifier}.Purchase", Purchase = new PurchaseEntity($"{identifier}.Purchase", "Purchase", this));
             Entities.Add($"{identifier}.PurchaseLine", PurchaseLine = new PurchaseLineEntity($"{identifier}.PurchaseLine", "PurchaseLine", this));
+            Entities.Add($"{identifier}.UnitTest", UnitTest = new UnitTestEntity($"{identifier}.UnitTest", "UnitTest", this));
             Entities.Add($"{identifier}.PersonTotalPurchasesView", PersonTotalPurchasesView = new PersonTotalPurchasesViewEntity($"{identifier}.PersonTotalPurchasesView", "PersonTotalPurchasesView", this));
         }
         #endregion
@@ -1444,9 +1420,10 @@ namespace DbEx.dboDataService
         #endregion
 
         #region interface
+
         /// <summary>A <see cref="DbEx.dboDataService.AccessAuditLogEntity.IdField"/> representing the "dbo.AccessAuditLog.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.AccessAuditLogEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -1466,9 +1443,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly IdField Id;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.AccessAuditLogEntity.PersonIdField"/> representing the "dbo.AccessAuditLog.PersonId" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.AccessAuditLogEntity.PersonIdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -1485,9 +1463,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly PersonIdField PersonId;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.AccessAuditLogEntity.AccessResultField"/> representing the "dbo.AccessAuditLog.AccessResult" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.AccessAuditLogEntity.AccessResultField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -1504,9 +1483,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly AccessResultField AccessResult;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.AccessAuditLogEntity.DateCreatedField"/> representing the "dbo.AccessAuditLog.DateCreated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbEx.dboDataService.AccessAuditLogEntity.DateCreatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -1553,10 +1533,10 @@ namespace DbEx.dboDataService
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new Int32SelectExpression(Id)
-                ,new Int32SelectExpression(PersonId)
-                ,new Int32SelectExpression(AccessResult)
-                ,new DateTimeSelectExpression(DateCreated)
+                new SelectExpression<int>(Id)
+                ,new SelectExpression<int>(PersonId)
+                ,new SelectExpression<int>(AccessResult)
+                ,new SelectExpression<DateTime>(DateCreated)
             ));
         }
 
@@ -1569,16 +1549,16 @@ namespace DbEx.dboDataService
             string aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new Int32SelectExpression(Id).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
 
             aliased = alias(nameof(PersonId));
-            set &= aliased != nameof(PersonId) ? new Int32SelectExpression(PersonId).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PersonId));
+            set &= aliased != nameof(PersonId) ? new SelectExpression<int>(PersonId).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PersonId));
 
             aliased = alias(nameof(AccessResult));
-            set &= aliased != nameof(AccessResult) ? new Int32SelectExpression(AccessResult).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(AccessResult));
+            set &= aliased != nameof(AccessResult) ? new SelectExpression<int>(AccessResult).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(AccessResult));
 
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new DateTimeSelectExpression(DateCreated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
 
             return set;
         }
@@ -1620,13 +1600,6 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             #endregion
         }
@@ -1642,16 +1615,9 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
-            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -1666,16 +1632,9 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
-            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -1687,13 +1646,6 @@ namespace DbEx.dboDataService
             public DateCreatedField(string identifier, string name, AccessAuditLogEntity entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
             }
             #endregion
 
@@ -1714,9 +1666,10 @@ namespace DbEx.dboDataService
         #endregion
 
         #region interface
+
         /// <summary>A <see cref="DbEx.dboDataService.AddressEntity.IdField"/> representing the "dbo.Address.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.AddressEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -1736,9 +1689,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly IdField Id;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.AddressEntity.AddressTypeField"/> representing the "dbo.Address.AddressType" column in the database, 
         /// with a .NET type of <see cref="DbEx.Data.AddressType"/>?.  The <see cref="DbEx.dboDataService.AddressEntity.AddressTypeField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyEnumElement{DbEx.Data.AddressType}Element"/> or <see cref="HatTrick.DbEx.Sql.NullableEnumElement{DbEx.Data.AddressType}Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DbEx.Data.AddressType}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -1755,9 +1709,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly AddressTypeField AddressType;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.AddressEntity.Line1Field"/> representing the "dbo.Address.Line1" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="DbEx.dboDataService.AddressEntity.Line1Field"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -1774,9 +1729,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly Line1Field Line1;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.AddressEntity.Line2Field"/> representing the "dbo.Address.Line2" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="DbEx.dboDataService.AddressEntity.Line2Field"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -1793,9 +1749,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly Line2Field Line2;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.AddressEntity.CityField"/> representing the "dbo.Address.City" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="DbEx.dboDataService.AddressEntity.CityField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -1812,9 +1769,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly CityField City;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.AddressEntity.StateField"/> representing the "dbo.Address.State" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="DbEx.dboDataService.AddressEntity.StateField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -1831,9 +1789,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly StateField State;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.AddressEntity.ZipField"/> representing the "dbo.Address.Zip" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="DbEx.dboDataService.AddressEntity.ZipField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -1850,9 +1809,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly ZipField Zip;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.AddressEntity.DateCreatedField"/> representing the "dbo.Address.DateCreated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbEx.dboDataService.AddressEntity.DateCreatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -1872,9 +1832,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly DateCreatedField DateCreated;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.AddressEntity.DateUpdatedField"/> representing the "dbo.Address.DateUpdated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbEx.dboDataService.AddressEntity.DateUpdatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -1926,15 +1887,15 @@ namespace DbEx.dboDataService
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new Int32SelectExpression(Id)
-                ,new NullableEnumSelectExpression<DbEx.Data.AddressType>(AddressType)
-                ,new StringSelectExpression(Line1)
-                ,new NullableStringSelectExpression(Line2)
-                ,new StringSelectExpression(City)
-                ,new StringSelectExpression(State)
-                ,new StringSelectExpression(Zip)
-                ,new DateTimeSelectExpression(DateCreated)
-                ,new DateTimeSelectExpression(DateUpdated)
+                new SelectExpression<int>(Id)
+                ,new SelectExpression<DbEx.Data.AddressType?>(AddressType)
+                ,new SelectExpression<string>(Line1)
+                ,new SelectExpression<string>(Line2)
+                ,new SelectExpression<string>(City)
+                ,new SelectExpression<string>(State)
+                ,new SelectExpression<string>(Zip)
+                ,new SelectExpression<DateTime>(DateCreated)
+                ,new SelectExpression<DateTime>(DateUpdated)
             ));
         }
 
@@ -1947,31 +1908,31 @@ namespace DbEx.dboDataService
             string aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new Int32SelectExpression(Id).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
 
             aliased = alias(nameof(AddressType));
-            set &= aliased != nameof(AddressType) ? new NullableEnumSelectExpression<DbEx.Data.AddressType>(AddressType).As(aliased) as NullableEnumSelectExpression<DbEx.Data.AddressType> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(AddressType));
+            set &= aliased != nameof(AddressType) ? new SelectExpression<DbEx.Data.AddressType?>(AddressType).As(aliased) as SelectExpression<DbEx.Data.AddressType?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(AddressType));
 
             aliased = alias(nameof(Line1));
-            set &= aliased != nameof(Line1) ? new StringSelectExpression(Line1).As(aliased) as StringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Line1));
+            set &= aliased != nameof(Line1) ? new SelectExpression<string>(Line1).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Line1));
 
             aliased = alias(nameof(Line2));
-            set &= aliased != nameof(Line2) ? new NullableStringSelectExpression(Line2).As(aliased) as NullableStringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Line2));
+            set &= aliased != nameof(Line2) ? new SelectExpression<string>(Line2).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Line2));
 
             aliased = alias(nameof(City));
-            set &= aliased != nameof(City) ? new StringSelectExpression(City).As(aliased) as StringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(City));
+            set &= aliased != nameof(City) ? new SelectExpression<string>(City).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(City));
 
             aliased = alias(nameof(State));
-            set &= aliased != nameof(State) ? new StringSelectExpression(State).As(aliased) as StringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(State));
+            set &= aliased != nameof(State) ? new SelectExpression<string>(State).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(State));
 
             aliased = alias(nameof(Zip));
-            set &= aliased != nameof(Zip) ? new StringSelectExpression(Zip).As(aliased) as StringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Zip));
+            set &= aliased != nameof(Zip) ? new SelectExpression<string>(Zip).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Zip));
 
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new DateTimeSelectExpression(DateCreated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
 
             aliased = alias(nameof(DateUpdated));
-            set &= aliased != nameof(DateUpdated) ? new DateTimeSelectExpression(DateUpdated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
+            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
 
             return set;
         }
@@ -2026,20 +1987,13 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             #endregion
         }
         #endregion
 
         #region address type field expression
-        public partial class AddressTypeField : NullableEnumFieldExpression<Address, DbEx.Data.AddressType>
+        public partial class AddressTypeField : NullableEnumFieldExpression<Address,DbEx.Data.AddressType>
         {
             #region constructors
             public AddressTypeField(string identifier, string name, AddressEntity entity) : base(identifier, name, entity)
@@ -2048,18 +2002,11 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override NullableEnumElement<DbEx.Data.AddressType> As(string alias)
-            {
-                return new NullableEnumSelectExpression<DbEx.Data.AddressType>(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(DbEx.Data.AddressType value) => new AssignmentExpression(this, new LiteralExpression<DbEx.Data.AddressType>(value, this));
-            public AssignmentExpression Set(EnumElement<DbEx.Data.AddressType> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<DbEx.Data.AddressType> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DbEx.Data.AddressType? value) => new AssignmentExpression(this, new LiteralExpression<DbEx.Data.AddressType?>(value, this));
-            public AssignmentExpression Set(NullableEnumElement<DbEx.Data.AddressType> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<DbEx.Data.AddressType?> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DbEx.Data.AddressType>(value, this));
             #endregion
         }
@@ -2075,16 +2022,9 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override StringElement As(string alias)
-            {
-                return new StringSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2099,17 +2039,9 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override NullableStringElement As(string alias)
-            {
-                return new NullableStringSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(NullableStringElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             #endregion
         }
@@ -2125,16 +2057,9 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override StringElement As(string alias)
-            {
-                return new StringSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2149,16 +2074,9 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override StringElement As(string alias)
-            {
-                return new StringSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2173,16 +2091,9 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override StringElement As(string alias)
-            {
-                return new StringSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2194,13 +2105,6 @@ namespace DbEx.dboDataService
             public DateCreatedField(string identifier, string name, AddressEntity entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
             }
             #endregion
 
@@ -2216,13 +2120,6 @@ namespace DbEx.dboDataService
             public DateUpdatedField(string identifier, string name, AddressEntity entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
             }
             #endregion
 
@@ -2243,9 +2140,10 @@ namespace DbEx.dboDataService
         #endregion
 
         #region interface
+
         /// <summary>A <see cref="DbEx.dboDataService.PersonEntity.IdField"/> representing the "dbo.Person.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.PersonEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2265,9 +2163,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly IdField Id;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.PersonEntity.FirstNameField"/> representing the "dbo.Person.FirstName" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="DbEx.dboDataService.PersonEntity.FirstNameField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2284,9 +2183,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly FirstNameField FirstName;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.PersonEntity.LastNameField"/> representing the "dbo.Person.LastName" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="DbEx.dboDataService.PersonEntity.LastNameField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2303,9 +2203,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly LastNameField LastName;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.PersonEntity.BirthDateField"/> representing the "dbo.Person.BirthDate" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>?.  The <see cref="DbEx.dboDataService.PersonEntity.BirthDateField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.NullableDateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2322,9 +2223,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly BirthDateField BirthDate;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.PersonEntity.GenderTypeField"/> representing the "dbo.Person.GenderType" column in the database, 
         /// with a .NET type of <see cref="DbEx.Data.GenderType"/>.  The <see cref="DbEx.dboDataService.PersonEntity.GenderTypeField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyEnumElement{DbEx.Data.GenderType}Element"/> or <see cref="HatTrick.DbEx.Sql.EnumElement{DbEx.Data.GenderType}Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DbEx.Data.GenderType}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2341,9 +2243,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly GenderTypeField GenderType;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.PersonEntity.CreditLimitField"/> representing the "dbo.Person.CreditLimit" column in the database, 
         /// with a .NET type of <see cref="int"/>?.  The <see cref="DbEx.dboDataService.PersonEntity.CreditLimitField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.NullableInt32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2360,9 +2263,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly CreditLimitField CreditLimit;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.PersonEntity.YearOfLastCreditLimitReviewField"/> representing the "dbo.Person.YearOfLastCreditLimitReview" column in the database, 
         /// with a .NET type of <see cref="int"/>?.  The <see cref="DbEx.dboDataService.PersonEntity.YearOfLastCreditLimitReviewField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.NullableInt32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2379,9 +2283,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly YearOfLastCreditLimitReviewField YearOfLastCreditLimitReview;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.PersonEntity.RegistrationDateField"/> representing the "dbo.Person.RegistrationDate" column in the database, 
         /// with a .NET type of <see cref="DateTimeOffset"/>.  The <see cref="DbEx.dboDataService.PersonEntity.RegistrationDateField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeOffsetElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeOffsetElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTimeOffset}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2401,9 +2306,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly RegistrationDateField RegistrationDate;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.PersonEntity.LastLoginDateField"/> representing the "dbo.Person.LastLoginDate" column in the database, 
         /// with a .NET type of <see cref="DateTimeOffset"/>?.  The <see cref="DbEx.dboDataService.PersonEntity.LastLoginDateField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeOffsetElement"/> or <see cref="HatTrick.DbEx.Sql.NullableDateTimeOffsetElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTimeOffset}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2420,9 +2326,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly LastLoginDateField LastLoginDate;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.PersonEntity.DateCreatedField"/> representing the "dbo.Person.DateCreated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbEx.dboDataService.PersonEntity.DateCreatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2442,9 +2349,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly DateCreatedField DateCreated;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.PersonEntity.DateUpdatedField"/> representing the "dbo.Person.DateUpdated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbEx.dboDataService.PersonEntity.DateUpdatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2498,17 +2406,17 @@ namespace DbEx.dboDataService
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new Int32SelectExpression(Id)
-                ,new StringSelectExpression(FirstName)
-                ,new StringSelectExpression(LastName)
-                ,new NullableDateTimeSelectExpression(BirthDate)
-                ,new EnumSelectExpression<DbEx.Data.GenderType>(GenderType)
-                ,new NullableInt32SelectExpression(CreditLimit)
-                ,new NullableInt32SelectExpression(YearOfLastCreditLimitReview)
-                ,new DateTimeOffsetSelectExpression(RegistrationDate)
-                ,new NullableDateTimeOffsetSelectExpression(LastLoginDate)
-                ,new DateTimeSelectExpression(DateCreated)
-                ,new DateTimeSelectExpression(DateUpdated)
+                new SelectExpression<int>(Id)
+                ,new SelectExpression<string>(FirstName)
+                ,new SelectExpression<string>(LastName)
+                ,new SelectExpression<DateTime?>(BirthDate)
+                ,new SelectExpression<DbEx.Data.GenderType>(GenderType)
+                ,new SelectExpression<int?>(CreditLimit)
+                ,new SelectExpression<int?>(YearOfLastCreditLimitReview)
+                ,new SelectExpression<DateTimeOffset>(RegistrationDate)
+                ,new SelectExpression<DateTimeOffset?>(LastLoginDate)
+                ,new SelectExpression<DateTime>(DateCreated)
+                ,new SelectExpression<DateTime>(DateUpdated)
             ));
         }
 
@@ -2521,37 +2429,37 @@ namespace DbEx.dboDataService
             string aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new Int32SelectExpression(Id).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
 
             aliased = alias(nameof(FirstName));
-            set &= aliased != nameof(FirstName) ? new StringSelectExpression(FirstName).As(aliased) as StringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(FirstName));
+            set &= aliased != nameof(FirstName) ? new SelectExpression<string>(FirstName).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(FirstName));
 
             aliased = alias(nameof(LastName));
-            set &= aliased != nameof(LastName) ? new StringSelectExpression(LastName).As(aliased) as StringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(LastName));
+            set &= aliased != nameof(LastName) ? new SelectExpression<string>(LastName).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(LastName));
 
             aliased = alias(nameof(BirthDate));
-            set &= aliased != nameof(BirthDate) ? new NullableDateTimeSelectExpression(BirthDate).As(aliased) as NullableDateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(BirthDate));
+            set &= aliased != nameof(BirthDate) ? new SelectExpression<DateTime?>(BirthDate).As(aliased) as SelectExpression<DateTime?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(BirthDate));
 
             aliased = alias(nameof(GenderType));
-            set &= aliased != nameof(GenderType) ? new EnumSelectExpression<DbEx.Data.GenderType>(GenderType).As(aliased) as EnumSelectExpression<DbEx.Data.GenderType> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(GenderType));
+            set &= aliased != nameof(GenderType) ? new SelectExpression<DbEx.Data.GenderType>(GenderType).As(aliased) as SelectExpression<DbEx.Data.GenderType> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(GenderType));
 
             aliased = alias(nameof(CreditLimit));
-            set &= aliased != nameof(CreditLimit) ? new NullableInt32SelectExpression(CreditLimit).As(aliased) as NullableInt32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(CreditLimit));
+            set &= aliased != nameof(CreditLimit) ? new SelectExpression<int?>(CreditLimit).As(aliased) as SelectExpression<int?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(CreditLimit));
 
             aliased = alias(nameof(YearOfLastCreditLimitReview));
-            set &= aliased != nameof(YearOfLastCreditLimitReview) ? new NullableInt32SelectExpression(YearOfLastCreditLimitReview).As(aliased) as NullableInt32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(YearOfLastCreditLimitReview));
+            set &= aliased != nameof(YearOfLastCreditLimitReview) ? new SelectExpression<int?>(YearOfLastCreditLimitReview).As(aliased) as SelectExpression<int?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(YearOfLastCreditLimitReview));
 
             aliased = alias(nameof(RegistrationDate));
-            set &= aliased != nameof(RegistrationDate) ? new DateTimeOffsetSelectExpression(RegistrationDate).As(aliased) as DateTimeOffsetSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(RegistrationDate));
+            set &= aliased != nameof(RegistrationDate) ? new SelectExpression<DateTimeOffset>(RegistrationDate).As(aliased) as SelectExpression<DateTimeOffset> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(RegistrationDate));
 
             aliased = alias(nameof(LastLoginDate));
-            set &= aliased != nameof(LastLoginDate) ? new NullableDateTimeOffsetSelectExpression(LastLoginDate).As(aliased) as NullableDateTimeOffsetSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(LastLoginDate));
+            set &= aliased != nameof(LastLoginDate) ? new SelectExpression<DateTimeOffset?>(LastLoginDate).As(aliased) as SelectExpression<DateTimeOffset?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(LastLoginDate));
 
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new DateTimeSelectExpression(DateCreated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
 
             aliased = alias(nameof(DateUpdated));
-            set &= aliased != nameof(DateUpdated) ? new DateTimeSelectExpression(DateUpdated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
+            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
 
             return set;
         }
@@ -2612,13 +2520,6 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             #endregion
         }
@@ -2634,16 +2535,9 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override StringElement As(string alias)
-            {
-                return new StringSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2658,16 +2552,9 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override StringElement As(string alias)
-            {
-                return new StringSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2682,25 +2569,18 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override NullableDateTimeElement As(string alias)
-            {
-                return new NullableDateTimeSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
-            public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DateTime? value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value, this));
-            public AssignmentExpression Set(NullableDateTimeElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<DateTime?> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
             #endregion
         }
         #endregion
 
         #region gender type field expression
-        public partial class GenderTypeField : EnumFieldExpression<Person, DbEx.Data.GenderType>
+        public partial class GenderTypeField : EnumFieldExpression<Person,DbEx.Data.GenderType>
         {
             #region constructors
             public GenderTypeField(string identifier, string name, PersonEntity entity) : base(identifier, name, entity)
@@ -2709,16 +2589,9 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override EnumElement<DbEx.Data.GenderType> As(string alias)
-            {
-                return new EnumSelectExpression<DbEx.Data.GenderType>(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(DbEx.Data.GenderType value) => new AssignmentExpression(this, new LiteralExpression<DbEx.Data.GenderType>(value, this));
-            public AssignmentExpression Set(EnumElement<DbEx.Data.GenderType> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<DbEx.Data.GenderType> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2733,18 +2606,11 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override NullableInt32Element As(string alias)
-            {
-                return new NullableInt32SelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
-            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(int? value) => new AssignmentExpression(this, new LiteralExpression<int?>(value, this));
-            public AssignmentExpression Set(NullableInt32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<int?> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             #endregion
         }
@@ -2760,18 +2626,11 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override NullableInt32Element As(string alias)
-            {
-                return new NullableInt32SelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
-            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(int? value) => new AssignmentExpression(this, new LiteralExpression<int?>(value, this));
-            public AssignmentExpression Set(NullableInt32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<int?> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             #endregion
         }
@@ -2787,16 +2646,9 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override DateTimeOffsetElement As(string alias)
-            {
-                return new DateTimeOffsetSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(DateTimeOffset value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset>(value, this));
-            public AssignmentExpression Set(DateTimeOffsetElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<DateTimeOffset> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2811,18 +2663,11 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override NullableDateTimeOffsetElement As(string alias)
-            {
-                return new NullableDateTimeOffsetSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(DateTimeOffset value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset>(value, this));
-            public AssignmentExpression Set(DateTimeOffsetElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<DateTimeOffset> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DateTimeOffset? value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset?>(value, this));
-            public AssignmentExpression Set(NullableDateTimeOffsetElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<DateTimeOffset?> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset>(value, this));
             #endregion
         }
@@ -2838,13 +2683,6 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             #endregion
         }
@@ -2857,13 +2695,6 @@ namespace DbEx.dboDataService
             public DateUpdatedField(string identifier, string name, PersonEntity entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
             }
             #endregion
 
@@ -2884,9 +2715,10 @@ namespace DbEx.dboDataService
         #endregion
 
         #region interface
+
         /// <summary>A <see cref="DbEx.dboDataService.PersonAddressEntity.IdField"/> representing the "dbo.Person_Address.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.PersonAddressEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2906,9 +2738,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly IdField Id;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.PersonAddressEntity.PersonIdField"/> representing the "dbo.Person_Address.PersonId" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.PersonAddressEntity.PersonIdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2925,9 +2758,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly PersonIdField PersonId;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.PersonAddressEntity.AddressIdField"/> representing the "dbo.Person_Address.AddressId" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.PersonAddressEntity.AddressIdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2944,9 +2778,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly AddressIdField AddressId;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.PersonAddressEntity.DateCreatedField"/> representing the "dbo.Person_Address.DateCreated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbEx.dboDataService.PersonAddressEntity.DateCreatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2993,10 +2828,10 @@ namespace DbEx.dboDataService
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new Int32SelectExpression(Id)
-                ,new Int32SelectExpression(PersonId)
-                ,new Int32SelectExpression(AddressId)
-                ,new DateTimeSelectExpression(DateCreated)
+                new SelectExpression<int>(Id)
+                ,new SelectExpression<int>(PersonId)
+                ,new SelectExpression<int>(AddressId)
+                ,new SelectExpression<DateTime>(DateCreated)
             ));
         }
 
@@ -3009,16 +2844,16 @@ namespace DbEx.dboDataService
             string aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new Int32SelectExpression(Id).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
 
             aliased = alias(nameof(PersonId));
-            set &= aliased != nameof(PersonId) ? new Int32SelectExpression(PersonId).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PersonId));
+            set &= aliased != nameof(PersonId) ? new SelectExpression<int>(PersonId).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PersonId));
 
             aliased = alias(nameof(AddressId));
-            set &= aliased != nameof(AddressId) ? new Int32SelectExpression(AddressId).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(AddressId));
+            set &= aliased != nameof(AddressId) ? new SelectExpression<int>(AddressId).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(AddressId));
 
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new DateTimeSelectExpression(DateCreated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
 
             return set;
         }
@@ -3060,13 +2895,6 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             #endregion
         }
@@ -3082,16 +2910,9 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
-            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3106,16 +2927,9 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
-            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3127,13 +2941,6 @@ namespace DbEx.dboDataService
             public DateCreatedField(string identifier, string name, PersonAddressEntity entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
             }
             #endregion
 
@@ -3154,9 +2961,10 @@ namespace DbEx.dboDataService
         #endregion
 
         #region interface
+
         /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.IdField"/> representing the "dbo.Product.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.ProductEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3176,9 +2984,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly IdField Id;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.ProductCategoryTypeField"/> representing the "dbo.Product.ProductCategoryType" column in the database, 
         /// with a .NET type of <see cref="DbEx.Data.ProductCategoryType"/>?.  The <see cref="DbEx.dboDataService.ProductEntity.ProductCategoryTypeField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyEnumElement{DbEx.Data.ProductCategoryType}Element"/> or <see cref="HatTrick.DbEx.Sql.NullableEnumElement{DbEx.Data.ProductCategoryType}Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DbEx.Data.ProductCategoryType}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3195,9 +3004,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly ProductCategoryTypeField ProductCategoryType;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.NameField"/> representing the "dbo.Product.Name" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="DbEx.dboDataService.ProductEntity.NameField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3214,9 +3024,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly NameField Name;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.DescriptionField"/> representing the "dbo.Product.Description" column in the database, 
-        /// with a .NET type of <see cref="string"/>.  The <see cref="DbEx.dboDataService.ProductEntity.DescriptionField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// with a .NET type of <see cref="HatTrick.DbEx.MsSql.Test.ProductDescription"/>.  The <see cref="DbEx.dboDataService.ProductEntity.DescriptionField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{HatTrick.DbEx.MsSql.Test.ProductDescription}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3233,9 +3044,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly DescriptionField Description;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.ListPriceField"/> representing the "dbo.Product.ListPrice" column in the database, 
         /// with a .NET type of <see cref="double"/>.  The <see cref="DbEx.dboDataService.ProductEntity.ListPriceField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDoubleElement"/> or <see cref="HatTrick.DbEx.Sql.DoubleElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Double}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3252,9 +3064,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly ListPriceField ListPrice;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.PriceField"/> representing the "dbo.Product.Price" column in the database, 
         /// with a .NET type of <see cref="double"/>.  The <see cref="DbEx.dboDataService.ProductEntity.PriceField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDoubleElement"/> or <see cref="HatTrick.DbEx.Sql.DoubleElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Double}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3271,9 +3084,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly PriceField Price;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.QuantityField"/> representing the "dbo.Product.Quantity" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.ProductEntity.QuantityField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3290,9 +3104,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly QuantityField Quantity;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.ImageField"/> representing the "dbo.Product.Image" column in the database, 
         /// with a .NET type of <see cref="byte"/>[].  The <see cref="DbEx.dboDataService.ProductEntity.ImageField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyByteArrayElement"/> or <see cref="HatTrick.DbEx.Sql.ByteArrayElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{ByteArray}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3309,9 +3124,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly ImageField Image;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.HeightField"/> representing the "dbo.Product.Height" column in the database, 
         /// with a .NET type of <see cref="decimal"/>?.  The <see cref="DbEx.dboDataService.ProductEntity.HeightField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDecimalElement"/> or <see cref="HatTrick.DbEx.Sql.NullableDecimalElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Decimal}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3328,9 +3144,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly HeightField Height;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.WidthField"/> representing the "dbo.Product.Width" column in the database, 
         /// with a .NET type of <see cref="decimal"/>?.  The <see cref="DbEx.dboDataService.ProductEntity.WidthField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDecimalElement"/> or <see cref="HatTrick.DbEx.Sql.NullableDecimalElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Decimal}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3347,9 +3164,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly WidthField Width;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.DepthField"/> representing the "dbo.Product.Depth" column in the database, 
         /// with a .NET type of <see cref="decimal"/>?.  The <see cref="DbEx.dboDataService.ProductEntity.DepthField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDecimalElement"/> or <see cref="HatTrick.DbEx.Sql.NullableDecimalElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Decimal}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3366,9 +3184,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly DepthField Depth;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.WeightField"/> representing the "dbo.Product.Weight" column in the database, 
         /// with a .NET type of <see cref="decimal"/>?.  The <see cref="DbEx.dboDataService.ProductEntity.WeightField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDecimalElement"/> or <see cref="HatTrick.DbEx.Sql.NullableDecimalElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Decimal}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3385,9 +3204,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly WeightField Weight;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.ShippingWeightField"/> representing the "dbo.Product.ShippingWeight" column in the database, 
         /// with a .NET type of <see cref="decimal"/>.  The <see cref="DbEx.dboDataService.ProductEntity.ShippingWeightField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDecimalElement"/> or <see cref="HatTrick.DbEx.Sql.DecimalElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Decimal}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3404,9 +3224,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly ShippingWeightField ShippingWeight;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.ValidStartTimeOfDayForPurchaseField"/> representing the "dbo.Product.ValidStartTimeOfDayForPurchase" column in the database, 
         /// with a .NET type of <see cref="TimeSpan"/>?.  The <see cref="DbEx.dboDataService.ProductEntity.ValidStartTimeOfDayForPurchaseField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyTimeSpanElement"/> or <see cref="HatTrick.DbEx.Sql.NullableTimeSpanElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{TimeSpan}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3423,9 +3244,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly ValidStartTimeOfDayForPurchaseField ValidStartTimeOfDayForPurchase;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.ValidEndTimeOfDayForPurchaseField"/> representing the "dbo.Product.ValidEndTimeOfDayForPurchase" column in the database, 
         /// with a .NET type of <see cref="TimeSpan"/>?.  The <see cref="DbEx.dboDataService.ProductEntity.ValidEndTimeOfDayForPurchaseField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyTimeSpanElement"/> or <see cref="HatTrick.DbEx.Sql.NullableTimeSpanElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{TimeSpan}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3442,9 +3264,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly ValidEndTimeOfDayForPurchaseField ValidEndTimeOfDayForPurchase;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.DateCreatedField"/> representing the "dbo.Product.DateCreated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbEx.dboDataService.ProductEntity.DateCreatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3464,9 +3287,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly DateCreatedField DateCreated;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.DateUpdatedField"/> representing the "dbo.Product.DateUpdated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbEx.dboDataService.ProductEntity.DateUpdatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3526,23 +3350,23 @@ namespace DbEx.dboDataService
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new Int32SelectExpression(Id)
-                ,new NullableEnumSelectExpression<DbEx.Data.ProductCategoryType>(ProductCategoryType)
-                ,new StringSelectExpression(Name)
-                ,new NullableStringSelectExpression(Description)
-                ,new DoubleSelectExpression(ListPrice)
-                ,new DoubleSelectExpression(Price)
-                ,new Int32SelectExpression(Quantity)
-                ,new NullableByteArraySelectExpression(Image)
-                ,new NullableDecimalSelectExpression(Height)
-                ,new NullableDecimalSelectExpression(Width)
-                ,new NullableDecimalSelectExpression(Depth)
-                ,new NullableDecimalSelectExpression(Weight)
-                ,new DecimalSelectExpression(ShippingWeight)
-                ,new NullableTimeSpanSelectExpression(ValidStartTimeOfDayForPurchase)
-                ,new NullableTimeSpanSelectExpression(ValidEndTimeOfDayForPurchase)
-                ,new DateTimeSelectExpression(DateCreated)
-                ,new DateTimeSelectExpression(DateUpdated)
+                new SelectExpression<int>(Id)
+                ,new SelectExpression<DbEx.Data.ProductCategoryType?>(ProductCategoryType)
+                ,new SelectExpression<string>(Name)
+                ,new SelectExpression<HatTrick.DbEx.MsSql.Test.ProductDescription>(Description)
+                ,new SelectExpression<double>(ListPrice)
+                ,new SelectExpression<double>(Price)
+                ,new SelectExpression<int>(Quantity)
+                ,new SelectExpression<byte[]>(Image)
+                ,new SelectExpression<decimal?>(Height)
+                ,new SelectExpression<decimal?>(Width)
+                ,new SelectExpression<decimal?>(Depth)
+                ,new SelectExpression<decimal?>(Weight)
+                ,new SelectExpression<decimal>(ShippingWeight)
+                ,new SelectExpression<TimeSpan?>(ValidStartTimeOfDayForPurchase)
+                ,new SelectExpression<TimeSpan?>(ValidEndTimeOfDayForPurchase)
+                ,new SelectExpression<DateTime>(DateCreated)
+                ,new SelectExpression<DateTime>(DateUpdated)
             ));
         }
 
@@ -3555,55 +3379,55 @@ namespace DbEx.dboDataService
             string aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new Int32SelectExpression(Id).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
 
             aliased = alias(nameof(ProductCategoryType));
-            set &= aliased != nameof(ProductCategoryType) ? new NullableEnumSelectExpression<DbEx.Data.ProductCategoryType>(ProductCategoryType).As(aliased) as NullableEnumSelectExpression<DbEx.Data.ProductCategoryType> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ProductCategoryType));
+            set &= aliased != nameof(ProductCategoryType) ? new SelectExpression<DbEx.Data.ProductCategoryType?>(ProductCategoryType).As(aliased) as SelectExpression<DbEx.Data.ProductCategoryType?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ProductCategoryType));
 
             aliased = alias(nameof(Name));
-            set &= aliased != nameof(Name) ? new StringSelectExpression(Name).As(aliased) as StringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Name));
+            set &= aliased != nameof(Name) ? new SelectExpression<string>(Name).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Name));
 
             aliased = alias(nameof(Description));
-            set &= aliased != nameof(Description) ? new NullableStringSelectExpression(Description).As(aliased) as NullableStringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Description));
+            set &= aliased != nameof(Description) ? new SelectExpression<HatTrick.DbEx.MsSql.Test.ProductDescription>(Description).As(aliased) as SelectExpression<HatTrick.DbEx.MsSql.Test.ProductDescription> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Description));
 
             aliased = alias(nameof(ListPrice));
-            set &= aliased != nameof(ListPrice) ? new DoubleSelectExpression(ListPrice).As(aliased) as DoubleSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ListPrice));
+            set &= aliased != nameof(ListPrice) ? new SelectExpression<double>(ListPrice).As(aliased) as SelectExpression<double> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ListPrice));
 
             aliased = alias(nameof(Price));
-            set &= aliased != nameof(Price) ? new DoubleSelectExpression(Price).As(aliased) as DoubleSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Price));
+            set &= aliased != nameof(Price) ? new SelectExpression<double>(Price).As(aliased) as SelectExpression<double> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Price));
 
             aliased = alias(nameof(Quantity));
-            set &= aliased != nameof(Quantity) ? new Int32SelectExpression(Quantity).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Quantity));
+            set &= aliased != nameof(Quantity) ? new SelectExpression<int>(Quantity).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Quantity));
 
             aliased = alias(nameof(Image));
-            set &= aliased != nameof(Image) ? new NullableByteArraySelectExpression(Image).As(aliased) as NullableByteArraySelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Image));
+            set &= aliased != nameof(Image) ? new SelectExpression<byte[]>(Image).As(aliased) as SelectExpression<byte[]> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Image));
 
             aliased = alias(nameof(Height));
-            set &= aliased != nameof(Height) ? new NullableDecimalSelectExpression(Height).As(aliased) as NullableDecimalSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Height));
+            set &= aliased != nameof(Height) ? new SelectExpression<decimal?>(Height).As(aliased) as SelectExpression<decimal?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Height));
 
             aliased = alias(nameof(Width));
-            set &= aliased != nameof(Width) ? new NullableDecimalSelectExpression(Width).As(aliased) as NullableDecimalSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Width));
+            set &= aliased != nameof(Width) ? new SelectExpression<decimal?>(Width).As(aliased) as SelectExpression<decimal?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Width));
 
             aliased = alias(nameof(Depth));
-            set &= aliased != nameof(Depth) ? new NullableDecimalSelectExpression(Depth).As(aliased) as NullableDecimalSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Depth));
+            set &= aliased != nameof(Depth) ? new SelectExpression<decimal?>(Depth).As(aliased) as SelectExpression<decimal?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Depth));
 
             aliased = alias(nameof(Weight));
-            set &= aliased != nameof(Weight) ? new NullableDecimalSelectExpression(Weight).As(aliased) as NullableDecimalSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Weight));
+            set &= aliased != nameof(Weight) ? new SelectExpression<decimal?>(Weight).As(aliased) as SelectExpression<decimal?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Weight));
 
             aliased = alias(nameof(ShippingWeight));
-            set &= aliased != nameof(ShippingWeight) ? new DecimalSelectExpression(ShippingWeight).As(aliased) as DecimalSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ShippingWeight));
+            set &= aliased != nameof(ShippingWeight) ? new SelectExpression<decimal>(ShippingWeight).As(aliased) as SelectExpression<decimal> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ShippingWeight));
 
             aliased = alias(nameof(ValidStartTimeOfDayForPurchase));
-            set &= aliased != nameof(ValidStartTimeOfDayForPurchase) ? new NullableTimeSpanSelectExpression(ValidStartTimeOfDayForPurchase).As(aliased) as NullableTimeSpanSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ValidStartTimeOfDayForPurchase));
+            set &= aliased != nameof(ValidStartTimeOfDayForPurchase) ? new SelectExpression<TimeSpan?>(ValidStartTimeOfDayForPurchase).As(aliased) as SelectExpression<TimeSpan?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ValidStartTimeOfDayForPurchase));
 
             aliased = alias(nameof(ValidEndTimeOfDayForPurchase));
-            set &= aliased != nameof(ValidEndTimeOfDayForPurchase) ? new NullableTimeSpanSelectExpression(ValidEndTimeOfDayForPurchase).As(aliased) as NullableTimeSpanSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ValidEndTimeOfDayForPurchase));
+            set &= aliased != nameof(ValidEndTimeOfDayForPurchase) ? new SelectExpression<TimeSpan?>(ValidEndTimeOfDayForPurchase).As(aliased) as SelectExpression<TimeSpan?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ValidEndTimeOfDayForPurchase));
 
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new DateTimeSelectExpression(DateCreated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
 
             aliased = alias(nameof(DateUpdated));
-            set &= aliased != nameof(DateUpdated) ? new DateTimeSelectExpression(DateUpdated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
+            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
 
             return set;
         }
@@ -3613,7 +3437,7 @@ namespace DbEx.dboDataService
             return new InsertExpressionSet<Product>(product 
                 ,new InsertExpression<DbEx.Data.ProductCategoryType?>(product.ProductCategoryType, ProductCategoryType)
                 ,new InsertExpression<string>(product.Name, Name)
-                ,new InsertExpression<string>(product.Description, Description)
+                ,new InsertExpression<HatTrick.DbEx.MsSql.Test.ProductDescription>(product.Description, Description)
                 ,new InsertExpression<double>(product.ListPrice, ListPrice)
                 ,new InsertExpression<double>(product.Price, Price)
                 ,new InsertExpression<int>(product.Quantity, Quantity)
@@ -3654,7 +3478,7 @@ namespace DbEx.dboDataService
             product.Id = reader.ReadField().GetValue<int>();
             product.ProductCategoryType = reader.ReadField().GetValue<DbEx.Data.ProductCategoryType?>();
             product.Name = reader.ReadField().GetValue<string>();
-            product.Description = reader.ReadField().GetValue<string>();
+            product.Description = reader.ReadField().GetValue<HatTrick.DbEx.MsSql.Test.ProductDescription>();
             product.ListPrice = reader.ReadField().GetValue<double>();
             product.Price = reader.ReadField().GetValue<double>();
             product.Quantity = reader.ReadField().GetValue<int>();
@@ -3682,20 +3506,13 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             #endregion
         }
         #endregion
 
         #region product category type field expression
-        public partial class ProductCategoryTypeField : NullableEnumFieldExpression<Product, DbEx.Data.ProductCategoryType>
+        public partial class ProductCategoryTypeField : NullableEnumFieldExpression<Product,DbEx.Data.ProductCategoryType>
         {
             #region constructors
             public ProductCategoryTypeField(string identifier, string name, ProductEntity entity) : base(identifier, name, entity)
@@ -3704,18 +3521,11 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override NullableEnumElement<DbEx.Data.ProductCategoryType> As(string alias)
-            {
-                return new NullableEnumSelectExpression<DbEx.Data.ProductCategoryType>(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(DbEx.Data.ProductCategoryType value) => new AssignmentExpression(this, new LiteralExpression<DbEx.Data.ProductCategoryType>(value, this));
-            public AssignmentExpression Set(EnumElement<DbEx.Data.ProductCategoryType> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<DbEx.Data.ProductCategoryType> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DbEx.Data.ProductCategoryType? value) => new AssignmentExpression(this, new LiteralExpression<DbEx.Data.ProductCategoryType?>(value, this));
-            public AssignmentExpression Set(NullableEnumElement<DbEx.Data.ProductCategoryType> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<DbEx.Data.ProductCategoryType?> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DbEx.Data.ProductCategoryType>(value, this));
             #endregion
         }
@@ -3731,22 +3541,15 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override StringElement As(string alias)
-            {
-                return new StringSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
 
         #region description field expression
-        public partial class DescriptionField : NullableStringFieldExpression<Product>
+        public partial class DescriptionField : ObjectFieldExpression<Product,HatTrick.DbEx.MsSql.Test.ProductDescription>
         {
             #region constructors
             public DescriptionField(string identifier, string name, ProductEntity entity) : base(identifier, name, entity)
@@ -3755,18 +3558,10 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override NullableStringElement As(string alias)
-            {
-                return new NullableStringSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
-            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(NullableStringElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(HatTrick.DbEx.MsSql.Test.ProductDescription value) => new AssignmentExpression(this, new LiteralExpression<HatTrick.DbEx.MsSql.Test.ProductDescription>(value, this));
+            public AssignmentExpression Set(AnyElement<HatTrick.DbEx.MsSql.Test.ProductDescription> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<HatTrick.DbEx.MsSql.Test.ProductDescription>(value, this));
             #endregion
         }
         #endregion
@@ -3781,16 +3576,9 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override DoubleElement As(string alias)
-            {
-                return new DoubleSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(double value) => new AssignmentExpression(this, new LiteralExpression<double>(value, this));
-            public AssignmentExpression Set(DoubleElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<double> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3805,16 +3593,9 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override DoubleElement As(string alias)
-            {
-                return new DoubleSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(double value) => new AssignmentExpression(this, new LiteralExpression<double>(value, this));
-            public AssignmentExpression Set(DoubleElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<double> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3829,16 +3610,9 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
-            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3853,17 +3627,9 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override NullableByteArrayElement As(string alias)
-            {
-                return new NullableByteArraySelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(byte[] value) => new AssignmentExpression(this, new LiteralExpression<byte[]>(value, this));
-            public AssignmentExpression Set(ByteArrayElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(NullableByteArrayElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<byte[]> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<byte[]>(value, this));
             #endregion
         }
@@ -3879,18 +3645,11 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override NullableDecimalElement As(string alias)
-            {
-                return new NullableDecimalSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
-            public AssignmentExpression Set(DecimalElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<decimal> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
-            public AssignmentExpression Set(NullableDecimalElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<decimal?> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
             #endregion
         }
@@ -3906,18 +3665,11 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override NullableDecimalElement As(string alias)
-            {
-                return new NullableDecimalSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
-            public AssignmentExpression Set(DecimalElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<decimal> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
-            public AssignmentExpression Set(NullableDecimalElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<decimal?> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
             #endregion
         }
@@ -3933,18 +3685,11 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override NullableDecimalElement As(string alias)
-            {
-                return new NullableDecimalSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
-            public AssignmentExpression Set(DecimalElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<decimal> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
-            public AssignmentExpression Set(NullableDecimalElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<decimal?> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
             #endregion
         }
@@ -3960,18 +3705,11 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override NullableDecimalElement As(string alias)
-            {
-                return new NullableDecimalSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
-            public AssignmentExpression Set(DecimalElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<decimal> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
-            public AssignmentExpression Set(NullableDecimalElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<decimal?> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
             #endregion
         }
@@ -3987,16 +3725,9 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override DecimalElement As(string alias)
-            {
-                return new DecimalSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
-            public AssignmentExpression Set(DecimalElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<decimal> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4011,18 +3742,11 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override NullableTimeSpanElement As(string alias)
-            {
-                return new NullableTimeSpanSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(TimeSpan value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan>(value, this));
-            public AssignmentExpression Set(TimeSpanElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<TimeSpan> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(TimeSpan? value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan?>(value, this));
-            public AssignmentExpression Set(NullableTimeSpanElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<TimeSpan?> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan>(value, this));
             #endregion
         }
@@ -4038,18 +3762,11 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override NullableTimeSpanElement As(string alias)
-            {
-                return new NullableTimeSpanSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(TimeSpan value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan>(value, this));
-            public AssignmentExpression Set(TimeSpanElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<TimeSpan> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(TimeSpan? value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan?>(value, this));
-            public AssignmentExpression Set(NullableTimeSpanElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<TimeSpan?> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan>(value, this));
             #endregion
         }
@@ -4065,13 +3782,6 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             #endregion
         }
@@ -4084,13 +3794,6 @@ namespace DbEx.dboDataService
             public DateUpdatedField(string identifier, string name, ProductEntity entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
             }
             #endregion
 
@@ -4111,9 +3814,10 @@ namespace DbEx.dboDataService
         #endregion
 
         #region interface
+
         /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity.IdField"/> representing the "dbo.Purchase.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.PurchaseEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4133,9 +3837,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly IdField Id;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity.PersonIdField"/> representing the "dbo.Purchase.PersonId" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.PurchaseEntity.PersonIdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4152,9 +3857,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly PersonIdField PersonId;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity.OrderNumberField"/> representing the "dbo.Purchase.OrderNumber" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="DbEx.dboDataService.PurchaseEntity.OrderNumberField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4171,9 +3877,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly OrderNumberField OrderNumber;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity.TotalPurchaseQuantityField"/> representing the "dbo.Purchase.TotalPurchaseQuantity" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="DbEx.dboDataService.PurchaseEntity.TotalPurchaseQuantityField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4190,9 +3897,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly TotalPurchaseQuantityField TotalPurchaseQuantity;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity.TotalPurchaseAmountField"/> representing the "dbo.Purchase.TotalPurchaseAmount" column in the database, 
         /// with a .NET type of <see cref="double"/>.  The <see cref="DbEx.dboDataService.PurchaseEntity.TotalPurchaseAmountField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDoubleElement"/> or <see cref="HatTrick.DbEx.Sql.DoubleElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Double}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4209,9 +3917,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly TotalPurchaseAmountField TotalPurchaseAmount;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity.PurchaseDateField"/> representing the "dbo.Purchase.PurchaseDate" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbEx.dboDataService.PurchaseEntity.PurchaseDateField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4228,9 +3937,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly PurchaseDateField PurchaseDate;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity.ShipDateField"/> representing the "dbo.Purchase.ShipDate" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>?.  The <see cref="DbEx.dboDataService.PurchaseEntity.ShipDateField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.NullableDateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4247,9 +3957,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly ShipDateField ShipDate;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity.ExpectedDeliveryDateField"/> representing the "dbo.Purchase.ExpectedDeliveryDate" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>?.  The <see cref="DbEx.dboDataService.PurchaseEntity.ExpectedDeliveryDateField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.NullableDateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4266,9 +3977,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly ExpectedDeliveryDateField ExpectedDeliveryDate;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity.TrackingIdentifierField"/> representing the "dbo.Purchase.TrackingIdentifier" column in the database, 
         /// with a .NET type of <see cref="Guid"/>?.  The <see cref="DbEx.dboDataService.PurchaseEntity.TrackingIdentifierField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyGuidElement"/> or <see cref="HatTrick.DbEx.Sql.NullableGuidElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Guid}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4285,9 +3997,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly TrackingIdentifierField TrackingIdentifier;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity.PaymentMethodTypeField"/> representing the "dbo.Purchase.PaymentMethodType" column in the database, 
         /// with a .NET type of <see cref="DbEx.Data.PaymentMethodType"/>.  The <see cref="DbEx.dboDataService.PurchaseEntity.PaymentMethodTypeField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyEnumElement{DbEx.Data.PaymentMethodType}Element"/> or <see cref="HatTrick.DbEx.Sql.EnumElement{DbEx.Data.PaymentMethodType}Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DbEx.Data.PaymentMethodType}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4304,9 +4017,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly PaymentMethodTypeField PaymentMethodType;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity.PaymentSourceTypeField"/> representing the "dbo.Purchase.PaymentSourceType" column in the database, 
         /// with a .NET type of <see cref="DbEx.Data.PaymentSourceType"/>?.  The <see cref="DbEx.dboDataService.PurchaseEntity.PaymentSourceTypeField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyEnumElement{DbEx.Data.PaymentSourceType}Element"/> or <see cref="HatTrick.DbEx.Sql.NullableEnumElement{DbEx.Data.PaymentSourceType}Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DbEx.Data.PaymentSourceType}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4323,9 +4037,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly PaymentSourceTypeField PaymentSourceType;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity.DateCreatedField"/> representing the "dbo.Purchase.DateCreated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbEx.dboDataService.PurchaseEntity.DateCreatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4345,9 +4060,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly DateCreatedField DateCreated;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity.DateUpdatedField"/> representing the "dbo.Purchase.DateUpdated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbEx.dboDataService.PurchaseEntity.DateUpdatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4403,19 +4119,19 @@ namespace DbEx.dboDataService
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new Int32SelectExpression(Id)
-                ,new Int32SelectExpression(PersonId)
-                ,new StringSelectExpression(OrderNumber)
-                ,new StringSelectExpression(TotalPurchaseQuantity)
-                ,new DoubleSelectExpression(TotalPurchaseAmount)
-                ,new DateTimeSelectExpression(PurchaseDate)
-                ,new NullableDateTimeSelectExpression(ShipDate)
-                ,new NullableDateTimeSelectExpression(ExpectedDeliveryDate)
-                ,new NullableGuidSelectExpression(TrackingIdentifier)
-                ,new EnumSelectExpression<DbEx.Data.PaymentMethodType>(PaymentMethodType)
-                ,new NullableEnumSelectExpression<DbEx.Data.PaymentSourceType>(PaymentSourceType)
-                ,new DateTimeSelectExpression(DateCreated)
-                ,new DateTimeSelectExpression(DateUpdated)
+                new SelectExpression<int>(Id)
+                ,new SelectExpression<int>(PersonId)
+                ,new SelectExpression<string>(OrderNumber)
+                ,new SelectExpression<string>(TotalPurchaseQuantity)
+                ,new SelectExpression<double>(TotalPurchaseAmount)
+                ,new SelectExpression<DateTime>(PurchaseDate)
+                ,new SelectExpression<DateTime?>(ShipDate)
+                ,new SelectExpression<DateTime?>(ExpectedDeliveryDate)
+                ,new SelectExpression<Guid?>(TrackingIdentifier)
+                ,new SelectExpression<DbEx.Data.PaymentMethodType>(PaymentMethodType)
+                ,new SelectExpression<DbEx.Data.PaymentSourceType?>(PaymentSourceType)
+                ,new SelectExpression<DateTime>(DateCreated)
+                ,new SelectExpression<DateTime>(DateUpdated)
             ));
         }
 
@@ -4428,43 +4144,43 @@ namespace DbEx.dboDataService
             string aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new Int32SelectExpression(Id).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
 
             aliased = alias(nameof(PersonId));
-            set &= aliased != nameof(PersonId) ? new Int32SelectExpression(PersonId).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PersonId));
+            set &= aliased != nameof(PersonId) ? new SelectExpression<int>(PersonId).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PersonId));
 
             aliased = alias(nameof(OrderNumber));
-            set &= aliased != nameof(OrderNumber) ? new StringSelectExpression(OrderNumber).As(aliased) as StringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(OrderNumber));
+            set &= aliased != nameof(OrderNumber) ? new SelectExpression<string>(OrderNumber).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(OrderNumber));
 
             aliased = alias(nameof(TotalPurchaseQuantity));
-            set &= aliased != nameof(TotalPurchaseQuantity) ? new StringSelectExpression(TotalPurchaseQuantity).As(aliased) as StringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TotalPurchaseQuantity));
+            set &= aliased != nameof(TotalPurchaseQuantity) ? new SelectExpression<string>(TotalPurchaseQuantity).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TotalPurchaseQuantity));
 
             aliased = alias(nameof(TotalPurchaseAmount));
-            set &= aliased != nameof(TotalPurchaseAmount) ? new DoubleSelectExpression(TotalPurchaseAmount).As(aliased) as DoubleSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TotalPurchaseAmount));
+            set &= aliased != nameof(TotalPurchaseAmount) ? new SelectExpression<double>(TotalPurchaseAmount).As(aliased) as SelectExpression<double> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TotalPurchaseAmount));
 
             aliased = alias(nameof(PurchaseDate));
-            set &= aliased != nameof(PurchaseDate) ? new DateTimeSelectExpression(PurchaseDate).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PurchaseDate));
+            set &= aliased != nameof(PurchaseDate) ? new SelectExpression<DateTime>(PurchaseDate).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PurchaseDate));
 
             aliased = alias(nameof(ShipDate));
-            set &= aliased != nameof(ShipDate) ? new NullableDateTimeSelectExpression(ShipDate).As(aliased) as NullableDateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ShipDate));
+            set &= aliased != nameof(ShipDate) ? new SelectExpression<DateTime?>(ShipDate).As(aliased) as SelectExpression<DateTime?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ShipDate));
 
             aliased = alias(nameof(ExpectedDeliveryDate));
-            set &= aliased != nameof(ExpectedDeliveryDate) ? new NullableDateTimeSelectExpression(ExpectedDeliveryDate).As(aliased) as NullableDateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ExpectedDeliveryDate));
+            set &= aliased != nameof(ExpectedDeliveryDate) ? new SelectExpression<DateTime?>(ExpectedDeliveryDate).As(aliased) as SelectExpression<DateTime?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ExpectedDeliveryDate));
 
             aliased = alias(nameof(TrackingIdentifier));
-            set &= aliased != nameof(TrackingIdentifier) ? new NullableGuidSelectExpression(TrackingIdentifier).As(aliased) as NullableGuidSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TrackingIdentifier));
+            set &= aliased != nameof(TrackingIdentifier) ? new SelectExpression<Guid?>(TrackingIdentifier).As(aliased) as SelectExpression<Guid?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TrackingIdentifier));
 
             aliased = alias(nameof(PaymentMethodType));
-            set &= aliased != nameof(PaymentMethodType) ? new EnumSelectExpression<DbEx.Data.PaymentMethodType>(PaymentMethodType).As(aliased) as EnumSelectExpression<DbEx.Data.PaymentMethodType> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PaymentMethodType));
+            set &= aliased != nameof(PaymentMethodType) ? new SelectExpression<DbEx.Data.PaymentMethodType>(PaymentMethodType).As(aliased) as SelectExpression<DbEx.Data.PaymentMethodType> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PaymentMethodType));
 
             aliased = alias(nameof(PaymentSourceType));
-            set &= aliased != nameof(PaymentSourceType) ? new NullableEnumSelectExpression<DbEx.Data.PaymentSourceType>(PaymentSourceType).As(aliased) as NullableEnumSelectExpression<DbEx.Data.PaymentSourceType> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PaymentSourceType));
+            set &= aliased != nameof(PaymentSourceType) ? new SelectExpression<DbEx.Data.PaymentSourceType?>(PaymentSourceType).As(aliased) as SelectExpression<DbEx.Data.PaymentSourceType?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PaymentSourceType));
 
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new DateTimeSelectExpression(DateCreated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
 
             aliased = alias(nameof(DateUpdated));
-            set &= aliased != nameof(DateUpdated) ? new DateTimeSelectExpression(DateUpdated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
+            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
 
             return set;
         }
@@ -4531,13 +4247,6 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             #endregion
         }
@@ -4553,16 +4262,9 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
-            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4577,16 +4279,9 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override StringElement As(string alias)
-            {
-                return new StringSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4601,16 +4296,9 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override StringElement As(string alias)
-            {
-                return new StringSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4625,16 +4313,9 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override DoubleElement As(string alias)
-            {
-                return new DoubleSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(double value) => new AssignmentExpression(this, new LiteralExpression<double>(value, this));
-            public AssignmentExpression Set(DoubleElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<double> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4649,16 +4330,9 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
-            public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4673,18 +4347,11 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override NullableDateTimeElement As(string alias)
-            {
-                return new NullableDateTimeSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
-            public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DateTime? value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value, this));
-            public AssignmentExpression Set(NullableDateTimeElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<DateTime?> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
             #endregion
         }
@@ -4700,18 +4367,11 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override NullableDateTimeElement As(string alias)
-            {
-                return new NullableDateTimeSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
-            public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DateTime? value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value, this));
-            public AssignmentExpression Set(NullableDateTimeElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<DateTime?> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
             #endregion
         }
@@ -4727,25 +4387,18 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override NullableGuidElement As(string alias)
-            {
-                return new NullableGuidSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(Guid value) => new AssignmentExpression(this, new LiteralExpression<Guid>(value, this));
-            public AssignmentExpression Set(GuidElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<Guid> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(Guid? value) => new AssignmentExpression(this, new LiteralExpression<Guid?>(value, this));
-            public AssignmentExpression Set(NullableGuidElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<Guid?> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<Guid>(value, this));
             #endregion
         }
         #endregion
 
         #region payment method type field expression
-        public partial class PaymentMethodTypeField : EnumFieldExpression<Purchase, DbEx.Data.PaymentMethodType>
+        public partial class PaymentMethodTypeField : EnumFieldExpression<Purchase,DbEx.Data.PaymentMethodType>
         {
             #region constructors
             public PaymentMethodTypeField(string identifier, string name, PurchaseEntity entity) : base(identifier, name, entity)
@@ -4754,22 +4407,15 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override EnumElement<DbEx.Data.PaymentMethodType> As(string alias)
-            {
-                return new EnumSelectExpression<DbEx.Data.PaymentMethodType>(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(DbEx.Data.PaymentMethodType value) => new AssignmentExpression(this, new LiteralExpression<DbEx.Data.PaymentMethodType>(value, this));
-            public AssignmentExpression Set(EnumElement<DbEx.Data.PaymentMethodType> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<DbEx.Data.PaymentMethodType> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
 
         #region payment source type field expression
-        public partial class PaymentSourceTypeField : NullableEnumFieldExpression<Purchase, DbEx.Data.PaymentSourceType>
+        public partial class PaymentSourceTypeField : NullableEnumFieldExpression<Purchase,DbEx.Data.PaymentSourceType>
         {
             #region constructors
             public PaymentSourceTypeField(string identifier, string name, PurchaseEntity entity) : base(identifier, name, entity)
@@ -4778,18 +4424,11 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override NullableEnumElement<DbEx.Data.PaymentSourceType> As(string alias)
-            {
-                return new NullableEnumSelectExpression<DbEx.Data.PaymentSourceType>(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(DbEx.Data.PaymentSourceType value) => new AssignmentExpression(this, new LiteralExpression<DbEx.Data.PaymentSourceType>(value, this));
-            public AssignmentExpression Set(EnumElement<DbEx.Data.PaymentSourceType> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<DbEx.Data.PaymentSourceType> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DbEx.Data.PaymentSourceType? value) => new AssignmentExpression(this, new LiteralExpression<DbEx.Data.PaymentSourceType?>(value, this));
-            public AssignmentExpression Set(NullableEnumElement<DbEx.Data.PaymentSourceType> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<DbEx.Data.PaymentSourceType?> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DbEx.Data.PaymentSourceType>(value, this));
             #endregion
         }
@@ -4805,13 +4444,6 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             #endregion
         }
@@ -4824,13 +4456,6 @@ namespace DbEx.dboDataService
             public DateUpdatedField(string identifier, string name, PurchaseEntity entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
             }
             #endregion
 
@@ -4851,9 +4476,10 @@ namespace DbEx.dboDataService
         #endregion
 
         #region interface
+
         /// <summary>A <see cref="DbEx.dboDataService.PurchaseLineEntity.IdField"/> representing the "dbo.PurchaseLine.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.PurchaseLineEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4873,9 +4499,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly IdField Id;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.PurchaseLineEntity.PurchaseIdField"/> representing the "dbo.PurchaseLine.PurchaseId" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.PurchaseLineEntity.PurchaseIdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4892,9 +4519,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly PurchaseIdField PurchaseId;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.PurchaseLineEntity.ProductIdField"/> representing the "dbo.PurchaseLine.ProductId" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.PurchaseLineEntity.ProductIdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4911,9 +4539,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly ProductIdField ProductId;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.PurchaseLineEntity.PurchasePriceField"/> representing the "dbo.PurchaseLine.PurchasePrice" column in the database, 
         /// with a .NET type of <see cref="decimal"/>.  The <see cref="DbEx.dboDataService.PurchaseLineEntity.PurchasePriceField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDecimalElement"/> or <see cref="HatTrick.DbEx.Sql.DecimalElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Decimal}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4930,9 +4559,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly PurchasePriceField PurchasePrice;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.PurchaseLineEntity.QuantityField"/> representing the "dbo.PurchaseLine.Quantity" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.PurchaseLineEntity.QuantityField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4949,9 +4579,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly QuantityField Quantity;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.PurchaseLineEntity.DateCreatedField"/> representing the "dbo.PurchaseLine.DateCreated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbEx.dboDataService.PurchaseLineEntity.DateCreatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4971,9 +4602,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly DateCreatedField DateCreated;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.PurchaseLineEntity.DateUpdatedField"/> representing the "dbo.PurchaseLine.DateUpdated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbEx.dboDataService.PurchaseLineEntity.DateUpdatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5023,13 +4655,13 @@ namespace DbEx.dboDataService
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new Int32SelectExpression(Id)
-                ,new Int32SelectExpression(PurchaseId)
-                ,new Int32SelectExpression(ProductId)
-                ,new DecimalSelectExpression(PurchasePrice)
-                ,new Int32SelectExpression(Quantity)
-                ,new DateTimeSelectExpression(DateCreated)
-                ,new DateTimeSelectExpression(DateUpdated)
+                new SelectExpression<int>(Id)
+                ,new SelectExpression<int>(PurchaseId)
+                ,new SelectExpression<int>(ProductId)
+                ,new SelectExpression<decimal>(PurchasePrice)
+                ,new SelectExpression<int>(Quantity)
+                ,new SelectExpression<DateTime>(DateCreated)
+                ,new SelectExpression<DateTime>(DateUpdated)
             ));
         }
 
@@ -5042,25 +4674,25 @@ namespace DbEx.dboDataService
             string aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new Int32SelectExpression(Id).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
 
             aliased = alias(nameof(PurchaseId));
-            set &= aliased != nameof(PurchaseId) ? new Int32SelectExpression(PurchaseId).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PurchaseId));
+            set &= aliased != nameof(PurchaseId) ? new SelectExpression<int>(PurchaseId).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PurchaseId));
 
             aliased = alias(nameof(ProductId));
-            set &= aliased != nameof(ProductId) ? new Int32SelectExpression(ProductId).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ProductId));
+            set &= aliased != nameof(ProductId) ? new SelectExpression<int>(ProductId).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ProductId));
 
             aliased = alias(nameof(PurchasePrice));
-            set &= aliased != nameof(PurchasePrice) ? new DecimalSelectExpression(PurchasePrice).As(aliased) as DecimalSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PurchasePrice));
+            set &= aliased != nameof(PurchasePrice) ? new SelectExpression<decimal>(PurchasePrice).As(aliased) as SelectExpression<decimal> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PurchasePrice));
 
             aliased = alias(nameof(Quantity));
-            set &= aliased != nameof(Quantity) ? new Int32SelectExpression(Quantity).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Quantity));
+            set &= aliased != nameof(Quantity) ? new SelectExpression<int>(Quantity).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Quantity));
 
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new DateTimeSelectExpression(DateCreated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
 
             aliased = alias(nameof(DateUpdated));
-            set &= aliased != nameof(DateUpdated) ? new DateTimeSelectExpression(DateUpdated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
+            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
 
             return set;
         }
@@ -5109,13 +4741,6 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             #endregion
         }
@@ -5131,16 +4756,9 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
-            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -5155,16 +4773,9 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
-            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -5179,16 +4790,9 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override DecimalElement As(string alias)
-            {
-                return new DecimalSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
-            public AssignmentExpression Set(DecimalElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<decimal> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -5203,16 +4807,9 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
-            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -5224,13 +4821,6 @@ namespace DbEx.dboDataService
             public DateCreatedField(string identifier, string name, PurchaseLineEntity entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
             }
             #endregion
 
@@ -5249,13 +4839,6 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             #endregion
         }
@@ -5265,17 +4848,18 @@ namespace DbEx.dboDataService
     }
     #endregion
 
-    #region person total purchases view entity expression
-    public partial class PersonTotalPurchasesViewEntity : EntityExpression<PersonTotalPurchasesView>
+    #region unit test entity expression
+    public partial class UnitTestEntity : EntityExpression<UnitTest>
     {
         #region internals
         private SelectExpressionSet _inclusiveSelectExpressionSet;
         #endregion
 
         #region interface
-        /// <summary>A <see cref="DbEx.dboDataService.PersonTotalPurchasesViewEntity.IdField"/> representing the "dbo.PersonTotalPurchasesView.Id" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.PersonTotalPurchasesViewEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+
+        /// <summary>A <see cref="DbEx.dboDataService.UnitTestEntity.IdField"/> representing the "dbo.UnitTest.Id" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.UnitTestEntity.IdField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5292,9 +4876,1423 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly IdField Id;
 
+
+        /// <summary>A <see cref="DbEx.dboDataService.UnitTestEntity.BooleanField"/> representing the "dbo.UnitTest.Boolean" column in the database, 
+        /// with a .NET type of <see cref="bool"/>.  The <see cref="DbEx.dboDataService.UnitTestEntity.BooleanField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Boolean}"/>.
+        /// <para>Database Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>Boolean</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>bit</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly BooleanField Boolean;
+
+
+        /// <summary>A <see cref="DbEx.dboDataService.UnitTestEntity.NullableBooleanField"/> representing the "dbo.UnitTest.NullableBoolean" column in the database, 
+        /// with a .NET type of <see cref="bool"/>?.  The <see cref="DbEx.dboDataService.UnitTestEntity.NullableBooleanField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Boolean}"/>?.
+        /// <para>Database Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>NullableBoolean</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>bit</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly NullableBooleanField NullableBoolean;
+
+
+        /// <summary>A <see cref="DbEx.dboDataService.UnitTestEntity.ByteField"/> representing the "dbo.UnitTest.Byte" column in the database, 
+        /// with a .NET type of <see cref="byte"/>.  The <see cref="DbEx.dboDataService.UnitTestEntity.ByteField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Byte}"/>.
+        /// <para>Database Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>Byte</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>tinyint</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly ByteField Byte;
+
+
+        /// <summary>A <see cref="DbEx.dboDataService.UnitTestEntity.NullableByteField"/> representing the "dbo.UnitTest.NullableByte" column in the database, 
+        /// with a .NET type of <see cref="byte"/>?.  The <see cref="DbEx.dboDataService.UnitTestEntity.NullableByteField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Byte}"/>?.
+        /// <para>Database Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>NullableByte</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>tinyint</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly NullableByteField NullableByte;
+
+
+        /// <summary>A <see cref="DbEx.dboDataService.UnitTestEntity.ByteArrayField"/> representing the "dbo.UnitTest.ByteArray" column in the database, 
+        /// with a .NET type of <see cref="byte"/>[].  The <see cref="DbEx.dboDataService.UnitTestEntity.ByteArrayField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{ByteArray}"/>.
+        /// <para>Database Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>ByteArray</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>varbinary(MAX)</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly ByteArrayField ByteArray;
+
+
+        /// <summary>A <see cref="DbEx.dboDataService.UnitTestEntity.NullableByteArrayField"/> representing the "dbo.UnitTest.NullableByteArray" column in the database, 
+        /// with a .NET type of <see cref="byte"/>[].  The <see cref="DbEx.dboDataService.UnitTestEntity.NullableByteArrayField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{ByteArray}"/>.
+        /// <para>Database Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>NullableByteArray</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>varbinary(MAX)</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly NullableByteArrayField NullableByteArray;
+
+
+        /// <summary>A <see cref="DbEx.dboDataService.UnitTestEntity.DateTimeField"/> representing the "dbo.UnitTest.DateTime" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbEx.dboDataService.UnitTestEntity.DateTimeField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
+        /// <para>Database Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>DateTime</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>datetime2</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly DateTimeField DateTime;
+
+
+        /// <summary>A <see cref="DbEx.dboDataService.UnitTestEntity.NullableDateTimeField"/> representing the "dbo.UnitTest.NullableDateTime" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>?.  The <see cref="DbEx.dboDataService.UnitTestEntity.NullableDateTimeField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>?.
+        /// <para>Database Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>NullableDateTime</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>datetime2</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly NullableDateTimeField NullableDateTime;
+
+
+        /// <summary>A <see cref="DbEx.dboDataService.UnitTestEntity.DateTimeOffsetField"/> representing the "dbo.UnitTest.DateTimeOffset" column in the database, 
+        /// with a .NET type of <see cref="DateTimeOffset"/>.  The <see cref="DbEx.dboDataService.UnitTestEntity.DateTimeOffsetField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTimeOffset}"/>.
+        /// <para>Database Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>DateTimeOffset</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>datetimeoffset</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly DateTimeOffsetField DateTimeOffset;
+
+
+        /// <summary>A <see cref="DbEx.dboDataService.UnitTestEntity.NullableDateTimeOffsetField"/> representing the "dbo.UnitTest.NullableDateTimeOffset" column in the database, 
+        /// with a .NET type of <see cref="DateTimeOffset"/>?.  The <see cref="DbEx.dboDataService.UnitTestEntity.NullableDateTimeOffsetField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTimeOffset}"/>?.
+        /// <para>Database Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>NullableDateTimeOffset</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>datetimeoffset</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly NullableDateTimeOffsetField NullableDateTimeOffset;
+
+
+        /// <summary>A <see cref="DbEx.dboDataService.UnitTestEntity.DecimalField"/> representing the "dbo.UnitTest.Decimal" column in the database, 
+        /// with a .NET type of <see cref="decimal"/>.  The <see cref="DbEx.dboDataService.UnitTestEntity.DecimalField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Decimal}"/>.
+        /// <para>Database Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>Decimal</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>decimal(4,1)</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly DecimalField Decimal;
+
+
+        /// <summary>A <see cref="DbEx.dboDataService.UnitTestEntity.NullableDecimalField"/> representing the "dbo.UnitTest.NullableDecimal" column in the database, 
+        /// with a .NET type of <see cref="decimal"/>?.  The <see cref="DbEx.dboDataService.UnitTestEntity.NullableDecimalField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Decimal}"/>?.
+        /// <para>Database Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>NullableDecimal</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>decimal(4,1)</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly NullableDecimalField NullableDecimal;
+
+
+        /// <summary>A <see cref="DbEx.dboDataService.UnitTestEntity.DoubleField"/> representing the "dbo.UnitTest.Double" column in the database, 
+        /// with a .NET type of <see cref="double"/>.  The <see cref="DbEx.dboDataService.UnitTestEntity.DoubleField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Double}"/>.
+        /// <para>Database Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>Double</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>money</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly DoubleField Double;
+
+
+        /// <summary>A <see cref="DbEx.dboDataService.UnitTestEntity.NullableDoubleField"/> representing the "dbo.UnitTest.NullableDouble" column in the database, 
+        /// with a .NET type of <see cref="double"/>?.  The <see cref="DbEx.dboDataService.UnitTestEntity.NullableDoubleField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Double}"/>?.
+        /// <para>Database Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>NullableDouble</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>money</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly NullableDoubleField NullableDouble;
+
+
+        /// <summary>A <see cref="DbEx.dboDataService.UnitTestEntity.GuidField"/> representing the "dbo.UnitTest.Guid" column in the database, 
+        /// with a .NET type of <see cref="Guid"/>.  The <see cref="DbEx.dboDataService.UnitTestEntity.GuidField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Guid}"/>.
+        /// <para>Database Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>Guid</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>uniqueidentifier</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly GuidField Guid;
+
+
+        /// <summary>A <see cref="DbEx.dboDataService.UnitTestEntity.NullableGuidField"/> representing the "dbo.UnitTest.NullableGuid" column in the database, 
+        /// with a .NET type of <see cref="Guid"/>?.  The <see cref="DbEx.dboDataService.UnitTestEntity.NullableGuidField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Guid}"/>?.
+        /// <para>Database Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>NullableGuid</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>uniqueidentifier</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly NullableGuidField NullableGuid;
+
+
+        /// <summary>A <see cref="DbEx.dboDataService.UnitTestEntity.Int16Field"/> representing the "dbo.UnitTest.Int16" column in the database, 
+        /// with a .NET type of <see cref="short"/>.  The <see cref="DbEx.dboDataService.UnitTestEntity.Int16Field"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int16}"/>.
+        /// <para>Database Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>Int16</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>smallint</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly Int16Field Int16;
+
+
+        /// <summary>A <see cref="DbEx.dboDataService.UnitTestEntity.NullableInt16Field"/> representing the "dbo.UnitTest.NullableInt16" column in the database, 
+        /// with a .NET type of <see cref="short"/>?.  The <see cref="DbEx.dboDataService.UnitTestEntity.NullableInt16Field"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int16}"/>?.
+        /// <para>Database Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>NullableInt16</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>smallint</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly NullableInt16Field NullableInt16;
+
+
+        /// <summary>A <see cref="DbEx.dboDataService.UnitTestEntity.Int32Field"/> representing the "dbo.UnitTest.Int32" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.UnitTestEntity.Int32Field"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
+        /// <para>Database Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>Int32</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>int</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly Int32Field Int32;
+
+
+        /// <summary>A <see cref="DbEx.dboDataService.UnitTestEntity.NullableInt32Field"/> representing the "dbo.UnitTest.NullableInt32" column in the database, 
+        /// with a .NET type of <see cref="int"/>?.  The <see cref="DbEx.dboDataService.UnitTestEntity.NullableInt32Field"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>?.
+        /// <para>Database Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>NullableInt32</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>int</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly NullableInt32Field NullableInt32;
+
+
+        /// <summary>A <see cref="DbEx.dboDataService.UnitTestEntity.Int64Field"/> representing the "dbo.UnitTest.Int64" column in the database, 
+        /// with a .NET type of <see cref="long"/>.  The <see cref="DbEx.dboDataService.UnitTestEntity.Int64Field"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int64}"/>.
+        /// <para>Database Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>Int64</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>bigint</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly Int64Field Int64;
+
+
+        /// <summary>A <see cref="DbEx.dboDataService.UnitTestEntity.NullableInt64Field"/> representing the "dbo.UnitTest.NullableInt64" column in the database, 
+        /// with a .NET type of <see cref="long"/>?.  The <see cref="DbEx.dboDataService.UnitTestEntity.NullableInt64Field"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int64}"/>?.
+        /// <para>Database Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>NullableInt64</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>bigint</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly NullableInt64Field NullableInt64;
+
+
+        /// <summary>A <see cref="DbEx.dboDataService.UnitTestEntity.SingleField"/> representing the "dbo.UnitTest.Single" column in the database, 
+        /// with a .NET type of <see cref="float"/>.  The <see cref="DbEx.dboDataService.UnitTestEntity.SingleField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Single}"/>.
+        /// <para>Database Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>Single</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>real</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly SingleField Single;
+
+
+        /// <summary>A <see cref="DbEx.dboDataService.UnitTestEntity.NullableSingleField"/> representing the "dbo.UnitTest.NullableSingle" column in the database, 
+        /// with a .NET type of <see cref="float"/>?.  The <see cref="DbEx.dboDataService.UnitTestEntity.NullableSingleField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Single}"/>?.
+        /// <para>Database Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>NullableSingle</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>real</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly NullableSingleField NullableSingle;
+
+
+        /// <summary>A <see cref="DbEx.dboDataService.UnitTestEntity.StringField"/> representing the "dbo.UnitTest.String" column in the database, 
+        /// with a .NET type of <see cref="string"/>.  The <see cref="DbEx.dboDataService.UnitTestEntity.StringField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
+        /// <para>Database Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>String</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>varchar(20)</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly StringField String;
+
+
+        /// <summary>A <see cref="DbEx.dboDataService.UnitTestEntity.NullableStringField"/> representing the "dbo.UnitTest.NullableString" column in the database, 
+        /// with a .NET type of <see cref="string"/>.  The <see cref="DbEx.dboDataService.UnitTestEntity.NullableStringField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
+        /// <para>Database Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>NullableString</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>varchar(20)</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly NullableStringField NullableString;
+
+
+        /// <summary>A <see cref="DbEx.dboDataService.UnitTestEntity.TimeSpanField"/> representing the "dbo.UnitTest.TimeSpan" column in the database, 
+        /// with a .NET type of <see cref="TimeSpan"/>?.  The <see cref="DbEx.dboDataService.UnitTestEntity.TimeSpanField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{TimeSpan}"/>?.
+        /// <para>Database Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>TimeSpan</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>time</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly TimeSpanField TimeSpan;
+
+
+        /// <summary>A <see cref="DbEx.dboDataService.UnitTestEntity.NullableTimeSpanField"/> representing the "dbo.UnitTest.NullableTimeSpan" column in the database, 
+        /// with a .NET type of <see cref="TimeSpan"/>?.  The <see cref="DbEx.dboDataService.UnitTestEntity.NullableTimeSpanField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{TimeSpan}"/>?.
+        /// <para>Database Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>NullableTimeSpan</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>time</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly NullableTimeSpanField NullableTimeSpan;
+
+        #endregion
+
+        #region constructors
+        private UnitTestEntity() : base(null, null, null, null)
+        {
+        }
+
+        public UnitTestEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
+        {
+        }
+
+        private UnitTestEntity(string identifier, string name, SchemaExpression schema, string alias) : base(identifier, name, schema, alias)
+        {
+            Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", "Id", this));
+            Fields.Add($"{identifier}.Boolean", Boolean = new BooleanField($"{identifier}.Boolean", "Boolean", this));
+            Fields.Add($"{identifier}.NullableBoolean", NullableBoolean = new NullableBooleanField($"{identifier}.NullableBoolean", "NullableBoolean", this));
+            Fields.Add($"{identifier}.Byte", Byte = new ByteField($"{identifier}.Byte", "Byte", this));
+            Fields.Add($"{identifier}.NullableByte", NullableByte = new NullableByteField($"{identifier}.NullableByte", "NullableByte", this));
+            Fields.Add($"{identifier}.ByteArray", ByteArray = new ByteArrayField($"{identifier}.ByteArray", "ByteArray", this));
+            Fields.Add($"{identifier}.NullableByteArray", NullableByteArray = new NullableByteArrayField($"{identifier}.NullableByteArray", "NullableByteArray", this));
+            Fields.Add($"{identifier}.DateTime", DateTime = new DateTimeField($"{identifier}.DateTime", "DateTime", this));
+            Fields.Add($"{identifier}.NullableDateTime", NullableDateTime = new NullableDateTimeField($"{identifier}.NullableDateTime", "NullableDateTime", this));
+            Fields.Add($"{identifier}.DateTimeOffset", DateTimeOffset = new DateTimeOffsetField($"{identifier}.DateTimeOffset", "DateTimeOffset", this));
+            Fields.Add($"{identifier}.NullableDateTimeOffset", NullableDateTimeOffset = new NullableDateTimeOffsetField($"{identifier}.NullableDateTimeOffset", "NullableDateTimeOffset", this));
+            Fields.Add($"{identifier}.Decimal", Decimal = new DecimalField($"{identifier}.Decimal", "Decimal", this));
+            Fields.Add($"{identifier}.NullableDecimal", NullableDecimal = new NullableDecimalField($"{identifier}.NullableDecimal", "NullableDecimal", this));
+            Fields.Add($"{identifier}.Double", Double = new DoubleField($"{identifier}.Double", "Double", this));
+            Fields.Add($"{identifier}.NullableDouble", NullableDouble = new NullableDoubleField($"{identifier}.NullableDouble", "NullableDouble", this));
+            Fields.Add($"{identifier}.Guid", Guid = new GuidField($"{identifier}.Guid", "Guid", this));
+            Fields.Add($"{identifier}.NullableGuid", NullableGuid = new NullableGuidField($"{identifier}.NullableGuid", "NullableGuid", this));
+            Fields.Add($"{identifier}.Int16", Int16 = new Int16Field($"{identifier}.Int16", "Int16", this));
+            Fields.Add($"{identifier}.NullableInt16", NullableInt16 = new NullableInt16Field($"{identifier}.NullableInt16", "NullableInt16", this));
+            Fields.Add($"{identifier}.Int32", Int32 = new Int32Field($"{identifier}.Int32", "Int32", this));
+            Fields.Add($"{identifier}.NullableInt32", NullableInt32 = new NullableInt32Field($"{identifier}.NullableInt32", "NullableInt32", this));
+            Fields.Add($"{identifier}.Int64", Int64 = new Int64Field($"{identifier}.Int64", "Int64", this));
+            Fields.Add($"{identifier}.NullableInt64", NullableInt64 = new NullableInt64Field($"{identifier}.NullableInt64", "NullableInt64", this));
+            Fields.Add($"{identifier}.Single", Single = new SingleField($"{identifier}.Single", "Single", this));
+            Fields.Add($"{identifier}.NullableSingle", NullableSingle = new NullableSingleField($"{identifier}.NullableSingle", "NullableSingle", this));
+            Fields.Add($"{identifier}.String", String = new StringField($"{identifier}.String", "String", this));
+            Fields.Add($"{identifier}.NullableString", NullableString = new NullableStringField($"{identifier}.NullableString", "NullableString", this));
+            Fields.Add($"{identifier}.TimeSpan", TimeSpan = new TimeSpanField($"{identifier}.TimeSpan", "TimeSpan", this));
+            Fields.Add($"{identifier}.NullableTimeSpan", NullableTimeSpan = new NullableTimeSpanField($"{identifier}.NullableTimeSpan", "NullableTimeSpan", this));
+        }
+        #endregion
+
+        #region methods
+        public UnitTestEntity As(string name)
+            => new UnitTestEntity(this.identifier, this.name, this.schema, name);
+
+        protected override SelectExpressionSet GetInclusiveSelectExpression()
+        {
+            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
+                new SelectExpression<int>(Id)
+                ,new SelectExpression<bool>(Boolean)
+                ,new SelectExpression<bool?>(NullableBoolean)
+                ,new SelectExpression<byte>(Byte)
+                ,new SelectExpression<byte?>(NullableByte)
+                ,new SelectExpression<byte[]>(ByteArray)
+                ,new SelectExpression<byte[]>(NullableByteArray)
+                ,new SelectExpression<DateTime>(DateTime)
+                ,new SelectExpression<DateTime?>(NullableDateTime)
+                ,new SelectExpression<DateTimeOffset>(DateTimeOffset)
+                ,new SelectExpression<DateTimeOffset?>(NullableDateTimeOffset)
+                ,new SelectExpression<decimal>(Decimal)
+                ,new SelectExpression<decimal?>(NullableDecimal)
+                ,new SelectExpression<double>(Double)
+                ,new SelectExpression<double?>(NullableDouble)
+                ,new SelectExpression<Guid>(Guid)
+                ,new SelectExpression<Guid?>(NullableGuid)
+                ,new SelectExpression<short>(Int16)
+                ,new SelectExpression<short?>(NullableInt16)
+                ,new SelectExpression<int>(Int32)
+                ,new SelectExpression<int?>(NullableInt32)
+                ,new SelectExpression<long>(Int64)
+                ,new SelectExpression<long?>(NullableInt64)
+                ,new SelectExpression<float>(Single)
+                ,new SelectExpression<float?>(NullableSingle)
+                ,new SelectExpression<string>(String)
+                ,new SelectExpression<string>(NullableString)
+                ,new SelectExpression<TimeSpan?>(TimeSpan)
+                ,new SelectExpression<TimeSpan?>(NullableTimeSpan)
+            ));
+        }
+
+        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
+        {
+            if (alias is null)
+                throw new ArgumentNullException(nameof(alias));
+
+            SelectExpressionSet set = null;
+            string aliased = null;
+
+            aliased = alias(nameof(Id));
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+
+            aliased = alias(nameof(Boolean));
+            set &= aliased != nameof(Boolean) ? new SelectExpression<bool>(Boolean).As(aliased) as SelectExpression<bool> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Boolean));
+
+            aliased = alias(nameof(NullableBoolean));
+            set &= aliased != nameof(NullableBoolean) ? new SelectExpression<bool?>(NullableBoolean).As(aliased) as SelectExpression<bool?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(NullableBoolean));
+
+            aliased = alias(nameof(Byte));
+            set &= aliased != nameof(Byte) ? new SelectExpression<byte>(Byte).As(aliased) as SelectExpression<byte> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Byte));
+
+            aliased = alias(nameof(NullableByte));
+            set &= aliased != nameof(NullableByte) ? new SelectExpression<byte?>(NullableByte).As(aliased) as SelectExpression<byte?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(NullableByte));
+
+            aliased = alias(nameof(ByteArray));
+            set &= aliased != nameof(ByteArray) ? new SelectExpression<byte[]>(ByteArray).As(aliased) as SelectExpression<byte[]> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ByteArray));
+
+            aliased = alias(nameof(NullableByteArray));
+            set &= aliased != nameof(NullableByteArray) ? new SelectExpression<byte[]>(NullableByteArray).As(aliased) as SelectExpression<byte[]> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(NullableByteArray));
+
+            aliased = alias(nameof(DateTime));
+            set &= aliased != nameof(DateTime) ? new SelectExpression<DateTime>(DateTime).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateTime));
+
+            aliased = alias(nameof(NullableDateTime));
+            set &= aliased != nameof(NullableDateTime) ? new SelectExpression<DateTime?>(NullableDateTime).As(aliased) as SelectExpression<DateTime?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(NullableDateTime));
+
+            aliased = alias(nameof(DateTimeOffset));
+            set &= aliased != nameof(DateTimeOffset) ? new SelectExpression<DateTimeOffset>(DateTimeOffset).As(aliased) as SelectExpression<DateTimeOffset> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateTimeOffset));
+
+            aliased = alias(nameof(NullableDateTimeOffset));
+            set &= aliased != nameof(NullableDateTimeOffset) ? new SelectExpression<DateTimeOffset?>(NullableDateTimeOffset).As(aliased) as SelectExpression<DateTimeOffset?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(NullableDateTimeOffset));
+
+            aliased = alias(nameof(Decimal));
+            set &= aliased != nameof(Decimal) ? new SelectExpression<decimal>(Decimal).As(aliased) as SelectExpression<decimal> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Decimal));
+
+            aliased = alias(nameof(NullableDecimal));
+            set &= aliased != nameof(NullableDecimal) ? new SelectExpression<decimal?>(NullableDecimal).As(aliased) as SelectExpression<decimal?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(NullableDecimal));
+
+            aliased = alias(nameof(Double));
+            set &= aliased != nameof(Double) ? new SelectExpression<double>(Double).As(aliased) as SelectExpression<double> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Double));
+
+            aliased = alias(nameof(NullableDouble));
+            set &= aliased != nameof(NullableDouble) ? new SelectExpression<double?>(NullableDouble).As(aliased) as SelectExpression<double?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(NullableDouble));
+
+            aliased = alias(nameof(Guid));
+            set &= aliased != nameof(Guid) ? new SelectExpression<Guid>(Guid).As(aliased) as SelectExpression<Guid> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Guid));
+
+            aliased = alias(nameof(NullableGuid));
+            set &= aliased != nameof(NullableGuid) ? new SelectExpression<Guid?>(NullableGuid).As(aliased) as SelectExpression<Guid?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(NullableGuid));
+
+            aliased = alias(nameof(Int16));
+            set &= aliased != nameof(Int16) ? new SelectExpression<short>(Int16).As(aliased) as SelectExpression<short> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Int16));
+
+            aliased = alias(nameof(NullableInt16));
+            set &= aliased != nameof(NullableInt16) ? new SelectExpression<short?>(NullableInt16).As(aliased) as SelectExpression<short?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(NullableInt16));
+
+            aliased = alias(nameof(Int32));
+            set &= aliased != nameof(Int32) ? new SelectExpression<int>(Int32).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Int32));
+
+            aliased = alias(nameof(NullableInt32));
+            set &= aliased != nameof(NullableInt32) ? new SelectExpression<int?>(NullableInt32).As(aliased) as SelectExpression<int?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(NullableInt32));
+
+            aliased = alias(nameof(Int64));
+            set &= aliased != nameof(Int64) ? new SelectExpression<long>(Int64).As(aliased) as SelectExpression<long> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Int64));
+
+            aliased = alias(nameof(NullableInt64));
+            set &= aliased != nameof(NullableInt64) ? new SelectExpression<long?>(NullableInt64).As(aliased) as SelectExpression<long?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(NullableInt64));
+
+            aliased = alias(nameof(Single));
+            set &= aliased != nameof(Single) ? new SelectExpression<float>(Single).As(aliased) as SelectExpression<float> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Single));
+
+            aliased = alias(nameof(NullableSingle));
+            set &= aliased != nameof(NullableSingle) ? new SelectExpression<float?>(NullableSingle).As(aliased) as SelectExpression<float?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(NullableSingle));
+
+            aliased = alias(nameof(String));
+            set &= aliased != nameof(String) ? new SelectExpression<string>(String).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(String));
+
+            aliased = alias(nameof(NullableString));
+            set &= aliased != nameof(NullableString) ? new SelectExpression<string>(NullableString).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(NullableString));
+
+            aliased = alias(nameof(TimeSpan));
+            set &= aliased != nameof(TimeSpan) ? new SelectExpression<TimeSpan?>(TimeSpan).As(aliased) as SelectExpression<TimeSpan?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TimeSpan));
+
+            aliased = alias(nameof(NullableTimeSpan));
+            set &= aliased != nameof(NullableTimeSpan) ? new SelectExpression<TimeSpan?>(NullableTimeSpan).As(aliased) as SelectExpression<TimeSpan?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(NullableTimeSpan));
+
+            return set;
+        }
+		
+        protected override InsertExpressionSet<UnitTest> GetInclusiveInsertExpression(UnitTest unitTest)
+        {
+            return new InsertExpressionSet<UnitTest>(unitTest 
+                ,new InsertExpression<int>(unitTest.Id, Id)
+                ,new InsertExpression<bool>(unitTest.Boolean, Boolean)
+                ,new InsertExpression<bool?>(unitTest.NullableBoolean, NullableBoolean)
+                ,new InsertExpression<byte>(unitTest.Byte, Byte)
+                ,new InsertExpression<byte?>(unitTest.NullableByte, NullableByte)
+                ,new InsertExpression<byte[]>(unitTest.ByteArray, ByteArray)
+                ,new InsertExpression<byte[]>(unitTest.NullableByteArray, NullableByteArray)
+                ,new InsertExpression<DateTime>(unitTest.DateTime, DateTime)
+                ,new InsertExpression<DateTime?>(unitTest.NullableDateTime, NullableDateTime)
+                ,new InsertExpression<DateTimeOffset>(unitTest.DateTimeOffset, DateTimeOffset)
+                ,new InsertExpression<DateTimeOffset?>(unitTest.NullableDateTimeOffset, NullableDateTimeOffset)
+                ,new InsertExpression<decimal>(unitTest.Decimal, Decimal)
+                ,new InsertExpression<decimal?>(unitTest.NullableDecimal, NullableDecimal)
+                ,new InsertExpression<double>(unitTest.Double, Double)
+                ,new InsertExpression<double?>(unitTest.NullableDouble, NullableDouble)
+                ,new InsertExpression<Guid>(unitTest.Guid, Guid)
+                ,new InsertExpression<Guid?>(unitTest.NullableGuid, NullableGuid)
+                ,new InsertExpression<short>(unitTest.Int16, Int16)
+                ,new InsertExpression<short?>(unitTest.NullableInt16, NullableInt16)
+                ,new InsertExpression<int>(unitTest.Int32, Int32)
+                ,new InsertExpression<int?>(unitTest.NullableInt32, NullableInt32)
+                ,new InsertExpression<long>(unitTest.Int64, Int64)
+                ,new InsertExpression<long?>(unitTest.NullableInt64, NullableInt64)
+                ,new InsertExpression<float>(unitTest.Single, Single)
+                ,new InsertExpression<float?>(unitTest.NullableSingle, NullableSingle)
+                ,new InsertExpression<string>(unitTest.String, String)
+                ,new InsertExpression<string>(unitTest.NullableString, NullableString)
+                ,new InsertExpression<TimeSpan?>(unitTest.TimeSpan, TimeSpan)
+                ,new InsertExpression<TimeSpan?>(unitTest.NullableTimeSpan, NullableTimeSpan)
+            );
+        }
+
+        protected override AssignmentExpressionSet GetAssignmentExpression(UnitTest target, UnitTest source)
+        {
+            AssignmentExpressionSet expr = new AssignmentExpressionSet();
+
+            if (target.Id != source.Id) { expr &= Id.Set(source.Id); }
+            if (target.Boolean != source.Boolean) { expr &= Boolean.Set(source.Boolean); }
+            if (target.NullableBoolean != source.NullableBoolean) { expr &= NullableBoolean.Set(source.NullableBoolean); }
+            if (target.Byte != source.Byte) { expr &= Byte.Set(source.Byte); }
+            if (target.NullableByte != source.NullableByte) { expr &= NullableByte.Set(source.NullableByte); }
+            if (target.ByteArray != source.ByteArray) { expr &= ByteArray.Set(source.ByteArray); }
+            if (target.NullableByteArray != source.NullableByteArray) { expr &= NullableByteArray.Set(source.NullableByteArray); }
+            if (target.DateTime != source.DateTime) { expr &= DateTime.Set(source.DateTime); }
+            if (target.NullableDateTime != source.NullableDateTime) { expr &= NullableDateTime.Set(source.NullableDateTime); }
+            if (target.DateTimeOffset != source.DateTimeOffset) { expr &= DateTimeOffset.Set(source.DateTimeOffset); }
+            if (target.NullableDateTimeOffset != source.NullableDateTimeOffset) { expr &= NullableDateTimeOffset.Set(source.NullableDateTimeOffset); }
+            if (target.Decimal != source.Decimal) { expr &= Decimal.Set(source.Decimal); }
+            if (target.NullableDecimal != source.NullableDecimal) { expr &= NullableDecimal.Set(source.NullableDecimal); }
+            if (target.Double != source.Double) { expr &= Double.Set(source.Double); }
+            if (target.NullableDouble != source.NullableDouble) { expr &= NullableDouble.Set(source.NullableDouble); }
+            if (target.Guid != source.Guid) { expr &= Guid.Set(source.Guid); }
+            if (target.NullableGuid != source.NullableGuid) { expr &= NullableGuid.Set(source.NullableGuid); }
+            if (target.Int16 != source.Int16) { expr &= Int16.Set(source.Int16); }
+            if (target.NullableInt16 != source.NullableInt16) { expr &= NullableInt16.Set(source.NullableInt16); }
+            if (target.Int32 != source.Int32) { expr &= Int32.Set(source.Int32); }
+            if (target.NullableInt32 != source.NullableInt32) { expr &= NullableInt32.Set(source.NullableInt32); }
+            if (target.Int64 != source.Int64) { expr &= Int64.Set(source.Int64); }
+            if (target.NullableInt64 != source.NullableInt64) { expr &= NullableInt64.Set(source.NullableInt64); }
+            if (target.Single != source.Single) { expr &= Single.Set(source.Single); }
+            if (target.NullableSingle != source.NullableSingle) { expr &= NullableSingle.Set(source.NullableSingle); }
+            if (target.String != source.String) { expr &= String.Set(source.String); }
+            if (target.NullableString != source.NullableString) { expr &= NullableString.Set(source.NullableString); }
+            if (target.TimeSpan != source.TimeSpan) { expr &= TimeSpan.Set(source.TimeSpan); }
+            if (target.NullableTimeSpan != source.NullableTimeSpan) { expr &= NullableTimeSpan.Set(source.NullableTimeSpan); }
+            return expr;
+        }
+
+        protected override void HydrateEntity(ISqlFieldReader reader, UnitTest unitTest)
+        {
+            unitTest.Id = reader.ReadField().GetValue<int>();
+            unitTest.Boolean = reader.ReadField().GetValue<bool>();
+            unitTest.NullableBoolean = reader.ReadField().GetValue<bool?>();
+            unitTest.Byte = reader.ReadField().GetValue<byte>();
+            unitTest.NullableByte = reader.ReadField().GetValue<byte?>();
+            unitTest.ByteArray = reader.ReadField().GetValue<byte[]>();
+            unitTest.NullableByteArray = reader.ReadField().GetValue<byte[]>();
+            unitTest.DateTime = reader.ReadField().GetValue<DateTime>();
+            unitTest.NullableDateTime = reader.ReadField().GetValue<DateTime?>();
+            unitTest.DateTimeOffset = reader.ReadField().GetValue<DateTimeOffset>();
+            unitTest.NullableDateTimeOffset = reader.ReadField().GetValue<DateTimeOffset?>();
+            unitTest.Decimal = reader.ReadField().GetValue<decimal>();
+            unitTest.NullableDecimal = reader.ReadField().GetValue<decimal?>();
+            unitTest.Double = reader.ReadField().GetValue<double>();
+            unitTest.NullableDouble = reader.ReadField().GetValue<double?>();
+            unitTest.Guid = reader.ReadField().GetValue<Guid>();
+            unitTest.NullableGuid = reader.ReadField().GetValue<Guid?>();
+            unitTest.Int16 = reader.ReadField().GetValue<short>();
+            unitTest.NullableInt16 = reader.ReadField().GetValue<short?>();
+            unitTest.Int32 = reader.ReadField().GetValue<int>();
+            unitTest.NullableInt32 = reader.ReadField().GetValue<int?>();
+            unitTest.Int64 = reader.ReadField().GetValue<long>();
+            unitTest.NullableInt64 = reader.ReadField().GetValue<long?>();
+            unitTest.Single = reader.ReadField().GetValue<float>();
+            unitTest.NullableSingle = reader.ReadField().GetValue<float?>();
+            unitTest.String = reader.ReadField().GetValue<string>();
+            unitTest.NullableString = reader.ReadField().GetValue<string>();
+            unitTest.TimeSpan = reader.ReadField().GetValue<TimeSpan?>();
+            unitTest.NullableTimeSpan = reader.ReadField().GetValue<TimeSpan?>();
+        }
+		#endregion
+
+        #region classes
+        #region id field expression
+        public partial class IdField : Int32FieldExpression<UnitTest>
+        {
+            #region constructors
+            public IdField(string identifier, string name, UnitTestEntity entity) : base(identifier, name, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region boolean field expression
+        public partial class BooleanField : BooleanFieldExpression<UnitTest>
+        {
+            #region constructors
+            public BooleanField(string identifier, string name, UnitTestEntity entity) : base(identifier, name, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(bool value) => new AssignmentExpression(this, new LiteralExpression<bool>(value, this));
+            public AssignmentExpression Set(AnyElement<bool> value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region nullable boolean field expression
+        public partial class NullableBooleanField : NullableBooleanFieldExpression<UnitTest>
+        {
+            #region constructors
+            public NullableBooleanField(string identifier, string name, UnitTestEntity entity) : base(identifier, name, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(bool value) => new AssignmentExpression(this, new LiteralExpression<bool>(value, this));
+            public AssignmentExpression Set(AnyElement<bool> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(bool? value) => new AssignmentExpression(this, new LiteralExpression<bool?>(value, this));
+            public AssignmentExpression Set(AnyElement<bool?> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<bool>(value, this));
+            #endregion
+        }
+        #endregion
+
+        #region byte field expression
+        public partial class ByteField : ByteFieldExpression<UnitTest>
+        {
+            #region constructors
+            public ByteField(string identifier, string name, UnitTestEntity entity) : base(identifier, name, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(byte value) => new AssignmentExpression(this, new LiteralExpression<byte>(value, this));
+            public AssignmentExpression Set(AnyElement<byte> value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region nullable byte field expression
+        public partial class NullableByteField : NullableByteFieldExpression<UnitTest>
+        {
+            #region constructors
+            public NullableByteField(string identifier, string name, UnitTestEntity entity) : base(identifier, name, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(byte value) => new AssignmentExpression(this, new LiteralExpression<byte>(value, this));
+            public AssignmentExpression Set(AnyElement<byte> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(byte? value) => new AssignmentExpression(this, new LiteralExpression<byte?>(value, this));
+            public AssignmentExpression Set(AnyElement<byte?> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<byte>(value, this));
+            #endregion
+        }
+        #endregion
+
+        #region byte array field expression
+        public partial class ByteArrayField : ByteArrayFieldExpression<UnitTest>
+        {
+            #region constructors
+            public ByteArrayField(string identifier, string name, UnitTestEntity entity) : base(identifier, name, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(byte[] value) => new AssignmentExpression(this, new LiteralExpression<byte[]>(value, this));
+            public AssignmentExpression Set(AnyElement<byte[]> value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region nullable byte array field expression
+        public partial class NullableByteArrayField : NullableByteArrayFieldExpression<UnitTest>
+        {
+            #region constructors
+            public NullableByteArrayField(string identifier, string name, UnitTestEntity entity) : base(identifier, name, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(byte[] value) => new AssignmentExpression(this, new LiteralExpression<byte[]>(value, this));
+            public AssignmentExpression Set(AnyElement<byte[]> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<byte[]>(value, this));
+            #endregion
+        }
+        #endregion
+
+        #region date time field expression
+        public partial class DateTimeField : DateTimeFieldExpression<UnitTest>
+        {
+            #region constructors
+            public DateTimeField(string identifier, string name, UnitTestEntity entity) : base(identifier, name, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region nullable date time field expression
+        public partial class NullableDateTimeField : NullableDateTimeFieldExpression<UnitTest>
+        {
+            #region constructors
+            public NullableDateTimeField(string identifier, string name, UnitTestEntity entity) : base(identifier, name, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DateTime? value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime?> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            #endregion
+        }
+        #endregion
+
+        #region date time offset field expression
+        public partial class DateTimeOffsetField : DateTimeOffsetFieldExpression<UnitTest>
+        {
+            #region constructors
+            public DateTimeOffsetField(string identifier, string name, UnitTestEntity entity) : base(identifier, name, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(DateTimeOffset value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTimeOffset> value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region nullable date time offset field expression
+        public partial class NullableDateTimeOffsetField : NullableDateTimeOffsetFieldExpression<UnitTest>
+        {
+            #region constructors
+            public NullableDateTimeOffsetField(string identifier, string name, UnitTestEntity entity) : base(identifier, name, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(DateTimeOffset value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTimeOffset> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DateTimeOffset? value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset?>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTimeOffset?> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset>(value, this));
+            #endregion
+        }
+        #endregion
+
+        #region decimal field expression
+        public partial class DecimalField : DecimalFieldExpression<UnitTest>
+        {
+            #region constructors
+            public DecimalField(string identifier, string name, UnitTestEntity entity) : base(identifier, name, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
+            public AssignmentExpression Set(AnyElement<decimal> value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region nullable decimal field expression
+        public partial class NullableDecimalField : NullableDecimalFieldExpression<UnitTest>
+        {
+            #region constructors
+            public NullableDecimalField(string identifier, string name, UnitTestEntity entity) : base(identifier, name, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
+            public AssignmentExpression Set(AnyElement<decimal> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
+            public AssignmentExpression Set(AnyElement<decimal?> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
+            #endregion
+        }
+        #endregion
+
+        #region double field expression
+        public partial class DoubleField : DoubleFieldExpression<UnitTest>
+        {
+            #region constructors
+            public DoubleField(string identifier, string name, UnitTestEntity entity) : base(identifier, name, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(double value) => new AssignmentExpression(this, new LiteralExpression<double>(value, this));
+            public AssignmentExpression Set(AnyElement<double> value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region nullable double field expression
+        public partial class NullableDoubleField : NullableDoubleFieldExpression<UnitTest>
+        {
+            #region constructors
+            public NullableDoubleField(string identifier, string name, UnitTestEntity entity) : base(identifier, name, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(double value) => new AssignmentExpression(this, new LiteralExpression<double>(value, this));
+            public AssignmentExpression Set(AnyElement<double> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(double? value) => new AssignmentExpression(this, new LiteralExpression<double?>(value, this));
+            public AssignmentExpression Set(AnyElement<double?> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<double>(value, this));
+            #endregion
+        }
+        #endregion
+
+        #region guid field expression
+        public partial class GuidField : GuidFieldExpression<UnitTest>
+        {
+            #region constructors
+            public GuidField(string identifier, string name, UnitTestEntity entity) : base(identifier, name, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(Guid value) => new AssignmentExpression(this, new LiteralExpression<Guid>(value, this));
+            public AssignmentExpression Set(AnyElement<Guid> value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region nullable guid field expression
+        public partial class NullableGuidField : NullableGuidFieldExpression<UnitTest>
+        {
+            #region constructors
+            public NullableGuidField(string identifier, string name, UnitTestEntity entity) : base(identifier, name, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(Guid value) => new AssignmentExpression(this, new LiteralExpression<Guid>(value, this));
+            public AssignmentExpression Set(AnyElement<Guid> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(Guid? value) => new AssignmentExpression(this, new LiteralExpression<Guid?>(value, this));
+            public AssignmentExpression Set(AnyElement<Guid?> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<Guid>(value, this));
+            #endregion
+        }
+        #endregion
+
+        #region int16 field expression
+        public partial class Int16Field : Int16FieldExpression<UnitTest>
+        {
+            #region constructors
+            public Int16Field(string identifier, string name, UnitTestEntity entity) : base(identifier, name, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(short value) => new AssignmentExpression(this, new LiteralExpression<short>(value, this));
+            public AssignmentExpression Set(AnyElement<short> value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region nullable int16 field expression
+        public partial class NullableInt16Field : NullableInt16FieldExpression<UnitTest>
+        {
+            #region constructors
+            public NullableInt16Field(string identifier, string name, UnitTestEntity entity) : base(identifier, name, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(short value) => new AssignmentExpression(this, new LiteralExpression<short>(value, this));
+            public AssignmentExpression Set(AnyElement<short> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(short? value) => new AssignmentExpression(this, new LiteralExpression<short?>(value, this));
+            public AssignmentExpression Set(AnyElement<short?> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<short>(value, this));
+            #endregion
+        }
+        #endregion
+
+        #region int32 field expression
+        public partial class Int32Field : Int32FieldExpression<UnitTest>
+        {
+            #region constructors
+            public Int32Field(string identifier, string name, UnitTestEntity entity) : base(identifier, name, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region nullable int32 field expression
+        public partial class NullableInt32Field : NullableInt32FieldExpression<UnitTest>
+        {
+            #region constructors
+            public NullableInt32Field(string identifier, string name, UnitTestEntity entity) : base(identifier, name, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(int? value) => new AssignmentExpression(this, new LiteralExpression<int?>(value, this));
+            public AssignmentExpression Set(AnyElement<int?> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            #endregion
+        }
+        #endregion
+
+        #region int64 field expression
+        public partial class Int64Field : Int64FieldExpression<UnitTest>
+        {
+            #region constructors
+            public Int64Field(string identifier, string name, UnitTestEntity entity) : base(identifier, name, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(long value) => new AssignmentExpression(this, new LiteralExpression<long>(value, this));
+            public AssignmentExpression Set(AnyElement<long> value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region nullable int64 field expression
+        public partial class NullableInt64Field : NullableInt64FieldExpression<UnitTest>
+        {
+            #region constructors
+            public NullableInt64Field(string identifier, string name, UnitTestEntity entity) : base(identifier, name, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(long value) => new AssignmentExpression(this, new LiteralExpression<long>(value, this));
+            public AssignmentExpression Set(AnyElement<long> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(long? value) => new AssignmentExpression(this, new LiteralExpression<long?>(value, this));
+            public AssignmentExpression Set(AnyElement<long?> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<long>(value, this));
+            #endregion
+        }
+        #endregion
+
+        #region single field expression
+        public partial class SingleField : SingleFieldExpression<UnitTest>
+        {
+            #region constructors
+            public SingleField(string identifier, string name, UnitTestEntity entity) : base(identifier, name, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(float value) => new AssignmentExpression(this, new LiteralExpression<float>(value, this));
+            public AssignmentExpression Set(AnyElement<float> value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region nullable single field expression
+        public partial class NullableSingleField : NullableSingleFieldExpression<UnitTest>
+        {
+            #region constructors
+            public NullableSingleField(string identifier, string name, UnitTestEntity entity) : base(identifier, name, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(float value) => new AssignmentExpression(this, new LiteralExpression<float>(value, this));
+            public AssignmentExpression Set(AnyElement<float> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(float? value) => new AssignmentExpression(this, new LiteralExpression<float?>(value, this));
+            public AssignmentExpression Set(AnyElement<float?> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<float>(value, this));
+            #endregion
+        }
+        #endregion
+
+        #region string field expression
+        public partial class StringField : StringFieldExpression<UnitTest>
+        {
+            #region constructors
+            public StringField(string identifier, string name, UnitTestEntity entity) : base(identifier, name, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region nullable string field expression
+        public partial class NullableStringField : NullableStringFieldExpression<UnitTest>
+        {
+            #region constructors
+            public NullableStringField(string identifier, string name, UnitTestEntity entity) : base(identifier, name, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            #endregion
+        }
+        #endregion
+
+        #region time span field expression
+        public partial class TimeSpanField : TimeSpanFieldExpression<UnitTest>
+        {
+            #region constructors
+            public TimeSpanField(string identifier, string name, UnitTestEntity entity) : base(identifier, name, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(TimeSpan value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan>(value, this));
+            public AssignmentExpression Set(AnyElement<TimeSpan> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(TimeSpan? value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan?>(value, this));
+            public AssignmentExpression Set(AnyElement<TimeSpan?> value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region nullable time span field expression
+        public partial class NullableTimeSpanField : NullableTimeSpanFieldExpression<UnitTest>
+        {
+            #region constructors
+            public NullableTimeSpanField(string identifier, string name, UnitTestEntity entity) : base(identifier, name, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(TimeSpan value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan>(value, this));
+            public AssignmentExpression Set(AnyElement<TimeSpan> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(TimeSpan? value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan?>(value, this));
+            public AssignmentExpression Set(AnyElement<TimeSpan?> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan>(value, this));
+            #endregion
+        }
+        #endregion
+
+        #endregion
+    }
+    #endregion
+
+    #region person total purchases view entity expression
+    public partial class PersonTotalPurchasesViewEntity : EntityExpression<PersonTotalPurchasesView>
+    {
+        #region internals
+        private SelectExpressionSet _inclusiveSelectExpressionSet;
+        #endregion
+
+        #region interface
+
+        /// <summary>A <see cref="DbEx.dboDataService.PersonTotalPurchasesViewEntity.IdField"/> representing the "dbo.PersonTotalPurchasesView.Id" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.PersonTotalPurchasesViewEntity.IdField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
+        /// <para>Database Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>Id</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>int</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly IdField Id;
+
+
         /// <summary>A <see cref="DbEx.dboDataService.PersonTotalPurchasesViewEntity.TotalAmountField"/> representing the "dbo.PersonTotalPurchasesView.TotalAmount" column in the database, 
         /// with a .NET type of <see cref="double"/>?.  The <see cref="DbEx.dboDataService.PersonTotalPurchasesViewEntity.TotalAmountField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDoubleElement"/> or <see cref="HatTrick.DbEx.Sql.NullableDoubleElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Double}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5311,9 +6309,10 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly TotalAmountField TotalAmount;
 
+
         /// <summary>A <see cref="DbEx.dboDataService.PersonTotalPurchasesViewEntity.TotalCountField"/> representing the "dbo.PersonTotalPurchasesView.TotalCount" column in the database, 
         /// with a .NET type of <see cref="int"/>?.  The <see cref="DbEx.dboDataService.PersonTotalPurchasesViewEntity.TotalCountField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.NullableInt32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5356,9 +6355,9 @@ namespace DbEx.dboDataService
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new Int32SelectExpression(Id)
-                ,new NullableDoubleSelectExpression(TotalAmount)
-                ,new NullableInt32SelectExpression(TotalCount)
+                new SelectExpression<int>(Id)
+                ,new SelectExpression<double?>(TotalAmount)
+                ,new SelectExpression<int?>(TotalCount)
             ));
         }
 
@@ -5371,13 +6370,13 @@ namespace DbEx.dboDataService
             string aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new Int32SelectExpression(Id).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
 
             aliased = alias(nameof(TotalAmount));
-            set &= aliased != nameof(TotalAmount) ? new NullableDoubleSelectExpression(TotalAmount).As(aliased) as NullableDoubleSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TotalAmount));
+            set &= aliased != nameof(TotalAmount) ? new SelectExpression<double?>(TotalAmount).As(aliased) as SelectExpression<double?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TotalAmount));
 
             aliased = alias(nameof(TotalCount));
-            set &= aliased != nameof(TotalCount) ? new NullableInt32SelectExpression(TotalCount).As(aliased) as NullableInt32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TotalCount));
+            set &= aliased != nameof(TotalCount) ? new SelectExpression<int?>(TotalCount).As(aliased) as SelectExpression<int?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TotalCount));
 
             return set;
         }
@@ -5414,13 +6413,6 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             #endregion
         }
@@ -5436,14 +6428,8 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override NullableDoubleElement As(string alias)
-            {
-                return new NullableDoubleSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<double>(value, this));
             #endregion
         }
         #endregion
@@ -5458,14 +6444,8 @@ namespace DbEx.dboDataService
             }
             #endregion
 
-            #region as
-            public override NullableInt32Element As(string alias)
-            {
-                return new NullableInt32SelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             #endregion
         }
         #endregion
@@ -5960,6 +6940,17 @@ namespace DbEx.dboDataService
         /// </summary>
         public static PurchaseLineEntity PurchaseLine { get; private set; }
 
+        /// <summary>A <see cref="DbEx.dboDataService.UnitTestEntity"/> representing the "dbo.UnitTest" table in the database.
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>UnitTest</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public static UnitTestEntity UnitTest { get; private set; }
+
         /// <summary>A <see cref="DbEx.dboDataService.PersonTotalPurchasesViewEntity"/> representing the "dbo.PersonTotalPurchasesView" view in the database.
         /// <para>Properties:
         /// <list type="table">
@@ -5988,6 +6979,7 @@ namespace DbEx.dboDataService
             Product = schema.Product;
             Purchase = schema.Purchase;
             PurchaseLine = schema.PurchaseLine;
+            UnitTest = schema.UnitTest;
             PersonTotalPurchasesView = schema.PersonTotalPurchasesView;
         }
         #endregion
@@ -6024,9 +7016,10 @@ namespace DbEx.secDataService
         #endregion
 
         #region interface
+
         /// <summary>A <see cref="DbEx.secDataService.PersonEntity.IdField"/> representing the "sec.Person.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.secDataService.PersonEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -6043,9 +7036,10 @@ namespace DbEx.secDataService
         /// </summary>
         public readonly IdField Id;
 
+
         /// <summary>A <see cref="DbEx.secDataService.PersonEntity.SocialSecurityNumberField"/> representing the "sec.Person.SSN" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="DbEx.secDataService.PersonEntity.SocialSecurityNumberField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -6062,9 +7056,10 @@ namespace DbEx.secDataService
         /// </summary>
         public readonly SocialSecurityNumberField SocialSecurityNumber;
 
+
         /// <summary>A <see cref="DbEx.secDataService.PersonEntity.DateCreatedField"/> representing the "sec.Person.DateCreated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbEx.secDataService.PersonEntity.DateCreatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -6084,9 +7079,10 @@ namespace DbEx.secDataService
         /// </summary>
         public readonly DateCreatedField DateCreated;
 
+
         /// <summary>A <see cref="DbEx.secDataService.PersonEntity.DateUpdatedField"/> representing the "sec.Person.DateUpdated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbEx.secDataService.PersonEntity.DateUpdatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -6133,10 +7129,10 @@ namespace DbEx.secDataService
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new Int32SelectExpression(Id)
-                ,new StringSelectExpression(SocialSecurityNumber)
-                ,new DateTimeSelectExpression(DateCreated)
-                ,new DateTimeSelectExpression(DateUpdated)
+                new SelectExpression<int>(Id)
+                ,new SelectExpression<string>(SocialSecurityNumber)
+                ,new SelectExpression<DateTime>(DateCreated)
+                ,new SelectExpression<DateTime>(DateUpdated)
             ));
         }
 
@@ -6149,16 +7145,16 @@ namespace DbEx.secDataService
             string aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new Int32SelectExpression(Id).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
 
             aliased = alias(nameof(SocialSecurityNumber));
-            set &= aliased != nameof(SocialSecurityNumber) ? new StringSelectExpression(SocialSecurityNumber).As(aliased) as StringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(SocialSecurityNumber));
+            set &= aliased != nameof(SocialSecurityNumber) ? new SelectExpression<string>(SocialSecurityNumber).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(SocialSecurityNumber));
 
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new DateTimeSelectExpression(DateCreated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
 
             aliased = alias(nameof(DateUpdated));
-            set &= aliased != nameof(DateUpdated) ? new DateTimeSelectExpression(DateUpdated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
+            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
 
             return set;
         }
@@ -6200,16 +7196,9 @@ namespace DbEx.secDataService
             }
             #endregion
 
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
-            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -6224,16 +7213,9 @@ namespace DbEx.secDataService
             }
             #endregion
 
-            #region as
-            public override StringElement As(string alias)
-            {
-                return new StringSelectExpression(this).As(alias);
-            }
-            #endregion
-
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -6245,13 +7227,6 @@ namespace DbEx.secDataService
             public DateCreatedField(string identifier, string name, PersonEntity entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
             }
             #endregion
 
@@ -6267,13 +7242,6 @@ namespace DbEx.secDataService
             public DateUpdatedField(string identifier, string name, PersonEntity entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
             }
             #endregion
 

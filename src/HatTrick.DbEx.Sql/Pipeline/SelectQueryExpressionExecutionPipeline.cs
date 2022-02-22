@@ -1314,9 +1314,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 connection,
                 new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select),
                 cmd => {
-#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
                     cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
-#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
                     beforeExecution?.Invoke(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(database, expression, cmd, statement))); 
                     configureCommand?.Invoke(cmd); 
                 },
@@ -1374,9 +1372,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select),
                 async cmd =>
                 {
-#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
                     cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
-#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
                     if (beforeExecution is object)
                     {
                         await beforeExecution.InvokeAsync(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(database, expression, cmd, statementBuilder.CreateSqlStatement())), ct).ConfigureAwait(false);

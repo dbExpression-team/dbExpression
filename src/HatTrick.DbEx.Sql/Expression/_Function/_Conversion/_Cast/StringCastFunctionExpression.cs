@@ -23,11 +23,10 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class StringCastFunctionExpression :
         CastFunctionExpression<string>,
         StringElement,
-        AnyStringElement,
         IEquatable<StringCastFunctionExpression>
     {
         #region constructors
-        public StringCastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType, int size)
+        public StringCastFunctionExpression(AnyElement expression, DbTypeExpression convertToDbType, int size)
             : base(expression, convertToDbType, size)
         {
 
@@ -35,8 +34,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public StringElement As(string alias)
-            => new StringSelectExpression(this).As(alias);
+        public AnyElement<string> As(string alias)
+            => new SelectExpression<string>(this).As(alias);
         #endregion
 
         #region like

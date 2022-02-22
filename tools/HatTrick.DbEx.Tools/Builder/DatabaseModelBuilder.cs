@@ -78,7 +78,7 @@ namespace HatTrick.DbEx.Tools.Builder
                                     helpers.GetClrTypeOverride(column),
                                     helpers.IsEnum(column),
                                     helpers.AllowInsert(column),
-                                    helpers.AllowUpdate(column)
+                                    helpers.AllowUpdate(column) && !column.IsComputed && !column.IsIdentity
                                 )
                             );
 

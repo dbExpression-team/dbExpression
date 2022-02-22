@@ -25,11 +25,11 @@ namespace HatTrick.DbEx.MsSql.Builder
     public class MsSqlCastFunctionExpressionBuilder : MsSqlCast
     {
         #region internals
-        public IExpressionElement Expression { get; private set; }
+        public AnyElement Expression { get; private set; }
         #endregion
 
         #region constructors
-        public MsSqlCastFunctionExpressionBuilder(IExpressionElement expression)
+        public MsSqlCastFunctionExpressionBuilder(AnyElement expression)
         {
             Expression = expression;
         }

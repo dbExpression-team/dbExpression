@@ -45,10 +45,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task Can_omit_setting_field_value_before_update_assembly_event_when_updateing_an_entity_not_containing_the_field(int version, string expected = "XXX")
+        public async Task Can_omit_setting_field_value_before_update_assembly_event_when_updating_an_entity_not_containing_the_field(int version, string expected = "XXX")
         {
             //given
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeUpdateSqlStatementAssembly(context => context.SetFieldValue(dbo.Product.Description, expected)));
+            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeUpdateSqlStatementAssembly(context => context.SetFieldValue(dbo.Product.Name, expected)));
 
             //when
             await db.Update(dbo.Person.FirstName.Set(expected)).From(dbo.Person).Where(dbo.Person.Id == 1).ExecuteAsync();

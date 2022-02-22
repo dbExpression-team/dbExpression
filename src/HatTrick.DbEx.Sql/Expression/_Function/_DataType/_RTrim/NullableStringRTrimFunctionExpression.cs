@@ -23,7 +23,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableStringRTrimFunctionExpression :
         NullableRTrimFunctionExpression<string,string>,
         NullableStringElement,
-        AnyStringElement,
         IEquatable<NullableStringRTrimFunctionExpression>
     {
         #region constructors
@@ -35,8 +34,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public NullableStringElement As(string alias)
-            => new NullableStringSelectExpression(this).As(alias);
+        public  AnyElement<string> As(string alias)
+            => new SelectExpression<string>(this).As(alias);
         #endregion
 
         #region like

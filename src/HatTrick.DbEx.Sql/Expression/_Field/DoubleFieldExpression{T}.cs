@@ -32,11 +32,6 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public override DoubleElement As(string alias)
-            => new DoubleSelectExpression(this).As(alias);
-        #endregion
-
         #region equals
         public bool Equals(DoubleFieldExpression<TEntity> obj)
             => obj is DoubleFieldExpression<TEntity> && base.Equals(obj);

@@ -23,11 +23,10 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class Int16CastFunctionExpression :
         CastFunctionExpression<short>,
         Int16Element,
-        AnyInt16Element,
         IEquatable<Int16CastFunctionExpression>
     {
         #region constructors
-        public Int16CastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType)
+        public Int16CastFunctionExpression(AnyElement expression, DbTypeExpression convertToDbType)
             : base(expression, convertToDbType)
         {
 
@@ -35,8 +34,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public Int16Element As(string alias)
-            => new Int16SelectExpression(this).As(alias);
+        public AnyElement<short> As(string alias)
+            => new SelectExpression<short>(this).As(alias);
         #endregion
 
         #region equals

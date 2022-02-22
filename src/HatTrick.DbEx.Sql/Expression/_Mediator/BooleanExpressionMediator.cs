@@ -23,7 +23,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class BooleanExpressionMediator :
         ExpressionMediator<bool>,
         BooleanElement,
-        AnyBooleanElement,
         IEquatable<BooleanExpressionMediator>
     {
         #region constructors
@@ -41,8 +40,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public BooleanElement As(string alias)
-            => new BooleanSelectExpression(this).As(alias);
+        public AnyElement<bool> As(string alias)
+            => new SelectExpression<bool>(this).As(alias);
         #endregion
 
         #region equals

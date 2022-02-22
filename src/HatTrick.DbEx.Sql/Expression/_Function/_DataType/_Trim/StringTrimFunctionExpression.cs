@@ -23,24 +23,18 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class StringTrimFunctionExpression :
         TrimFunctionExpression<string>,
         StringElement,
-        AnyStringElement,
         IEquatable<StringTrimFunctionExpression>
     {
         #region constructors
-        public StringTrimFunctionExpression(StringElement expression) : base(expression)
-        {
-
-        }
-
-        public StringTrimFunctionExpression(AnyObjectElement expression) : base(expression)
+        public StringTrimFunctionExpression(AnyElement<string> expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public StringElement As(string alias)
-            => new StringSelectExpression(this).As(alias);
+        public AnyElement<string> As(string alias)
+            => new SelectExpression<string>(this).As(alias);
         #endregion
 
         #region equals

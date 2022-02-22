@@ -23,7 +23,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class TimeSpanExpressionMediator :
         ExpressionMediator<TimeSpan>,
         TimeSpanElement,
-        AnyTimeSpanElement,
         IEquatable<TimeSpanExpressionMediator>
     {
         #region constructors
@@ -41,8 +40,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public TimeSpanElement As(string alias)
-            => new TimeSpanSelectExpression(this).As(alias);
+        public AnyElement<TimeSpan> As(string alias)
+            => new SelectExpression<TimeSpan>(this).As(alias);
         #endregion
 
         #region equals

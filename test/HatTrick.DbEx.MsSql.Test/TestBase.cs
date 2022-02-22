@@ -34,6 +34,12 @@ namespace HatTrick.DbEx.MsSql.Test
                         .OverrideForEnumType<PaymentSourceType>().PersistAsString()
                 );
 
+                database.Conversions.UseDefaultFactory(x =>
+                    x.OverrideForReferenceType<ProductDescription>().Use(
+                        pd => pd is null ? null : System.Text.Json.JsonSerializer.Serialize(pd), 
+                        o => string.IsNullOrWhiteSpace(o as string) ? default : System.Text.Json.JsonSerializer.Deserialize<ProductDescription>(o as string))
+                    );
+
                 postConfigure?.Invoke(database);
             };
 

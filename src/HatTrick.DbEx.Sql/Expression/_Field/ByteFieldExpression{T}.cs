@@ -32,11 +32,6 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public override ByteElement As(string alias)
-            => new ByteSelectExpression(this).As(alias);
-        #endregion
-
         #region equals
         public bool Equals(ByteFieldExpression<TEntity> obj)
             => obj is ByteFieldExpression<TEntity> && base.Equals(obj);

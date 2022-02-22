@@ -23,19 +23,18 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class TimeSpanMinimumFunctionExpression :
         MinimumFunctionExpression<TimeSpan>,
         TimeSpanElement,
-        AnyTimeSpanElement,
         IEquatable<TimeSpanMinimumFunctionExpression>
     {
         #region constructors
-        public TimeSpanMinimumFunctionExpression(TimeSpanElement expression) : base(expression)
+        public TimeSpanMinimumFunctionExpression(AnyElement<TimeSpan> expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public TimeSpanElement As(string alias)
-            => new TimeSpanSelectExpression(this).As(alias);
+        public AnyElement<TimeSpan> As(string alias)
+            => new SelectExpression<TimeSpan>(this).As(alias);
         #endregion
 
         #region distinct

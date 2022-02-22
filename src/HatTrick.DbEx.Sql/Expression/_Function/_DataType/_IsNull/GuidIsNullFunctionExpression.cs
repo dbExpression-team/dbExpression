@@ -23,19 +23,18 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class GuidIsNullFunctionExpression :
         IsNullFunctionExpression<Guid>,
         GuidElement,
-        AnyGuidElement,
         IEquatable<GuidIsNullFunctionExpression>
     {
         #region constructors
-        public GuidIsNullFunctionExpression(AnyGuidElement expression, GuidElement value) : base(expression, value)
+        public GuidIsNullFunctionExpression(AnyElement<Guid?> expression, AnyElement<Guid> value) : base(expression, value)
         {
 
         }
         #endregion
 
         #region as
-        public GuidElement As(string alias)
-            => new GuidSelectExpression(this).As(alias);
+        public AnyElement<Guid> As(string alias)
+            => new SelectExpression<Guid>(this).As(alias);
         #endregion
 
         #region equals

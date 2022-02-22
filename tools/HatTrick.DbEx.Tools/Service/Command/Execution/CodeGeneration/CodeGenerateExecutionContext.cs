@@ -631,8 +631,12 @@ namespace HatTrick.DbEx.Tools.Service
             repo.Register(nameof(helpers.InsertSpaceOnCapitalizationAndToLower), (Func<string, string>)helpers.InsertSpaceOnCapitalizationAndToLower);
             repo.Register(nameof(helpers.FirstOrDefault), (Func<IEnumerable, object>)helpers.FirstOrDefault);
             repo.Register(nameof(helpers.Concat), (Func<string, string, string>)helpers.Concat);
+            repo.Register(nameof(helpers.Replace), (Func<string, string, string, string>)helpers.Replace);
             repo.Register(nameof(helpers.GetTemplatePartial), (Func<string, string>)helpers.GetTemplatePartial);
             repo.Register(nameof(helpers.TrimStart), (Func<string, string, string>)helpers.TrimStart);
+            repo.Register(nameof(helpers.BuildFieldExpressionTypeName), (Func<ColumnPairModel, string>)helpers.BuildFieldExpressionTypeName);
+            repo.Register(nameof(helpers.BuildExpressionElementTypeName), (Func<ColumnPairModel, string>)helpers.BuildExpressionElementTypeName);
+            repo.Register(nameof(helpers.BuildSelectExpressionTypeName), (Func<ColumnPairModel, string>)helpers.BuildSelectExpressionTypeName);
 
             string output = null;
             try

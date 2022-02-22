@@ -23,19 +23,18 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class DoubleAbsFunctionExpression :
         AbsFunctionExpression<double>,
         DoubleElement,
-        AnyDoubleElement, 
         IEquatable<DoubleAbsFunctionExpression>
     {
         #region constructors
-        public DoubleAbsFunctionExpression(DoubleElement expression) : base(expression)
+        public DoubleAbsFunctionExpression(AnyElement<double> expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public DoubleElement As(string alias)
-            => new DoubleSelectExpression(this).As(alias);
+        public AnyElement<double> As(string alias)
+            => new SelectExpression<double>(this).As(alias);
         #endregion
 
         #region distinct

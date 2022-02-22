@@ -337,7 +337,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             object result = exp.Execute();
 
             //then
-            result.Should().BeOfType<int>().Which.Should().Be(expected);
+            result.Should().BeOfType<long>().Which.Should().Be(expected);
         }
     }
 }

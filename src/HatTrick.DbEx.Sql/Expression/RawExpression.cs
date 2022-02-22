@@ -21,7 +21,8 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class RawExpression :
-        ObjectElement,
+        IExpressionElement,
+        ObjectElement<string>,
         IEquatable<RawExpression>
     {
         #region interface
@@ -40,8 +41,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public ObjectElement As(string alias)
-            => new ObjectSelectExpression(this).As(alias);
+        public AnyElement<string> As(string alias)
+            => new SelectExpression<string>(this).As(alias);
         #endregion
 
         #region tostring

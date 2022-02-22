@@ -80,8 +80,7 @@ namespace HatTrick.DbEx.Sql
 
             try
             {
-                var insert = context.Expression as InsertQueryExpression;
-                if (insert is null)
+                if (!(context.Expression is InsertQueryExpression insert))
                     return false;
 
                 var entity = insert.BaseEntity as IExpressionListProvider<FieldExpression>;
@@ -122,8 +121,7 @@ namespace HatTrick.DbEx.Sql
                 if (fieldExpression is null)
                     return false;
 
-                var insert = context.Expression as InsertQueryExpression;
-                if (insert is null)
+                if (!(context.Expression is InsertQueryExpression insert))
                     return false;
 
                 var found = (insert.BaseEntity as IExpressionListProvider<FieldExpression>).Expressions.SingleOrDefault(x => string.Compare((x as IExpressionNameProvider).Name, (fieldExpression as IExpressionNameProvider).Name, true) == 0);

@@ -23,29 +23,28 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableInt32AverageFunctionExpression :
         NullableAverageFunctionExpression<int,int?>,
         NullableInt32Element,
-        AnyInt32Element,
         IEquatable<NullableInt32AverageFunctionExpression>
     {
         #region constructors
-        public NullableInt32AverageFunctionExpression(NullableByteElement expression) : base(expression)
+        public NullableInt32AverageFunctionExpression(AnyElement<byte?> expression) : base(expression)
         {
 
         }
 
-        public NullableInt32AverageFunctionExpression(NullableInt16Element expression) : base(expression)
+        public NullableInt32AverageFunctionExpression(AnyElement<short?> expression) : base(expression)
         {
 
         }
 
-        public NullableInt32AverageFunctionExpression(NullableInt32Element expression) : base(expression)
+        public NullableInt32AverageFunctionExpression(AnyElement<int?> expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public NullableInt32Element As(string alias)
-            => new NullableInt32SelectExpression(this).As(alias);
+        public AnyElement<int?> As(string alias)
+            => new SelectExpression<int?>(this).As(alias);
         #endregion
 
         #region distinct

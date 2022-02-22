@@ -25,44 +25,43 @@ namespace HatTrick.DbEx.MsSql.Expression
     public partial class NullableSingleRoundFunctionExpression :
         NullableRoundFunctionExpression<float,float?>,
         NullableSingleElement,
-        AnySingleElement,
         IEquatable<NullableSingleRoundFunctionExpression>
     {
         #region constructors
-        public NullableSingleRoundFunctionExpression(NullableSingleElement expression, IntegralNumericElement length) : base(expression, length)
+        public NullableSingleRoundFunctionExpression(AnyElement<float?> expression, IntegralNumericElement length) : base(expression, length)
         {
 
         }
 
-        public NullableSingleRoundFunctionExpression(NullableSingleElement expression, IntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
+        public NullableSingleRoundFunctionExpression(AnyElement<float?> expression, IntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
         {
 
         }
 
-        public NullableSingleRoundFunctionExpression(NullableSingleElement expression, NullableIntegralNumericElement length) : base(expression, length)
+        public NullableSingleRoundFunctionExpression(AnyElement<float?> expression, NullableIntegralNumericElement length) : base(expression, length)
         {
 
         }
 
-        public NullableSingleRoundFunctionExpression(NullableSingleElement expression, NullableIntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
+        public NullableSingleRoundFunctionExpression(AnyElement<float?> expression, NullableIntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
         {
 
         }
 
-        public NullableSingleRoundFunctionExpression(NullableSingleElement expression, IntegralNumericElement length, NullableIntegralNumericElement function) : base(expression, length, function)
+        public NullableSingleRoundFunctionExpression(AnyElement<float?> expression, IntegralNumericElement length, NullableIntegralNumericElement function) : base(expression, length, function)
         {
 
         }
 
-        public NullableSingleRoundFunctionExpression(NullableSingleElement expression, NullableIntegralNumericElement length, NullableIntegralNumericElement function) : base(expression, length, function)
+        public NullableSingleRoundFunctionExpression(AnyElement<float?> expression, NullableIntegralNumericElement length, NullableIntegralNumericElement function) : base(expression, length, function)
         {
 
         }
         #endregion
 
         #region as
-        public NullableSingleElement As(string alias)
-            => new NullableSingleSelectExpression(this).As(alias);
+        public AnyElement<float?> As(string alias)
+            => new SelectExpression<float?>(this).As(alias);
         #endregion
 
         #region equals

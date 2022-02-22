@@ -24,7 +24,6 @@ namespace HatTrick.DbEx.MsSql.Expression
 {
     public partial class SysDateTimeOffsetFunctionExpression : DataTypeFunctionExpression,
         IExpressionElement<DateTime>,
-        AnyDateTimeElement,
         DateTimeElement,
         IEquatable<SysDateTimeOffsetFunctionExpression>
     {
@@ -36,8 +35,8 @@ namespace HatTrick.DbEx.MsSql.Expression
         #endregion
 
         #region as
-        public DateTimeElement As(string alias)
-            => new DateTimeSelectExpression(this).As(alias);
+        public AnyElement<DateTime> As(string alias)
+            => new SelectExpression<DateTime>(this).As(alias);
         #endregion
 
 

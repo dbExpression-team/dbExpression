@@ -23,6 +23,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class FieldExpression<TValue> : FieldExpression,
         IExpressionElement<TValue>,
+        AnyElement<TValue>,
         IEquatable<FieldExpression<TValue>>
     {
         #region constructors
@@ -30,6 +31,11 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
+        #endregion
+
+        #region as
+        public AnyElement<TValue> As(string alias)
+            => new SelectExpression<TValue>(this).As(alias);
         #endregion
 
         #region equals

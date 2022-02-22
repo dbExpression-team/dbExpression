@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ).From(dbo.Person);
 
             //when               
-            int result = exp.Execute();
+            object result = exp.Execute();
 
             //then
             result.Should().Be(expected);
@@ -45,7 +45,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .GroupBy(dbo.Person.Id);
 
             //when               
-            IList<int?> result = exp.Execute();
+            IList<object> result = exp.Execute();
 
             //then
             result.Should().HaveCount(expected);
@@ -60,7 +60,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.Max(db.fx.Coalesce(dbo.Person.CreditLimit, 1))
+                    db.fx.Max(db.fx.Coalesce<int>(dbo.Person.CreditLimit, 1))
                 ).From(dbo.Person);
 
             //when               
@@ -78,11 +78,11 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.Max(db.fx.Coalesce(dbo.Person.CreditLimit, dbo.Person.Id))
+                    db.fx.Max(db.fx.Coalesce<int>(dbo.Person.CreditLimit, dbo.Person.Id))
                 ).From(dbo.Person);
 
             //when               
-            int? result = exp.Execute();
+            int result = exp.Execute();
 
             //then
             result.Should().Be(expected);
@@ -96,7 +96,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.Max(db.fx.Coalesce(dbo.Person.CreditLimit, dbo.Person.YearOfLastCreditLimitReview))
+                    db.fx.Max(db.fx.Coalesce<int?>(dbo.Person.CreditLimit, dbo.Person.YearOfLastCreditLimitReview))
                 ).From(dbo.Person);
 
             //when               

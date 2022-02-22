@@ -32,11 +32,6 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public override GuidElement As(string alias) 
-            => new GuidSelectExpression(this).As(alias);
-        #endregion
-
         #region equals
         public bool Equals(GuidFieldExpression<TEntity> obj)
             => obj is GuidFieldExpression<TEntity> && base.Equals(obj);

@@ -23,19 +23,18 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class DateTimeOffsetIsNullFunctionExpression :
         IsNullFunctionExpression<DateTimeOffset>,
         DateTimeOffsetElement,
-        AnyDateTimeOffsetElement,
         IEquatable<DateTimeOffsetIsNullFunctionExpression>
     {
         #region constructors
-        public DateTimeOffsetIsNullFunctionExpression(AnyDateTimeOffsetElement expression, DateTimeOffsetElement value) : base(expression, value)
+        public DateTimeOffsetIsNullFunctionExpression(AnyElement<DateTimeOffset?> expression, AnyElement<DateTimeOffset> value) : base(expression, value)
         {
 
         }
         #endregion
 
         #region as
-        public DateTimeOffsetElement As(string alias)
-            => new DateTimeOffsetSelectExpression(this).As(alias);
+        public AnyElement<DateTimeOffset> As(string alias)
+            => new SelectExpression<DateTimeOffset>(this).As(alias);
         #endregion
 
         #region equals

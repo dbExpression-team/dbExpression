@@ -23,7 +23,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableByteArrayExpressionMediator :
         ExpressionMediator<byte[]>,
         NullableByteArrayElement,
-        AnyByteArrayElement,
         IEquatable<NullableByteArrayExpressionMediator>
     {
         #region constructors
@@ -41,8 +40,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public NullableByteArrayElement As(string alias)
-            => new NullableByteArraySelectExpression(this).As(alias);
+        public AnyElement<byte[]> As(string alias)
+            => new SelectExpression<byte[]>(this).As(alias);
         #endregion
 
         #region equals

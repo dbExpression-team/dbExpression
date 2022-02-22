@@ -32,11 +32,6 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public override NullableDecimalElement As(string alias)
-            => new NullableDecimalSelectExpression(this).As(alias);
-        #endregion
-
         #region equals
         public bool Equals(NullableDecimalFieldExpression<TEntity> obj)
             => obj is NullableDecimalFieldExpression<TEntity> && base.Equals(obj);

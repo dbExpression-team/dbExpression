@@ -32,11 +32,6 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public override NullableDateTimeOffsetElement As(string alias)
-            => new NullableDateTimeOffsetSelectExpression(this).As(alias);
-        #endregion
-
         #region equals
         public bool Equals(NullableDateTimeOffsetFieldExpression<TEntity> obj)
             => obj is NullableDateTimeOffsetFieldExpression<TEntity> && base.Equals(obj);

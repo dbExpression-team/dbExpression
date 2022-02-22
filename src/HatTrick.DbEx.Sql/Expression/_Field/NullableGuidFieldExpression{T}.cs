@@ -32,11 +32,6 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public override NullableGuidElement As(string alias)
-            => new NullableGuidSelectExpression(this).As(alias);
-        #endregion
-
         #region equals
         public bool Equals(NullableGuidFieldExpression<TEntity> obj)
             => obj is NullableGuidFieldExpression<TEntity> && base.Equals(obj);
