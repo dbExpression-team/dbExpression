@@ -46,10 +46,10 @@ with other expressions.  For example, to use the Average function in composition
 ```
 the IsNull database function must return something that can be used as input to the Average database function.  To support this, the IsNull
 function, through implicit conversion, is converted to a ```DecimalExpressionMediator```, which the Average database function can work with
-as the fluent syntax (and constructor args for the Average database function) accept a ```DecimalExpressionMediator```.  This also means that
-the IsNull database function can work with any database function (or expression) added later that accepts a ```DecimalExpressionMediator```, with
+as the fluent syntax (and constructor args for the Average database function) accept a ```AnyElement<decimal>```.  This also means that
+the IsNull database function can work with any database function (or expression) added later that accepts a ```AnyElement<decimal>```, with
 no changes required to the implementation of the IsNull database function.  Also note that the IsNull database function is convertible to a
-```StringExpressionMediator```, but the Average fluent syntax does not have an overload that accepts a ```StringExpressionMediator```, nor
+```AnyElement<string>```, but the Average fluent syntax does not have an overload that accepts a ```AnyElement<string>```, nor
 is there a concrete class for the ```string``` variant of the Average database function (```StringAverageFunctionExpression```); as database 
 platforms do not support performing an Average on ```string```s.
 
@@ -70,7 +70,7 @@ any existing database function:
 
 We'll use the Floor database function as an example.  The Floor database function accepts any numeric data type, and
 returns the same data type.  So, an input value of ```3.1415m``` would result in ```3.0m```.  The Floor database function therefore extends
-the abstract DataTypeFunctionExpression type as it is not perform aggregation on data, nor does it change the return data type.
+the abstract ```DataTypeFunctionExpression``` type as it is does not perform aggregation on data, nor does it change the return data type.
 
 1.  The first step is to create the base level concrete classes, with appropriate constructors.  The Floor database function works on any 
 numeeric data type, so we will need the following concrete classes (under Expression/_Function/_DataType/_Floor):
@@ -93,11 +93,10 @@ numeeric data type, so we will need the following concrete classes (under Expres
 - NullableInt64FloorFunctionExpression.cs
 - NullableSingleFloorFunctionExpression.cs
 
-Add FloorFunctionExpression.cs, which is an abstract class extending DataTypeFunctionExpression and implmenting the IDbFunctionExpresion, 
-IExpressionAliasProvider, and IEquatable<FloorFunctionExpression> interfaces.  Provide a protected constructor that accepts a non-generic 
-ExpressionMediator as a constructor arg (concrete implementation classes that extend the FloorFunctionExpression
-can define more concrete argument types).  Implement the interfaces similar to other database function classes.  Note that the As method
-is a "new" implementation to change the return type to FloorFunctionExpression.  The end result of FloorFunctionExpression.cs:
+Add FloorFunctionExpression.cs, which is an abstract class extending ```DataTypeFunctionExpression```, implementing the relevant interfaces (see other functions
+for examples).  Provide a protected constructor that accepts a non-generic 
+```IExpressionElement``` as a constructor arg (concrete implementation classes that extend the FloorFunctionExpression
+can define more concrete argument types).  Implement the interfaces similar to other database function classes.  The end result of FloorFunctionExpression.cs:
 ```c#
 using System;
 
@@ -113,39 +112,32 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        protected FloorFunctionExpression(ExpressionMediator expression) : base(expression)
+        protected FloorFunctionExpression(IExpressionElement expression) : base(expression)
         {
-        }
-        #endregion
-
-        #region as
-        public new FloorFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
         }
         #endregion
 
         #region to string
-        public override string ToString() => $"FLOOR({Expression})";
+        public override string ToString() 
+		=> $"FLOOR({Expression})";
         #endregion
 
         #region equals
         public bool Equals(FloorFunctionExpression obj)
-         => base.Equals(obj);
+         	=> base.Equals(obj);
 
         public override bool Equals(object obj)
-         => obj is FloorFunctionExpression exp && Equals(exp);
+         	=> obj is FloorFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
-         => base.GetHashCode();
+         	=> base.GetHashCode();
         #endregion
     }
 }
 ```
 
-Add a class named FloorFunctionExpression\{T\}.cs, which is abstract and extends FloorFunctionExpression.  The class should simply provide about
-constructor that accetps an ExpressionMediator, generically typed to T.
+Add a class named FloorFunctionExpression\{T\}.cs, which is abstract and extends ```FloorFunctionExpression```.  The class should simply provide required
+constructors, generically typed to T.
 ```c#
 using System;
 
@@ -155,15 +147,14 @@ namespace HatTrick.DbEx.Sql.Expression
         where TValue : IComparable
     {
         #region constructors
-        protected FloorFunctionExpression(ExpressionMediator<TValue> expression) : base(expression)
+        protected FloorFunctionExpression(AnyElement<TValue> expression) : base(expression)
         {
         }
         #endregion
     }
 }
 ```
-Add a concrete (non-nullable) type for each data type that extends FloorFunctionExpression<TValue> and implements IEquatable.  Again, note
-that the As method is a "new" implementation to change the return type to ByteFloorFunctionExpression.  The ByteFloorFunctionExpression should resemble:
+Add a concrete (non-nullable) type for each data type that extends ```FloorFunctionExpression<TValue>``` and implements ```IEquatable```.  The ```ByteFloorFunctionExpression``` should resemble:
 ```c#
 using System;
 
@@ -171,6 +162,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class ByteFloorFunctionExpression : 
         FloorFunctionExpression<byte>,
+	ByteElement,
         IEquatable<ByteFloorFunctionExpression>
     {
         #region constructors
@@ -181,11 +173,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public new ByteFloorFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public new AnyElement<byte> As(string alias)
+        	=> new SelectExpression<byte>(this).As(alias);
         #endregion
 
         #region equals
@@ -202,17 +191,19 @@ namespace HatTrick.DbEx.Sql.Expression
 }
 ```
 
-Add all other concrete implementation types for all return types of the Floor database function similar to the BytefloorFunctionExpression.
+Add all other concrete implementation types for all return types of the Floor database function similar to the ```BytefloorFunctionExpression```.
  
 The same implementation patterns should be used for the Nullable versions of the Floor database function.  Add a file named NullableFloorFunctionExpression.cs that
-extends FloorFunctionExpression.:
+extends ```FloorFunctionExpression```:
 ```c#
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public abstract class NullableFloorFunctionExpression : FloorFunctionExpression
+    public abstract class NullableFloorFunctionExpression : FloorFunctionExpression,
+        IExpressionElement<TValue,TNullableValue>
+        where TValue : IComparable
     {
         #region constructors
-        protected NullableFloorFunctionExpression(ExpressionMediator expression) : base(expression)
+        protected NullableFloorFunctionExpression(IExpressionElement expression) : base(expression)
         {
         }
         #endregion
@@ -220,17 +211,18 @@ namespace HatTrick.DbEx.Sql.Expression
 }
 ```
 
-Add a class named NullableFloorFunctionExpression\{T\}.cs:
+Add a class named NullableFloorFunctionExpression\{T,U\}.cs:
 ```c#
 using System;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public abstract class NullableFloorFunctionExpression<TValue> : NullableFloorFunctionExpression
+    public abstract class NullableFloorFunctionExpression<TValue, TNullableValue> : FloorFunctionExpression
+        IExpressionElement<TValue, TNullableValue>
         where TValue : IComparable
     {
         #region constructors
-        protected NullableFloorFunctionExpression(NullableExpressionMediator<TValue> expression) : base(expression)
+        protected NullableFloorFunctionExpression(AnyElement<byte?> expression) : base(expression)
         {
 
         }
@@ -239,28 +231,26 @@ namespace HatTrick.DbEx.Sql.Expression
 }
 ```
 
-Similar to the ByteFloorFunctionExpression, add NullableByteFloorFunctionExpression\{T\}.cs, which extends NullableFloorFunctionExpression<TValue>.
+Similar to the ```ByteFloorFunctionExpression```, add NullableByteFloorFunctionExpression\{T,U\}.cs, which extends ```NullableFloorFunctionExpression<TValue,TNullableValue>```.
 ```c#
 using System;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableByteFloorFunctionExpression :
-        NullableFloorFunctionExpression<byte>,
+        NullableFloorFunctionExpression<byte,byte?>,
+	NullableByteElement,
         IEquatable<NullableByteFloorFunctionExpression>
     {
         #region constructors
-        public NullableByteFloorFunctionExpression(NullableExpressionMediator<byte> expression) : base(expression)
+        public NullableByteFloorFunctionExpression(AnyElement<byte?> expression) : base(expression)
         {
         }
         #endregion
 
         #region as
-        public new NullableByteFloorFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public AnyElement<byte?> As(string alias)
+            => new SelectExpression<byte?>(this).As(alias);
         #endregion
 
         #region equals
@@ -276,7 +266,7 @@ namespace HatTrick.DbEx.Sql.Expression
     }
 }
 ```
-Add additional concrete types that extend NullableFloorFunctionExpression<TValue>, one for each return type.
+Add additional concrete types that extend ```NullableFloorFunctionExpression<TValue,TNullableValue>```, one for each return type.
 
 2.  Next, create the metadata required to code generate additional implementation details of each of the concrete FloorFunctionExpression classes (things like
  implicit converters) for each data type (there's a lot for each one, so code generation is used to cut down on the amount of hand-written code).  In the 
@@ -332,21 +322,21 @@ type; i.e. it won't return a divide for a ```string``` type.
 5. Add the fluent syntax to support the function in the appropriate file.  The floor function is used in SqlServer, MySql, Oracle, and Postres, so syntax should be added to the base sql
 builder (```SqlFunctionExpressionBuilder```).  Here we are defining what happens when someone types ```db.fx.Floor(...``` so provide all the appropriate overloads:
 ```c#
-public static ByteFloorFunctionExpression Floor(ByteExpressionMediator field)
-	=> new ByteFloorFunctionExpression(field);
+public static ByteFloorFunctionExpression Floor(AnyElement<byte> element)
+	=> new ByteFloorFunctionExpression(element);
 
-public static NullableByteFloorFunctionExpression Floor(NullableByteExpressionMediator field)
-	=> new NullableByteFloorFunctionExpression(field);
+public static NullableByteFloorFunctionExpression Floor(AnyElement<byte?> element)
+	=> new NullableByteFloorFunctionExpression(element);
 
-public static Int16FloorFunctionExpression Floor(Int16ExpressionMediator field)
-	=> new Int16FloorFunctionExpression(field);
+public static Int16FloorFunctionExpression Floor(AnyElement<int> element)
+	=> new Int16FloorFunctionExpression(element);
 
-public static NullableInt16FloorFunctionExpression Floor(NullableInt16ExpressionMediator field)
-	=> new NullableInt16FloorFunctionExpression(field);
+public static NullableInt16FloorFunctionExpression Floor(AnyElement<int?> element)
+	=> new NullableInt16FloorFunctionExpression(element);
 
 //continue with other data types
 ```
-Note that each accepts some form of an expression mediator.  This means that any expression that can be converted to an expression mediator can be used with the floor function.
+Note that each accepts some form of an ```AnyElement```.  This means that any expression that can be converted to this interface type can be used with the floor function.
 
 6.  Add an appender for the function.  Using the floor function example, add FloorFunctionExpressionPartAppender.cs to HatTrick.DbEx.Sql/Assembler/_Appenders/_Functions.  The role of the appender
 is simply to accept a FloorFunctionExpression and append it to the sql statement writer.  As such, the FloorFunctionExpressionPartAppender class looks like:
@@ -355,23 +345,21 @@ using HatTrick.DbEx.Sql.Expression;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
-    public class FloorFunctionExpressionPartAppender : PartAppender<FloorFunctionExpression>
+    public class FloorFunctionExpressionPartAppender : ExpressionElementAppender<FloorFunctionExpression>
     {
         #region methods
-        public override void AppendPart(FloorFunctionExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
+        public override void AppendElement(FloorFunctionExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             builder.Appender.Write("FLOOR(");
-            builder.AppendPart(expression.Expression, context);
+            builder.AppendElement((expression as IExpressionProvider<IExpressionElement>).Expression, context);
             builder.Appender.Write(")");
-
-            AppendAlias(expression, builder, context);
         }
         #endregion
     }
 }
 ```
 Ensure to allow the builder to append parts that don't have anything to do with the Floor database function (```builder.AppendPart(expression.Expression, context```).  This is because
-this could be any expression type supported by the floor function, like a FieldExpression, another database function, a literal value, etc.  For example, the function expression could be
+this could be any expression type supported by the floor function, like a ```FieldExpression```, another database function, a literal value, etc.  For example, the function expression could be
 one of:
 ```c#
 db.fx.Floor(dbo.Purchase.TotalAmount)
@@ -384,8 +372,8 @@ db.fx.Floor(237.19m) //don't know why anyone would do this, but you get the poin
 7.  Add default registrations for the appender.  In ```HatTrick.DbEx.Sql.Assembler.SqlStatementBuilderFactory```, add a static readonly property referencing a ```FloorFunctionExpressionPartAppender``` (the appender
 is thread-safe and can be used/re-used by any thread).  In ```RegisterDefaultAppenders```, add the appender to the dictionary, creating a func that simply returns the static instance:
 ```c#
-private static readonly FloorFunctionExpressionPartAppender _floorFunctionAppender = new FloorFunctionExpressionPartAppender();
+private static readonly FloorFunctionExpressionAppender floorFunctionAppender = new FloorFunctionExpressionAppender();
 
-_partAppenders.TryAdd(typeof(FloorFunctionExpression), () => _floorFunctionAppender);
+RegisterElementAppender(floorFunctionAppender);
 ```
 8.  Add unit tests.
