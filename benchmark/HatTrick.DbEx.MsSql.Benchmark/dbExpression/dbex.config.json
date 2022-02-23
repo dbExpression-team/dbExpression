@@ -31,6 +31,14 @@
 		},
 		{
 			"apply": {
+				"ignore": true,
+				"to": {
+					"path": "dbo.UnitTest"
+				}
+			}
+		},
+		{
+			"apply": {
 				"name": "MsSqlDb",
 				"to": {
 					"path": "."

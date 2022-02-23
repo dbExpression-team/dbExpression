@@ -808,7 +808,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableInt32Element" />
-        ///, for example "dbo.:column.Entity.Name}.Id"
+        ///, for example "dbo.:column.Entity.Name}.CreditLimit"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<int?> SelectMany(NullableInt32Element element)
