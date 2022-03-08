@@ -49,7 +49,7 @@ namespace HatTrick.DbEx.Sql.Builder
         protected virtual void ApplyFrom<T>(Entity<T> entity)
             where T : class, IDbEntity
         {
-            if (!(entity is EntityExpression e))
+            if (entity is not EntityExpression e)
                 throw new DbExpressionException($"Expected {nameof(entity)} to be of type {nameof(EntityExpression)}.");          
             Expression.BaseEntity = e;
         }
@@ -64,21 +64,22 @@ namespace HatTrick.DbEx.Sql.Builder
             Expression.Distinct = true;
         }
 
-        protected void ApplyWhere(AnyWhereClause expression)
+        protected void ApplyWhere(AnyWhereClause? expression)
         {
             if (expression is null)
                 return;
 
-            if (!(expression is FilterExpressionSet set))
+            if (expression is not FilterExpressionSet set)
                 throw new DbExpressionException($"Expected {nameof(expression)} to be of type {nameof(FilterExpressionSet)}.");
 
-            if (Expression.Where is null || Expression.Where.IsEmpty)
+            var where = (Expression.Where as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>)?.Expression;
+            if (where is null || where.IsEmpty || Expression.Where is null)
                 Expression.Where = set;
             else
                 Expression.Where &= set;
         }
 
-        protected void ApplyOrderBy(IEnumerable<AnyOrderByClause> orderBy)
+        protected void ApplyOrderBy(IEnumerable<AnyOrderByClause>? orderBy)
         {
             if (orderBy is null || !orderBy.Any())
                 return;
@@ -86,7 +87,7 @@ namespace HatTrick.DbEx.Sql.Builder
             Expression.OrderBy &= new OrderByExpressionSet(orderBy);
         }
 
-        protected void ApplyGroupBy(IEnumerable<AnyGroupByClause> groupBy)
+        protected void ApplyGroupBy(IEnumerable<AnyGroupByClause>? groupBy)
         {
             if (groupBy is null || !groupBy.Any())
                 return;
@@ -94,12 +95,12 @@ namespace HatTrick.DbEx.Sql.Builder
             Expression.GroupBy &= new GroupByExpressionSet(groupBy);
         }
 
-        protected void ApplyHaving(AnyHavingClause having)
+        protected void ApplyHaving(AnyHavingClause? having)
         {
             if (having is null)
                 return;
 
-            if (!(having is FilterExpressionSet set))
+            if (having is not FilterExpressionSet set)
                 throw new DbExpressionException($"Expected {nameof(having)} to be of type {nameof(FilterExpressionSet)}.");
 
             Expression.Having &= new HavingExpression(set);

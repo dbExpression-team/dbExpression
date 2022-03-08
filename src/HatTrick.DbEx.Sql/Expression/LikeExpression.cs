@@ -17,6 +17,7 @@
 #endregion
 
 ﻿using System;
+using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -39,23 +40,22 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region tostring
-        public override string ToString()
+        public override string? ToString()
             => $"LIKE ({Expression})";
         #endregion
 
         #region equals
-        public bool Equals(LikeExpression obj)
+        public bool Equals(LikeExpression? obj)
         {
             if (obj is null) return false;
+            if (ReferenceEquals(this, obj)) return true;
 
-            if (Expression is null && obj.Expression is object) return false;
-            if (Expression is object && obj.Expression is null) return false;
-            if (!Expression.Equals(obj.Expression)) return false;
+            if (!Expression.SequenceEqual(obj.Expression)) return false;
 
             return true;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
             => obj is LikeExpression exp && Equals(exp);
 
         public override int GetHashCode()
@@ -66,7 +66,7 @@ namespace HatTrick.DbEx.Sql.Expression
                 const int multiplier = 16777619;
 
                 int hash = @base;
-                hash = (hash * multiplier) ^ (Expression is object ? Expression.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (Expression is not null ? Expression.GetHashCode() : 0);
                 return hash;
             }
         }

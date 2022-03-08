@@ -105,11 +105,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(NullableInt32DateDiffFunctionExpression obj)
-            => obj is NullableInt32DateDiffFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableInt32DateDiffFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableInt32DateDiffFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableInt32DateDiffFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

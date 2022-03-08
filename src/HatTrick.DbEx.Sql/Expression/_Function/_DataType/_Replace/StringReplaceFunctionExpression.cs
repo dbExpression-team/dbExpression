@@ -30,24 +30,43 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
+
+        public StringReplaceFunctionExpression(StringElement expression, AnyElement<string> pattern, AnyElement<string> replacement) : base(expression, pattern, replacement)
+        {
+
+        }
+
+        public StringReplaceFunctionExpression(StringElement expression, StringElement pattern, AnyElement<string> replacement) : base(expression, pattern, replacement)
+        {
+
+        }
+
+        public StringReplaceFunctionExpression(StringElement expression, StringElement pattern, StringElement replacement) : base(expression, pattern, replacement)
+        {
+
+        }
+        public StringReplaceFunctionExpression(StringElement expression, AnyElement<string> pattern, StringElement replacement) : base(expression, pattern, replacement)
+        {
+
+        }
         #endregion
 
         #region as
-        public AnyElement<string> As(string alias)
-            => new SelectExpression<string>(this).As(alias);
+        public StringElement As(string alias)
+            => new StringSelectExpression(this as StringElement).As(alias);
         #endregion
 
         #region like
         public FilterExpressionSet Like(string phrase)
-            => new FilterExpressionSet(new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
+            => new(new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
         #endregion
 
         #region equals
-        public bool Equals(StringReplaceFunctionExpression obj)
-            => obj is StringReplaceFunctionExpression && base.Equals(obj);
+        public bool Equals(StringReplaceFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is StringReplaceFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is StringReplaceFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

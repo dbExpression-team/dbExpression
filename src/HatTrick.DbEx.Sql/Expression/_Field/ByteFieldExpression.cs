@@ -33,11 +33,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(ByteFieldExpression obj)
-            => obj is ByteFieldExpression && base.Equals(obj);
+        public bool Equals(ByteFieldExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is ByteFieldExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is ByteFieldExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

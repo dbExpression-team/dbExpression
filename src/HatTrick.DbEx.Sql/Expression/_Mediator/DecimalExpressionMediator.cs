@@ -33,10 +33,6 @@ namespace HatTrick.DbEx.Sql.Expression
         public DecimalExpressionMediator(IExpressionElement expression) : base(expression)
         {
         }
-
-        protected DecimalExpressionMediator(IExpressionElement expression, string alias) : base(expression, alias)
-        {
-        }
         #endregion
 
         #region as
@@ -45,11 +41,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(DecimalExpressionMediator obj)
-            => obj is DecimalExpressionMediator && base.Equals(obj);
+        public bool Equals(DecimalExpressionMediator? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is DecimalExpressionMediator exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is DecimalExpressionMediator exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

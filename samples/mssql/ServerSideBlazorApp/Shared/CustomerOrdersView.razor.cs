@@ -14,11 +14,11 @@ namespace ServerSideBlazorApp.Shared
 
         private PagingParameters PagingParameters { get; set; } = PagingParameters.CreateDefault(25, DefaultSort);
         private Page<OrderSummaryModel> CurrentPage { get; set; } = Page<OrderSummaryModel>.CreateDefault();
-        private PagingParameters PreviousPagingParameters { get; set; }
-        private OrderDetailModel SelectedOrder { get; set; }
+        private PagingParameters? PreviousPagingParameters { get; set; }
+        private OrderDetailModel? SelectedOrder { get; set; }
 
-        [Parameter] public Func<PagingParameters, Task<Page<OrderSummaryModel>>> OnGetOrderPageAsync { get; set; }
-        [Parameter] public Func<int, Task<OrderDetailModel>> OnGetOrderDetailAsync { get; set; }
+        [Parameter] public Func<PagingParameters, Task<Page<OrderSummaryModel>>> OnGetOrderPageAsync { get; set; } = new Func<PagingParameters, Task<Page<OrderSummaryModel>>>(_ => Task.FromResult(new Page<OrderSummaryModel>()));
+        [Parameter] public Func<int, Task<OrderDetailModel>> OnGetOrderDetailAsync { get; set; } = new Func<int, Task<OrderDetailModel>>(_ => Task.FromResult(new OrderDetailModel()));
 
         private async Task FetchCurrentPageAsync()
         {

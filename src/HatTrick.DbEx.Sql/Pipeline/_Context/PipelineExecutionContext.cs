@@ -26,7 +26,9 @@ namespace HatTrick.DbEx.Sql.Pipeline
     {
         public RuntimeSqlDatabaseConfiguration Database { get; private set; }
         public QueryExpression Expression { get; private set; }
-        public virtual Type EntityType => (Expression.BaseEntity as IDbEntityTypeProvider).EntityType;
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+        public virtual Type EntityType => (Expression.BaseEntity as IDbEntityTypeProvider).EntityType; //TODO: interface
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
         protected PipelineExecutionContext(RuntimeSqlDatabaseConfiguration database, QueryExpression expression)
         {

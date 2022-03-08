@@ -1,5 +1,6 @@
 ﻿using Blazorise;
 using Blazorise.DataGrid;
+using HatTrick.DbEx.Sql.Expression;
 using ServerSideBlazorApp.Models;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ namespace ServerSideBlazorApp
 {
     public static class DataGridDataEventArgsExtensions
     {
-        public static T CreatePagingParameters<T,U>(this DataGridReadDataEventArgs<U> args, T previous, Sort defaultSort, Action<T> additionalConfiguration = null)
+        public static T CreatePagingParameters<T,U>(this DataGridReadDataEventArgs<U> args, T previous, Sort defaultSort, Action<T>? additionalConfiguration = null)
              where T : PagingParameters, new()
         {
             //args.Columns is assumed to be every column in the grid
@@ -23,7 +24,7 @@ namespace ServerSideBlazorApp
                 model.Offset = 0;
             }
 
-            var requestedSorting = args.Columns.Where(c => c.SortDirection != SortDirection.None).Select(r => new Sort(r.Field, r.SortDirection.ConvertSortDirection().Value)).ToList();
+            var requestedSorting = args.Columns.Where(c => c.SortDirection != SortDirection.None).Select(r => new Sort(r.Field, r.SortDirection.ConvertSortDirection() ?? OrderExpressionDirection.ASC)).ToList();
             var previousSorting = previous?.Sorting?.ToList() ?? new List<Sort>();
             var newSorting = new Sort[Math.Max(requestedSorting.Count, previousSorting.Count)];
             var newlyRequestedSorting = new List<Sort>();
@@ -59,7 +60,7 @@ namespace ServerSideBlazorApp
             return model;
         }
 
-        public static T CreatePagingParameters<T>(this DataGridPageChangedEventArgs args, T previous, Sort defaultSort, Action<T> additionalConfiguration = null)
+        public static T CreatePagingParameters<T>(this DataGridPageChangedEventArgs args, T previous, Sort defaultSort, Action<T>? additionalConfiguration = null)
             where T : PagingParameters, new()
         {
             //args.Columns is assumed to be every column in the grid
@@ -70,7 +71,7 @@ namespace ServerSideBlazorApp
                 Sorting = previous?.Sorting?.ToList() ?? new List<Sort>() {  defaultSort }
             };
 
-            if (args.PageSize != previous.Limit) //page size is changing
+            if (args.PageSize != (previous?.Limit ?? 0)) //page size is changing
             {
                 model.Offset = 0;
             }            

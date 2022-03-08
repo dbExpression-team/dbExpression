@@ -18,6 +18,7 @@
 
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
@@ -28,70 +29,87 @@ namespace HatTrick.DbEx.Tools.Configuration
 {
     public class DbExConfig
     {
-        public Source Source { get; set; }
+        public Source? Source { get; set; }
 
-        public string RootNamespace { get; set; }
+        public string? RootNamespace { get; set; }
 
-        public string DatabaseAccessor { get; set; }
+        public string DatabaseAccessor { get; set; } = "db";
 
-        public string WorkingDirectory { get; set; }
+        public string? WorkingDirectory { get; set; }
 
-        public string OutputDirectory { get; set; }
+        public string? OutputDirectory { get; set; }
 
-        public string[] Enums { get; set; }
+        public NullableFeature? Nullable { get; set; }
 
-        public Override[] Overrides { get; set; }
+        public string[] Enums { get; set; } = Array.Empty<string>();
+
+        public Override[] Overrides { get; set; } = Array.Empty<Override>();
     }
 
     public class Source
     {
-        public string Type { get; set; }
+        public string? Type { get; set; }
 
-        public ConnectionString ConnectionString { get; set; }
+        public ConnectionString? ConnectionString { get; set; }
     }
 
     public class ConnectionString
     {
-        public string Value { get; set; }
+        public string? Value { get; set; }
     }
 
     public class Override
     {
-        public Apply Apply { get; set; }
+        public Apply Apply { get; set; } = new();
+
+        public override string? ToString()
+        {
+            return $"{Apply}";
+        }
     }
 
     public class Apply
     {
         public bool Ignore { get; set; }
 
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
-        public string ClrType { get; set; }
+        public string? ClrType { get; set; }
 
-        public string[] Interfaces { get; set; }
+        public string[] Interfaces { get; set; } = Array.Empty<string>();
 
         public bool? AllowInsert { get; set; }
 
         public bool? AllowUpdate { get; set; }
 
-        public string Direction { get; set; }
+        public string? Direction { get; set; }
 
-        public ApplyTo To { get; set; }
+        public ApplyTo To { get; set; } = new();
 
         public string ToJson()
         {
             string json = JsonConvert.SerializeObject(this);
             return json;
         }
+
+        public override string? ToString()
+        {
+            return $"{To}, name: {Name}";
+        }
     }
 
     public class ApplyTo
     {
-        public string Path { get; set; }
+        public string? Path { get; set; }
 
-        public ObjectType ObjectType { get; set; }
+        public ObjectType ObjectType { get; set; } = Configuration.ObjectType.Any;
 
-        public Dictionary<string, object> Match { get; set; }
+        public Dictionary<string, object> Match { get; set; } = new();
+
+        public override string? ToString()
+        {
+            return $"path: {Path}, objectType: {ObjectType}, match: {Match.Keys.Aggregate(string.Empty, (s, k) => s += $",{k}", s => s.TrimStart(','))}";
+        }
     }
 
     public enum SourceTypeCode

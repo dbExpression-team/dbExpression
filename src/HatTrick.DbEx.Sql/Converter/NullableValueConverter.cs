@@ -22,16 +22,16 @@ namespace HatTrick.DbEx.Sql.Converter
 {
     public class NullableValueConverter : IValueConverter
     {
-        private Type type;
-        private Type underlyingType;
+        private readonly Type type;
+        private readonly Type underlyingType;
 
         public NullableValueConverter(Type type)
         {
             this.type = type;
-            this.underlyingType = Nullable.GetUnderlyingType(type);
+            this.underlyingType = Nullable.GetUnderlyingType(type)!;
         }
 
-        public virtual (Type Type, object ConvertedValue) ConvertToDatabase(object value)
+        public virtual (Type Type, object? ConvertedValue) ConvertToDatabase(object? value)
         {
             if (value is null)
                 return (type, default);
@@ -45,7 +45,7 @@ namespace HatTrick.DbEx.Sql.Converter
             return (type, Convert.ChangeType(value, underlyingType));
         }
 
-        public virtual object ConvertFromDatabase(object value)
+        public virtual object? ConvertFromDatabase(object? value)
         {
             if (value is null)
                 return default;
@@ -59,10 +59,10 @@ namespace HatTrick.DbEx.Sql.Converter
             return Convert.ChangeType(value, underlyingType);
         }
 
-        public virtual T ConvertFromDatabase<T>(object value)
+        public virtual T? ConvertFromDatabase<T>(object? value)
         {
             if (value is null)
-                return default;
+                 return default;
 
             if (typeof(T) == value.GetType())
                 return (T)value;

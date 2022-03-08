@@ -51,7 +51,7 @@ namespace HatTrick.DbEx.Sql.Configuration
             return caller;
         }
 
-        public IValueConverterFactoryContinuationConfigurationBuilder Use(Func<T, object> convertToDatabase, Func<object, T> convertFromDatabase)
+        public IValueConverterFactoryContinuationConfigurationBuilder Use(Func<T?, object?> convertToDatabase, Func<object?, T?> convertFromDatabase)
         {
             var converter = new DelegateValueConverter<T>(convertToDatabase, convertFromDatabase);
             factory.RegisterConverter(typeof(T), converter);

@@ -16,7 +16,7 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Expression
@@ -33,12 +33,17 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region equals
-        public bool Equals(ObjectCoalesceFunctionExpression obj)
-            => obj is ObjectCoalesceFunctionExpression && base.Equals(obj);
+        #region as
+        public new ObjectElement<object> As(string alias)
+            => new ObjectSelectExpression<object>(this).As(alias);
+        #endregion
 
-        public override bool Equals(object obj)
-            => obj is ObjectCoalesceFunctionExpression exp && base.Equals(exp);
+        #region equals
+        public bool Equals(ObjectCoalesceFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
+
+        public override bool Equals(object? obj)
+            => obj is ObjectCoalesceFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

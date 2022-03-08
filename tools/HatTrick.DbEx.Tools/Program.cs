@@ -76,9 +76,9 @@ namespace HatTrick.DbEx.Tools
             int colorAssign = msg.IndexOf('»');
             if (colorAssign > 1)//color assignment provided
             {
-                string color = msg.Substring(colorAssign + 1, msg.Length - (colorAssign + 1));
-                msg = msg.Substring(0, colorAssign);
-                if (Enum.TryParse<ConsoleColor>(color, out ConsoleColor cc))
+                string color = msg[(colorAssign + 1)..];
+                msg = msg[..colorAssign];
+                if (Enum.TryParse(color, out ConsoleColor cc))
                 {
                     Console.ForegroundColor = cc;
                 }
@@ -87,11 +87,11 @@ namespace HatTrick.DbEx.Tools
             if (msg.StartsWith("««")) //blank out current line and write over it...
             {
                 Console.Write($"\r{new string(' ', Console.CursorLeft)}\r");
-                Console.Write(msg.Substring(2));
+                Console.Write(msg[2..]);
             }
             else if (msg.StartsWith("«")) //intend same line continuation
             {
-                Console.Write(msg.Substring(1));
+                Console.Write(msg[1..]);
             }
             else
             {
@@ -123,12 +123,12 @@ namespace HatTrick.DbEx.Tools
         #region handle exception feedback
         private static void HandleExceptionFeedback(string json)
         {
-            dynamic obj = JsonConvert.DeserializeObject(json);
+            dynamic? obj = JsonConvert.DeserializeObject(json);
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(obj.Message);
+            Console.WriteLine(obj?.Message);
             Console.WriteLine(string.Empty);
             Console.ForegroundColor = _foregroundColor;
-            Console.WriteLine(obj.StackTrace);
+            Console.WriteLine(obj?.StackTrace);
         }
         #endregion
     }

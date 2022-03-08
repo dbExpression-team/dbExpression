@@ -53,17 +53,17 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(AliasExpression<T> obj)
+        public bool Equals(AliasExpression<T>? obj)
         {
             if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
 
             if (declaredType != obj.declaredType) return false;
 
-            return base.Equals(obj);
+            return true;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
             => obj is AliasExpression<T> exp && Equals(exp);
 
         public override int GetHashCode()

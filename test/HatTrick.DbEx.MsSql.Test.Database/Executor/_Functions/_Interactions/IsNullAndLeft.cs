@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Where(dbo.Address.Line2 == DBNull.Value);
 
             //when               
-            string result = exp.Execute();
+            string? result = exp.Execute();
 
             //then
             result.Should().Be(expected);
@@ -44,7 +44,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Where(dbo.Address.Line2 == DBNull.Value);
 
             //when               
-            string result = exp.Execute();
+            string? result = exp.Execute();
 
             //then
             result.Should().NotBeNull();
@@ -63,7 +63,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Where(dbo.Address.Line1 != DBNull.Value);
 
             //when               
-            string result = exp.Execute();
+            string? result = exp.Execute();
 
             //then
             result.Should().NotBe(expected);

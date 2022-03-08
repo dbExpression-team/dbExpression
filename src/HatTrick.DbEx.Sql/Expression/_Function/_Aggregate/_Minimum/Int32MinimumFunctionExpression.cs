@@ -46,11 +46,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(Int32MinimumFunctionExpression obj)
-            => obj is Int32MinimumFunctionExpression && base.Equals(obj);
+        public bool Equals(Int32MinimumFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is Int32MinimumFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is Int32MinimumFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

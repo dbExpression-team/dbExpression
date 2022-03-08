@@ -25,36 +25,36 @@ namespace HatTrick.DbEx.Sql.Configuration
     {
         #region internals
         private readonly RuntimeSqlDatabaseConfiguration configuration;
-        private IConnectionStringFactoryConfigurationBuilder _connectionString;
-        private ISqlStatementsConfigurationBuilderGrouping _assembler;
-        private ISqlDatabaseMetadataProviderConfigurationBuilder _metadata;
-        private IQueryExpressionFactoryConfigurationBuilder _queryExpressions;
-        private IValueConverterFactoryConfigurationBuilder _valueConverter;
-        private IExecutionPipelineEventConfigurationBuilder _event;
+        private IConnectionStringFactoryConfigurationBuilder? _connectionString;
+        private ISqlStatementsConfigurationBuilderGrouping? _assembler;
+        private ISqlDatabaseMetadataProviderConfigurationBuilder? _metadata;
+        private IQueryExpressionFactoryConfigurationBuilder? _queryExpressions;
+        private IValueConverterFactoryConfigurationBuilder? _valueConverter;
+        private IQueryExecutionPipelineEventConfigurationBuilder? _event;
 
-        private IEntitiesConfigurationBuilderGrouping _entities;
+        private IEntitiesConfigurationBuilderGrouping? _entities;
         #endregion
 
         #region interface
         RuntimeSqlDatabaseConfiguration IRuntimeSqlDatabaseConfigurationProvider.Configuration => configuration;
-        public IConnectionStringFactoryConfigurationBuilder ConnectionString => _connectionString ?? (_connectionString = new ConnectionStringFactoryConfigurationBuilder(configuration));
-        public ISqlDatabaseMetadataProviderConfigurationBuilder SchemaMetadata => _metadata ?? (_metadata = new SqlDatabaseMetadataProviderConfigurationBuilder(configuration));
-        public IQueryExpressionFactoryConfigurationBuilder QueryExpressions => _queryExpressions ?? (_queryExpressions = new QueryExpressionFactoryConfigurationBuilder(configuration));
-        public IEntitiesConfigurationBuilderGrouping Entities => _entities ?? (_entities = new EntitiesConfigurationBuilderGrouping(configuration));
-        public IValueConverterFactoryConfigurationBuilder Conversions => _valueConverter ?? (_valueConverter = new ValueConverterFactoryConfigurationBuilder(configuration));
-        public ISqlStatementsConfigurationBuilderGrouping SqlStatements => _assembler ?? (_assembler = new SqlStatementsConfigurationBuilderGrouping(configuration));     
-        public IExecutionPipelineEventConfigurationBuilder Events => _event ?? (_event = new ExecutionPipelineEventConfigurationBuilder(configuration));
+        public IConnectionStringFactoryConfigurationBuilder ConnectionString => _connectionString ??= new ConnectionStringFactoryConfigurationBuilder(configuration);
+        public ISqlDatabaseMetadataProviderConfigurationBuilder SchemaMetadata => _metadata ??= new SqlDatabaseMetadataProviderConfigurationBuilder(configuration);
+        public IQueryExpressionFactoryConfigurationBuilder QueryExpressions => _queryExpressions ??= new QueryExpressionFactoryConfigurationBuilder(configuration);
+        public IEntitiesConfigurationBuilderGrouping Entities => _entities ??= new EntitiesConfigurationBuilderGrouping(configuration);
+        public IValueConverterFactoryConfigurationBuilder Conversions => _valueConverter ??= new ValueConverterFactoryConfigurationBuilder(configuration);
+        public ISqlStatementsConfigurationBuilderGrouping SqlStatements => _assembler ??= new SqlStatementsConfigurationBuilderGrouping(configuration);     
+        public IQueryExecutionPipelineEventConfigurationBuilder Events => _event ??= new QueryExecutionPipelineEventConfigurationBuilder(configuration);
         #endregion
 
         #region constructors
+        protected RuntimeSqlDatabaseConfigurationBuilder()
+        {
+            this.configuration = new RuntimeSqlDatabaseConfiguration();
+        }
+
         public RuntimeSqlDatabaseConfigurationBuilder(RuntimeSqlDatabaseConfiguration configuration)
         {
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-        }
-
-        protected RuntimeSqlDatabaseConfigurationBuilder()
-        {
-
         }
         #endregion
     }

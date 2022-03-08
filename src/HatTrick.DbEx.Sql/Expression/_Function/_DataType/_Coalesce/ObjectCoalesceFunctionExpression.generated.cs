@@ -18,12 +18,14 @@
 
 using System;
 
+#nullable enable
+
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class ObjectCoalesceFunctionExpression
     {
         #region implicit operators
-        public static implicit operator ObjectExpressionMediator(ObjectCoalesceFunctionExpression a) => new ObjectExpressionMediator(a);
+        public static implicit operator ObjectExpressionMediator(ObjectCoalesceFunctionExpression a) => new(a);
         #endregion
 
         #region arithmetic operators
@@ -35,135 +37,135 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
         
         #region byte
-        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, byte b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<byte>(b), ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, byte b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<byte>(b), ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(ObjectCoalesceFunctionExpression a, byte b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<byte>(b), ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(ObjectCoalesceFunctionExpression a, byte b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<byte>(b), ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(ObjectCoalesceFunctionExpression a, byte b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<byte>(b), ArithmeticExpressionOperator.Modulo));
+        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, byte b) => new(new ArithmeticExpression(a, new LiteralExpression<byte>(b), ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, byte b) => new(new ArithmeticExpression(a, new LiteralExpression<byte>(b), ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *(ObjectCoalesceFunctionExpression a, byte b) => new(new ArithmeticExpression(a, new LiteralExpression<byte>(b), ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /(ObjectCoalesceFunctionExpression a, byte b) => new(new ArithmeticExpression(a, new LiteralExpression<byte>(b), ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %(ObjectCoalesceFunctionExpression a, byte b) => new(new ArithmeticExpression(a, new LiteralExpression<byte>(b), ArithmeticExpressionOperator.Modulo));
 
-        public static ObjectExpressionMediator operator +(byte a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<byte>(a), b, ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(byte a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<byte>(a), b, ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(byte a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<byte>(a), b, ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(byte a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<byte>(a), b, ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(byte a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<byte>(a), b, ArithmeticExpressionOperator.Modulo));
+        public static ObjectExpressionMediator operator +(byte a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<byte>(a), b, ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(byte a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<byte>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *(byte a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<byte>(a), b, ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /(byte a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<byte>(a), b, ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %(byte a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<byte>(a), b, ArithmeticExpressionOperator.Modulo));
 
-        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, byte? b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<byte?>(b), ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, byte? b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<byte?>(b), ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(ObjectCoalesceFunctionExpression a, byte? b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<byte?>(b), ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(ObjectCoalesceFunctionExpression a, byte? b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<byte?>(b), ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(ObjectCoalesceFunctionExpression a, byte? b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<byte?>(b), ArithmeticExpressionOperator.Modulo));
+        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, byte? b) => new(new ArithmeticExpression(a, new LiteralExpression<byte?>(b), ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, byte? b) => new(new ArithmeticExpression(a, new LiteralExpression<byte?>(b), ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *(ObjectCoalesceFunctionExpression a, byte? b) => new(new ArithmeticExpression(a, new LiteralExpression<byte?>(b), ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /(ObjectCoalesceFunctionExpression a, byte? b) => new(new ArithmeticExpression(a, new LiteralExpression<byte?>(b), ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %(ObjectCoalesceFunctionExpression a, byte? b) => new(new ArithmeticExpression(a, new LiteralExpression<byte?>(b), ArithmeticExpressionOperator.Modulo));
 
-        public static ObjectExpressionMediator operator +(byte? a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<byte?>(a), b, ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(byte? a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<byte?>(a), b, ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(byte? a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<byte?>(a), b, ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(byte? a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<byte?>(a), b, ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(byte? a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<byte?>(a), b, ArithmeticExpressionOperator.Modulo));
+        public static ObjectExpressionMediator operator +(byte? a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<byte?>(a), b, ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(byte? a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<byte?>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *(byte? a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<byte?>(a), b, ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /(byte? a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<byte?>(a), b, ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %(byte? a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<byte?>(a), b, ArithmeticExpressionOperator.Modulo));
         #endregion
         
         #region decimal
-        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, decimal b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<decimal>(b), ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, decimal b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<decimal>(b), ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(ObjectCoalesceFunctionExpression a, decimal b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<decimal>(b), ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(ObjectCoalesceFunctionExpression a, decimal b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<decimal>(b), ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(ObjectCoalesceFunctionExpression a, decimal b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<decimal>(b), ArithmeticExpressionOperator.Modulo));
+        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, decimal b) => new(new ArithmeticExpression(a, new LiteralExpression<decimal>(b), ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, decimal b) => new(new ArithmeticExpression(a, new LiteralExpression<decimal>(b), ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *(ObjectCoalesceFunctionExpression a, decimal b) => new(new ArithmeticExpression(a, new LiteralExpression<decimal>(b), ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /(ObjectCoalesceFunctionExpression a, decimal b) => new(new ArithmeticExpression(a, new LiteralExpression<decimal>(b), ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %(ObjectCoalesceFunctionExpression a, decimal b) => new(new ArithmeticExpression(a, new LiteralExpression<decimal>(b), ArithmeticExpressionOperator.Modulo));
 
-        public static ObjectExpressionMediator operator +(decimal a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<decimal>(a), b, ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(decimal a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<decimal>(a), b, ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(decimal a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<decimal>(a), b, ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(decimal a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<decimal>(a), b, ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(decimal a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<decimal>(a), b, ArithmeticExpressionOperator.Modulo));
+        public static ObjectExpressionMediator operator +(decimal a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<decimal>(a), b, ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(decimal a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<decimal>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *(decimal a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<decimal>(a), b, ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /(decimal a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<decimal>(a), b, ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %(decimal a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<decimal>(a), b, ArithmeticExpressionOperator.Modulo));
 
-        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, decimal? b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<decimal?>(b), ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, decimal? b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<decimal?>(b), ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(ObjectCoalesceFunctionExpression a, decimal? b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<decimal?>(b), ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(ObjectCoalesceFunctionExpression a, decimal? b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<decimal?>(b), ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(ObjectCoalesceFunctionExpression a, decimal? b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<decimal?>(b), ArithmeticExpressionOperator.Modulo));
+        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, decimal? b) => new(new ArithmeticExpression(a, new LiteralExpression<decimal?>(b), ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, decimal? b) => new(new ArithmeticExpression(a, new LiteralExpression<decimal?>(b), ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *(ObjectCoalesceFunctionExpression a, decimal? b) => new(new ArithmeticExpression(a, new LiteralExpression<decimal?>(b), ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /(ObjectCoalesceFunctionExpression a, decimal? b) => new(new ArithmeticExpression(a, new LiteralExpression<decimal?>(b), ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %(ObjectCoalesceFunctionExpression a, decimal? b) => new(new ArithmeticExpression(a, new LiteralExpression<decimal?>(b), ArithmeticExpressionOperator.Modulo));
 
-        public static ObjectExpressionMediator operator +(decimal? a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<decimal?>(a), b, ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(decimal? a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<decimal?>(a), b, ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(decimal? a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<decimal?>(a), b, ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(decimal? a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<decimal?>(a), b, ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(decimal? a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<decimal?>(a), b, ArithmeticExpressionOperator.Modulo));
+        public static ObjectExpressionMediator operator +(decimal? a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<decimal?>(a), b, ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(decimal? a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<decimal?>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *(decimal? a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<decimal?>(a), b, ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /(decimal? a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<decimal?>(a), b, ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %(decimal? a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<decimal?>(a), b, ArithmeticExpressionOperator.Modulo));
         #endregion
         
         #region DateTime
-        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, DateTime b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<DateTime>(b), ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, DateTime b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<DateTime>(b), ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, DateTime b) => new(new ArithmeticExpression(a, new LiteralExpression<DateTime>(b), ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, DateTime b) => new(new ArithmeticExpression(a, new LiteralExpression<DateTime>(b), ArithmeticExpressionOperator.Subtract));
 
-        public static ObjectExpressionMediator operator +(DateTime a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<DateTime>(a), b, ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(DateTime a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<DateTime>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator +(DateTime a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<DateTime>(a), b, ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(DateTime a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<DateTime>(a), b, ArithmeticExpressionOperator.Subtract));
 
-        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, DateTime? b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<DateTime?>(b), ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, DateTime? b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<DateTime?>(b), ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, DateTime? b) => new(new ArithmeticExpression(a, new LiteralExpression<DateTime?>(b), ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, DateTime? b) => new(new ArithmeticExpression(a, new LiteralExpression<DateTime?>(b), ArithmeticExpressionOperator.Subtract));
 
-        public static ObjectExpressionMediator operator +(DateTime? a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<DateTime?>(a), b, ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(DateTime? a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<DateTime?>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator +(DateTime? a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<DateTime?>(a), b, ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(DateTime? a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<DateTime?>(a), b, ArithmeticExpressionOperator.Subtract));
         #endregion
         
         #region DateTimeOffset
-        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, DateTimeOffset b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<DateTimeOffset>(b), ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, DateTimeOffset b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<DateTimeOffset>(b), ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, DateTimeOffset b) => new(new ArithmeticExpression(a, new LiteralExpression<DateTimeOffset>(b), ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, DateTimeOffset b) => new(new ArithmeticExpression(a, new LiteralExpression<DateTimeOffset>(b), ArithmeticExpressionOperator.Subtract));
 
-        public static ObjectExpressionMediator operator +(DateTimeOffset a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<DateTimeOffset>(a), b, ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(DateTimeOffset a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<DateTimeOffset>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator +(DateTimeOffset a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<DateTimeOffset>(a), b, ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(DateTimeOffset a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<DateTimeOffset>(a), b, ArithmeticExpressionOperator.Subtract));
 
-        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, DateTimeOffset? b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<DateTimeOffset?>(b), ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, DateTimeOffset? b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<DateTimeOffset?>(b), ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, DateTimeOffset? b) => new(new ArithmeticExpression(a, new LiteralExpression<DateTimeOffset?>(b), ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, DateTimeOffset? b) => new(new ArithmeticExpression(a, new LiteralExpression<DateTimeOffset?>(b), ArithmeticExpressionOperator.Subtract));
 
-        public static ObjectExpressionMediator operator +(DateTimeOffset? a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<DateTimeOffset?>(a), b, ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(DateTimeOffset? a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<DateTimeOffset?>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator +(DateTimeOffset? a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<DateTimeOffset?>(a), b, ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(DateTimeOffset? a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<DateTimeOffset?>(a), b, ArithmeticExpressionOperator.Subtract));
         #endregion
         
         #region double
-        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, double b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<double>(b), ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, double b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<double>(b), ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(ObjectCoalesceFunctionExpression a, double b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<double>(b), ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(ObjectCoalesceFunctionExpression a, double b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<double>(b), ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(ObjectCoalesceFunctionExpression a, double b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<double>(b), ArithmeticExpressionOperator.Modulo));
+        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, double b) => new(new ArithmeticExpression(a, new LiteralExpression<double>(b), ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, double b) => new(new ArithmeticExpression(a, new LiteralExpression<double>(b), ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *(ObjectCoalesceFunctionExpression a, double b) => new(new ArithmeticExpression(a, new LiteralExpression<double>(b), ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /(ObjectCoalesceFunctionExpression a, double b) => new(new ArithmeticExpression(a, new LiteralExpression<double>(b), ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %(ObjectCoalesceFunctionExpression a, double b) => new(new ArithmeticExpression(a, new LiteralExpression<double>(b), ArithmeticExpressionOperator.Modulo));
 
-        public static ObjectExpressionMediator operator +(double a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<double>(a), b, ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(double a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<double>(a), b, ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(double a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<double>(a), b, ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(double a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<double>(a), b, ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(double a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<double>(a), b, ArithmeticExpressionOperator.Modulo));
+        public static ObjectExpressionMediator operator +(double a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<double>(a), b, ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(double a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<double>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *(double a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<double>(a), b, ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /(double a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<double>(a), b, ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %(double a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<double>(a), b, ArithmeticExpressionOperator.Modulo));
 
-        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, double? b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<double?>(b), ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, double? b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<double?>(b), ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(ObjectCoalesceFunctionExpression a, double? b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<double?>(b), ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(ObjectCoalesceFunctionExpression a, double? b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<double?>(b), ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(ObjectCoalesceFunctionExpression a, double? b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<double?>(b), ArithmeticExpressionOperator.Modulo));
+        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, double? b) => new(new ArithmeticExpression(a, new LiteralExpression<double?>(b), ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, double? b) => new(new ArithmeticExpression(a, new LiteralExpression<double?>(b), ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *(ObjectCoalesceFunctionExpression a, double? b) => new(new ArithmeticExpression(a, new LiteralExpression<double?>(b), ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /(ObjectCoalesceFunctionExpression a, double? b) => new(new ArithmeticExpression(a, new LiteralExpression<double?>(b), ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %(ObjectCoalesceFunctionExpression a, double? b) => new(new ArithmeticExpression(a, new LiteralExpression<double?>(b), ArithmeticExpressionOperator.Modulo));
 
-        public static ObjectExpressionMediator operator +(double? a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<double?>(a), b, ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(double? a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<double?>(a), b, ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(double? a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<double?>(a), b, ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(double? a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<double?>(a), b, ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(double? a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<double?>(a), b, ArithmeticExpressionOperator.Modulo));
+        public static ObjectExpressionMediator operator +(double? a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<double?>(a), b, ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(double? a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<double?>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *(double? a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<double?>(a), b, ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /(double? a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<double?>(a), b, ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %(double? a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<double?>(a), b, ArithmeticExpressionOperator.Modulo));
         #endregion
         
         #region float
-        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, float b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<float>(b), ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, float b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<float>(b), ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(ObjectCoalesceFunctionExpression a, float b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<float>(b), ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(ObjectCoalesceFunctionExpression a, float b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<float>(b), ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(ObjectCoalesceFunctionExpression a, float b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<float>(b), ArithmeticExpressionOperator.Modulo));
+        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, float b) => new(new ArithmeticExpression(a, new LiteralExpression<float>(b), ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, float b) => new(new ArithmeticExpression(a, new LiteralExpression<float>(b), ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *(ObjectCoalesceFunctionExpression a, float b) => new(new ArithmeticExpression(a, new LiteralExpression<float>(b), ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /(ObjectCoalesceFunctionExpression a, float b) => new(new ArithmeticExpression(a, new LiteralExpression<float>(b), ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %(ObjectCoalesceFunctionExpression a, float b) => new(new ArithmeticExpression(a, new LiteralExpression<float>(b), ArithmeticExpressionOperator.Modulo));
 
-        public static ObjectExpressionMediator operator +(float a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<float>(a), b, ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(float a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<float>(a), b, ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(float a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<float>(a), b, ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(float a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<float>(a), b, ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(float a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<float>(a), b, ArithmeticExpressionOperator.Modulo));
+        public static ObjectExpressionMediator operator +(float a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<float>(a), b, ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(float a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<float>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *(float a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<float>(a), b, ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /(float a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<float>(a), b, ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %(float a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<float>(a), b, ArithmeticExpressionOperator.Modulo));
 
-        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, float? b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<float?>(b), ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, float? b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<float?>(b), ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(ObjectCoalesceFunctionExpression a, float? b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<float?>(b), ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(ObjectCoalesceFunctionExpression a, float? b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<float?>(b), ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(ObjectCoalesceFunctionExpression a, float? b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<float?>(b), ArithmeticExpressionOperator.Modulo));
+        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, float? b) => new(new ArithmeticExpression(a, new LiteralExpression<float?>(b), ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, float? b) => new(new ArithmeticExpression(a, new LiteralExpression<float?>(b), ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *(ObjectCoalesceFunctionExpression a, float? b) => new(new ArithmeticExpression(a, new LiteralExpression<float?>(b), ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /(ObjectCoalesceFunctionExpression a, float? b) => new(new ArithmeticExpression(a, new LiteralExpression<float?>(b), ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %(ObjectCoalesceFunctionExpression a, float? b) => new(new ArithmeticExpression(a, new LiteralExpression<float?>(b), ArithmeticExpressionOperator.Modulo));
 
-        public static ObjectExpressionMediator operator +(float? a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<float?>(a), b, ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(float? a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<float?>(a), b, ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(float? a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<float?>(a), b, ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(float? a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<float?>(a), b, ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(float? a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<float?>(a), b, ArithmeticExpressionOperator.Modulo));
+        public static ObjectExpressionMediator operator +(float? a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<float?>(a), b, ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(float? a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<float?>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *(float? a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<float?>(a), b, ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /(float? a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<float?>(a), b, ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %(float? a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<float?>(a), b, ArithmeticExpressionOperator.Modulo));
         #endregion
         
         #region Guid
@@ -173,87 +175,87 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
         
         #region short
-        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, short b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<short>(b), ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, short b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<short>(b), ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(ObjectCoalesceFunctionExpression a, short b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<short>(b), ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(ObjectCoalesceFunctionExpression a, short b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<short>(b), ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(ObjectCoalesceFunctionExpression a, short b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<short>(b), ArithmeticExpressionOperator.Modulo));
+        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, short b) => new(new ArithmeticExpression(a, new LiteralExpression<short>(b), ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, short b) => new(new ArithmeticExpression(a, new LiteralExpression<short>(b), ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *(ObjectCoalesceFunctionExpression a, short b) => new(new ArithmeticExpression(a, new LiteralExpression<short>(b), ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /(ObjectCoalesceFunctionExpression a, short b) => new(new ArithmeticExpression(a, new LiteralExpression<short>(b), ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %(ObjectCoalesceFunctionExpression a, short b) => new(new ArithmeticExpression(a, new LiteralExpression<short>(b), ArithmeticExpressionOperator.Modulo));
 
-        public static ObjectExpressionMediator operator +(short a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<short>(a), b, ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(short a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<short>(a), b, ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(short a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<short>(a), b, ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(short a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<short>(a), b, ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(short a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<short>(a), b, ArithmeticExpressionOperator.Modulo));
+        public static ObjectExpressionMediator operator +(short a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<short>(a), b, ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(short a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<short>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *(short a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<short>(a), b, ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /(short a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<short>(a), b, ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %(short a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<short>(a), b, ArithmeticExpressionOperator.Modulo));
 
-        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, short? b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<short?>(b), ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, short? b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<short?>(b), ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(ObjectCoalesceFunctionExpression a, short? b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<short?>(b), ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(ObjectCoalesceFunctionExpression a, short? b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<short?>(b), ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(ObjectCoalesceFunctionExpression a, short? b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<short?>(b), ArithmeticExpressionOperator.Modulo));
+        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, short? b) => new(new ArithmeticExpression(a, new LiteralExpression<short?>(b), ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, short? b) => new(new ArithmeticExpression(a, new LiteralExpression<short?>(b), ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *(ObjectCoalesceFunctionExpression a, short? b) => new(new ArithmeticExpression(a, new LiteralExpression<short?>(b), ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /(ObjectCoalesceFunctionExpression a, short? b) => new(new ArithmeticExpression(a, new LiteralExpression<short?>(b), ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %(ObjectCoalesceFunctionExpression a, short? b) => new(new ArithmeticExpression(a, new LiteralExpression<short?>(b), ArithmeticExpressionOperator.Modulo));
 
-        public static ObjectExpressionMediator operator +(short? a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<short?>(a), b, ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(short? a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<short?>(a), b, ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(short? a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<short?>(a), b, ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(short? a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<short?>(a), b, ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(short? a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<short?>(a), b, ArithmeticExpressionOperator.Modulo));
+        public static ObjectExpressionMediator operator +(short? a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<short?>(a), b, ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(short? a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<short?>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *(short? a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<short?>(a), b, ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /(short? a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<short?>(a), b, ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %(short? a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<short?>(a), b, ArithmeticExpressionOperator.Modulo));
         #endregion
         
         #region int
-        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, int b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<int>(b), ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, int b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<int>(b), ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(ObjectCoalesceFunctionExpression a, int b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<int>(b), ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(ObjectCoalesceFunctionExpression a, int b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<int>(b), ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(ObjectCoalesceFunctionExpression a, int b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<int>(b), ArithmeticExpressionOperator.Modulo));
+        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, int b) => new(new ArithmeticExpression(a, new LiteralExpression<int>(b), ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, int b) => new(new ArithmeticExpression(a, new LiteralExpression<int>(b), ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *(ObjectCoalesceFunctionExpression a, int b) => new(new ArithmeticExpression(a, new LiteralExpression<int>(b), ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /(ObjectCoalesceFunctionExpression a, int b) => new(new ArithmeticExpression(a, new LiteralExpression<int>(b), ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %(ObjectCoalesceFunctionExpression a, int b) => new(new ArithmeticExpression(a, new LiteralExpression<int>(b), ArithmeticExpressionOperator.Modulo));
 
-        public static ObjectExpressionMediator operator +(int a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<int>(a), b, ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(int a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<int>(a), b, ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(int a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<int>(a), b, ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(int a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<int>(a), b, ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(int a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<int>(a), b, ArithmeticExpressionOperator.Modulo));
+        public static ObjectExpressionMediator operator +(int a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<int>(a), b, ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(int a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<int>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *(int a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<int>(a), b, ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /(int a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<int>(a), b, ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %(int a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<int>(a), b, ArithmeticExpressionOperator.Modulo));
 
-        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, int? b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<int?>(b), ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, int? b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<int?>(b), ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(ObjectCoalesceFunctionExpression a, int? b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<int?>(b), ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(ObjectCoalesceFunctionExpression a, int? b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<int?>(b), ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(ObjectCoalesceFunctionExpression a, int? b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<int?>(b), ArithmeticExpressionOperator.Modulo));
+        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, int? b) => new(new ArithmeticExpression(a, new LiteralExpression<int?>(b), ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, int? b) => new(new ArithmeticExpression(a, new LiteralExpression<int?>(b), ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *(ObjectCoalesceFunctionExpression a, int? b) => new(new ArithmeticExpression(a, new LiteralExpression<int?>(b), ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /(ObjectCoalesceFunctionExpression a, int? b) => new(new ArithmeticExpression(a, new LiteralExpression<int?>(b), ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %(ObjectCoalesceFunctionExpression a, int? b) => new(new ArithmeticExpression(a, new LiteralExpression<int?>(b), ArithmeticExpressionOperator.Modulo));
 
-        public static ObjectExpressionMediator operator +(int? a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<int?>(a), b, ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(int? a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<int?>(a), b, ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(int? a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<int?>(a), b, ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(int? a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<int?>(a), b, ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(int? a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<int?>(a), b, ArithmeticExpressionOperator.Modulo));
+        public static ObjectExpressionMediator operator +(int? a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<int?>(a), b, ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(int? a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<int?>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *(int? a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<int?>(a), b, ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /(int? a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<int?>(a), b, ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %(int? a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<int?>(a), b, ArithmeticExpressionOperator.Modulo));
         #endregion
         
         #region long
-        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, long b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<long>(b), ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, long b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<long>(b), ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(ObjectCoalesceFunctionExpression a, long b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<long>(b), ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(ObjectCoalesceFunctionExpression a, long b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<long>(b), ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(ObjectCoalesceFunctionExpression a, long b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<long>(b), ArithmeticExpressionOperator.Modulo));
+        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, long b) => new(new ArithmeticExpression(a, new LiteralExpression<long>(b), ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, long b) => new(new ArithmeticExpression(a, new LiteralExpression<long>(b), ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *(ObjectCoalesceFunctionExpression a, long b) => new(new ArithmeticExpression(a, new LiteralExpression<long>(b), ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /(ObjectCoalesceFunctionExpression a, long b) => new(new ArithmeticExpression(a, new LiteralExpression<long>(b), ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %(ObjectCoalesceFunctionExpression a, long b) => new(new ArithmeticExpression(a, new LiteralExpression<long>(b), ArithmeticExpressionOperator.Modulo));
 
-        public static ObjectExpressionMediator operator +(long a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<long>(a), b, ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(long a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<long>(a), b, ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(long a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<long>(a), b, ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(long a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<long>(a), b, ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(long a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<long>(a), b, ArithmeticExpressionOperator.Modulo));
+        public static ObjectExpressionMediator operator +(long a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<long>(a), b, ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(long a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<long>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *(long a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<long>(a), b, ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /(long a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<long>(a), b, ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %(long a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<long>(a), b, ArithmeticExpressionOperator.Modulo));
 
-        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, long? b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<long?>(b), ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, long? b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<long?>(b), ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(ObjectCoalesceFunctionExpression a, long? b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<long?>(b), ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(ObjectCoalesceFunctionExpression a, long? b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<long?>(b), ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(ObjectCoalesceFunctionExpression a, long? b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<long?>(b), ArithmeticExpressionOperator.Modulo));
+        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, long? b) => new(new ArithmeticExpression(a, new LiteralExpression<long?>(b), ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, long? b) => new(new ArithmeticExpression(a, new LiteralExpression<long?>(b), ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *(ObjectCoalesceFunctionExpression a, long? b) => new(new ArithmeticExpression(a, new LiteralExpression<long?>(b), ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /(ObjectCoalesceFunctionExpression a, long? b) => new(new ArithmeticExpression(a, new LiteralExpression<long?>(b), ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %(ObjectCoalesceFunctionExpression a, long? b) => new(new ArithmeticExpression(a, new LiteralExpression<long?>(b), ArithmeticExpressionOperator.Modulo));
 
-        public static ObjectExpressionMediator operator +(long? a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<long?>(a), b, ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(long? a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<long?>(a), b, ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(long? a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<long?>(a), b, ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(long? a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<long?>(a), b, ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(long? a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<long?>(a), b, ArithmeticExpressionOperator.Modulo));
+        public static ObjectExpressionMediator operator +(long? a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<long?>(a), b, ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(long? a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<long?>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *(long? a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<long?>(a), b, ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /(long? a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<long?>(a), b, ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %(long? a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<long?>(a), b, ArithmeticExpressionOperator.Modulo));
         #endregion
         
-        #region string
-        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, string b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<string>(b), ArithmeticExpressionOperator.Add));
+        #region string?
+        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, string? b) => new(new ArithmeticExpression(a, new LiteralExpression<string?>(b), ArithmeticExpressionOperator.Add));
 
-        public static ObjectExpressionMediator operator +(string a, ObjectCoalesceFunctionExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<string>(a), b, ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator +(string? a, ObjectCoalesceFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<string?>(a), b, ArithmeticExpressionOperator.Add));
 
 
         #endregion
@@ -274,76 +276,76 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #endregion        
         #region byte
-        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, ByteExpressionMediator b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, ByteExpressionMediator b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(ObjectCoalesceFunctionExpression a, ByteExpressionMediator b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(ObjectCoalesceFunctionExpression a, ByteExpressionMediator b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(ObjectCoalesceFunctionExpression a, ByteExpressionMediator b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, ByteExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, ByteExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *(ObjectCoalesceFunctionExpression a, ByteExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /(ObjectCoalesceFunctionExpression a, ByteExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %(ObjectCoalesceFunctionExpression a, ByteExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
 
         #endregion        
         #region decimal
-        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, DecimalExpressionMediator b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, DecimalExpressionMediator b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(ObjectCoalesceFunctionExpression a, DecimalExpressionMediator b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(ObjectCoalesceFunctionExpression a, DecimalExpressionMediator b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(ObjectCoalesceFunctionExpression a, DecimalExpressionMediator b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, DecimalExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, DecimalExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *(ObjectCoalesceFunctionExpression a, DecimalExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /(ObjectCoalesceFunctionExpression a, DecimalExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %(ObjectCoalesceFunctionExpression a, DecimalExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
 
         #endregion        
         #region DateTime
-        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, DateTimeExpressionMediator b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, DateTimeExpressionMediator b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, DateTimeExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, DateTimeExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
 
         #endregion        
         #region DateTimeOffset
-        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, DateTimeOffsetExpressionMediator b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, DateTimeOffsetExpressionMediator b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, DateTimeOffsetExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, DateTimeOffsetExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
 
         #endregion        
         #region double
-        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, DoubleExpressionMediator b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, DoubleExpressionMediator b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(ObjectCoalesceFunctionExpression a, DoubleExpressionMediator b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(ObjectCoalesceFunctionExpression a, DoubleExpressionMediator b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(ObjectCoalesceFunctionExpression a, DoubleExpressionMediator b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, DoubleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, DoubleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *(ObjectCoalesceFunctionExpression a, DoubleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /(ObjectCoalesceFunctionExpression a, DoubleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %(ObjectCoalesceFunctionExpression a, DoubleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
 
         #endregion        
         #region float
-        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, SingleExpressionMediator b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, SingleExpressionMediator b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(ObjectCoalesceFunctionExpression a, SingleExpressionMediator b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(ObjectCoalesceFunctionExpression a, SingleExpressionMediator b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(ObjectCoalesceFunctionExpression a, SingleExpressionMediator b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, SingleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, SingleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *(ObjectCoalesceFunctionExpression a, SingleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /(ObjectCoalesceFunctionExpression a, SingleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %(ObjectCoalesceFunctionExpression a, SingleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
 
         #endregion        
         #region Guid
 
         #endregion        
         #region short
-        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, Int16ExpressionMediator b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, Int16ExpressionMediator b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(ObjectCoalesceFunctionExpression a, Int16ExpressionMediator b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(ObjectCoalesceFunctionExpression a, Int16ExpressionMediator b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(ObjectCoalesceFunctionExpression a, Int16ExpressionMediator b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, Int16ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, Int16ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *(ObjectCoalesceFunctionExpression a, Int16ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /(ObjectCoalesceFunctionExpression a, Int16ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %(ObjectCoalesceFunctionExpression a, Int16ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
 
         #endregion        
         #region int
-        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, Int32ExpressionMediator b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, Int32ExpressionMediator b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(ObjectCoalesceFunctionExpression a, Int32ExpressionMediator b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(ObjectCoalesceFunctionExpression a, Int32ExpressionMediator b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(ObjectCoalesceFunctionExpression a, Int32ExpressionMediator b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, Int32ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, Int32ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *(ObjectCoalesceFunctionExpression a, Int32ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /(ObjectCoalesceFunctionExpression a, Int32ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %(ObjectCoalesceFunctionExpression a, Int32ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
 
         #endregion        
         #region long
-        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, Int64ExpressionMediator b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, Int64ExpressionMediator b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(ObjectCoalesceFunctionExpression a, Int64ExpressionMediator b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(ObjectCoalesceFunctionExpression a, Int64ExpressionMediator b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(ObjectCoalesceFunctionExpression a, Int64ExpressionMediator b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, Int64ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(ObjectCoalesceFunctionExpression a, Int64ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *(ObjectCoalesceFunctionExpression a, Int64ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /(ObjectCoalesceFunctionExpression a, Int64ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %(ObjectCoalesceFunctionExpression a, Int64ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
 
         #endregion        
-        #region string
-        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, StringExpressionMediator b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        #region string?
+        public static ObjectExpressionMediator operator +(ObjectCoalesceFunctionExpression a, StringExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
 
         #endregion        
         #region TimeSpan
@@ -357,20 +359,20 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region filter operators
         #region data types
-        #region object
-        public static FilterExpressionSet operator ==(ObjectCoalesceFunctionExpression a, object b) => new FilterExpressionSet(new FilterExpression<bool>(a, new LiteralExpression<object>(b), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(ObjectCoalesceFunctionExpression a, object b) => new FilterExpressionSet(new FilterExpression<bool>(a, new LiteralExpression<object>(b), FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator <(ObjectCoalesceFunctionExpression a, object b) => new FilterExpressionSet(new FilterExpression<bool>(a, new LiteralExpression<object>(b), FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator >(ObjectCoalesceFunctionExpression a, object b) => new FilterExpressionSet(new FilterExpression<bool>(a, new LiteralExpression<object>(b), FilterExpressionOperator.GreaterThan));
-        public static FilterExpressionSet operator <=(ObjectCoalesceFunctionExpression a, object b) => new FilterExpressionSet(new FilterExpression<bool>(a, new LiteralExpression<object>(b), FilterExpressionOperator.LessThanOrEqual));
-        public static FilterExpressionSet operator >=(ObjectCoalesceFunctionExpression a, object b) => new FilterExpressionSet(new FilterExpression<bool>(a, new LiteralExpression<object>(b), FilterExpressionOperator.GreaterThanOrEqual));
+        #region object?
+        public static FilterExpressionSet operator ==(ObjectCoalesceFunctionExpression a, object? b) => new(new FilterExpression<bool>(a, new LiteralExpression<object?>(b), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(ObjectCoalesceFunctionExpression a, object? b) => new(new FilterExpression<bool>(a, new LiteralExpression<object?>(b), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(ObjectCoalesceFunctionExpression a, object? b) => new(new FilterExpression<bool>(a, new LiteralExpression<object?>(b), FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator >(ObjectCoalesceFunctionExpression a, object? b) => new(new FilterExpression<bool>(a, new LiteralExpression<object?>(b), FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator <=(ObjectCoalesceFunctionExpression a, object? b) => new(new FilterExpression<bool>(a, new LiteralExpression<object?>(b), FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >=(ObjectCoalesceFunctionExpression a, object? b) => new(new FilterExpression<bool>(a, new LiteralExpression<object?>(b), FilterExpressionOperator.GreaterThanOrEqual));
 
-        public static FilterExpressionSet operator ==(object a, ObjectCoalesceFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new LiteralExpression<object>(a), b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(object a, ObjectCoalesceFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new LiteralExpression<object>(a), b, FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator <(object a, ObjectCoalesceFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new LiteralExpression<object>(a), b, FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator >(object a, ObjectCoalesceFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new LiteralExpression<object>(a), b, FilterExpressionOperator.GreaterThan));
-        public static FilterExpressionSet operator <=(object a, ObjectCoalesceFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new LiteralExpression<object>(a), b, FilterExpressionOperator.LessThanOrEqual));
-        public static FilterExpressionSet operator >=(object a, ObjectCoalesceFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new LiteralExpression<object>(a), b, FilterExpressionOperator.GreaterThanOrEqual));
+        public static FilterExpressionSet operator ==(object? a, ObjectCoalesceFunctionExpression b) => new(new FilterExpression<bool>(new LiteralExpression<object?>(a), b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(object? a, ObjectCoalesceFunctionExpression b) => new(new FilterExpression<bool>(new LiteralExpression<object?>(a), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(object? a, ObjectCoalesceFunctionExpression b) => new(new FilterExpression<bool>(new LiteralExpression<object?>(a), b, FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator >(object? a, ObjectCoalesceFunctionExpression b) => new(new FilterExpression<bool>(new LiteralExpression<object?>(a), b, FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator <=(object? a, ObjectCoalesceFunctionExpression b) => new(new FilterExpression<bool>(new LiteralExpression<object?>(a), b, FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >=(object? a, ObjectCoalesceFunctionExpression b) => new(new FilterExpression<bool>(new LiteralExpression<object?>(a), b, FilterExpressionOperator.GreaterThanOrEqual));
 
         #endregion
         #endregion
@@ -379,28 +381,28 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region mediators
-        public static FilterExpressionSet operator ==(ObjectCoalesceFunctionExpression a, ObjectExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(ObjectCoalesceFunctionExpression a, ObjectExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator <(ObjectCoalesceFunctionExpression a, ObjectExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator >(ObjectCoalesceFunctionExpression a, ObjectExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.GreaterThan));
-        public static FilterExpressionSet operator <=(ObjectCoalesceFunctionExpression a, ObjectExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.LessThanOrEqual));
-        public static FilterExpressionSet operator >=(ObjectCoalesceFunctionExpression a, ObjectExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.GreaterThanOrEqual));
+        public static FilterExpressionSet operator ==(ObjectCoalesceFunctionExpression a, ObjectExpressionMediator b) => new(new FilterExpression<bool>(a, b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(ObjectCoalesceFunctionExpression a, ObjectExpressionMediator b) => new(new FilterExpression<bool>(a, b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(ObjectCoalesceFunctionExpression a, ObjectExpressionMediator b) => new(new FilterExpression<bool>(a, b, FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator >(ObjectCoalesceFunctionExpression a, ObjectExpressionMediator b) => new(new FilterExpression<bool>(a, b, FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator <=(ObjectCoalesceFunctionExpression a, ObjectExpressionMediator b) => new(new FilterExpression<bool>(a, b, FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >=(ObjectCoalesceFunctionExpression a, ObjectExpressionMediator b) => new(new FilterExpression<bool>(a, b, FilterExpressionOperator.GreaterThanOrEqual));
 
         #endregion
 
         #region alias
-        public static FilterExpressionSet operator ==(ObjectCoalesceFunctionExpression a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(ObjectCoalesceFunctionExpression a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator <(ObjectCoalesceFunctionExpression a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator >(ObjectCoalesceFunctionExpression a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan));
-        public static FilterExpressionSet operator <=(ObjectCoalesceFunctionExpression a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual));
-        public static FilterExpressionSet operator >=(ObjectCoalesceFunctionExpression a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual));
-        public static FilterExpressionSet operator ==(ObjectCoalesceFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(ObjectCoalesceFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator <(ObjectCoalesceFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator >(ObjectCoalesceFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.GreaterThan));
-        public static FilterExpressionSet operator <=(ObjectCoalesceFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.LessThanOrEqual));
-        public static FilterExpressionSet operator >=(ObjectCoalesceFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.GreaterThanOrEqual));
+        public static FilterExpressionSet operator ==(ObjectCoalesceFunctionExpression a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(ObjectCoalesceFunctionExpression a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(ObjectCoalesceFunctionExpression a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator >(ObjectCoalesceFunctionExpression a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator <=(ObjectCoalesceFunctionExpression a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >=(ObjectCoalesceFunctionExpression a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual));
+        public static FilterExpressionSet operator ==(ObjectCoalesceFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(ObjectCoalesceFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(ObjectCoalesceFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator >(ObjectCoalesceFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator <=(ObjectCoalesceFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >=(ObjectCoalesceFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.GreaterThanOrEqual));
         #endregion
         #endregion
     }

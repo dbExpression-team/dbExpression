@@ -48,7 +48,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         /// <summary>
         /// Configure custom delegates to execute during the assembly of query expressions and execution of sql statements.  
         /// </summary>
-        IExecutionPipelineEventConfigurationBuilder Events { get; }
+        IQueryExecutionPipelineEventConfigurationBuilder Events { get; }
 
         /// <summary>
         /// Configure the factory used to create a value converter used to convert data to and from the target database.  

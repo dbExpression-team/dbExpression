@@ -60,7 +60,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
 
         #region methods
-        public virtual int ExecuteDelete(DeleteQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand)
+        public virtual int ExecuteDelete(DeleteQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand)
         {
             if (expression is null)
                 throw new ArgumentNullException(nameof(expression));
@@ -81,9 +81,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 statement,
                 connection,
                 cmd => {
-#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
                     cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
-#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
                     beforeExecution?.Invoke(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(database, expression, cmd, statement))); 
                     configureCommand?.Invoke(cmd); 
                 },
@@ -95,7 +93,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return rowsAffected;
         }
 
-        public virtual async Task<int> ExecuteDeleteAsync(DeleteQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
+        public virtual async Task<int> ExecuteDeleteAsync(DeleteQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
         {
             if (expression is null)
                 throw new ArgumentNullException(nameof(expression));
@@ -105,20 +103,20 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, expression) ?? throw new DbExpressionException("The sql statement builder is null, cannot execute a delete query without a statement builder to construct the sql statement.");
 
-            if (beforeAssembly is object)
+            if (beforeAssembly is not null)
             {
                 await beforeAssembly.InvokeAsync(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(database, expression, statementBuilder.Parameters)), ct).ConfigureAwait(false);
                 ct.ThrowIfCancellationRequested();
             }
 
             var statement = statementBuilder.CreateSqlStatement() ?? throw new DbExpressionException("The sql statement builder returned a null value, cannot execute a delete query without a sql statement.");
-            if (afterAssembly is object)
+            if (afterAssembly is not null)
             {
                 await afterAssembly.InvokeAsync(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(database, expression, statementBuilder.Parameters, statement)), ct).ConfigureAwait(false);
                 ct.ThrowIfCancellationRequested();
             }
 
-            if (beforeDelete is object)
+            if (beforeDelete is not null)
             {
                 await beforeDelete.InvokeAsync(new Lazy<BeforeDeletePipelineExecutionContext>(() => new BeforeDeletePipelineExecutionContext(database, expression, statementBuilder.Parameters, statement)), ct).ConfigureAwait(false);
                 ct.ThrowIfCancellationRequested();
@@ -130,10 +128,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 connection,
                 async cmd =>
                 {
-#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
                     cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
-#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
-                    if (beforeExecution is object)
+                    if (beforeExecution is not null)
                     {
                         await beforeExecution.InvokeAsync(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(database, expression, cmd, statement)), ct).ConfigureAwait(false);
                     }
@@ -141,7 +137,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 },
                 async cmd =>
                 {
-                    if (afterExecution is object)
+                    if (afterExecution is not null)
                     {
                         await afterExecution.InvokeAsync(new Lazy<AfterExecutionPipelineExecutionContext>(() => new AfterExecutionPipelineExecutionContext(database, expression, cmd)), ct).ConfigureAwait(false);
                     }
@@ -151,7 +147,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             ct.ThrowIfCancellationRequested();
 
-            if (afterDelete is object)
+            if (afterDelete is not null)
             {
                 await afterDelete.InvokeAsync(new Lazy<AfterDeletePipelineExecutionContext>(() => new AfterDeletePipelineExecutionContext(database, expression)), ct).ConfigureAwait(false);
                 ct.ThrowIfCancellationRequested();

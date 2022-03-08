@@ -5,8 +5,8 @@ namespace ServerSideBlazorApp.Validation
 {
     public class USStateAttribute : ValidationAttribute
     {
-        public override bool IsValid(object value)
-            => ListProvider.States.ContainsKey(value.ToString());
+        public override bool IsValid(object? value)
+            => value is not null && ListProvider.States.ContainsKey(value.ToString() ?? string.Empty);
 
         public override string FormatErrorMessage(string name)
             => $"{name} must be from the list of valid US states.";

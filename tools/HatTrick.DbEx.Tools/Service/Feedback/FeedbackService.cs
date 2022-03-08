@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.Tools.Service
     public class FeedbackService
     {
         #region internals
-        private Action<To, string> _receivers;
+        private Action<To, string> _receivers = new((t,s) => { });
         #endregion
 
         #region register

@@ -14,10 +14,10 @@ namespace ServerSideBlazorApp.Pages
         private static readonly Sort DefaultSort = PagingParameters.CreateDefaultSort(nameof(OrderSummaryModel.PurchaseDate), SortDirection.Descending);
         private static readonly IList<int> AllowedPageSizes = new int[] { 5, 10, 25, 50, 100 };
 
-        private bool ShowProgressBar { get; set; } = false;
+        private bool ShowProgressBar { get; set; }
         private PagingParameters PagingParameters { get; set; } = PagingParameters.CreateDefault(DefaultSort);
         private Page<OrderSummaryModel> CurrentPage { get; set; } = Page<OrderSummaryModel>.CreateDefault();
-        private PagingParameters PreviousPagingParameters { get; set; }
+        private PagingParameters? PreviousPagingParameters { get; set; }
 
         #endregion
 
@@ -54,8 +54,8 @@ namespace ServerSideBlazorApp.Pages
 
         public async override Task SetParametersAsync(ParameterView parameters)
         {
-            if (NavigationManager.TryGetPagingParametersFromReturnUrl(out PagingParameters page))
-                PagingParameters = page;
+            if (NavigationManager.TryGetPagingParametersFromReturnUrl(out PagingParameters? page))
+                PagingParameters = page!;
             await base.SetParametersAsync(parameters);
         }
         #endregion

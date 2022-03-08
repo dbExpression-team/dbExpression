@@ -36,13 +36,17 @@ namespace HatTrick.DbEx.Sql.Converter
             this.underlyingType = typeof(TEnum).GetFields()[0].FieldType;
         }
 
-        public (Type Type, object ConvertedValue) ConvertToDatabase(object value)
-            => (underlyingType, convertToDatabase((TEnum)Enum.ToObject(typeof(TEnum), Convert.ChangeType(value, underlyingType))));
+        public (Type Type, object? ConvertedValue) ConvertToDatabase(object? value)
+            => value is not null ? (underlyingType, convertToDatabase((TEnum)Enum.ToObject(typeof(TEnum), Convert.ChangeType(value, underlyingType))))
+                : throw new DbExpressionException("Expected a non-null value for conversion to the database.");
 
-        public object ConvertFromDatabase(object value)
-            => convertFromDatabase(value);
+        public object? ConvertFromDatabase(object? value)
+            => convertFromDatabase(value ?? throw new DbExpressionException("Expected a non-null value from the database."));
 
-        public U ConvertFromDatabase<U>(object value)
-            => (U)Convert.ChangeType(convertFromDatabase(value), typeof(U));
+        public U? ConvertFromDatabase<U>(object? value)
+        {
+            if (value is null) throw new DbExpressionException("Expected a non-null value from the database.");
+            return (U?)Convert.ChangeType(convertFromDatabase(value), typeof(U));
+        }
     }
 }

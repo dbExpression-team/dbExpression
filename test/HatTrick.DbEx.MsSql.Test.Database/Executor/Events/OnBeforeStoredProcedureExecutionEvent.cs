@@ -51,7 +51,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor.Events
             ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeStoredProcedureExecution(_ => actionExecuted = true));
 
             //when
-            dynamic value = db.sp.dbo.SelectPerson_As_Dynamic_With_Input(1).GetValue().Execute();
+            dynamic? value = db.sp.dbo.SelectPerson_As_Dynamic_With_Input(1).GetValue().Execute();
 
             //then
             actionExecuted.Should().BeTrue();
@@ -126,7 +126,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor.Events
             ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeStoredProcedureExecution(_ => actionExecuted = true));
 
             //when
-            dynamic value = await db.sp.dbo.SelectPerson_As_Dynamic_With_Input(1).GetValue().ExecuteAsync();
+            dynamic? value = await db.sp.dbo.SelectPerson_As_Dynamic_With_Input(1).GetValue().ExecuteAsync();
 
             //then
             actionExecuted.Should().BeTrue();

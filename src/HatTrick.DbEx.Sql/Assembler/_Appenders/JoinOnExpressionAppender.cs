@@ -19,14 +19,21 @@
 ﻿using HatTrick.DbEx.Sql.Attribute;
 using HatTrick.DbEx.Sql.Expression;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
     public class JoinOnExpressionAppender : ExpressionElementAppender<JoinOnExpression>
     {
         #region internals
-        private static IDictionary<FilterExpressionOperator, string> _filterOperatorMap;
-        private static IDictionary<FilterExpressionOperator, string> FilterOperatorMap => _filterOperatorMap ?? (_filterOperatorMap = typeof(FilterExpressionOperator).GetValuesAndFilterOperators(x => string.IsNullOrWhiteSpace(x) ? " " : $" {x} "));
+        private static readonly Dictionary<FilterExpressionOperator, string> filterOperatorMap;
+        #endregion
+
+        #region constructors
+        static JoinOnExpressionAppender()
+        {
+            filterOperatorMap  = typeof(FilterExpressionOperator).GetValuesAndFilterOperators(x => string.IsNullOrWhiteSpace(x) ? " " : $" {x} ").ToDictionary(k => k.Key, v => v.Value!);
+        }
         #endregion
 
         #region methods
@@ -41,7 +48,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 }
                 builder.AppendElement(expression.LeftArg, context);
 
-                builder.Appender.Write(FilterOperatorMap[expression.ExpressionOperator]);
+                builder.Appender.Write(filterOperatorMap[expression.ExpressionOperator]);
                 builder.AppendElement(expression.RightArg, context);
                 
                 if (expression.Negate)

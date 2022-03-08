@@ -29,18 +29,18 @@ namespace HatTrick.DbEx.Sql.Builder
         /// Construct an expression for the RTRIM transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/rtrim-transact-sql">Microsoft docs on RTRIM</see></para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{String}"/> to trim trailing spaces from.</param>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to trim trailing spaces from.</param>
         /// <returns><see cref="StringRTrimFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
-        public static StringRTrimFunctionExpression RTrim(AnyElement<string> element)
-            => new StringRTrimFunctionExpression(element);
+        public static StringRTrimFunctionExpression RTrim(StringElement element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the RTRIM transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/rtrim-transact-sql">Microsoft docs on RTRIM</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableStringElement"/> to trim trailing spaces from.</param>
-        /// <returns><see cref="NullableStringRTrimFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        /// <returns><see cref="NullableStringRTrimFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>?.</returns>
         public static NullableStringRTrimFunctionExpression RTrim(NullableStringElement element)
-            => new NullableStringRTrimFunctionExpression(element);
+            => new(element);
     }
 }

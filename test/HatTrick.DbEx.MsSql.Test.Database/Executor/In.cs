@@ -37,7 +37,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             ConfigureForMsSqlVersion(version);
-            var lines = new List<string> { null, "Box 13", "Apt. 42" };
+            var lines = new List<string> { null!, "Box 13", "Apt. 42" };
 
             //when
             var addresses = db.SelectMany<Address>()
@@ -55,7 +55,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             ConfigureForMsSqlVersion(version);
-            var lines = new List<string> { "Box 13", null, "Apt. 42" };
+            var lines = new List<string> { "Box 13", null!, "Apt. 42" };
 
             //when
             var addresses = db.SelectMany<Address>()
@@ -73,7 +73,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             ConfigureForMsSqlVersion(version);
-            var lines = new List<string> { null, null, null, null };
+            var lines = new List<string> { null!, null!, null!, null! };
 
             //when
             var addresses = db.SelectMany<Address>()

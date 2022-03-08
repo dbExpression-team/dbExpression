@@ -51,14 +51,14 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         public IEntitiesConfigurationBuilderMappingGrouping Use<TEntityFactory>()
             where TEntityFactory : class, IEntityFactory, new()
-            => Use<TEntityFactory>(null);
+            => Use<TEntityFactory>(_ => { });
 
         public IEntitiesConfigurationBuilderMappingGrouping Use<TEntityFactory>(Action<TEntityFactory> configureFactory)
             where TEntityFactory : class, IEntityFactory, new()
         {
-            if (!(configuration.EntityFactory is TEntityFactory))
+            if (configuration.EntityFactory is not TEntityFactory)
                 configuration.EntityFactory = new TEntityFactory();
-            configureFactory?.Invoke(configuration.MapperFactory as TEntityFactory);
+            configureFactory?.Invoke((configuration.MapperFactory as TEntityFactory)!);
             return caller;
         }
 
@@ -69,11 +69,11 @@ namespace HatTrick.DbEx.Sql.Configuration
         }
 
         public IEntitiesConfigurationBuilderMappingGrouping UseDefaultFactory()
-            => UseDefaultFactory(null);
+            => UseDefaultFactory(_ => { });
 
         public IEntitiesConfigurationBuilderMappingGrouping UseDefaultFactory(Action<IEntityFactoryContinuationConfigurationBuilder> configureFactory)
         {
-            if (!(configuration.EntityFactory is EntityFactory))
+            if (configuration.EntityFactory is not EntityFactory)
                 configuration.EntityFactory = new EntityFactory();
             configureFactory?.Invoke(this);
             return caller;
@@ -82,7 +82,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         public IEntityFactoryContinuationConfigurationBuilder OverrideForEntity<T>(Func<T> entityFactory)
             where T : class, IDbEntity
         {
-            (configuration.EntityFactory as EntityFactory).RegisterFactory(entityFactory ?? throw new ArgumentNullException(nameof(entityFactory)));
+            ((configuration.EntityFactory as EntityFactory)!).RegisterFactory(entityFactory ?? throw new ArgumentNullException(nameof(entityFactory)));
             return this;
         }
         #endregion

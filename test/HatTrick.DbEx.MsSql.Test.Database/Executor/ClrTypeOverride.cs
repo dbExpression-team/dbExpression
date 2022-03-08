@@ -70,7 +70,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .ExecuteAsync();
 
             //then
-            purchase.TotalPurchaseQuantity.Should().Be(expected);
+            purchase!.TotalPurchaseQuantity.Should().Be(expected);
         }
 
         [Theory]

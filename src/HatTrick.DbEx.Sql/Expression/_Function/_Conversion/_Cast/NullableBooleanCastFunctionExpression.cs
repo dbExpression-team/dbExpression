@@ -34,16 +34,16 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public  AnyElement<bool?> As(string alias)
+        public AnyElement<bool?> As(string alias)
             => new SelectExpression<bool?>(this).As(alias);
         #endregion
 
         #region equals
-        public bool Equals(NullableBooleanCastFunctionExpression obj)
-            => obj is NullableBooleanCastFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableBooleanCastFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableBooleanCastFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableBooleanCastFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

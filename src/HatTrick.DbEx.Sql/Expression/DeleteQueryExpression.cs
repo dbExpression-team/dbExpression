@@ -22,15 +22,14 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public class DeleteQueryExpression : QueryExpression
     {
-
         #region interface
         public int? Top { get; set; }
-        public FilterExpressionSet Where { get; set; }
-        public JoinExpressionSet Joins { get; set; }
+        public FilterExpressionSet? Where { get; set; }
+        public JoinExpressionSet? Joins { get; set; }
         #endregion
 
         #region to string
-        public override string ToString()
+        public override string? ToString()
         {
             var sb = new StringBuilder("DELETE ");
             if (Top.HasValue)
@@ -40,10 +39,10 @@ namespace HatTrick.DbEx.Sql.Expression
             }
             sb.Append("FROM ");
             sb.Append(BaseEntity);
-            sb.Append(" ");
+            sb.Append(' ');
             sb.Append(Joins);
-            sb.Append(" ");
-            if (Where?.LeftArg is object)
+            sb.Append(' ');
+            if (!(Where as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>)?.Expression?.IsEmpty is not null)
             {
                 sb.Append("WHERE ");
                 sb.Append(Where);
@@ -54,34 +53,34 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region operators
-        public static DeleteQueryExpression operator &(DeleteQueryExpression query, JoinExpression join)
+        public static DeleteQueryExpression operator &(DeleteQueryExpression? query, JoinExpression? join)
         {
-            if (query is object)
+            if (query is not null && join is not null)
             {
                 if (query.Joins is null) { query.Joins = new JoinExpressionSet(join); }
                 else { query.Joins &= join; }
             }
-            return query;
+            return query ?? new();
         }
 
-        public static DeleteQueryExpression operator &(DeleteQueryExpression query, FilterExpression filter)
+        public static DeleteQueryExpression operator &(DeleteQueryExpression? query, FilterExpression? filter)
         {
-            if (query is object)
+            if (query is not null && filter is not null)
             {
                 if (query.Where is null) { query.Where = new FilterExpressionSet(filter); }
                 else { query.Where &= filter; }
             }
-            return query;
+            return query ?? new();
         }
 
-        public static DeleteQueryExpression operator &(DeleteQueryExpression query, FilterExpressionSet filter)
+        public static DeleteQueryExpression operator &(DeleteQueryExpression? query, FilterExpressionSet? filter)
         {
-            if (query is object)
+            if (query is not null && filter is not null)
             {
                 if (query.Where is null) { query.Where = filter; }
                 else { query.Where &= filter; }
             }
-            return query;
+            return query ?? new();
         }
         #endregion
     }

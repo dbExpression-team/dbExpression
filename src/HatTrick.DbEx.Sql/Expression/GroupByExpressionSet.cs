@@ -24,10 +24,11 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public class GroupByExpressionSet : 
         IExpressionElement,
-        IExpressionListProvider<AnyGroupByClause>
+        IExpressionListProvider<AnyGroupByClause>,
+        IEquatable<GroupByExpressionSet>
     {
         #region interface
-        public IEnumerable<AnyGroupByClause> Expressions { get; private set; } = new List<AnyGroupByClause>();
+        public IEnumerable<AnyGroupByClause> Expressions { get; private set; } = Array.Empty<AnyGroupByClause>();
         #endregion
 
         #region constructors
@@ -57,30 +58,66 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region to string
-        public override string ToString() => string.Join(", ", Expressions.Select(g => g.ToString()));
+        public override string? ToString() => string.Join(", ", Expressions.Select(g => g.ToString()));
+        #endregion
+
+        #region equals
+        public bool Equals(GroupByExpressionSet? obj)
+        {
+            if (obj is null) return false;
+            if (ReferenceEquals(this, obj)) return true;
+
+            if (!Expressions.SequenceEqual(obj.Expressions)) return false;
+
+            return true;
+        }
+
+        public override bool Equals(object? obj)
+            => obj is GroupByExpressionSet exp && Equals(exp);
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                const int @base = (int)2166136261;
+                const int multiplier = 16777619;
+
+                int hash = @base;
+                foreach (var exp in Expressions)
+                    hash = (hash * multiplier) ^ (exp is not null ? exp.GetHashCode() : 0);
+                return hash;
+            }
+        }
         #endregion
 
         #region conditional & operator
-        public static GroupByExpressionSet operator &(GroupByExpressionSet aSet, GroupByExpression b)
+        public static GroupByExpressionSet operator &(GroupByExpressionSet? a, GroupByExpression? b)
         {
-            if (aSet is null)
+            if (a is null && b is null)
+                return new();
+
+            if (a is null)
             {
-                aSet = b;
+                a = b!;
             }
             else
             {
-                aSet.Expressions = aSet.Expressions.Concat(new AnyGroupByClause[1] { b });
+                a.Expressions = a.Expressions.Concat(new AnyGroupByClause[1] { b! });
             }
-            return aSet;
+            return a;
         }
 
-        public static GroupByExpressionSet operator &(GroupByExpressionSet aSet, GroupByExpressionSet bSet)
+        public static GroupByExpressionSet operator &(GroupByExpressionSet? a, GroupByExpressionSet? b)
         {
-            if (aSet is null)
-                return bSet;
+            if (a is null)
+                return b ?? new();
 
-            aSet.Expressions = aSet.Expressions.Concat(bSet?.Expressions);
-            return aSet;
+            if (b?.Expressions is null)
+                return a;
+
+            a.Expressions = a.Expressions.Concat(b.Expressions);
+
+            return a;
         }
         #endregion
     }

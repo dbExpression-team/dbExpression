@@ -32,7 +32,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
             builder.AppendElement(elements.Expression, context);
             builder.Appender.Write(", ");
             builder.AppendElement(elements.Length, context);
-            if (elements.Function is object)
+            if (elements.Function is not null)
             {
                 builder.Appender.Write(", ");
                 builder.AppendElement(elements.Function, context);

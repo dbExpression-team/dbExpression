@@ -22,6 +22,7 @@ using System;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public interface IEntityExpression<T> : IEntityExpression
+        where T : class, IDbEntity
     {
         SelectExpressionSet BuildInclusiveSelectExpression();
         SelectExpressionSet BuildInclusiveSelectExpression(Func<string, string> alias);

@@ -4,13 +4,18 @@ namespace ServerSideBlazorApp.Models
 {
     public class PagingParametersWithSearch : PagingParameters
     { 
-        public string SearchPhrase { get; set; }
+        public string? SearchPhrase { get; set; }
 
         public PagingParametersWithSearch()
         {
 
         }
-        
+
+        private PagingParametersWithSearch(int offset, int limit, Sort sort) : base(offset, limit, sort)
+        {
+
+        }
+
         public PagingParametersWithSearch(int offset, int limit, string searchPhrase) : base(offset, limit)
         {
             SearchPhrase = searchPhrase;
@@ -27,6 +32,6 @@ namespace ServerSideBlazorApp.Models
         }
 
         public new static PagingParametersWithSearch CreateDefault(Sort defaultSort)
-            => new PagingParametersWithSearch(0, 10, defaultSort, null);
+            => new(0, 10, defaultSort);
     }
 }

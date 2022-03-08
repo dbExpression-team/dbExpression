@@ -26,10 +26,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
     public class PipelineEventHook<TContext>
         where TContext : class, IPipelineExecutionContext
     {
-        private IEnumerable<(Action<TContext> Action, Predicate<TContext> Predicate)> SyncHooks { get; set; }
-        private IEnumerable<(Func<TContext, CancellationToken, Task> Action, Predicate<TContext> Predicate)> AsyncHooks { get; set; }
+        private IEnumerable<(Action<TContext> Action, Predicate<TContext>? Predicate)> SyncHooks { get; set; }
+        private IEnumerable<(Func<TContext, CancellationToken, Task> Action, Predicate<TContext>? Predicate)> AsyncHooks { get; set; }
 
-        public PipelineEventHook(IEnumerable<(Action<TContext> Action, Predicate<TContext> Predicate)> syncHooks, IEnumerable<(Func<TContext, CancellationToken, Task> Action, Predicate<TContext> Predicate)> asyncHooks)
+        public PipelineEventHook(IEnumerable<(Action<TContext> Action, Predicate<TContext>? Predicate)> syncHooks, IEnumerable<(Func<TContext, CancellationToken, Task> Action, Predicate<TContext>? Predicate)> asyncHooks)
         {
             SyncHooks = syncHooks;
             AsyncHooks = asyncHooks;

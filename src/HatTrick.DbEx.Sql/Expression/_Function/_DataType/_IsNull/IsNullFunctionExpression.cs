@@ -43,27 +43,28 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region to string
-        public override string ToString() => $"ISNULL({checkExpression}, {replacementValue})";
+        public override string? ToString() => $"ISNULL({checkExpression}, {replacementValue})";
         #endregion
 
         #region equals
-        public bool Equals(IsNullFunctionExpression obj)
+        public bool Equals(IsNullFunctionExpression? obj)
         {
-            if (!base.Equals(obj)) return false;
+            if (obj is null) return false;
+            if (ReferenceEquals(this, obj)) return true;
 
-            if (this.checkExpression is null && obj.checkExpression is object) return false;
-            if (this.checkExpression is object && obj.checkExpression is null) return false;
-            if (!this.checkExpression.Equals(obj.checkExpression)) return false;
+            if (checkExpression is null && obj.checkExpression is not null) return false;
+            if (checkExpression is not null && obj.checkExpression is null) return false;
+            if (checkExpression is not null && !checkExpression.Equals(obj.checkExpression)) return false;
 
-            if (this.replacementValue is null && obj.replacementValue is object) return false;
-            if (this.replacementValue is object && obj.replacementValue is null) return false;
-            if (!this.replacementValue.Equals(obj.replacementValue)) return false;
+            if (replacementValue is null && obj.replacementValue is not null) return false;
+            if (replacementValue is not null && obj.replacementValue is null) return false;
+            if (replacementValue is not null && !replacementValue.Equals(obj.replacementValue)) return false;
 
             return true;
         }
 
-        public override bool Equals(object obj)
-         => obj is IsNullFunctionExpression exp ? Equals(exp) : false;
+        public override bool Equals(object? obj)
+         => obj is IsNullFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
         {
@@ -72,8 +73,8 @@ namespace HatTrick.DbEx.Sql.Expression
                 const int multiplier = 16777619;
 
                 int hash = base.GetHashCode();
-                hash = (hash * multiplier) ^ (checkExpression is object ? checkExpression.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ (replacementValue is object ? replacementValue.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (checkExpression is not null ? checkExpression.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (replacementValue is not null ? replacementValue.GetHashCode() : 0);
                 return hash;
             }
         }

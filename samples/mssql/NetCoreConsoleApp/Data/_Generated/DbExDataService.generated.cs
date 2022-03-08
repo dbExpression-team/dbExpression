@@ -105,17 +105,54 @@ namespace SimpleConsole.DataService
             => expressionBuilderFactory.CreateSelectValueBuilder<TEnum>(configuration, element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <see cref="object" /> value.
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/> value.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{Object}" />?
-        ///, for example "dbo.AccessAuditLog.AccessResult"
+        /// <param name="element">An expression of type <see cref="ObjectElement" />
         /// </param>
-        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<object> SelectOne(AnyElement<object> element)
+        /// <returns><see cref="SelectValue{object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<object> SelectOne(ObjectElement element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableObjectElement" />
+        /// </param>
+        /// <returns><see cref="SelectValue{object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<object> SelectOne(NullableObjectElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="ObjectElement{T}" />
+        /// </param>
+        /// <returns><see cref="SelectValues{T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <typeparam name="T">The type of the object to select.</typeparam>
+        public static SelectValue<T> SelectOne<T>(ObjectElement<T> element)
+            => expressionBuilderFactory.CreateSelectValueBuilder<T>(configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableObjectElement{T}" />
+        /// </param>
+        /// <returns><see cref="SelectValue{T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <typeparam name="T">The type of the object to select.</typeparam>
+        public static SelectValue<T> SelectOne<T>(NullableObjectElement<T> element)
+            => expressionBuilderFactory.CreateSelectValueBuilder<T>(configuration, element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="bool" /> value.
@@ -172,7 +209,6 @@ namespace SimpleConsole.DataService
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
-        ///, for example "dbo.Product.Image" or "db.fx.IsNull(dbo.Product.Image, new byte[0])"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<byte[]> SelectOne(AnyElement<byte[]> element)
@@ -414,8 +450,21 @@ namespace SimpleConsole.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{String}" />
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         ///</param>
-        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<string> SelectOne(AnyElement<string> element) 
+        /// <returns><see cref="SelectValue{String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<string> SelectOne(StringElement element) 
+            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="string" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{String}" />
+        ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
+        ///</param>
+        /// <returns><see cref="SelectValue{String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<string> SelectOne(NullableStringElement element) 
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -526,17 +575,54 @@ namespace SimpleConsole.DataService
             => expressionBuilderFactory.CreateSelectValuesBuilder<TEnum>(configuration, element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a list of <see cref="object" /> values.
-        /// </summary>
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/> values.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
-        /// <param name="element">An expression of type <see cref="AnyElement{Object}" />
-        ///, for example "db.fx.Coalesce(dbo.Person.CreditLimit, dbo.Address.Line1)"
-        ///</param>
-        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<object> SelectMany(AnyElement<object> element)
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="ObjectElement" />
+        /// </param>
+        /// <returns><see cref="SelectValues{object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<object> SelectMany(ObjectElement element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableObjectElement" />
+        /// </param>
+        /// <returns><see cref="SelectValues{object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<object> SelectMany(NullableObjectElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="ObjectElement{T}" />
+        /// </param>
+        /// <returns><see cref="SelectValues{T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <typeparam name="T">The type of the object to select.</typeparam>
+        public static SelectValues<T> SelectMany<T>(ObjectElement<T> element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder<T>(configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableObjectElement{T}" />
+        /// </param>
+        /// <returns><see cref="SelectValues{T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <typeparam name="T">The type of the object to select.</typeparam>
+        public static SelectValues<T> SelectMany<T>(NullableObjectElement<T> element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder<T>(configuration, element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="bool" /> values.
@@ -593,7 +679,6 @@ namespace SimpleConsole.DataService
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
-        ///, for example "dbo.Product.Image" or "db.fx.IsNull(dbo.Product.Image, new byte[0])"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<byte[]> SelectMany(AnyElement<byte[]> element)
@@ -835,8 +920,21 @@ namespace SimpleConsole.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{String}" />
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         ///</param>
-        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<string> SelectMany(AnyElement<string> element)
+        /// <returns><see cref="SelectValues{String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<string> SelectMany(StringElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="string" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{String}" />
+        ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
+        ///</param>
+        /// <returns><see cref="SelectValues{String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<string> SelectMany(NullableStringElement element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -1504,10 +1602,6 @@ namespace SimpleConsole.dboDataService
         #endregion
 
         #region constructors
-        private AccessAuditLogEntity() : base(null, null, null, null)
-        {
-        }
-
         public AccessAuditLogEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
@@ -1596,6 +1690,8 @@ namespace SimpleConsole.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -1645,6 +1741,8 @@ namespace SimpleConsole.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -1853,10 +1951,6 @@ namespace SimpleConsole.dboDataService
         #endregion
 
         #region constructors
-        private AddressEntity() : base(null, null, null, null)
-        {
-        }
-
         public AddressEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
@@ -1983,6 +2077,8 @@ namespace SimpleConsole.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -1998,11 +2094,11 @@ namespace SimpleConsole.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<SimpleConsole.Data.AddressType?>(value, this));
             public AssignmentExpression Set(SimpleConsole.Data.AddressType value) => new AssignmentExpression(this, new LiteralExpression<SimpleConsole.Data.AddressType>(value, this));
             public AssignmentExpression Set(AnyElement<SimpleConsole.Data.AddressType> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(SimpleConsole.Data.AddressType? value) => new AssignmentExpression(this, new LiteralExpression<SimpleConsole.Data.AddressType?>(value, this));
             public AssignmentExpression Set(AnyElement<SimpleConsole.Data.AddressType?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<SimpleConsole.Data.AddressType>(value, this));
             #endregion
         }
         #endregion
@@ -2019,13 +2115,13 @@ namespace SimpleConsole.dboDataService
 
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
 
         #region line2 field expression
-        public partial class Line2Field : NullableStringFieldExpression<Address>
+        public partial class Line2Field : StringFieldExpression<Address>
         {
             #region constructors
             public Line2Field(string identifier, string name, AddressEntity entity) : base(identifier, name, entity)
@@ -2036,8 +2132,7 @@ namespace SimpleConsole.dboDataService
 
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2054,7 +2149,7 @@ namespace SimpleConsole.dboDataService
 
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2071,7 +2166,7 @@ namespace SimpleConsole.dboDataService
 
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2088,7 +2183,7 @@ namespace SimpleConsole.dboDataService
 
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2104,6 +2199,8 @@ namespace SimpleConsole.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2119,6 +2216,8 @@ namespace SimpleConsole.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2370,10 +2469,6 @@ namespace SimpleConsole.dboDataService
         #endregion
 
         #region constructors
-        private PersonEntity() : base(null, null, null, null)
-        {
-        }
-
         public PersonEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
@@ -2516,6 +2611,8 @@ namespace SimpleConsole.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2532,7 +2629,7 @@ namespace SimpleConsole.dboDataService
 
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2549,7 +2646,7 @@ namespace SimpleConsole.dboDataService
 
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2565,11 +2662,11 @@ namespace SimpleConsole.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
-            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value, this));
             public AssignmentExpression Set(DateTime? value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value, this));
             public AssignmentExpression Set(AnyElement<DateTime?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2602,11 +2699,11 @@ namespace SimpleConsole.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
-            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<int?>(value, this));
             public AssignmentExpression Set(int? value) => new AssignmentExpression(this, new LiteralExpression<int?>(value, this));
             public AssignmentExpression Set(AnyElement<int?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2622,11 +2719,11 @@ namespace SimpleConsole.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
-            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<int?>(value, this));
             public AssignmentExpression Set(int? value) => new AssignmentExpression(this, new LiteralExpression<int?>(value, this));
             public AssignmentExpression Set(AnyElement<int?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2659,11 +2756,11 @@ namespace SimpleConsole.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(DateTimeOffset value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset>(value, this));
-            public AssignmentExpression Set(AnyElement<DateTimeOffset> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset?>(value, this));
             public AssignmentExpression Set(DateTimeOffset? value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset?>(value, this));
             public AssignmentExpression Set(AnyElement<DateTimeOffset?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset>(value, this));
+            public AssignmentExpression Set(DateTimeOffset value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTimeOffset> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2679,6 +2776,8 @@ namespace SimpleConsole.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2694,6 +2793,8 @@ namespace SimpleConsole.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2799,10 +2900,6 @@ namespace SimpleConsole.dboDataService
         #endregion
 
         #region constructors
-        private PersonAddressEntity() : base(null, null, null, null)
-        {
-        }
-
         public PersonAddressEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
@@ -2891,6 +2988,8 @@ namespace SimpleConsole.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2940,6 +3039,8 @@ namespace SimpleConsole.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3102,7 +3203,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.ProductEntity.ImageField"/> representing the "dbo.Product.Image" column in the database, 
         /// with a .NET type of <see cref="byte"/>[].  The <see cref="SimpleConsole.dboDataService.ProductEntity.ImageField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{ByteArray}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{ByteArray}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3308,10 +3409,6 @@ namespace SimpleConsole.dboDataService
         #endregion
 
         #region constructors
-        private ProductEntity() : base(null, null, null, null)
-        {
-        }
-
         public ProductEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
@@ -3502,6 +3599,8 @@ namespace SimpleConsole.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3517,11 +3616,11 @@ namespace SimpleConsole.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<SimpleConsole.Data.ProductCategoryType?>(value, this));
             public AssignmentExpression Set(SimpleConsole.Data.ProductCategoryType value) => new AssignmentExpression(this, new LiteralExpression<SimpleConsole.Data.ProductCategoryType>(value, this));
             public AssignmentExpression Set(AnyElement<SimpleConsole.Data.ProductCategoryType> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(SimpleConsole.Data.ProductCategoryType? value) => new AssignmentExpression(this, new LiteralExpression<SimpleConsole.Data.ProductCategoryType?>(value, this));
             public AssignmentExpression Set(AnyElement<SimpleConsole.Data.ProductCategoryType?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<SimpleConsole.Data.ProductCategoryType>(value, this));
             #endregion
         }
         #endregion
@@ -3538,13 +3637,13 @@ namespace SimpleConsole.dboDataService
 
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
 
         #region description field expression
-        public partial class DescriptionField : NullableStringFieldExpression<Product>
+        public partial class DescriptionField : StringFieldExpression<Product>
         {
             #region constructors
             public DescriptionField(string identifier, string name, ProductEntity entity) : base(identifier, name, entity)
@@ -3555,8 +3654,7 @@ namespace SimpleConsole.dboDataService
 
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3623,9 +3721,9 @@ namespace SimpleConsole.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<byte[]>(value, this));
             public AssignmentExpression Set(byte[] value) => new AssignmentExpression(this, new LiteralExpression<byte[]>(value, this));
             public AssignmentExpression Set(AnyElement<byte[]> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<byte[]>(value, this));
             #endregion
         }
         #endregion
@@ -3641,11 +3739,11 @@ namespace SimpleConsole.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
-            public AssignmentExpression Set(AnyElement<decimal> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
             public AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
             public AssignmentExpression Set(AnyElement<decimal?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
+            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
+            public AssignmentExpression Set(AnyElement<decimal> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3661,11 +3759,11 @@ namespace SimpleConsole.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
-            public AssignmentExpression Set(AnyElement<decimal> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
             public AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
             public AssignmentExpression Set(AnyElement<decimal?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
+            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
+            public AssignmentExpression Set(AnyElement<decimal> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3681,11 +3779,11 @@ namespace SimpleConsole.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
-            public AssignmentExpression Set(AnyElement<decimal> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
             public AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
             public AssignmentExpression Set(AnyElement<decimal?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
+            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
+            public AssignmentExpression Set(AnyElement<decimal> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3701,11 +3799,11 @@ namespace SimpleConsole.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
-            public AssignmentExpression Set(AnyElement<decimal> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
             public AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
             public AssignmentExpression Set(AnyElement<decimal?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
+            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
+            public AssignmentExpression Set(AnyElement<decimal> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3738,11 +3836,11 @@ namespace SimpleConsole.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(TimeSpan value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan>(value, this));
-            public AssignmentExpression Set(AnyElement<TimeSpan> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan?>(value, this));
             public AssignmentExpression Set(TimeSpan? value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan?>(value, this));
             public AssignmentExpression Set(AnyElement<TimeSpan?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan>(value, this));
+            public AssignmentExpression Set(TimeSpan value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan>(value, this));
+            public AssignmentExpression Set(AnyElement<TimeSpan> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3758,11 +3856,11 @@ namespace SimpleConsole.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(TimeSpan value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan>(value, this));
-            public AssignmentExpression Set(AnyElement<TimeSpan> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan?>(value, this));
             public AssignmentExpression Set(TimeSpan? value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan?>(value, this));
             public AssignmentExpression Set(AnyElement<TimeSpan?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan>(value, this));
+            public AssignmentExpression Set(TimeSpan value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan>(value, this));
+            public AssignmentExpression Set(AnyElement<TimeSpan> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3778,6 +3876,8 @@ namespace SimpleConsole.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3793,6 +3893,8 @@ namespace SimpleConsole.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4081,10 +4183,6 @@ namespace SimpleConsole.dboDataService
         #endregion
 
         #region constructors
-        private PurchaseEntity() : base(null, null, null, null)
-        {
-        }
-
         public PurchaseEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
@@ -4243,6 +4341,8 @@ namespace SimpleConsole.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4276,7 +4376,7 @@ namespace SimpleConsole.dboDataService
 
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4343,11 +4443,11 @@ namespace SimpleConsole.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
-            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value, this));
             public AssignmentExpression Set(DateTime? value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value, this));
             public AssignmentExpression Set(AnyElement<DateTime?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4363,11 +4463,11 @@ namespace SimpleConsole.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
-            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value, this));
             public AssignmentExpression Set(DateTime? value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value, this));
             public AssignmentExpression Set(AnyElement<DateTime?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4383,11 +4483,11 @@ namespace SimpleConsole.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(Guid value) => new AssignmentExpression(this, new LiteralExpression<Guid>(value, this));
-            public AssignmentExpression Set(AnyElement<Guid> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<Guid?>(value, this));
             public AssignmentExpression Set(Guid? value) => new AssignmentExpression(this, new LiteralExpression<Guid?>(value, this));
             public AssignmentExpression Set(AnyElement<Guid?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<Guid>(value, this));
+            public AssignmentExpression Set(Guid value) => new AssignmentExpression(this, new LiteralExpression<Guid>(value, this));
+            public AssignmentExpression Set(AnyElement<Guid> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4420,11 +4520,11 @@ namespace SimpleConsole.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<SimpleConsole.Data.PaymentSourceType?>(value, this));
             public AssignmentExpression Set(SimpleConsole.Data.PaymentSourceType value) => new AssignmentExpression(this, new LiteralExpression<SimpleConsole.Data.PaymentSourceType>(value, this));
             public AssignmentExpression Set(AnyElement<SimpleConsole.Data.PaymentSourceType> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(SimpleConsole.Data.PaymentSourceType? value) => new AssignmentExpression(this, new LiteralExpression<SimpleConsole.Data.PaymentSourceType?>(value, this));
             public AssignmentExpression Set(AnyElement<SimpleConsole.Data.PaymentSourceType?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<SimpleConsole.Data.PaymentSourceType>(value, this));
             #endregion
         }
         #endregion
@@ -4440,6 +4540,8 @@ namespace SimpleConsole.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4455,6 +4557,8 @@ namespace SimpleConsole.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4623,10 +4727,6 @@ namespace SimpleConsole.dboDataService
         #endregion
 
         #region constructors
-        private PurchaseLineEntity() : base(null, null, null, null)
-        {
-        }
-
         public PurchaseLineEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
@@ -4737,6 +4837,8 @@ namespace SimpleConsole.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4820,6 +4922,8 @@ namespace SimpleConsole.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4835,6 +4939,8 @@ namespace SimpleConsole.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4914,10 +5020,6 @@ namespace SimpleConsole.dboDataService
         #endregion
 
         #region constructors
-        private PersonTotalPurchasesViewEntity() : base(null, null, null, null)
-        {
-        }
-
         public PersonTotalPurchasesViewEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
@@ -4996,6 +5098,8 @@ namespace SimpleConsole.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -5011,7 +5115,11 @@ namespace SimpleConsole.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<double>(value, this));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<double?>(value, this));
+            public AssignmentExpression Set(double? value) => new AssignmentExpression(this, new LiteralExpression<double?>(value, this));
+            public AssignmentExpression Set(AnyElement<double?> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(double value) => new AssignmentExpression(this, new LiteralExpression<double>(value, this));
+            public AssignmentExpression Set(AnyElement<double> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -5027,7 +5135,11 @@ namespace SimpleConsole.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<int?>(value, this));
+            public AssignmentExpression Set(int? value) => new AssignmentExpression(this, new LiteralExpression<int?>(value, this));
+            public AssignmentExpression Set(AnyElement<int?> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -5673,10 +5785,6 @@ namespace SimpleConsole.secDataService
         #endregion
 
         #region constructors
-        private PersonEntity() : base(null, null, null, null)
-        {
-        }
-
         public PersonEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
@@ -5783,7 +5891,7 @@ namespace SimpleConsole.secDataService
 
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -5799,6 +5907,8 @@ namespace SimpleConsole.secDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -5814,6 +5924,8 @@ namespace SimpleConsole.secDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion

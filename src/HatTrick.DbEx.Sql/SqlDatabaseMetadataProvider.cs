@@ -24,9 +24,9 @@ namespace HatTrick.DbEx.Sql
     public class SqlDatabaseMetadataProvider : ISqlDatabaseMetadataProvider
     {
         #region internals
-        private ConcurrentDictionary<string, ISqlEntityMetadata> _discoveredEntities = new ConcurrentDictionary<string, ISqlEntityMetadata>();
-        private ConcurrentDictionary<string, ISqlFieldMetadata> _discoveredFields = new ConcurrentDictionary<string, ISqlFieldMetadata>();
-        private ConcurrentDictionary<string, ISqlParameterMetadata> _discoveredParameters = new ConcurrentDictionary<string, ISqlParameterMetadata>();
+        private ConcurrentDictionary<string, ISqlEntityMetadata> _discoveredEntities = new();
+        private ConcurrentDictionary<string, ISqlFieldMetadata> _discoveredFields = new();
+        private ConcurrentDictionary<string, ISqlParameterMetadata> _discoveredParameters = new();
         #endregion
 
         #region interface
@@ -41,14 +41,14 @@ namespace HatTrick.DbEx.Sql
         #endregion
 
         #region methods
-        public ISqlSchemaMetadata FindSchemaMetadata(string identifier)
+        public ISqlSchemaMetadata? FindSchemaMetadata(string identifier)
         {
             if (Database.Schemas.TryGetValue(identifier, out var meta))
                 return meta;
             return null;
         }
 
-        public ISqlEntityMetadata FindEntityMetadata(string identifier)
+        public ISqlEntityMetadata? FindEntityMetadata(string identifier)
         {
             if (_discoveredEntities.TryGetValue(identifier, out var entity))
                 return entity;
@@ -63,7 +63,7 @@ namespace HatTrick.DbEx.Sql
             return null;
         }
 
-        public ISqlFieldMetadata FindFieldMetadata(string identifier)
+        public ISqlFieldMetadata? FindFieldMetadata(string identifier)
         {
             if (_discoveredFields.TryGetValue(identifier, out var field))
                 return field;
@@ -79,7 +79,7 @@ namespace HatTrick.DbEx.Sql
             return null;
         }
 
-        public ISqlParameterMetadata FindParameterMetadata(string identifier)
+        public ISqlParameterMetadata? FindParameterMetadata(string identifier)
         {
             if (_discoveredParameters.TryGetValue(identifier, out var parameter))
                 return parameter;

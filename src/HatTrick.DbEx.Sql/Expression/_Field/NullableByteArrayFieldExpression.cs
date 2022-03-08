@@ -21,6 +21,13 @@ using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
+    /// <summary>
+    /// Field expression representing nullable strings.
+    /// </summary>
+    /// <remarks>
+    /// Due to nullability of reference types and abstract members in base, cannot follow the same pattern for other nullable fields.
+    /// MUST inherit directly from FieldExpression{Byte[]}, not NullableFieldExpression{Byte[],Byte[]?}.
+    /// </remarks>
     public abstract partial class NullableByteArrayFieldExpression :
         FieldExpression<byte[]>,
         NullableByteArrayElement,
@@ -33,45 +40,45 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region equals
-        public bool Equals(NullableByteArrayFieldExpression obj)
-            => obj is NullableByteArrayFieldExpression && base.Equals(obj);
+        #region as
+        public new AnyElement<byte[]?> As(string alias)
+            => new SelectExpression<byte[]?>(this, alias);
+        #endregion
 
-        public override bool Equals(object obj)
-            => obj is NullableByteArrayFieldExpression exp && base.Equals(exp);
+        #region equals
+        public bool Equals(NullableByteArrayFieldExpression? obj)
+            => obj is not null && base.Equals(obj);
+
+        public override bool Equals(object? obj)
+            => obj is NullableByteArrayFieldExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();
         #endregion
 
-        #region in value set
-        public override FilterExpressionSet In(params byte[][] value) => value is object ? new FilterExpressionSet(new FilterExpression<bool>(this, new InExpression<byte[]>(this, value), FilterExpressionOperator.None)) : null;
-        public override FilterExpressionSet In(IEnumerable<byte[]> value) => value is object ? new FilterExpressionSet(new FilterExpression<bool>(this, new InExpression<byte[]>(this, value), FilterExpressionOperator.None)) : null;
-        #endregion
-
         #region implicit operators
-        public static implicit operator NullableByteArrayExpressionMediator(NullableByteArrayFieldExpression a) => new NullableByteArrayExpressionMediator(a);
+        public static implicit operator NullableByteArrayExpressionMediator(NullableByteArrayFieldExpression a) => new(a);
         #endregion
 
         #region filter operators
         #region DBNull
-        public static FilterExpressionSet operator ==(NullableByteArrayFieldExpression a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<byte[]>(b, a), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableByteArrayFieldExpression a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<byte[]>(b, a), FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator ==(DBNull a, NullableByteArrayFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<byte[]>(a, b), b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(DBNull a, NullableByteArrayFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<byte[]>(a, b), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(NullableByteArrayFieldExpression a, DBNull b) => new(new FilterExpression<bool?>(a, new LiteralExpression<byte[]>(b, a), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(NullableByteArrayFieldExpression a, DBNull b) => new(new FilterExpression<bool?>(a, new LiteralExpression<byte[]>(b, a), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(DBNull a, NullableByteArrayFieldExpression b) => new(new FilterExpression<bool?>(new LiteralExpression<byte[]>(a, b), b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(DBNull a, NullableByteArrayFieldExpression b) => new(new FilterExpression<bool?>(new LiteralExpression<byte[]>(a, b), b, FilterExpressionOperator.NotEqual));
         #endregion
 
         #region byte[]
-        public static FilterExpression<bool?> operator ==(NullableByteArrayFieldExpression a, byte[] b) => new FilterExpression<bool?>(a, new LiteralExpression<byte[]>(b, a), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool?> operator !=(NullableByteArrayFieldExpression a, byte[] b) => new FilterExpression<bool?>(a, new LiteralExpression<byte[]>(b, a), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator ==(NullableByteArrayFieldExpression a, byte[] b) => new(a, new LiteralExpression<byte[]>(b, a), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator !=(NullableByteArrayFieldExpression a, byte[] b) => new(a, new LiteralExpression<byte[]>(b, a), FilterExpressionOperator.NotEqual);
 
-        public static FilterExpression<bool?> operator ==(byte[] a, NullableByteArrayFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<byte[]>(a, b), b, FilterExpressionOperator.Equal);
-        public static FilterExpression<bool?> operator !=(byte[] a, NullableByteArrayFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<byte[]>(a, b), b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator ==(byte[] a, NullableByteArrayFieldExpression b) => new(new LiteralExpression<byte[]>(a, b), b, FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator !=(byte[] a, NullableByteArrayFieldExpression b) => new(new LiteralExpression<byte[]>(a, b), b, FilterExpressionOperator.NotEqual);
         #endregion
 
         #region mediator
-        public static FilterExpression<bool?> operator ==(NullableByteArrayFieldExpression a, ByteArrayExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression<bool?> operator !=(NullableByteArrayFieldExpression a, ByteArrayExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator ==(NullableByteArrayFieldExpression a, ByteArrayExpressionMediator b) => new(a, b, FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator !=(NullableByteArrayFieldExpression a, ByteArrayExpressionMediator b) => new(a, b, FilterExpressionOperator.NotEqual);
         #endregion
         #endregion
     }

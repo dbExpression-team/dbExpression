@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<Int64LengthFunctionExpression>
     {
         #region constructors
-        public Int64LengthFunctionExpression(AnyElement<string> expression) : base(expression)
+        public Int64LengthFunctionExpression(StringElement expression) : base(expression)
         {
 
         }
@@ -38,11 +38,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(Int64LengthFunctionExpression obj)
-            => obj is Int64LengthFunctionExpression && base.Equals(obj);
+        public bool Equals(Int64LengthFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is Int64LengthFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is Int64LengthFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

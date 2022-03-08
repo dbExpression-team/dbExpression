@@ -39,7 +39,7 @@ namespace HatTrick.DbEx.Sql.Expression
         protected readonly Type dbEntityType;
         protected readonly SchemaExpression schema;
         protected IDictionary<string, FieldExpression> Fields { get; } = new Dictionary<string, FieldExpression>();
-        protected readonly string alias;
+        protected readonly string? alias;
         #endregion
 
         #region interface
@@ -47,17 +47,17 @@ namespace HatTrick.DbEx.Sql.Expression
         Type IDbEntityTypeProvider.EntityType => dbEntityType;
         SchemaExpression IExpressionProvider<SchemaExpression>.Expression => schema;
         IEnumerable<FieldExpression> IExpressionListProvider<FieldExpression>.Expressions => Fields.Values;
-        string IExpressionAliasProvider.Alias => alias;
+        string? IExpressionAliasProvider.Alias => alias;
         string IExpressionNameProvider.Name => name;
         #endregion
 
         #region constructors
-        private EntityExpression()
+        protected EntityExpression()
         {
-
+            throw new InvalidOperationException("Constructor does not initialize properties.");
         }
-        
-        protected EntityExpression(string identifier, string name, Type dbEntityType, SchemaExpression schema, string alias)
+
+        protected EntityExpression(string identifier, string name, Type dbEntityType, SchemaExpression schema, string? alias)
         {
             this.identifier = identifier ?? throw new ArgumentNullException(nameof(identifier));
             this.name = name ?? throw new ArgumentNullException(nameof(name));
@@ -68,7 +68,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region to string
-        public override string ToString() => this.ToString(false);
+        public override string? ToString() => this.ToString(false);
 
         public string ToString(bool ignoreAlias = false)
         {
@@ -80,35 +80,33 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region operators
-        public static bool operator ==(EntityExpression obj1, EntityExpression obj2)
+        public static bool operator ==(EntityExpression? obj1, EntityExpression? obj2)
         {
-            if (obj1 is null && obj2 is object) return false;
-            if (obj1 is object && obj2 is null) return false;
+            if (obj1 is not null && obj2 is null) return false;
+            if (obj1 is null && obj2 is not null) return false;
             if (obj1 is null && obj2 is null) return true;
 
-            return obj1.Equals(obj2);
+            return obj1!.Equals(obj2);
         }
 
-        public static bool operator !=(EntityExpression obj1, EntityExpression obj2)
+        public static bool operator !=(EntityExpression? obj1, EntityExpression? obj2)
             => !(obj1 == obj2);
         #endregion
 
         #region equals
-        public bool Equals(EntityExpression obj)
+        public bool Equals(EntityExpression? obj)
         {
             if (obj is null) return false;
-            if (ReferenceEquals(this, obj)) return true;
+            if (ReferenceEquals(obj, this)) return true;
 
-            if (schema is null && obj.schema is object) return false;
-            if (schema is object && obj.schema is null) return false;
             if (!schema.Equals(obj.schema)) return false;
-
             if (!StringComparer.Ordinal.Equals(alias, obj.alias)) return false;
+            if (!StringComparer.Ordinal.Equals(identifier, obj.identifier)) return false;
 
-            return identifier.Equals(obj.identifier);
+            return true;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
             => obj is EntityExpression exp && Equals(exp);
 
         public override int GetHashCode()
@@ -119,8 +117,8 @@ namespace HatTrick.DbEx.Sql.Expression
                 const int multiplier = 16777619;
 
                 int hash = @base;
-                hash = (hash * multiplier) ^ (identifier is object ? identifier.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ (alias is object ? alias.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (identifier is not null ? identifier.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (alias is not null ? alias.GetHashCode() : 0);
                 return hash;
             }
         }

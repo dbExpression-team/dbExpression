@@ -23,12 +23,14 @@ using System;
 using {$};
 {/each-}
 
+#nullable enable
+
 namespace {Namespace}
 {{
     public partial class {:dataType.Name}{:functionName}FunctionExpression
     {{
         #region implicit operators
-        public static implicit operator {:dataType.Name}ExpressionMediator({:dataType.Name}{:functionName}FunctionExpression a) => new {:dataType.Name}ExpressionMediator(a);
+        public static implicit operator {:dataType.Name}ExpressionMediator({:dataType.Name}{:functionName}FunctionExpression a) => new(a);
         #endregion
 
         #region arithmetic operators
@@ -38,22 +40,22 @@ namespace {Namespace}
         {-?var:operationType = OperationType-}
         #region {:operationType.Alias}
         {-#each Operations-}
-        public static {:mediatorType.Name}ExpressionMediator operator {ArithmeticOperatorSymbol}({:dataType}{:functionName}FunctionExpression a, {:operationType.Alias} b) => new {:mediatorType.Name}ExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<{:operationType.Alias}>(b), ArithmeticExpressionOperator.{ArithmeticOperatorName}));
+        public static {:mediatorType.Name}ExpressionMediator operator {ArithmeticOperatorSymbol}({:dataType}{:functionName}FunctionExpression a, {:operationType.Alias} b) => new(new ArithmeticExpression(a, new LiteralExpression<{:operationType.Alias}>(b), ArithmeticExpressionOperator.{ArithmeticOperatorName}));
         {-/each-}
 
         {-#each Operations-}
-        public static {:mediatorType.Name}ExpressionMediator operator {ArithmeticOperatorSymbol}({:operationType.Alias} a, {..\..\$.Type.Name}{:functionName}FunctionExpression b) => new {:mediatorType.Name}ExpressionMediator(new ArithmeticExpression(new LiteralExpression<{:operationType.Alias}>(a), b, ArithmeticExpressionOperator.{ArithmeticOperatorName}));
+        public static {:mediatorType.Name}ExpressionMediator operator {ArithmeticOperatorSymbol}({:operationType.Alias} a, {..\..\$.Type.Name}{:functionName}FunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<{:operationType.Alias}>(a), b, ArithmeticExpressionOperator.{ArithmeticOperatorName}));
         {-/each-}
 
         {-#each Operations-}
         {-#if :operationType.IsNullable-}
-        public static {#if :mediatorType.IsNullable}Nullable{/if}{:mediatorType.Name}ExpressionMediator operator {ArithmeticOperatorSymbol}({:dataType.Name}{:functionName}FunctionExpression a, {:operationType.NullableAlias} b) => new {#if :mediatorType.IsNullable}Nullable{/if}{:mediatorType.Name}ExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<{:operationType.NullableAlias}>(b), ArithmeticExpressionOperator.{ArithmeticOperatorName}));
+        public static {#if :mediatorType.IsNullable}Nullable{/if}{:mediatorType.Name}ExpressionMediator operator {ArithmeticOperatorSymbol}({:dataType.Name}{:functionName}FunctionExpression a, {:operationType.NullableAlias} b) => new(new ArithmeticExpression(a, new LiteralExpression<{:operationType.NullableAlias}>(b), ArithmeticExpressionOperator.{ArithmeticOperatorName}));
         {-/if-}
         {-/each-}
 
         {-#each Operations-}
         {-#if :operationType.IsNullable-}
-        public static {#if :mediatorType.IsNullable}Nullable{/if}{:mediatorType.Name}ExpressionMediator operator {ArithmeticOperatorSymbol}({:operationType.NullableAlias} a, {:dataType.Name}{:functionName}FunctionExpression b) => new {#if :mediatorType.IsNullable}Nullable{/if}{:mediatorType.Name}ExpressionMediator(new ArithmeticExpression(new LiteralExpression<{:operationType.NullableAlias}>(a), b, ArithmeticExpressionOperator.{ArithmeticOperatorName}));
+        public static {#if :mediatorType.IsNullable}Nullable{/if}{:mediatorType.Name}ExpressionMediator operator {ArithmeticOperatorSymbol}({:operationType.NullableAlias} a, {:dataType.Name}{:functionName}FunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<{:operationType.NullableAlias}>(a), b, ArithmeticExpressionOperator.{ArithmeticOperatorName}));
         {-/if-}
         {-/each-}
         #endregion
@@ -68,13 +70,13 @@ namespace {Namespace}
         {-?var:operationType = OperationType-}
         #region {:operationType.Alias}
         {-#each Operations-}
-        public static {:mediatorType.Name}ExpressionMediator operator {ArithmeticOperatorSymbol}({:dataType.Name}{:functionName}FunctionExpression a, {:operationType.Name}FieldExpression b) => new {:mediatorType.Name}ExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.{ArithmeticOperatorName}));
+        public static {:mediatorType.Name}ExpressionMediator operator {ArithmeticOperatorSymbol}({:dataType.Name}{:functionName}FunctionExpression a, {:operationType.Name}FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.{ArithmeticOperatorName}));
         {-/each-}
 
         {-#if :mediatorType.IsNullable-}
         {-#if :operationType.IsNullable-}
         {-#each Operations-}
-        public static Nullable{:mediatorType.Name}ExpressionMediator operator {ArithmeticOperatorSymbol}({:dataType.Name}{:functionName}FunctionExpression a, Nullable{:operationType.Name}FieldExpression b) => new Nullable{:mediatorType.Name}ExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.{ArithmeticOperatorName}));
+        public static Nullable{:mediatorType.Name}ExpressionMediator operator {ArithmeticOperatorSymbol}({:dataType.Name}{:functionName}FunctionExpression a, Nullable{:operationType.Name}FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.{ArithmeticOperatorName}));
         {-/each-}
         {-/if-}
         {-/if-}
@@ -89,13 +91,13 @@ namespace {Namespace}
         {-?var:operationType = OperationType-}
         #region {:operationType.Alias}
         {-#each Operations-}
-        public static {:mediatorType.Name}ExpressionMediator operator {ArithmeticOperatorSymbol}({:dataType.Name}{:functionName}FunctionExpression a, {:operationType.Name}ExpressionMediator b) => new {:mediatorType.Name}ExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.{ArithmeticOperatorName}));
+        public static {:mediatorType.Name}ExpressionMediator operator {ArithmeticOperatorSymbol}({:dataType.Name}{:functionName}FunctionExpression a, {:operationType.Name}ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.{ArithmeticOperatorName}));
         {-/each-}
 
         {-#if :mediatorType.IsNullable-}
         {-#if :operationType.IsNullable-}
         {-#each Operations-}
-        public static Nullable{:mediatorType.Name}ExpressionMediator operator {ArithmeticOperatorSymbol}({:dataType.Name}{:functionName}FunctionExpression a, Nullable{:operationType.Name}ExpressionMediator b) => new Nullable{:mediatorType.Name}ExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.{ArithmeticOperatorName}));
+        public static Nullable{:mediatorType.Name}ExpressionMediator operator {ArithmeticOperatorSymbol}({:dataType.Name}{:functionName}FunctionExpression a, Nullable{:operationType.Name}ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.{ArithmeticOperatorName}));
         {-/each-}
         {-/if-}
         {-/if-}
@@ -105,10 +107,10 @@ namespace {Namespace}
 
         #region alias
         {-#each ($.ArithmeticOperations, :dataType.Type) => GetArithmeticOperationsForType-}
-        public static ObjectExpressionMediator operator {ArithmeticOperatorSymbol}({:dataType.Name}{:functionName}FunctionExpression a, AliasExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.{ArithmeticOperatorName}));
+        public static ObjectExpressionMediator operator {ArithmeticOperatorSymbol}({:dataType.Name}{:functionName}FunctionExpression a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.{ArithmeticOperatorName}));
         {-/each-}
         {-#each ($.ArithmeticOperations, :dataType.Type) => GetArithmeticOperationsForType-}
-        public static ObjectExpressionMediator operator {ArithmeticOperatorSymbol}({:dataType.Name}{:functionName}FunctionExpression a, (string TableName, string FieldName) b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new AliasExpression(b.TableName, b.FieldName), ArithmeticExpressionOperator.{ArithmeticOperatorName}));
+        public static ObjectExpressionMediator operator {ArithmeticOperatorSymbol}({:dataType.Name}{:functionName}FunctionExpression a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression(b.TableName, b.FieldName), ArithmeticExpressionOperator.{ArithmeticOperatorName}));
         {-/each-}
         #endregion
         #endregion
@@ -118,20 +120,20 @@ namespace {Namespace}
         #region {:dataType.Alias}
         {-#each Filters-}
         {-#each Operations-}
-        public static FilterExpressionSet operator {FilterOperatorSymbol}({:dataType.Name}{:functionName}FunctionExpression a, {:dataType.Alias} b) => new FilterExpressionSet(new FilterExpression<bool>(a, new LiteralExpression<{:dataType.Alias}>(b), FilterExpressionOperator.{FilterOperatorName}));
+        public static FilterExpressionSet operator {FilterOperatorSymbol}({:dataType.Name}{:functionName}FunctionExpression a, {:dataType.Alias} b) => new(new FilterExpression<bool>(a, new LiteralExpression<{:dataType.Alias}>(b), FilterExpressionOperator.{FilterOperatorName}));
         {-/each-}
 
         {-#each Operations-}
-        public static FilterExpressionSet operator {FilterOperatorSymbol}({:dataType.Alias} a, {:dataType.Name}{:functionName}FunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new LiteralExpression<{:dataType.Alias}>(a), b, FilterExpressionOperator.{FilterOperatorName}));
+        public static FilterExpressionSet operator {FilterOperatorSymbol}({:dataType.Alias} a, {:dataType.Name}{:functionName}FunctionExpression b) => new(new FilterExpression<bool>(new LiteralExpression<{:dataType.Alias}>(a), b, FilterExpressionOperator.{FilterOperatorName}));
         {-/each-}
 
         {-#if :dataType.IsNullable-}
         {-#each Operations-}
-        public static FilterExpressionSet operator {FilterOperatorSymbol}({:dataType.Name}{:functionName}FunctionExpression a, {:dataType.NullableAlias} b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<{:dataType.NullableAlias}>(b), FilterExpressionOperator.{FilterOperatorName}));
+        public static FilterExpressionSet operator {FilterOperatorSymbol}({:dataType.Name}{:functionName}FunctionExpression a, {:dataType.NullableAlias} b) => new(new FilterExpression<bool?>(a, new LiteralExpression<{:dataType.NullableAlias}>(b), FilterExpressionOperator.{FilterOperatorName}));
         {-/each-}
 
         {-#each Operations-}
-        public static FilterExpressionSet operator {FilterOperatorSymbol}({:dataType.NullableAlias} a, {:dataType.Name}{:functionName}FunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<{:dataType.NullableAlias}>(a), b, FilterExpressionOperator.{FilterOperatorName}));
+        public static FilterExpressionSet operator {FilterOperatorSymbol}({:dataType.NullableAlias} a, {:dataType.Name}{:functionName}FunctionExpression b) => new(new FilterExpression<bool?>(new LiteralExpression<{:dataType.NullableAlias}>(a), b, FilterExpressionOperator.{FilterOperatorName}));
         {-/each-}
         {-/if-}
         {-/each-}
@@ -142,12 +144,12 @@ namespace {Namespace}
         {-#if !:dataType.Type => IsTypeOfObject-}
         {-#each Filters-}
         {-#each Operations-}
-        public static FilterExpressionSet operator {FilterOperatorSymbol}({:dataType.Name}{:functionName}FunctionExpression a, {:dataType.Name}FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.{FilterOperatorName}));
+        public static FilterExpressionSet operator {FilterOperatorSymbol}({:dataType.Name}{:functionName}FunctionExpression a, {:dataType.Name}FieldExpression b) => new(new FilterExpression<bool>(a, b, FilterExpressionOperator.{FilterOperatorName}));
         {-/each-}
         
         {-#if Type.IsNullable-}
         {-#each Operations-}
-        public static FilterExpressionSet operator {FilterOperatorSymbol}({:dataType.Name}{:functionName}FunctionExpression a, Nullable{:dataType.Name}FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.{FilterOperatorName}));
+        public static FilterExpressionSet operator {FilterOperatorSymbol}({:dataType.Name}{:functionName}FunctionExpression a, Nullable{:dataType.Name}FieldExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.{FilterOperatorName}));
         {-/each-}
         {-/if-}
 
@@ -158,12 +160,12 @@ namespace {Namespace}
         #region mediators
         {-#each Filters-}
         {-#each Operations-}
-        public static FilterExpressionSet operator {FilterOperatorSymbol}({:dataType.Name}{:functionName}FunctionExpression a, {:dataType.Name}ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.{FilterOperatorName}));
+        public static FilterExpressionSet operator {FilterOperatorSymbol}({:dataType.Name}{:functionName}FunctionExpression a, {:dataType.Name}ExpressionMediator b) => new(new FilterExpression<bool>(a, b, FilterExpressionOperator.{FilterOperatorName}));
         {-/each-}
 
         {-#if :dataType.IsNullable-}
         {-#each Operations-}
-        public static FilterExpressionSet operator {FilterOperatorSymbol}({:dataType.Name}{:functionName}FunctionExpression a, Nullable{:dataType.Name}ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.{FilterOperatorName}));
+        public static FilterExpressionSet operator {FilterOperatorSymbol}({:dataType.Name}{:functionName}FunctionExpression a, Nullable{:dataType.Name}ExpressionMediator b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.{FilterOperatorName}));
         {-/each-}
         {-/if-}
         {-/each-}
@@ -172,10 +174,10 @@ namespace {Namespace}
         #region alias
         {-#each Filters-}
         {-#each Operations-}
-        public static FilterExpressionSet operator {FilterOperatorSymbol}({:dataType.Name}{:functionName}FunctionExpression a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.{FilterOperatorName}));
+        public static FilterExpressionSet operator {FilterOperatorSymbol}({:dataType.Name}{:functionName}FunctionExpression a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.{FilterOperatorName}));
         {-/each-}
         {-#each Operations-}
-        public static FilterExpressionSet operator {FilterOperatorSymbol}({:dataType.Name}{:functionName}FunctionExpression a, (string TableName, string FieldName) b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.{FilterOperatorName}));
+        public static FilterExpressionSet operator {FilterOperatorSymbol}({:dataType.Name}{:functionName}FunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.{FilterOperatorName}));
         {-/each-}
         {-/each-}
         #endregion

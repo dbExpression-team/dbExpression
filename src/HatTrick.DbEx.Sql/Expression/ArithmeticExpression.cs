@@ -41,28 +41,25 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region to string
-        public override string ToString() => $"({LeftArg} {ExpressionOperator.GetArithmeticOperator()} {RightArg})";
+        public override string? ToString() => $"({LeftArg} {ExpressionOperator.GetArithmeticOperator()} {RightArg})";
         #endregion
 
         #region equals
-        public bool Equals(ArithmeticExpression obj)
+        public bool Equals(ArithmeticExpression? obj)
         {
             if (obj is null) return false;
+            if (ReferenceEquals(this, obj)) return true;
 
             if (!ExpressionOperator.Equals(obj.ExpressionOperator)) return false;
 
-            if (LeftArg is null && obj.LeftArg is object) return false;
-            if (LeftArg is object && obj.LeftArg is null) return false;
             if (!LeftArg.Equals(obj.LeftArg)) return false;
 
-            if (RightArg is null && obj.RightArg is object) return false;
-            if (RightArg is object && obj.RightArg is null) return false;
             if (!RightArg.Equals(obj.RightArg)) return false;
 
             return true;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
             => obj is ArithmeticExpression exp && Equals(exp);
 
         public override int GetHashCode()
@@ -73,8 +70,8 @@ namespace HatTrick.DbEx.Sql.Expression
                 const int multiplier = 16777619;
 
                 int hash = @base;
-                hash = (hash * multiplier) ^ (LeftArg is object ? LeftArg.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ (RightArg is object ? RightArg.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (LeftArg is not null ? LeftArg.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (RightArg is not null ? RightArg.GetHashCode() : 0);
                 hash = (hash * multiplier) ^ ExpressionOperator.GetHashCode();
                 return hash;
             }

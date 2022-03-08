@@ -39,11 +39,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(NullableDoubleCeilingFunctionExpression obj)
-            => obj is NullableDoubleCeilingFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableDoubleCeilingFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableDoubleCeilingFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableDoubleCeilingFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

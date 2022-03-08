@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             }
 
             builder.Appender.Write(context.Configuration.IdentifierDelimiter.Begin);
-            builder.Appender.Write(builder.FindMetadata(expression).Name);
+            builder.Appender.Write((builder.FindMetadata(expression) ?? throw new DbExpressionException($"Expected to find metadata for {expression}, but metadata is actually null.")).Name);
             builder.Appender.Write(context.Configuration.IdentifierDelimiter.End);
         }
     }

@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region interface
-        public object Value { get; private set; }
+        public object? Value { get; private set; }
         public ParameterDirection Direction { get; set; }
         string ISqlMetadataIdentifierProvider.Identifier => identifier;
         string IExpressionNameProvider.Name => name;
@@ -50,7 +50,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
 
-        protected ParameterExpression(string identifier, string name, Type declaredType, object expression, ParameterDirection direction)
+        protected ParameterExpression(string identifier, string name, Type declaredType, object? expression, ParameterDirection direction)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException($"{nameof(name)} is required.");
@@ -63,7 +63,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region tostring
-        public override string ToString()
+        public override string? ToString()
         {
             if (Direction == ParameterDirection.Output)
                 return $"{name} OUTPUT";
@@ -85,28 +85,24 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(ParameterExpression obj)
+        public bool Equals(ParameterExpression? obj)
         {
             if (obj is null) return false;
+            if (ReferenceEquals(this, obj)) return true;
 
-            if (name is null && obj.name is object) return false;
-            if (name is object && obj.name is null) return false;
             if (!name.Equals(obj.name)) return false;
-
-            if (declaredType is null && obj.declaredType is object) return false;
-            if (declaredType is object && obj.declaredType is null) return false;
             if (!declaredType.Equals(obj.declaredType)) return false;
 
-            if (Value is null && obj.Value is object) return false;
-            if (Value is object && obj.Value is null) return false;
-            if (!Value.Equals(obj.Value)) return false;
+            if (Value is null && obj.Value is not null) return false;
+            if (Value is not null && obj.Value is null) return false;
+            if (Value is not null && !Value.Equals(obj.Value)) return false;
 
-            if (Direction != obj.Direction) return false;
+            if (!Direction.Equals(obj.Direction)) return false;
 
             return true;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
             => obj is ParameterExpression exp && Equals(exp);
 
         public override int GetHashCode()
@@ -117,9 +113,9 @@ namespace HatTrick.DbEx.Sql.Expression
                 const int multiplier = 16777619;
 
                 int hash = @base;
-                hash = (hash * multiplier) ^ (name is object ? name.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ (declaredType is object ? declaredType.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ (Value is object ? Value.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (name is not null ? name.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (declaredType is not null ? declaredType.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (Value is not null ? Value.GetHashCode() : 0);
                 hash = (hash * multiplier) ^ Direction.GetHashCode();
                 return hash;
             }

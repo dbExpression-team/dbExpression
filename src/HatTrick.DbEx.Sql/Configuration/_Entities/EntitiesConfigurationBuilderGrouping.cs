@@ -24,13 +24,13 @@ namespace HatTrick.DbEx.Sql.Configuration
     {
         #region internals
         private readonly RuntimeSqlDatabaseConfiguration configuration;
-        private IMapperFactoryConfigurationBuilder _mapper;
-        private IEntityFactoryConfigurationBuilder _entity;
+        private IMapperFactoryConfigurationBuilder? _mapper;
+        private IEntityFactoryConfigurationBuilder? _entity;
         #endregion
 
         #region interface
-        public IEntityFactoryConfigurationBuilder Creation => _entity ?? (_entity = new EntityFactoryConfigurationBuilder(this, configuration));
-        public IMapperFactoryConfigurationBuilder Mapping => _mapper ?? (_mapper = new MapperFactoryConfigurationBuilder(this, configuration));
+        public IEntityFactoryConfigurationBuilder Creation => _entity ??= new EntityFactoryConfigurationBuilder(this, configuration);
+        public IMapperFactoryConfigurationBuilder Mapping => _mapper ??= new MapperFactoryConfigurationBuilder(this, configuration);
         #endregion
 
         #region constructors

@@ -32,7 +32,7 @@ namespace HatTrick.DbEx.Sql.Builder
         MapValuesStoredProcedureContinuation
     {
         #region internals
-        Action<ISqlFieldReader> map;
+        private readonly Action<ISqlFieldReader> map;
         #endregion
 
         #region interface
@@ -41,13 +41,17 @@ namespace HatTrick.DbEx.Sql.Builder
 
         #region constructors
         public MapValuesStoredProcedureQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, StoredProcedureQueryExpression expression)
-            : base(config, expression, expression.BaseEntity as StoredProcedureExpression)
+#pragma warning disable CS8604 // Possible null reference argument.
+            : base(config, expression, expression.BaseEntity as StoredProcedureExpression) //TODO: interface
+#pragma warning restore CS8604 // Possible null reference argument.
         {
-
+            this.map = _ => { };
         }
 
         public MapValuesStoredProcedureQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, StoredProcedureQueryExpression expression, Action<ISqlFieldReader> map)
-            : base(config, expression, expression.BaseEntity as StoredProcedureExpression)
+#pragma warning disable CS8604 // Possible null reference argument.
+            : base(config, expression, expression.BaseEntity as StoredProcedureExpression) //TODO: interface
+#pragma warning restore CS8604 // Possible null reference argument.
         {
             this.map = map ?? throw new ArgumentNullException(nameof(map));
         }
@@ -58,11 +62,11 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         void MapValuesStoredProcedureTermination.Execute()
         {
-            using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
-                ExecutePipeline(
-                    connection,
-                    null
-                );
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            ExecutePipeline(
+                connection,
+                null
+            );
         }
 
         /// <inheritdoc />
@@ -77,11 +81,11 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         void MapValuesStoredProcedureTermination.Execute(int commandTimeout)
         {
-            using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
-                ExecutePipeline(
-                    connection,
-                    command => command.CommandTimeout = commandTimeout
-                );
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            ExecutePipeline(
+                connection,
+                command => command.CommandTimeout = commandTimeout
+            );
         }
 
         /// <inheritdoc />
@@ -96,12 +100,12 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         async Task MapValuesStoredProcedureTermination.ExecuteAsync(CancellationToken cancellationToken)
         {
-            using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
-                await ExecutePipelineAsync(
-                    connection,
-                    null,
-                    cancellationToken
-                ).ConfigureAwait(false);
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            await ExecutePipelineAsync(
+                connection,
+                null,
+                cancellationToken
+            ).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -117,12 +121,12 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         async Task MapValuesStoredProcedureTermination.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
         {
-            using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
-                await ExecutePipelineAsync(
-                    connection,
-                    command => command.CommandTimeout = commandTimeout,
-                    cancellationToken
-                ).ConfigureAwait(false);
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            await ExecutePipelineAsync(
+                connection,
+                command => command.CommandTimeout = commandTimeout,
+                cancellationToken
+            ).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -135,10 +139,10 @@ namespace HatTrick.DbEx.Sql.Builder
             ).ConfigureAwait(false);
         }
 
-        protected override void ExecutePipeline(ISqlConnection connection, Action<IDbCommand> configureCommand)
+        protected override void ExecutePipeline(ISqlConnection connection, Action<IDbCommand>? configureCommand)
             => CreateStoredProcedureExecutionPipeline().Execute(Expression, map, connection, configureCommand);
 
-        protected override async Task ExecutePipelineAsync(ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
+        protected override async Task ExecutePipelineAsync(ISqlConnection connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
             => await CreateStoredProcedureExecutionPipeline().ExecuteAsync(Expression, map, connection, configureCommand, ct).ConfigureAwait(false);
         #endregion
         #endregion

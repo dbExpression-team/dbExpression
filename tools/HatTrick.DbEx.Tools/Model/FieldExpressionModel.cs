@@ -18,39 +18,188 @@
 
 ﻿using HatTrick.DbEx.Tools.Builder;
 using HatTrick.Model.MsSql;
+using System;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Tools.Model
 {
+    public class FieldExpressionAssignmentMethodParameters
+    { 
+        public string Left { get; }
+        public string Right { get; }
+
+        public FieldExpressionAssignmentMethodParameters(string left, string right)
+        {
+            Left = left;
+            Right = right;
+        }
+    }
     public class FieldExpressionModel
     {
+        private string? _typeName;
+        private string? _elementName;
+        private string? _selectName;
+        private IList<FieldExpressionAssignmentMethodParameters>? _assignmentParameters;
+
+        public LanguageFeatures LanguageFeatures { get; }
         public EntityExpressionModel EntityExpression { get; }
         public string Name { get; }
         public TypeModel Type { get; }
         public bool AllowInsert { get; }
         public bool AllowUpdate { get; }
-        public (string,string) CrefTypeName
+        public string FieldExpressionTypeName => _typeName ??= BuildFieldExpressionTypeName();
+        public string ExpressionElementTypeName => _elementName ??= BuildExpressionElementTypeName();
+        public string SelectExpressionTypeName => _selectName ??= BuildSelectExpressionTypeName();
+        public IList<FieldExpressionAssignmentMethodParameters> AssignmentMethodParameters => _assignmentParameters ??= BuildFieldExpressionAssignmentMethodParameters();
+        public (string, string?) CrefTypeName
         {
             get
             {
                 if (Type.IsArray)
-                    return (Type.Alias.Substring(0, Type.Alias.Length - 2), "[]");
+                    return (Type.Alias[0..^2], "[]");
                 if (Type.IsNullable)
                     return (Type.Alias, "?");
 
                 return (Type.Alias, null);
             }
-        }
+        }        
 
-        public FieldExpressionModel(EntityExpressionModel entity, MsSqlColumn column, string name, string clrTypeOverride, bool isEnum, bool allowInsert, bool allowUpdate)
+        public string ValueInitializer => Type.Initializer is not null ? $" = {Type.Initializer};" : string.Empty;
+
+        public FieldExpressionModel(LanguageFeatures features, EntityExpressionModel entity, MsSqlColumn column, string name, string? clrTypeOverride, bool isEnum, bool allowInsert, bool allowUpdate)
         {
-            EntityExpression = entity;
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException($"{nameof(name)} is required.");
+            EntityExpression = entity ?? throw new ArgumentNullException(nameof(entity));
+            LanguageFeatures = features ?? throw new ArgumentNullException(nameof(features));
             Name = name;
-            Type = TypeModelBuilder.CreateTypeModel(column.SqlType, clrTypeOverride, column.IsNullable, isEnum);
+            Type = TypeModelBuilder.CreateTypeModel(features, column.SqlType, clrTypeOverride, column.IsNullable, isEnum ? TypeSpecialCase.Enum : null);
             AllowInsert = allowInsert;
             AllowUpdate = allowUpdate;
         }
 
+        public IList<FieldExpressionAssignmentMethodParameters> BuildFieldExpressionAssignmentMethodParameters()
+        {
+            List<FieldExpressionAssignmentMethodParameters> parameters = new();
+
+            if (Type.IsNullable)
+            {
+                parameters.Add(new("DBNull", $"new LiteralExpression<{Type.NullableAlias}>(value, this)"));
+            }
+
+            if (Type.IsEnum)
+            {
+                parameters.Add(new(Type.Alias, $"new LiteralExpression<{Type.Alias}>(value, this)"));
+                parameters.Add(new(ExpressionElementTypeName.Replace("?",""), "value"));
+                if (Type.IsNullable)
+                {
+                    parameters.Add(new(Type.NullableAlias, $"new LiteralExpression<{Type.NullableAlias}>(value, this)"));
+                    parameters.Add(new(ExpressionElementTypeName, "value"));
+                }
+                return parameters;
+            }
+
+            if (Type.IsString)
+            {
+                if (LanguageFeatures.Nullable.IsFeatureEnabled && Type.IsNullable)
+                {
+                    parameters.Add(new(Type.NullableAlias, $"new LiteralExpression<{Type.NullableAlias}>(value, this)"));
+                }
+                else
+                {
+                    parameters.Add(new(Type.Alias, $"new LiteralExpression<{Type.Alias}>(value, this)"));
+                }
+                parameters.Add(new(ExpressionElementTypeName, "value"));
+                return parameters;
+            }
+
+            if (Type.IsUserDefinedType)
+            {
+                if (LanguageFeatures.Nullable.IsFeatureEnabled && Type.IsNullable)
+                {
+                    parameters.Add(new(Type.NullableAlias, $"new LiteralExpression<{Type.NullableAlias}>(value, this)"));
+                }
+                else
+                {
+                    parameters.Add(new(Type.Alias, $"new LiteralExpression<{Type.Alias}>(value, this)"));
+                }
+                parameters.Add(new(ExpressionElementTypeName, "value"));
+                return parameters;
+            }
+
+            if (Type.IsArray)
+            {
+                if (LanguageFeatures.Nullable.IsFeatureEnabled && Type.IsNullable)
+                {
+                    parameters.Add(new(Type.NullableAlias, $"new LiteralExpression<{Type.NullableAlias}>(value, this)"));
+                }
+                else
+                {
+                    parameters.Add(new(Type.Alias, $"new LiteralExpression<{Type.Alias}>(value, this)"));
+                }
+                parameters.Add(new(ExpressionElementTypeName, "value"));
+                return parameters;
+            }
+
+            if (Type.IsSystemType)
+            {
+                parameters.Add(new(Type.IsNullable ? Type.NullableAlias : Type.Alias, $"new LiteralExpression<{(Type.IsNullable ? Type.NullableAlias : Type.Alias)}>(value, this)"));
+                parameters.Add(new(ExpressionElementTypeName, "value"));
+                if (Type.IsNullable)
+                {
+                    parameters.Add(new(Type.Alias, $"new LiteralExpression<{Type.Alias}>(value, this)"));
+                    parameters.Add(new(ExpressionElementTypeName.Replace("?", ""), "value"));
+                }
+                return parameters;
+            }
+
+            return parameters;
+        }
+
+        private string BuildFieldExpressionTypeName()
+        {
+            var name = "";
+            if (Type.IsUserDefinedType && !Type.IsEnum)
+                return $"{(Type.IsNullable ? "Nullable" : "")}ObjectFieldExpression<{EntityExpression.Name},{Type.TypeName}>";
+
+            if (Type.IsNullable)
+                name += "Nullable";
+
+            name += Type.IsEnum ? "Enum" : Type.TypeName;
+            name += "FieldExpression<";
+            name += EntityExpression.Name;
+
+            if (Type.IsEnum)
+            {
+                name += ",";
+                name += Type.TypeName;
+            }
+            name += ">";
+
+            return name;
+        }
+
+        public string BuildExpressionElementTypeName()
+        {
+            if (Type.IsString)
+            {
+                return Type.IsNullable ? "AnyStringElement" : "StringElement";
+            }
+            var fieldExpressionTypeName = "AnyElement<";
+            fieldExpressionTypeName += Type.NullableAlias;
+            fieldExpressionTypeName += ">";
+            return fieldExpressionTypeName;
+        }
+
+        public string BuildSelectExpressionTypeName()
+        {
+            var fieldExpressionTypeName = "SelectExpression<";
+            fieldExpressionTypeName += Type.NullableAlias;
+            fieldExpressionTypeName += ">";
+            return fieldExpressionTypeName;
+        }
+
         public override string ToString()
-            => $"{Name}Field";
+                => $"{Name}Field";
     }
 }

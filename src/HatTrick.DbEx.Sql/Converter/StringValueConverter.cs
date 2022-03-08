@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.Sql.Converter
         {
         }
 
-        public override object ConvertFromDatabase(object value)
+        public override object? ConvertFromDatabase(object? value)
         {
             if (value is null)
                 return default;
@@ -37,7 +37,7 @@ namespace HatTrick.DbEx.Sql.Converter
             return Convert.ChangeType(value, typeof(string));
         }
 
-        public override (Type, object) ConvertToDatabase(object value)
+        public override (Type, object?) ConvertToDatabase(object? value)
         {
             if (value is null)
                 return (typeof(string), default);

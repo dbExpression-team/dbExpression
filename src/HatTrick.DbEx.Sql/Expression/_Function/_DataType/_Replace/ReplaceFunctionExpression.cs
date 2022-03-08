@@ -41,22 +41,23 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region to string
-        public override string ToString() => $"SUBSTRING({elements.Expression}, {elements.Pattern}, {elements.Replacement})";
+        public override string? ToString() => $"SUBSTRING({elements.Expression}, {elements.Pattern}, {elements.Replacement})";
         #endregion
 
         #region equals
-        public bool Equals(ReplaceFunctionExpression obj)
+        public bool Equals(ReplaceFunctionExpression? obj)
         {
-            if (!base.Equals(obj)) return false;
+            if (obj is null) return false;
+            if (ReferenceEquals(this, obj)) return true;
 
-            if (elements is null && obj.elements is object) return false;
-            if (elements is object && obj.elements is null) return false;
-            if (!elements.Equals(obj.elements)) return false;
+            if (elements is null && obj.elements is not null) return false;
+            if (elements is not null && obj.elements is null) return false;
+            if (elements is not null && !elements.Equals(obj.elements)) return false;
 
             return true;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
          => obj is ReplaceFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
@@ -66,7 +67,7 @@ namespace HatTrick.DbEx.Sql.Expression
                 const int multiplier = 16777619;
 
                 int hash = base.GetHashCode();
-                hash = (hash * multiplier) ^ (elements is object ? elements.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (elements is not null ? elements.GetHashCode() : 0);
                 return hash;
             }
         }
@@ -92,25 +93,28 @@ namespace HatTrick.DbEx.Sql.Expression
             #endregion
 
             #region equals
-            public bool Equals(ReplaceFunctionExpressionElements obj)
+            public bool Equals(ReplaceFunctionExpressionElements? obj)
             {
-                if (Expression is null && obj.Expression is object) return false;
-                if (Expression is object && obj.Expression is null) return false;
-                if (!Expression.Equals(obj.Expression)) return false;
+                if (obj is null) return false;
+                if (ReferenceEquals(this, obj)) return true;
 
-                if (Pattern is null && obj.Pattern is object) return false;
-                if (Pattern is object && obj.Pattern is null) return false;
-                if (!Pattern.Equals(obj.Pattern)) return false;
+                if (Expression is null && obj.Expression is not null) return false;
+                if (Expression is not null && obj.Expression is null) return false;
+                if (Expression is not null && !Expression.Equals(obj.Expression)) return false;
 
-                if (Replacement is null && obj.Replacement is object) return false;
-                if (Replacement is object && obj.Replacement is null) return false;
-                if (!Replacement.Equals(obj.Replacement)) return false;
+                if (Pattern is null && obj.Pattern is not null) return false;
+                if (Pattern is not null && obj.Pattern is null) return false;
+                if (Pattern is not null && !Pattern.Equals(obj.Pattern)) return false;
+
+                if (Replacement is null && obj.Replacement is not null) return false;
+                if (Replacement is not null && obj.Replacement is null) return false;
+                if (Replacement is not null && !Replacement.Equals(obj.Replacement)) return false;
 
                 return true;
             }
 
-            public override bool Equals(object obj)
-                => Equals(obj as ReplaceFunctionExpressionElements);
+            public override bool Equals(object? obj)
+                => obj is ReplaceFunctionExpressionElements && Equals(obj);
 
             public override int GetHashCode()
             {
@@ -119,9 +123,9 @@ namespace HatTrick.DbEx.Sql.Expression
                     const int multiplier = 16777619;
 
                     int hash = base.GetHashCode();
-                    hash = (hash * multiplier) ^ (Expression is object ? Expression.GetHashCode() : 0);
-                    hash = (hash * multiplier) ^ (Pattern is object ? Pattern.GetHashCode() : 0);
-                    hash = (hash * multiplier) ^ (Replacement is object ? Replacement.GetHashCode() : 0);
+                    hash = (hash * multiplier) ^ (Expression is not null ? Expression.GetHashCode() : 0);
+                    hash = (hash * multiplier) ^ (Pattern is not null ? Pattern.GetHashCode() : 0);
+                    hash = (hash * multiplier) ^ (Replacement is not null ? Replacement.GetHashCode() : 0);
                     return hash;
                 }
             }

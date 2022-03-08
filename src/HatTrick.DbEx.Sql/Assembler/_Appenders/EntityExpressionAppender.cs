@@ -30,7 +30,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 if (!string.IsNullOrWhiteSpace(alias))
                 {
                     builder.Appender.Write(context.Configuration.IdentifierDelimiter.Begin);
-                    builder.Appender.Write(alias);
+                    builder.Appender.Write(alias!);
                     builder.Appender.Write(context.Configuration.IdentifierDelimiter.End);
                     return;
                 }
@@ -42,7 +42,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 builder.Appender.Write(".");
             }
             builder.Appender.Write(context.Configuration.IdentifierDelimiter.Begin);
-            builder.Appender.Write(builder.FindMetadata(expression).Name);
+            builder.Appender.Write((builder.FindMetadata(expression) ?? throw new DbExpressionException($"Expected to find metadata for {expression}, but metadata is actually null.")).Name);
             builder.Appender.Write(context.Configuration.IdentifierDelimiter.End);
 
             if (context.EntityExpressionAppendStyle == EntityExpressionAppendStyle.Declaration)
@@ -51,7 +51,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             }
         }
 
-        protected void AppendAlias(IExpressionAliasProvider aliasable, ISqlStatementBuilder builder, AssemblyContext context)
+        protected static void AppendAlias(IExpressionAliasProvider aliasable, ISqlStatementBuilder builder, AssemblyContext context)
         {
             if (string.IsNullOrWhiteSpace(aliasable.Alias))
                 return;
@@ -61,7 +61,7 @@ namespace HatTrick.DbEx.Sql.Assembler
 
             builder.Appender.Write(" AS ")
                 .Write(context.Configuration.IdentifierDelimiter.Begin)
-                .Write(aliasable.Alias)
+                .Write(aliasable.Alias!)
                 .Write(context.Configuration.IdentifierDelimiter.End);
         }
     }

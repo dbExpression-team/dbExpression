@@ -30,11 +30,7 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public NullableInt64ExpressionMediator(IExpressionElement expression) : base(expression, typeof(long?))
-        {
-        }
-
-        protected NullableInt64ExpressionMediator(IExpressionElement expression, string alias) : base(expression, typeof(long?), alias)
+        public NullableInt64ExpressionMediator(IExpressionElement expression) : base(expression)
         {
         }
         #endregion
@@ -45,11 +41,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(NullableInt64ExpressionMediator obj)
-            => obj is NullableInt64ExpressionMediator && base.Equals(obj);
+        public bool Equals(NullableInt64ExpressionMediator? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableInt64ExpressionMediator exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableInt64ExpressionMediator exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

@@ -18,6 +18,8 @@
 
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace HatTrick.DbEx.Sql.Expression
@@ -40,7 +42,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region tostring
-        public override string ToString()
+        public override string? ToString()
         {
             if (Expression is null)
                 return "null";
@@ -66,22 +68,21 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(InExpression obj)
+        public bool Equals(InExpression? obj)
         {
             if (obj is null) return false;
+            if (ReferenceEquals(this, obj)) return true;
 
-            if (Expression is null && obj.Expression is object) return false;
-            if (Expression is object && obj.Expression is null) return false;
+            if (Field is null && obj.Field is not null) return false;
+            if (Field is not null && obj.Field is null) return false;
+            if (Field is not null && !Field.Equals(obj.Field)) return false;
+
             if (!Expression.Equals(obj.Expression)) return false;
-
-            if (Field is null && obj.Field is object) return false;
-            if (Field is object && obj.Field is null) return false;
-            if (!Field.Equals(obj.Field)) return false;
 
             return true;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
             => obj is InExpression exp && Equals(exp);
 
         public override int GetHashCode()
@@ -92,8 +93,8 @@ namespace HatTrick.DbEx.Sql.Expression
                 const int multiplier = 16777619;
 
                 int hash = @base;
-                hash = (hash * multiplier) ^ (Expression is object ? Expression.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ (Field is object ? Field.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (Expression is not null ? Expression.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (Field is not null ? Field.GetHashCode() : 0);
                 return hash;
             }
         }

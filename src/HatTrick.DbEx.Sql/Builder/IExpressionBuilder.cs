@@ -31,7 +31,7 @@ namespace HatTrick.DbEx.Sql.Builder
         [EditorBrowsable(EditorBrowsableState.Never)]
         Type GetType();
         [EditorBrowsable(EditorBrowsableState.Never)]
-        string ToString();
+        string? ToString();
         #endregion
     }
 }

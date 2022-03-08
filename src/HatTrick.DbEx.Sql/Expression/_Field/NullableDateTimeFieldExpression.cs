@@ -33,11 +33,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(NullableDateTimeFieldExpression obj)
-            => obj is NullableDateTimeFieldExpression && base.Equals(obj);
+        public bool Equals(NullableDateTimeFieldExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableDateTimeFieldExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableDateTimeFieldExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

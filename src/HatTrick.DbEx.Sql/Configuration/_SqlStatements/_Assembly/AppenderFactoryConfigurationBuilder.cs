@@ -40,14 +40,16 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         public ISqlStatementAssemblyGroupingConfigurationBuilders Use<TAppenderFactory>()
             where TAppenderFactory : class, IAppenderFactory, new()
-            => Use<TAppenderFactory>(null);
+            => Use<TAppenderFactory>(_ => { });
 
         public ISqlStatementAssemblyGroupingConfigurationBuilders Use<TAppenderFactory>(Action<TAppenderFactory> configureFactory)
             where TAppenderFactory : class, IAppenderFactory, new()
         {
-            if (!(configuration.AppenderFactory is TAppenderFactory))
+            if (configuration.AppenderFactory is not TAppenderFactory)
                 configuration.AppenderFactory = new TAppenderFactory();
-            configureFactory?.Invoke(configuration.AppenderFactory as TAppenderFactory);
+#pragma warning disable CS8604 // Possible null reference argument.
+            configureFactory?.Invoke(configuration.AppenderFactory as TAppenderFactory); //TODO: interface
+#pragma warning restore CS8604 // Possible null reference argument.
             return caller;
         }
 
@@ -59,7 +61,7 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         public ISqlStatementAssemblyGroupingConfigurationBuilders UseDefaultFactory()
         {
-            if (!(configuration.AppenderFactory is AppenderFactory))
+            if (configuration.AppenderFactory is not AppenderFactory)
                 configuration.AppenderFactory = new AppenderFactory();
             return caller;
         }

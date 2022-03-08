@@ -36,7 +36,9 @@ namespace HatTrick.DbEx.MsSql.Assembler
             const string insertValuesName = "__values";
 
             var template = expression.Inserts.First().Value;
-            var identity = (expression.BaseEntity as IExpressionListProvider<FieldExpression>).Expressions.SingleOrDefault(x => builder.FindMetadata(x).IsIdentity);
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+            var identity = (expression.BaseEntity as IExpressionListProvider<FieldExpression>).Expressions.SingleOrDefault(x => builder.FindMetadata(x).IsIdentity); //TODO: interface
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
             builder.Appender.Indent().Write("SET NOCOUNT ON;").LineBreak();
             builder.Appender.Indent().Write("MERGE ");

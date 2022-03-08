@@ -53,7 +53,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         public void Use<TConnectionStringFactory>()
             where TConnectionStringFactory : class, IConnectionStringFactory, new()
         {
-            if (!(configuration.ConnectionStringFactory is TConnectionStringFactory))
+            if (configuration.ConnectionStringFactory is not TConnectionStringFactory)
                 configuration.ConnectionStringFactory = new TConnectionStringFactory();
         }
         #endregion

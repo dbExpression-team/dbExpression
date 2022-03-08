@@ -60,7 +60,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(
-                    db.fx.Coalesce<DateTime?>(db.fx.IsNull(dbo.Purchase.ShipDate, dbo.Purchase.ExpectedDeliveryDate), (DateTime?)null)
+                    db.fx.Coalesce<DateTime?>(db.fx.IsNull(dbo.Purchase.ShipDate, dbo.Purchase.ExpectedDeliveryDate), (DateTime?)null!)
                 ).From(dbo.Purchase);
 
             //when               
@@ -79,7 +79,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(
-                    db.fx.IsNull(dbo.Purchase.ShipDate, db.fx.Coalesce<DateTime?>(dbo.Purchase.ShipDate, dbo.Purchase.ExpectedDeliveryDate, (DateTime?)null))
+                    db.fx.IsNull(dbo.Purchase.ShipDate, db.fx.Coalesce<DateTime?>(dbo.Purchase.ShipDate, dbo.Purchase.ExpectedDeliveryDate, (DateTime?)null!))
                 ).From(dbo.Purchase);
 
             //when               

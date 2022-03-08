@@ -29,21 +29,21 @@ namespace HatTrick.DbEx.Sql.Builder
         /// Construct an expression for the LEFT transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/left-transact-sql">Microsoft docs on LEFT</see></para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{String}"/> to take the number of characters from.</param>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to take the number of characters from.</param>
         /// <param name="characterCount">An expression of type <see cref="int"/> providing the number of characters to return from the left of <paramref name="element"/>.</param>
         /// <returns><see cref="StringLeftFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
-        public static StringLeftFunctionExpression Left(AnyElement<string> element, int characterCount)
-            => new StringLeftFunctionExpression(element, new LiteralExpression<int>(characterCount));
+        public static StringLeftFunctionExpression Left(StringElement element, int characterCount)
+            => new(element, new LiteralExpression<int>(characterCount));
 
         /// <summary>
         /// Construct an expression for the LEFT transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/left-transact-sql">Microsoft docs on LEFT</see></para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{String}"/> to take the number of characters from.</param>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to take the number of characters from.</param>
         /// <param name="characterCount">An expression of type <see cref="AnyElement{Int32}"/> providing the number of characters to return from the left of <paramref name="element"/>.</param>
         /// <returns><see cref="StringLeftFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
-        public static StringLeftFunctionExpression Left(AnyElement<string> element, AnyElement<int> characterCount)
-            => new StringLeftFunctionExpression(element, characterCount);
+        public static StringLeftFunctionExpression Left(StringElement element, AnyElement<int> characterCount)
+            => new(element, characterCount);
 
         /// <summary>
         /// Construct an expression for the LEFT transact sql function.
@@ -51,9 +51,19 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableStringElement"/> to take the number of characters from.</param>
         /// <param name="characterCount">An expression of type <see cref="int"/> providing the number of characters to return from the left of <paramref name="element"/>.</param>
-        /// <returns><see cref="NullableStringLeftFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
+        /// <returns><see cref="NullableStringLeftFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>?.</returns>
         public static NullableStringLeftFunctionExpression Left(NullableStringElement element, int characterCount)
-            => new NullableStringLeftFunctionExpression(element, new LiteralExpression<int>(characterCount));
+            => new(element, new LiteralExpression<int>(characterCount));
+
+        /// <summary>
+        /// Construct an expression for the LEFT transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/left-transact-sql">Microsoft docs on LEFT</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableStringElement"/> to take the number of characters from.</param>
+        /// <param name="characterCount">An expression of type <see cref="Int32"/>? providing the number of characters to return from the left of <paramref name="element"/>.</param>
+        /// <returns><see cref="NullableStringLeftFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>?.</returns>
+        public static NullableStringLeftFunctionExpression Left(NullableStringElement element, int? characterCount)
+            => new(element, new NullableInt32ExpressionMediator(new LiteralExpression<int?>(characterCount)));
 
         /// <summary>
         /// Construct an expression for the LEFT transact sql function.
@@ -61,8 +71,18 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableStringElement"/> to take the number of characters from.</param>
         /// <param name="characterCount">An expression of type <see cref="AnyElement{Int32}"/> providing the number of characters to return from the left of <paramref name="element"/>.</param>
-        /// <returns><see cref="NullableStringLeftFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
+        /// <returns><see cref="NullableStringLeftFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>?.</returns>
         public static NullableStringLeftFunctionExpression Left(NullableStringElement element, AnyElement<int> characterCount)
-            => new NullableStringLeftFunctionExpression(element, characterCount);
+            => new(element, characterCount);
+
+        /// <summary>
+        /// Construct an expression for the LEFT transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/left-transact-sql">Microsoft docs on LEFT</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to take the number of characters from.</param>
+        /// <param name="characterCount">An expression of type <see cref="AnyElement{Int32}"/>? providing the number of characters to return from the left of <paramref name="element"/>.</param>
+        /// <returns><see cref="NullableStringLeftFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>?.</returns>
+        public static NullableStringLeftFunctionExpression Left(StringElement element, AnyElement<int?> characterCount)
+            => new(element, characterCount);
     }
 }

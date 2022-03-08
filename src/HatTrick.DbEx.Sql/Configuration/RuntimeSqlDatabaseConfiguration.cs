@@ -29,9 +29,10 @@ namespace HatTrick.DbEx.Sql.Configuration
     public class RuntimeSqlDatabaseConfiguration
     {
         #region interface
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public ISqlDatabaseMetadataProvider MetadataProvider { get; set; }
         public IQueryExpressionFactory QueryExpressionFactory { get; set; }
-        public IExecutionPipelineFactory ExecutionPipelineFactory { get; set;  }
+        public IQueryExecutionPipelineFactory ExecutionPipelineFactory { get; set;  }
         public ISqlStatementAssemblerFactory StatementAssemblerFactory { get; set; }
         public ISqlStatementBuilderFactory StatementBuilderFactory { get; set; }
         public IExpressionElementAppenderFactory ExpressionElementAppenderFactory { get; set; }
@@ -43,6 +44,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         public IMapperFactory MapperFactory { get; set; }
         public IEntityFactory EntityFactory { get; set; }
         public IValueConverterFactory ValueConverterFactory { get; set; }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public SqlStatementAssemblerConfiguration AssemblerConfiguration { get; set; } = new SqlStatementAssemblerConfiguration();
         #endregion
     }

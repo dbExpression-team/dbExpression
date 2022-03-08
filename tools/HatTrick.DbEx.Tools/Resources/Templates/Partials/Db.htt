@@ -1,4 +1,5 @@
-﻿    #region {$.DatabaseExpression.AccessorName}
+﻿    {?var:nullableAnnotation = $.DatabaseExpression.LanguageFeatures.Nullable.Annotation}
+    #region {$.DatabaseExpression.AccessorName}
     public partial class {$.DatabaseExpression.AccessorName} : {$.DatabaseExpression.Name}RuntimeSqlDatabase
     {{
         #region constructors
@@ -67,20 +68,70 @@
             => expressionBuilderFactory.CreateSelectValueBuilder<TEnum>(configuration, element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <see cref="object" /> value.
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/> value.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{{Object}}" />?
-        {#if $.Documentation.AnyEnumColumnExpression}
-        {?var:column = $.Documentation.AnyEnumColumnExpression}
+        /// <param name="element">An expression of type <see cref="ObjectElement" />
+        {#if $.Documentation.AnyObjectColumnExpression}
+        {?var:column = $.Documentation.AnyObjectColumnExpression}
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
         {/if}      
         /// </param>
-        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<object> SelectOne(AnyElement<object> element)
+        /// <returns><see cref="SelectValue{{object}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<object>{:nullableAnnotation} SelectOne(ObjectElement element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/>{:nullableAnnotation} value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableObjectElement" />
+        {#if $.Documentation.AnyObjectColumnExpression}
+        {?var:column = $.Documentation.AnyObjectColumnExpression}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}      
+        /// </param>
+        /// <returns><see cref="SelectValue{{object}}"/>{:nullableAnnotation}, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<object{:nullableAnnotation}> SelectOne(NullableObjectElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="ObjectElement{{T}}" />
+        {#if $.Documentation.AnyObjectColumnExpression}
+        {?var:column = $.Documentation.AnyObjectColumnExpression}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}      
+        /// </param>
+        /// <returns><see cref="SelectValues{{T}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <typeparam name="T">The type of the object to select.</typeparam>
+        public static SelectValue<T> SelectOne<T>(ObjectElement<T> element)
+            => expressionBuilderFactory.CreateSelectValueBuilder<T>(configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/>{:nullableAnnotation} value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableObjectElement{{T}}" />{:nullableAnnotation}
+        {#if $.Documentation.AnyObjectColumnExpression}
+        {?var:column = $.Documentation.AnyObjectColumnExpression}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}      
+        /// </param>
+        /// <returns><see cref="SelectValue{{T}}"/>{:nullableAnnotation}, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <typeparam name="T">The type of the object to select.</typeparam>
+        public static SelectValue<T{:nullableAnnotation}> SelectOne<T>(NullableObjectElement<T> element)
+            => expressionBuilderFactory.CreateSelectValueBuilder<T>(configuration, element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="bool" /> value.
@@ -451,19 +502,35 @@
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <see cref="string" /> value.
+        /// Start constructing a sql SELECT query expression for a single <see cref="string" />{:nullableAnnotation} value.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{{String}}" />
+        /// <param name="element">An expression of type <see cref="AnyElement{{String}}" />{:nullableAnnotation}
         {#if $.Documentation.AnyColumnOfTypeString}
         {?var:column = $.Documentation.AnyColumnOfTypeString}
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Concat("Value: ", {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
         {/if}
         ///</param>
-        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<string> SelectOne(AnyElement<string> element) 
+        /// <returns><see cref="SelectValue{{String}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<string> SelectOne(StringElement element) 
+            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="string" />{:nullableAnnotation} value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{String}}" />{:nullableAnnotation}
+        {#if $.Documentation.AnyColumnOfTypeString}
+        {?var:column = $.Documentation.AnyColumnOfTypeString}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Concat("Value: ", {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{String}}"/>{:nullableAnnotation}, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<string{:nullableAnnotation}> SelectOne(NullableStringElement element) 
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -587,23 +654,70 @@
             => expressionBuilderFactory.CreateSelectValuesBuilder<TEnum>(configuration, element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a list of <see cref="object" /> values.
-        /// </summary>
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/> values.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
-        /// <param name="element">An expression of type <see cref="AnyElement{{Object}}" />
-        {#if $.Documentation.AnyColumnOfTypeNullableInt32}
-        {#if $.Documentation.AnyColumnOfTypeString}
-        {?var:firstColumn = $.Documentation.AnyColumnOfTypeNullableInt32}
-        {?var:secondColumn = $.Documentation.AnyColumnOfTypeString}
-        ///, for example "db.fx.Coalesce({:firstColumn.Entity.Schema.Name}.{:firstColumn.Entity.Name}.{:firstColumn.Name}, {:secondColumn.Entity.Schema.Name}.{:secondColumn.Entity.Name}.{:secondColumn.Name})"
-        {/if}
-        {/if}
-        ///</param>
-        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<object> SelectMany(AnyElement<object> element)
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="ObjectElement" />
+        {#if $.Documentation.AnyObjectColumnExpression}
+        {?var:column = $.Documentation.AnyObjectColumnExpression}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}      
+        /// </param>
+        /// <returns><see cref="SelectValues{{object}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<object>{:nullableAnnotation} SelectMany(ObjectElement element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/>{:nullableAnnotation} values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableObjectElement" />
+        {#if $.Documentation.AnyObjectColumnExpression}
+        {?var:column = $.Documentation.AnyObjectColumnExpression}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}      
+        /// </param>
+        /// <returns><see cref="SelectValues{{object}}"/>{:nullableAnnotation}, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<object{:nullableAnnotation}> SelectMany(NullableObjectElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="ObjectElement{{T}}" />
+        {#if $.Documentation.AnyObjectColumnExpression}
+        {?var:column = $.Documentation.AnyObjectColumnExpression}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}      
+        /// </param>
+        /// <returns><see cref="SelectValues{{T}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <typeparam name="T">The type of the object to select.</typeparam>
+        public static SelectValues<T> SelectMany<T>(ObjectElement<T> element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder<T>(configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/>{:nullableAnnotation} values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableObjectElement{{T}}" />{:nullableAnnotation}
+        {#if $.Documentation.AnyObjectColumnExpression}
+        {?var:column = $.Documentation.AnyObjectColumnExpression}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}      
+        /// </param>
+        /// <returns><see cref="SelectValues{{T}}"/>{:nullableAnnotation}, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <typeparam name="T">The type of the object to select.</typeparam>
+        public static SelectValues<T{:nullableAnnotation}> SelectMany<T>(NullableObjectElement<T> element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder<T>(configuration, element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="bool" /> values.
@@ -974,19 +1088,35 @@
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a list of <see cref="string" /> values.
+        /// Start constructing a sql SELECT query expression for a list of <see cref="string" />{:nullableAnnotation} values.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{{String}}" />
+        /// <param name="element">An expression of type <see cref="AnyElement{{String}}" />{:nullableAnnotation}
         {#if $.Documentation.AnyColumnOfTypeString}
         {?var:column = $.Documentation.AnyColumnOfTypeString}
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Concat("Value: ", {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
         {/if}
         ///</param>
-        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<string> SelectMany(AnyElement<string> element)
+        /// <returns><see cref="SelectValues{{String}}"/>{:nullableAnnotation}, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<string> SelectMany(StringElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="string" />{:nullableAnnotation} values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{String}}" />{:nullableAnnotation}
+        {#if $.Documentation.AnyColumnOfTypeString}
+        {?var:column = $.Documentation.AnyColumnOfTypeString}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Concat("Value: ", {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{String}}"/>{:nullableAnnotation}, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<string{:nullableAnnotation}> SelectMany(NullableStringElement element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>

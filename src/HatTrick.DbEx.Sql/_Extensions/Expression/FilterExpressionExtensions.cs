@@ -27,7 +27,8 @@
 
         internal static JoinOnExpressionSet ConvertToJoinOnExpressionSet(this FilterExpressionSet filterSet)
         {
-            return ConvertToJoinOnExpressionSet(filterSet.LeftArg, filterSet.RightArg, filterSet.ConditionalOperator, filterSet.Negate);
+            var expression = (filterSet as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>).Expression;
+            return ConvertToJoinOnExpressionSet(expression.LeftArg, expression.RightArg!, expression.ConditionalOperator, expression.Negate);
         }
 
         private static JoinOnExpressionSet ConvertToJoinOnExpressionSet(IExpressionElement leftArg, IExpressionElement rightArg, ConditionalExpressionOperator conditionalOperator, bool negate)
@@ -39,7 +40,7 @@
             }
             else if (leftArg is FilterExpression leftExp)
             {
-                leftArg = new JoinOnExpression(leftExp.LeftArg, leftExp.RightArg, leftExp.ExpressionOperator);
+                leftArg = new JoinOnExpression(leftExp.LeftArg, leftExp.RightArg!, leftExp.ExpressionOperator);
             }
 
             //right
@@ -49,7 +50,7 @@
             }
             else if (rightArg is FilterExpression rightExp)
             {
-                rightArg = new JoinOnExpression(rightExp.LeftArg, rightExp.RightArg, rightExp.ExpressionOperator);
+                rightArg = new JoinOnExpression(rightExp.LeftArg, rightExp.RightArg!, rightExp.ExpressionOperator);
             }
 
             return new JoinOnExpressionSet(leftArg, rightArg, conditionalOperator, negate);

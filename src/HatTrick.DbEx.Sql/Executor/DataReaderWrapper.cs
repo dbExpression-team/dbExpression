@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.Sql.Executor
         #region internals
         private bool disposed;
         private int currentRowIndex;
-        private readonly Dictionary<int, IValueConverter> fieldConverters = new Dictionary<int, IValueConverter>();
+        private readonly Dictionary<int, IValueConverter> fieldConverters = new();
         protected ISqlConnection SqlConnection { get; private set; }
         protected IDataReader DataReader { get; private set; }
         protected IValueConverterProvider Converters { get; private set; }
@@ -45,7 +45,7 @@ namespace HatTrick.DbEx.Sql.Executor
         #endregion
 
         #region methods
-        public ISqlFieldReader ReadRow()
+        public ISqlFieldReader? ReadRow()
         {
             try
             {
@@ -95,13 +95,12 @@ namespace HatTrick.DbEx.Sql.Executor
 
         public void Close()
         {
-            if (DataReader is object)
+            if (DataReader is not null)
             {
                 if (!DataReader.IsClosed)
                     DataReader.Close();
 
                 DataReader.Dispose();
-                DataReader = null;
             }
         }
 

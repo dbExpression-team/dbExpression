@@ -45,11 +45,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(DoubleCastFunctionExpression obj)
-            => obj is DoubleCastFunctionExpression && base.Equals(obj);
+        public bool Equals(DoubleCastFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is DoubleCastFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is DoubleCastFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

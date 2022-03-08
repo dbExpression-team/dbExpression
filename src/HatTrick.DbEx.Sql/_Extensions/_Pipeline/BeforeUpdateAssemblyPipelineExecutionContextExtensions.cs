@@ -31,7 +31,7 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(fieldName)} parameter is required.");
 
             if (!context.TrySetFieldValue(fieldName, value, overrideExistingAssignment))
-                throw new DbExpressionException($"A field with name {fieldName} is not a field on entity {(context.Expression.BaseEntity as IExpressionNameProvider).Name}.");
+                throw new DbExpressionException($"A field with name {fieldName} is not a field on entity {(context.Expression.BaseEntity as IExpressionNameProvider)?.Name ?? "[UNKNOWN]"}.");
         }
         public static void SetFieldValue<T>(this BeforeUpdateAssemblyPipelineExecutionContext context, string fieldName, DBNull value, bool overrideExistingAssignment = false)
         {
@@ -39,7 +39,7 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(fieldName)} parameter is required.");
 
             if (!context.TrySetFieldValue(fieldName, value, overrideExistingAssignment))
-                throw new DbExpressionException($"A field with name {fieldName} is not a field on entity {(context.Expression.BaseEntity as IExpressionNameProvider).Name}.");
+                throw new DbExpressionException($"A field with name {fieldName} is not a field on entity {(context.Expression.BaseEntity as IExpressionNameProvider)?.Name ?? "[UNKNOWN]"}.");
         }
         public static void SetFieldValue<T>(this BeforeUpdateAssemblyPipelineExecutionContext context, EnumFieldExpression<T> fieldExpression, T value, bool overrideExistingAssignment = false)
             where T : struct, Enum, IComparable
@@ -48,7 +48,7 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentNullException(nameof(fieldExpression));
 
             if (!DoTrySetFieldValue(context, fieldExpression, value, overrideExistingAssignment))
-                throw new DbExpressionException($"A field with name {(fieldExpression as IExpressionNameProvider).Name} is not a field on entity {(context.Expression.BaseEntity as IExpressionNameProvider).Name}.");
+                throw new DbExpressionException($"A field with name {(fieldExpression as IExpressionNameProvider).Name} is not a field on entity {(context.Expression.BaseEntity as IExpressionNameProvider)?.Name ?? "[UNKNOWN]"}.");
         }
         public static void SetFieldValue<T>(this BeforeUpdateAssemblyPipelineExecutionContext context, NullableEnumFieldExpression<T> fieldExpression, T? value, bool overrideExistingAssignment = false)
            where T : struct, Enum, IComparable
@@ -57,7 +57,7 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentNullException(nameof(fieldExpression));
 
             if (!DoTrySetFieldValue(context, fieldExpression, value, overrideExistingAssignment))
-                throw new DbExpressionException($"A field with name {(fieldExpression as IExpressionNameProvider).Name} is not a field on entity {(context.Expression.BaseEntity as IExpressionNameProvider).Name}.");
+                throw new DbExpressionException($"A field with name {(fieldExpression as IExpressionNameProvider).Name} is not a field on entity {(context.Expression.BaseEntity as IExpressionNameProvider)?.Name ?? "[UNKNOWN]"}.");
         }
         public static void SetFieldValue<T>(this BeforeUpdateAssemblyPipelineExecutionContext context, NullableEnumFieldExpression<T> fieldExpression, DBNull value, bool overrideExistingAssignment = false)
             where T : struct, Enum, IComparable
@@ -66,7 +66,7 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentNullException(nameof(fieldExpression));
 
             if (!DoTrySetFieldValue(context, fieldExpression, value, overrideExistingAssignment))
-                throw new DbExpressionException($"A field with name {(fieldExpression as IExpressionNameProvider).Name} is not a field on entity {(context.Expression.BaseEntity as IExpressionNameProvider).Name}.");
+                throw new DbExpressionException($"A field with name {(fieldExpression as IExpressionNameProvider).Name} is not a field on entity {(context.Expression.BaseEntity as IExpressionNameProvider)?.Name ?? "[UNKNOWN]"}.");
         }
         public static void SetFieldValue<T>(this BeforeUpdateAssemblyPipelineExecutionContext context, FieldExpression<T> fieldExpression, T value, bool overrideExistingAssignment = false)
         {
@@ -74,7 +74,7 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentNullException(nameof(fieldExpression));
 
             if (!DoTrySetFieldValue(context, fieldExpression, value, overrideExistingAssignment))
-                throw new DbExpressionException($"A field with name {(fieldExpression as IExpressionNameProvider).Name} is not a field on entity {(context.Expression.BaseEntity as IExpressionNameProvider).Name}.");
+                throw new DbExpressionException($"A field with name {(fieldExpression as IExpressionNameProvider).Name} is not a field on entity {(context.Expression.BaseEntity as IExpressionNameProvider)?.Name ?? "[UNKNOWN]"}.");
         }
         public static bool TrySetFieldValue<T>(this BeforeUpdateAssemblyPipelineExecutionContext context, string fieldName, T value, bool overrideExistingAssignment = false)
         {
@@ -83,11 +83,14 @@ namespace HatTrick.DbEx.Sql
 
             try
             {
-                if (!(context.Expression is UpdateQueryExpression update))
+                if (context.Expression is not UpdateQueryExpression update)
                     return false;
 
-                var entity = update.BaseEntity as IExpressionListProvider<FieldExpression>;
+                if (update.BaseEntity is not IExpressionListProvider<FieldExpression> entity)
+                    throw new InvalidOperationException($"Expected the update expression entity to implement {typeof(IExpressionListProvider<FieldExpression>)}");
                 var field = entity.Expressions.SingleOrDefault(x => string.Compare((x as IExpressionNameProvider).Name, fieldName, true) == 0);
+                if (field is null)
+                    return false;
 
                 return DoTrySetFieldValue(context, field, value, overrideExistingAssignment);
             }
@@ -122,17 +125,18 @@ namespace HatTrick.DbEx.Sql
 
             try
             {
-                if (!(context.Expression is UpdateQueryExpression update))
+                if (context.Expression is not UpdateQueryExpression update)
                     return false;
 
-                var entity = update.BaseEntity as IExpressionListProvider<FieldExpression>;
-                if (((fieldExpression as IExpressionProvider<EntityExpression>).Expression as IEntityExpression) != update.BaseEntity)
+                if (update.BaseEntity is not IExpressionListProvider<FieldExpression> entity)
+                    throw new InvalidOperationException($"Expected entity to implement type {typeof(IExpressionListProvider<FieldExpression>)}");
+                if ((fieldExpression as IExpressionProvider<EntityExpression>).Expression != (EntityExpression)update.BaseEntity)
                     return true;
 
                 var field = entity.Expressions.SingleOrDefault(x => x == fieldExpression);
 
-                var existing = update.Assign.Expressions.SingleOrDefault(x => ((x as IAssignmentExpressionProvider).Assignee as IExpressionNameProvider).Name == (field as IExpressionNameProvider).Name);
-                if (existing is object)
+                var existing = update.Assign.Expressions.SingleOrDefault(x => ((x as IAssignmentExpressionProvider).Assignee as IExpressionNameProvider).Name == (field as IExpressionNameProvider)?.Name);
+                if (existing is not null)
                 {
                      if (!overwrite)
                         return true; //field assignmet is already part of the UpdateQueryExpression

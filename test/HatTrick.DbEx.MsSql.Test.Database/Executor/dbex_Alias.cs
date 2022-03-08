@@ -251,11 +251,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ).As("vips").On(dbo.Person.Id == dbex.Alias("vips", "PersonId"))
             .Where(dbex.Alias("vips", "PurchaseCount") == expected);
 
-            var vipStatistics = vipStatisticsq
-            .Execute();
+            var vipStatistics = vipStatisticsq.Execute();
 
             //then
-            ((int)vipStatistics.Result).Should().Be(expected);
+            ((int?)vipStatistics!.Result).Should().Be(expected);
         }
 
         [Theory]
@@ -355,8 +354,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             int purchaseCount = 3;  //any person making 3 or more purchases (in a calendar year are considered VIP customers
 
-            IList<object> values = db.SelectMany(
-                db.fx.Coalesce(dbex.Alias<int>("vips", "PurchaseCount"), dbex.Alias<int>("not_vips", "PurchaseCount"), 1).As("PurchaseCount") //HERE: if use generic on Coalesce, As doesn't work....
+            IList<int> values = db.SelectMany(
+                db.fx.Coalesce<int>(dbex.Alias<int>("vips", "PurchaseCount"), dbex.Alias<int>("not_vips", "PurchaseCount"), 1).As("PurchaseCount")
             )
             .From(dbo.Person)
             .LeftJoin(
@@ -448,8 +447,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             .Execute(row =>
                 {
                     dynamic o = new ExpandoObject();
-                    o.Id = row.ReadField().GetValue<int>();
-                    o.Count = row.ReadField().GetValue<int>();
+                    o.Id = row.ReadField()!.GetValue<int>();
+                    o.Count = row.ReadField()!.GetValue<int>();
                     return o;
                 });
 
@@ -477,13 +476,13 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             .Execute(row =>
             {
                 dynamic o = new ExpandoObject();
-                o.Id = row.ReadField().GetValue<int>();
-                o.AddressType = row.ReadField().GetValue<AddressType?>();
+                o.Id = row.ReadField()!.GetValue<int>();
+                o.AddressType = row.ReadField()!.GetValue<AddressType?>();
                 return o;
             });
 
             //then
-            ((AddressType?)values.AddressType).Should().NotBeNull();
+            ((AddressType?)values!.AddressType).Should().NotBeNull();
         }
 
         [Theory]
@@ -505,7 +504,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             .Execute();
 
             //then
-            ((AddressType?)values.foo).Should().NotBeNull();
+            ((AddressType?)values!.foo).Should().NotBeNull();
         }
 
         [Theory]

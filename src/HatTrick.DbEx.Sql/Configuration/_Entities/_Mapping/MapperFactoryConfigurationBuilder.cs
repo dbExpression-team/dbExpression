@@ -52,14 +52,14 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         public IEntitiesConfigurationBuilderCreationGrouping Use<TMapperFactory>()
             where TMapperFactory : class, IMapperFactory, new()
-            => Use<TMapperFactory>(null);
+            => Use<TMapperFactory>(_ => { });
 
         public IEntitiesConfigurationBuilderCreationGrouping Use<TMapperFactory>(Action<TMapperFactory> configureFactory)
             where TMapperFactory : class, IMapperFactory, new()
         {
-            if (!(configuration.MapperFactory is TMapperFactory))
+            if (configuration.MapperFactory is not TMapperFactory)
                 configuration.MapperFactory = new TMapperFactory();
-            configureFactory?.Invoke(configuration.MapperFactory as TMapperFactory);
+            configureFactory?.Invoke((configuration.MapperFactory as TMapperFactory)!);
             return caller;
         }
 
@@ -71,11 +71,11 @@ namespace HatTrick.DbEx.Sql.Configuration
         }
 
         public IEntitiesConfigurationBuilderCreationGrouping UseDefaultFactory()
-            => UseDefaultFactory(null);
+            => UseDefaultFactory(_ => { });
 
         public IEntitiesConfigurationBuilderCreationGrouping UseDefaultFactory(Action<IMapperFactoryContinuationConfigurationBuilder> configureFactory)
         {
-            if (!(configuration.MapperFactory is MapperFactory))
+            if (configuration.MapperFactory is not MapperFactory)
                 configuration.MapperFactory = new MapperFactory();
             configureFactory?.Invoke(this);
             return caller;
@@ -84,7 +84,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         public IMapperFactoryContinuationConfigurationBuilder OverrideForEntity<TEntity>(Action<ISqlFieldReader, TEntity> mapping)
             where TEntity : class, IDbEntity
         {
-            (configuration.EntityFactory as MapperFactory).RegisterEntityMapper(mapping);
+            ((configuration.EntityFactory as MapperFactory)!).RegisterEntityMapper(mapping);
             return this;
         }
         #endregion

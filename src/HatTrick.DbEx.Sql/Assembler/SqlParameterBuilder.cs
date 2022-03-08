@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 Parameters.Add(parameter);
         }
 
-        protected virtual ParameterizedExpression FindExistingParameter<T>(T value, Type declaredType, DbType dbType, ParameterDirection direction, int? size, byte? precision, byte? scale)
+        protected virtual ParameterizedExpression? FindExistingParameter<T>(T value, Type declaredType, DbType dbType, ParameterDirection direction, int? size, byte? precision, byte? scale)
         {
             foreach (var parameter in Parameters)
             {
@@ -56,7 +56,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 if (parameter.Parameter.DbType != dbType)
                     continue;
 
-                if (value == null || value is DBNull)
+                if (value is null || value is DBNull)
                 {
                     if (parameter.Parameter.Value == DBNull.Value)
                         return parameter; //both null/DBNull, parameters are equivalent
@@ -66,12 +66,12 @@ namespace HatTrick.DbEx.Sql.Assembler
                 if (parameter.Parameter.Value is DBNull)
                     continue;  //parameter is null but value isn't, continue before type conversion (DBNull will fail type conversion)
 
-                if (!Convert.ChangeType(parameter.Parameter.Value, parameter.DeclaredType).Equals(Convert.ChangeType(value, declaredType)))
+                if (!Convert.ChangeType(parameter.Parameter.Value!, parameter.DeclaredType).Equals(Convert.ChangeType(value, declaredType)))
                     continue;
 
                 return parameter;
             }
-            return null;
+            return default;
         }
         #endregion
     }

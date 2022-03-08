@@ -317,7 +317,7 @@ namespace Microsoft.Extensions.DependencyInjection
             builder.Services.TryAdd(ServiceDescriptor.Singleton<ISqlStatementAssemblerFactory, SqlStatementAssemblerFactory>());
             builder.Services.TryAdd(ServiceDescriptor.Singleton<IAppenderFactory, AppenderFactory>());
             builder.Services.TryAdd(ServiceDescriptor.Singleton<ISqlStatementExecutorFactory, SqlStatementExecutorFactory>());
-            builder.Services.TryAdd(ServiceDescriptor.Singleton<IExecutionPipelineFactory, ExecutionPipelineFactory>());
+            builder.Services.TryAdd(ServiceDescriptor.Singleton<IQueryExecutionPipelineFactory, QueryExecutionPipelineFactory>());
 
             //mssql
             builder.Services.TryAdd(ServiceDescriptor.Singleton<IDbTypeMapFactory<SqlDbType>, MsSqlTypeMapFactory>());
@@ -332,32 +332,32 @@ namespace Microsoft.Extensions.DependencyInjection
                     {
                         builder.SchemaMetadata.Use(builder.Environment.Metadata);
 
-                        builder.QueryExpressions.Use(serviceProvider.GetService<IQueryExpressionFactory>());
+                        builder.QueryExpressions.Use(serviceProvider.GetService<IQueryExpressionFactory>()!);
 
                         builder.Entities
-                            .Creation.Use(serviceProvider.GetService<IEntityFactory>())
-                            .Mapping.Use(serviceProvider.GetService<IMapperFactory>());
+                            .Creation.Use(serviceProvider.GetService<IEntityFactory>()!)
+                            .Mapping.Use(serviceProvider.GetService<IMapperFactory>()!);
 
-                        builder.Conversions.Use(serviceProvider.GetService<IValueConverterFactory>());
+                        builder.Conversions.Use(serviceProvider.GetService<IValueConverterFactory>()!);
 
                         builder.SqlStatements
                             .Assembly
-                                .StatementBuilder.Use(serviceProvider.GetService<ISqlStatementBuilderFactory>())
-                                .StatementAppender.Use(serviceProvider.GetService<IAppenderFactory>())
-                                .ElementAppender.Use(serviceProvider.GetService<IExpressionElementAppenderFactory>())
-                                .ParameterBuilder.Use(serviceProvider.GetService<ISqlParameterBuilderFactory>())
-                            .Execution
-                                .Executor.Use(serviceProvider.GetService<ISqlStatementExecutorFactory>())
-                                .Connection.Use(serviceProvider.GetService<ISqlConnectionFactory>())
-                                .Pipeline.Use(serviceProvider.GetService<IExecutionPipelineFactory>());
+                                .StatementBuilder.Use(serviceProvider.GetService<ISqlStatementBuilderFactory>()!)
+                                .StatementAppender.Use(serviceProvider.GetService<IAppenderFactory>()!)
+                                .ElementAppender.Use(serviceProvider.GetService<IExpressionElementAppenderFactory>()!)
+                                .ParameterBuilder.Use(serviceProvider.GetService<ISqlParameterBuilderFactory>()!)
+                            .QueryExecution
+                                .Executor.Use(serviceProvider.GetService<ISqlStatementExecutorFactory>()!)
+                                .Connection.Use(serviceProvider.GetService<ISqlConnectionFactory>()!)
+                                .Pipeline.Use(serviceProvider.GetService<IQueryExecutionPipelineFactory>()!);
 
-                        configuration?.Invoke(serviceProvider, builder);
+                        configuration.Invoke(serviceProvider, builder);
 
                         var config = (builder as IRuntimeSqlDatabaseConfigurationProvider).Configuration;
                         config.Validate();
 
                         return new RuntimeSqlDatabaseConfigurationFor<T>(
-                            builder.Environment as T,
+                            (builder.Environment as T)!,
                             config
                         );
                     },

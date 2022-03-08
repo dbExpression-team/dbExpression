@@ -46,11 +46,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(Int64AverageFunctionExpression obj)
-            => obj is Int64AverageFunctionExpression && base.Equals(obj);
+        public bool Equals(Int64AverageFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is Int64AverageFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is Int64AverageFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

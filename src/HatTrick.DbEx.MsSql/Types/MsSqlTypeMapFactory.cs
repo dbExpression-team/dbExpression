@@ -102,13 +102,13 @@ namespace HatTrick.DbEx.MsSql.Types
         #endregion
 
         #region methods
-        public DbTypeMap<SqlDbType> FindByDbType(DbType dbType)
+        public DbTypeMap<SqlDbType>? FindByDbType(DbType dbType)
             => typeMaps.FirstOrDefault(x => x.DbType == dbType);
 
-        public DbTypeMap<SqlDbType> FindByPlatformType(SqlDbType dbType)
+        public DbTypeMap<SqlDbType>? FindByPlatformType(SqlDbType dbType)
             => typeMaps.FirstOrDefault(x => x.PlatformType == dbType);
 
-        public DbTypeMap<SqlDbType> FindByClrType(Type clrType)
+        public DbTypeMap<SqlDbType>? FindByClrType(Type clrType)
         {
             var existing = typeMaps.FirstOrDefault(x => x.ClrType == clrType);
             if (existing is object)

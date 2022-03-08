@@ -48,7 +48,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #region methods
         /// <inheritdoc />
         DeleteEntitiesContinuation<TEntity> DeleteEntities.From<TEntity>(Entity<TEntity> entity)
-            => CreateTypedBuilder(Configuration, Expression, entity as EntityExpression<TEntity> ?? throw new DbExpressionException($"Expected {nameof(entity)} to be of type {nameof(EntityExpression)}."));
+            => CreateTypedBuilder(Configuration, Expression, entity as EntityExpression<TEntity> ?? throw new DbExpressionException($"Expected {nameof(entity)} to be of type {typeof(EntityExpression)}."));
 
         /// <inheritdoc />
         DeleteEntities DeleteEntities.Top(int value)
@@ -66,10 +66,11 @@ namespace HatTrick.DbEx.Sql.Builder
             if (expression is null)
                 return;
 
-            if (!(expression is FilterExpressionSet set))
-                throw new DbExpressionException($"Expected {nameof(expression)} to be of type {nameof(FilterExpressionSet)}.");
+            if (expression is not FilterExpressionSet set)
+                throw new DbExpressionException($"Expected {nameof(expression)} to be of type {typeof(FilterExpressionSet)}.");
 
-            if (Expression.Where is null || Expression.Where.IsEmpty)
+            var where = (Expression.Where as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>)?.Expression;
+            if (where is null || where.IsEmpty || Expression.Where is null)
                 Expression.Where = set;
             else
                 Expression.Where &= set;

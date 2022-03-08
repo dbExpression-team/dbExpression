@@ -6,7 +6,7 @@ namespace ServerSideBlazorApp.Models
     {
         public int Id { get; set; }
         public ProductCategoryType? Category { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public double ListPrice { get; set; }
         public double Price { get; set; }
     }

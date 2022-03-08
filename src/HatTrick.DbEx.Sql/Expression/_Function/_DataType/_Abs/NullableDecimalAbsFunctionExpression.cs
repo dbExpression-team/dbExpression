@@ -47,11 +47,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(NullableDecimalAbsFunctionExpression obj)
-            => obj is NullableDecimalAbsFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableDecimalAbsFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableDecimalAbsFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableDecimalAbsFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

@@ -28,7 +28,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<FunctionExpression>
     {
         #region internals
-        protected Type DeclaredType { get; private set; }
+        protected Type DeclaredType { get; private set; } = typeof(object);
         #endregion
 
         #region interface
@@ -47,17 +47,22 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region order
-        public OrderByExpression Asc => new OrderByExpression(this, OrderExpressionDirection.ASC);
-        public OrderByExpression Desc => new OrderByExpression(this, OrderExpressionDirection.DESC);
+        public OrderByExpression Asc => new(this, OrderExpressionDirection.ASC);
+        public OrderByExpression Desc => new(this, OrderExpressionDirection.DESC);
         #endregion
 
         #region equals
-        public bool Equals(FunctionExpression obj)
+        public bool Equals(FunctionExpression? obj)
         {
-            return DeclaredType == obj.DeclaredType;
+            if (obj is null) return false;
+            if (ReferenceEquals(this, obj)) return true;
+
+            if (DeclaredType != obj?.DeclaredType) return false;
+
+            return true;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
             => obj is FunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
@@ -68,14 +73,14 @@ namespace HatTrick.DbEx.Sql.Expression
                 const int multiplier = 16777619;
 
                 int hash = @base;
-                hash = (hash * multiplier) ^ (DeclaredType is object ? DeclaredType.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ DeclaredType.GetHashCode();
                 return hash;
             }
         }
         #endregion
 
         #region implicit operators
-        public static implicit operator OrderByExpression(FunctionExpression a) => new OrderByExpression(a, OrderExpressionDirection.ASC);
+        public static implicit operator OrderByExpression(FunctionExpression a) => new(a, OrderExpressionDirection.ASC);
         #endregion
     }
 }

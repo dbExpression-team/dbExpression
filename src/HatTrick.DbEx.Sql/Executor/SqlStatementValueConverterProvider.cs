@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.Sql.Executor
     public class SqlStatementValueConverterProvider : IValueConverterProvider
     {
         #region internals
-        private readonly IEnumerable<IExpressionTypeProvider> typeProviders;
+        private readonly IEnumerable<IExpressionTypeProvider?>? typeProviders;
         private readonly IValueConverterFactory valueConverterFactory;
         #endregion
 
@@ -37,13 +37,13 @@ namespace HatTrick.DbEx.Sql.Executor
             this.valueConverterFactory = valueConverterFactory ?? throw new ArgumentNullException(nameof(valueConverterFactory));
         }
 
-        public SqlStatementValueConverterProvider(IValueConverterFactory valueConverterFactory, IEnumerable<FieldExpression> fieldExpressions)
+        public SqlStatementValueConverterProvider(IValueConverterFactory valueConverterFactory, IEnumerable<FieldExpression?> fieldExpressions)
         {
             this.valueConverterFactory = valueConverterFactory ?? throw new ArgumentNullException(nameof(valueConverterFactory));
             this.typeProviders = fieldExpressions ?? throw new ArgumentNullException(nameof(fieldExpressions));
         }
 
-        public SqlStatementValueConverterProvider(IValueConverterFactory valueConverterFactory, IEnumerable<ParameterizedExpression> outputParameters)
+        public SqlStatementValueConverterProvider(IValueConverterFactory valueConverterFactory, IEnumerable<ParameterizedExpression?> outputParameters)
         {
             this.valueConverterFactory = valueConverterFactory ?? throw new ArgumentNullException(nameof(valueConverterFactory));
             this.typeProviders = outputParameters ?? throw new ArgumentNullException(nameof(typeProviders));
@@ -64,7 +64,7 @@ namespace HatTrick.DbEx.Sql.Executor
             var provider = typeProviders?.ElementAt(fieldIndex);
 
             //provider's declared type takes precedence over requested type (could be requesting an "int", when the declared type is "int?")
-            if (provider is object)
+            if (provider is not null)
                 return valueConverterFactory.CreateConverter(provider.DeclaredType);
 
             if (value is DBNull && !requestedType.IsNullableType() && requestedType.IsConvertibleToNullableType())

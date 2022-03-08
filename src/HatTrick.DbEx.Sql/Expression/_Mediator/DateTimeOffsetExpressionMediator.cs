@@ -33,10 +33,6 @@ namespace HatTrick.DbEx.Sql.Expression
         public DateTimeOffsetExpressionMediator(IExpressionElement expression) : base(expression)
         {
         }
-
-        protected DateTimeOffsetExpressionMediator(IExpressionElement expression, string alias) : base(expression, alias)
-        {
-        }
         #endregion
 
         #region as
@@ -45,11 +41,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(DateTimeOffsetExpressionMediator obj)
-            => obj is DateTimeOffsetExpressionMediator && base.Equals(obj);
+        public bool Equals(DateTimeOffsetExpressionMediator? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is DateTimeOffsetExpressionMediator exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is DateTimeOffsetExpressionMediator exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

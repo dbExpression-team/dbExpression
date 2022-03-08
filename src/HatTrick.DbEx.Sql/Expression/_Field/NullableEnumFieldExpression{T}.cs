@@ -35,11 +35,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(NullableFieldExpression<TEnum, TEnum?> obj)
-            => obj is NullableFieldExpression<TEnum, TEnum?> && base.Equals(obj);
+        public bool Equals(NullableFieldExpression<TEnum, TEnum?>? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableFieldExpression<TEnum, TEnum?> exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableFieldExpression<TEnum, TEnum?> exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

@@ -63,22 +63,14 @@ namespace HatTrick.DbEx.Sql
         /// Assemble and execute a SELECT query to retrieve records and use the <paramref name="handleValue"/> delegate to manage the retrieved value.
         /// </summary>
         /// <param name="handleValue">The delegate to manage the value returned from execution of the query.</param>
-        void Execute(Action<TValue> handleValue);
+        void Execute(Action<TValue?> handleValue);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve records and use the <paramref name="handleValue"/> delegate to manage the retrieved value.
         /// </summary>
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
         /// <param name="handleValue">The delegate to manage the value returned from execution of the query.</param>
-        void Execute(int commandTimeout, Action<TValue> handleValue);
-
-        /// <summary>
-        /// Assemble and execute a SELECT query to retrieve records and use the <paramref name="handleValue"/> delegate to manage the retrieved value.
-        /// </summary>
-        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql SELECT query.</param>
-        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
-        /// <param name="handleValue">The delegate to manage the value returned from execution of the query.</param>
-        void Execute(ISqlConnection connection, Action<TValue> handleValue);
+        void Execute(int commandTimeout, Action<TValue?> handleValue);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve records and use the <paramref name="handleValue"/> delegate to manage the retrieved value.
@@ -86,7 +78,15 @@ namespace HatTrick.DbEx.Sql
         /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql SELECT query.</param>
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
         /// <param name="handleValue">The delegate to manage the value returned from execution of the query.</param>
-        void Execute(ISqlConnection connection, int commandTimeout, Action<TValue> handleValue);
+        void Execute(ISqlConnection connection, Action<TValue?> handleValue);
+
+        /// <summary>
+        /// Assemble and execute a SELECT query to retrieve records and use the <paramref name="handleValue"/> delegate to manage the retrieved value.
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql SELECT query.</param>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
+        /// <param name="handleValue">The delegate to manage the value returned from execution of the query.</param>
+        void Execute(ISqlConnection connection, int commandTimeout, Action<TValue?> handleValue);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TValue"/> values.
@@ -125,7 +125,7 @@ namespace HatTrick.DbEx.Sql
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
         /// <returns>A list of <typeparamref name="TValue"/> values retrieved from execution of the sql SELECT query.</returns>
-        Task ExecuteAsync(Action<TValue> read, CancellationToken cancellationToken = default);
+        Task ExecuteAsync(Action<TValue?> read, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TValue"/> values.
@@ -133,7 +133,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
         /// <returns>A list of <typeparamref name="TValue"/> values retrieved from execution of the sql SELECT query.</returns>
-        Task ExecuteAsync(int commandTimeout, Action<TValue> read, CancellationToken cancellationToken = default);
+        Task ExecuteAsync(int commandTimeout, Action<TValue?> read, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TValue"/> values.
@@ -141,39 +141,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql SELECT query.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
         /// <returns>A list of <typeparamref name="TValue"/> values retrieved from execution of the sql SELECT query.</returns>
-        Task ExecuteAsync(ISqlConnection connection, Action<TValue> read, CancellationToken cancellationToken = default);
-
-        /// <summary>
-        /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TValue"/> values.
-        /// </summary>
-        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql SELECT query.</param>
-        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
-        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
-        /// <returns>A list of <typeparamref name="TValue"/> values retrieved from execution of the sql SELECT query.</returns>
-        Task ExecuteAsync(ISqlConnection connection, int commandTimeout, Action<TValue> read, CancellationToken cancellationToken = default);
-
-        /// <summary>
-        /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TValue"/> values.
-        /// </summary>
-        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
-        /// <returns>A list of <typeparamref name="TValue"/> values retrieved from execution of the sql SELECT query.</returns>
-        Task ExecuteAsync(Func<TValue, Task> read, CancellationToken cancellationToken = default);
-
-        /// <summary>
-        /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TValue"/> values.
-        /// </summary>
-        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
-        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
-        /// <returns>A list of <typeparamref name="TValue"/> values retrieved from execution of the sql SELECT query.</returns>
-        Task ExecuteAsync(int commandTimeout, Func<TValue, Task> read, CancellationToken cancellationToken = default);
-
-        /// <summary>
-        /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TValue"/> values.
-        /// </summary>
-        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql SELECT query.</param>
-        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
-        /// <returns>A list of <typeparamref name="TValue"/> values retrieved from execution of the sql SELECT query.</returns>
-        Task ExecuteAsync(ISqlConnection connection, Func<TValue, Task> read, CancellationToken cancellationToken = default);
+        Task ExecuteAsync(ISqlConnection connection, Action<TValue?> read, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TValue"/> values.
@@ -182,6 +150,38 @@ namespace HatTrick.DbEx.Sql
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
         /// <returns>A list of <typeparamref name="TValue"/> values retrieved from execution of the sql SELECT query.</returns>
-        Task ExecuteAsync(ISqlConnection connection, int commandTimeout, Func<TValue, Task> read, CancellationToken cancellationToken = default);
+        Task ExecuteAsync(ISqlConnection connection, int commandTimeout, Action<TValue?> read, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TValue"/> values.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
+        /// <returns>A list of <typeparamref name="TValue"/> values retrieved from execution of the sql SELECT query.</returns>
+        Task ExecuteAsync(Func<TValue?, Task> read, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TValue"/> values.
+        /// </summary>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
+        /// <returns>A list of <typeparamref name="TValue"/> values retrieved from execution of the sql SELECT query.</returns>
+        Task ExecuteAsync(int commandTimeout, Func<TValue?, Task> read, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TValue"/> values.
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql SELECT query.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
+        /// <returns>A list of <typeparamref name="TValue"/> values retrieved from execution of the sql SELECT query.</returns>
+        Task ExecuteAsync(ISqlConnection connection, Func<TValue?, Task> read, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TValue"/> values.
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql SELECT query.</param>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
+        /// <returns>A list of <typeparamref name="TValue"/> values retrieved from execution of the sql SELECT query.</returns>
+        Task ExecuteAsync(ISqlConnection connection, int commandTimeout, Func<TValue?, Task> read, CancellationToken cancellationToken = default);
     }
 }

@@ -6,34 +6,16 @@ namespace HatTrick.DbEx.MsSql.Test
     public static class ConfigurationProvider
     {
         private static readonly string ConnectionStringKey = "hattrick_dbex_mssql_test";
-        private static IConfiguration _configuration;
+        private static IConfiguration? _configuration;
         private static int? _msSqlVersion;
 
-        public static IConfiguration Configuration
-        {
-            get
-            {
-                if (_configuration is object)
-                    return _configuration;
-
-                return _configuration = new ConfigurationBuilder()
+        public static IConfiguration Configuration =>  _configuration ??= new ConfigurationBuilder()
                         .AddJsonFile("appsettings.json", optional: true, reloadOnChange: false)
                         .AddEnvironmentVariables()
                         .Build();
-            }
-        }
 
-        public static string ConnectionString =>  Configuration.GetConnectionString(ConnectionStringKey);
+        public static string ConnectionString => Configuration.GetConnectionString(ConnectionStringKey);
 
-        public static int? MsSqlVersion
-        {
-            get
-            {
-                if (_msSqlVersion is object)
-                    return _msSqlVersion;
-
-                return _msSqlVersion = Configuration.GetValue("MsSqlVersion", (int?)null);
-            }
-        }
+        public static int? MsSqlVersion =>  _msSqlVersion ??= Configuration.GetValue("MsSqlVersion", (int?)null);
     }
 }

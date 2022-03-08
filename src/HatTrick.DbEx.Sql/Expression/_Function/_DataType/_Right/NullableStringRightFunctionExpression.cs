@@ -21,7 +21,7 @@ using System;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableStringRightFunctionExpression :
-        NullableRightFunctionExpression<string,string>,
+        NullableRightFunctionExpression<string,string?>,
         NullableStringElement,
         IEquatable<NullableStringRightFunctionExpression>
     {
@@ -31,24 +31,36 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
+
+        public NullableStringRightFunctionExpression(NullableStringElement expression, AnyElement<int?> characterCount)
+            : base(expression, characterCount)
+        {
+
+        }
+
+        public NullableStringRightFunctionExpression(StringElement expression, AnyElement<int?> characterCount)
+            : base(expression, characterCount)
+        {
+
+        }
         #endregion
 
         #region as
-        public  AnyElement<string> As(string alias)
-            => new SelectExpression<string>(this).As(alias);
+        public NullableStringElement As(string alias)
+            => new NullableStringSelectExpression(this).As(alias);
         #endregion
 
         #region like
         public FilterExpressionSet Like(string phrase)
-            => new FilterExpressionSet(new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
+            => new (new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
         #endregion
 
         #region equals
-        public bool Equals(NullableStringRightFunctionExpression obj)
-            => obj is NullableStringRightFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableStringRightFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableStringRightFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableStringRightFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

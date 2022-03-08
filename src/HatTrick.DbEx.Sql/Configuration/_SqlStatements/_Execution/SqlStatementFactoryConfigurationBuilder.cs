@@ -46,14 +46,14 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         public ISqlStatementExecutionGroupingConfigurationBuilders Use<TSqlStatementExecutorFactory>()
             where TSqlStatementExecutorFactory : class, ISqlStatementExecutorFactory, new()
-            => Use<TSqlStatementExecutorFactory>(null);
+            => Use<TSqlStatementExecutorFactory>(_ => { });
 
         public ISqlStatementExecutionGroupingConfigurationBuilders Use<TSqlStatementExecutorFactory>(Action<TSqlStatementExecutorFactory> configureFactory)
             where TSqlStatementExecutorFactory : class, ISqlStatementExecutorFactory, new()
         {
-            if (!(configuration.StatementExecutorFactory is TSqlStatementExecutorFactory))
+            if (configuration.StatementExecutorFactory is not TSqlStatementExecutorFactory)
                 configuration.StatementExecutorFactory = new TSqlStatementExecutorFactory();
-            configureFactory?.Invoke(configuration.StatementExecutorFactory as TSqlStatementExecutorFactory);
+            configureFactory?.Invoke((configuration.StatementExecutorFactory as TSqlStatementExecutorFactory)!);
             return caller;
         }
 

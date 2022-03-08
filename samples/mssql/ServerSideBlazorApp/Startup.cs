@@ -55,38 +55,19 @@ namespace ServerSideBlazorApp
                             database.Conversions.UseDefaultFactory(x =>
                                 x.OverrideForReferenceType<ProductDescription>().Use(
                                     pd => pd is null ? null : System.Text.Json.JsonSerializer.Serialize(pd), //serialize to json as it goes in to the database
-                                    o => string.IsNullOrWhiteSpace(o as string) ? default : System.Text.Json.JsonSerializer.Deserialize<ProductDescription>(o as string)) //deserialize to ProductDescription as it comes from the database
+                                    o => string.IsNullOrWhiteSpace(o as string) ? default : System.Text.Json.JsonSerializer.Deserialize<ProductDescription>((o as string)!)) //deserialize to ProductDescription as it comes from the database
                                 );
                         });
                     }
                 );
 
-            services.AddBlazorise(options =>
-              {
-                  options.ChangeTextOnKeyPress = true; // optional
-              })
+            services.AddBlazorise(options => options.ChangeTextOnKeyPress = true)
               .AddMaterialProviders()
               .AddMaterialIcons();
 
             services.AddSingleton<CustomerService>();
             services.AddSingleton<OrderService>();
             services.AddSingleton<ProductService>();
-
-            //following required as a workaround for MatBlazor
-            // Server Side Blazor doesn't register HttpClient by default
-            if (!services.Any(x => x.ServiceType == typeof(HttpClient)))
-            {
-                // Setup HttpClient for server side in a client side compatible fashion
-                services.AddScoped<HttpClient>(s =>
-                {
-                    // Creating the URI helper needs to wait until the JS Runtime is initialized, so defer it.
-                    var uriHelper = s.GetRequiredService<NavigationManager>();
-                    return new HttpClient
-                    {
-                        BaseAddress = new Uri(uriHelper.BaseUri)
-                    };
-                });
-            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

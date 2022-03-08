@@ -25,8 +25,8 @@ namespace HatTrick.DbEx.Sql.Connection
 {
     public interface ISqlConnection : IDbConnection
     {
-        IDbConnection DbConnection { get; }
-        IDbTransaction DbTransaction { get; }
+        IDbConnection? DbConnection { get; }
+        IDbTransaction? DbTransaction { get; }
         bool IsTransactional { get; }
         void EnsureOpen();
         Task EnsureOpenAsync(CancellationToken ct);

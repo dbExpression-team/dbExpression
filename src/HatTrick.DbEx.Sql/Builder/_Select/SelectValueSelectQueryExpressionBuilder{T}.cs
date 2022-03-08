@@ -56,7 +56,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        SelectValueContinuation<TValue> SelectValueContinuation<TValue>.OrderBy(IEnumerable<AnyOrderByClause> orderBy)
+        SelectValueContinuation<TValue> SelectValueContinuation<TValue>.OrderBy(IEnumerable<AnyOrderByClause>? orderBy)
         {
             ApplyOrderBy(orderBy);
             return this;
@@ -70,21 +70,21 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        SelectValueContinuation<TValue> SelectValueContinuation<TValue>.GroupBy(IEnumerable<AnyGroupByClause> groupBy)
+        SelectValueContinuation<TValue> SelectValueContinuation<TValue>.GroupBy(IEnumerable<AnyGroupByClause>? groupBy)
         {
             ApplyGroupBy(groupBy);
             return this;
         }
 
         /// <inheritdoc />
-        SelectValueContinuation<TValue> SelectValueContinuation<TValue>.Having(AnyHavingClause having)
+        SelectValueContinuation<TValue> SelectValueContinuation<TValue>.Having(AnyHavingClause? having)
         {
             ApplyHaving(having);
             return this;
         }
 
         /// <inheritdoc />
-        SelectValueContinuation<TValue> SelectValueContinuation<TValue>.Where(AnyWhereClause where)
+        SelectValueContinuation<TValue> SelectValueContinuation<TValue>.Where(AnyWhereClause? where)
         {
             ApplyWhere(where);
             return this;
@@ -96,7 +96,9 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <inheritdoc />
         JoinOnWithAlias<SelectValueContinuation<TValue>> SelectValueContinuation<TValue>.InnerJoin(AnySelectSubquery subquery)
-            => new SelectValueJoinBuilder<TValue>(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.INNER, this);
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+            => new SelectValueJoinBuilder<TValue>(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.INNER, this); //TODO: interface
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
         /// <inheritdoc />
         JoinOn<SelectValueContinuation<TValue>> SelectValueContinuation<TValue>.LeftJoin(AnyEntity entity)
@@ -104,7 +106,9 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <inheritdoc />
         JoinOnWithAlias<SelectValueContinuation<TValue>> SelectValueContinuation<TValue>.LeftJoin(AnySelectSubquery subquery)
-            => new SelectValueJoinBuilder<TValue>(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.LEFT, this);
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+            => new SelectValueJoinBuilder<TValue>(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.LEFT, this); //TODO: interface
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
         /// <inheritdoc />
         JoinOn<SelectValueContinuation<TValue>> SelectValueContinuation<TValue>.RightJoin(AnyEntity entity)
@@ -112,7 +116,9 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <inheritdoc />
         JoinOnWithAlias<SelectValueContinuation<TValue>> SelectValueContinuation<TValue>.RightJoin(AnySelectSubquery subquery)
-            => new SelectValueJoinBuilder<TValue>(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.RIGHT, this);
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+            => new SelectValueJoinBuilder<TValue>(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.RIGHT, this); //TODO: interface
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
         /// <inheritdoc />
         JoinOn<SelectValueContinuation<TValue>> SelectValueContinuation<TValue>.FullJoin(AnyEntity entity)
@@ -120,7 +126,9 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <inheritdoc />
         JoinOnWithAlias<SelectValueContinuation<TValue>> SelectValueContinuation<TValue>.FullJoin(AnySelectSubquery subquery)
-            => new SelectValueJoinBuilder<TValue>(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.FULL, this);
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+            => new SelectValueJoinBuilder<TValue>(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.FULL, this); //TODO: interface
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
         /// <inheritdoc />
         SelectValueContinuation<TValue> SelectValueContinuation<TValue>.CrossJoin(AnyEntity entity)
@@ -132,30 +140,30 @@ namespace HatTrick.DbEx.Sql.Builder
 
         #region SelectValueTermination<TValue>
         /// <inheritdoc />
-        TValue SelectValueTermination<TValue>.Execute()
+        TValue? SelectValueTermination<TValue>.Execute()
         {
-            using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
-                return ExecutePipeline(
-                    connection,
-                    null
-                );
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            return ExecutePipeline(
+                connection,
+                null
+            );
         }
 
         /// <inheritdoc />
-        TValue SelectValueTermination<TValue>.Execute(int commandTimeout)
+        TValue? SelectValueTermination<TValue>.Execute(int commandTimeout)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
-                return ExecutePipeline(
-                    connection,
-                    command => command.CommandTimeout = commandTimeout
-                );
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            return ExecutePipeline(
+                connection,
+                command => command.CommandTimeout = commandTimeout
+            );
         }
 
         /// <inheritdoc />
-        TValue SelectValueTermination<TValue>.Execute(ISqlConnection connection)
+        TValue? SelectValueTermination<TValue>.Execute(ISqlConnection connection)
         {
             return ExecutePipeline(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
@@ -164,7 +172,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        TValue SelectValueTermination<TValue>.Execute(ISqlConnection connection, int commandTimeout)
+        TValue? SelectValueTermination<TValue>.Execute(ISqlConnection connection, int commandTimeout)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -176,32 +184,32 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        async Task<TValue> SelectValueTermination<TValue>.ExecuteAsync(CancellationToken cancellationToken)
+        async Task<TValue?> SelectValueTermination<TValue>.ExecuteAsync(CancellationToken cancellationToken)
         {
-            using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
-                return await ExecutePipelineAsync(
-                    connection,
-                    null,
-                    cancellationToken
-                ).ConfigureAwait(false);
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            return await ExecutePipelineAsync(
+                connection,
+                null,
+                cancellationToken
+            ).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        async Task<TValue> SelectValueTermination<TValue>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
+        async Task<TValue?> SelectValueTermination<TValue>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
-                return await ExecutePipelineAsync(
-                    connection,
-                    command => command.CommandTimeout = commandTimeout,
-                    cancellationToken
-                ).ConfigureAwait(false);
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            return await ExecutePipelineAsync(
+                connection,
+                command => command.CommandTimeout = commandTimeout,
+                cancellationToken
+            ).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        async Task<TValue> SelectValueTermination<TValue>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
+        async Task<TValue?> SelectValueTermination<TValue>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
         {
             return await ExecutePipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
@@ -211,7 +219,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        async Task<TValue> SelectValueTermination<TValue>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
+        async Task<TValue?> SelectValueTermination<TValue>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -223,15 +231,15 @@ namespace HatTrick.DbEx.Sql.Builder
             ).ConfigureAwait(false);
         }
 
-        protected virtual TValue ExecutePipeline(ISqlConnection connection, Action<IDbCommand> configureCommand)
+        protected virtual TValue? ExecutePipeline(ISqlConnection connection, Action<IDbCommand>? configureCommand)
             => CreateSelectExecutionPipeline().ExecuteSelectValue<TValue>(Expression, connection, configureCommand);
 
-        protected virtual async Task<TValue> ExecutePipelineAsync( ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken cancellationToken)
+        protected virtual async Task<TValue?> ExecutePipelineAsync( ISqlConnection connection, Action<IDbCommand>? configureCommand, CancellationToken cancellationToken)
             => await CreateSelectExecutionPipeline().ExecuteSelectValueAsync<TValue>(Expression, connection, configureCommand, cancellationToken).ConfigureAwait(false);
 
         protected virtual ISelectQueryExpressionExecutionPipeline CreateSelectExecutionPipeline()
         {
-            return Configuration.ExecutionPipelineFactory?.CreateExecutionPipeline(Configuration, Expression) ?? throw new DbExpressionConfigurationException($"Could not resolve/create an execution pipeline for type '{GetType()}',  please review and ensure the correct configuration for DbExpression.");
+            return Configuration.ExecutionPipelineFactory?.CreateQueryExecutionPipeline(Configuration, Expression) ?? throw new DbExpressionConfigurationException($"Could not resolve/create an execution pipeline for type '{GetType()}',  please review and ensure the correct configuration for DbExpression.");
         }
         #endregion
     }

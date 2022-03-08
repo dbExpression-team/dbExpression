@@ -51,7 +51,7 @@ namespace HatTrick.DbEx.Sql.Configuration
             return caller;
         }
 
-        public IValueConverterFactoryContinuationConfigurationBuilder Use(Func<TEnum?, object> convertToDatabase, Func<object, TEnum?> convertFromDatabase)
+        public IValueConverterFactoryContinuationConfigurationBuilder Use(Func<TEnum?, object?> convertToDatabase, Func<object?, TEnum?> convertFromDatabase)
         {
             var converter = new DelegateValueConverter<TEnum?>(convertToDatabase, convertFromDatabase);
             factory.RegisterConverter<TEnum>(converter);
@@ -72,7 +72,7 @@ namespace HatTrick.DbEx.Sql.Configuration
             else if (enumType.IsEnum)
             {
                 var nullableEnumType = typeof(Nullable<>).MakeGenericType(enumType);
-                var converter = new StringNullableEnumValueConverter(nullableEnumType);
+                var converter = new StringNullableEnumValueConverter(enumType);
                 factory.RegisterConverter(enumType, converter);
                 factory.RegisterConverter(nullableEnumType, converter);
             }

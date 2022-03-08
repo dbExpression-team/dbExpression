@@ -1,6 +1,6 @@
 ﻿@namespace ServerSideBlazorApp.Shared
 
-<Card>
+<Card ColumnSize="@ColumnSize">
     <CardBody>
         <CardTitle>
             @(Address.Type) Address<Button Class="@(Mode == UIControlMode.Edit ? "d-none" : string.Empty)" Clicked="ToggleMode" Color="Color.Link"><i class="fas fa-edit"></i>&nbsp;Edit</Button>

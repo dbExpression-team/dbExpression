@@ -31,21 +31,21 @@ namespace HatTrick.DbEx.Sql
         /// Assemble and execute a stored procedure and retrieve a dynamic object.  The properties of the dynamic object are defined by the column attributes of the returned rowset.
         /// </summary>
         /// <returns>A dynamic object created from the return rowset from execution of the stored procedure.</returns>
-        dynamic Execute();
+        dynamic? Execute();
 
         /// <summary>
         /// Assemble and execute a stored procedure and retrieve a dynamic object.  The properties of the dynamic object are defined by the column attributes of the returned rowset.
         /// </summary>
         /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
         /// <returns>A dynamic object created from the return rowset from execution of the stored procedure.</returns>
-        dynamic Execute(ISqlConnection connection);
+        dynamic? Execute(ISqlConnection connection);
 
         /// <summary>
         /// Assemble and execute a stored procedure and retrieve a dynamic object.  The properties of the dynamic object are defined by the column attributes of the returned rowset.
         /// </summary>
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
         /// <returns>A dynamic object created from the return rowset from execution of the stored procedure.</returns>
-        dynamic Execute(int commandTimeout);
+        dynamic? Execute(int commandTimeout);
 
         /// <summary>
         /// Assemble and execute a stored procedure and retrieve a dynamic object.  The properties of the dynamic object are defined by the column attributes of the returned rowset.
@@ -53,14 +53,14 @@ namespace HatTrick.DbEx.Sql
         /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
         /// <returns>A dynamic object created from the return rowset from execution of the stored procedure.</returns>
-        dynamic Execute(ISqlConnection connection, int commandTimeout);
+        dynamic? Execute(ISqlConnection connection, int commandTimeout);
 
         /// <summary>
         /// Assemble and execute a stored procedure and retrieve a dynamic object.  The properties of the dynamic object are defined by the column attributes of the returned rowset.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
         /// <returns>A dynamic object created from the return rowset from execution of the stored procedure.</returns>
-        Task<dynamic> ExecuteAsync(CancellationToken cancellationToken = default);
+        Task<dynamic?> ExecuteAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a stored procedure and retrieve a dynamic object.  The properties of the dynamic object are defined by the column attributes of the returned rowset.
@@ -68,7 +68,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
         /// <returns>A dynamic object created from the return rowset from execution of the stored procedure.</returns>
-        Task<dynamic> ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken = default);
+        Task<dynamic?> ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a stored procedure and retrieve a dynamic object.  The properties of the dynamic object are defined by the column attributes of the returned rowset.
@@ -76,7 +76,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
         /// <returns>A dynamic object created from the return rowset from execution of the stored procedure.</returns>
-        Task<dynamic> ExecuteAsync(int commandTimeout, CancellationToken cancellationToken = default);
+        Task<dynamic?> ExecuteAsync(int commandTimeout, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a stored procedure and retrieve a dynamic object.  The properties of the dynamic object are defined by the column attributes of the returned rowset.
@@ -85,6 +85,6 @@ namespace HatTrick.DbEx.Sql
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
         /// <returns>A dynamic object created from the return rowset from execution of the stored procedure.</returns>
-        Task<dynamic> ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default);
+        Task<dynamic?> ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default);
     }
 }

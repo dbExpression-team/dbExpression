@@ -54,7 +54,9 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <inheritdoc />
         JoinOnWithAlias<UpdateEntitiesContinuation<TEntity>> UpdateEntitiesContinuation<TEntity>.InnerJoin(AnySelectSubquery subquery)
-            => new UpdateEntitiesJoinBuilder<TEntity>(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.INNER, this);
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+            => new UpdateEntitiesJoinBuilder<TEntity>(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.INNER, this); //TODO: interface
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
         /// <inheritdoc />
         JoinOn<UpdateEntitiesContinuation<TEntity>> UpdateEntitiesContinuation<TEntity>.LeftJoin(AnyEntity entity)
@@ -62,7 +64,9 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <inheritdoc />
         JoinOnWithAlias<UpdateEntitiesContinuation<TEntity>> UpdateEntitiesContinuation<TEntity>.LeftJoin(AnySelectSubquery subquery)
-            => new UpdateEntitiesJoinBuilder<TEntity>(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.LEFT, this);
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+            => new UpdateEntitiesJoinBuilder<TEntity>(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.LEFT, this); //TODO: interface
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
         /// <inheritdoc />
         JoinOn<UpdateEntitiesContinuation<TEntity>> UpdateEntitiesContinuation<TEntity>.RightJoin(AnyEntity entity)
@@ -70,7 +74,9 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <inheritdoc />
         JoinOnWithAlias<UpdateEntitiesContinuation<TEntity>> UpdateEntitiesContinuation<TEntity>.RightJoin(AnySelectSubquery subquery)
-            => new UpdateEntitiesJoinBuilder<TEntity>(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.RIGHT, this);
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+            => new UpdateEntitiesJoinBuilder<TEntity>(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.RIGHT, this); //TODO: interface
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
         /// <inheritdoc />
         JoinOn<UpdateEntitiesContinuation<TEntity>> UpdateEntitiesContinuation<TEntity>.FullJoin(AnyEntity entity)
@@ -78,7 +84,9 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <inheritdoc />
         JoinOnWithAlias<UpdateEntitiesContinuation<TEntity>> UpdateEntitiesContinuation<TEntity>.FullJoin(AnySelectSubquery subquery)
-            => new UpdateEntitiesJoinBuilder<TEntity>(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.FULL, this);
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+            => new UpdateEntitiesJoinBuilder<TEntity>(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.FULL, this); //TODO: interface
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
         /// <inheritdoc />
         UpdateEntitiesContinuation<TEntity> UpdateEntitiesContinuation<TEntity>.CrossJoin(AnyEntity entity)
@@ -102,11 +110,11 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         int UpdateEntitiesTermination.Execute()
         {
-            using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
-                return ExecutePipeline(
-                    connection,
-                    null
-                );
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            return ExecutePipeline(
+                connection,
+                null
+            );
         }
 
         /// <inheritdoc />
@@ -115,11 +123,11 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
-                return ExecutePipeline(
-                    connection,
-                    command => command.CommandTimeout = commandTimeout
-                );
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            return ExecutePipeline(
+                connection,
+                command => command.CommandTimeout = commandTimeout
+            );
         }
 
         /// <inheritdoc />
@@ -146,12 +154,12 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         async Task<int> UpdateEntitiesTermination.ExecuteAsync(CancellationToken cancellationToken)
         {
-            using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
-                return await ExecutePipelineAsync(
-                    connection,
-                    null,
-                    cancellationToken
-                ).ConfigureAwait(false);
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            return await ExecutePipelineAsync(
+                connection,
+                null,
+                cancellationToken
+            ).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -170,12 +178,12 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
-                return await ExecutePipelineAsync(
-                    connection,
-                    command => command.CommandTimeout = commandTimeout,
-                    cancellationToken
-                ).ConfigureAwait(false);
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            return await ExecutePipelineAsync(
+                connection,
+                command => command.CommandTimeout = commandTimeout,
+                cancellationToken
+            ).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -191,15 +199,15 @@ namespace HatTrick.DbEx.Sql.Builder
             ).ConfigureAwait(false);
         }
 
-        protected virtual int ExecutePipeline(ISqlConnection connection, Action<IDbCommand> configureCommand)
+        protected virtual int ExecutePipeline(ISqlConnection connection, Action<IDbCommand>? configureCommand)
             => CreateUpdateExecutionPipeline().ExecuteUpdate(Expression, connection, configureCommand);
 
-        protected virtual async Task<int> ExecutePipelineAsync(ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken cancellationToken)
+        protected virtual async Task<int> ExecutePipelineAsync(ISqlConnection connection, Action<IDbCommand>? configureCommand, CancellationToken cancellationToken)
             => await CreateUpdateExecutionPipeline().ExecuteUpdateAsync(Expression, connection, configureCommand, cancellationToken).ConfigureAwait(false);
 
         protected virtual IUpdateQueryExpressionExecutionPipeline CreateUpdateExecutionPipeline()
         {
-            return Configuration.ExecutionPipelineFactory.CreateExecutionPipeline(Configuration, Expression);
+            return Configuration.ExecutionPipelineFactory.CreateQueryExecutionPipeline(Configuration, Expression);
         }
         #endregion
         #endregion

@@ -21,17 +21,17 @@
     public static class ServiceDispatch
     {
         #region internals
-        private static CommandService _command;
-        private static FeedbackService _feedback;
-        private static IOService _io;
+        private static CommandService? _command;
+        private static FeedbackService? _feedback;
+        private static IOService? _io;
         #endregion
 
-        #region inteface
-        public static CommandService Command => _command ?? (_command = new CommandService());
+        #region interface
+        public static CommandService Command => _command ??= new();
 
-        public static FeedbackService Feedback => _feedback ?? (_feedback = new FeedbackService());
+        public static FeedbackService Feedback => _feedback ??= new();
 
-        public static IOService IO => _io ?? (_io = new IOService());
+        public static IOService IO => _io ??= new();
         #endregion
     }
 }

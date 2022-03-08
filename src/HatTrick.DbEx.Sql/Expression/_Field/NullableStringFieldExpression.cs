@@ -20,29 +20,41 @@
 
 namespace HatTrick.DbEx.Sql.Expression
 {
+    /// <summary>
+    /// Field expression representing nullable strings.
+    /// </summary>
+    /// <remarks>
+    /// Due to nullability of reference types and abstract members in base, cannot follow the same pattern for other nullable fields.
+    /// MUST inherit directly from FieldExpression{String}, not NullableFieldExpression{String,String?}.
+    /// </remarks>
     public abstract partial class NullableStringFieldExpression :
-        FieldExpression<string>,
+        NullableFieldExpression<string,string?>,
         NullableStringElement,
         IEquatable<NullableStringFieldExpression>
     {
         #region constructors
-        protected NullableStringFieldExpression(string identifier, string name, EntityExpression entity) : base(identifier, name, typeof(string), entity)
+        protected NullableStringFieldExpression(string identifier, string name, EntityExpression entity) : base(identifier, name, entity)
         {
 
         }
         #endregion
 
+        #region as
+        public new NullableStringElement As(string alias)
+            => new NullableStringSelectExpression(this as NullableStringElement).As(alias);
+        #endregion
+
         #region like
         public FilterExpressionSet Like(string phrase)
-            => new FilterExpressionSet(new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
+            => new(new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
         #endregion
 
         #region equals
-        public bool Equals(NullableStringFieldExpression obj)
-            => obj is NullableStringFieldExpression && base.Equals(obj);
+        public bool Equals(NullableStringFieldExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableStringFieldExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableStringFieldExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

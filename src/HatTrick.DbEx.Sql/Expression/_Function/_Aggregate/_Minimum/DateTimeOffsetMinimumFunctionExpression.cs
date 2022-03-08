@@ -46,11 +46,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(DateTimeOffsetMinimumFunctionExpression obj)
-            => obj is DateTimeOffsetMinimumFunctionExpression && base.Equals(obj);
+        public bool Equals(DateTimeOffsetMinimumFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is DateTimeOffsetMinimumFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is DateTimeOffsetMinimumFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

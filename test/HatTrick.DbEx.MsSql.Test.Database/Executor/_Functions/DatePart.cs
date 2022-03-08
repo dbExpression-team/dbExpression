@@ -91,7 +91,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             int? result = exp.Execute();
 
             //then
-            result.Value.Should().Be(expected);
+            result!.Value.Should().Be(expected);
         }
 
         [Theory]
@@ -131,7 +131,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             int? result = exp.Execute();
 
             //then
-            result.Value.Should().Be(expected);
+            result!.Value.Should().Be(expected);
         }
 
         [Theory]

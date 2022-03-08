@@ -46,11 +46,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(SingleSumFunctionExpression obj)
-            => obj is SingleSumFunctionExpression && base.Equals(obj);
+        public bool Equals(SingleSumFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is SingleSumFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is SingleSumFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

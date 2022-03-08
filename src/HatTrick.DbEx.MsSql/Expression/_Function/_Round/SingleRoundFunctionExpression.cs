@@ -45,11 +45,11 @@ namespace HatTrick.DbEx.MsSql.Expression
         #endregion
 
         #region equals
-        public bool Equals(SingleRoundFunctionExpression obj)
-            => obj is SingleRoundFunctionExpression && base.Equals(obj);
+        public bool Equals(SingleRoundFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is SingleRoundFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is SingleRoundFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

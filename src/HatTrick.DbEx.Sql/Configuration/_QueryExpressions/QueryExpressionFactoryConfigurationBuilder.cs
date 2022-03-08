@@ -40,19 +40,21 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         public void Use<TQueryExpressionFactory>()
             where TQueryExpressionFactory : class, IQueryExpressionFactory, new()
-            => Use<TQueryExpressionFactory>(null);
+            => Use<TQueryExpressionFactory>(_ => { });
 
         public void Use<TQueryExpressionFactory>(Action<TQueryExpressionFactory> configureFactory)
             where TQueryExpressionFactory : class, IQueryExpressionFactory, new()
         {
-            if (!(configuration.QueryExpressionFactory is TQueryExpressionFactory))
+            if (configuration.QueryExpressionFactory is not TQueryExpressionFactory)
                 configuration.QueryExpressionFactory = new TQueryExpressionFactory();
-            configureFactory?.Invoke(configuration.QueryExpressionFactory as TQueryExpressionFactory);
+#pragma warning disable CS8604 // Possible null reference argument.
+            configureFactory?.Invoke(configuration.QueryExpressionFactory as TQueryExpressionFactory); //TODO: interface
+#pragma warning restore CS8604 // Possible null reference argument.
         }
 
         public void UseDefaultFactory()
         {
-            if (!(configuration.QueryExpressionFactory is QueryExpressionFactory))
+            if (configuration.QueryExpressionFactory is not QueryExpressionFactory)
                 configuration.QueryExpressionFactory = new QueryExpressionFactory();
         }
         #endregion

@@ -91,7 +91,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.Coalesce<float?>(db.fx.StDevP(dbo.Person.CreditLimit), (float?)null)
+                    db.fx.Coalesce<float?>(db.fx.StDevP(dbo.Person.CreditLimit), (float?)null!)
                 ).From(dbo.Person);
 
             //when               
@@ -109,7 +109,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.StDevP(db.fx.Coalesce<int?>(dbo.Person.CreditLimit, (int?)null))
+                    db.fx.StDevP(db.fx.Coalesce<int?>(dbo.Person.CreditLimit, (int?)null!))
                 ).From(dbo.Person);
 
             //when               

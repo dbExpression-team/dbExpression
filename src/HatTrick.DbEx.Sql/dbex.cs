@@ -32,54 +32,54 @@ namespace HatTrick.DbEx.Sql
         /// Use an aliased field as part of a SELECT clause, indicating the data type of the aliased field.
         /// </summary>
         public static AliasExpression<T> Alias<T>(string tableName, string fieldName)
-            => new AliasExpression<T>(tableName, fieldName);
+            => new(tableName, fieldName);
 
         /// <summary>
         /// Create an alias for a field.
         /// </summary>
         public static AliasExpression Alias(string tableName, string fieldName)
-            => new AliasExpression(tableName, fieldName);
+            => new(tableName, fieldName);
 
         /// <summary>
         /// Change the encapsulated type of an element to a nullable.
         /// </summary>
-        public static NullableBooleanElement Coerce(BooleanElement element)
+        public static NullableBooleanElement Coerce(AnyElement<bool> element)
             => new NullableBooleanExpressionMediator(element);
 
         /// <summary>
         /// Change the encapsulated type of an element to a nullable.
         /// </summary>
-        public static NullableByteElement Coerce(ByteElement element)
+        public static NullableByteElement Coerce(AnyElement<byte> element)
             => new NullableByteExpressionMediator(element);
 
         /// <summary>
         /// Change the encapsulated type of an element to a nullable.
         /// </summary>
-        public static NullableByteArrayElement Coerce(ByteArrayElement element)
+        public static NullableByteArrayElement Coerce(AnyElement<byte[]> element)
             => new NullableByteArrayExpressionMediator(element);
 
         /// <summary>
         /// Change the encapsulated type of an element to a nullable.
         /// </summary>
-        public static NullableDateTimeElement Coerce(DateTimeElement element)
+        public static NullableDateTimeElement Coerce(AnyElement<DateTime> element)
             => new NullableDateTimeExpressionMediator(element);
 
         /// <summary>
         /// Change the encapsulated type of an element to a nullable.
         /// </summary>
-        public static NullableDateTimeOffsetElement Coerce(DateTimeOffsetElement element)
+        public static NullableDateTimeOffsetElement Coerce(AnyElement<DateTimeOffset> element)
             => new NullableDateTimeOffsetExpressionMediator(element);
 
         /// <summary>
         /// Change the encapsulated type of an element to a nullable.
         /// </summary>
-        public static NullableDecimalElement Coerce(DecimalElement element)
+        public static NullableDecimalElement Coerce(AnyElement<decimal> element)
             => new NullableDecimalExpressionMediator(element);
 
         /// <summary>
         /// Change the encapsulated type of an element to a nullable.
         /// </summary>
-        public static NullableDoubleElement Coerce(DoubleElement element)
+        public static NullableDoubleElement Coerce(AnyElement<double> element)
             => new NullableDoubleExpressionMediator(element);
 
         /// <summary>
@@ -92,31 +92,38 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Change the encapsulated type of an element to a nullable.
         /// </summary>
-        public static NullableGuidElement Coerce(GuidElement element)
+        public static EnumElement<TEnum> Coerce<TEnum>(NullableEnumElement<TEnum> element)
+            where TEnum : struct, Enum, IComparable
+            => new EnumExpressionMediator<TEnum>(element);
+
+        /// <summary>
+        /// Change the encapsulated type of an element to a nullable.
+        /// </summary>
+        public static NullableGuidElement Coerce(AnyElement<Guid> element)
             => new NullableGuidExpressionMediator(element);
 
         /// <summary>
         /// Change the encapsulated type of an element to a nullable.
         /// </summary>
-        public static NullableInt16Element Coerce(Int16Element element)
+        public static NullableInt16Element Coerce(AnyElement<short> element)
             => new NullableInt16ExpressionMediator(element);
 
         /// <summary>
         /// Change the encapsulated type of an element to a nullable.
         /// </summary>
-        public static NullableInt32Element Coerce(Int32Element element)
+        public static NullableInt32Element Coerce(AnyElement<int> element)
             => new NullableInt32ExpressionMediator(element);
 
         /// <summary>
         /// Change the encapsulated type of an element to a nullable.
         /// </summary>
-        public static NullableInt64Element Coerce(Int64Element element)
+        public static NullableInt64Element Coerce(AnyElement<long> element)
             => new NullableInt64ExpressionMediator(element);
 
         /// <summary>
         /// Change the encapsulated type of an element to a nullable.
         /// </summary>
-        public static NullableSingleElement Coerce(SingleElement element)
+        public static NullableSingleElement Coerce(AnyElement<float> element)
             => new NullableSingleExpressionMediator(element);
 
         /// <summary>
@@ -128,7 +135,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Change the encapsulated type of an element to a nullable.
         /// </summary>
-        public static NullableTimeSpanElement Coerce(TimeSpanElement element)
+        public static NullableTimeSpanElement Coerce(AnyElement<TimeSpan> element)
             => new NullableTimeSpanExpressionMediator(element);
 
         /// <summary>

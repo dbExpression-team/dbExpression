@@ -19,9 +19,9 @@
 namespace HatTrick.DbEx.Sql
 {
 #pragma warning disable IDE1006 // Naming Styles
-    public interface ObjectElement<T> : AnyElement<T>
+    public interface ObjectElement<T> : AnyObjectElement<T>
 #pragma warning restore IDE1006 // Naming Styles
     {
-
+        ObjectElement<T> As(string alias);
     }
 }

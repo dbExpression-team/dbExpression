@@ -274,7 +274,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
                     .ConfigureOutputSettings(
                         a => a.PrependCommaOnSelectClause = false
                     )
-                .Execution
+                .QueryExecution
                     .Executor.UseDefaultFactory()
                     .Pipeline.UseDefaultFactory()
                     .Connection.Use<MsSqlConnectionFactory>();

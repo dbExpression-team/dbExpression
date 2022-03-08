@@ -22,7 +22,8 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public class AssignmentExpression :
         EntityFieldAssignment,
-        IAssignmentExpressionProvider
+        IAssignmentExpressionProvider,
+        IEquatable<AssignmentExpression>
     {
         #region internals
         private readonly FieldExpression assignee;
@@ -43,12 +44,42 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region to string
-        public override string ToString() => $"{assignee} = {assignment}";
+        public override string? ToString() => $"{assignee} = {assignment}";
+        #endregion
+
+        #region equals
+        public bool Equals(AssignmentExpression? obj)
+        {
+            if (obj is null) return false;
+            if (ReferenceEquals(this, obj)) return true;
+
+            if (!assignee.Equals(obj.assignee)) return false;
+
+            if (!assignment.Equals(obj.assignment)) return false;
+
+            return true;
+        }
+
+        public override bool Equals(object? obj)
+            => obj is AssignmentExpression exp && Equals(exp);
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                const int @base = (int)2166136261;
+                const int multiplier = 16777619;
+
+                int hash = @base;
+                hash = (hash * multiplier) ^ (assignee is not null ? assignee.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (assignment is not null ? assignment.GetHashCode() : 0);
+                return hash;
+            }
+        }
         #endregion
 
         #region implicit assignment expression set operator
-        public static implicit operator AssignmentExpressionSet(AssignmentExpression a) => new AssignmentExpressionSet(a);
+        public static implicit operator AssignmentExpressionSet(AssignmentExpression a) => new(a);
         #endregion
-    }
-    
+    }    
 }

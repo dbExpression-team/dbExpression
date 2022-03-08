@@ -81,7 +81,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //when & then      
             Assert.Throws<ArgumentException>(() => 
                 db.SelectOne(
-                    db.fx.PatIndex((string)null, dbo.Person.FirstName)
+                    db.fx.PatIndex((string)null!, dbo.Person.FirstName)
                 ).From(dbo.Person)
             );
         }
@@ -104,28 +104,29 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             persons.Should().HaveCount(expected);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        [Trait("Operation", "SUBQUERY")]
-        public void Does_patindex_of_aliased_field_succeed(int version, int expected = 0)
-        {
-            //given
-            ConfigureForMsSqlVersion(version);
+        //TODO: aliasing
+        //[Theory]
+        //[MsSqlVersions.AllVersions]
+        //[Trait("Operation", "SUBQUERY")]
+        //public void Does_patindex_of_aliased_field_succeed(int version, int expected = 0)
+        //{
+        //    //given
+        //    ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectOne(
-                    db.fx.PatIndex("P", dbex.Alias<string>("_address", "Line1")).As("address_line1")
-                ).From(dbo.Address)
-                .InnerJoin(
-                    db.SelectOne<Address>()
-                    .From(dbo.Address)
-                    .Where(dbo.Address.Id == 1)
-                ).As("_address").On(dbo.Address.Id == ("_address", "Id"));
+        //    var exp = db.SelectOne(
+        //            db.fx.PatIndex("P", dbex.Alias<string>("_address", "Line1")).As("address_line1")
+        //        ).From(dbo.Address)
+        //        .InnerJoin(
+        //            db.SelectOne<Address>()
+        //            .From(dbo.Address)
+        //            .Where(dbo.Address.Id == 1)
+        //        ).As("_address").On(dbo.Address.Id == ("_address", "Id"));
 
-            //when               
-            object result = exp.Execute();
+        //    //when               
+        //    object result = exp.Execute();
 
-            //then
-            result.Should().BeOfType<long>().Which.Should().Be(expected);
-        }
+        //    //then
+        //    result.Should().BeOfType<long>().Which.Should().Be(expected);
+        //}
     }
 }

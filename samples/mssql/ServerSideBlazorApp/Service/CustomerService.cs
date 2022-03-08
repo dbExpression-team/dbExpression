@@ -83,7 +83,10 @@ namespace ServerSideBlazorApp.Service
                 .Where(whereClause)
                 .LeftJoin(dbo.PersonTotalPurchasesView).On(dbo.Customer.Id == dbo.PersonTotalPurchasesView.Id)
                 .OrderBy(
-                    pagingParameters.Sorting?.Select(s => s.Direction == OrderExpressionDirection.ASC ? CustomerSummaryOrderByClauseElements[s.Field].Asc : CustomerSummaryOrderByClauseElements[s.Field].Desc)
+                    pagingParameters.Sorting?.Select(
+                        s => s.Direction == OrderExpressionDirection.ASC 
+                        ? CustomerSummaryOrderByClauseElements[s.Field].Asc : CustomerSummaryOrderByClauseElements[s.Field].Desc
+                    )
                 )
                 .Offset(pagingParameters.Offset).Limit(pagingParameters.Limit)
                 .ExecuteAsync(MapToCustomerSummary);
@@ -106,10 +109,10 @@ namespace ServerSideBlazorApp.Service
         private static CustomerSummaryModel MapToCustomerSummary(ISqlFieldReader row)
             => new ()
             {
-                Id = row.ReadField().GetValue<int>(),
-                Name = row.ReadField().GetValue<string>(),
-                LifetimeValue = row.ReadField().GetValue<double>(),
-                CurrentAge = row.ReadField().GetValue<short?>(),
+                Id = row.ReadField()!.GetValue<int>(),
+                Name = row.ReadField()!.GetValue<string>(),
+                LifetimeValue = row.ReadField()!.GetValue<double>(),
+                CurrentAge = row.ReadField()!.GetValue<short?>(),
                 IsVIP = row.GetValue<double>(2) >= Rules.LifetimeValueAmountToBeAVIPCustomer
             };
         #endregion
@@ -124,11 +127,11 @@ namespace ServerSideBlazorApp.Service
                 =>  new()
                 {
                     Type = addressType,
-                    Line1 = sqlRow.ReadField().GetValue<string>(),
-                    Line2 = sqlRow.ReadField().GetValue<string>(),
-                    City = sqlRow.ReadField().GetValue<string>(),
-                    State = sqlRow.ReadField().GetValue<string>(),
-                    ZIP = sqlRow.ReadField().GetValue<string>()
+                    Line1 = sqlRow.ReadField()!.GetValue<string>(),
+                    Line2 = sqlRow.ReadField()!.GetValue<string>(),
+                    City = sqlRow.ReadField()!.GetValue<string>(),
+                    State = sqlRow.ReadField()!.GetValue<string>(),
+                    ZIP = sqlRow.ReadField()!.GetValue<string>()
                 };
 
             var mailingAddress = nameof(CustomerDetailModel.MailingAddress);
@@ -209,15 +212,15 @@ namespace ServerSideBlazorApp.Service
                 .ExecuteAsync(
                     reader => 
                     {
-                        customer.Id = reader.ReadField().GetValue<int>();
-                        customer.FirstName = reader.ReadField().GetValue<string>();
-                        customer.LastName = reader.ReadField().GetValue<string>();
-                        customer.LifetimeValue = reader.ReadField().GetValue<double>();
-                        customer.Gender = reader.ReadField().GetValue<GenderType>();
-                        customer.CreditLimit = reader.ReadField().GetValue<int?>();
-                        customer.YearOfLastCreditLimitReview = reader.ReadField().GetValue<int?>();
-                        customer.BirthDate = reader.ReadField().GetValue<DateTime?>();
-                        customer.CurrentAge = reader.ReadField().GetValue<short?>();
+                        customer.Id = reader.ReadField()!.GetValue<int>();
+                        customer.FirstName = reader.ReadField()!.GetValue<string>();
+                        customer.LastName = reader.ReadField()!.GetValue<string>();
+                        customer.LifetimeValue = reader.ReadField()!.GetValue<double>();
+                        customer.Gender = reader.ReadField()!.GetValue<GenderType>();
+                        customer.CreditLimit = reader.ReadField()!.GetValue<int?>();
+                        customer.YearOfLastCreditLimitReview = reader.ReadField()!.GetValue<int?>();
+                        customer.BirthDate = reader.ReadField()!.GetValue<DateTime?>();
+                        customer.CurrentAge = reader.ReadField()!.GetValue<short?>();
                         customer.MailingAddress = mapAddress(AddressType.Mailing, reader);
                         customer.BillingAddress = mapAddress(AddressType.Billing, reader);
                         customer.ShippingAddress = mapAddress(AddressType.Shipping, reader);
@@ -256,15 +259,15 @@ namespace ServerSideBlazorApp.Service
                 @new.DateUpdated = DateTime.UtcNow;
 
                 await UpdateAddressAsync(persisted, @new);
-                var updated = await GetAddressAsync(customerId, address.Type);
+                persisted = (await GetAddressAsync(customerId, address.Type))!;
                 return new AddressModel
                 {
-                    Line1 = updated.Line1,
-                    Line2 = updated.Line2,
-                    City = updated.City,
-                    State = updated.State,
-                    ZIP = updated.Zip,
-                    Type = address.Type
+                    Line1 = persisted.Line1,
+                    Line2 = persisted.Line2,
+                    City = persisted.City,
+                    State = persisted.State,
+                    ZIP = persisted.Zip,
+                    Type = persisted.AddressType!.Value
                 };
             }
             else
@@ -282,7 +285,7 @@ namespace ServerSideBlazorApp.Service
             }
         }
 
-        private static async Task<Address> GetAddressAsync(int customerId, AddressType addressType)
+        private static async Task<Address?> GetAddressAsync(int customerId, AddressType addressType)
             => await db.SelectOne<Address>()
                 .From(dbo.Address)
                 .InnerJoin(dbo.CustomerAddress).On(dbo.Address.Id == dbo.CustomerAddress.AddressId)

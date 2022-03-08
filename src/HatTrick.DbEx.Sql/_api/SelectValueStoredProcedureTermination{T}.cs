@@ -31,21 +31,21 @@ namespace HatTrick.DbEx.Sql
         /// Assemble and execute a stored procedure and return the scalar value.
         /// </summary>
         /// <returns>The scalar value of type <typeparamref name="TValue"/> returned from execution of the stored procedure.</returns>
-        TValue Execute();
+        TValue? Execute();
 
         /// <summary>
         /// Assemble and execute a stored procedure and return the scalar value.
         /// </summary>
         /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
         /// <returns>The scalar value of type <typeparamref name="TValue"/> returned from execution of the stored procedure.</returns>
-        TValue Execute(ISqlConnection connection);
+        TValue? Execute(ISqlConnection connection);
 
         /// <summary>
         /// Assemble and execute a stored procedure and return the scalar value.
         /// </summary>
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
         /// <returns>The scalar value of type <typeparamref name="TValue"/> returned from execution of the stored procedure.</returns>
-        TValue Execute(int commandTimeout);
+        TValue? Execute(int commandTimeout);
 
         /// <summary>
         /// Assemble and execute a stored procedure and return the scalar value.
@@ -53,14 +53,14 @@ namespace HatTrick.DbEx.Sql
         /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
         /// <returns>The scalar value of type <typeparamref name="TValue"/> returned from execution of the stored procedure.</returns>
-        TValue Execute(ISqlConnection connection, int commandTimeout);
+        TValue? Execute(ISqlConnection connection, int commandTimeout);
 
         /// <summary>
         /// Assemble and execute a stored procedure and return the scalar value.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
         /// <returns>The scalar value of type <typeparamref name="TValue"/> returned from execution of the stored procedure.</returns>
-        Task<TValue> ExecuteAsync(CancellationToken cancellationToken = default);
+        Task<TValue?> ExecuteAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a stored procedure and return the scalar value.
@@ -68,7 +68,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
         /// <returns>The scalar value of type <typeparamref name="TValue"/> returned from execution of the stored procedure.</returns>
-        Task<TValue> ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken = default);
+        Task<TValue?> ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a stored procedure and return the scalar value.
@@ -76,7 +76,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
         /// <returns>The scalar value of type <typeparamref name="TValue"/> returned from execution of the stored procedure.</returns>
-        Task<TValue> ExecuteAsync(int commandTimeout, CancellationToken cancellationToken = default);
+        Task<TValue?> ExecuteAsync(int commandTimeout, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a stored procedure and return the scalar value.
@@ -85,6 +85,6 @@ namespace HatTrick.DbEx.Sql
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
         /// <returns>The scalar value of type <typeparamref name="TValue"/> returned from execution of the stored procedure.</returns>
-        Task<TValue> ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default);
+        Task<TValue?> ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default);
     }
 }

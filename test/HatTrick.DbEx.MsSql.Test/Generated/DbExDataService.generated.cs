@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
-
+#nullable enable
 #pragma warning disable IDE1006 // Naming Styles
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 #pragma warning disable CA1034 // Nested types should not be visible
@@ -25,8 +25,8 @@ namespace DbEx.DataService
         #region internals
         protected static readonly MsSqlQueryExpressionBuilderFactory expressionBuilderFactory = new MsSqlQueryExpressionBuilderFactory();
         protected static readonly IList<SchemaExpression> schemas = new List<SchemaExpression>();
-        protected static RuntimeSqlDatabaseConfiguration configuration => configurationFactory.CreateConfiguration() ?? throw new DbExpressionConfigurationException($"Configuration factory returned a null value for configuration ({nameof(RuntimeSqlDatabaseConfiguration)}).  Cannot build and execute queries without valid configuration.");
-        private static IRuntimeSqlDatabaseConfigurationFactory configurationFactory;
+        protected static RuntimeSqlDatabaseConfiguration configuration => configurationFactory?.CreateConfiguration() ?? throw new DbExpressionConfigurationException($"Configuration factory returned a null value for configuration ({nameof(RuntimeSqlDatabaseConfiguration)}).  Cannot build and execute queries without valid configuration.");
+        private static IRuntimeSqlDatabaseConfigurationFactory? configurationFactory;
         #endregion
 
         #region interface
@@ -105,17 +105,54 @@ namespace DbEx.DataService
             => expressionBuilderFactory.CreateSelectValueBuilder<TEnum>(configuration, element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <see cref="object" /> value.
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/> value.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{Object}" />?
-        ///, for example "dbo.Person.GenderType"
+        /// <param name="element">An expression of type <see cref="ObjectElement" />
         /// </param>
-        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<object> SelectOne(AnyElement<object> element)
+        /// <returns><see cref="SelectValue{object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<object>? SelectOne(ObjectElement element)
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/>? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableObjectElement" />
+        /// </param>
+        /// <returns><see cref="SelectValue{object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<object?> SelectOne(NullableObjectElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="ObjectElement{T}" />
+        /// </param>
+        /// <returns><see cref="SelectValues{T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <typeparam name="T">The type of the object to select.</typeparam>
+        public static SelectValue<T> SelectOne<T>(ObjectElement<T> element)
+            => expressionBuilderFactory.CreateSelectValueBuilder<T>(configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/>? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableObjectElement{T}" />?
+        /// </param>
+        /// <returns><see cref="SelectValue{T}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <typeparam name="T">The type of the object to select.</typeparam>
+        public static SelectValue<T?> SelectOne<T>(NullableObjectElement<T> element)
+            => expressionBuilderFactory.CreateSelectValueBuilder<T>(configuration, element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="bool" /> value.
@@ -176,7 +213,7 @@ namespace DbEx.DataService
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
-        ///, for example "dbo.Product.Image" or "db.fx.IsNull(dbo.Product.Image, new byte[0])"
+        ///, for example "dbo.UnitTest.ByteArray" or "db.fx.IsNull(dbo.UnitTest.ByteArray, new byte[0])"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<byte[]> SelectOne(AnyElement<byte[]> element)
@@ -417,16 +454,29 @@ namespace DbEx.DataService
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <see cref="string" /> value.
+        /// Start constructing a sql SELECT query expression for a single <see cref="string" />? value.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{String}" />
+        /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         ///</param>
-        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<string> SelectOne(AnyElement<string> element) 
+        /// <returns><see cref="SelectValue{String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<string> SelectOne(StringElement element) 
+            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="string" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
+        ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
+        ///</param>
+        /// <returns><see cref="SelectValue{String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<string?> SelectOne(NullableStringElement element) 
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
@@ -436,6 +486,7 @@ namespace DbEx.DataService
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />
+        ///, for example "dbo.UnitTest.TimeSpan", "db.fx.IsNull(dbo.UnitTest.TimeSpan, TimeSpan.MinValue)" or "dbo.UnitTest.TimeSpan + DateTime.Now"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<TimeSpan> SelectOne(AnyElement<TimeSpan> element)
@@ -537,17 +588,54 @@ namespace DbEx.DataService
             => expressionBuilderFactory.CreateSelectValuesBuilder<TEnum>(configuration, element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a list of <see cref="object" /> values.
-        /// </summary>
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/> values.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
-        /// <param name="element">An expression of type <see cref="AnyElement{Object}" />
-        ///, for example "db.fx.Coalesce(dbo.Person.CreditLimit, dbo.Address.Line1)"
-        ///</param>
-        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<object> SelectMany(AnyElement<object> element)
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="ObjectElement" />
+        /// </param>
+        /// <returns><see cref="SelectValues{object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<object>? SelectMany(ObjectElement element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/>? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableObjectElement" />
+        /// </param>
+        /// <returns><see cref="SelectValues{object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<object?> SelectMany(NullableObjectElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="ObjectElement{T}" />
+        /// </param>
+        /// <returns><see cref="SelectValues{T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <typeparam name="T">The type of the object to select.</typeparam>
+        public static SelectValues<T> SelectMany<T>(ObjectElement<T> element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder<T>(configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/>? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableObjectElement{T}" />?
+        /// </param>
+        /// <returns><see cref="SelectValues{T}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <typeparam name="T">The type of the object to select.</typeparam>
+        public static SelectValues<T?> SelectMany<T>(NullableObjectElement<T> element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder<T>(configuration, element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="bool" /> values.
@@ -608,7 +696,7 @@ namespace DbEx.DataService
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
-        ///, for example "dbo.Product.Image" or "db.fx.IsNull(dbo.Product.Image, new byte[0])"
+        ///, for example "dbo.UnitTest.ByteArray" or "db.fx.IsNull(dbo.UnitTest.ByteArray, new byte[0])"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<byte[]> SelectMany(AnyElement<byte[]> element)
@@ -849,16 +937,29 @@ namespace DbEx.DataService
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a list of <see cref="string" /> values.
+        /// Start constructing a sql SELECT query expression for a list of <see cref="string" />? values.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{String}" />
+        /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         ///</param>
-        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<string> SelectMany(AnyElement<string> element)
+        /// <returns><see cref="SelectValues{String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<string> SelectMany(StringElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="string" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
+        ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
+        ///</param>
+        /// <returns><see cref="SelectValues{String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<string?> SelectMany(NullableStringElement element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
 
         /// <summary>
@@ -868,6 +969,7 @@ namespace DbEx.DataService
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />
+        ///, for example "dbo.UnitTest.TimeSpan", "db.fx.IsNull(dbo.UnitTest.TimeSpan, TimeSpan.MinValue)" or "dbo.UnitTest.TimeSpan + DateTime.Now"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<TimeSpan> SelectMany(AnyElement<TimeSpan> element)
@@ -1416,7 +1518,7 @@ namespace DbEx.dboDataService
     public partial class AccessAuditLogEntity : EntityExpression<AccessAuditLog>
     {
         #region internals
-        private SelectExpressionSet _inclusiveSelectExpressionSet;
+        private SelectExpressionSet? _inclusiveSelectExpressionSet;
         #endregion
 
         #region interface
@@ -1509,15 +1611,11 @@ namespace DbEx.dboDataService
         #endregion
 
         #region constructors
-        private AccessAuditLogEntity() : base(null, null, null, null)
-        {
-        }
-
         public AccessAuditLogEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
 
-        private AccessAuditLogEntity(string identifier, string name, SchemaExpression schema, string alias) : base(identifier, name, schema, alias)
+        private AccessAuditLogEntity(string identifier, string name, SchemaExpression schema, string? alias) : base(identifier, name, schema, alias)
         {
             Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", "Id", this));
             Fields.Add($"{identifier}.PersonId", PersonId = new PersonIdField($"{identifier}.PersonId", "PersonId", this));
@@ -1545,20 +1643,20 @@ namespace DbEx.dboDataService
             if (alias is null)
                 throw new ArgumentNullException(nameof(alias));
 
-            SelectExpressionSet set = null;
-            string aliased = null;
+            SelectExpressionSet? set = null;
+            string? aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Id));
 
             aliased = alias(nameof(PersonId));
-            set &= aliased != nameof(PersonId) ? new SelectExpression<int>(PersonId).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PersonId));
+            set &= aliased != nameof(PersonId) ? new SelectExpression<int>(PersonId).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(PersonId));
 
             aliased = alias(nameof(AccessResult));
-            set &= aliased != nameof(AccessResult) ? new SelectExpression<int>(AccessResult).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(AccessResult));
+            set &= aliased != nameof(AccessResult) ? new SelectExpression<int>(AccessResult).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(AccessResult));
 
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(DateCreated));
 
             return set;
         }
@@ -1582,10 +1680,10 @@ namespace DbEx.dboDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, AccessAuditLog accessAuditLog)
         {
-            accessAuditLog.Id = reader.ReadField().GetValue<int>();
-            accessAuditLog.PersonId = reader.ReadField().GetValue<int>();
-            accessAuditLog.AccessResult = reader.ReadField().GetValue<int>();
-            accessAuditLog.DateCreated = reader.ReadField().GetValue<DateTime>();
+            accessAuditLog.Id = reader.ReadField()!.GetValue<int>();
+            accessAuditLog.PersonId = reader.ReadField()!.GetValue<int>();
+            accessAuditLog.AccessResult = reader.ReadField()!.GetValue<int>();
+            accessAuditLog.DateCreated = reader.ReadField()!.GetValue<DateTime>();
         }
 		#endregion
 
@@ -1601,6 +1699,8 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -1650,6 +1750,8 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -1662,7 +1764,7 @@ namespace DbEx.dboDataService
     public partial class AddressEntity : EntityExpression<Address>
     {
         #region internals
-        private SelectExpressionSet _inclusiveSelectExpressionSet;
+        private SelectExpressionSet? _inclusiveSelectExpressionSet;
         #endregion
 
         #region interface
@@ -1731,8 +1833,8 @@ namespace DbEx.dboDataService
 
 
         /// <summary>A <see cref="DbEx.dboDataService.AddressEntity.Line2Field"/> representing the "dbo.Address.Line2" column in the database, 
-        /// with a .NET type of <see cref="string"/>.  The <see cref="DbEx.dboDataService.AddressEntity.Line2Field"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.dboDataService.AddressEntity.Line2Field"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -1858,15 +1960,11 @@ namespace DbEx.dboDataService
         #endregion
 
         #region constructors
-        private AddressEntity() : base(null, null, null, null)
-        {
-        }
-
         public AddressEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
 
-        private AddressEntity(string identifier, string name, SchemaExpression schema, string alias) : base(identifier, name, schema, alias)
+        private AddressEntity(string identifier, string name, SchemaExpression schema, string? alias) : base(identifier, name, schema, alias)
         {
             Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", "Id", this));
             Fields.Add($"{identifier}.AddressType", AddressType = new AddressTypeField($"{identifier}.AddressType", "AddressType", this));
@@ -1890,7 +1988,7 @@ namespace DbEx.dboDataService
                 new SelectExpression<int>(Id)
                 ,new SelectExpression<DbEx.Data.AddressType?>(AddressType)
                 ,new SelectExpression<string>(Line1)
-                ,new SelectExpression<string>(Line2)
+                ,new SelectExpression<string?>(Line2)
                 ,new SelectExpression<string>(City)
                 ,new SelectExpression<string>(State)
                 ,new SelectExpression<string>(Zip)
@@ -1904,35 +2002,35 @@ namespace DbEx.dboDataService
             if (alias is null)
                 throw new ArgumentNullException(nameof(alias));
 
-            SelectExpressionSet set = null;
-            string aliased = null;
+            SelectExpressionSet? set = null;
+            string? aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Id));
 
             aliased = alias(nameof(AddressType));
-            set &= aliased != nameof(AddressType) ? new SelectExpression<DbEx.Data.AddressType?>(AddressType).As(aliased) as SelectExpression<DbEx.Data.AddressType?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(AddressType));
+            set &= aliased != nameof(AddressType) ? new SelectExpression<DbEx.Data.AddressType?>(AddressType).As(aliased) as SelectExpression<DbEx.Data.AddressType?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(AddressType));
 
             aliased = alias(nameof(Line1));
-            set &= aliased != nameof(Line1) ? new SelectExpression<string>(Line1).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Line1));
+            set &= aliased != nameof(Line1) ? new SelectExpression<string>(Line1).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Line1));
 
             aliased = alias(nameof(Line2));
-            set &= aliased != nameof(Line2) ? new SelectExpression<string>(Line2).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Line2));
+            set &= aliased != nameof(Line2) ? new SelectExpression<string?>(Line2).As(aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Line2));
 
             aliased = alias(nameof(City));
-            set &= aliased != nameof(City) ? new SelectExpression<string>(City).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(City));
+            set &= aliased != nameof(City) ? new SelectExpression<string>(City).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(City));
 
             aliased = alias(nameof(State));
-            set &= aliased != nameof(State) ? new SelectExpression<string>(State).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(State));
+            set &= aliased != nameof(State) ? new SelectExpression<string>(State).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(State));
 
             aliased = alias(nameof(Zip));
-            set &= aliased != nameof(Zip) ? new SelectExpression<string>(Zip).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Zip));
+            set &= aliased != nameof(Zip) ? new SelectExpression<string>(Zip).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Zip));
 
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(DateCreated));
 
             aliased = alias(nameof(DateUpdated));
-            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
+            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(DateUpdated));
 
             return set;
         }
@@ -1942,7 +2040,7 @@ namespace DbEx.dboDataService
             return new InsertExpressionSet<Address>(address 
                 ,new InsertExpression<DbEx.Data.AddressType?>(address.AddressType, AddressType)
                 ,new InsertExpression<string>(address.Line1, Line1)
-                ,new InsertExpression<string>(address.Line2, Line2)
+                ,new InsertExpression<string?>(address.Line2, Line2)
                 ,new InsertExpression<string>(address.City, City)
                 ,new InsertExpression<string>(address.State, State)
                 ,new InsertExpression<string>(address.Zip, Zip)
@@ -1964,15 +2062,15 @@ namespace DbEx.dboDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, Address address)
         {
-            address.Id = reader.ReadField().GetValue<int>();
-            address.AddressType = reader.ReadField().GetValue<DbEx.Data.AddressType?>();
-            address.Line1 = reader.ReadField().GetValue<string>();
-            address.Line2 = reader.ReadField().GetValue<string>();
-            address.City = reader.ReadField().GetValue<string>();
-            address.State = reader.ReadField().GetValue<string>();
-            address.Zip = reader.ReadField().GetValue<string>();
-            address.DateCreated = reader.ReadField().GetValue<DateTime>();
-            address.DateUpdated = reader.ReadField().GetValue<DateTime>();
+            address.Id = reader.ReadField()!.GetValue<int>();
+            address.AddressType = reader.ReadField()!.GetValue<DbEx.Data.AddressType?>();
+            address.Line1 = reader.ReadField()!.GetValue<string>();
+            address.Line2 = reader.ReadField()!.GetValue<string?>();
+            address.City = reader.ReadField()!.GetValue<string>();
+            address.State = reader.ReadField()!.GetValue<string>();
+            address.Zip = reader.ReadField()!.GetValue<string>();
+            address.DateCreated = reader.ReadField()!.GetValue<DateTime>();
+            address.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
         }
 		#endregion
 
@@ -1988,6 +2086,8 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2003,11 +2103,11 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DbEx.Data.AddressType?>(value, this));
             public AssignmentExpression Set(DbEx.Data.AddressType value) => new AssignmentExpression(this, new LiteralExpression<DbEx.Data.AddressType>(value, this));
             public AssignmentExpression Set(AnyElement<DbEx.Data.AddressType> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DbEx.Data.AddressType? value) => new AssignmentExpression(this, new LiteralExpression<DbEx.Data.AddressType?>(value, this));
             public AssignmentExpression Set(AnyElement<DbEx.Data.AddressType?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DbEx.Data.AddressType>(value, this));
             #endregion
         }
         #endregion
@@ -2024,7 +2124,7 @@ namespace DbEx.dboDataService
 
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2040,9 +2140,9 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2059,7 +2159,7 @@ namespace DbEx.dboDataService
 
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2076,7 +2176,7 @@ namespace DbEx.dboDataService
 
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2093,7 +2193,7 @@ namespace DbEx.dboDataService
 
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2109,6 +2209,8 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2124,6 +2226,8 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2136,7 +2240,7 @@ namespace DbEx.dboDataService
     public partial class PersonEntity : EntityExpression<Person>
     {
         #region internals
-        private SelectExpressionSet _inclusiveSelectExpressionSet;
+        private SelectExpressionSet? _inclusiveSelectExpressionSet;
         #endregion
 
         #region interface
@@ -2375,15 +2479,11 @@ namespace DbEx.dboDataService
         #endregion
 
         #region constructors
-        private PersonEntity() : base(null, null, null, null)
-        {
-        }
-
         public PersonEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
 
-        private PersonEntity(string identifier, string name, SchemaExpression schema, string alias) : base(identifier, name, schema, alias)
+        private PersonEntity(string identifier, string name, SchemaExpression schema, string? alias) : base(identifier, name, schema, alias)
         {
             Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", "Id", this));
             Fields.Add($"{identifier}.FirstName", FirstName = new FirstNameField($"{identifier}.FirstName", "FirstName", this));
@@ -2425,41 +2525,41 @@ namespace DbEx.dboDataService
             if (alias is null)
                 throw new ArgumentNullException(nameof(alias));
 
-            SelectExpressionSet set = null;
-            string aliased = null;
+            SelectExpressionSet? set = null;
+            string? aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Id));
 
             aliased = alias(nameof(FirstName));
-            set &= aliased != nameof(FirstName) ? new SelectExpression<string>(FirstName).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(FirstName));
+            set &= aliased != nameof(FirstName) ? new SelectExpression<string>(FirstName).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(FirstName));
 
             aliased = alias(nameof(LastName));
-            set &= aliased != nameof(LastName) ? new SelectExpression<string>(LastName).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(LastName));
+            set &= aliased != nameof(LastName) ? new SelectExpression<string>(LastName).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(LastName));
 
             aliased = alias(nameof(BirthDate));
-            set &= aliased != nameof(BirthDate) ? new SelectExpression<DateTime?>(BirthDate).As(aliased) as SelectExpression<DateTime?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(BirthDate));
+            set &= aliased != nameof(BirthDate) ? new SelectExpression<DateTime?>(BirthDate).As(aliased) as SelectExpression<DateTime?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(BirthDate));
 
             aliased = alias(nameof(GenderType));
-            set &= aliased != nameof(GenderType) ? new SelectExpression<DbEx.Data.GenderType>(GenderType).As(aliased) as SelectExpression<DbEx.Data.GenderType> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(GenderType));
+            set &= aliased != nameof(GenderType) ? new SelectExpression<DbEx.Data.GenderType>(GenderType).As(aliased) as SelectExpression<DbEx.Data.GenderType> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(GenderType));
 
             aliased = alias(nameof(CreditLimit));
-            set &= aliased != nameof(CreditLimit) ? new SelectExpression<int?>(CreditLimit).As(aliased) as SelectExpression<int?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(CreditLimit));
+            set &= aliased != nameof(CreditLimit) ? new SelectExpression<int?>(CreditLimit).As(aliased) as SelectExpression<int?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(CreditLimit));
 
             aliased = alias(nameof(YearOfLastCreditLimitReview));
-            set &= aliased != nameof(YearOfLastCreditLimitReview) ? new SelectExpression<int?>(YearOfLastCreditLimitReview).As(aliased) as SelectExpression<int?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(YearOfLastCreditLimitReview));
+            set &= aliased != nameof(YearOfLastCreditLimitReview) ? new SelectExpression<int?>(YearOfLastCreditLimitReview).As(aliased) as SelectExpression<int?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(YearOfLastCreditLimitReview));
 
             aliased = alias(nameof(RegistrationDate));
-            set &= aliased != nameof(RegistrationDate) ? new SelectExpression<DateTimeOffset>(RegistrationDate).As(aliased) as SelectExpression<DateTimeOffset> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(RegistrationDate));
+            set &= aliased != nameof(RegistrationDate) ? new SelectExpression<DateTimeOffset>(RegistrationDate).As(aliased) as SelectExpression<DateTimeOffset> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(RegistrationDate));
 
             aliased = alias(nameof(LastLoginDate));
-            set &= aliased != nameof(LastLoginDate) ? new SelectExpression<DateTimeOffset?>(LastLoginDate).As(aliased) as SelectExpression<DateTimeOffset?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(LastLoginDate));
+            set &= aliased != nameof(LastLoginDate) ? new SelectExpression<DateTimeOffset?>(LastLoginDate).As(aliased) as SelectExpression<DateTimeOffset?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(LastLoginDate));
 
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(DateCreated));
 
             aliased = alias(nameof(DateUpdated));
-            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
+            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(DateUpdated));
 
             return set;
         }
@@ -2495,17 +2595,17 @@ namespace DbEx.dboDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, Person person)
         {
-            person.Id = reader.ReadField().GetValue<int>();
-            person.FirstName = reader.ReadField().GetValue<string>();
-            person.LastName = reader.ReadField().GetValue<string>();
-            person.BirthDate = reader.ReadField().GetValue<DateTime?>();
-            person.GenderType = reader.ReadField().GetValue<DbEx.Data.GenderType>();
-            person.CreditLimit = reader.ReadField().GetValue<int?>();
-            person.YearOfLastCreditLimitReview = reader.ReadField().GetValue<int?>();
-            person.RegistrationDate = reader.ReadField().GetValue<DateTimeOffset>();
-            person.LastLoginDate = reader.ReadField().GetValue<DateTimeOffset?>();
-            person.DateCreated = reader.ReadField().GetValue<DateTime>();
-            person.DateUpdated = reader.ReadField().GetValue<DateTime>();
+            person.Id = reader.ReadField()!.GetValue<int>();
+            person.FirstName = reader.ReadField()!.GetValue<string>();
+            person.LastName = reader.ReadField()!.GetValue<string>();
+            person.BirthDate = reader.ReadField()!.GetValue<DateTime?>();
+            person.GenderType = reader.ReadField()!.GetValue<DbEx.Data.GenderType>();
+            person.CreditLimit = reader.ReadField()!.GetValue<int?>();
+            person.YearOfLastCreditLimitReview = reader.ReadField()!.GetValue<int?>();
+            person.RegistrationDate = reader.ReadField()!.GetValue<DateTimeOffset>();
+            person.LastLoginDate = reader.ReadField()!.GetValue<DateTimeOffset?>();
+            person.DateCreated = reader.ReadField()!.GetValue<DateTime>();
+            person.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
         }
 		#endregion
 
@@ -2521,6 +2621,8 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2537,7 +2639,7 @@ namespace DbEx.dboDataService
 
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2554,7 +2656,7 @@ namespace DbEx.dboDataService
 
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2570,11 +2672,11 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
-            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value, this));
             public AssignmentExpression Set(DateTime? value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value, this));
             public AssignmentExpression Set(AnyElement<DateTime?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2607,11 +2709,11 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
-            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<int?>(value, this));
             public AssignmentExpression Set(int? value) => new AssignmentExpression(this, new LiteralExpression<int?>(value, this));
             public AssignmentExpression Set(AnyElement<int?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2627,11 +2729,11 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
-            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<int?>(value, this));
             public AssignmentExpression Set(int? value) => new AssignmentExpression(this, new LiteralExpression<int?>(value, this));
             public AssignmentExpression Set(AnyElement<int?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2664,11 +2766,11 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(DateTimeOffset value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset>(value, this));
-            public AssignmentExpression Set(AnyElement<DateTimeOffset> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset?>(value, this));
             public AssignmentExpression Set(DateTimeOffset? value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset?>(value, this));
             public AssignmentExpression Set(AnyElement<DateTimeOffset?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset>(value, this));
+            public AssignmentExpression Set(DateTimeOffset value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTimeOffset> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2684,6 +2786,8 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2699,6 +2803,8 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2711,7 +2817,7 @@ namespace DbEx.dboDataService
     public partial class PersonAddressEntity : EntityExpression<PersonAddress>
     {
         #region internals
-        private SelectExpressionSet _inclusiveSelectExpressionSet;
+        private SelectExpressionSet? _inclusiveSelectExpressionSet;
         #endregion
 
         #region interface
@@ -2804,15 +2910,11 @@ namespace DbEx.dboDataService
         #endregion
 
         #region constructors
-        private PersonAddressEntity() : base(null, null, null, null)
-        {
-        }
-
         public PersonAddressEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
 
-        private PersonAddressEntity(string identifier, string name, SchemaExpression schema, string alias) : base(identifier, name, schema, alias)
+        private PersonAddressEntity(string identifier, string name, SchemaExpression schema, string? alias) : base(identifier, name, schema, alias)
         {
             Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", "Id", this));
             Fields.Add($"{identifier}.PersonId", PersonId = new PersonIdField($"{identifier}.PersonId", "PersonId", this));
@@ -2840,20 +2942,20 @@ namespace DbEx.dboDataService
             if (alias is null)
                 throw new ArgumentNullException(nameof(alias));
 
-            SelectExpressionSet set = null;
-            string aliased = null;
+            SelectExpressionSet? set = null;
+            string? aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Id));
 
             aliased = alias(nameof(PersonId));
-            set &= aliased != nameof(PersonId) ? new SelectExpression<int>(PersonId).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PersonId));
+            set &= aliased != nameof(PersonId) ? new SelectExpression<int>(PersonId).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(PersonId));
 
             aliased = alias(nameof(AddressId));
-            set &= aliased != nameof(AddressId) ? new SelectExpression<int>(AddressId).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(AddressId));
+            set &= aliased != nameof(AddressId) ? new SelectExpression<int>(AddressId).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(AddressId));
 
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(DateCreated));
 
             return set;
         }
@@ -2877,10 +2979,10 @@ namespace DbEx.dboDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, PersonAddress personAddress)
         {
-            personAddress.Id = reader.ReadField().GetValue<int>();
-            personAddress.PersonId = reader.ReadField().GetValue<int>();
-            personAddress.AddressId = reader.ReadField().GetValue<int>();
-            personAddress.DateCreated = reader.ReadField().GetValue<DateTime>();
+            personAddress.Id = reader.ReadField()!.GetValue<int>();
+            personAddress.PersonId = reader.ReadField()!.GetValue<int>();
+            personAddress.AddressId = reader.ReadField()!.GetValue<int>();
+            personAddress.DateCreated = reader.ReadField()!.GetValue<DateTime>();
         }
 		#endregion
 
@@ -2896,6 +2998,8 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2945,6 +3049,8 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2957,7 +3063,7 @@ namespace DbEx.dboDataService
     public partial class ProductEntity : EntityExpression<Product>
     {
         #region internals
-        private SelectExpressionSet _inclusiveSelectExpressionSet;
+        private SelectExpressionSet? _inclusiveSelectExpressionSet;
         #endregion
 
         #region interface
@@ -3026,8 +3132,8 @@ namespace DbEx.dboDataService
 
 
         /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.DescriptionField"/> representing the "dbo.Product.Description" column in the database, 
-        /// with a .NET type of <see cref="HatTrick.DbEx.MsSql.Test.ProductDescription"/>.  The <see cref="DbEx.dboDataService.ProductEntity.DescriptionField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{HatTrick.DbEx.MsSql.Test.ProductDescription}"/>.
+        /// with a .NET type of <see cref="HatTrick.DbEx.MsSql.Test.ProductDescription"/>?.  The <see cref="DbEx.dboDataService.ProductEntity.DescriptionField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{HatTrick.DbEx.MsSql.Test.ProductDescription}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3107,7 +3213,7 @@ namespace DbEx.dboDataService
 
         /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.ImageField"/> representing the "dbo.Product.Image" column in the database, 
         /// with a .NET type of <see cref="byte"/>[].  The <see cref="DbEx.dboDataService.ProductEntity.ImageField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{ByteArray}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{ByteArray}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3313,15 +3419,11 @@ namespace DbEx.dboDataService
         #endregion
 
         #region constructors
-        private ProductEntity() : base(null, null, null, null)
-        {
-        }
-
         public ProductEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
 
-        private ProductEntity(string identifier, string name, SchemaExpression schema, string alias) : base(identifier, name, schema, alias)
+        private ProductEntity(string identifier, string name, SchemaExpression schema, string? alias) : base(identifier, name, schema, alias)
         {
             Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", "Id", this));
             Fields.Add($"{identifier}.ProductCategoryType", ProductCategoryType = new ProductCategoryTypeField($"{identifier}.ProductCategoryType", "ProductCategoryType", this));
@@ -3353,11 +3455,11 @@ namespace DbEx.dboDataService
                 new SelectExpression<int>(Id)
                 ,new SelectExpression<DbEx.Data.ProductCategoryType?>(ProductCategoryType)
                 ,new SelectExpression<string>(Name)
-                ,new SelectExpression<HatTrick.DbEx.MsSql.Test.ProductDescription>(Description)
+                ,new SelectExpression<HatTrick.DbEx.MsSql.Test.ProductDescription?>(Description)
                 ,new SelectExpression<double>(ListPrice)
                 ,new SelectExpression<double>(Price)
                 ,new SelectExpression<int>(Quantity)
-                ,new SelectExpression<byte[]>(Image)
+                ,new SelectExpression<byte[]?>(Image)
                 ,new SelectExpression<decimal?>(Height)
                 ,new SelectExpression<decimal?>(Width)
                 ,new SelectExpression<decimal?>(Depth)
@@ -3375,59 +3477,59 @@ namespace DbEx.dboDataService
             if (alias is null)
                 throw new ArgumentNullException(nameof(alias));
 
-            SelectExpressionSet set = null;
-            string aliased = null;
+            SelectExpressionSet? set = null;
+            string? aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Id));
 
             aliased = alias(nameof(ProductCategoryType));
-            set &= aliased != nameof(ProductCategoryType) ? new SelectExpression<DbEx.Data.ProductCategoryType?>(ProductCategoryType).As(aliased) as SelectExpression<DbEx.Data.ProductCategoryType?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ProductCategoryType));
+            set &= aliased != nameof(ProductCategoryType) ? new SelectExpression<DbEx.Data.ProductCategoryType?>(ProductCategoryType).As(aliased) as SelectExpression<DbEx.Data.ProductCategoryType?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(ProductCategoryType));
 
             aliased = alias(nameof(Name));
-            set &= aliased != nameof(Name) ? new SelectExpression<string>(Name).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Name));
+            set &= aliased != nameof(Name) ? new SelectExpression<string>(Name).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Name));
 
             aliased = alias(nameof(Description));
-            set &= aliased != nameof(Description) ? new SelectExpression<HatTrick.DbEx.MsSql.Test.ProductDescription>(Description).As(aliased) as SelectExpression<HatTrick.DbEx.MsSql.Test.ProductDescription> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Description));
+            set &= aliased != nameof(Description) ? new SelectExpression<HatTrick.DbEx.MsSql.Test.ProductDescription?>(Description).As(aliased) as SelectExpression<HatTrick.DbEx.MsSql.Test.ProductDescription?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Description));
 
             aliased = alias(nameof(ListPrice));
-            set &= aliased != nameof(ListPrice) ? new SelectExpression<double>(ListPrice).As(aliased) as SelectExpression<double> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ListPrice));
+            set &= aliased != nameof(ListPrice) ? new SelectExpression<double>(ListPrice).As(aliased) as SelectExpression<double> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(ListPrice));
 
             aliased = alias(nameof(Price));
-            set &= aliased != nameof(Price) ? new SelectExpression<double>(Price).As(aliased) as SelectExpression<double> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Price));
+            set &= aliased != nameof(Price) ? new SelectExpression<double>(Price).As(aliased) as SelectExpression<double> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Price));
 
             aliased = alias(nameof(Quantity));
-            set &= aliased != nameof(Quantity) ? new SelectExpression<int>(Quantity).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Quantity));
+            set &= aliased != nameof(Quantity) ? new SelectExpression<int>(Quantity).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Quantity));
 
             aliased = alias(nameof(Image));
-            set &= aliased != nameof(Image) ? new SelectExpression<byte[]>(Image).As(aliased) as SelectExpression<byte[]> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Image));
+            set &= aliased != nameof(Image) ? new SelectExpression<byte[]?>(Image).As(aliased) as SelectExpression<byte[]?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Image));
 
             aliased = alias(nameof(Height));
-            set &= aliased != nameof(Height) ? new SelectExpression<decimal?>(Height).As(aliased) as SelectExpression<decimal?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Height));
+            set &= aliased != nameof(Height) ? new SelectExpression<decimal?>(Height).As(aliased) as SelectExpression<decimal?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Height));
 
             aliased = alias(nameof(Width));
-            set &= aliased != nameof(Width) ? new SelectExpression<decimal?>(Width).As(aliased) as SelectExpression<decimal?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Width));
+            set &= aliased != nameof(Width) ? new SelectExpression<decimal?>(Width).As(aliased) as SelectExpression<decimal?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Width));
 
             aliased = alias(nameof(Depth));
-            set &= aliased != nameof(Depth) ? new SelectExpression<decimal?>(Depth).As(aliased) as SelectExpression<decimal?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Depth));
+            set &= aliased != nameof(Depth) ? new SelectExpression<decimal?>(Depth).As(aliased) as SelectExpression<decimal?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Depth));
 
             aliased = alias(nameof(Weight));
-            set &= aliased != nameof(Weight) ? new SelectExpression<decimal?>(Weight).As(aliased) as SelectExpression<decimal?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Weight));
+            set &= aliased != nameof(Weight) ? new SelectExpression<decimal?>(Weight).As(aliased) as SelectExpression<decimal?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Weight));
 
             aliased = alias(nameof(ShippingWeight));
-            set &= aliased != nameof(ShippingWeight) ? new SelectExpression<decimal>(ShippingWeight).As(aliased) as SelectExpression<decimal> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ShippingWeight));
+            set &= aliased != nameof(ShippingWeight) ? new SelectExpression<decimal>(ShippingWeight).As(aliased) as SelectExpression<decimal> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(ShippingWeight));
 
             aliased = alias(nameof(ValidStartTimeOfDayForPurchase));
-            set &= aliased != nameof(ValidStartTimeOfDayForPurchase) ? new SelectExpression<TimeSpan?>(ValidStartTimeOfDayForPurchase).As(aliased) as SelectExpression<TimeSpan?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ValidStartTimeOfDayForPurchase));
+            set &= aliased != nameof(ValidStartTimeOfDayForPurchase) ? new SelectExpression<TimeSpan?>(ValidStartTimeOfDayForPurchase).As(aliased) as SelectExpression<TimeSpan?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(ValidStartTimeOfDayForPurchase));
 
             aliased = alias(nameof(ValidEndTimeOfDayForPurchase));
-            set &= aliased != nameof(ValidEndTimeOfDayForPurchase) ? new SelectExpression<TimeSpan?>(ValidEndTimeOfDayForPurchase).As(aliased) as SelectExpression<TimeSpan?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ValidEndTimeOfDayForPurchase));
+            set &= aliased != nameof(ValidEndTimeOfDayForPurchase) ? new SelectExpression<TimeSpan?>(ValidEndTimeOfDayForPurchase).As(aliased) as SelectExpression<TimeSpan?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(ValidEndTimeOfDayForPurchase));
 
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(DateCreated));
 
             aliased = alias(nameof(DateUpdated));
-            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
+            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(DateUpdated));
 
             return set;
         }
@@ -3437,11 +3539,11 @@ namespace DbEx.dboDataService
             return new InsertExpressionSet<Product>(product 
                 ,new InsertExpression<DbEx.Data.ProductCategoryType?>(product.ProductCategoryType, ProductCategoryType)
                 ,new InsertExpression<string>(product.Name, Name)
-                ,new InsertExpression<HatTrick.DbEx.MsSql.Test.ProductDescription>(product.Description, Description)
+                ,new InsertExpression<HatTrick.DbEx.MsSql.Test.ProductDescription?>(product.Description, Description)
                 ,new InsertExpression<double>(product.ListPrice, ListPrice)
                 ,new InsertExpression<double>(product.Price, Price)
                 ,new InsertExpression<int>(product.Quantity, Quantity)
-                ,new InsertExpression<byte[]>(product.Image, Image)
+                ,new InsertExpression<byte[]?>(product.Image, Image)
                 ,new InsertExpression<decimal?>(product.Height, Height)
                 ,new InsertExpression<decimal?>(product.Width, Width)
                 ,new InsertExpression<decimal?>(product.Depth, Depth)
@@ -3475,23 +3577,23 @@ namespace DbEx.dboDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, Product product)
         {
-            product.Id = reader.ReadField().GetValue<int>();
-            product.ProductCategoryType = reader.ReadField().GetValue<DbEx.Data.ProductCategoryType?>();
-            product.Name = reader.ReadField().GetValue<string>();
-            product.Description = reader.ReadField().GetValue<HatTrick.DbEx.MsSql.Test.ProductDescription>();
-            product.ListPrice = reader.ReadField().GetValue<double>();
-            product.Price = reader.ReadField().GetValue<double>();
-            product.Quantity = reader.ReadField().GetValue<int>();
-            product.Image = reader.ReadField().GetValue<byte[]>();
-            product.Height = reader.ReadField().GetValue<decimal?>();
-            product.Width = reader.ReadField().GetValue<decimal?>();
-            product.Depth = reader.ReadField().GetValue<decimal?>();
-            product.Weight = reader.ReadField().GetValue<decimal?>();
-            product.ShippingWeight = reader.ReadField().GetValue<decimal>();
-            product.ValidStartTimeOfDayForPurchase = reader.ReadField().GetValue<TimeSpan?>();
-            product.ValidEndTimeOfDayForPurchase = reader.ReadField().GetValue<TimeSpan?>();
-            product.DateCreated = reader.ReadField().GetValue<DateTime>();
-            product.DateUpdated = reader.ReadField().GetValue<DateTime>();
+            product.Id = reader.ReadField()!.GetValue<int>();
+            product.ProductCategoryType = reader.ReadField()!.GetValue<DbEx.Data.ProductCategoryType?>();
+            product.Name = reader.ReadField()!.GetValue<string>();
+            product.Description = reader.ReadField()!.GetValue<HatTrick.DbEx.MsSql.Test.ProductDescription?>();
+            product.ListPrice = reader.ReadField()!.GetValue<double>();
+            product.Price = reader.ReadField()!.GetValue<double>();
+            product.Quantity = reader.ReadField()!.GetValue<int>();
+            product.Image = reader.ReadField()!.GetValue<byte[]?>();
+            product.Height = reader.ReadField()!.GetValue<decimal?>();
+            product.Width = reader.ReadField()!.GetValue<decimal?>();
+            product.Depth = reader.ReadField()!.GetValue<decimal?>();
+            product.Weight = reader.ReadField()!.GetValue<decimal?>();
+            product.ShippingWeight = reader.ReadField()!.GetValue<decimal>();
+            product.ValidStartTimeOfDayForPurchase = reader.ReadField()!.GetValue<TimeSpan?>();
+            product.ValidEndTimeOfDayForPurchase = reader.ReadField()!.GetValue<TimeSpan?>();
+            product.DateCreated = reader.ReadField()!.GetValue<DateTime>();
+            product.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
         }
 		#endregion
 
@@ -3507,6 +3609,8 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3522,11 +3626,11 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DbEx.Data.ProductCategoryType?>(value, this));
             public AssignmentExpression Set(DbEx.Data.ProductCategoryType value) => new AssignmentExpression(this, new LiteralExpression<DbEx.Data.ProductCategoryType>(value, this));
             public AssignmentExpression Set(AnyElement<DbEx.Data.ProductCategoryType> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DbEx.Data.ProductCategoryType? value) => new AssignmentExpression(this, new LiteralExpression<DbEx.Data.ProductCategoryType?>(value, this));
             public AssignmentExpression Set(AnyElement<DbEx.Data.ProductCategoryType?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DbEx.Data.ProductCategoryType>(value, this));
             #endregion
         }
         #endregion
@@ -3543,13 +3647,13 @@ namespace DbEx.dboDataService
 
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
 
         #region description field expression
-        public partial class DescriptionField : ObjectFieldExpression<Product,HatTrick.DbEx.MsSql.Test.ProductDescription>
+        public partial class DescriptionField : NullableObjectFieldExpression<Product,HatTrick.DbEx.MsSql.Test.ProductDescription>
         {
             #region constructors
             public DescriptionField(string identifier, string name, ProductEntity entity) : base(identifier, name, entity)
@@ -3559,9 +3663,9 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(HatTrick.DbEx.MsSql.Test.ProductDescription value) => new AssignmentExpression(this, new LiteralExpression<HatTrick.DbEx.MsSql.Test.ProductDescription>(value, this));
-            public AssignmentExpression Set(AnyElement<HatTrick.DbEx.MsSql.Test.ProductDescription> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<HatTrick.DbEx.MsSql.Test.ProductDescription>(value, this));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<HatTrick.DbEx.MsSql.Test.ProductDescription?>(value, this));
+            public AssignmentExpression Set(HatTrick.DbEx.MsSql.Test.ProductDescription? value) => new AssignmentExpression(this, new LiteralExpression<HatTrick.DbEx.MsSql.Test.ProductDescription?>(value, this));
+            public AssignmentExpression Set(AnyElement<HatTrick.DbEx.MsSql.Test.ProductDescription?> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3628,9 +3732,9 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(byte[] value) => new AssignmentExpression(this, new LiteralExpression<byte[]>(value, this));
-            public AssignmentExpression Set(AnyElement<byte[]> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<byte[]>(value, this));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<byte[]?>(value, this));
+            public AssignmentExpression Set(byte[]? value) => new AssignmentExpression(this, new LiteralExpression<byte[]?>(value, this));
+            public AssignmentExpression Set(AnyElement<byte[]?> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3646,11 +3750,11 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
-            public AssignmentExpression Set(AnyElement<decimal> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
             public AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
             public AssignmentExpression Set(AnyElement<decimal?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
+            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
+            public AssignmentExpression Set(AnyElement<decimal> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3666,11 +3770,11 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
-            public AssignmentExpression Set(AnyElement<decimal> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
             public AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
             public AssignmentExpression Set(AnyElement<decimal?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
+            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
+            public AssignmentExpression Set(AnyElement<decimal> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3686,11 +3790,11 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
-            public AssignmentExpression Set(AnyElement<decimal> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
             public AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
             public AssignmentExpression Set(AnyElement<decimal?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
+            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
+            public AssignmentExpression Set(AnyElement<decimal> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3706,11 +3810,11 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
-            public AssignmentExpression Set(AnyElement<decimal> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
             public AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
             public AssignmentExpression Set(AnyElement<decimal?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
+            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
+            public AssignmentExpression Set(AnyElement<decimal> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3743,11 +3847,11 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(TimeSpan value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan>(value, this));
-            public AssignmentExpression Set(AnyElement<TimeSpan> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan?>(value, this));
             public AssignmentExpression Set(TimeSpan? value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan?>(value, this));
             public AssignmentExpression Set(AnyElement<TimeSpan?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan>(value, this));
+            public AssignmentExpression Set(TimeSpan value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan>(value, this));
+            public AssignmentExpression Set(AnyElement<TimeSpan> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3763,11 +3867,11 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(TimeSpan value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan>(value, this));
-            public AssignmentExpression Set(AnyElement<TimeSpan> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan?>(value, this));
             public AssignmentExpression Set(TimeSpan? value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan?>(value, this));
             public AssignmentExpression Set(AnyElement<TimeSpan?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan>(value, this));
+            public AssignmentExpression Set(TimeSpan value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan>(value, this));
+            public AssignmentExpression Set(AnyElement<TimeSpan> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3783,6 +3887,8 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3798,6 +3904,8 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3810,7 +3918,7 @@ namespace DbEx.dboDataService
     public partial class PurchaseEntity : EntityExpression<Purchase>
     {
         #region internals
-        private SelectExpressionSet _inclusiveSelectExpressionSet;
+        private SelectExpressionSet? _inclusiveSelectExpressionSet;
         #endregion
 
         #region interface
@@ -4086,15 +4194,11 @@ namespace DbEx.dboDataService
         #endregion
 
         #region constructors
-        private PurchaseEntity() : base(null, null, null, null)
-        {
-        }
-
         public PurchaseEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
 
-        private PurchaseEntity(string identifier, string name, SchemaExpression schema, string alias) : base(identifier, name, schema, alias)
+        private PurchaseEntity(string identifier, string name, SchemaExpression schema, string? alias) : base(identifier, name, schema, alias)
         {
             Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", "Id", this));
             Fields.Add($"{identifier}.PersonId", PersonId = new PersonIdField($"{identifier}.PersonId", "PersonId", this));
@@ -4140,47 +4244,47 @@ namespace DbEx.dboDataService
             if (alias is null)
                 throw new ArgumentNullException(nameof(alias));
 
-            SelectExpressionSet set = null;
-            string aliased = null;
+            SelectExpressionSet? set = null;
+            string? aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Id));
 
             aliased = alias(nameof(PersonId));
-            set &= aliased != nameof(PersonId) ? new SelectExpression<int>(PersonId).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PersonId));
+            set &= aliased != nameof(PersonId) ? new SelectExpression<int>(PersonId).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(PersonId));
 
             aliased = alias(nameof(OrderNumber));
-            set &= aliased != nameof(OrderNumber) ? new SelectExpression<string>(OrderNumber).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(OrderNumber));
+            set &= aliased != nameof(OrderNumber) ? new SelectExpression<string>(OrderNumber).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(OrderNumber));
 
             aliased = alias(nameof(TotalPurchaseQuantity));
-            set &= aliased != nameof(TotalPurchaseQuantity) ? new SelectExpression<string>(TotalPurchaseQuantity).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TotalPurchaseQuantity));
+            set &= aliased != nameof(TotalPurchaseQuantity) ? new SelectExpression<string>(TotalPurchaseQuantity).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(TotalPurchaseQuantity));
 
             aliased = alias(nameof(TotalPurchaseAmount));
-            set &= aliased != nameof(TotalPurchaseAmount) ? new SelectExpression<double>(TotalPurchaseAmount).As(aliased) as SelectExpression<double> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TotalPurchaseAmount));
+            set &= aliased != nameof(TotalPurchaseAmount) ? new SelectExpression<double>(TotalPurchaseAmount).As(aliased) as SelectExpression<double> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(TotalPurchaseAmount));
 
             aliased = alias(nameof(PurchaseDate));
-            set &= aliased != nameof(PurchaseDate) ? new SelectExpression<DateTime>(PurchaseDate).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PurchaseDate));
+            set &= aliased != nameof(PurchaseDate) ? new SelectExpression<DateTime>(PurchaseDate).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(PurchaseDate));
 
             aliased = alias(nameof(ShipDate));
-            set &= aliased != nameof(ShipDate) ? new SelectExpression<DateTime?>(ShipDate).As(aliased) as SelectExpression<DateTime?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ShipDate));
+            set &= aliased != nameof(ShipDate) ? new SelectExpression<DateTime?>(ShipDate).As(aliased) as SelectExpression<DateTime?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(ShipDate));
 
             aliased = alias(nameof(ExpectedDeliveryDate));
-            set &= aliased != nameof(ExpectedDeliveryDate) ? new SelectExpression<DateTime?>(ExpectedDeliveryDate).As(aliased) as SelectExpression<DateTime?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ExpectedDeliveryDate));
+            set &= aliased != nameof(ExpectedDeliveryDate) ? new SelectExpression<DateTime?>(ExpectedDeliveryDate).As(aliased) as SelectExpression<DateTime?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(ExpectedDeliveryDate));
 
             aliased = alias(nameof(TrackingIdentifier));
-            set &= aliased != nameof(TrackingIdentifier) ? new SelectExpression<Guid?>(TrackingIdentifier).As(aliased) as SelectExpression<Guid?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TrackingIdentifier));
+            set &= aliased != nameof(TrackingIdentifier) ? new SelectExpression<Guid?>(TrackingIdentifier).As(aliased) as SelectExpression<Guid?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(TrackingIdentifier));
 
             aliased = alias(nameof(PaymentMethodType));
-            set &= aliased != nameof(PaymentMethodType) ? new SelectExpression<DbEx.Data.PaymentMethodType>(PaymentMethodType).As(aliased) as SelectExpression<DbEx.Data.PaymentMethodType> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PaymentMethodType));
+            set &= aliased != nameof(PaymentMethodType) ? new SelectExpression<DbEx.Data.PaymentMethodType>(PaymentMethodType).As(aliased) as SelectExpression<DbEx.Data.PaymentMethodType> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(PaymentMethodType));
 
             aliased = alias(nameof(PaymentSourceType));
-            set &= aliased != nameof(PaymentSourceType) ? new SelectExpression<DbEx.Data.PaymentSourceType?>(PaymentSourceType).As(aliased) as SelectExpression<DbEx.Data.PaymentSourceType?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PaymentSourceType));
+            set &= aliased != nameof(PaymentSourceType) ? new SelectExpression<DbEx.Data.PaymentSourceType?>(PaymentSourceType).As(aliased) as SelectExpression<DbEx.Data.PaymentSourceType?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(PaymentSourceType));
 
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(DateCreated));
 
             aliased = alias(nameof(DateUpdated));
-            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
+            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(DateUpdated));
 
             return set;
         }
@@ -4220,19 +4324,19 @@ namespace DbEx.dboDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, Purchase purchase)
         {
-            purchase.Id = reader.ReadField().GetValue<int>();
-            purchase.PersonId = reader.ReadField().GetValue<int>();
-            purchase.OrderNumber = reader.ReadField().GetValue<string>();
-            purchase.TotalPurchaseQuantity = reader.ReadField().GetValue<string>();
-            purchase.TotalPurchaseAmount = reader.ReadField().GetValue<double>();
-            purchase.PurchaseDate = reader.ReadField().GetValue<DateTime>();
-            purchase.ShipDate = reader.ReadField().GetValue<DateTime?>();
-            purchase.ExpectedDeliveryDate = reader.ReadField().GetValue<DateTime?>();
-            purchase.TrackingIdentifier = reader.ReadField().GetValue<Guid?>();
-            purchase.PaymentMethodType = reader.ReadField().GetValue<DbEx.Data.PaymentMethodType>();
-            purchase.PaymentSourceType = reader.ReadField().GetValue<DbEx.Data.PaymentSourceType?>();
-            purchase.DateCreated = reader.ReadField().GetValue<DateTime>();
-            purchase.DateUpdated = reader.ReadField().GetValue<DateTime>();
+            purchase.Id = reader.ReadField()!.GetValue<int>();
+            purchase.PersonId = reader.ReadField()!.GetValue<int>();
+            purchase.OrderNumber = reader.ReadField()!.GetValue<string>();
+            purchase.TotalPurchaseQuantity = reader.ReadField()!.GetValue<string>();
+            purchase.TotalPurchaseAmount = reader.ReadField()!.GetValue<double>();
+            purchase.PurchaseDate = reader.ReadField()!.GetValue<DateTime>();
+            purchase.ShipDate = reader.ReadField()!.GetValue<DateTime?>();
+            purchase.ExpectedDeliveryDate = reader.ReadField()!.GetValue<DateTime?>();
+            purchase.TrackingIdentifier = reader.ReadField()!.GetValue<Guid?>();
+            purchase.PaymentMethodType = reader.ReadField()!.GetValue<DbEx.Data.PaymentMethodType>();
+            purchase.PaymentSourceType = reader.ReadField()!.GetValue<DbEx.Data.PaymentSourceType?>();
+            purchase.DateCreated = reader.ReadField()!.GetValue<DateTime>();
+            purchase.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
         }
 		#endregion
 
@@ -4248,6 +4352,8 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4281,7 +4387,7 @@ namespace DbEx.dboDataService
 
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4298,7 +4404,7 @@ namespace DbEx.dboDataService
 
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4348,11 +4454,11 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
-            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value, this));
             public AssignmentExpression Set(DateTime? value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value, this));
             public AssignmentExpression Set(AnyElement<DateTime?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4368,11 +4474,11 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
-            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value, this));
             public AssignmentExpression Set(DateTime? value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value, this));
             public AssignmentExpression Set(AnyElement<DateTime?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4388,11 +4494,11 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(Guid value) => new AssignmentExpression(this, new LiteralExpression<Guid>(value, this));
-            public AssignmentExpression Set(AnyElement<Guid> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<Guid?>(value, this));
             public AssignmentExpression Set(Guid? value) => new AssignmentExpression(this, new LiteralExpression<Guid?>(value, this));
             public AssignmentExpression Set(AnyElement<Guid?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<Guid>(value, this));
+            public AssignmentExpression Set(Guid value) => new AssignmentExpression(this, new LiteralExpression<Guid>(value, this));
+            public AssignmentExpression Set(AnyElement<Guid> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4425,11 +4531,11 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DbEx.Data.PaymentSourceType?>(value, this));
             public AssignmentExpression Set(DbEx.Data.PaymentSourceType value) => new AssignmentExpression(this, new LiteralExpression<DbEx.Data.PaymentSourceType>(value, this));
             public AssignmentExpression Set(AnyElement<DbEx.Data.PaymentSourceType> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DbEx.Data.PaymentSourceType? value) => new AssignmentExpression(this, new LiteralExpression<DbEx.Data.PaymentSourceType?>(value, this));
             public AssignmentExpression Set(AnyElement<DbEx.Data.PaymentSourceType?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DbEx.Data.PaymentSourceType>(value, this));
             #endregion
         }
         #endregion
@@ -4445,6 +4551,8 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4460,6 +4568,8 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4472,7 +4582,7 @@ namespace DbEx.dboDataService
     public partial class PurchaseLineEntity : EntityExpression<PurchaseLine>
     {
         #region internals
-        private SelectExpressionSet _inclusiveSelectExpressionSet;
+        private SelectExpressionSet? _inclusiveSelectExpressionSet;
         #endregion
 
         #region interface
@@ -4628,15 +4738,11 @@ namespace DbEx.dboDataService
         #endregion
 
         #region constructors
-        private PurchaseLineEntity() : base(null, null, null, null)
-        {
-        }
-
         public PurchaseLineEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
 
-        private PurchaseLineEntity(string identifier, string name, SchemaExpression schema, string alias) : base(identifier, name, schema, alias)
+        private PurchaseLineEntity(string identifier, string name, SchemaExpression schema, string? alias) : base(identifier, name, schema, alias)
         {
             Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", "Id", this));
             Fields.Add($"{identifier}.PurchaseId", PurchaseId = new PurchaseIdField($"{identifier}.PurchaseId", "PurchaseId", this));
@@ -4670,29 +4776,29 @@ namespace DbEx.dboDataService
             if (alias is null)
                 throw new ArgumentNullException(nameof(alias));
 
-            SelectExpressionSet set = null;
-            string aliased = null;
+            SelectExpressionSet? set = null;
+            string? aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Id));
 
             aliased = alias(nameof(PurchaseId));
-            set &= aliased != nameof(PurchaseId) ? new SelectExpression<int>(PurchaseId).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PurchaseId));
+            set &= aliased != nameof(PurchaseId) ? new SelectExpression<int>(PurchaseId).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(PurchaseId));
 
             aliased = alias(nameof(ProductId));
-            set &= aliased != nameof(ProductId) ? new SelectExpression<int>(ProductId).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ProductId));
+            set &= aliased != nameof(ProductId) ? new SelectExpression<int>(ProductId).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(ProductId));
 
             aliased = alias(nameof(PurchasePrice));
-            set &= aliased != nameof(PurchasePrice) ? new SelectExpression<decimal>(PurchasePrice).As(aliased) as SelectExpression<decimal> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PurchasePrice));
+            set &= aliased != nameof(PurchasePrice) ? new SelectExpression<decimal>(PurchasePrice).As(aliased) as SelectExpression<decimal> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(PurchasePrice));
 
             aliased = alias(nameof(Quantity));
-            set &= aliased != nameof(Quantity) ? new SelectExpression<int>(Quantity).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Quantity));
+            set &= aliased != nameof(Quantity) ? new SelectExpression<int>(Quantity).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Quantity));
 
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(DateCreated));
 
             aliased = alias(nameof(DateUpdated));
-            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
+            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(DateUpdated));
 
             return set;
         }
@@ -4720,13 +4826,13 @@ namespace DbEx.dboDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, PurchaseLine purchaseLine)
         {
-            purchaseLine.Id = reader.ReadField().GetValue<int>();
-            purchaseLine.PurchaseId = reader.ReadField().GetValue<int>();
-            purchaseLine.ProductId = reader.ReadField().GetValue<int>();
-            purchaseLine.PurchasePrice = reader.ReadField().GetValue<decimal>();
-            purchaseLine.Quantity = reader.ReadField().GetValue<int>();
-            purchaseLine.DateCreated = reader.ReadField().GetValue<DateTime>();
-            purchaseLine.DateUpdated = reader.ReadField().GetValue<DateTime>();
+            purchaseLine.Id = reader.ReadField()!.GetValue<int>();
+            purchaseLine.PurchaseId = reader.ReadField()!.GetValue<int>();
+            purchaseLine.ProductId = reader.ReadField()!.GetValue<int>();
+            purchaseLine.PurchasePrice = reader.ReadField()!.GetValue<decimal>();
+            purchaseLine.Quantity = reader.ReadField()!.GetValue<int>();
+            purchaseLine.DateCreated = reader.ReadField()!.GetValue<DateTime>();
+            purchaseLine.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
         }
 		#endregion
 
@@ -4742,6 +4848,8 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4825,6 +4933,8 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4840,6 +4950,8 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4852,7 +4964,7 @@ namespace DbEx.dboDataService
     public partial class UnitTestEntity : EntityExpression<UnitTest>
     {
         #region internals
-        private SelectExpressionSet _inclusiveSelectExpressionSet;
+        private SelectExpressionSet? _inclusiveSelectExpressionSet;
         #endregion
 
         #region interface
@@ -4979,7 +5091,7 @@ namespace DbEx.dboDataService
 
         /// <summary>A <see cref="DbEx.dboDataService.UnitTestEntity.NullableByteArrayField"/> representing the "dbo.UnitTest.NullableByteArray" column in the database, 
         /// with a .NET type of <see cref="byte"/>[].  The <see cref="DbEx.dboDataService.UnitTestEntity.NullableByteArrayField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{ByteArray}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{ByteArray}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5378,8 +5490,8 @@ namespace DbEx.dboDataService
 
 
         /// <summary>A <see cref="DbEx.dboDataService.UnitTestEntity.NullableStringField"/> representing the "dbo.UnitTest.NullableString" column in the database, 
-        /// with a .NET type of <see cref="string"/>.  The <see cref="DbEx.dboDataService.UnitTestEntity.NullableStringField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.dboDataService.UnitTestEntity.NullableStringField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5398,8 +5510,8 @@ namespace DbEx.dboDataService
 
 
         /// <summary>A <see cref="DbEx.dboDataService.UnitTestEntity.TimeSpanField"/> representing the "dbo.UnitTest.TimeSpan" column in the database, 
-        /// with a .NET type of <see cref="TimeSpan"/>?.  The <see cref="DbEx.dboDataService.UnitTestEntity.TimeSpanField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{TimeSpan}"/>?.
+        /// with a .NET type of <see cref="TimeSpan"/>.  The <see cref="DbEx.dboDataService.UnitTestEntity.TimeSpanField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{TimeSpan}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5439,15 +5551,11 @@ namespace DbEx.dboDataService
         #endregion
 
         #region constructors
-        private UnitTestEntity() : base(null, null, null, null)
-        {
-        }
-
         public UnitTestEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
 
-        private UnitTestEntity(string identifier, string name, SchemaExpression schema, string alias) : base(identifier, name, schema, alias)
+        private UnitTestEntity(string identifier, string name, SchemaExpression schema, string? alias) : base(identifier, name, schema, alias)
         {
             Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", "Id", this));
             Fields.Add($"{identifier}.Boolean", Boolean = new BooleanField($"{identifier}.Boolean", "Boolean", this));
@@ -5494,7 +5602,7 @@ namespace DbEx.dboDataService
                 ,new SelectExpression<byte>(Byte)
                 ,new SelectExpression<byte?>(NullableByte)
                 ,new SelectExpression<byte[]>(ByteArray)
-                ,new SelectExpression<byte[]>(NullableByteArray)
+                ,new SelectExpression<byte[]?>(NullableByteArray)
                 ,new SelectExpression<DateTime>(DateTime)
                 ,new SelectExpression<DateTime?>(NullableDateTime)
                 ,new SelectExpression<DateTimeOffset>(DateTimeOffset)
@@ -5514,8 +5622,8 @@ namespace DbEx.dboDataService
                 ,new SelectExpression<float>(Single)
                 ,new SelectExpression<float?>(NullableSingle)
                 ,new SelectExpression<string>(String)
-                ,new SelectExpression<string>(NullableString)
-                ,new SelectExpression<TimeSpan?>(TimeSpan)
+                ,new SelectExpression<string?>(NullableString)
+                ,new SelectExpression<TimeSpan>(TimeSpan)
                 ,new SelectExpression<TimeSpan?>(NullableTimeSpan)
             ));
         }
@@ -5525,95 +5633,95 @@ namespace DbEx.dboDataService
             if (alias is null)
                 throw new ArgumentNullException(nameof(alias));
 
-            SelectExpressionSet set = null;
-            string aliased = null;
+            SelectExpressionSet? set = null;
+            string? aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Id));
 
             aliased = alias(nameof(Boolean));
-            set &= aliased != nameof(Boolean) ? new SelectExpression<bool>(Boolean).As(aliased) as SelectExpression<bool> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Boolean));
+            set &= aliased != nameof(Boolean) ? new SelectExpression<bool>(Boolean).As(aliased) as SelectExpression<bool> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Boolean));
 
             aliased = alias(nameof(NullableBoolean));
-            set &= aliased != nameof(NullableBoolean) ? new SelectExpression<bool?>(NullableBoolean).As(aliased) as SelectExpression<bool?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(NullableBoolean));
+            set &= aliased != nameof(NullableBoolean) ? new SelectExpression<bool?>(NullableBoolean).As(aliased) as SelectExpression<bool?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(NullableBoolean));
 
             aliased = alias(nameof(Byte));
-            set &= aliased != nameof(Byte) ? new SelectExpression<byte>(Byte).As(aliased) as SelectExpression<byte> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Byte));
+            set &= aliased != nameof(Byte) ? new SelectExpression<byte>(Byte).As(aliased) as SelectExpression<byte> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Byte));
 
             aliased = alias(nameof(NullableByte));
-            set &= aliased != nameof(NullableByte) ? new SelectExpression<byte?>(NullableByte).As(aliased) as SelectExpression<byte?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(NullableByte));
+            set &= aliased != nameof(NullableByte) ? new SelectExpression<byte?>(NullableByte).As(aliased) as SelectExpression<byte?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(NullableByte));
 
             aliased = alias(nameof(ByteArray));
-            set &= aliased != nameof(ByteArray) ? new SelectExpression<byte[]>(ByteArray).As(aliased) as SelectExpression<byte[]> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ByteArray));
+            set &= aliased != nameof(ByteArray) ? new SelectExpression<byte[]>(ByteArray).As(aliased) as SelectExpression<byte[]> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(ByteArray));
 
             aliased = alias(nameof(NullableByteArray));
-            set &= aliased != nameof(NullableByteArray) ? new SelectExpression<byte[]>(NullableByteArray).As(aliased) as SelectExpression<byte[]> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(NullableByteArray));
+            set &= aliased != nameof(NullableByteArray) ? new SelectExpression<byte[]?>(NullableByteArray).As(aliased) as SelectExpression<byte[]?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(NullableByteArray));
 
             aliased = alias(nameof(DateTime));
-            set &= aliased != nameof(DateTime) ? new SelectExpression<DateTime>(DateTime).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateTime));
+            set &= aliased != nameof(DateTime) ? new SelectExpression<DateTime>(DateTime).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(DateTime));
 
             aliased = alias(nameof(NullableDateTime));
-            set &= aliased != nameof(NullableDateTime) ? new SelectExpression<DateTime?>(NullableDateTime).As(aliased) as SelectExpression<DateTime?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(NullableDateTime));
+            set &= aliased != nameof(NullableDateTime) ? new SelectExpression<DateTime?>(NullableDateTime).As(aliased) as SelectExpression<DateTime?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(NullableDateTime));
 
             aliased = alias(nameof(DateTimeOffset));
-            set &= aliased != nameof(DateTimeOffset) ? new SelectExpression<DateTimeOffset>(DateTimeOffset).As(aliased) as SelectExpression<DateTimeOffset> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateTimeOffset));
+            set &= aliased != nameof(DateTimeOffset) ? new SelectExpression<DateTimeOffset>(DateTimeOffset).As(aliased) as SelectExpression<DateTimeOffset> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(DateTimeOffset));
 
             aliased = alias(nameof(NullableDateTimeOffset));
-            set &= aliased != nameof(NullableDateTimeOffset) ? new SelectExpression<DateTimeOffset?>(NullableDateTimeOffset).As(aliased) as SelectExpression<DateTimeOffset?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(NullableDateTimeOffset));
+            set &= aliased != nameof(NullableDateTimeOffset) ? new SelectExpression<DateTimeOffset?>(NullableDateTimeOffset).As(aliased) as SelectExpression<DateTimeOffset?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(NullableDateTimeOffset));
 
             aliased = alias(nameof(Decimal));
-            set &= aliased != nameof(Decimal) ? new SelectExpression<decimal>(Decimal).As(aliased) as SelectExpression<decimal> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Decimal));
+            set &= aliased != nameof(Decimal) ? new SelectExpression<decimal>(Decimal).As(aliased) as SelectExpression<decimal> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Decimal));
 
             aliased = alias(nameof(NullableDecimal));
-            set &= aliased != nameof(NullableDecimal) ? new SelectExpression<decimal?>(NullableDecimal).As(aliased) as SelectExpression<decimal?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(NullableDecimal));
+            set &= aliased != nameof(NullableDecimal) ? new SelectExpression<decimal?>(NullableDecimal).As(aliased) as SelectExpression<decimal?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(NullableDecimal));
 
             aliased = alias(nameof(Double));
-            set &= aliased != nameof(Double) ? new SelectExpression<double>(Double).As(aliased) as SelectExpression<double> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Double));
+            set &= aliased != nameof(Double) ? new SelectExpression<double>(Double).As(aliased) as SelectExpression<double> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Double));
 
             aliased = alias(nameof(NullableDouble));
-            set &= aliased != nameof(NullableDouble) ? new SelectExpression<double?>(NullableDouble).As(aliased) as SelectExpression<double?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(NullableDouble));
+            set &= aliased != nameof(NullableDouble) ? new SelectExpression<double?>(NullableDouble).As(aliased) as SelectExpression<double?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(NullableDouble));
 
             aliased = alias(nameof(Guid));
-            set &= aliased != nameof(Guid) ? new SelectExpression<Guid>(Guid).As(aliased) as SelectExpression<Guid> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Guid));
+            set &= aliased != nameof(Guid) ? new SelectExpression<Guid>(Guid).As(aliased) as SelectExpression<Guid> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Guid));
 
             aliased = alias(nameof(NullableGuid));
-            set &= aliased != nameof(NullableGuid) ? new SelectExpression<Guid?>(NullableGuid).As(aliased) as SelectExpression<Guid?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(NullableGuid));
+            set &= aliased != nameof(NullableGuid) ? new SelectExpression<Guid?>(NullableGuid).As(aliased) as SelectExpression<Guid?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(NullableGuid));
 
             aliased = alias(nameof(Int16));
-            set &= aliased != nameof(Int16) ? new SelectExpression<short>(Int16).As(aliased) as SelectExpression<short> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Int16));
+            set &= aliased != nameof(Int16) ? new SelectExpression<short>(Int16).As(aliased) as SelectExpression<short> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Int16));
 
             aliased = alias(nameof(NullableInt16));
-            set &= aliased != nameof(NullableInt16) ? new SelectExpression<short?>(NullableInt16).As(aliased) as SelectExpression<short?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(NullableInt16));
+            set &= aliased != nameof(NullableInt16) ? new SelectExpression<short?>(NullableInt16).As(aliased) as SelectExpression<short?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(NullableInt16));
 
             aliased = alias(nameof(Int32));
-            set &= aliased != nameof(Int32) ? new SelectExpression<int>(Int32).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Int32));
+            set &= aliased != nameof(Int32) ? new SelectExpression<int>(Int32).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Int32));
 
             aliased = alias(nameof(NullableInt32));
-            set &= aliased != nameof(NullableInt32) ? new SelectExpression<int?>(NullableInt32).As(aliased) as SelectExpression<int?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(NullableInt32));
+            set &= aliased != nameof(NullableInt32) ? new SelectExpression<int?>(NullableInt32).As(aliased) as SelectExpression<int?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(NullableInt32));
 
             aliased = alias(nameof(Int64));
-            set &= aliased != nameof(Int64) ? new SelectExpression<long>(Int64).As(aliased) as SelectExpression<long> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Int64));
+            set &= aliased != nameof(Int64) ? new SelectExpression<long>(Int64).As(aliased) as SelectExpression<long> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Int64));
 
             aliased = alias(nameof(NullableInt64));
-            set &= aliased != nameof(NullableInt64) ? new SelectExpression<long?>(NullableInt64).As(aliased) as SelectExpression<long?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(NullableInt64));
+            set &= aliased != nameof(NullableInt64) ? new SelectExpression<long?>(NullableInt64).As(aliased) as SelectExpression<long?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(NullableInt64));
 
             aliased = alias(nameof(Single));
-            set &= aliased != nameof(Single) ? new SelectExpression<float>(Single).As(aliased) as SelectExpression<float> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Single));
+            set &= aliased != nameof(Single) ? new SelectExpression<float>(Single).As(aliased) as SelectExpression<float> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Single));
 
             aliased = alias(nameof(NullableSingle));
-            set &= aliased != nameof(NullableSingle) ? new SelectExpression<float?>(NullableSingle).As(aliased) as SelectExpression<float?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(NullableSingle));
+            set &= aliased != nameof(NullableSingle) ? new SelectExpression<float?>(NullableSingle).As(aliased) as SelectExpression<float?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(NullableSingle));
 
             aliased = alias(nameof(String));
-            set &= aliased != nameof(String) ? new SelectExpression<string>(String).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(String));
+            set &= aliased != nameof(String) ? new SelectExpression<string>(String).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(String));
 
             aliased = alias(nameof(NullableString));
-            set &= aliased != nameof(NullableString) ? new SelectExpression<string>(NullableString).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(NullableString));
+            set &= aliased != nameof(NullableString) ? new SelectExpression<string?>(NullableString).As(aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(NullableString));
 
             aliased = alias(nameof(TimeSpan));
-            set &= aliased != nameof(TimeSpan) ? new SelectExpression<TimeSpan?>(TimeSpan).As(aliased) as SelectExpression<TimeSpan?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TimeSpan));
+            set &= aliased != nameof(TimeSpan) ? new SelectExpression<TimeSpan>(TimeSpan).As(aliased) as SelectExpression<TimeSpan> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(TimeSpan));
 
             aliased = alias(nameof(NullableTimeSpan));
-            set &= aliased != nameof(NullableTimeSpan) ? new SelectExpression<TimeSpan?>(NullableTimeSpan).As(aliased) as SelectExpression<TimeSpan?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(NullableTimeSpan));
+            set &= aliased != nameof(NullableTimeSpan) ? new SelectExpression<TimeSpan?>(NullableTimeSpan).As(aliased) as SelectExpression<TimeSpan?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(NullableTimeSpan));
 
             return set;
         }
@@ -5627,7 +5735,7 @@ namespace DbEx.dboDataService
                 ,new InsertExpression<byte>(unitTest.Byte, Byte)
                 ,new InsertExpression<byte?>(unitTest.NullableByte, NullableByte)
                 ,new InsertExpression<byte[]>(unitTest.ByteArray, ByteArray)
-                ,new InsertExpression<byte[]>(unitTest.NullableByteArray, NullableByteArray)
+                ,new InsertExpression<byte[]?>(unitTest.NullableByteArray, NullableByteArray)
                 ,new InsertExpression<DateTime>(unitTest.DateTime, DateTime)
                 ,new InsertExpression<DateTime?>(unitTest.NullableDateTime, NullableDateTime)
                 ,new InsertExpression<DateTimeOffset>(unitTest.DateTimeOffset, DateTimeOffset)
@@ -5647,8 +5755,8 @@ namespace DbEx.dboDataService
                 ,new InsertExpression<float>(unitTest.Single, Single)
                 ,new InsertExpression<float?>(unitTest.NullableSingle, NullableSingle)
                 ,new InsertExpression<string>(unitTest.String, String)
-                ,new InsertExpression<string>(unitTest.NullableString, NullableString)
-                ,new InsertExpression<TimeSpan?>(unitTest.TimeSpan, TimeSpan)
+                ,new InsertExpression<string?>(unitTest.NullableString, NullableString)
+                ,new InsertExpression<TimeSpan>(unitTest.TimeSpan, TimeSpan)
                 ,new InsertExpression<TimeSpan?>(unitTest.NullableTimeSpan, NullableTimeSpan)
             );
         }
@@ -5691,35 +5799,35 @@ namespace DbEx.dboDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, UnitTest unitTest)
         {
-            unitTest.Id = reader.ReadField().GetValue<int>();
-            unitTest.Boolean = reader.ReadField().GetValue<bool>();
-            unitTest.NullableBoolean = reader.ReadField().GetValue<bool?>();
-            unitTest.Byte = reader.ReadField().GetValue<byte>();
-            unitTest.NullableByte = reader.ReadField().GetValue<byte?>();
-            unitTest.ByteArray = reader.ReadField().GetValue<byte[]>();
-            unitTest.NullableByteArray = reader.ReadField().GetValue<byte[]>();
-            unitTest.DateTime = reader.ReadField().GetValue<DateTime>();
-            unitTest.NullableDateTime = reader.ReadField().GetValue<DateTime?>();
-            unitTest.DateTimeOffset = reader.ReadField().GetValue<DateTimeOffset>();
-            unitTest.NullableDateTimeOffset = reader.ReadField().GetValue<DateTimeOffset?>();
-            unitTest.Decimal = reader.ReadField().GetValue<decimal>();
-            unitTest.NullableDecimal = reader.ReadField().GetValue<decimal?>();
-            unitTest.Double = reader.ReadField().GetValue<double>();
-            unitTest.NullableDouble = reader.ReadField().GetValue<double?>();
-            unitTest.Guid = reader.ReadField().GetValue<Guid>();
-            unitTest.NullableGuid = reader.ReadField().GetValue<Guid?>();
-            unitTest.Int16 = reader.ReadField().GetValue<short>();
-            unitTest.NullableInt16 = reader.ReadField().GetValue<short?>();
-            unitTest.Int32 = reader.ReadField().GetValue<int>();
-            unitTest.NullableInt32 = reader.ReadField().GetValue<int?>();
-            unitTest.Int64 = reader.ReadField().GetValue<long>();
-            unitTest.NullableInt64 = reader.ReadField().GetValue<long?>();
-            unitTest.Single = reader.ReadField().GetValue<float>();
-            unitTest.NullableSingle = reader.ReadField().GetValue<float?>();
-            unitTest.String = reader.ReadField().GetValue<string>();
-            unitTest.NullableString = reader.ReadField().GetValue<string>();
-            unitTest.TimeSpan = reader.ReadField().GetValue<TimeSpan?>();
-            unitTest.NullableTimeSpan = reader.ReadField().GetValue<TimeSpan?>();
+            unitTest.Id = reader.ReadField()!.GetValue<int>();
+            unitTest.Boolean = reader.ReadField()!.GetValue<bool>();
+            unitTest.NullableBoolean = reader.ReadField()!.GetValue<bool?>();
+            unitTest.Byte = reader.ReadField()!.GetValue<byte>();
+            unitTest.NullableByte = reader.ReadField()!.GetValue<byte?>();
+            unitTest.ByteArray = reader.ReadField()!.GetValue<byte[]>();
+            unitTest.NullableByteArray = reader.ReadField()!.GetValue<byte[]?>();
+            unitTest.DateTime = reader.ReadField()!.GetValue<DateTime>();
+            unitTest.NullableDateTime = reader.ReadField()!.GetValue<DateTime?>();
+            unitTest.DateTimeOffset = reader.ReadField()!.GetValue<DateTimeOffset>();
+            unitTest.NullableDateTimeOffset = reader.ReadField()!.GetValue<DateTimeOffset?>();
+            unitTest.Decimal = reader.ReadField()!.GetValue<decimal>();
+            unitTest.NullableDecimal = reader.ReadField()!.GetValue<decimal?>();
+            unitTest.Double = reader.ReadField()!.GetValue<double>();
+            unitTest.NullableDouble = reader.ReadField()!.GetValue<double?>();
+            unitTest.Guid = reader.ReadField()!.GetValue<Guid>();
+            unitTest.NullableGuid = reader.ReadField()!.GetValue<Guid?>();
+            unitTest.Int16 = reader.ReadField()!.GetValue<short>();
+            unitTest.NullableInt16 = reader.ReadField()!.GetValue<short?>();
+            unitTest.Int32 = reader.ReadField()!.GetValue<int>();
+            unitTest.NullableInt32 = reader.ReadField()!.GetValue<int?>();
+            unitTest.Int64 = reader.ReadField()!.GetValue<long>();
+            unitTest.NullableInt64 = reader.ReadField()!.GetValue<long?>();
+            unitTest.Single = reader.ReadField()!.GetValue<float>();
+            unitTest.NullableSingle = reader.ReadField()!.GetValue<float?>();
+            unitTest.String = reader.ReadField()!.GetValue<string>();
+            unitTest.NullableString = reader.ReadField()!.GetValue<string?>();
+            unitTest.TimeSpan = reader.ReadField()!.GetValue<TimeSpan>();
+            unitTest.NullableTimeSpan = reader.ReadField()!.GetValue<TimeSpan?>();
         }
 		#endregion
 
@@ -5769,11 +5877,11 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(bool value) => new AssignmentExpression(this, new LiteralExpression<bool>(value, this));
-            public AssignmentExpression Set(AnyElement<bool> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<bool?>(value, this));
             public AssignmentExpression Set(bool? value) => new AssignmentExpression(this, new LiteralExpression<bool?>(value, this));
             public AssignmentExpression Set(AnyElement<bool?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<bool>(value, this));
+            public AssignmentExpression Set(bool value) => new AssignmentExpression(this, new LiteralExpression<bool>(value, this));
+            public AssignmentExpression Set(AnyElement<bool> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -5806,11 +5914,11 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(byte value) => new AssignmentExpression(this, new LiteralExpression<byte>(value, this));
-            public AssignmentExpression Set(AnyElement<byte> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<byte?>(value, this));
             public AssignmentExpression Set(byte? value) => new AssignmentExpression(this, new LiteralExpression<byte?>(value, this));
             public AssignmentExpression Set(AnyElement<byte?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<byte>(value, this));
+            public AssignmentExpression Set(byte value) => new AssignmentExpression(this, new LiteralExpression<byte>(value, this));
+            public AssignmentExpression Set(AnyElement<byte> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -5843,9 +5951,9 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(byte[] value) => new AssignmentExpression(this, new LiteralExpression<byte[]>(value, this));
-            public AssignmentExpression Set(AnyElement<byte[]> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<byte[]>(value, this));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<byte[]?>(value, this));
+            public AssignmentExpression Set(byte[]? value) => new AssignmentExpression(this, new LiteralExpression<byte[]?>(value, this));
+            public AssignmentExpression Set(AnyElement<byte[]?> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -5878,11 +5986,11 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
-            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value, this));
             public AssignmentExpression Set(DateTime? value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value, this));
             public AssignmentExpression Set(AnyElement<DateTime?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -5915,11 +6023,11 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(DateTimeOffset value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset>(value, this));
-            public AssignmentExpression Set(AnyElement<DateTimeOffset> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset?>(value, this));
             public AssignmentExpression Set(DateTimeOffset? value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset?>(value, this));
             public AssignmentExpression Set(AnyElement<DateTimeOffset?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset>(value, this));
+            public AssignmentExpression Set(DateTimeOffset value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTimeOffset> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -5952,11 +6060,11 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
-            public AssignmentExpression Set(AnyElement<decimal> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
             public AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
             public AssignmentExpression Set(AnyElement<decimal?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
+            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
+            public AssignmentExpression Set(AnyElement<decimal> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -5989,11 +6097,11 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(double value) => new AssignmentExpression(this, new LiteralExpression<double>(value, this));
-            public AssignmentExpression Set(AnyElement<double> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<double?>(value, this));
             public AssignmentExpression Set(double? value) => new AssignmentExpression(this, new LiteralExpression<double?>(value, this));
             public AssignmentExpression Set(AnyElement<double?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<double>(value, this));
+            public AssignmentExpression Set(double value) => new AssignmentExpression(this, new LiteralExpression<double>(value, this));
+            public AssignmentExpression Set(AnyElement<double> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -6026,11 +6134,11 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(Guid value) => new AssignmentExpression(this, new LiteralExpression<Guid>(value, this));
-            public AssignmentExpression Set(AnyElement<Guid> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<Guid?>(value, this));
             public AssignmentExpression Set(Guid? value) => new AssignmentExpression(this, new LiteralExpression<Guid?>(value, this));
             public AssignmentExpression Set(AnyElement<Guid?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<Guid>(value, this));
+            public AssignmentExpression Set(Guid value) => new AssignmentExpression(this, new LiteralExpression<Guid>(value, this));
+            public AssignmentExpression Set(AnyElement<Guid> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -6063,11 +6171,11 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(short value) => new AssignmentExpression(this, new LiteralExpression<short>(value, this));
-            public AssignmentExpression Set(AnyElement<short> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<short?>(value, this));
             public AssignmentExpression Set(short? value) => new AssignmentExpression(this, new LiteralExpression<short?>(value, this));
             public AssignmentExpression Set(AnyElement<short?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<short>(value, this));
+            public AssignmentExpression Set(short value) => new AssignmentExpression(this, new LiteralExpression<short>(value, this));
+            public AssignmentExpression Set(AnyElement<short> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -6100,11 +6208,11 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
-            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<int?>(value, this));
             public AssignmentExpression Set(int? value) => new AssignmentExpression(this, new LiteralExpression<int?>(value, this));
             public AssignmentExpression Set(AnyElement<int?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -6137,11 +6245,11 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(long value) => new AssignmentExpression(this, new LiteralExpression<long>(value, this));
-            public AssignmentExpression Set(AnyElement<long> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<long?>(value, this));
             public AssignmentExpression Set(long? value) => new AssignmentExpression(this, new LiteralExpression<long?>(value, this));
             public AssignmentExpression Set(AnyElement<long?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<long>(value, this));
+            public AssignmentExpression Set(long value) => new AssignmentExpression(this, new LiteralExpression<long>(value, this));
+            public AssignmentExpression Set(AnyElement<long> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -6174,11 +6282,11 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(float value) => new AssignmentExpression(this, new LiteralExpression<float>(value, this));
-            public AssignmentExpression Set(AnyElement<float> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<float?>(value, this));
             public AssignmentExpression Set(float? value) => new AssignmentExpression(this, new LiteralExpression<float?>(value, this));
             public AssignmentExpression Set(AnyElement<float?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<float>(value, this));
+            public AssignmentExpression Set(float value) => new AssignmentExpression(this, new LiteralExpression<float>(value, this));
+            public AssignmentExpression Set(AnyElement<float> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -6195,7 +6303,7 @@ namespace DbEx.dboDataService
 
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -6211,9 +6319,9 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -6231,8 +6339,6 @@ namespace DbEx.dboDataService
             #region set
             public AssignmentExpression Set(TimeSpan value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan>(value, this));
             public AssignmentExpression Set(AnyElement<TimeSpan> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(TimeSpan? value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan?>(value, this));
-            public AssignmentExpression Set(AnyElement<TimeSpan?> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -6248,11 +6354,11 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(TimeSpan value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan>(value, this));
-            public AssignmentExpression Set(AnyElement<TimeSpan> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan?>(value, this));
             public AssignmentExpression Set(TimeSpan? value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan?>(value, this));
             public AssignmentExpression Set(AnyElement<TimeSpan?> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan>(value, this));
+            public AssignmentExpression Set(TimeSpan value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan>(value, this));
+            public AssignmentExpression Set(AnyElement<TimeSpan> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -6265,7 +6371,7 @@ namespace DbEx.dboDataService
     public partial class PersonTotalPurchasesViewEntity : EntityExpression<PersonTotalPurchasesView>
     {
         #region internals
-        private SelectExpressionSet _inclusiveSelectExpressionSet;
+        private SelectExpressionSet? _inclusiveSelectExpressionSet;
         #endregion
 
         #region interface
@@ -6332,15 +6438,11 @@ namespace DbEx.dboDataService
         #endregion
 
         #region constructors
-        private PersonTotalPurchasesViewEntity() : base(null, null, null, null)
-        {
-        }
-
         public PersonTotalPurchasesViewEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
 
-        private PersonTotalPurchasesViewEntity(string identifier, string name, SchemaExpression schema, string alias) : base(identifier, name, schema, alias)
+        private PersonTotalPurchasesViewEntity(string identifier, string name, SchemaExpression schema, string? alias) : base(identifier, name, schema, alias)
         {
             Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", "Id", this));
             Fields.Add($"{identifier}.TotalAmount", TotalAmount = new TotalAmountField($"{identifier}.TotalAmount", "TotalAmount", this));
@@ -6366,17 +6468,17 @@ namespace DbEx.dboDataService
             if (alias is null)
                 throw new ArgumentNullException(nameof(alias));
 
-            SelectExpressionSet set = null;
-            string aliased = null;
+            SelectExpressionSet? set = null;
+            string? aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Id));
 
             aliased = alias(nameof(TotalAmount));
-            set &= aliased != nameof(TotalAmount) ? new SelectExpression<double?>(TotalAmount).As(aliased) as SelectExpression<double?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TotalAmount));
+            set &= aliased != nameof(TotalAmount) ? new SelectExpression<double?>(TotalAmount).As(aliased) as SelectExpression<double?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(TotalAmount));
 
             aliased = alias(nameof(TotalCount));
-            set &= aliased != nameof(TotalCount) ? new SelectExpression<int?>(TotalCount).As(aliased) as SelectExpression<int?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TotalCount));
+            set &= aliased != nameof(TotalCount) ? new SelectExpression<int?>(TotalCount).As(aliased) as SelectExpression<int?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(TotalCount));
 
             return set;
         }
@@ -6396,9 +6498,9 @@ namespace DbEx.dboDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, PersonTotalPurchasesView personTotalPurchasesView)
         {
-            personTotalPurchasesView.Id = reader.ReadField().GetValue<int>();
-            personTotalPurchasesView.TotalAmount = reader.ReadField().GetValue<double?>();
-            personTotalPurchasesView.TotalCount = reader.ReadField().GetValue<int?>();
+            personTotalPurchasesView.Id = reader.ReadField()!.GetValue<int>();
+            personTotalPurchasesView.TotalAmount = reader.ReadField()!.GetValue<double?>();
+            personTotalPurchasesView.TotalCount = reader.ReadField()!.GetValue<int?>();
         }
 		#endregion
 
@@ -6414,6 +6516,8 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -6429,7 +6533,11 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<double>(value, this));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<double?>(value, this));
+            public AssignmentExpression Set(double? value) => new AssignmentExpression(this, new LiteralExpression<double?>(value, this));
+            public AssignmentExpression Set(AnyElement<double?> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(double value) => new AssignmentExpression(this, new LiteralExpression<double>(value, this));
+            public AssignmentExpression Set(AnyElement<double> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -6445,7 +6553,11 @@ namespace DbEx.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<int?>(value, this));
+            public AssignmentExpression Set(int? value) => new AssignmentExpression(this, new LiteralExpression<int?>(value, this));
+            public AssignmentExpression Set(AnyElement<int?> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -6769,7 +6881,7 @@ namespace DbEx.dboDataService
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
     {
-        private static dboSchemaExpression schema;
+        private static dboSchemaExpression? schema;
 
         #region interface
         /// <summary>A <see cref="DbEx.dboDataService.AccessAuditLogEntity"/> representing the "dbo.AccessAuditLog" table in the database.
@@ -6794,7 +6906,7 @@ namespace DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static AccessAuditLogEntity AccessAuditLog { get; private set; }
+        public static AccessAuditLogEntity AccessAuditLog { get; private set; } = null!;
 
         /// <summary>A <see cref="DbEx.dboDataService.AddressEntity"/> representing the "dbo.Address" table in the database.
         /// <para>Properties:
@@ -6818,7 +6930,7 @@ namespace DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static AddressEntity Address { get; private set; }
+        public static AddressEntity Address { get; private set; } = null!;
 
         /// <summary>A <see cref="DbEx.dboDataService.PersonEntity"/> representing the "dbo.Person" table in the database.
         /// <para>Properties:
@@ -6842,7 +6954,7 @@ namespace DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static PersonEntity Person { get; private set; }
+        public static PersonEntity Person { get; private set; } = null!;
 
         /// <summary>A <see cref="DbEx.dboDataService.PersonAddressEntity"/> representing the "dbo.Person_Address" table in the database.
         /// <para>Properties:
@@ -6866,7 +6978,7 @@ namespace DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static PersonAddressEntity PersonAddress { get; private set; }
+        public static PersonAddressEntity PersonAddress { get; private set; } = null!;
 
         /// <summary>A <see cref="DbEx.dboDataService.ProductEntity"/> representing the "dbo.Product" table in the database.
         /// <para>Properties:
@@ -6890,7 +7002,7 @@ namespace DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static ProductEntity Product { get; private set; }
+        public static ProductEntity Product { get; private set; } = null!;
 
         /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity"/> representing the "dbo.Purchase" table in the database.
         /// <para>Properties:
@@ -6914,7 +7026,7 @@ namespace DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static PurchaseEntity Purchase { get; private set; }
+        public static PurchaseEntity Purchase { get; private set; } = null!;
 
         /// <summary>A <see cref="DbEx.dboDataService.PurchaseLineEntity"/> representing the "dbo.PurchaseLine" table in the database.
         /// <para>Properties:
@@ -6938,7 +7050,7 @@ namespace DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static PurchaseLineEntity PurchaseLine { get; private set; }
+        public static PurchaseLineEntity PurchaseLine { get; private set; } = null!;
 
         /// <summary>A <see cref="DbEx.dboDataService.UnitTestEntity"/> representing the "dbo.UnitTest" table in the database.
         /// <para>Properties:
@@ -6949,7 +7061,7 @@ namespace DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static UnitTestEntity UnitTest { get; private set; }
+        public static UnitTestEntity UnitTest { get; private set; } = null!;
 
         /// <summary>A <see cref="DbEx.dboDataService.PersonTotalPurchasesViewEntity"/> representing the "dbo.PersonTotalPurchasesView" view in the database.
         /// <para>Properties:
@@ -6960,7 +7072,7 @@ namespace DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static PersonTotalPurchasesViewEntity PersonTotalPurchasesView { get; private set; }
+        public static PersonTotalPurchasesViewEntity PersonTotalPurchasesView { get; private set; } = null!;
 
         #endregion
 
@@ -7012,7 +7124,7 @@ namespace DbEx.secDataService
     public partial class PersonEntity : EntityExpression<Person>
     {
         #region internals
-        private SelectExpressionSet _inclusiveSelectExpressionSet;
+        private SelectExpressionSet? _inclusiveSelectExpressionSet;
         #endregion
 
         #region interface
@@ -7105,15 +7217,11 @@ namespace DbEx.secDataService
         #endregion
 
         #region constructors
-        private PersonEntity() : base(null, null, null, null)
-        {
-        }
-
         public PersonEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
 
-        private PersonEntity(string identifier, string name, SchemaExpression schema, string alias) : base(identifier, name, schema, alias)
+        private PersonEntity(string identifier, string name, SchemaExpression schema, string? alias) : base(identifier, name, schema, alias)
         {
             Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", "Id", this));
             Fields.Add($"{identifier}.SSN", SocialSecurityNumber = new SocialSecurityNumberField($"{identifier}.SSN", "SocialSecurityNumber", this));
@@ -7141,20 +7249,20 @@ namespace DbEx.secDataService
             if (alias is null)
                 throw new ArgumentNullException(nameof(alias));
 
-            SelectExpressionSet set = null;
-            string aliased = null;
+            SelectExpressionSet? set = null;
+            string? aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Id));
 
             aliased = alias(nameof(SocialSecurityNumber));
-            set &= aliased != nameof(SocialSecurityNumber) ? new SelectExpression<string>(SocialSecurityNumber).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(SocialSecurityNumber));
+            set &= aliased != nameof(SocialSecurityNumber) ? new SelectExpression<string>(SocialSecurityNumber).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(SocialSecurityNumber));
 
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(DateCreated));
 
             aliased = alias(nameof(DateUpdated));
-            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
+            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(DateUpdated));
 
             return set;
         }
@@ -7178,10 +7286,10 @@ namespace DbEx.secDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, Person person)
         {
-            person.Id = reader.ReadField().GetValue<int>();
-            person.SocialSecurityNumber = reader.ReadField().GetValue<string>();
-            person.DateCreated = reader.ReadField().GetValue<DateTime>();
-            person.DateUpdated = reader.ReadField().GetValue<DateTime>();
+            person.Id = reader.ReadField()!.GetValue<int>();
+            person.SocialSecurityNumber = reader.ReadField()!.GetValue<string>();
+            person.DateCreated = reader.ReadField()!.GetValue<DateTime>();
+            person.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
         }
 		#endregion
 
@@ -7215,7 +7323,7 @@ namespace DbEx.secDataService
 
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(AnyElement<string> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -7231,6 +7339,8 @@ namespace DbEx.secDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -7246,6 +7356,8 @@ namespace DbEx.secDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -7261,7 +7373,7 @@ namespace DbEx.secDataService
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
     {
-        private static secSchemaExpression schema;
+        private static secSchemaExpression? schema;
 
         #region interface
         /// <summary>A <see cref="DbEx.secDataService.PersonEntity"/> representing the "sec.Person" table in the database.
@@ -7286,7 +7398,7 @@ namespace DbEx.secDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static PersonEntity Person { get; private set; }
+        public static PersonEntity Person { get; private set; } = null!;
 
         #endregion
 

@@ -25,11 +25,11 @@ namespace HatTrick.DbEx.Sql.Assembler
     public abstract class SqlStatementAssemblerFactory : ISqlStatementAssemblerFactory
     {
         #region internals
-        private readonly ConcurrentDictionary<Type, Func<ISqlStatementAssembler>> statementAssemblers = new ConcurrentDictionary<Type, Func<ISqlStatementAssembler>>();
+        private readonly ConcurrentDictionary<Type, Func<ISqlStatementAssembler>> statementAssemblers = new();
         #endregion
 
         #region methods
-        public ISqlStatementAssembler CreateSqlStatementAssembler(QueryExpression expression)
+        public ISqlStatementAssembler? CreateSqlStatementAssembler(QueryExpression expression)
             => ResolveAssemblerFactory(expression.GetType());
 
         public virtual void RegisterStatementAssembler<T, U>()
@@ -47,15 +47,15 @@ namespace HatTrick.DbEx.Sql.Assembler
             where U : class, ISqlStatementAssembler
             => statementAssemblers.AddOrUpdate(typeof(T), assemblerFactory, (t, f) => assemblerFactory);
 
-        private ISqlStatementAssembler ResolveAssemblerFactory(Type current)
+        private ISqlStatementAssembler? ResolveAssemblerFactory(Type current)
         {
             var factory = ResolveAssemblerFactory(current, current);
-            return factory is object ? factory() : null;
+            return factory is not null ? factory() : null;
         }
 
-        private Func<ISqlStatementAssembler> ResolveAssemblerFactory(Type current, Type original)
+        private Func<ISqlStatementAssembler>? ResolveAssemblerFactory(Type current, Type original)
         {
-            if (statementAssemblers.TryGetValue(current, out Func<ISqlStatementAssembler> factory))
+            if (statementAssemblers.TryGetValue(current, out Func<ISqlStatementAssembler>? factory))
                 return factory;
 
             if (current.BaseType is null)
@@ -63,7 +63,7 @@ namespace HatTrick.DbEx.Sql.Assembler
 
             factory = ResolveAssemblerFactory(current.BaseType, original);
 
-            if (factory is object && current == original)
+            if (factory is not null && current == original)
                 //reduce runtime recursion by "registering" the original with the found factory
                 statementAssemblers.TryAdd(original, factory);
 

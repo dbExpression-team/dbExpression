@@ -30,9 +30,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                         },
                         from => {
                             fromFired = true;
-                            if (from is null)
+                            if (from is not string value)
                                 return null;
-                            var value = from as string;
                             if (value == "FOO")
                                 return expected;
                             return (PaymentSourceType?)Enum.Parse(typeof(PaymentSourceType), value, true);
@@ -117,7 +116,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                         from =>
                         {
                             fromFired = true;
-                            var value = from as string;
+                            if (from is not string value)
+                                return null;
                             if (value == "FOO")
                                 return expected;
                             return (PaymentMethodType)Enum.Parse(typeof(PaymentMethodType), value, true);
@@ -320,7 +320,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                         from =>
                         {
                             fromFired = true;
-                            var value = from as string;
+                            if (from is not string value)
+                                return null;
                             if (value == "FOO")
                                 return expected;
                             return (PaymentMethodType)Enum.Parse(typeof(PaymentMethodType), value, true);
@@ -359,7 +360,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                         from =>
                         {
                             fromFired = true;
-                            var value = from as string;
+                            if (from is not string value)
+                                return null;
                             if (value == "FOO")
                                 return expected;
                             return (PaymentMethodType)Enum.Parse(typeof(PaymentMethodType), value, true);
@@ -397,7 +399,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                         from =>
                         {
                             fromFired = true;
-                            var value = from as string;
+                            if (from is not string value)
+                                return null;
                             if (value == "FOO")
                                 return expected;
                             return (PaymentSourceType)Enum.Parse(typeof(PaymentSourceType), value, true);
@@ -436,7 +439,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                         from =>
                         {
                             fromFired = true;
-                            var value = from as string;
+                            if (from is not string value)
+                                return null;
                             if (value == "FOO")
                                 return expected;
                             return (PaymentSourceType)Enum.Parse(typeof(PaymentSourceType), value, true);
@@ -495,7 +499,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Execute();
 
             //then
-            birthDate.Value.Year.Should().Be(expected.Value.AddYears(5).Year);
+            birthDate!.Value.Year.Should().Be(expected.Value.AddYears(5).Year);
             toFired.Should().BeTrue();
             fromFired.Should().BeTrue();
         }
@@ -535,7 +539,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Execute();
 
             //then
-            birthDate.Value.Year.Should().Be(expected.AddYears(5).Year);
+            birthDate!.Value.Year.Should().Be(expected.AddYears(5).Year);
             toFired.Should().BeTrue();
             fromFired.Should().BeTrue();
         }
@@ -609,7 +613,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Execute();
 
             //then
-            birthDate.Value.Year.Should().Be(expected.Value.AddYears(5).Year);
+            birthDate!.Value.Year.Should().Be(expected.Value.AddYears(5).Year);
             toFired.Should().BeTrue();
             fromFired.Should().BeTrue();
         }
@@ -692,7 +696,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Execute();
 
             //then
-            ((DateTime?)person.BirthDate).Value.Year.Should().Be(expected.Value.AddYears(5).Year);
+            ((DateTime?)person!.BirthDate).Value.Year.Should().Be(expected.Value.AddYears(5).Year);
             toFired.Should().BeTrue();
             fromFired.Should().BeTrue();
         }
@@ -730,7 +734,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Execute();
 
             //then
-            ((DateTimeOffset)person.RegistrationDate).Year.Should().Be(expected.AddYears(-10).Year);
+            ((DateTimeOffset)person!.RegistrationDate).Year.Should().Be(expected.AddYears(-10).Year);
             fromFired.Should().BeTrue();
         }
 
@@ -772,7 +776,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Execute();
 
             //then
-            ((DateTime?)person.BirthDate).Value.Year.Should().Be(expected.Value.AddYears(5).Year);
+            ((DateTime?)person!.BirthDate).Value.Year.Should().Be(expected.Value.AddYears(5).Year);
             toFired.Should().BeTrue();
             fromFired.Should().BeTrue();
         }
@@ -815,7 +819,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Execute();
 
             //then
-            ((DateTimeOffset)person.RegistrationDate).Year.Should().Be(expected.AddYears(5).Year);
+            ((DateTimeOffset)person!.RegistrationDate).Year.Should().Be(expected.AddYears(5).Year);
             toFired.Should().BeTrue();
             fromFired.Should().BeTrue();
         }
@@ -858,7 +862,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Execute();
 
             //then
-            ((DateTime?)person.BirthDate).Value.Year.Should().Be(expected.AddYears(5).Year);
+            ((DateTime?)person!.BirthDate).Value.Year.Should().Be(expected.AddYears(5).Year);
             toFired.Should().BeTrue();
             fromFired.Should().BeTrue();
         }
@@ -898,7 +902,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Execute();
 
             //then
-            ((DateTime?)person.BirthDate).Value.Year.Should().Be(expected.Value.AddYears(5).Year);
+            person!.BirthDate!.Value.Year.Should().Be(expected.Value.AddYears(5).Year);
             toFired.Should().BeTrue();
             fromFired.Should().BeTrue();
         }
@@ -933,7 +937,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Execute();
 
             //then
-            ((DateTimeOffset)person.RegistrationDate).Year.Should().Be(expected.AddYears(-10).Year);
+            person!.RegistrationDate!.Year.Should().Be(expected.AddYears(-10).Year);
             fromFired.Should().BeTrue();
         }
 
@@ -972,7 +976,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Execute();
 
             //then
-            ((DateTime?)person.BirthDate).Value.Year.Should().Be(expected.Value.AddYears(5).Year);
+            person!.BirthDate!.Value.Year.Should().Be(expected.Value.AddYears(5).Year);
             toFired.Should().BeTrue();
             fromFired.Should().BeTrue();
         }
@@ -1012,7 +1016,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Execute();
 
             //then
-            ((DateTimeOffset)person.RegistrationDate).Year.Should().Be(expected.AddYears(5).Year);
+            person!.RegistrationDate.Year.Should().Be(expected.AddYears(5).Year);
             toFired.Should().BeTrue();
             fromFired.Should().BeTrue();
         }
@@ -1077,7 +1081,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Where(dbo.Purchase.Id == purchase.Id).Execute();
 
             //then
-            persisted.PaymentMethodType.Should().Be(PaymentMethodType.PayPal);
+            persisted!.PaymentMethodType.Should().Be(PaymentMethodType.PayPal);
             toFired.Should().BeTrue();
             fromFired.Should().BeTrue();
         }
@@ -1096,7 +1100,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Execute();
 
             //then
-            persisted.Description.Should().NotBeNull();
+            persisted!.Description.Should().NotBeNull();
             persisted.Description?.Long.Should().NotBeNullOrWhiteSpace();
         }
 
@@ -1127,7 +1131,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Execute();
 
             //then
-            persisted.Description.Should().NotBeNull();
+            persisted!.Description.Should().NotBeNull();
             persisted.Description?.Long.Should().NotBeNullOrWhiteSpace();
         }
 
@@ -1167,7 +1171,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Execute();
 
             //then
-            updated.Description.Should().NotBeNull();
+            updated!.Description.Should().NotBeNull();
             updated.Description?.Long.Should().Be("This is a really long description");
         }
     }

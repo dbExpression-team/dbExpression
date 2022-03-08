@@ -35,19 +35,19 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(ObjectFieldExpression<TEntity,TType> obj)
-            => obj is ObjectFieldExpression<TEntity,TType> && base.Equals(obj);
+        public bool Equals(ObjectFieldExpression<TEntity,TType>? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is ObjectFieldExpression<TEntity,TType> exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is ObjectFieldExpression<TEntity,TType> exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();
         #endregion
 
         #region in
-        public override FilterExpressionSet In(params TType[] value) => value is object ? new FilterExpressionSet(new FilterExpression<bool>(this, new InExpression<TType>(this, value), FilterExpressionOperator.None)) : null;
-        public override FilterExpressionSet In(IEnumerable<TType> value) => value is object ? new FilterExpressionSet(new FilterExpression<bool>(this, new InExpression<TType>(this, value), FilterExpressionOperator.None)) : null;
+        public override FilterExpressionSet In(params TType[] value) => new(new FilterExpression<bool>(this, new InExpression<TType>(this, value), FilterExpressionOperator.None));
+        public override FilterExpressionSet In(IEnumerable<TType> value) => new(new FilterExpression<bool>(this, new InExpression<TType>(this, value), FilterExpressionOperator.None));
         #endregion
     }
 }

@@ -63,7 +63,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
 
         #region methods
-        public virtual int ExecuteUpdate(UpdateQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand)
+        public virtual int ExecuteUpdate(UpdateQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand)
         {
             if (expression is null)
                 throw new ArgumentNullException(nameof(expression));
@@ -85,9 +85,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 statement,
                 connection,
                 cmd => {
-#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
                     cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
-#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
                     beforeExecution?.Invoke(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(database, expression, cmd, statement))); 
                     configureCommand?.Invoke(cmd); 
                 },
@@ -99,7 +97,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return rowsAffected;
         }
 
-        public virtual async Task<int> ExecuteUpdateAsync(UpdateQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
+        public virtual async Task<int> ExecuteUpdateAsync(UpdateQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
         {
             if (expression is null)
                 throw new ArgumentNullException(nameof(expression));
@@ -109,24 +107,24 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, expression) ?? throw new DbExpressionException("The sql statement builder is null, cannot execute an update query without a statement builder to construct the sql statement.");
 
-            if (beforeAssembly is object)
+            if (beforeAssembly is not null)
             {
                 await beforeAssembly.InvokeAsync(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(database, expression, statementBuilder.Parameters)), ct).ConfigureAwait(false);
                 ct.ThrowIfCancellationRequested();
             }
-            if (beforeUpdateAssembly is object)
+            if (beforeUpdateAssembly is not null)
             {
                 await beforeUpdateAssembly.InvokeAsync(new Lazy<BeforeUpdateAssemblyPipelineExecutionContext>(() => new BeforeUpdateAssemblyPipelineExecutionContext(database, expression, statementBuilder.Parameters)), ct).ConfigureAwait(false);
                 ct.ThrowIfCancellationRequested();
             }
             var statement = statementBuilder.CreateSqlStatement() ?? throw new DbExpressionException("The sql statement builder returned a null value, cannot execute an update query without a sql statement.");
-            if (afterAssembly is object)
+            if (afterAssembly is not null)
             {
                 await afterAssembly.InvokeAsync(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(database, expression, statementBuilder.Parameters, statement)), ct).ConfigureAwait(false);
                 ct.ThrowIfCancellationRequested();
             }
 
-            if (beforeUpdate is object)
+            if (beforeUpdate is not null)
             {
                 await beforeUpdate.InvokeAsync(new Lazy<BeforeUpdatePipelineExecutionContext>(() => new BeforeUpdatePipelineExecutionContext(database, expression, statement, statementBuilder.Parameters)), ct).ConfigureAwait(false);
                 ct.ThrowIfCancellationRequested();
@@ -137,10 +135,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 statement,
                 connection,
                 async cmd => {
-#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
                     cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
-#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
-                    if (beforeExecution is object)
+                    if (beforeExecution is not null)
                     {
                         await beforeExecution.InvokeAsync(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(database, expression, cmd, statement)), ct).ConfigureAwait(false);
                     }
@@ -148,7 +144,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 },
                 async cmd =>
                 {
-                    if (afterExecution is object)
+                    if (afterExecution is not null)
                     {
                         await afterExecution.InvokeAsync(new Lazy<AfterExecutionPipelineExecutionContext>(() => new AfterExecutionPipelineExecutionContext(database, expression, cmd)), ct).ConfigureAwait(false);
                     }
@@ -158,7 +154,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             ct.ThrowIfCancellationRequested();
 
-            if (afterUpdate is object)
+            if (afterUpdate is not null)
             {
                 await afterUpdate.InvokeAsync(new Lazy<AfterUpdatePipelineExecutionContext>(() => new AfterUpdatePipelineExecutionContext(database, expression, statement)), ct).ConfigureAwait(false);
                 ct.ThrowIfCancellationRequested();

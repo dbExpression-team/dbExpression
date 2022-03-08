@@ -25,21 +25,21 @@ namespace HatTrick.DbEx.Tools
     public class Tokenizer
     {
         #region internals
-        private object _lock;
-        private char[] _delims;
+        private readonly object _lock;
+        private readonly char[] _delims;
         private readonly char _delimEscape = '\\';
 
         private int _index;
         private int _length;
 
-        private string _expression;
-        private bool _maintainQuotes;
+        private string? _expression;
+        private readonly bool _maintainQuotes;
 
-        private char[] _token;
+        private readonly char[] _token;
         #endregion
 
         #region interface
-        public Action<string> Emit { get; set; }
+        public Action<string> Emit { get; set; } = new(s => { });
         #endregion
 
         #region constructor
@@ -62,8 +62,8 @@ namespace HatTrick.DbEx.Tools
             {
                 _expression = expression;
                 _length = expression.Length;
-                string token;
-                while ((token = this.Walk()) is object)
+                string? token;
+                while ((token = this.Walk()) is not null)
                 {
                     this.Emit(token);
                 }
@@ -75,15 +75,15 @@ namespace HatTrick.DbEx.Tools
         #endregion
 
         #region walk
-        private string Walk()
+        private string? Walk()
         {
-            string token = null;
+            string? token = null;
             char c;
             int len = 0;
             bool inQuotes = false;
             while (_index < _length && token is null)
             {
-                c = _expression[_index];
+                c = _expression![_index];
                 if (c == _delimEscape && !inQuotes)
                 {
                     char next = _expression[_index + 1];

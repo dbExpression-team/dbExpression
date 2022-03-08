@@ -4,8 +4,8 @@
         #region internals
         protected static readonly MsSqlQueryExpressionBuilderFactory expressionBuilderFactory = new MsSqlQueryExpressionBuilderFactory();
         protected static readonly IList<SchemaExpression> schemas = new List<SchemaExpression>();
-        protected static RuntimeSqlDatabaseConfiguration configuration => configurationFactory.CreateConfiguration() ?? throw new DbExpressionConfigurationException($"Configuration factory returned a null value for configuration ({{nameof(RuntimeSqlDatabaseConfiguration)}}).  Cannot build and execute queries without valid configuration.");
-        private static IRuntimeSqlDatabaseConfigurationFactory configurationFactory;
+        protected static RuntimeSqlDatabaseConfiguration configuration => configurationFactory{$.LanguageFeatures.Nullable.Annotation}.CreateConfiguration() ?? throw new DbExpressionConfigurationException($"Configuration factory returned a null value for configuration ({{nameof(RuntimeSqlDatabaseConfiguration)}}).  Cannot build and execute queries without valid configuration.");
+        private static IRuntimeSqlDatabaseConfigurationFactory{$.LanguageFeatures.Nullable.Annotation} configurationFactory;
         #endregion
 
         #region interface

@@ -558,12 +558,12 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
 
             var predicate = dbo.Product.Name == productName;
 
-            var appender = database.ExpressionElementAppenderFactory.CreateElementAppender(predicate);
+            var appender = database.ExpressionElementAppenderFactory.CreateElementAppender(predicate)!;
 
             //when
             appender.AppendElement(predicate, builder, context);
-            var parameter = builder.Parameters.Parameters.SingleOrDefault();
-            var meta = parameter.Metadata as ISqlFieldMetadata;
+            var parameter = builder.Parameters.Parameters.Single();
+            var meta = (parameter.Metadata as ISqlFieldMetadata)!;
 
             //then
             meta.DbType.Should().Be(SqlDbType.VarChar);
@@ -584,12 +584,12 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
 
             var predicate = dbo.Person.FirstName == firstName;
 
-            var appender = database.ExpressionElementAppenderFactory.CreateElementAppender(predicate);
+            var appender = database.ExpressionElementAppenderFactory.CreateElementAppender(predicate)!;
 
             //when
             appender.AppendElement(predicate, builder, context);
-            var parameter = builder.Parameters.Parameters.SingleOrDefault();
-            var meta = parameter.Metadata as ISqlFieldMetadata;
+            var parameter = builder.Parameters.Parameters.Single();
+            var meta = (parameter.Metadata as ISqlFieldMetadata)!;
 
             //then
             meta.DbType.Should().Be(SqlDbType.VarChar);
@@ -610,12 +610,12 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
 
             var predicate = dbo.Product.Price == productPrice;
 
-            var appender = database.ExpressionElementAppenderFactory.CreateElementAppender(predicate);
+            var appender = database.ExpressionElementAppenderFactory.CreateElementAppender(predicate)!;
 
             //when
             appender.AppendElement(predicate, builder, context);
-            var parameter = builder.Parameters.Parameters.SingleOrDefault();
-            var meta = parameter.Metadata as ISqlFieldMetadata;
+            var parameter = builder.Parameters.Parameters.Single();
+            var meta = (parameter.Metadata as ISqlFieldMetadata)!;
 
             //then
             meta.DbType.Should().Be(SqlDbType.Money);
@@ -635,12 +635,12 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
 
             var predicate = dbo.Product.Image == image;
 
-            var appender = database.ExpressionElementAppenderFactory.CreateElementAppender(predicate);
+            var appender = database.ExpressionElementAppenderFactory.CreateElementAppender(predicate)!;
 
             //when
             appender.AppendElement(predicate, builder, context);
-            var parameter = builder.Parameters.Parameters.SingleOrDefault();
-            var meta = parameter.Metadata as ISqlFieldMetadata;
+            var parameter = builder.Parameters.Parameters.Single();
+            var meta = (parameter.Metadata as ISqlFieldMetadata)!;
 
             //then
             meta.DbType.Should().Be(SqlDbType.VarBinary);

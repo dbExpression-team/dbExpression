@@ -32,7 +32,9 @@ namespace HatTrick.DbEx.Sql.Builder
     {
         #region constructors
         public SelectValueStoredProcedureQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, StoredProcedureQueryExpression expression)
-            : base(config, expression, expression.BaseEntity as StoredProcedureExpression)
+#pragma warning disable CS8604 // Possible null reference argument.
+            : base(config, expression, expression.BaseEntity as StoredProcedureExpression) //TODO: interface
+#pragma warning restore CS8604 // Possible null reference argument.
         {
 
         }
@@ -41,17 +43,17 @@ namespace HatTrick.DbEx.Sql.Builder
         #region methods
         #region SelectValueStoredProcedureTermination
         /// <inheritdoc />
-        TValue SelectValueStoredProcedureTermination<TValue>.Execute()
+        TValue? SelectValueStoredProcedureTermination<TValue>.Execute()
         {
-            using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
-                return ExecuteValuePipeline(
-                    connection,
-                    null
-                );
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            return ExecuteValuePipeline(
+                connection,
+                null
+            );
         }
 
         /// <inheritdoc />
-		TValue SelectValueStoredProcedureTermination<TValue>.Execute(ISqlConnection connection)
+		TValue? SelectValueStoredProcedureTermination<TValue>.Execute(ISqlConnection connection)
         {
             return ExecuteValuePipeline(
                 connection,
@@ -60,17 +62,17 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-		TValue SelectValueStoredProcedureTermination<TValue>.Execute(int commandTimeout)
+		TValue? SelectValueStoredProcedureTermination<TValue>.Execute(int commandTimeout)
         {
-            using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
-                return ExecuteValuePipeline(
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            return ExecuteValuePipeline(
                 connection,
                 command => command.CommandTimeout = commandTimeout
             );
         }
 
         /// <inheritdoc />
-		TValue SelectValueStoredProcedureTermination<TValue>.Execute(ISqlConnection connection, int commandTimeout)
+		TValue? SelectValueStoredProcedureTermination<TValue>.Execute(ISqlConnection connection, int commandTimeout)
         {
             return ExecuteValuePipeline(
                 connection,
@@ -79,18 +81,18 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-		async Task<TValue> SelectValueStoredProcedureTermination<TValue>.ExecuteAsync(CancellationToken cancellationToken)
+		async Task<TValue?> SelectValueStoredProcedureTermination<TValue>.ExecuteAsync(CancellationToken cancellationToken)
         {
-            using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
-                return await ExecuteValuePipelineAsync(
-                    connection,
-                    null,
-                    cancellationToken
-                ).ConfigureAwait(false);
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            return await ExecuteValuePipelineAsync(
+                connection,
+                null,
+                cancellationToken
+            ).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-		async Task<TValue> SelectValueStoredProcedureTermination<TValue>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
+		async Task<TValue?> SelectValueStoredProcedureTermination<TValue>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
         {
             return await ExecuteValuePipelineAsync(
                 connection,
@@ -100,18 +102,18 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-		async Task<TValue> SelectValueStoredProcedureTermination<TValue>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
+		async Task<TValue?> SelectValueStoredProcedureTermination<TValue>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
         {
-            using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
-                return await ExecuteValuePipelineAsync(
-                    connection,
-                    command => command.CommandTimeout = commandTimeout,
-                    cancellationToken
-                ).ConfigureAwait(false);
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            return await ExecuteValuePipelineAsync(
+                connection,
+                command => command.CommandTimeout = commandTimeout,
+                cancellationToken
+            ).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-		async Task<TValue> SelectValueStoredProcedureTermination<TValue>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
+		async Task<TValue?> SelectValueStoredProcedureTermination<TValue>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
         {
             return await ExecuteValuePipelineAsync(
                 connection,
@@ -120,10 +122,10 @@ namespace HatTrick.DbEx.Sql.Builder
             ).ConfigureAwait(false);
         }
 
-        protected virtual TValue ExecuteValuePipeline(ISqlConnection connection, Action<IDbCommand> configureCommand)
+        protected virtual TValue? ExecuteValuePipeline(ISqlConnection connection, Action<IDbCommand>? configureCommand)
             => CreateStoredProcedureExecutionPipeline().ExecuteSelectValue<TValue>(Expression, connection, configureCommand);
 
-        protected virtual async Task<TValue> ExecuteValuePipelineAsync(ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
+        protected virtual async Task<TValue?> ExecuteValuePipelineAsync(ISqlConnection connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
             => await CreateStoredProcedureExecutionPipeline().ExecuteSelectValueAsync<TValue>(Expression, connection, configureCommand, ct).ConfigureAwait(false);
 
         #endregion

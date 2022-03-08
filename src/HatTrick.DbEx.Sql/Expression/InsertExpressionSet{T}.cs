@@ -23,6 +23,7 @@ using System.Linq;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class InsertExpressionSet<T> : InsertExpressionSet
+        where T : class, IDbEntity
     {
         #region interface
         public new T Entity { get; private set; }
@@ -31,20 +32,22 @@ namespace HatTrick.DbEx.Sql.Expression
         #region constructors
         private InsertExpressionSet()
         {
-
+            throw new InvalidOperationException("Private constructor does not correctly initialize internal members.");
         }
 
-        public InsertExpressionSet(T entity, IEnumerable<InsertExpression> fields) : base(entity as IDbEntity, fields)
+        public InsertExpressionSet(T entity, IEnumerable<InsertExpression> fields) : base(entity, fields)
         {
+            Entity = entity;
         }
 
-        public InsertExpressionSet(T entity, params InsertExpression[] fields) : base(entity as IDbEntity, fields?.ToArray())
+        public InsertExpressionSet(T entity, params InsertExpression[] fields) : base(entity, fields?.ToArray() ?? Enumerable.Empty<InsertExpression>())
         {
+            Entity = entity;
         }
         #endregion
 
         #region to string
-        public override string ToString() => $"{string.Join(", ", expressions.Select(e => e.ToString()))}";
+        public override string? ToString() => $"{string.Join(", ", expressions.Select(e => e.ToString()))}";
         #endregion
     }
 

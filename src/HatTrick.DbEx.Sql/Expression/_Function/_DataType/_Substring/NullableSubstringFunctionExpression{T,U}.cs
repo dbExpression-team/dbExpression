@@ -25,22 +25,82 @@ namespace HatTrick.DbEx.Sql.Expression
         where TValue : IComparable
     {
         #region constructors
-        protected NullableSubstringFunctionExpression(StringElement expression, Int32Element start, Int32Element length) : base(expression, start, length, typeof(TNullableValue))
+        protected NullableSubstringFunctionExpression(AnyStringElement expression, AnyElement<int?> start, AnyElement<int?> length) : base(expression, start, length, typeof(TNullableValue))
         {
 
         }
 
-        protected NullableSubstringFunctionExpression(StringElement expression, Int32Element start, Int64Element length) : base(expression, start, length, typeof(TNullableValue))
+        protected NullableSubstringFunctionExpression(AnyStringElement expression, AnyElement<int?> start, AnyElement<long?> length) : base(expression, start, length, typeof(TNullableValue))
         {
 
         }
 
-        protected NullableSubstringFunctionExpression(StringElement expression, Int64Element start, Int32Element length) : base(expression, start, length, typeof(TNullableValue))
+        protected NullableSubstringFunctionExpression(AnyStringElement expression, AnyElement<long?> start, AnyElement<int?> length) : base(expression, start, length, typeof(TNullableValue))
         {
 
         }
 
-        protected NullableSubstringFunctionExpression(StringElement expression, Int64Element start, Int64Element length) : base(expression, start, length, typeof(TNullableValue))
+        protected NullableSubstringFunctionExpression(AnyStringElement expression, AnyElement<long?> start, AnyElement<long?> length) : base(expression, start, length, typeof(TNullableValue))
+        {
+
+        }
+
+        protected NullableSubstringFunctionExpression(AnyStringElement expression, AnyElement<int> start, AnyElement<int?> length) : base(expression, start, length, typeof(TNullableValue))
+        {
+
+        }
+
+        protected NullableSubstringFunctionExpression(AnyStringElement expression, AnyElement<int> start, AnyElement<long?> length) : base(expression, start, length, typeof(TNullableValue))
+        {
+
+        }
+
+        protected NullableSubstringFunctionExpression(AnyStringElement expression, AnyElement<long> start, AnyElement<int?> length) : base(expression, start, length, typeof(TNullableValue))
+        {
+
+        }
+
+        protected NullableSubstringFunctionExpression(AnyStringElement expression, AnyElement<long> start, AnyElement<long?> length) : base(expression, start, length, typeof(TNullableValue))
+        {
+
+        }
+
+        protected NullableSubstringFunctionExpression(AnyStringElement expression, AnyElement<int?> start, AnyElement<int> length) : base(expression, start, length, typeof(TNullableValue))
+        {
+
+        }
+
+        protected NullableSubstringFunctionExpression(AnyStringElement expression, AnyElement<int?> start, AnyElement<long> length) : base(expression, start, length, typeof(TNullableValue))
+        {
+
+        }
+
+        protected NullableSubstringFunctionExpression(AnyStringElement expression, AnyElement<long?> start, AnyElement<int> length) : base(expression, start, length, typeof(TNullableValue))
+        {
+
+        }
+
+        protected NullableSubstringFunctionExpression(AnyStringElement expression, AnyElement<long?> start, AnyElement<long> length) : base(expression, start, length, typeof(TNullableValue))
+        {
+
+        }
+
+        protected NullableSubstringFunctionExpression(AnyStringElement expression, AnyElement<int> start, AnyElement<int> length) : base(expression, start, length, typeof(TNullableValue))
+        {
+
+        }
+
+        protected NullableSubstringFunctionExpression(AnyStringElement expression, AnyElement<int> start, AnyElement<long> length) : base(expression, start, length, typeof(TNullableValue))
+        {
+
+        }
+
+        protected NullableSubstringFunctionExpression(AnyStringElement expression, AnyElement<long> start, AnyElement<int> length) : base(expression, start, length, typeof(TNullableValue))
+        {
+
+        }
+
+        protected NullableSubstringFunctionExpression(AnyStringElement expression, AnyElement<long> start, AnyElement<long> length) : base(expression, start, length, typeof(TNullableValue))
         {
 
         }

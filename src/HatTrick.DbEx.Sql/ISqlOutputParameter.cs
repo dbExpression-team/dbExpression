@@ -25,8 +25,8 @@ namespace HatTrick.DbEx.Sql
         int Index { get; }
         string Name { get; }
         Type DataType { get; }
-        object RawValue { get; }
-        T GetValue<T>();
-        object GetValue();
+        object? RawValue { get; }
+        T? GetValue<T>();
+        object? GetValue();
     }
 }

@@ -6,12 +6,12 @@ namespace HatTrick.DbEx.CodeTemplating.Builder
 {
     public class FilterBuilder
     {
-        private static readonly FilterOperationTemplateModel equal = new FilterOperationTemplateModel { FilterOperatorName = "Equal", FilterOperatorSymbol = "==" };
-        private static readonly FilterOperationTemplateModel notEqual = new FilterOperationTemplateModel { FilterOperatorName = "NotEqual", FilterOperatorSymbol = "!=" };
-        private static readonly FilterOperationTemplateModel lessThan = new FilterOperationTemplateModel { FilterOperatorName = "LessThan", FilterOperatorSymbol = "<" };
-        private static readonly FilterOperationTemplateModel lessThanOrEqual = new FilterOperationTemplateModel { FilterOperatorName = "LessThanOrEqual", FilterOperatorSymbol = "<=" };
-        private static readonly FilterOperationTemplateModel greaterThan = new FilterOperationTemplateModel { FilterOperatorName = "GreaterThan", FilterOperatorSymbol = ">" };
-        private static readonly FilterOperationTemplateModel greaterThanOrEqual = new FilterOperationTemplateModel { FilterOperatorName = "GreaterThanOrEqual", FilterOperatorSymbol = ">=" };
+        private static readonly FilterOperationTemplateModel equal = new() { FilterOperatorName = "Equal", FilterOperatorSymbol = "==" };
+        private static readonly FilterOperationTemplateModel notEqual = new() { FilterOperatorName = "NotEqual", FilterOperatorSymbol = "!=" };
+        private static readonly FilterOperationTemplateModel lessThan = new() { FilterOperatorName = "LessThan", FilterOperatorSymbol = "<" };
+        private static readonly FilterOperationTemplateModel lessThanOrEqual = new() { FilterOperatorName = "LessThanOrEqual", FilterOperatorSymbol = "<=" };
+        private static readonly FilterOperationTemplateModel greaterThan = new() { FilterOperatorName = "GreaterThan", FilterOperatorSymbol = ">" };
+        private static readonly FilterOperationTemplateModel greaterThanOrEqual = new() { FilterOperatorName = "GreaterThanOrEqual", FilterOperatorSymbol = ">=" };
 
         private IList<FilterOperationTemplateModel> operations = new List<FilterOperationTemplateModel>();
 
@@ -71,7 +71,7 @@ namespace HatTrick.DbEx.CodeTemplating.Builder
         public IList<FilterOperationTemplateModel> ToList() => operations;
 
         public static FilterBuilder CreateBuilder()
-            => new FilterBuilder();
+            => new();
 
         public FilterBuilder InferFilterOperations(TypeModel sourceType, TypeModel targetType)
         {

@@ -11,10 +11,10 @@ namespace ServerSideBlazorApp.Shared
 {
     public partial class SingleMetricChart : ComponentBase
     {
-        private LineChart<object> lineChart;
-        private PieChart<object> pieChart;
-        private BarChart<object> barChart;
-        private DoughnutChart<object> doughnutChart;
+        private LineChart<object> lineChart = new();
+        private PieChart<object> pieChart = new();
+        private BarChart<object> barChart = new();
+        private DoughnutChart<object> doughnutChart = new();
 
         private readonly List<string> backgroundColors = new()
         { 
@@ -48,7 +48,7 @@ namespace ServerSideBlazorApp.Shared
             }
         };
 
-        [Parameter] public Func<Task<IEnumerable<SingleMetricDatasetModel>>> Data { get; set; }
+        [Parameter] public Func<Task<IEnumerable<SingleMetricDatasetModel>>> Data { get; set; } = new Func<Task<IEnumerable<SingleMetricDatasetModel>>>(() => Task.FromResult(Enumerable.Empty<SingleMetricDatasetModel>()));
         [Parameter] public ChartType Type { get; set; }
         [Parameter] public bool ShowLegend { get; set; } = true;
 
@@ -81,7 +81,7 @@ namespace ServerSideBlazorApp.Shared
                 data.Select(x => x.Label).ToList().AsReadOnly(),
                 new LineChartDataset<object>
                 {
-                    Data = data.Select(x => x.Value).ToList(),
+                    Data = data.Where(x => x is not null).Select(x => x.Value).ToList()!,
                     BackgroundColor = data.Select((x, i) => backgroundColors[i % backgroundColors.Count]).ToList(),
                     BorderColor = data.Select((x, i) => borderColors[i % borderColors.Count]).ToList(),
                     PointRadius = 3
@@ -98,7 +98,7 @@ namespace ServerSideBlazorApp.Shared
                 data.Select(x => x.Label).ToList().AsReadOnly(),
                 new PieChartDataset<object>
                 {
-                    Data = data.Select(x => x.Value).ToList(),
+                    Data = data.Where(x => x is not null).Select(x => x.Value).ToList()!,
                     BackgroundColor = data.Select((x, i) => backgroundColors[i % backgroundColors.Count]).ToList(),
                     BorderColor = data.Select((x, i) => borderColors[i % borderColors.Count]).ToList()
                 }
@@ -114,7 +114,7 @@ namespace ServerSideBlazorApp.Shared
                 data.Select(x => x.Label).ToList().AsReadOnly(),
                 new BarChartDataset<object>
                 {
-                    Data = data.Select(x => x.Value).ToList(),
+                    Data = data.Where(x => x is not null).Select(x => x.Value).ToList()!,
                     BackgroundColor = data.Select((x, i) => backgroundColors[i % backgroundColors.Count]).ToList(),
                     BorderColor = data.Select((x, i) => borderColors[i % borderColors.Count]).ToList()
                 }
@@ -130,7 +130,7 @@ namespace ServerSideBlazorApp.Shared
                 data.Select(x => x.Label).ToList().AsReadOnly(),
                 new DoughnutChartDataset<object>
                 {
-                    Data = data.Select(x => x.Value).ToList(),
+                    Data = data.Where(x => x is not null).Select(x => x.Value).ToList()!,
                     BackgroundColor = data.Select((x, i) => backgroundColors[i % backgroundColors.Count]).ToList(),
                     BorderColor = data.Select((x, i) => borderColors[i % borderColors.Count]).ToList()
                 }

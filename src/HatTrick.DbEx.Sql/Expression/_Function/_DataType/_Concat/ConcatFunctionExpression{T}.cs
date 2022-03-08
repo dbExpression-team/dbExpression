@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.Sql.Expression
         where TValue : IComparable
     {
         #region constructors
-        protected ConcatFunctionExpression(IList<AnyElement<string>> expressions) : base(expressions, typeof(TValue))
+        protected ConcatFunctionExpression(IList<AnyStringElement> expressions) : base(expressions, typeof(TValue))
         {
 
         }

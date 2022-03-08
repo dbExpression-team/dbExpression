@@ -80,14 +80,14 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        SelectDynamicsOrderByContinuation SelectDynamicsContinuation.OrderBy(IEnumerable<AnyOrderByClause> orderBy)
+        SelectDynamicsOrderByContinuation SelectDynamicsContinuation.OrderBy(IEnumerable<AnyOrderByClause>? orderBy)
         {
             ApplyOrderBy(orderBy);
             return this;
         }
 
         /// <inheritdoc />
-        SelectDynamicsContinuation SelectDynamicsContinuation.Where(AnyWhereClause where)
+        SelectDynamicsContinuation SelectDynamicsContinuation.Where(AnyWhereClause? where)
         {
             ApplyWhere(where);
             return this;
@@ -99,7 +99,9 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <inheritdoc />
         JoinOnWithAlias<SelectDynamicsContinuation> SelectDynamicsContinuation.InnerJoin(AnySelectSubquery subquery)
-            => new SelectDynamicsJoinBuilder(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.INNER, this);
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+            => new SelectDynamicsJoinBuilder(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.INNER, this); //TODO: interface
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
         /// <inheritdoc />
         JoinOn<SelectDynamicsContinuation> SelectDynamicsContinuation.LeftJoin(AnyEntity entity)
@@ -107,7 +109,9 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <inheritdoc />
         JoinOnWithAlias<SelectDynamicsContinuation> SelectDynamicsContinuation.LeftJoin(AnySelectSubquery subquery)
-            => new SelectDynamicsJoinBuilder(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.LEFT, this);
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+            => new SelectDynamicsJoinBuilder(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.LEFT, this); //TODO: interface
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
         /// <inheritdoc />
         JoinOn<SelectDynamicsContinuation> SelectDynamicsContinuation.RightJoin(AnyEntity entity)
@@ -115,7 +119,9 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <inheritdoc />
         JoinOnWithAlias<SelectDynamicsContinuation> SelectDynamicsContinuation.RightJoin(AnySelectSubquery subquery)
-            => new SelectDynamicsJoinBuilder(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.RIGHT, this);
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+            => new SelectDynamicsJoinBuilder(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.RIGHT, this); //TODO: interface
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
         /// <inheritdoc />
         JoinOn<SelectDynamicsContinuation> SelectDynamicsContinuation.FullJoin(AnyEntity entity)
@@ -123,7 +129,9 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <inheritdoc />
         JoinOnWithAlias<SelectDynamicsContinuation> SelectDynamicsContinuation.FullJoin(AnySelectSubquery subquery)
-            => new SelectDynamicsJoinBuilder(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.FULL, this);
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+            => new SelectDynamicsJoinBuilder(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.FULL, this); //TODO: interface
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
         /// <inheritdoc />
         SelectDynamicsContinuation SelectDynamicsContinuation.CrossJoin(AnyEntity entity)
@@ -140,14 +148,14 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        SelectDynamicsContinuation SelectDynamicsContinuation.GroupBy(IEnumerable<AnyGroupByClause> groupBy)
+        SelectDynamicsContinuation SelectDynamicsContinuation.GroupBy(IEnumerable<AnyGroupByClause>? groupBy)
         {
             ApplyGroupBy(groupBy);
             return this;
         }
 
         /// <inheritdoc />
-        SelectDynamicsContinuation SelectDynamicsContinuation.Having(AnyHavingClause having)
+        SelectDynamicsContinuation SelectDynamicsContinuation.Having(AnyHavingClause? having)
         {
             ApplyHaving(having);
             return this;
@@ -156,7 +164,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         #region Limit<SelectDynamicsOrderByContinuation>
         /// <inheritdoc />
-        SelectDynamicsOrderByContinuation Limit<SelectDynamicsOrderByContinuation>.Having(AnyHavingClause having)
+        SelectDynamicsOrderByContinuation Limit<SelectDynamicsOrderByContinuation>.Having(AnyHavingClause? having)
         {
             ApplyHaving(having);
             return this;
@@ -184,14 +192,14 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        SelectDynamicsOrderByContinuation SelectDynamicsOrderByContinuation.GroupBy(IEnumerable<AnyGroupByClause> groupBy)
+        SelectDynamicsOrderByContinuation SelectDynamicsOrderByContinuation.GroupBy(IEnumerable<AnyGroupByClause>? groupBy)
         {
             ApplyGroupBy(groupBy);
             return this;
         }
 
         /// <inheritdoc />
-        SelectDynamicsOrderByContinuation SelectDynamicsOrderByContinuation.Having(AnyHavingClause having)
+        SelectDynamicsOrderByContinuation SelectDynamicsOrderByContinuation.Having(AnyHavingClause? having)
         {
             ApplyHaving(having);
             return this;
@@ -202,11 +210,11 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         IList<dynamic> SelectDynamicsTermination.Execute()
         {
-            using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
-                return ExecutePipeline(
-                    connection,
-                    null
-                );
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            return ExecutePipeline(
+                connection,
+                null
+            );
         }
 
         /// <inheritdoc />
@@ -215,11 +223,11 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
-                return ExecutePipeline(
-                    connection,
-                    command => command.CommandTimeout = commandTimeout
-                );
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            return ExecutePipeline(
+                connection,
+                command => command.CommandTimeout = commandTimeout
+            );
         }
 
         /// <inheritdoc />
@@ -246,12 +254,12 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         async Task<IList<dynamic>> SelectDynamicsTermination.ExecuteAsync(CancellationToken cancellationToken)
         {
-            using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
-                return await ExecutePipelineAsync(
-                    connection,
-                    null,
-                    cancellationToken
-                ).ConfigureAwait(false);
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            return await ExecutePipelineAsync(
+                connection,
+                null,
+                cancellationToken
+            ).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -260,12 +268,12 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
-                return await ExecutePipelineAsync(
-                    connection,
-                    command => command.CommandTimeout = commandTimeout,
-                    cancellationToken
-                ).ConfigureAwait(false);
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            return await ExecutePipelineAsync(
+                connection,
+                command => command.CommandTimeout = commandTimeout,
+                cancellationToken
+            ).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -294,12 +302,12 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         IList<T> SelectDynamicsTermination.Execute<T>(Func<ISqlFieldReader, T> map)
         {
-            using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
-                return ExecutePipeline(
-                    connection,
-                    null,
-                    map ?? throw new ArgumentNullException(nameof(map))
-                );
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            return ExecutePipeline(
+                connection,
+                null,
+                map ?? throw new ArgumentNullException(nameof(map))
+            );
         }
 
         /// <inheritdoc />
@@ -308,12 +316,12 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
-                return ExecutePipeline(
-                    connection,
-                    command => command.CommandTimeout = commandTimeout,
-                    map ?? throw new ArgumentNullException(nameof(map))
-                );
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            return ExecutePipeline(
+                connection,
+                command => command.CommandTimeout = commandTimeout,
+                map ?? throw new ArgumentNullException(nameof(map))
+            );
         }
 
         /// <inheritdoc />
@@ -342,12 +350,12 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         void SelectDynamicsTermination.Execute(Action<ISqlFieldReader> map)
         {
-            using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
-                ExecutePipeline(
-                    connection,
-                    null,
-                    map ?? throw new ArgumentNullException(nameof(map))
-                );
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            ExecutePipeline(
+                connection,
+                null,
+                map ?? throw new ArgumentNullException(nameof(map))
+            );
         }
 
         /// <inheritdoc />
@@ -356,12 +364,12 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
-                ExecutePipeline(
-                    connection,
-                    command => command.CommandTimeout = commandTimeout,
-                    map ?? throw new ArgumentNullException(nameof(map))
-                );
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            ExecutePipeline(
+                connection,
+                command => command.CommandTimeout = commandTimeout,
+                map ?? throw new ArgumentNullException(nameof(map))
+            );
         }
 
         /// <inheritdoc />
@@ -390,13 +398,13 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         async Task<IList<T>> SelectDynamicsTermination.ExecuteAsync<T>(Func<ISqlFieldReader, T> map, CancellationToken cancellationToken)
         {
-            using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
-                return await ExecutePipelineAsync(
-                    connection,
-                    null,
-                    map ?? throw new ArgumentNullException(nameof(map)),
-                    cancellationToken
-                ).ConfigureAwait(false);
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            return await ExecutePipelineAsync(
+                connection,
+                null,
+                map ?? throw new ArgumentNullException(nameof(map)),
+                cancellationToken
+            ).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -405,13 +413,13 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
-                return await ExecutePipelineAsync(
-                    connection,
-                    command => command.CommandTimeout = commandTimeout,
-                    map ?? throw new ArgumentNullException(nameof(map)),
-                    cancellationToken
-                ).ConfigureAwait(false);
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            return await ExecutePipelineAsync(
+                connection,
+                command => command.CommandTimeout = commandTimeout,
+                map ?? throw new ArgumentNullException(nameof(map)),
+                cancellationToken
+            ).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -442,13 +450,13 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         async Task SelectDynamicsTermination.ExecuteAsync(Action<ISqlFieldReader> read, CancellationToken cancellationToken)
         {
-            using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
-                await ExecutePipelineAsync(
-                    connection,
-                    null,
-                    read ?? throw new ArgumentNullException(nameof(read)),
-                    cancellationToken
-                ).ConfigureAwait(false);
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            await ExecutePipelineAsync(
+                connection,
+                null,
+                read ?? throw new ArgumentNullException(nameof(read)),
+                cancellationToken
+            ).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -457,13 +465,13 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
-                await ExecutePipelineAsync(
-                    connection,
-                    command => command.CommandTimeout = commandTimeout,
-                    read ?? throw new ArgumentNullException(nameof(read)),
-                    cancellationToken
-                ).ConfigureAwait(false);
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            await ExecutePipelineAsync(
+                connection,
+                command => command.CommandTimeout = commandTimeout,
+                read ?? throw new ArgumentNullException(nameof(read)),
+                cancellationToken
+            ).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -494,13 +502,13 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         async Task SelectDynamicsTermination.ExecuteAsync(Func<ISqlFieldReader, Task> read, CancellationToken cancellationToken)
         {
-            using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
-                await ExecutePipelineAsync(
-                    connection,
-                    null,
-                    read ?? throw new ArgumentNullException(nameof(read)),
-                    cancellationToken
-                ).ConfigureAwait(false);
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            await ExecutePipelineAsync(
+                connection,
+                null,
+                read ?? throw new ArgumentNullException(nameof(read)),
+                cancellationToken
+            ).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -509,13 +517,13 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
-                await ExecutePipelineAsync(
-                    connection,
-                    command => command.CommandTimeout = commandTimeout,
-                    read ?? throw new ArgumentNullException(nameof(read)),
-                    cancellationToken
-                ).ConfigureAwait(false);
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            await ExecutePipelineAsync(
+                connection,
+                command => command.CommandTimeout = commandTimeout,
+                read ?? throw new ArgumentNullException(nameof(read)),
+                cancellationToken
+            ).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -544,30 +552,30 @@ namespace HatTrick.DbEx.Sql.Builder
         }
         #endregion
 
-        protected virtual IList<dynamic> ExecutePipeline(ISqlConnection connection, Action<IDbCommand> configureCommand)
+        protected virtual IList<dynamic> ExecutePipeline(ISqlConnection connection, Action<IDbCommand>? configureCommand)
             => CreateSelectExecutionPipeline().ExecuteSelectDynamicList(Expression, connection, configureCommand);
 
-        protected virtual void ExecutePipeline(ISqlConnection connection, Action<IDbCommand> configureCommand, Action<ISqlFieldReader> read)
+        protected virtual void ExecutePipeline(ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> read)
             => CreateSelectExecutionPipeline().ExecuteSelectDynamic(Expression, connection, configureCommand, read);
 
-        protected virtual IList<T> ExecutePipeline<T>(ISqlConnection connection, Action<IDbCommand> configureCommand, Func<ISqlFieldReader, T> map)
+        protected virtual IList<T> ExecutePipeline<T>(ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, T> map)
             => CreateSelectExecutionPipeline().ExecuteSelectObjectList(Expression, connection, configureCommand, map);
 
-        protected virtual async Task<IList<dynamic>> ExecutePipelineAsync(ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken cancellationToken)
+        protected virtual async Task<IList<dynamic>> ExecutePipelineAsync(ISqlConnection connection, Action<IDbCommand>? configureCommand, CancellationToken cancellationToken)
             => await CreateSelectExecutionPipeline().ExecuteSelectDynamicListAsync(Expression, connection, configureCommand, cancellationToken).ConfigureAwait(false);
 
-        protected virtual async Task ExecutePipelineAsync(ISqlConnection connection, Action<IDbCommand> configureCommand, Action<ISqlFieldReader> read, CancellationToken cancellationToken)
+        protected virtual async Task ExecutePipelineAsync(ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> read, CancellationToken cancellationToken)
             => await CreateSelectExecutionPipeline().ExecuteSelectDynamicListAsync(Expression, connection, configureCommand, read, cancellationToken).ConfigureAwait(false);
 
-        protected virtual async Task ExecutePipelineAsync(ISqlConnection connection, Action<IDbCommand> configureCommand, Func<ISqlFieldReader, Task> read, CancellationToken cancellationToken)
+        protected virtual async Task ExecutePipelineAsync(ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, Task> read, CancellationToken cancellationToken)
             => await CreateSelectExecutionPipeline().ExecuteSelectDynamicListAsync(Expression, connection, configureCommand, read, cancellationToken).ConfigureAwait(false);
 
-        protected virtual async Task<IList<T>> ExecutePipelineAsync<T>(ISqlConnection connection, Action<IDbCommand> configureCommand, Func<ISqlFieldReader, T> map, CancellationToken cancellationToken)
+        protected virtual async Task<IList<T>> ExecutePipelineAsync<T>(ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, T> map, CancellationToken cancellationToken)
             => await CreateSelectExecutionPipeline().ExecuteSelectObjectListAsync(Expression, connection, configureCommand, map, cancellationToken).ConfigureAwait(false);
 
         protected virtual ISelectQueryExpressionExecutionPipeline CreateSelectExecutionPipeline()
         {
-            return Configuration.ExecutionPipelineFactory?.CreateExecutionPipeline(Configuration, Expression) ?? throw new DbExpressionConfigurationException($"Could not resolve/create an execution pipeline for type '{GetType()}',  please review and ensure the correct configuration for DbExpression.");
+            return Configuration.ExecutionPipelineFactory?.CreateQueryExecutionPipeline(Configuration, Expression) ?? throw new DbExpressionConfigurationException($"Could not resolve/create an execution pipeline for type '{GetType()}',  please review and ensure the correct configuration for DbExpression.");
         }
         #endregion
     }

@@ -40,14 +40,14 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         public ISqlStatementAssemblyGroupingConfigurationBuilders Use<TSqlParameterBuilderFactory>()
             where TSqlParameterBuilderFactory : class, ISqlParameterBuilderFactory, new()
-            => Use<TSqlParameterBuilderFactory>(null);
+            => Use<TSqlParameterBuilderFactory>(_ => { });
 
         public ISqlStatementAssemblyGroupingConfigurationBuilders Use<TSqlParameterBuilderFactory>(Action<TSqlParameterBuilderFactory> configureFactory)
             where TSqlParameterBuilderFactory : class, ISqlParameterBuilderFactory, new()
         {
-            if (!(configuration.ParameterBuilderFactory is TSqlParameterBuilderFactory))
+            if (configuration.ParameterBuilderFactory is not TSqlParameterBuilderFactory)
                 configuration.ParameterBuilderFactory = new TSqlParameterBuilderFactory();
-            configureFactory?.Invoke(configuration.ParameterBuilderFactory as TSqlParameterBuilderFactory);
+            configureFactory?.Invoke((configuration.ParameterBuilderFactory as TSqlParameterBuilderFactory)!);
             return caller;
         }
 

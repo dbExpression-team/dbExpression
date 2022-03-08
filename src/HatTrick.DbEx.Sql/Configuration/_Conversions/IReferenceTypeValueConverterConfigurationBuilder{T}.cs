@@ -42,6 +42,6 @@ namespace HatTrick.DbEx.Sql.Configuration
         /// </summary>
         /// <typeparam name="convertToDatabase">A custom delegate that will convert a <typeparamref name="T"/> into an <see cref="object"/> for persistence in the database.</param>
         /// <typeparam name="convertFromDatabase">A custom delegate that will convert an <see cref="object"/> read from the database into the type <typeparamref name="T"/>.</param>
-        IValueConverterFactoryContinuationConfigurationBuilder Use(Func<T, object> convertToDatabase, Func<object, T> convertFromDatabase);
+        IValueConverterFactoryContinuationConfigurationBuilder Use(Func<T?, object?> convertToDatabase, Func<object?, T?> convertFromDatabase);
     }
 }

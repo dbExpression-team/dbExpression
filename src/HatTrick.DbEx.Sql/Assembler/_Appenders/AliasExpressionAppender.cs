@@ -25,11 +25,11 @@ namespace HatTrick.DbEx.Sql.Assembler
         public override void AppendElement(AliasExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             builder.Appender.Write(context.Configuration.IdentifierDelimiter.Begin)
-                .Write((expression as IExpressionProvider<AliasExpression.AliasSpecification>).Expression.TableAlias)
+                .Write((expression as IExpressionProvider<AliasExpression.AliasExpressionElements>).Expression.TableAlias)
                 .Write(context.Configuration.IdentifierDelimiter.End)
                 .Write(".")
                 .Write(context.Configuration.IdentifierDelimiter.Begin)
-                .Write((expression as IExpressionProvider<AliasExpression.AliasSpecification>).Expression.FieldAlias)
+                .Write((expression as IExpressionProvider<AliasExpression.AliasExpressionElements>).Expression.FieldAlias)
                 .Write(context.Configuration.IdentifierDelimiter.End);
         }
     }

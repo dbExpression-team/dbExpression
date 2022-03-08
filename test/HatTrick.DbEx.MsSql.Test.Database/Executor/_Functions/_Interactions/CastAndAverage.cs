@@ -23,7 +23,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ).From(dbo.PurchaseLine);
 
             //when               
-            string result = exp.Execute();
+            string? result = exp.Execute();
 
             //then
             result.Should().Be(expected);

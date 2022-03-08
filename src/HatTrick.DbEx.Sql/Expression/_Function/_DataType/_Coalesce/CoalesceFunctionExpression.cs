@@ -43,13 +43,14 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region to string
-        public override string ToString() => $"COALESCE({string.Join(", ", expressions)})";
+        public override string? ToString() => $"COALESCE({string.Join(", ", expressions)})";
         #endregion
 
         #region equals
-        public bool Equals(CoalesceFunctionExpression obj)
+        public bool Equals(CoalesceFunctionExpression? obj)
         {
-            if (!base.Equals(obj)) return false;
+            if (obj is null) return false;
+            if (ReferenceEquals(this, obj)) return true;
 
             if (expressions.Count() != obj.expressions.Count()) return false;
 
@@ -59,8 +60,8 @@ namespace HatTrick.DbEx.Sql.Expression
             return true;
         }
 
-        public override bool Equals(object obj)
-            => obj is CoalesceFunctionExpression exp ? Equals(exp) : false;
+        public override bool Equals(object? obj)
+            => obj is CoalesceFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

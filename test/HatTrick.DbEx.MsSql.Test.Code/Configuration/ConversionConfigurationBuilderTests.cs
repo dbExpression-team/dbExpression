@@ -16,7 +16,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
         public void Does_configuration_using_instance_method_with_null_instance_throw_expected_exception(int version)
         {
             //given & when & then
-            Assert.Throws<DbExpressionConfigurationException>(() => ConfigureForMsSqlVersion(version, builder => builder.Conversions.Use((IValueConverterFactory)null)));
+            Assert.Throws<DbExpressionConfigurationException>(() => ConfigureForMsSqlVersion(version, builder => builder.Conversions.Use((IValueConverterFactory)null!)));
         }
 
         [Theory]
@@ -55,7 +55,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
             var config = ConfigureForMsSqlVersion(version, builder => builder.Conversions.UseDefaultFactory(x => x.OverrideForValueType<int>().Use<NoOpValueConverter>()));
 
             //when
-            var matchingType = config.ValueConverterFactory is IValueConverterFactory;
+            var matchingType = config.ValueConverterFactory is not null;
 
             //then
             matchingType.Should().BeTrue();
@@ -82,7 +82,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
             var config = ConfigureForMsSqlVersion(version, builder => builder.Conversions.UseDefaultFactory(x => x.OverrideForValueType<int>().Use(new NoOpValueConverter())));
 
             //when
-            var matchingType = config.ValueConverterFactory is IValueConverterFactory;
+            var matchingType = config.ValueConverterFactory is not null;
 
             //then
             matchingType.Should().BeTrue();
@@ -109,7 +109,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
             var config = ConfigureForMsSqlVersion(version, builder => builder.Conversions.UseDefaultFactory(x => x.OverrideForEnumType<AddressType>().Use<NoOpValueConverter>()));
 
             //when
-            var matchingType = config.ValueConverterFactory is IValueConverterFactory;
+            var matchingType = config.ValueConverterFactory is not null;
 
             //then
             matchingType.Should().BeTrue();
@@ -136,7 +136,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
             var config = ConfigureForMsSqlVersion(version, builder => builder.Conversions.UseDefaultFactory(x => x.OverrideForEnumType<AddressType>().Use(new NoOpValueConverter())));
 
             //when
-            var matchingType = config.ValueConverterFactory is IValueConverterFactory;
+            var matchingType = config.ValueConverterFactory is not null;
 
             //then
             matchingType.Should().BeTrue();
@@ -163,7 +163,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
             var config = ConfigureForMsSqlVersion(version, builder => builder.Conversions.UseDefaultFactory(x => x.OverrideForEnumType<AddressType>().Use<NoOpValueConverter>()));
 
             //when
-            var matchingType = config.ValueConverterFactory is IValueConverterFactory;
+            var matchingType = config.ValueConverterFactory is not null;
 
             //then
             matchingType.Should().BeTrue();
@@ -199,16 +199,16 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
 
         public class NoOpValueConverter : IValueConverter
         {
-            public object ConvertFromDatabase(object value) => throw new NotImplementedException();
-            public T ConvertFromDatabase<T>(object value) => throw new NotImplementedException();
-            public (Type, object) ConvertToDatabase(object value) => throw new NotImplementedException();
+            public object? ConvertFromDatabase(object? value) => throw new NotImplementedException();
+            public T? ConvertFromDatabase<T>(object? value) => throw new NotImplementedException();
+            public (Type, object?) ConvertToDatabase(object? value) => throw new NotImplementedException();
         }
 
         public class NoOpValueConverterFactory : IValueConverterFactory
         {
             public IValueConverter CreateConverter<T>() => throw new NotImplementedException();
             public IValueConverter CreateConverter(Type type) => throw new NotImplementedException();
-            public IValueConverter CreateConverter(FieldExpression field) => throw new NotImplementedException();
+            public IValueConverter CreateConverter(FieldExpression _) => throw new NotImplementedException();
         }
     }
 }

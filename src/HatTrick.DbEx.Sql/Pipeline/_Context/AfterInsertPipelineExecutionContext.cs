@@ -41,7 +41,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
 
         #region methods
-        public TEntity GetEntity<TEntity>()
+        public TEntity? GetEntity<TEntity>()
             where TEntity : class, IDbEntity
             => entity as TEntity;
         #endregion

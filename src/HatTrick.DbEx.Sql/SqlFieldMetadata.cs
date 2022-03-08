@@ -33,9 +33,6 @@ namespace HatTrick.DbEx.Sql
         public byte? Scale { get; private set; }
         public bool IsIdentity { get; set; }
 
-        public SqlFieldMetadata()
-        { }
-
         public SqlFieldMetadata(ISqlEntityMetadata parent, string identifier, string name, object dbType)
         {
             Entity = parent;
@@ -64,40 +61,41 @@ namespace HatTrick.DbEx.Sql
         }
 
         #region equals
-        public bool Equals(SqlFieldMetadata obj)
+        public bool Equals(SqlFieldMetadata? obj)
         {
             if (obj is null) return false;
+            if (ReferenceEquals(this, obj)) return true;
 
-            if (Entity is null && obj.Entity is object) return false;
-            if (Entity is object && obj.Entity is null) return false;
-            if (!Entity.Equals(obj.Entity)) return false;
+            if (Entity is null && obj.Entity is not null) return false;
+            if (Entity is not null && obj.Entity is null) return false;
+            if (Entity is not null && !Entity.Equals(obj.Entity)) return false;
 
             if (!StringComparer.Ordinal.Equals(Identifier, obj.Identifier)) return false;
 
             if (!StringComparer.Ordinal.Equals(Name, obj.Name)) return false;
 
-            if (DbType is null && obj.DbType is object) return false;
-            if (DbType is object && obj.DbType is null) return false;
-            if (!DbType.Equals(obj.DbType)) return false;
+            if (DbType is null && obj.DbType is not null) return false;
+            if (DbType is not null && obj.DbType is null) return false;
+            if (DbType is not null && !DbType.Equals(obj.DbType)) return false;
 
-            if (Size is null && obj.Size is object) return false;
-            if (Size is object && obj.Size is null) return false;
-            if (!Size.Equals(obj.Size)) return false;
+            if (Size is null && obj.Size is not null) return false;
+            if (Size is not null && obj.Size is null) return false;
+            if (Size is not null && !Size.Equals(obj.Size)) return false;
 
-            if (Precision is null && obj.Precision is object) return false;
-            if (Precision is object && obj.Precision is null) return false;
-            if (!Precision.Equals(obj.Precision)) return false;
+            if (Precision is null && obj.Precision is not null) return false;
+            if (Precision is not null && obj.Precision is null) return false;
+            if (Precision is not null && !Precision.Equals(obj.Precision)) return false;
 
-            if (Scale is null && obj.Scale is object) return false;
-            if (Scale is object && obj.Scale is null) return false;
-            if (!Scale.Equals(obj.Scale)) return false;
+            if (Scale is null && obj.Scale is not null) return false;
+            if (Scale is not null && obj.Scale is null) return false;
+            if (Scale is not null && !Scale.Equals(obj.Scale)) return false;
 
             if (IsIdentity != obj.IsIdentity) return false;
 
             return true;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
             => obj is SqlFieldMetadata exp && Equals(exp);
 
         public override int GetHashCode()
@@ -108,13 +106,13 @@ namespace HatTrick.DbEx.Sql
                 const int multiplier = 16777619;
 
                 int hash = @base;
-                hash = (hash * multiplier) ^ (Entity is object ? Entity.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ (Identifier is object ? Identifier.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ (Name is object ? Name.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ (DbType is object ? DbType.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ (Size is object ? Size.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ (Precision is object ? Precision.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ (Scale is object ? Scale.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (Entity is not null ? Entity.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (Identifier is not null ? Identifier.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (Name is not null ? Name.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (DbType is not null ? DbType.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (Size is not null ? Size.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (Precision is not null ? Precision.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (Scale is not null ? Scale.GetHashCode() : 0);
                 hash = (hash * multiplier) ^ IsIdentity.GetHashCode();
                 return hash;
             }

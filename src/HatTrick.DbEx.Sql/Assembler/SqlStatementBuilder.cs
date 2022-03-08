@@ -34,13 +34,13 @@ namespace HatTrick.DbEx.Sql.Assembler
         private readonly IAppenderFactory appenderFactory;
         private readonly ISqlParameterBuilderFactory parameterBuilderFactory;
         private int _currentAliasCounter;
-        private SqlStatement _sqlStatement;
-        private IAppender _appender;
-        private ISqlParameterBuilder _parameters;
+        private SqlStatement? _sqlStatement;
+        private IAppender? _appender;
+        private ISqlParameterBuilder? _parameters;
         #endregion
 
-        public IAppender Appender => _appender ?? (_appender = appenderFactory.CreateAppender() ?? throw new DbExpressionConfigurationException($"Could not resolve an appender, please ensure a an appender has been registered during startup initialization of dbExpression."));
-        public ISqlParameterBuilder Parameters => _parameters ?? (_parameters = parameterBuilderFactory.CreateSqlParameterBuilder() ?? throw new DbExpressionConfigurationException($"Could not resolve a parameter builder, please ensure a parameter builder has been registered during startup initialization of dbExpression."));
+        public IAppender Appender => _appender ??= appenderFactory.CreateAppender() ?? throw new DbExpressionConfigurationException($"Could not resolve an appender, please ensure a an appender has been registered during startup initialization of dbExpression.");
+        public ISqlParameterBuilder Parameters => _parameters ??= parameterBuilderFactory.CreateSqlParameterBuilder() ?? throw new DbExpressionConfigurationException($"Could not resolve a parameter builder, please ensure a parameter builder has been registered during startup initialization of dbExpression.");
 
         public SqlStatementBuilder(
             QueryExpression query,
@@ -63,7 +63,7 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public SqlStatement CreateSqlStatement()
         {
-            if (_sqlStatement is object)
+            if (_sqlStatement is not null)
                 return _sqlStatement;
 
             var context = new AssemblyContext(assemblerConfiguration);
@@ -80,7 +80,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             where T : class, IExpressionElement
         {
             var appender = elementAppenderFactory.CreateElementAppender(element);
-            if (appender is object)
+            if (appender is not null)
             {
                 appender.AppendElement(element, this, context);
                 return;
@@ -104,9 +104,9 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public string GenerateAlias() => $"_t{++_currentAliasCounter}";
 
-        public ISqlSchemaMetadata FindMetadata(SchemaExpression schema) => databaseMetadata.FindSchemaMetadata((schema as ISqlMetadataIdentifierProvider).Identifier);
-        public ISqlEntityMetadata FindMetadata(EntityExpression entity) => databaseMetadata.FindEntityMetadata((entity as ISqlMetadataIdentifierProvider).Identifier);
-        public ISqlFieldMetadata FindMetadata(FieldExpression field) => databaseMetadata.FindFieldMetadata((field as ISqlMetadataIdentifierProvider).Identifier);
-        public ISqlParameterMetadata FindMetadata(ParameterExpression parameter) => databaseMetadata.FindParameterMetadata((parameter as ISqlMetadataIdentifierProvider).Identifier);
+        public ISqlSchemaMetadata? FindMetadata(SchemaExpression schema) => databaseMetadata.FindSchemaMetadata((schema as ISqlMetadataIdentifierProvider).Identifier);
+        public ISqlEntityMetadata? FindMetadata(EntityExpression entity) => databaseMetadata.FindEntityMetadata((entity as ISqlMetadataIdentifierProvider).Identifier);
+        public ISqlFieldMetadata? FindMetadata(FieldExpression field) => databaseMetadata.FindFieldMetadata((field as ISqlMetadataIdentifierProvider).Identifier);
+        public ISqlParameterMetadata? FindMetadata(ParameterExpression parameter) => databaseMetadata.FindParameterMetadata((parameter as ISqlMetadataIdentifierProvider).Identifier);
     }
 }

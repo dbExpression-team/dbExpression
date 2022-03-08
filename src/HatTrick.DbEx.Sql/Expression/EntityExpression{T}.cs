@@ -27,12 +27,12 @@ namespace HatTrick.DbEx.Sql.Expression
         where T : class, IDbEntity
     {
         #region constructors
-        private EntityExpression() : base(null, null, typeof(T), null, null)
-        { 
-        
+        private EntityExpression()
+        {
+
         }
 
-        protected EntityExpression(string identifier, string name, SchemaExpression schema, string alias)
+        protected EntityExpression(string identifier, string name, SchemaExpression schema, string? alias)
             : base(identifier, name, typeof(T), schema, alias)
         {
 

@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.MsSql.Microsoft.Extensions.DependencyInjection.Builder
     internal sealed class ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder : RuntimeSqlDatabaseConfigurationBuilder, IDbExpressionConfigurationBuilder
     {
         public IServiceCollection Services { get; private set; }
-        public IRuntimeEnvironmentSqlDatabase Environment { get; set; }
+        public IRuntimeEnvironmentSqlDatabase? Environment { get; set; }
 
         public ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder(IServiceCollection services, RuntimeSqlDatabaseConfiguration configuration) : base(configuration)
         {

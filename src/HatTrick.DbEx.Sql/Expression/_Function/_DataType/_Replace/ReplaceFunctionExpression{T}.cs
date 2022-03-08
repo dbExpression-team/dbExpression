@@ -26,6 +26,26 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
+
+        protected ReplaceFunctionExpression(StringElement expression, AnyElement<string> pattern, AnyElement<string> replacement) : base(expression, pattern, replacement, typeof(TValue))
+        {
+
+        }
+
+        protected ReplaceFunctionExpression(StringElement expression, StringElement pattern, AnyElement<string> replacement) : base(expression, pattern, replacement, typeof(TValue))
+        {
+
+        }
+
+        protected ReplaceFunctionExpression(StringElement expression, StringElement pattern, StringElement replacement) : base(expression, pattern, replacement, typeof(TValue))
+        {
+
+        }
+
+        protected ReplaceFunctionExpression(StringElement expression, AnyElement<string> pattern, StringElement replacement) : base(expression, pattern, replacement, typeof(TValue))
+        {
+
+        }
         #endregion
     }
 }

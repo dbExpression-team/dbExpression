@@ -31,7 +31,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //then
             result.Should().NotBeNull();
-            result.Value.Year.Should().Be(expectedValue);
+            result!.Value.Year.Should().Be(expectedValue);
         }
 
         [Theory]
@@ -91,7 +91,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             DateTime? result = exp.Execute();
 
             //then
-            result.Value.Year.Should().Be(expected);
+            result.Should().NotBeNull();
+            result!.Value.Year.Should().Be(expected);
         }
 
         [Theory]
@@ -131,7 +132,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             DateTime? result = exp.Execute();
 
             //then
-            result.Value.Year.Should().Be(expected);
+            result.Should().NotBeNull();
+            result!.Value.Year.Should().Be(expected);
         }
     }
 }

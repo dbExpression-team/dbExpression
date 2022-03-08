@@ -32,7 +32,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_length_of_address_line2_succeed(int version, string line2 = null)
+        public void Does_length_of_address_line2_succeed(int version, string? line2 = null)
         {
             //given
             ConfigureForMsSqlVersion(version);

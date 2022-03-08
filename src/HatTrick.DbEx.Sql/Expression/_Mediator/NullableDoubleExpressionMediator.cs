@@ -30,11 +30,7 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public NullableDoubleExpressionMediator(IExpressionElement expression) : base(expression, typeof(double?))
-        {
-        }
-
-        protected NullableDoubleExpressionMediator(IExpressionElement expression, string alias) : base(expression, typeof(double?), alias)
+        public NullableDoubleExpressionMediator(IExpressionElement expression) : base(expression)
         {
         }
         #endregion
@@ -45,11 +41,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(NullableDoubleExpressionMediator obj)
-            => obj is NullableDoubleExpressionMediator && base.Equals(obj);
+        public bool Equals(NullableDoubleExpressionMediator? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableDoubleExpressionMediator exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableDoubleExpressionMediator exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

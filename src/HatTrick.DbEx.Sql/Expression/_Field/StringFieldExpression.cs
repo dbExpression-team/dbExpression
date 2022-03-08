@@ -32,17 +32,22 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
+        #region as
+        public new StringElement As(string alias)
+            => new StringSelectExpression(this as StringElement).As(alias);
+        #endregion
+
         #region like
         public FilterExpressionSet Like(string phrase)
-            => new FilterExpressionSet(new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
+            => new(new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
         #endregion
 
         #region equals
-        public bool Equals(StringFieldExpression obj)
-            => obj is StringFieldExpression && base.Equals(obj);
+        public bool Equals(StringFieldExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is StringFieldExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is StringFieldExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

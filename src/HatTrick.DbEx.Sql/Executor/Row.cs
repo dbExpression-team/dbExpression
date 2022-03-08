@@ -43,9 +43,9 @@ namespace HatTrick.DbEx.Sql.Executor
         #endregion
 
         #region methods
-        public ISqlField ReadField() => fieldIndex >= fields.Count ? null : fields[fieldIndex++];
+        public ISqlField? ReadField() => fieldIndex >= fields.Count ? null : fields[fieldIndex++];
 
-        public T GetValue<T>(int index)
+        public T? GetValue<T>(int index)
         {
             var field = fields[index];
             if (field.RawValue == default)

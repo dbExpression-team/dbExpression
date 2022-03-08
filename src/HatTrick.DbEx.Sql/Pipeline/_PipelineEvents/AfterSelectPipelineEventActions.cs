@@ -25,13 +25,13 @@ namespace HatTrick.DbEx.Sql.Pipeline
     public class AfterSelectPipelineEventActions : PipelineEventActions<Func<AfterSelectPipelineExecutionContext, CancellationToken, Task>, Action<AfterSelectPipelineExecutionContext>, AfterSelectPipelineExecutionContext>
     {
         protected override Func<AfterSelectPipelineExecutionContext, CancellationToken, Task> MakeAsync(Action<AfterSelectPipelineExecutionContext> action)
-            => new Func<AfterSelectPipelineExecutionContext, CancellationToken, Task>((ctx, ct) =>
+            => new((ctx, ct) =>
             {
                 action.Invoke(ctx);
-                return Task.FromResult<object>(null);
+                return Task.CompletedTask;
             });
 
         protected override Action<AfterSelectPipelineExecutionContext> MakeSync(Func<AfterSelectPipelineExecutionContext, CancellationToken, Task> action)
-           => new Action<AfterSelectPipelineExecutionContext>(ctx => action.Invoke(ctx, CancellationToken.None).GetAwaiter().GetResult());
+           => new(ctx => action.Invoke(ctx, CancellationToken.None).GetAwaiter().GetResult());
     }
 }

@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.Sql.Expression
             return false;
         }
 
-        internal static FieldExpression AsFieldExpression(this IExpressionElement expression)
+        internal static FieldExpression? AsFieldExpression(this IExpressionElement expression)
         {
             if (expression is FieldExpression field)
                 return field;

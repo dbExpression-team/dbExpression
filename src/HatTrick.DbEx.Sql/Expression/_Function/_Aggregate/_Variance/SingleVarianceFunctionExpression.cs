@@ -76,11 +76,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(SingleVarianceFunctionExpression obj)
-            => obj is SingleVarianceFunctionExpression && base.Equals(obj);
+        public bool Equals(SingleVarianceFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is SingleVarianceFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is SingleVarianceFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

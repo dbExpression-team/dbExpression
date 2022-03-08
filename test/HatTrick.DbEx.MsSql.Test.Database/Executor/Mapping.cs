@@ -33,7 +33,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             .Execute();
 
             //then
-            ((ProductCategoryType?)product.ProductCategoryType).Should().NotBeNull();
+            ((ProductCategoryType?)product!.ProductCategoryType).Should().NotBeNull();
         }
 
         [Theory]
@@ -53,7 +53,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             .Execute();
 
             //then
-            ((ProductCategoryType?)product.ProductCategoryType).Should().BeNull();
+            ((ProductCategoryType?)product!.ProductCategoryType).Should().BeNull();
         }
 
         [Theory]
@@ -74,7 +74,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             .Execute();
 
             //then
-            ((ProductCategoryType?)product.ProductCategoryType).Should().Be(ProductCategoryType.Books);
+            ((ProductCategoryType?)product!.ProductCategoryType).Should().Be(ProductCategoryType.Books);
         }
 
         [Theory]
@@ -94,7 +94,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             .Execute();
 
             //then
-            ((GenderType)person.GenderType).Should().Be(GenderType.Male);
+            ((GenderType)person!.GenderType).Should().Be(GenderType.Male);
         }
 
         [Theory]
@@ -172,13 +172,13 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             .Where(dbo.Product.ProductCategoryType != DBNull.Value)
             .Execute(p => {
                 dynamic d = new ExpandoObject();
-                d.Id = p.ReadField().GetValue<int>();
-                d.ProductCategoryType = p.ReadField().GetValue<ProductCategoryType?>();
+                d.Id = p.ReadField()!.GetValue<int>();
+                d.ProductCategoryType = p.ReadField()!.GetValue<ProductCategoryType?>();
                 return d;
             });
 
             //then
-            ((ProductCategoryType?)product.ProductCategoryType).Should().NotBeNull();
+            ((ProductCategoryType?)product!.ProductCategoryType).Should().NotBeNull();
         }
 
         [Theory]
@@ -197,13 +197,13 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             .Where(dbo.Product.ProductCategoryType == DBNull.Value)
             .Execute(p => {
                 dynamic d = new ExpandoObject();
-                d.Id = p.ReadField().GetValue<int>();
-                d.ProductCategoryType = p.ReadField().GetValue<ProductCategoryType?>();
+                d.Id = p.ReadField()!.GetValue<int>();
+                d.ProductCategoryType = p.ReadField()!.GetValue<ProductCategoryType?>();
                 return d;
             });
 
             //then
-            ((ProductCategoryType?)product.ProductCategoryType).Should().BeNull();
+            ((ProductCategoryType?)product!.ProductCategoryType).Should().BeNull();
         }
 
         [Theory]
@@ -222,13 +222,13 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             .Where(dbo.Person.Id == 1)
             .Execute(p => {
                 dynamic d = new ExpandoObject();
-                d.Id = p.ReadField().GetValue<int>();
-                d.GenderType = p.ReadField().GetValue<GenderType>();
+                d.Id = p.ReadField()!.GetValue<int>();
+                d.GenderType = p.ReadField()!.GetValue<GenderType>();
                 return d;
             });
 
             //then
-            ((GenderType)person.GenderType).Should().Be(GenderType.Male);
+            ((GenderType)person!.GenderType).Should().Be(GenderType.Male);
         }
 
         [Theory]
@@ -247,8 +247,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             .Where(dbo.Product.ProductCategoryType != DBNull.Value)
             .Execute(p => {
                 dynamic d = new ExpandoObject();
-                d.Id = p.ReadField().GetValue<int>();
-                d.ProductCategoryType = p.ReadField().GetValue<ProductCategoryType?>();
+                d.Id = p.ReadField()!.GetValue<int>();
+                d.ProductCategoryType = p.ReadField()!.GetValue<ProductCategoryType?>();
                 return d;
             });
 
@@ -272,8 +272,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             .Where(dbo.Product.ProductCategoryType == DBNull.Value)
             .Execute(p => {
                 dynamic d = new ExpandoObject();
-                d.Id = p.ReadField().GetValue<int>();
-                d.ProductCategoryType = p.ReadField().GetValue<ProductCategoryType?>();
+                d.Id = p.ReadField()!.GetValue<int>();
+                d.ProductCategoryType = p.ReadField()!.GetValue<ProductCategoryType?>();
                 return d;
             });
 
@@ -296,8 +296,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             .From(dbo.Person)
             .Execute(p => {
                 dynamic d = new ExpandoObject();
-                d.Id = p.ReadField().GetValue<int>();
-                d.GenderType = p.ReadField().GetValue<GenderType>();
+                d.Id = p.ReadField()!.GetValue<int>();
+                d.GenderType = p.ReadField()!.GetValue<GenderType>();
                 return d;
             });
 
@@ -379,23 +379,23 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .ExecuteAsync(
                     sqlRow =>
                     {
-                        customer.Id = sqlRow.ReadField().GetValue<int>();
-                        customer.Gender = sqlRow.ReadField().GetValue<GenderType>();
-                        customer.MailingAddress.Line1 = sqlRow.ReadField().GetValue<string>();
-                        customer.MailingAddress.Line2 = sqlRow.ReadField().GetValue<string>();
-                        customer.MailingAddress.City = sqlRow.ReadField().GetValue<string>();
-                        customer.MailingAddress.State = sqlRow.ReadField().GetValue<string>();
-                        customer.MailingAddress.ZIP = sqlRow.ReadField().GetValue<string>();
-                        customer.BillingAddress.Line1 = sqlRow.ReadField().GetValue<string>();
-                        customer.BillingAddress.Line2 = sqlRow.ReadField().GetValue<string>();
-                        customer.BillingAddress.City = sqlRow.ReadField().GetValue<string>();
-                        customer.BillingAddress.State = sqlRow.ReadField().GetValue<string>();
-                        customer.BillingAddress.ZIP = sqlRow.ReadField().GetValue<string>();
-                        customer.ShippingAddress.Line1 = sqlRow.ReadField().GetValue<string>();
-                        customer.ShippingAddress.Line2 = sqlRow.ReadField().GetValue<string>();
-                        customer.ShippingAddress.City = sqlRow.ReadField().GetValue<string>();
-                        customer.ShippingAddress.State = sqlRow.ReadField().GetValue<string>();
-                        customer.ShippingAddress.ZIP = sqlRow.ReadField().GetValue<string>();
+                        customer.Id = sqlRow.ReadField()!.GetValue<int>();
+                        customer.Gender = sqlRow.ReadField()!.GetValue<GenderType>();
+                        customer.MailingAddress.Line1 = sqlRow.ReadField()!.GetValue<string>()!;
+                        customer.MailingAddress.Line2 = sqlRow.ReadField()!.GetValue<string?>();
+                        customer.MailingAddress.City = sqlRow.ReadField()!.GetValue<string>()!;
+                        customer.MailingAddress.State = sqlRow.ReadField()!.GetValue<string>()!;
+                        customer.MailingAddress.ZIP = sqlRow.ReadField()!.GetValue<string>()!;
+                        customer.BillingAddress.Line1 = sqlRow.ReadField()!.GetValue<string>()!;
+                        customer.BillingAddress.Line2 = sqlRow.ReadField()!.GetValue<string?>();
+                        customer.BillingAddress.City = sqlRow.ReadField()!.GetValue<string>()!;
+                        customer.BillingAddress.State = sqlRow.ReadField()!.GetValue<string>()!;
+                        customer.BillingAddress.ZIP = sqlRow.ReadField()!.GetValue<string>()!;
+                        customer.ShippingAddress.Line1 = sqlRow.ReadField()!.GetValue<string>()!;
+                        customer.ShippingAddress.Line2 = sqlRow.ReadField()!.GetValue<string?>();
+                        customer.ShippingAddress.City = sqlRow.ReadField()!.GetValue<string>()!;
+                        customer.ShippingAddress.State = sqlRow.ReadField()!.GetValue<string>()!;
+                        customer.ShippingAddress.ZIP = sqlRow.ReadField()!.GetValue<string>()!;
                         return customer;
                     }
                 );
@@ -425,11 +425,11 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         private class Address
         {
-            public string Line1 { get; set; }
-            public string Line2 { get; set; }
-            public string City { get; set; }
-            public string State { get; set; }
-            public string ZIP { get; set; }
+            public string Line1 { get; set; } = String.Empty;
+            public string? Line2 { get; set; }
+            public string City { get; set; } = String.Empty;
+            public string State { get; set; } = String.Empty;
+            public string ZIP { get; set; } = String.Empty;
         }
     }
 }

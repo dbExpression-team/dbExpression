@@ -16,12 +16,12 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿namespace HatTrick.DbEx.Sql
+namespace HatTrick.DbEx.Sql
 {
 #pragma warning disable IDE1006 // Naming Styles
-    public interface StringElement : AnyElement<string>
+    public interface StringElement : AnyStringElement
 #pragma warning restore IDE1006 // Naming Styles
     {
-
+        StringElement As(string alias);
     }
 }

@@ -1,4 +1,5 @@
 {
+	"nullable": "enable",
 	"source": {
 		"type": "MsSqlDb",
 		"connectionString": {

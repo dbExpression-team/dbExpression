@@ -77,8 +77,17 @@ namespace HatTrick.DbEx.MsSql.Builder
             return new SelectValueSelectQueryExpressionBuilder<TEnum?>(configuration, expression);
         }
 
-        public virtual SelectValue<object> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<object> field)
-            => CreateSelectValueBuilder<object>(configuration, field);
+        public virtual SelectValue<object> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, ObjectElement field)
+            => CreateSelectValueBuilder(configuration, field);
+
+        public virtual SelectValue<object?> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableObjectElement field)
+            => CreateSelectValueBuilder(configuration, field);
+
+        public virtual SelectValue<T> CreateSelectValueBuilder<T>(RuntimeSqlDatabaseConfiguration configuration, ObjectElement<T> field)
+            => CreateSelectValueBuilder<T>(configuration, field as AnyElement);
+
+        public virtual SelectValue<T?> CreateSelectValueBuilder<T>(RuntimeSqlDatabaseConfiguration configuration, NullableObjectElement<T> field)
+            => CreateSelectValueBuilder<T?>(configuration, field as AnyElement);
 
         public virtual SelectValue<bool> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<bool> field)
             => CreateSelectValueBuilder<bool>(configuration, field);
@@ -149,16 +158,19 @@ namespace HatTrick.DbEx.MsSql.Builder
         public virtual SelectValue<float?> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<float?> field)
             => CreateSelectValueBuilder<float?>(configuration, field);
 
-        public virtual SelectValue<string> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<string> field)
+        public virtual SelectValue<string> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, StringElement field)
             => CreateSelectValueBuilder<string>(configuration, field);
 
+        public virtual SelectValue<string?> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableStringElement field)
+           => CreateSelectValueBuilder<string?>(configuration, field);
+        
         public virtual SelectValue<TimeSpan> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<TimeSpan> field)
             => CreateSelectValueBuilder<TimeSpan>(configuration, field);
 
         public virtual SelectValue<TimeSpan?> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<TimeSpan?> field)
             => CreateSelectValueBuilder<TimeSpan?>(configuration, field);
 
-        private SelectValue<TValue> CreateSelectValueBuilder<TValue>(RuntimeSqlDatabaseConfiguration configuration, AnyElement field)
+        private static SelectValue<TValue> CreateSelectValueBuilder<TValue>(RuntimeSqlDatabaseConfiguration configuration, AnyElement field)
         {
             var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
             expression.Top = 1;
@@ -211,8 +223,17 @@ namespace HatTrick.DbEx.MsSql.Builder
             return new SelectValuesSelectQueryExpressionBuilder<TEnum?>(configuration, expression);
         }
 
-        public virtual SelectValues<object> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<object> field)
-            => CreateSelectValuesBuilder<object>(configuration, field);
+        public virtual SelectValues<object> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, ObjectElement field)
+             => CreateSelectValuesBuilder(configuration, field);
+
+        public virtual SelectValues<object?> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableObjectElement field)
+            => CreateSelectValuesBuilder(configuration, field);
+
+        public virtual SelectValues<T> CreateSelectValuesBuilder<T>(RuntimeSqlDatabaseConfiguration configuration, ObjectElement<T> field)
+            => CreateSelectValuesBuilder<T>(configuration, field as AnyElement);
+
+        public virtual SelectValues<T?> CreateSelectValuesBuilder<T>(RuntimeSqlDatabaseConfiguration configuration, NullableObjectElement<T> field)
+            => CreateSelectValuesBuilder<T?>(configuration, field as AnyElement);
 
         public virtual SelectValues<bool> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<bool> field)
             => CreateSelectValuesBuilder<bool>(configuration, field);
@@ -283,8 +304,11 @@ namespace HatTrick.DbEx.MsSql.Builder
         public virtual SelectValues<float?> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<float?> field)
             => CreateSelectValuesBuilder<float?>(configuration, field);
 
-        public virtual SelectValues<string> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<string> field)
+        public virtual SelectValues<string> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, StringElement field)
             => CreateSelectValuesBuilder<string>(configuration, field);
+
+        public virtual SelectValues<string?> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableStringElement field)
+            => CreateSelectValuesBuilder<string?>(configuration, field);
 
         public virtual SelectValues<TimeSpan> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<TimeSpan> field)
             => CreateSelectValuesBuilder<TimeSpan>(configuration, field);
@@ -292,7 +316,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         public virtual SelectValues<TimeSpan?> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement<TimeSpan?> field)
             => CreateSelectValuesBuilder<TimeSpan?>(configuration, field);
 
-        private SelectValues<TValue> CreateSelectValuesBuilder<TValue>(RuntimeSqlDatabaseConfiguration configuration, AnyElement field)
+        private static SelectValues<TValue> CreateSelectValuesBuilder<TValue>(RuntimeSqlDatabaseConfiguration configuration, AnyElement field)
         {
             var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
             expression.Select = new SelectExpressionSet(field?.ToSelectExpression(configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(field)));
@@ -309,7 +333,7 @@ namespace HatTrick.DbEx.MsSql.Builder
                 {
                     assignment as AssignmentExpression ?? throw new DbExpressionException($"Expected {nameof(assignment)} to be assignable to {typeof(AssignmentExpression)}.")
                 }
-                .Concat(assignments?.Select(x => x as AssignmentExpression ?? throw new DbExpressionException($"Expected all {nameof(assignments)} to be assignable to {typeof(AssignmentExpression)}.")))
+                .Concat(assignments.Select(x => x as AssignmentExpression ?? throw new DbExpressionException($"Expected all {nameof(assignments)} to be assignable to {typeof(AssignmentExpression)}.")))
             );
             return new UpdateQueryExpressionBuilder(configuration, expression);
         }

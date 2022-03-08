@@ -40,7 +40,7 @@ namespace HatTrick.DbEx.Tools.Service
         #endregion
 
         #region try create directory
-        public bool TryCreateDirectory(string path, out string msg)
+        public bool TryCreateDirectory(string path, out string? msg)
         {
             msg = null;
             try
@@ -59,8 +59,8 @@ namespace HatTrick.DbEx.Tools.Service
         #region get file
         public byte[] GetFile(string path)
         {
-            byte[] buffer = null;
-            using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
+            byte[] buffer = Array.Empty<byte>();
+            using (FileStream fs = new(path, FileMode.Open, FileAccess.Read))
             {
                 if (fs.Length > int.MaxValue)
                 {
@@ -86,11 +86,9 @@ namespace HatTrick.DbEx.Tools.Service
         #region write file
         public void WriteFile(string fullPath, string content, Encoding encoding)
         {
-            using (FileStream fs = new FileStream(fullPath, FileMode.Create, FileAccess.Write))
-            {
-                byte[] buffer = encoding.GetBytes(content);
-                fs.Write(buffer, 0, buffer.Length);
-            }
+            using FileStream fs = new(fullPath, FileMode.Create, FileAccess.Write);
+            byte[] buffer = encoding.GetBytes(content);
+            fs.Write(buffer, 0, buffer.Length);
         }
         #endregion
     }

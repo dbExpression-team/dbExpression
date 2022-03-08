@@ -42,14 +42,14 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         public void Use<TValueConverterFactory>()
             where TValueConverterFactory : class, IValueConverterFactory, new()
-            => Use<TValueConverterFactory>(null);
+            => Use<TValueConverterFactory>(_ => { });
 
         public void Use<TValueConverterFactory>(Action<TValueConverterFactory> configureFactory)
             where TValueConverterFactory : class, IValueConverterFactory, new()
         {
-            if (!(configuration.ValueConverterFactory is TValueConverterFactory))
+            if (configuration.ValueConverterFactory is not TValueConverterFactory)
                 configuration.ValueConverterFactory = new TValueConverterFactory();
-            configureFactory?.Invoke(configuration.ValueConverterFactory as TValueConverterFactory);
+            configureFactory?.Invoke((configuration.ValueConverterFactory as TValueConverterFactory)!);
         }
 
         public void Use(Func<Type, IValueConverter> factory)
@@ -60,14 +60,15 @@ namespace HatTrick.DbEx.Sql.Configuration
         }
 
         public void UseDefaultFactory()
-            => UseDefaultFactory(null);
+            => UseDefaultFactory(_ => { });
 
         public void UseDefaultFactory(Action<IValueConverterFactoryContinuationConfigurationBuilder> configureFactory)
         {
-            if (!(configuration.ValueConverterFactory is ValueConverterFactory))
+            if (configuration.ValueConverterFactory is not ValueConverterFactory)
                 configuration.ValueConverterFactory = new ValueConverterFactory();
-            configureFactory?.Invoke(new ValueConverterFactoryContinuationConfigurationBuilder(configuration.ValueConverterFactory as ValueConverterFactory));
+            configureFactory?.Invoke(new ValueConverterFactoryContinuationConfigurationBuilder((configuration.ValueConverterFactory as ValueConverterFactory)!));
         }
         #endregion
     }
 }
+ 

@@ -13,7 +13,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
         public void Does_configuration_using_instance_method_with_null_instance_throw_expected_exception(int version)
         {
             //given & when & then
-            Assert.Throws<ArgumentNullException>(() => ConfigureForMsSqlVersion(version, builder => builder.SchemaMetadata.Use((ISqlDatabaseMetadataProvider)null)));
+            Assert.Throws<ArgumentNullException>(() => ConfigureForMsSqlVersion(version, builder => builder.SchemaMetadata.Use(null!)));
         }
 
         [Theory]

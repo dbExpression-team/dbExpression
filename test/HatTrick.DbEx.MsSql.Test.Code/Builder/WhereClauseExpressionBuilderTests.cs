@@ -7,7 +7,7 @@ using HatTrick.DbEx.Sql.Expression;
 using System;
 using Xunit;
 
-namespace HatTrick.DbEx.MsSql.Test.Builder
+namespace HatTrick.DbEx.MsSql.Test.Code.Builder
 {
     [Trait("Statement", "SELECT")]
     [Trait("Clause", "WHERE")]
@@ -23,15 +23,17 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             ITerminationExpressionBuilder exp;
             FilterExpressionSet filterSet;
             FilterExpression idFilter;
+            FilterExpressionSet.FilterExpressionSetElements leftArg;
 
             //when
             exp = db.SelectOne(sec.Person.Id)
                .From(sec.Person)
                .Where(sec.Person.Id > 0);
 
-            filterSet = ((exp as IQueryExpressionProvider).Expression as SelectQueryExpression).Where;
+            filterSet = ((exp as IQueryExpressionProvider)!.Expression as SelectQueryExpression)!.Where!;
+            leftArg = (filterSet as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>).Expression;
 
-            idFilter = filterSet.LeftArg as FilterExpression;
+            idFilter = (leftArg.LeftArg as FilterExpression)!;
 
             //then
             idFilter.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
@@ -57,19 +59,21 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             FilterExpressionSet filterSet;
             FilterExpression idFilter;
             FilterExpression ssnFilter;
+            FilterExpressionSet.FilterExpressionSetElements leftArg;
 
             //when
             exp = db.SelectOne(sec.Person.Id)
                .From(sec.Person)
                .Where(sec.Person.Id > 0 & sec.Person.SocialSecurityNumber == "XXX");
 
-            filterSet = ((exp as IQueryExpressionProvider).Expression as SelectQueryExpression).Where;
+            filterSet = ((exp as IQueryExpressionProvider)!.Expression as SelectQueryExpression)!.Where!;
+            leftArg = (filterSet as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>)!.Expression;
 
-            idFilter = filterSet.LeftArg as FilterExpression;
-            ssnFilter = filterSet.RightArg as FilterExpression;
+            idFilter = (leftArg.LeftArg as FilterExpression)!;
+            ssnFilter = (leftArg.RightArg as FilterExpression)!;
 
             //then
-            filterSet.ConditionalOperator.Should().Be(ConditionalExpressionOperator.And);
+            leftArg.ConditionalOperator.Should().Be(ConditionalExpressionOperator.And);
 
             idFilter.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
 
@@ -106,6 +110,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             FilterExpression idFilter;
             FilterExpression ssnFilter;
             FilterExpression dateCreatedFilter;
+            FilterExpressionSet.FilterExpressionSetElements leftArg;
 
             var now = DateTime.UtcNow;
 
@@ -114,14 +119,15 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
                .From(sec.Person)
                .Where(sec.Person.Id > 0 & sec.Person.SocialSecurityNumber == "XXX" & sec.Person.DateCreated != now);
 
-            filterSet = ((exp as IQueryExpressionProvider).Expression as SelectQueryExpression).Where;
+            filterSet = ((exp as IQueryExpressionProvider)!.Expression as SelectQueryExpression)!.Where!;
+            leftArg = (filterSet as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>).Expression;
 
-            idFilter = (filterSet.LeftArg as FilterExpressionSet).LeftArg as FilterExpression;
-            ssnFilter = (filterSet.LeftArg as FilterExpressionSet).RightArg as FilterExpression;
-            dateCreatedFilter = filterSet.RightArg as FilterExpression;
+            idFilter = ((leftArg.LeftArg as FilterExpressionSet as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>)!.Expression.LeftArg as FilterExpression)!;
+            ssnFilter = ((leftArg.LeftArg as FilterExpressionSet as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>)!.Expression.RightArg as FilterExpression)!;
+            dateCreatedFilter = ((leftArg.RightArg as FilterExpressionSet as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>)!.Expression.LeftArg as FilterExpression)!;
 
             //then
-            filterSet.ConditionalOperator.Should().Be(ConditionalExpressionOperator.And);
+            leftArg.ConditionalOperator.Should().Be(ConditionalExpressionOperator.And);
 
             idFilter.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
 

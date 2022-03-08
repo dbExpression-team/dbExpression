@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.MsSql
 {
     internal static class ExpressionElementExtensions
     {
-        internal static FieldExpression AsFieldExpression(this IExpressionElement expression)
+        internal static FieldExpression? AsFieldExpression(this IExpressionElement expression)
         {
             if (expression is FieldExpression field)
                 return field;

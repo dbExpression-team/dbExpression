@@ -49,12 +49,12 @@ namespace ServerSideBlazorApp.Service
                 .ExecuteAsync(reader =>
                     new ProductSummaryModel
                     {
-                        Id = reader.ReadField().GetValue<int>(),
-                        Category = reader.ReadField().GetValue<ProductCategoryType?>(),
-                        Name = reader.ReadField().GetValue<string>(),
-                        ListPrice = reader.ReadField().GetValue<double>(),
-                        Price = reader.ReadField().GetValue<double>(),
-                        QuantityOnHand = reader.ReadField().GetValue<int>()
+                        Id = reader.ReadField()!.GetValue<int>(),
+                        Category = reader.ReadField()!.GetValue<ProductCategoryType?>(),
+                        Name = reader.ReadField()!.GetValue<string>(),
+                        ListPrice = reader.ReadField()!.GetValue<double>(),
+                        Price = reader.ReadField()!.GetValue<double>(),
+                        QuantityOnHand = reader.ReadField()!.GetValue<int>()
                     }
                 );
 
@@ -75,7 +75,7 @@ namespace ServerSideBlazorApp.Service
         /// <summary>
         /// Fetch a specific product by id.
         /// </summary>
-        public async Task<ProductDetailModel> GetProductDetailAsync(int productId)
+        public async Task<ProductDetailModel?> GetProductDetailAsync(int productId)
         {
             return await
                 db.SelectOne(
@@ -97,21 +97,21 @@ namespace ServerSideBlazorApp.Service
                 .Where(dbo.Product.Id == productId)
                 .ExecuteAsync(reader => {
                     var model = new ProductDetailModel();
-                    model.Id = reader.ReadField().GetValue<int>();
-                    model.Category = reader.ReadField().GetValue<ProductCategoryType?>();
-                    model.Name = reader.ReadField().GetValue<string>();
-                    var description = reader.ReadField().GetValue<ProductDescription>();
+                    model.Id = reader.ReadField()!.GetValue<int>();
+                    model.Category = reader.ReadField()!.GetValue<ProductCategoryType?>();
+                    model.Name = reader.ReadField()!.GetValue<string>();
+                    var description = reader.ReadField()!.GetValue<ProductDescription>();
                     model.LongDescription = description.Long;
                     model.ShortDescription = description.Short;
-                    model.ListPrice = reader.ReadField().GetValue<double>();
-                    model.Price = reader.ReadField().GetValue<double>();
-                    model.QuantityOnHand = reader.ReadField().GetValue<int>();
-                    model.Height = reader.ReadField().GetValue<decimal?>();
-                    model.Width = reader.ReadField().GetValue<decimal?>();
-                    model.Depth = reader.ReadField().GetValue<decimal?>();
-                    model.Weight = reader.ReadField().GetValue<decimal?>();
-                    model.ShippingWeight = reader.ReadField().GetValue<decimal>();
-                    model.Image = Convert.ToBase64String(reader.ReadField().GetValue<byte[]>() ?? new byte[0]);
+                    model.ListPrice = reader.ReadField()!.GetValue<double>();
+                    model.Price = reader.ReadField()!.GetValue<double>();
+                    model.QuantityOnHand = reader.ReadField()!.GetValue<int>();
+                    model.Height = reader.ReadField()!.GetValue<decimal?>();
+                    model.Width = reader.ReadField()!.GetValue<decimal?>();
+                    model.Depth = reader.ReadField()!.GetValue<decimal?>();
+                    model.Weight = reader.ReadField()!.GetValue<decimal?>();
+                    model.ShippingWeight = reader.ReadField()!.GetValue<decimal>();
+                    model.Image = Convert.ToBase64String(reader.ReadField()!.GetValue<byte[]>() ?? new byte[0]);
                     return model;
                 });
         }

@@ -16,15 +16,16 @@ namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
             var fileService = new FileService(templatePath, outputSubdirectory);
             string template = fileService.GetTemplate();
 
-            TemplateEngine ngin = new TemplateEngine(template)
+            TemplateEngine ngin = new(template)
             {
                 TrimWhitespace = false //global flag for whitespace control...                
             };
-            ngin.LambdaRepo.Register("GetArithmeticOperationsForType", (Func<IList<ArithmeticOperationsTemplateModel>, Type, IList<ArithmeticOperationTemplateModel>>)((operations, type) => operations.SingleOrDefault(x => x.OperationType.Type == type)?.Operations ?? new List<ArithmeticOperationTemplateModel>()));
+            ngin.LambdaRepo.Register("GetArithmeticOperationsForType", (Func<IList<ArithmeticOperationsTemplateModel>, Type, IList<ArithmeticOperationTemplateModel>>)((operations, type) => operations.SingleOrDefault(x => x.OperationType?.Type == type)?.Operations ?? new List<ArithmeticOperationTemplateModel>()));
             ngin.LambdaRepo.Register("IsTypeOfObject", (Func<Type, bool>)((type) => type == typeof(object)));
+            ngin.LambdaRepo.Register("IsNotTypeOfObject", (Func<Type, bool>)((type) => type != typeof(object)));
             //ngin.ProgressListener = (i, s) => Console.WriteLine($"{i}: {s}");
             var output = ngin.Merge(data);
-            fileService.WriteFile(fileService.GetOutputPath(fileName), output);
+            FileService.WriteFile(fileService.GetOutputPath(fileName), output);
         }
 
         protected virtual TModel CreateModel(string @namespace, TypeModel @type)
@@ -39,17 +40,17 @@ namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
             model.Namespace = @namespace;
             model.Type = typeModel;
 
-            if (typeModel is null || typeModel == TypeBuilder.Get<Guid>() || typeModel == TypeBuilder.Get<bool>() || typeModel == TypeBuilder.Get<object>()) //Guid, Boolean, and Object don't support arithmetic
+            if (model.Type is null || model.Type == TypeBuilder.Get<Guid>() || model.Type == TypeBuilder.Get<bool>() || model.Type == TypeBuilder.Get<object>()) //Guid, Boolean, and Object don't support arithmetic
             {
 
             }
-            else if (typeModel == TypeBuilder.Get<string>()) //String only supports concatenation
+            else if (model.Type == TypeBuilder.Get<string>()) //String only supports concatenation
             {
                 model.ArithmeticOperations = TypeBuilder.CreateBuilder().AddAllTypes().Except<object>().ToList().Select(@type => new ArithmeticOperationsTemplateModel
                 {
                     OperationType = @type,
                     ReturnType = TypeBuilder.Get<string>(),
-                    Operations = ArithmeticBuilder.CreateBuilder().InferArithmeticOperations(typeModel, @type).ToList()
+                    Operations = ArithmeticBuilder.CreateBuilder().InferArithmeticOperations(model.Type, @type).ToList()
                 }).ToList();
             }
             else
@@ -57,15 +58,15 @@ namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
                 model.ArithmeticOperations = TypeBuilder.CreateBuilder().AddAllTypes().Except(typeof(Guid), typeof(bool), typeof(object)).ToList().Select(@type => new ArithmeticOperationsTemplateModel
                 {
                     OperationType = @type,
-                    ReturnType = TypeBuilder.InferReturnType(typeModel, @type),
-                    Operations = ArithmeticBuilder.CreateBuilder().InferArithmeticOperations(typeModel, @type).ToList()
+                    ReturnType = TypeBuilder.InferReturnType(model.Type, @type),
+                    Operations = ArithmeticBuilder.CreateBuilder().InferArithmeticOperations(model.Type, @type).ToList()
                 }).ToList();
             }
 
-            model.Filters = TypeBuilder.CreateBuilder().Add(typeModel).ToList().Select(@type => new FilterOperationsTemplateModel
+            model.Filters = TypeBuilder.CreateBuilder().Add(model.Type!).ToList().Select(@type => new FilterOperationsTemplateModel
             {
                 Type = type,
-                Operations = FilterBuilder.CreateBuilder().InferFilterOperations(typeModel, @type).ToList()
+                Operations = FilterBuilder.CreateBuilder().InferFilterOperations(model.Type!, @type).ToList()
             }).ToList();
         }
 

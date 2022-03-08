@@ -22,12 +22,12 @@ using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
-    public class EntityComparisonAssignmentBuilder<TEntity> : EntityFieldAssignmentsContinuation<TEntity>
+    public class EntityComparisonAssignmentBuilder<TEntity> : EntityFieldAssignmentsContinuation<TEntity>, EntityFieldAssignmentsFromContinuation<TEntity>
         where TEntity : class, IDbEntity
     {
         #region internals
         private readonly Entity<TEntity> entity;
-        private TEntity oldStateOfEntity;
+        private TEntity? oldStateOfEntity;
         #endregion
 
         #region constructors
@@ -39,15 +39,15 @@ namespace HatTrick.DbEx.Sql.Builder
 
         #region methods
         ///<inheritdoc/>
-        EntityFieldAssignmentsContinuation<TEntity> EntityFieldAssignmentsContinuation<TEntity>.From(TEntity oldStateOfEntity)
+        EntityFieldAssignmentsFromContinuation<TEntity> EntityFieldAssignmentsContinuation<TEntity>.From(TEntity oldStateOfEntity)
         {
             this.oldStateOfEntity = oldStateOfEntity ?? throw new ArgumentNullException(nameof(oldStateOfEntity));
             return this;
         }
 
         ///<inheritdoc/>
-        IEnumerable<EntityFieldAssignment> EntityFieldAssignmentsContinuation<TEntity>.To(TEntity newStateOfEntity)
-            => entity.BuildAssignmentExpression(oldStateOfEntity, newStateOfEntity ?? throw new ArgumentNullException(nameof(newStateOfEntity))).Expressions.Cast<EntityFieldAssignment>();
+        IEnumerable<EntityFieldAssignment> EntityFieldAssignmentsFromContinuation<TEntity>.To(TEntity newStateOfEntity)
+            => entity.BuildAssignmentExpression(oldStateOfEntity!, newStateOfEntity ?? throw new ArgumentNullException(nameof(newStateOfEntity))).Expressions.Cast<EntityFieldAssignment>();
         #endregion
     }
 }

@@ -30,176 +30,1410 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// Construct an expression for the SUBSTRING transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
         /// </summary>
-        /// <param name="expression">A <see cref="AnyElement{String}"/> to take a portion of.</param>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
-        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
-        public static StringSubstringFunctionExpression Substring(AnyElement<string> expression, int start, int length)
-            => new StringSubstringFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(start)), new Int32ExpressionMediator(new LiteralExpression<int>(length)));
+        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static StringSubstringFunctionExpression Substring(StringElement expression, int start, int length)
+            => new(expression, new LiteralExpression<int>(start), new LiteralExpression<int>(length));
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
         /// </summary>
-        /// <param name="expression">A <see cref="AnyElement{String}"/> to take a portion of.</param>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int32}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
-        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
-        public static StringSubstringFunctionExpression Substring(AnyElement<string> expression, AnyElement<int> start, int length)
-            => new StringSubstringFunctionExpression(expression, start, new Int32ExpressionMediator(new LiteralExpression<int>(length)));
+        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static StringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int> start, int length)
+            => new(expression, start, new LiteralExpression<int>(length));
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
         /// </summary>
-        /// <param name="expression">A <see cref="AnyElement{String}"/> to take a portion of.</param>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int32}"/>, the number of characters to take.</param>
-        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
-        public static StringSubstringFunctionExpression Substring(AnyElement<string> expression, int start, AnyElement<int> length)
-            => new StringSubstringFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(start)), length);
+        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static StringSubstringFunctionExpression Substring(StringElement expression, int start, AnyElement<int> length)
+            => new(expression, new LiteralExpression<int>(start), length);
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
         /// </summary>
-        /// <param name="expression">A <see cref="AnyElement{String}"/> to take a portion of.</param>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int32}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int32}"/>, the number of characters to take.</param>
-        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
-        public static StringSubstringFunctionExpression Substring(AnyElement<string> expression, AnyElement<int> start, AnyElement<int> length)
-            => new StringSubstringFunctionExpression(expression, start, length);
+        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static StringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int> start, AnyElement<int> length)
+            => new(expression, start, length);
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
         /// </summary>
-        /// <param name="expression">A <see cref="AnyElement{String}"/> to take a portion of.</param>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
-        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
-        public static StringSubstringFunctionExpression Substring(AnyElement<string> expression, long start, long length)
-            => new StringSubstringFunctionExpression(expression, new Int64ExpressionMediator(new LiteralExpression<long>(start)), new Int64ExpressionMediator(new LiteralExpression<long>(length)));
+        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static StringSubstringFunctionExpression Substring(StringElement expression, long start, long length)
+            => new(expression, new LiteralExpression<long>(start), new LiteralExpression<long>(length));
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
         /// </summary>
-        /// <param name="expression">A <see cref="AnyElement{String}"/> to take a portion of.</param>
-        /// <param name="start">A <see cref="AnyElement<long>"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
-        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
-        public static StringSubstringFunctionExpression Substring(AnyElement<string> expression, AnyElement<long> start, long length)
-            => new StringSubstringFunctionExpression(expression, start, new Int64ExpressionMediator(new LiteralExpression<long>(length)));
+        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static StringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long> start, long length)
+            => new(expression, start, new LiteralExpression<long>(length));
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
         /// </summary>
-        /// <param name="expression">A <see cref="AnyElement{String}"/> to take a portion of.</param>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
-        /// <param name="length">A <see cref="AnyElement<long>"/>, the number of characters to take.</param>
-        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
-        public static StringSubstringFunctionExpression Substring(AnyElement<string> expression, long start, AnyElement<long> length)
-            => new StringSubstringFunctionExpression(expression, new Int64ExpressionMediator(new LiteralExpression<long>(start)), length);
+        /// <param name="length">A <see cref="AnyElement{Int64}"/>, the number of characters to take.</param>
+        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static StringSubstringFunctionExpression Substring(StringElement expression, long start, AnyElement<long> length)
+            => new(expression, new LiteralExpression<long>(start), length);
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
         /// </summary>
-        /// <param name="expression">A <see cref="AnyElement{String}"/> to take a portion of.</param>
-        /// <param name="start">A <see cref="AnyElement<long>"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
-        /// <param name="length">A <see cref="AnyElement<long>"/>, the number of characters to take.</param>
-        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
-        public static StringSubstringFunctionExpression Substring(AnyElement<string> expression, AnyElement<long> start, AnyElement<long> length)
-            => new StringSubstringFunctionExpression(expression, start, length);
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int64}"/>, the number of characters to take.</param>
+        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static StringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long> start, AnyElement<long> length)
+            => new(expression, start, length);
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
         /// </summary>
-        /// <param name="expression">A <see cref="AnyElement{String}"/> to take a portion of.</param>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
-        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
-        public static StringSubstringFunctionExpression Substring(AnyElement<string> expression, int start, long length)
-            => new StringSubstringFunctionExpression(expression, new Int64ExpressionMediator(new LiteralExpression<long>(start)), new Int64ExpressionMediator(new LiteralExpression<long>(length)));
+        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static StringSubstringFunctionExpression Substring(StringElement expression, int start, long length)
+            => new(expression, new LiteralExpression<long>(start), new LiteralExpression<long>(length));
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
         /// </summary>
-        /// <param name="expression">A <see cref="AnyElement{String}"/> to take a portion of.</param>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int32}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
-        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
-        public static StringSubstringFunctionExpression Substring(AnyElement<string> expression, AnyElement<int> start, long length)
-            => new StringSubstringFunctionExpression(expression, start, new Int64ExpressionMediator(new LiteralExpression<long>(length)));
+        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static StringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int> start, long length)
+            => new(expression, start, new LiteralExpression<long>(length));
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
         /// </summary>
-        /// <param name="expression">A <see cref="AnyElement{String}"/> to take a portion of.</param>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
-        /// <param name="length">A <see cref="AnyElement<long>"/>, the number of characters to take.</param>
-        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
-        public static StringSubstringFunctionExpression Substring(AnyElement<string> expression, int start, AnyElement<long> length)
-            => new StringSubstringFunctionExpression(expression, new Int64ExpressionMediator(new LiteralExpression<long>(start)), length);
+        /// <param name="length">A <see cref="AnyElement{Int64}"/>, the number of characters to take.</param>
+        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static StringSubstringFunctionExpression Substring(StringElement expression, int start, AnyElement<long> length)
+            => new(expression, new LiteralExpression<long>(start), length);
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
         /// </summary>
-        /// <param name="expression">A <see cref="AnyElement{String}"/> to take a portion of.</param>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int32}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
-        /// <param name="length">A <see cref="AnyElement<long>"/>, the number of characters to take.</param>
-        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
-        public static StringSubstringFunctionExpression Substring(AnyElement<string> expression, AnyElement<int> start, AnyElement<long> length)
-            => new StringSubstringFunctionExpression(expression, start, length);
+        /// <param name="length">A <see cref="AnyElement{Int64}"/>, the number of characters to take.</param>
+        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static StringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int> start, AnyElement<long> length)
+            => new(expression, start, length);
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
         /// </summary>
-        /// <param name="expression">A <see cref="AnyElement{String}"/> to take a portion of.</param>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
-        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
-        public static StringSubstringFunctionExpression Substring(AnyElement<string> expression, long start, int length)
-            => new StringSubstringFunctionExpression(expression, new Int64ExpressionMediator(new LiteralExpression<long>(start)), new Int64ExpressionMediator(new LiteralExpression<long>(length)));
+        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static StringSubstringFunctionExpression Substring(StringElement expression, long start, int length)
+            => new(expression, new LiteralExpression<long>(start), new LiteralExpression<long>(length));
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
         /// </summary>
-        /// <param name="expression">A <see cref="AnyElement{String}"/> to take a portion of.</param>
-        /// <param name="start">A <see cref="AnyElement<long>"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
-        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
-        public static StringSubstringFunctionExpression Substring(AnyElement<string> expression, AnyElement<long> start, int length)
-            => new StringSubstringFunctionExpression(expression, start, new Int64ExpressionMediator(new LiteralExpression<long>(length)));
+        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static StringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long> start, int length)
+            => new(expression, start, new LiteralExpression<long>(length));
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
         /// </summary>
-        /// <param name="expression">A <see cref="AnyElement{String}"/> to take a portion of.</param>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int32}"/>, the number of characters to take.</param>
-        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
-        public static StringSubstringFunctionExpression Substring(AnyElement<string> expression, long start, AnyElement<int> length)
-            => new StringSubstringFunctionExpression(expression, new Int64ExpressionMediator(new LiteralExpression<long>(start)), length);
+        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static StringSubstringFunctionExpression Substring(StringElement expression, long start, AnyElement<int> length)
+            => new(expression, new LiteralExpression<long>(start), length);
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
         /// </summary>
-        /// <param name="expression">A <see cref="AnyElement{String}"/> to take a portion of.</param>
-        /// <param name="start">A <see cref="AnyElement<long>"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
-        /// <param name="length">A <see cref="Int64ElAnyElement<int>ement"/>, the number of characters to take.</param>
-        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
-        public static StringSubstringFunctionExpression Substring(AnyElement<string> expression, AnyElement<long> start, AnyElement<int> length)
-            => new StringSubstringFunctionExpression(expression, start, length);
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int64}"/>, the number of characters to take.</param>
+        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static StringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long> start, AnyElement<int> length)
+            => new(expression, start, length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, int? start, int? length)
+            => new(expression, new LiteralExpression<int?>(start), new LiteralExpression<int?>(length));
+
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, int start, int? length)
+            => new(expression, new LiteralExpression<int?>(start), new LiteralExpression<int?>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, int? start, int length)
+            => new(expression, new LiteralExpression<int?>(start), new LiteralExpression<int?>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int32}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int?> start, int length)
+            => new(expression, start, new LiteralExpression<int>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int32}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int> start, int? length)
+            => new(expression, start, new LiteralExpression<int?>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int32}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int?> start, int? length)
+            => new(expression, start, new LiteralExpression<int?>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int32}"/>, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, int? start, AnyElement<int> length)
+            => new(expression, new LiteralExpression<int?>(start), length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int32}"/>?, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, int start, AnyElement<int?> length)
+            => new(expression, new LiteralExpression<int>(start), length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int32}"/>?, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, int? start, AnyElement<int?> length)
+            => new(expression, new LiteralExpression<int?>(start), length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int32}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int32}"/>, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int?> start, AnyElement<int> length)
+            => new(expression, start, length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int32}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int32}"/>?, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int> start, AnyElement<int?> length)
+            => new(expression, start, length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int32}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int32}"/>?, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int?> start, AnyElement<int?> length)
+            => new(expression, start, length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, long? start, long length)
+            => new(expression, new LiteralExpression<long?>(start), new LiteralExpression<long>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, long start, long? length)
+            => new(expression, new LiteralExpression<long>(start), new LiteralExpression<long?>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, long? start, long? length)
+            => new(expression, new LiteralExpression<long?>(start), new LiteralExpression<long?>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int64}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long?> start, long length)
+            => new(expression, start, new LiteralExpression<long>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long> start, long? length)
+            => new(expression, start, new LiteralExpression<long?>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int64}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long?> start, long? length)
+            => new(expression, start, new LiteralExpression<long?>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int64}"/>, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, long? start, AnyElement<long> length)
+            => new(expression, new LiteralExpression<long?>(start), length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int64}"/>?, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, long start, AnyElement<long?> length)
+            => new(expression, new LiteralExpression<long>(start), length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int64}"/>?, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, long? start, AnyElement<long?> length)
+            => new(expression, new LiteralExpression<long?>(start), length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int64}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int64}"/>, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long?> start, AnyElement<long> length)
+            => new(expression, start, length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int64}"/>?, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long> start, AnyElement<long?> length)
+            => new(expression, start, length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int64}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int64}"/>?, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long?> start, AnyElement<long?> length)
+            => new(expression, start, length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, int? start, long length)
+            => new(expression, new LiteralExpression<int?>(start), new LiteralExpression<long>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, int start, long? length)
+            => new(expression, new LiteralExpression<int>(start), new LiteralExpression<long?>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, int? start, long? length)
+            => new(expression, new LiteralExpression<int?>(start), new LiteralExpression<long?>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int32}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int?> start, long length)
+            => new(expression, start, new LiteralExpression<long>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int32}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int> start, long? length)
+            => new(expression, start, new LiteralExpression<long?>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int32}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int?> start, long? length)
+            => new(expression, start, new LiteralExpression<long?>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int64}"/>?, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, int? start, AnyElement<long?> length)
+            => new(expression, new LiteralExpression<int?>(start), length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int64}"/>?, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, int start, AnyElement<long?> length)
+            => new(expression, new LiteralExpression<int>(start), length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int64}"/>, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, int? start, AnyElement<long> length)
+            => new(expression, new LiteralExpression<int?>(start), length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int32}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int64}"/>, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int?> start, AnyElement<long> length)
+            => new(expression, start, length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int32}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int64}"/>?, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int> start, AnyElement<long?> length)
+            => new(expression, start, length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int32}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int64}"/>?, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int?> start, AnyElement<long?> length)
+            => new(expression, start, length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, long? start, int length)
+            => new(expression, new LiteralExpression<long?>(start), new LiteralExpression<long>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, long start, int? length)
+            => new(expression, new LiteralExpression<long>(start), new LiteralExpression<long?>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, long? start, int? length)
+            => new(expression, new LiteralExpression<long?>(start), new LiteralExpression<long?>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long?> start, int length)
+            => new(expression, start, new LiteralExpression<long>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long> start, int? length)
+            => new(expression, start, new LiteralExpression<long?>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long?> start, int? length)
+            => new(expression, start, new LiteralExpression<long?>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int32}"/>, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, long? start, AnyElement<int> length)
+            => new(expression, new LiteralExpression<long?>(start), length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int32}"/>?, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, long start, AnyElement<int?> length)
+            => new(expression, new LiteralExpression<long>(start), length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int32}"/>?, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, long? start, AnyElement<int?> length)
+            => new(expression, new LiteralExpression<long?>(start), length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int64}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int64}"/>, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long?> start, AnyElement<int> length)
+            => new(expression, start, length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int64}"/>?, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long> start, AnyElement<int?> length)
+            => new(expression, start, length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int64}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int64}"/>?, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long?> start, AnyElement<int?> length)
+            => new(expression, start, length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int? start, int? length)
+            => new(expression, new LiteralExpression<int?>(start), new LiteralExpression<int?>(length));
+
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int start, int? length)
+            => new(expression, new LiteralExpression<int?>(start), new LiteralExpression<int?>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int? start, int length)
+            => new(expression, new LiteralExpression<int?>(start), new LiteralExpression<int?>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int start, int length)
+            => new(expression, new LiteralExpression<int?>(start), new LiteralExpression<int?>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int32}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int> start, int length)
+            => new(expression, start, new LiteralExpression<int>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int32}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int?> start, int length)
+            => new(expression, start, new LiteralExpression<int>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int32}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int> start, int? length)
+            => new(expression, start, new LiteralExpression<int?>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int32}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int?> start, int? length)
+            => new(expression, start, new LiteralExpression<int?>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int32}"/>, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int start, AnyElement<int> length)
+            => new(expression, new LiteralExpression<int>(start), length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int32}"/>, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int? start, AnyElement<int> length)
+            => new(expression, new LiteralExpression<int?>(start), length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int32}"/>?, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int start, AnyElement<int?> length)
+            => new(expression, new LiteralExpression<int>(start), length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int32}"/>?, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int? start, AnyElement<int?> length)
+            => new(expression, new LiteralExpression<int?>(start), length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int32}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int32}"/>, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int> start, AnyElement<int> length)
+            => new(expression, start, length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int32}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int32}"/>, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int?> start, AnyElement<int> length)
+            => new(expression, start, length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int32}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int32}"/>?, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int> start, AnyElement<int?> length)
+            => new(expression, start, length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int32}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int32}"/>?, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int?> start, AnyElement<int?> length)
+            => new(expression, start, length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long start, long length)
+            => new(expression, new LiteralExpression<long>(start), new LiteralExpression<long>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long? start, long length)
+            => new(expression, new LiteralExpression<long?>(start), new LiteralExpression<long>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long start, long? length)
+            => new(expression, new LiteralExpression<long>(start), new LiteralExpression<long?>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long? start, long? length)
+            => new(expression, new LiteralExpression<long?>(start), new LiteralExpression<long?>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long> start, long length)
+            => new(expression, start, new LiteralExpression<long>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int64}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long?> start, long length)
+            => new(expression, start, new LiteralExpression<long>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long> start, long? length)
+            => new(expression, start, new LiteralExpression<long?>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int64}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long?> start, long? length)
+            => new(expression, start, new LiteralExpression<long?>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int64}"/>, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long start, AnyElement<long> length)
+            => new(expression, new LiteralExpression<long>(start), length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int64}"/>, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long? start, AnyElement<long> length)
+            => new(expression, new LiteralExpression<long?>(start), length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int64}"/>?, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long start, AnyElement<long?> length)
+            => new(expression, new LiteralExpression<long>(start), length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int64}"/>?, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long? start, AnyElement<long?> length)
+            => new(expression, new LiteralExpression<long?>(start), length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int64}"/>, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long> start, AnyElement<long> length)
+            => new(expression, start, length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int64}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int64}"/>, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long?> start, AnyElement<long> length)
+            => new(expression, start, length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int64}"/>?, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long> start, AnyElement<long?> length)
+            => new(expression, start, length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int64}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int64}"/>?, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long?> start, AnyElement<long?> length)
+            => new(expression, start, length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int start, long length)
+            => new(expression, new LiteralExpression<int>(start), new LiteralExpression<long>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int? start, long length)
+            => new(expression, new LiteralExpression<int?>(start), new LiteralExpression<long>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int start, long? length)
+            => new(expression, new LiteralExpression<int>(start), new LiteralExpression<long?>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int? start, long? length)
+            => new(expression, new LiteralExpression<int?>(start), new LiteralExpression<long?>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int32}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int> start, long length)
+            => new(expression, start, new LiteralExpression<long>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int32}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int?> start, long length)
+            => new(expression, start, new LiteralExpression<long>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int32}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int> start, long? length)
+            => new(expression, start, new LiteralExpression<long?>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int32}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int?> start, long? length)
+            => new(expression, start, new LiteralExpression<long?>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int64}"/>, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int start, AnyElement<long> length)
+            => new(expression, new LiteralExpression<int>(start), length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int64}"/>?, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int? start, AnyElement<long?> length)
+            => new(expression, new LiteralExpression<int?>(start), length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int64}"/>?, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int start, AnyElement<long?> length)
+            => new(expression, new LiteralExpression<int>(start), length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int64}"/>, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int? start, AnyElement<long> length)
+            => new(expression, new LiteralExpression<int?>(start), length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int32}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int64}"/>, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int> start, AnyElement<long> length)
+            => new(expression, start, length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int32}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int64}"/>, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int?> start, AnyElement<long> length)
+            => new(expression, start, length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int32}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int64}"/>?, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int> start, AnyElement<long?> length)
+            => new(expression, start, length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int32}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int64}"/>?, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int?> start, AnyElement<long?> length)
+            => new(expression, start, length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long start, int length)
+            => new(expression, new LiteralExpression<long>(start), new LiteralExpression<long>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long? start, int length)
+            => new(expression, new LiteralExpression<long?>(start), new LiteralExpression<long>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long start, int? length)
+            => new(expression, new LiteralExpression<long>(start), new LiteralExpression<long?>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long? start, int? length)
+            => new(expression, new LiteralExpression<long?>(start), new LiteralExpression<long?>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int64}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long> start, int length)
+            => new(expression, start, new LiteralExpression<long>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long?> start, int length)
+            => new(expression, start, new LiteralExpression<long>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long> start, int? length)
+            => new(expression, start, new LiteralExpression<long?>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long?> start, int? length)
+            => new(expression, start, new LiteralExpression<long?>(length));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int32}"/>?, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long start, AnyElement<int> length)
+            => new(expression, new LiteralExpression<long>(start), length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int32}"/>, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long? start, AnyElement<int> length)
+            => new(expression, new LiteralExpression<long?>(start), length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int32}"/>?, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long start, AnyElement<int?> length)
+            => new(expression, new LiteralExpression<long>(start), length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int32}"/>?, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long? start, AnyElement<int?> length)
+            => new(expression, new LiteralExpression<long?>(start), length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int64}"/>, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long> start, AnyElement<int> length)
+            => new(expression, start, length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int64}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int64}"/>, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long?> start, AnyElement<int> length)
+            => new(expression, start, length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int64}"/>?, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long> start, AnyElement<int?> length)
+            => new(expression, start, length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="AnyElement{Int64}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="AnyElement{Int64}"/>?, the number of characters to take.</param>
+        /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long?> start, AnyElement<int?> length)
+            => new(expression, start, length);
     }
 }

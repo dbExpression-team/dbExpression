@@ -51,7 +51,7 @@ namespace HatTrick.DbEx.Sql.Mapper
         public IExpandoObjectMapper CreateExpandoObjectMapper()
         {
             var mapper = expandoObjectMapperFactory();
-            if (mapper is object)
+            if (mapper is not null)
                 return mapper;
             throw new DbExpressionConfigurationException($"The factory returned a null mapper for an {typeof(IExpandoObjectMapper).Name}");
         }

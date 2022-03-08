@@ -46,14 +46,14 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         public ISqlStatementExecutionGroupingConfigurationBuilders Use<TSqlConnectionFactory>()
             where TSqlConnectionFactory : class, ISqlConnectionFactory, new()
-            => Use<TSqlConnectionFactory>(null);
+            => Use<TSqlConnectionFactory>(_ => { });
 
         public ISqlStatementExecutionGroupingConfigurationBuilders Use<TSqlConnectionFactory>(Action<TSqlConnectionFactory> configureFactory)
             where TSqlConnectionFactory : class, ISqlConnectionFactory, new()
         {
-            if (!(configuration.ConnectionFactory is TSqlConnectionFactory))
+            if (configuration.ConnectionFactory is not TSqlConnectionFactory)
                 configuration.ConnectionFactory = new TSqlConnectionFactory();
-            configureFactory?.Invoke(configuration.ConnectionFactory as TSqlConnectionFactory);
+            configureFactory?.Invoke((configuration.ConnectionFactory as TSqlConnectionFactory)!);
             return caller;
         }
 

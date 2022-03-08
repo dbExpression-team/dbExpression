@@ -28,6 +28,11 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
+
+        protected LTrimFunctionExpression(StringElement expression) : base(expression, typeof(TValue))
+        {
+
+        }
         #endregion
     }
 }

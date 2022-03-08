@@ -55,30 +55,31 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region to string
-        public override string ToString() => identifier;
+        public override string? ToString() => identifier;
         #endregion
 
         #region order
-        public virtual OrderByExpression Asc => new OrderByExpression(this, OrderExpressionDirection.ASC);
-        public virtual OrderByExpression Desc => new OrderByExpression(this, OrderExpressionDirection.DESC);
+        public virtual OrderByExpression Asc => new(this, OrderExpressionDirection.ASC);
+        public virtual OrderByExpression Desc => new(this, OrderExpressionDirection.DESC);
         #endregion
 
         #region equals
-        public bool Equals(FieldExpression obj)
+        public bool Equals(FieldExpression? obj)
         {
             if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
 
-            if (entity is null && obj.entity is object) return false;
-            if (entity is object && obj.entity is null) return false;
-            if (!entity.Equals(obj.entity)) return false;
+            if (entity is null && obj.entity is not null) return false;
+            if (entity is not null && obj.entity is null) return false;
+            if (entity is not null && !entity.Equals(obj.entity)) return false;
 
             if (declaredType != obj.declaredType) return false;
+            if (!StringComparer.Ordinal.Equals(identifier, obj.identifier)) return false;
 
-            return identifier.Equals(obj.identifier);
+            return true;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
             => obj is FieldExpression exp && Equals(exp);
 
         public override int GetHashCode()
@@ -89,25 +90,25 @@ namespace HatTrick.DbEx.Sql.Expression
                 const int multiplier = 16777619;
 
                 int hash = @base;
-                hash = (hash * multiplier) ^ (identifier is object ? identifier.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ (entity is object ? entity.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ (declaredType is object ? declaredType.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (identifier is not null ? identifier.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (entity is not null ? entity.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (declaredType is not null ? declaredType.GetHashCode() : 0);
                 return hash;
             }
         }
         #endregion
 
         #region operators
-        public static implicit operator OrderByExpression(FieldExpression a) => new OrderByExpression(a, OrderExpressionDirection.ASC);
-        public static implicit operator GroupByExpression(FieldExpression a) => new GroupByExpression(a);
+        public static implicit operator OrderByExpression(FieldExpression a) => new(a, OrderExpressionDirection.ASC);
+        public static implicit operator GroupByExpression(FieldExpression a) => new(a);
 
         public static bool operator ==(FieldExpression obj1, FieldExpression obj2)
         {
-            if (obj1 is null && obj2 is object) return false;
-            if (obj1 is object && obj2 is null) return false;
+            if (obj1 is null && obj2 is not null) return false;
+            if (obj1 is not null && obj2 is null) return false;
             if (obj1 is null && obj2 is null) return true;
 
-            return obj1.Equals(obj2);
+            return obj1!.Equals(obj2);
         }
 
         public static bool operator !=(FieldExpression obj1, FieldExpression obj2)

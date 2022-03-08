@@ -27,27 +27,52 @@ namespace HatTrick.DbEx.MsSql.Expression
         where TValue : IComparable
     {
         #region constructors
-        protected NullableCharIndexFunctionExpression(AnyElement<string> pattern, AnyElement<string> expression) : base(pattern, expression, typeof(TNullableValue))
+        protected NullableCharIndexFunctionExpression(NullableStringElement pattern, AnyStringElement expression) : base(pattern, expression, typeof(TNullableValue))
         {
 
         }
 
-        protected NullableCharIndexFunctionExpression(AnyElement<string> pattern, AnyElement<string> expression, AnyElement<long> startSearchPosition) : base(pattern, expression, startSearchPosition, typeof(TNullableValue))
+        protected NullableCharIndexFunctionExpression(NullableStringElement pattern, AnyStringElement expression, AnyElement<long> startSearchPosition) : base(pattern, expression, startSearchPosition, typeof(TNullableValue))
         {
 
         }
 
-        protected NullableCharIndexFunctionExpression(AnyElement<string> pattern, AnyElement<string> expression, AnyElement<int> startSearchPosition) : base(pattern, expression, startSearchPosition, typeof(TNullableValue))
+        protected NullableCharIndexFunctionExpression(NullableStringElement pattern, AnyStringElement expression, AnyElement<int> startSearchPosition) : base(pattern, expression, startSearchPosition, typeof(TNullableValue))
         {
 
         }
 
-        protected NullableCharIndexFunctionExpression(AnyElement<string> pattern, AnyElement<string> expression, AnyElement<long?> startSearchPosition) : base(pattern, expression, startSearchPosition, typeof(TNullableValue))
+        protected NullableCharIndexFunctionExpression(NullableStringElement pattern, AnyStringElement expression, AnyElement<long?> startSearchPosition) : base(pattern, expression, startSearchPosition, typeof(TNullableValue))
         {
 
         }
 
-        protected NullableCharIndexFunctionExpression(AnyElement<string> pattern, AnyElement<string> expression, AnyElement<int?> startSearchPosition) : base(pattern, expression, startSearchPosition, typeof(TNullableValue))
+        protected NullableCharIndexFunctionExpression(NullableStringElement pattern, AnyStringElement expression, AnyElement<int?> startSearchPosition) : base(pattern, expression, startSearchPosition, typeof(TNullableValue))
+        {
+
+        }
+
+        protected NullableCharIndexFunctionExpression(AnyStringElement pattern, NullableStringElement expression) : base(pattern, expression, typeof(TNullableValue))
+        {
+
+        }
+
+        protected NullableCharIndexFunctionExpression(AnyStringElement pattern, NullableStringElement expression, AnyElement<long> startSearchPosition) : base(pattern, expression, startSearchPosition, typeof(TNullableValue))
+        {
+
+        }
+
+        protected NullableCharIndexFunctionExpression(AnyStringElement pattern, NullableStringElement expression, AnyElement<int> startSearchPosition) : base(pattern, expression, startSearchPosition, typeof(TNullableValue))
+        {
+
+        }
+
+        protected NullableCharIndexFunctionExpression(AnyStringElement pattern, NullableStringElement expression, AnyElement<long?> startSearchPosition) : base(pattern, expression, startSearchPosition, typeof(TNullableValue))
+        {
+
+        }
+
+        protected NullableCharIndexFunctionExpression(AnyStringElement pattern, NullableStringElement expression, AnyElement<int?> startSearchPosition) : base(pattern, expression, startSearchPosition, typeof(TNullableValue))
         {
 
         }

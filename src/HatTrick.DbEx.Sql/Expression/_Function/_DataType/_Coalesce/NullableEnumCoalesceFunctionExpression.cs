@@ -36,13 +36,13 @@ namespace HatTrick.DbEx.Sql.Expression
         }
 
         public NullableEnumCoalesceFunctionExpression(IList<NullableEnumElement<TEnum>> expressions, AnyElement<TEnum> termination) 
-            : base(expressions?.Concat(new IExpressionElement[1] { termination }))
+            : base(expressions?.Concat(new IExpressionElement[1] { termination }) ?? new IExpressionElement[1] { termination })
         {
 
         }
 
         public NullableEnumCoalesceFunctionExpression(IList<NullableEnumElement<TEnum>> expressions, AnyElement<TEnum?> termination) 
-            : base(expressions?.Concat(new IExpressionElement[1] { termination }))
+            : base(expressions?.Concat(new IExpressionElement[1] { termination }) ?? new IExpressionElement[1] { termination })
         {
 
         }
@@ -54,11 +54,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(NullableEnumCoalesceFunctionExpression<TEnum> obj)
-            => obj is NullableEnumCoalesceFunctionExpression<TEnum> && base.Equals(obj);
+        public bool Equals(NullableEnumCoalesceFunctionExpression<TEnum>? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableEnumCoalesceFunctionExpression<TEnum> exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableEnumCoalesceFunctionExpression<TEnum> exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

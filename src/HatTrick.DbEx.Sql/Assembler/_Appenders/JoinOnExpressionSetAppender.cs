@@ -20,14 +20,21 @@
 using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
     public class JoinOnExpressionSetAppender : ExpressionElementAppender<JoinOnExpressionSet>
     {
         #region internals
-        private static IDictionary<ConditionalExpressionOperator, string> _conditionalOperatorMap;
-        private static IDictionary<ConditionalExpressionOperator, string> ConditionalOperatorMap => _conditionalOperatorMap ?? (_conditionalOperatorMap = typeof(ConditionalExpressionOperator).GetValuesAndConditionalOperators()); // x => string.IsNullOrWhiteSpace(x) ? " " : $" {x} "));
+        private static readonly Dictionary<ConditionalExpressionOperator, string> conditionalOperatorMap;
+        #endregion
+
+        #region constructors
+        static JoinOnExpressionSetAppender()
+        {
+            conditionalOperatorMap = typeof(ConditionalExpressionOperator).GetValuesAndConditionalOperators().ToDictionary(k => k.Key, v => v.Value!);
+        }
         #endregion
 
         #region methods
@@ -37,7 +44,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 return;
 
             //helper action used to conditionally append text to the appender
-            void ifAppend(bool condition, Action<IAppender> trueAction, Action<IAppender> falseAction = null) { if (condition) trueAction(builder.Appender); else if (falseAction is object) falseAction(builder.Appender); }
+            void ifAppend(bool condition, Action<IAppender> trueAction, Action<IAppender>? falseAction = null) { if (condition) trueAction(builder.Appender); else if (falseAction is not null) falseAction(builder.Appender); }
 
             var thisIsTheRoot = context.GetState<JoinOnExpressionSetContext>() is null;
             if (thisIsTheRoot)
@@ -54,7 +61,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 //if the expression set is negated, render "NOT"
                 ifAppend(expression.Negate, AppendNegateStart);
 
-                if (expression.LeftArg is object)
+                if (expression.LeftArg is not null)
                 {
                     ifAppend(leftIsAComplexExpression, AppendParensStart);
 
@@ -62,12 +69,15 @@ namespace HatTrick.DbEx.Sql.Assembler
 
                     ifAppend(leftIsAComplexExpression, AppendParensEnd);
                 }
-                if (expression.RightArg is object)
+                if (expression.RightArg is not null)
                 {
                     if (thisIsTheRoot)
                     {
                         builder.Appender.Indentation++;
-                        context.GetState<JoinOnExpressionSetContext>().ExtraIndentionApplied = true;
+                        var state = context.GetState<JoinOnExpressionSetContext>();
+                        if (state is null)
+                            context.SetState(state = new JoinOnExpressionSetContext());
+                        state.ExtraIndentionApplied = true;
                     }
 
                     AppendConditionalOperator(builder.Appender, expression.ConditionalOperator);
@@ -85,7 +95,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             {
                 if (thisIsTheRoot)
                 {
-                    if (context.GetState<JoinOnExpressionSetContext>().ExtraIndentionApplied)
+                    if (context.GetState<JoinOnExpressionSetContext>()?.ExtraIndentionApplied == true)
                         builder.Appender.Indentation--;
 
                     context.RemoveState<JoinOnExpressionSetContext>();
@@ -128,7 +138,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             => appender
                     .LineBreak()
                     .Indent()
-                    .Write(ConditionalOperatorMap[condition])
+                    .Write(conditionalOperatorMap[condition])
                     .LineBreak()
                     .Indent();
         #endregion

@@ -18,28 +18,59 @@
 
 using System;
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class InExpression<TValue> : InExpression,
         IEquatable<InExpression<TValue>>
     {
+        #region internals
+        private readonly IEnumerable<TValue> enumerable;
+        private readonly Lazy<List<TValue>> ordered;
+        #endregion
+
         #region constructors
         public InExpression(FieldExpression field, IEnumerable<TValue> values) : base(field, values)
         {
-
+            enumerable = values;
+            ordered = new Lazy<List<TValue>>(() => enumerable.OrderBy(x => x).ToList());
         }
         #endregion
 
         #region equals
-        public bool Equals(InExpression<TValue> obj)
-            => obj is InExpression<TValue> && base.Equals(obj);
+        public bool Equals(InExpression<TValue>? obj)
+        {
+            if (obj is null) return false;
+            if (ReferenceEquals(this, obj)) return true;
 
-        public override bool Equals(object obj)
-            => obj is InExpression<TValue> exp && base.Equals(exp);
+            if (Field is null && obj.Field is not null) return false;
+            if (Field is not null && obj.Field is null) return false;
+            if (Field is not null && !Field.Equals(obj.Field)) return false;
+
+            if (!ordered.Value.SequenceEqual(obj.ordered.Value)) return false;
+
+            return true;
+        }
+
+        public override bool Equals(object? obj)
+            => obj is InExpression<TValue> exp && Equals(exp);
 
         public override int GetHashCode()
-            => base.GetHashCode();
+        {
+            unchecked
+            {
+                const int @base = (int)2166136261;
+                const int multiplier = 16777619;
+
+                int hash = @base;
+                hash = (hash * multiplier) ^ (Field is not null ? Field.GetHashCode() : 0);
+                foreach (var item in ordered.Value)
+                    hash = (hash * multiplier) ^ (item is not null ? item.GetHashCode() : 0);
+
+                return hash;
+            }
+        }
         #endregion
     }
 }

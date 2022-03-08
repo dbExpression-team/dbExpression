@@ -43,7 +43,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region to string
-        public override string ToString() => $"{assignee} = {assignment}";
+        public override string? ToString() => $"{assignee} = {assignment}";
         #endregion
     }
 }

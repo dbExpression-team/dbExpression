@@ -21,12 +21,14 @@
 using {$};
 {/each-}
 
+#nullable enable
+
 namespace {Namespace}
 {{
     public partial class Enum{:functionName}FunctionExpression<TEnum>
     {{
         #region implicit operators
-        public static implicit operator EnumExpressionMediator<TEnum>(Enum{:functionName}FunctionExpression<TEnum> a) => new EnumExpressionMediator<TEnum>(new EnumExpressionMediator<TEnum>(a));
+        public static implicit operator EnumExpressionMediator<TEnum>(Enum{:functionName}FunctionExpression<TEnum> a) => new(new EnumExpressionMediator<TEnum>(a));
         #endregion
 
         #region filter operators
@@ -34,19 +36,19 @@ namespace {Namespace}
         #region {Type.Alias}
         {-#each Filters-}
         {-#each Operations-}
-        public static FilterExpressionSet operator {FilterOperatorSymbol}(Enum{:functionName}FunctionExpression<TEnum> a, TEnum b) => new FilterExpressionSet(new FilterExpression<bool>(a, new LiteralExpression<TEnum>(b), FilterExpressionOperator.{FilterOperatorName}));
+        public static FilterExpressionSet operator {FilterOperatorSymbol}(Enum{:functionName}FunctionExpression<TEnum> a, TEnum b) => new(new FilterExpression<bool>(a, new LiteralExpression<TEnum>(b), FilterExpressionOperator.{FilterOperatorName}));
         {-/each-}
 
         {-#each Operations-}
-        public static FilterExpressionSet operator {FilterOperatorSymbol}(TEnum a, Enum{:functionName}FunctionExpression<TEnum> b) => new FilterExpressionSet(new FilterExpression<bool>(new LiteralExpression<TEnum>(a), b, FilterExpressionOperator.{FilterOperatorName}));
+        public static FilterExpressionSet operator {FilterOperatorSymbol}(TEnum a, Enum{:functionName}FunctionExpression<TEnum> b) => new(new FilterExpression<bool>(new LiteralExpression<TEnum>(a), b, FilterExpressionOperator.{FilterOperatorName}));
         {-/each-}
 
         {-#each Operations-}
-        public static FilterExpressionSet operator {FilterOperatorSymbol}(Enum{:functionName}FunctionExpression<TEnum> a, TEnum? b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<TEnum?>(b), FilterExpressionOperator.{FilterOperatorName}));
+        public static FilterExpressionSet operator {FilterOperatorSymbol}(Enum{:functionName}FunctionExpression<TEnum> a, TEnum? b) => new(new FilterExpression<bool?>(a, new LiteralExpression<TEnum?>(b), FilterExpressionOperator.{FilterOperatorName}));
         {-/each-}
 
         {-#each Operations-}
-        public static FilterExpressionSet operator {FilterOperatorSymbol}(TEnum? a, Enum{:functionName}FunctionExpression<TEnum> b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<TEnum?>(a), b, FilterExpressionOperator.{FilterOperatorName}));
+        public static FilterExpressionSet operator {FilterOperatorSymbol}(TEnum? a, Enum{:functionName}FunctionExpression<TEnum> b) => new(new FilterExpression<bool?>(new LiteralExpression<TEnum?>(a), b, FilterExpressionOperator.{FilterOperatorName}));
         {-/each-}
         {-/each-}
         #endregion
@@ -55,11 +57,11 @@ namespace {Namespace}
         #region mediator
         {-#each Filters-}
         {-#each Operations-}
-        public static FilterExpressionSet operator {FilterOperatorSymbol}(Enum{:functionName}FunctionExpression<TEnum> a, EnumExpressionMediator<TEnum> b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.{FilterOperatorName}));
+        public static FilterExpressionSet operator {FilterOperatorSymbol}(Enum{:functionName}FunctionExpression<TEnum> a, EnumExpressionMediator<TEnum> b) => new(new FilterExpression<bool>(a, b, FilterExpressionOperator.{FilterOperatorName}));
         {-/each-}
 
         {-#each Operations-}
-        public static FilterExpressionSet operator {FilterOperatorSymbol}(Enum{:functionName}FunctionExpression<TEnum> a, NullableEnumExpressionMediator<TEnum> b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.{FilterOperatorName}));
+        public static FilterExpressionSet operator {FilterOperatorSymbol}(Enum{:functionName}FunctionExpression<TEnum> a, NullableEnumExpressionMediator<TEnum> b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.{FilterOperatorName}));
         {-/each-}
         {-/each-}
         #endregion
@@ -67,10 +69,10 @@ namespace {Namespace}
         #region alias
         {-#each Filters-}
         {-#each Operations-}
-        public static FilterExpressionSet operator {FilterOperatorSymbol}(Enum{:functionName}FunctionExpression<TEnum> a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.{FilterOperatorName}));
+        public static FilterExpressionSet operator {FilterOperatorSymbol}(Enum{:functionName}FunctionExpression<TEnum> a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.{FilterOperatorName}));
         {-/each-}
         {-#each Operations-}
-        public static FilterExpressionSet operator {FilterOperatorSymbol}(Enum{:functionName}FunctionExpression<TEnum> a, (string TableName, string FieldName) b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.{FilterOperatorName}));
+        public static FilterExpressionSet operator {FilterOperatorSymbol}(Enum{:functionName}FunctionExpression<TEnum> a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.{FilterOperatorName}));
         {-/each-}
         {-/each-}
         #endregion

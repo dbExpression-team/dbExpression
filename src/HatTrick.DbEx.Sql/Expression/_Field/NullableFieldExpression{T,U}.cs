@@ -38,8 +38,6 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region in value set
-        public abstract FilterExpressionSet In(params TValue[] value);
-        public abstract FilterExpressionSet In(IEnumerable<TValue> value);
         public abstract FilterExpressionSet In(params TNullableValue[] value);
         public abstract FilterExpressionSet In(IEnumerable<TNullableValue> value);
         #endregion

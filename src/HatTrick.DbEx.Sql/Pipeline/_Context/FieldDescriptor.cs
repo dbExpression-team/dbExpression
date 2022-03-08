@@ -23,7 +23,9 @@ namespace HatTrick.DbEx.Sql.Pipeline
     public class FieldDescriptor
     { 
         public FieldExpression Field { get; private set; }
-        public ISqlFieldMetadata Metadata => (Field as ISqlMetadataProvider<ISqlFieldMetadata>).Metadata;
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+        public ISqlFieldMetadata Metadata => (Field as ISqlMetadataProvider<ISqlFieldMetadata>).Metadata; //TODO: interface
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
         public FieldDescriptor(FieldExpression field)
         {

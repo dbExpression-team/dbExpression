@@ -1,31 +1,38 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<LangVersion>9.0</LangVersion>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Content Remove="dbex.config.json" />
-  </ItemGroup>
+	<ItemGroup>
+	  <Compile Remove="Shared\DataGridPager.razor.cs" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\src\HatTrick.DbEx.MsSql.Extensions.DependencyInjection\HatTrick.DbEx.MsSql.Extensions.DependencyInjection.csproj" />
-    <ProjectReference Include="..\..\..\src\HatTrick.DbEx.MsSql\HatTrick.DbEx.MsSql.csproj" />
-    <ProjectReference Include="..\..\..\src\HatTrick.DbEx.Sql\HatTrick.DbEx.Sql.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<Content Remove="dbex.config.json" />
+		<Content Remove="Shared\DataGridPager.razor" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Include="dbex.config.json" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\src\HatTrick.DbEx.MsSql.Extensions.DependencyInjection\HatTrick.DbEx.MsSql.Extensions.DependencyInjection.csproj" />
+		<ProjectReference Include="..\..\..\src\HatTrick.DbEx.MsSql\HatTrick.DbEx.MsSql.csproj" />
+		<ProjectReference Include="..\..\..\src\HatTrick.DbEx.Sql\HatTrick.DbEx.Sql.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Blazorise.Charts" Version="0.9.5.2" />
-    <PackageReference Include="Blazorise.Components" Version="0.9.5.2" />
-    <PackageReference Include="Blazorise.DataGrid" Version="0.9.5.2" />
-    <PackageReference Include="Blazorise.Icons.FontAwesome" Version="0.9.5.2" />
-    <PackageReference Include="Blazorise.Icons.Material" Version="0.9.5.2" />
-    <PackageReference Include="Blazorise.Material" Version="0.9.5.2" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="dbex.config.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Blazorise.Charts" Version="0.9.5.2" />
+		<PackageReference Include="Blazorise.Components" Version="0.9.5.2" />
+		<PackageReference Include="Blazorise.DataGrid" Version="0.9.5.2" />
+		<PackageReference Include="Blazorise.Icons.FontAwesome" Version="0.9.5.2" />
+		<PackageReference Include="Blazorise.Icons.Material" Version="0.9.5.2" />
+		<PackageReference Include="Blazorise.Material" Version="0.9.5.2" />
+		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.0" />
+	</ItemGroup>
 
 </Project>

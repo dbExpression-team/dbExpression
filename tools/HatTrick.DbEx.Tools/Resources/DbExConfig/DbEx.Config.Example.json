@@ -1,11 +1,12 @@
 ﻿{
+  "nullable": "{enable|disable} (if property isn't provided, no directive is emitted)",
   "source": {
     "type": "MsSql",
     "connectionString": {
       "value": "{connectionString}"
     }
   },
-  "workingDirectory":  null,
+  "workingDirectory": null,
   "rootNamespace": null,
   "enums": [],
   "outputDirectory": null,

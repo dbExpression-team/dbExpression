@@ -51,7 +51,7 @@ namespace HatTrick.DbEx.Sql
         /// </summary>
         /// <param name="groupBy">A list of expressions of type <see cref="AnyGroupByClause"/> specifying how to group the selected results.</param>
         /// <returns><see cref="SelectEntitiesOrderByContinuation{TEntity}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
-        SelectEntitiesOrderByContinuation<TEntity> GroupBy(IEnumerable<AnyGroupByClause> groupBy);
+        SelectEntitiesOrderByContinuation<TEntity> GroupBy(IEnumerable<AnyGroupByClause>? groupBy);
 
         /// <summary>
         /// Construct the HAVING clause of a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.
@@ -61,6 +61,6 @@ namespace HatTrick.DbEx.Sql
         /// </summary>
         /// <param name="having">A list of expressions of type <see cref="AnyHavingClause"/> specifying conditions on the grouping or aggregation of selected results.</param>
         /// <returns><see cref="SelectEntitiesContinuation{TEntity}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
-        SelectEntitiesOrderByContinuation<TEntity> Having(AnyHavingClause having);
+        SelectEntitiesOrderByContinuation<TEntity> Having(AnyHavingClause? having);
     }
 }

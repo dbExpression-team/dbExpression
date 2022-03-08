@@ -179,7 +179,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //then
             result.Should().NotBeNull();
-            result.Value.Should().Be(expectedValue);
+            result!.Value.Should().Be(expectedValue);
         }
 
         [Theory]
@@ -199,7 +199,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //then
             result.Should().NotBeNull();
-            result.Value.Should().Be(expectedValue);
+            result!.Value.Should().Be(expectedValue);
         }
     }
 }

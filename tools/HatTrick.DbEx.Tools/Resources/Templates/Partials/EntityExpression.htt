@@ -1,8 +1,10 @@
-﻿    #region {($.EntityExpression.Name) => InsertSpaceOnCapitalizationAndToLower} entity expression
+﻿    {?var:nullableAnnotation = $.EntityExpression.LanguageFeatures.Nullable.Annotation}
+    {?var:nullableForgivingOperator = $.EntityExpression.LanguageFeatures.Nullable.ForgivingOperator}
+    #region {($.EntityExpression.Name) => InsertSpaceOnCapitalizationAndToLower} entity expression
     public partial class {$.EntityExpression.Name}Entity : EntityExpression<{$.EntityExpression.Name}>
     {{
         #region internals
-        private SelectExpressionSet _inclusiveSelectExpressionSet;
+        private SelectExpressionSet{:nullableAnnotation} _inclusiveSelectExpressionSet;
         #endregion
 
         #region interface
@@ -14,15 +16,11 @@
         #endregion
 
         #region constructors
-        private {$.EntityExpression.Name}Entity() : base(null, null, null, null)
-        {{
-        }}
-
         public {$.EntityExpression.Name}Entity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {{
         }}
 
-        private {$.EntityExpression.Name}Entity(string identifier, string name, SchemaExpression schema, string alias) : base(identifier, name, schema, alias)
+        private {$.EntityExpression.Name}Entity(string identifier, string name, SchemaExpression schema, string{:nullableAnnotation} alias) : base(identifier, name, schema, alias)
         {{
             {#each $.Columns}
             Fields.Add($"{{identifier}}.{$.Column.Name}", {$.FieldExpression.Name} = new {$.FieldExpression.Name}Field($"{{identifier}}.{$.Column.Name}", "{$.FieldExpression.Name}", this));
@@ -39,8 +37,7 @@
             {?var :applyComma = false}
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
                 {#each $.Columns}
-                {?var:selectExpressionTypeName = ($) => BuildSelectExpressionTypeName}
-                {+#if :applyComma},{/if}new {:selectExpressionTypeName}({$.FieldExpression.Name})
+                {+#if :applyComma},{/if}new {$.FieldExpression.SelectExpressionTypeName}({$.FieldExpression.Name})
                 {? :applyComma = true}
 				{/each}
             ));
@@ -51,13 +48,12 @@
             if (alias is null)
                 throw new ArgumentNullException(nameof(alias));
 
-            SelectExpressionSet set = null;
-            string aliased = null;
+            SelectExpressionSet{:nullableAnnotation} set = null;
+            string{:nullableAnnotation} aliased = null;
 
             {#each $.Columns}
-            {?var:selectExpressionTypeName = ($) => BuildSelectExpressionTypeName}
             aliased = alias(nameof({$.FieldExpression.Name}));
-            set &= aliased != nameof({$.FieldExpression.Name}) ? new {:selectExpressionTypeName}({$.FieldExpression.Name}).As(aliased) as {:selectExpressionTypeName} : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof({$.FieldExpression.Name}));
+            set &= aliased != nameof({$.FieldExpression.Name}) ? new {$.FieldExpression.SelectExpressionTypeName}({$.FieldExpression.Name}).As(aliased) as {$.FieldExpression.SelectExpressionTypeName} : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider){:nullableAnnotation}.Name == nameof({$.FieldExpression.Name}));
 
             {/each}
             return set;
@@ -97,7 +93,7 @@
         protected override void HydrateEntity(ISqlFieldReader reader, {$.EntityExpression.Name} {($.EntityExpression.Name) => ToCamelCase})
         {{
             {#each $.Columns}
-            {($.FieldExpression.EntityExpression.Name) => ToCamelCase}.{$.FieldExpression.Name} = reader.ReadField().GetValue<{$.FieldExpression.Type.NullableAlias}>();
+            {($.FieldExpression.EntityExpression.Name) => ToCamelCase}.{$.FieldExpression.Name} = reader.ReadField(){:nullableForgivingOperator}.GetValue<{$.FieldExpression.Type.NullableAlias}>();
             {/each}
         }}
 		#endregion
