@@ -34,6 +34,6 @@ namespace HatTrick.DbEx.Sql
         /// </summary>
         /// <param name="entity">The database representation of the entity, for example "dbo.<typeparamref name="TEntity"/>" when the entity is of type <typeparamref name="TEntity"/>.</param>
         /// <returns><see cref="InsertEntityTermination{TEntity}"/>, a fluent continuation for the construction of a sql INSERT query expression for inserting a <typeparamref name="TEntity"/> entity.</returns>
-        InsertEntityTermination<TEntity> Into(Entity<TEntity> entity);
+        InsertEntityTermination<TEntity> Into(Table<TEntity> entity);
     }
 }

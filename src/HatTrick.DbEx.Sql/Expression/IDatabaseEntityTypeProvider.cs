@@ -20,7 +20,7 @@
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public interface IDbEntityTypeProvider
+    public interface IDatabaseEntityTypeProvider
     {
         Type EntityType { get; }
     }

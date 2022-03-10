@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,31 +16,21 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
+using HatTrick.DbEx.Sql.Expression;
 using System;
+using System.Collections.Generic;
 
-namespace HatTrick.DbEx.Sql.Expression
+namespace HatTrick.DbEx.Sql
 {
-    public abstract partial class ByteFieldExpression : 
-        FieldExpression<byte>,
-        ByteElement,
-        IEquatable<ByteFieldExpression>
+#pragma warning disable IDE1006 // Naming Styles
+    public interface Table : 
+        DatabaseEntity,
+        IExpressionAliasProvider
+#pragma warning restore IDE1006 // Naming Styles
     {
-        #region constructors
-        protected ByteFieldExpression(string identifier, string name, Table entity) : base(identifier, name, typeof(string), entity)
-        {
-
-        }
-        #endregion
-
-        #region equals
-        public bool Equals(ByteFieldExpression? obj)
-            => obj is not null && base.Equals(obj);
-
-        public override bool Equals(object? obj)
-            => obj is ByteFieldExpression exp && Equals(exp);
-
-        public override int GetHashCode()
-            => base.GetHashCode();
-        #endregion
+        Schema Schema { get; }
+        IEnumerable<Field> Fields { get; }
+        SelectExpressionSet BuildInclusiveSelectExpression();
+        SelectExpressionSet BuildInclusiveSelectExpression(Func<string, string> alias);
     }
 }

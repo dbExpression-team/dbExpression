@@ -143,7 +143,7 @@ namespace HatTrick.DbEx.Sql
         /// The completion of this fluent builder is useful for building an UPDATE query expression for updating an <typeparamref name="TEntity"/> entity.
         /// </summary>
         /// <returns><see cref="EntityFieldAssignmentsContinuation{TEntity}"/>, a fluent continuation for the construction of a list of <see cref="EntityFieldAssignment"/>s.</returns>
-        public static EntityFieldAssignmentsContinuation<TEntity> BuildAssignmentsFor<TEntity>(Entity<TEntity> entity)
+        public static EntityFieldAssignmentsContinuation<TEntity> BuildAssignmentsFor<TEntity>(Table<TEntity> entity)
             where TEntity : class, IDbEntity
             => new EntityComparisonAssignmentBuilder<TEntity>(entity);
 
@@ -152,7 +152,7 @@ namespace HatTrick.DbEx.Sql
         /// </summary>
         /// <returns>A <see cref="SelectExpressionSet"/> containing a list of <see cref="SelectExpression"/>s representing all columns for a table.</returns>
         /// <remarks>The list will not include any fields/columns that were marked to ignore as part of configuration.</remarks>
-        public static IEnumerable<AnyElement> SelectAllFor<TEntity>(Entity<TEntity> entity)
+        public static IEnumerable<AnyElement> SelectAllFor<TEntity>(Table<TEntity> entity)
             where TEntity : class, IDbEntity
         {
             if (entity is null)
@@ -166,7 +166,7 @@ namespace HatTrick.DbEx.Sql
         /// </summary>
         /// <returns>A <see cref="SelectExpressionSet"/> containing a list of <see cref="SelectExpression"/>s representing all columns for a table.</returns>
         /// <remarks>The list will not include any fields/columns that were marked to ignore as part of configuration.</remarks>
-        public static IEnumerable<AnyElement> SelectAllFor<TEntity>(Entity<TEntity> entity, string aliasPrefix)
+        public static IEnumerable<AnyElement> SelectAllFor<TEntity>(Table<TEntity> entity, string aliasPrefix)
             where TEntity : class, IDbEntity
         {
             return SelectAllFor(entity, name => $"{aliasPrefix}{name}");
@@ -177,7 +177,7 @@ namespace HatTrick.DbEx.Sql
         /// </summary>
         /// <returns>A <see cref="SelectExpressionSet"/> containing a list of <see cref="SelectExpression"/>s representing all columns for a table.</returns>
         /// <remarks>The list will not include any fields/columns that were marked to ignore as part of configuration.</remarks>
-        public static IEnumerable<AnyElement> SelectAllFor<TEntity>(Entity<TEntity> entity, Func<string,string> alias)
+        public static IEnumerable<AnyElement> SelectAllFor<TEntity>(Table<TEntity> entity, Func<string,string> alias)
             where TEntity : class, IDbEntity
         {
             if (entity is null)
@@ -194,7 +194,7 @@ namespace HatTrick.DbEx.Sql
         /// </summary>
         /// <returns>A <see cref="SelectExpressionSet"/> containing a list of <see cref="SelectExpression"/>s representing all columns for a table.</returns>
         /// <remarks>The list will not include any fields/columns that were marked to ignore as part of configuration.</remarks>
-        public static Action<ISqlFieldReader, TEntity> GetDefaultMappingFor<TEntity>(Entity<TEntity> entity)
+        public static Action<ISqlFieldReader, TEntity> GetDefaultMappingFor<TEntity>(Table<TEntity> entity)
             where TEntity : class, IDbEntity
         {
             if (entity is null)

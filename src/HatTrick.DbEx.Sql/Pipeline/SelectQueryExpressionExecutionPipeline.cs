@@ -84,8 +84,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         return;
 
                     var mapper = database.MapperFactory.CreateEntityMapper(
-                        expression.BaseEntity as IEntityExpression<T> 
-                            ?? throw new DbExpressionException($"Expected base entity to be type {typeof(IEntityExpression<T>)}, but is actually {expression.BaseEntity?.GetType()?.ToString() ?? "<null>"}.")
+                        expression.BaseEntity as Table<T> 
+                            ?? throw new DbExpressionException($"Expected base entity to be type {typeof(Table<T>)}, but is actually {expression.BaseEntity?.GetType()?.ToString() ?? "<null>"}.")
                         );
                     mapper.Map(row, entity);
                 }
@@ -199,8 +199,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         entity = database.EntityFactory.CreateEntity<T>() 
                             ?? throw new DbExpressionException($"Expected entity factory to provide an entity of type {typeof(T)}, but <null> was returned.");
                         var mapper = database.MapperFactory.CreateEntityMapper(
-                            expression.BaseEntity as IEntityExpression<T>
-                                ?? throw new DbExpressionException($"Expected base entity to be type {typeof(IEntityExpression<T>)}, but is actually {expression.BaseEntity?.GetType()?.ToString() ?? "<null>"}.")
+                            expression.BaseEntity as Table<T>
+                                ?? throw new DbExpressionException($"Expected base entity to be type {typeof(Table<T>)}, but is actually {expression.BaseEntity?.GetType()?.ToString() ?? "<null>"}.")
                         );
                         mapper.Map(row, entity);
                     }
@@ -368,8 +368,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
         {
             var entities = new List<T>();
             var mapper = database.MapperFactory.CreateEntityMapper(
-                expression.BaseEntity as IEntityExpression<T>
-                    ?? throw new DbExpressionException($"Expected base entity to be type {typeof(IEntityExpression<T>)}, but is actually {expression.BaseEntity?.GetType()?.ToString() ?? "<null>"}.")
+                expression.BaseEntity as Table<T>
+                    ?? throw new DbExpressionException($"Expected base entity to be type {typeof(Table<T>)}, but is actually {expression.BaseEntity?.GetType()?.ToString() ?? "<null>"}.")
             ); 
             ExecuteSelectQuery(
                 expression,
@@ -396,8 +396,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
         {
             var entities = new List<T>();
             var mapper = database.MapperFactory.CreateEntityMapper(
-                expression.BaseEntity as IEntityExpression<T>
-                    ?? throw new DbExpressionException($"Expected base entity to be type {typeof(IEntityExpression<T>)}, but is actually {expression.BaseEntity?.GetType()?.ToString() ?? "<null>"}.")
+                expression.BaseEntity as Table<T>
+                    ?? throw new DbExpressionException($"Expected base entity to be type {typeof(Table<T>)}, but is actually {expression.BaseEntity?.GetType()?.ToString() ?? "<null>"}.")
             );
             ExecuteSelectQuery(
                 expression,
@@ -487,8 +487,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
         {
             var entities = new List<T>();
             var mapper = database.MapperFactory.CreateEntityMapper(
-                expression.BaseEntity as IEntityExpression<T>
-                    ?? throw new DbExpressionException($"Expected base entity to be type {typeof(IEntityExpression<T>)}, but is actually {expression.BaseEntity?.GetType()?.ToString() ?? "<null>"}.")
+                expression.BaseEntity as Table<T>
+                    ?? throw new DbExpressionException($"Expected base entity to be type {typeof(Table<T>)}, but is actually {expression.BaseEntity?.GetType()?.ToString() ?? "<null>"}.")
             );
             await ExecuteSelectQueryAsync(
                 expression,
@@ -575,8 +575,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
         {
             var entities = new List<T>();
             var mapper = database.MapperFactory.CreateEntityMapper(
-                expression.BaseEntity as IEntityExpression<T>
-                    ?? throw new DbExpressionException($"Expected base entity to be type {typeof(IEntityExpression<T>)}, but is actually {expression.BaseEntity?.GetType()?.ToString() ?? "<null>"}.")
+                expression.BaseEntity as Table<T>
+                    ?? throw new DbExpressionException($"Expected base entity to be type {typeof(Table<T>)}, but is actually {expression.BaseEntity?.GetType()?.ToString() ?? "<null>"}.")
             );
             await ExecuteSelectQueryAsync(
                 expression,

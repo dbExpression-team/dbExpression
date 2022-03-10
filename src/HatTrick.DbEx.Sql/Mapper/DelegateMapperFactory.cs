@@ -37,7 +37,7 @@ namespace HatTrick.DbEx.Sql.Mapper
         #endregion
 
         #region methods
-        public IEntityMapper<TEntity> CreateEntityMapper<TEntity>(IEntityExpression<TEntity> entity)
+        public IEntityMapper<TEntity> CreateEntityMapper<TEntity>(Table<TEntity> entity)
             where TEntity : class, IDbEntity
         {
             var mapper = entityMapperFactory(typeof(TEntity));

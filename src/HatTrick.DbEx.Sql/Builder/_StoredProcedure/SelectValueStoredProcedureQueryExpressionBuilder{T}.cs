@@ -32,9 +32,7 @@ namespace HatTrick.DbEx.Sql.Builder
     {
         #region constructors
         public SelectValueStoredProcedureQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, StoredProcedureQueryExpression expression)
-#pragma warning disable CS8604 // Possible null reference argument.
-            : base(config, expression, expression.BaseEntity as StoredProcedureExpression) //TODO: interface
-#pragma warning restore CS8604 // Possible null reference argument.
+            : base(config, expression, expression.BaseEntity!)
         {
 
         }

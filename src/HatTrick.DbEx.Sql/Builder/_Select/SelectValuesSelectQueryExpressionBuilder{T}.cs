@@ -59,7 +59,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        SelectValuesContinuation<TValue> SelectValues<TValue>.From<TEntity>(Entity<TEntity> entity)
+        SelectValuesContinuation<TValue> SelectValues<TValue>.From<TEntity>(Table<TEntity> entity)
         {
             ApplyFrom(entity);
             return this;
@@ -113,9 +113,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <inheritdoc />
         JoinOnWithAlias<SelectValuesContinuation<TValue>> SelectValuesContinuation<TValue>.InnerJoin(AnySelectSubquery subquery)
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-            => new SelectValuesJoinBuilder<TValue>(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.INNER, this); //TODO: interface
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
+            => new SelectValuesJoinBuilder<TValue>(Expression, subquery.Expression, JoinOperationExpressionOperator.INNER, this);
 
         /// <inheritdoc />
         JoinOn<SelectValuesContinuation<TValue>> SelectValuesContinuation<TValue>.LeftJoin(AnyEntity entity)
@@ -123,9 +121,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <inheritdoc />
         JoinOnWithAlias<SelectValuesContinuation<TValue>> SelectValuesContinuation<TValue>.LeftJoin(AnySelectSubquery subquery)
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-            => new SelectValuesJoinBuilder<TValue>(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.LEFT, this); //TODO: interface
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
+            => new SelectValuesJoinBuilder<TValue>(Expression, subquery.Expression, JoinOperationExpressionOperator.LEFT, this);
 
         /// <inheritdoc />
         JoinOn<SelectValuesContinuation<TValue>> SelectValuesContinuation<TValue>.RightJoin(AnyEntity entity)
@@ -133,9 +129,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <inheritdoc />
         JoinOnWithAlias<SelectValuesContinuation<TValue>> SelectValuesContinuation<TValue>.RightJoin(AnySelectSubquery subquery)
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-            => new SelectValuesJoinBuilder<TValue>(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.RIGHT, this); //TODO: interface
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
+            => new SelectValuesJoinBuilder<TValue>(Expression, subquery.Expression, JoinOperationExpressionOperator.RIGHT, this);
 
         /// <inheritdoc />
         JoinOn<SelectValuesContinuation<TValue>> SelectValuesContinuation<TValue>.FullJoin(AnyEntity entity)
@@ -143,9 +137,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <inheritdoc />
         JoinOnWithAlias<SelectValuesContinuation<TValue>> SelectValuesContinuation<TValue>.FullJoin(AnySelectSubquery subquery)
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-            => new SelectValuesJoinBuilder<TValue>(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.FULL, this); //TODO: interface
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
+            => new SelectValuesJoinBuilder<TValue>(Expression, subquery.Expression, JoinOperationExpressionOperator.FULL, this);
 
         /// <inheritdoc />
         SelectValuesContinuation<TValue> SelectValuesContinuation<TValue>.CrossJoin(AnyEntity entity)

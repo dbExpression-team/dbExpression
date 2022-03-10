@@ -21,7 +21,7 @@
 namespace HatTrick.DbEx.Sql
 {
 #pragma warning disable IDE1006 // Naming Styles
-    public interface AnyElement : IExpressionElement
+    public interface AnyElement : IExpressionElement, IExpressionTypeProvider
 #pragma warning restore IDE1006 // Naming Styles
     {
         OrderByExpression Asc { get; }

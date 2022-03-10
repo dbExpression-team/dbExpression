@@ -16,32 +16,19 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
+using HatTrick.DbEx.Sql.Executor;
+using HatTrick.DbEx.Sql.Expression;
 using System;
+using System.Collections.Generic;
 
-namespace HatTrick.DbEx.Sql.Expression
+namespace HatTrick.DbEx.Sql
 {
-    public partial class StringFieldExpression<TEntity> :
-        StringFieldExpression,
-        IExpressionElement<string>,
-        IEquatable<StringFieldExpression<TEntity>>
+
+#pragma warning disable IDE1006 // Naming Styles
+    public interface Entity<TEntity> : AnyEntity
+#pragma warning restore IDE1006 // Naming Styles
         where TEntity : class, IDbEntity
     {
-        #region constructors
-        public StringFieldExpression(string identifier, string name, Table entity) : base(identifier, name, entity)
-        {
 
-        }
-        #endregion
-
-        #region equals
-        public bool Equals(StringFieldExpression<TEntity>? obj)
-            => obj is not null && base.Equals(obj);
-
-        public override bool Equals(object? obj)
-            => obj is StringFieldExpression<TEntity> exp && Equals(exp);
-
-        public override int GetHashCode()
-            => base.GetHashCode();
-        #endregion
     }
 }

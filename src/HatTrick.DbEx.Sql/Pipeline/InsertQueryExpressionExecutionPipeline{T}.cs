@@ -102,9 +102,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 cmd => afterExecution?.Invoke(new Lazy<AfterExecutionPipelineExecutionContext>(() => new AfterExecutionPipelineExecutionContext(database, expression, cmd)))
             );
 
-#pragma warning disable CS8604 // Possible null reference argument.
-            var mapper = database.MapperFactory.CreateEntityMapper(expression.BaseEntity as IEntityExpression<TEntity>) ?? throw new DbExpressionException("The mapper is null, cannot execute an insert query without a mapper to map return values to entity instances."); //TODO: interface
-#pragma warning restore CS8604 // Possible null reference argument.
+            var mapper = database.MapperFactory.CreateEntityMapper(expression.BaseEntity as Table<TEntity> ?? throw new InvalidOperationException($"Expected base entity to be type {typeof(Table<TEntity>)}."));
 
             ISqlFieldReader? row;
             while ((row = reader.ReadRow()) is not null)
@@ -195,7 +193,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             ct.ThrowIfCancellationRequested();
 
-            var mapper = database.MapperFactory.CreateEntityMapper(expression.BaseEntity as IEntityExpression<TEntity> ?? throw new InvalidOperationException($"Expected base entity to be type {typeof(IEntityExpression<TEntity>)}.")) 
+            var mapper = database.MapperFactory.CreateEntityMapper(expression.BaseEntity as Table<TEntity> ?? throw new InvalidOperationException($"Expected base entity to be type {typeof(Table<TEntity>)}.")) 
                 ?? throw new DbExpressionException("The mapper is null, cannot execute an insert query without a mapper to map return values to entity instances.");
 
             ISqlFieldReader? row;

@@ -22,7 +22,7 @@ namespace HatTrick.DbEx.Sql.Mapper
 {
     public interface IMapperFactory
     {
-        IEntityMapper<TEntity> CreateEntityMapper<TEntity>(IEntityExpression<TEntity> entity)
+        IEntityMapper<TEntity> CreateEntityMapper<TEntity>(Table<TEntity> entity)
             where TEntity : class, IDbEntity;
         IExpandoObjectMapper CreateExpandoObjectMapper();
     }

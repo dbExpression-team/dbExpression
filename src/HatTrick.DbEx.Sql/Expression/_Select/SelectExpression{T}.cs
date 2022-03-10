@@ -26,12 +26,12 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<SelectExpression<TValue>>
     {
         #region constructors
-        public SelectExpression(IExpressionElement expression) : base(expression)
+        public SelectExpression(AnyElement expression) : base(expression)
         {
 
         }
 
-        public SelectExpression(IExpressionElement expression, string alias) : base(expression, alias)
+        public SelectExpression(AnyElement expression, string alias) : base(expression, alias)
         {
 
         }

@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,20 +16,17 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Expression;
+using System.Collections.Generic;
+using HatTrick.DbEx.Sql.Expression;
 
-namespace HatTrick.DbEx.Sql.Pipeline
+namespace HatTrick.DbEx.Sql
 {
-    public class FieldDescriptor
-    { 
-        public FieldExpression Field { get; private set; }
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-        public ISqlFieldMetadata Metadata => (Field as ISqlMetadataProvider<ISqlFieldMetadata>).Metadata; //TODO: interface
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
-
-        public FieldDescriptor(FieldExpression field)
-        {
-            Field = field;
-        }
+#pragma warning disable IDE1006 // Naming Styles
+    public interface Schema : 
+        IExpressionElement, 
+        ISqlMetadataIdentifierProvider
+#pragma warning restore IDE1006 // Naming Styles
+    {
+        IEnumerable<Table> Entities { get; }
     }
 }

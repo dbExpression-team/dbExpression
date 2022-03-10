@@ -27,9 +27,7 @@ namespace HatTrick.DbEx.Sql.Expression
     {
         #region interface
         public string Expression { get; private set; }
-
-        public OrderByExpression Asc => new(this, OrderExpressionDirection.ASC);
-        public OrderByExpression Desc => new(this, OrderExpressionDirection.DESC);
+        Type IExpressionTypeProvider.DeclaredType => typeof(object);
         #endregion
 
         #region constructors
@@ -46,6 +44,11 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region tostring
         public override string? ToString() => Expression ?? "null";
+        #endregion
+
+        #region order by
+        public OrderByExpression Asc => new(this, OrderExpressionDirection.ASC);
+        public OrderByExpression Desc => new(this, OrderExpressionDirection.DESC);
         #endregion
 
         #region equals

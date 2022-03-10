@@ -30,7 +30,7 @@ namespace HatTrick.DbEx.Sql
         /// </para>
         /// </summary>
         /// <returns><see cref="SelectDynamicContinuation"/>, a fluent continuation for the construction of a sql SELECT query expression for a single <typeparamref name="TValue"/> value.</returns>
-        SelectDynamicContinuation From<TEntity>(Entity<TEntity> entity)
+        SelectDynamicContinuation From<TEntity>(Table<TEntity> entity)
             where TEntity : class, IDbEntity;
     }
 }

@@ -37,7 +37,7 @@ namespace HatTrick.DbEx.Sql.Builder
             Expression = expression ?? throw new ArgumentNullException(nameof(expression));
         }
 
-        protected UpdateQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, UpdateQueryExpression expression, EntityExpression entity)
+        protected UpdateQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, UpdateQueryExpression expression, Table entity)
             : base(config, expression)
         {
             Expression = expression ?? throw new ArgumentNullException(nameof(expression));
@@ -47,7 +47,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         #region methods
         /// <inheritdoc />
-        UpdateEntitiesContinuation<TEntity> UpdateEntities.From<TEntity>(Entity<TEntity> entity)
+        UpdateEntitiesContinuation<TEntity> UpdateEntities.From<TEntity>(Table<TEntity> entity)
             => CreateTypedBuilder(Configuration, Expression, entity as EntityExpression<TEntity> ?? throw new DbExpressionException($"Expected {nameof(entity)} to be of type {nameof(EntityExpression)}."));
 
         /// <inheritdoc />

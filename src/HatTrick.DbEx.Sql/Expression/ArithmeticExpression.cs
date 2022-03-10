@@ -26,9 +26,9 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<ArithmeticExpression>
     {
         #region interface
-        public IExpressionElement LeftArg { get; private set; }
-        public IExpressionElement RightArg { get; private set; }
-        public ArithmeticExpressionOperator ExpressionOperator { get; private set; }
+        public IExpressionElement LeftArg { get; }
+        public IExpressionElement RightArg { get; }
+        public ArithmeticExpressionOperator ExpressionOperator { get; }
         #endregion
 
         #region constructors

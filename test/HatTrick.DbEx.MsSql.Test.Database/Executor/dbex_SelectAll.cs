@@ -45,9 +45,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var rowCount = 0;
             var fieldCount = 0;
 
-            expectedFieldCount += (dbo.Person as IExpressionListProvider<FieldExpression>).Expressions.Count();
-            expectedFieldCount += (dbo.Address as IExpressionListProvider<FieldExpression>).Expressions.Count();
-            expectedFieldCount += (dbo.PersonAddress as IExpressionListProvider<FieldExpression>).Expressions.Count();
+            expectedFieldCount += (dbo.Person as Table).Fields.Count();
+            expectedFieldCount += (dbo.Address as Table).Fields.Count();
+            expectedFieldCount += (dbo.PersonAddress as Table).Fields.Count();
 
             var exp = db.SelectMany(
                     dbex.SelectAllFor(dbo.Person)
@@ -81,9 +81,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var rowCount = 0;
             var fieldCount = 0;
 
-            expectedFieldCount += (dbo.Person as IExpressionListProvider<FieldExpression>).Expressions.Count();
-            expectedFieldCount += (dbo.Address as IExpressionListProvider<FieldExpression>).Expressions.Count();
-            expectedFieldCount += (dbo.PersonAddress as IExpressionListProvider<FieldExpression>).Expressions.Count();
+            expectedFieldCount += (dbo.Person as Table).Fields.Count();
+            expectedFieldCount += (dbo.Address as Table).Fields.Count();
+            expectedFieldCount += (dbo.PersonAddress as Table).Fields.Count();
 
             var exp = db.SelectMany(
                     dbex.SelectAllFor(dbo.Person)

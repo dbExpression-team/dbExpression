@@ -23,14 +23,7 @@ using System.Linq;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class EntityExpression : 
-        IEntityExpression,
-        AnyEntity,
-        ISqlMetadataIdentifierProvider,
-        IExpressionProvider<SchemaExpression>,
-        IExpressionListProvider<FieldExpression>,
-        IExpressionAliasProvider,
-        IExpressionNameProvider,
-        IDbEntityTypeProvider,
+        Table,
         IEquatable<EntityExpression>
    {
         #region internals
@@ -38,15 +31,15 @@ namespace HatTrick.DbEx.Sql.Expression
         protected readonly string name;
         protected readonly Type dbEntityType;
         protected readonly SchemaExpression schema;
-        protected IDictionary<string, FieldExpression> Fields { get; } = new Dictionary<string, FieldExpression>();
+        protected Dictionary<string, Field> Fields { get; } = new();
         protected readonly string? alias;
         #endregion
 
         #region interface
+        Schema Table.Schema => schema;
+        IEnumerable<Field> Table.Fields => Fields.Values;
         string ISqlMetadataIdentifierProvider.Identifier => identifier;
-        Type IDbEntityTypeProvider.EntityType => dbEntityType;
-        SchemaExpression IExpressionProvider<SchemaExpression>.Expression => schema;
-        IEnumerable<FieldExpression> IExpressionListProvider<FieldExpression>.Expressions => Fields.Values;
+        Type IDatabaseEntityTypeProvider.EntityType => dbEntityType;
         string? IExpressionAliasProvider.Alias => alias;
         string IExpressionNameProvider.Name => name;
         #endregion
@@ -65,6 +58,15 @@ namespace HatTrick.DbEx.Sql.Expression
             this.schema = schema ?? throw new ArgumentNullException(nameof(schema));
             this.alias = alias;
         }
+        #endregion
+
+        #region methods
+        SelectExpressionSet Table.BuildInclusiveSelectExpression()
+            => GetInclusiveSelectExpression();
+        SelectExpressionSet Table.BuildInclusiveSelectExpression(Func<string, string> alias)
+            => GetInclusiveSelectExpression(alias);
+        protected abstract SelectExpressionSet GetInclusiveSelectExpression();
+        protected abstract SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias);
         #endregion
 
         #region to string

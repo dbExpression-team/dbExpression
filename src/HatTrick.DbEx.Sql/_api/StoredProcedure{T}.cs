@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,18 +16,16 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Executor;
-using System;
+using HatTrick.DbEx.Sql.Expression;
 
-namespace HatTrick.DbEx.Sql.Expression
+namespace HatTrick.DbEx.Sql
 {
-    public interface IEntityExpression<T> : IEntityExpression
-        where T : class, IDbEntity
+
+#pragma warning disable IDE1006 // Naming Styles
+    public interface StoredProcedure<TSproc> : StoredProcedure, Entity<TSproc>
+#pragma warning restore IDE1006 // Naming Styles
+        where TSproc : class, IDbEntity
     {
-        SelectExpressionSet BuildInclusiveSelectExpression();
-        SelectExpressionSet BuildInclusiveSelectExpression(Func<string, string> alias);
-        InsertExpressionSet<T> BuildInclusiveInsertExpression(T entity);
-        AssignmentExpressionSet BuildAssignmentExpression(T from, T to);
-        void HydrateEntity(ISqlFieldReader reader, T entity);
+
     }
 }

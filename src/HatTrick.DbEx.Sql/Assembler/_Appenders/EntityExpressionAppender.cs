@@ -38,7 +38,7 @@ namespace HatTrick.DbEx.Sql.Assembler
 
             if (context.Configuration.IncludeSchemaName)
             {
-                builder.AppendElement((expression as IExpressionProvider<SchemaExpression>).Expression, context);
+                builder.AppendElement((expression as Table).Schema, context);
                 builder.Appender.Write(".");
             }
             builder.Appender.Write(context.Configuration.IdentifierDelimiter.Begin);

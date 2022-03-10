@@ -22,48 +22,42 @@ using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class StoredProcedureExpression : 
-        IEntityExpression,
-        AnyEntity,
-        ISqlMetadataIdentifierProvider,
-        IExpressionProvider<SchemaExpression>,
-        IExpressionNameProvider,
-        IExpressionListProvider<ParameterExpression>,
-        IOutputParameterMappingDelegateProvider,
+    public class StoredProcedureExpression :
+        StoredProcedure,
+        IExpressionElement,
         IEquatable<StoredProcedureExpression>
     {
         #region internals
         protected readonly string identifier;
         protected readonly string name;
         protected readonly SchemaExpression schema;
-        protected readonly IList<ParameterExpression> parameters;
         protected readonly Action<ISqlOutputParameterList> mapping;
+        protected Dictionary<string, QueryParameter> Parameters { get; } = new();
         #endregion
 
         #region interface
         string ISqlMetadataIdentifierProvider.Identifier => identifier;
-        SchemaExpression IExpressionProvider<SchemaExpression>.Expression => schema;
+        Schema StoredProcedure.Schema => schema;
         string IExpressionNameProvider.Name => name;
-        IEnumerable<ParameterExpression> IExpressionListProvider<ParameterExpression>.Expressions => parameters;
+        IEnumerable<QueryParameter> StoredProcedure.Parameters => Parameters.Values;
         Action<ISqlOutputParameterList> IOutputParameterMappingDelegateProvider.MapDelegate => mapping;
+        Type IDatabaseEntityTypeProvider.EntityType => this.GetType();
         #endregion
 
         #region constructors
-        public StoredProcedureExpression(string identifier, string name, SchemaExpression schema, IList<ParameterExpression> parameters)
+        public StoredProcedureExpression(string identifier, string name, SchemaExpression schema)
         {
             this.identifier = identifier ?? throw new ArgumentNullException(nameof(identifier));
             this.name = name ?? throw new ArgumentNullException(nameof(name));
             this.schema = schema ?? throw new ArgumentNullException(nameof(schema));
-            this.parameters = parameters ?? Array.Empty<ParameterExpression>();
             this.mapping = _ => { };
         }
 
-        public StoredProcedureExpression(string identifier, string name, SchemaExpression schema, IList<ParameterExpression> parameters, Action<ISqlOutputParameterList> outputParameterMappingDelegate)
+        public StoredProcedureExpression(string identifier, string name, SchemaExpression schema, Action<ISqlOutputParameterList> outputParameterMappingDelegate)
         {
             this.identifier = identifier ?? throw new ArgumentNullException(nameof(identifier));
             this.name = name ?? throw new ArgumentNullException(nameof(name));
             this.schema = schema ?? throw new ArgumentNullException(nameof(schema));
-            this.parameters = parameters ?? Array.Empty<ParameterExpression>();
             this.mapping = outputParameterMappingDelegate ?? throw new ArgumentNullException(nameof(outputParameterMappingDelegate));
         }
         #endregion
@@ -95,7 +89,7 @@ namespace HatTrick.DbEx.Sql.Expression
             if (schema is not null && !schema.Equals(obj.schema)) return false;
             if (identifier != obj.identifier) return false;
             if (name != obj.name) return false;
-            if (!parameters.SequenceEqual(obj.parameters)) return false;
+            if (!Parameters.SequenceEqual(obj.Parameters)) return false;
 
             //both are as initialized in constructor
             var thisMappingIsNull = mapping.Equals(new Action<ISqlOutputParameterList>(_ => { }));
@@ -123,8 +117,11 @@ namespace HatTrick.DbEx.Sql.Expression
                 hash = (hash * multiplier) ^ (identifier is not null ? identifier.GetHashCode() : 0);
                 hash = (hash * multiplier) ^ (schema is not null ? schema.GetHashCode() : 0);
                 hash = (hash * multiplier) ^ (name is not null ? name.GetHashCode() : 0);
-                foreach (var parameter in parameters)
-                    hash = (hash * multiplier) ^ (parameter is not null ? parameter.GetHashCode() : 0);
+                foreach (var parameter in Parameters)
+                {
+                    hash = (hash * multiplier) ^ (parameter.Key is not null ? parameter.Key.GetHashCode() : 0);
+                    hash = (hash * multiplier) ^ (parameter.Value is not null ? parameter.Value.GetHashCode() : 0);
+                }
                 return hash;
             }
         }

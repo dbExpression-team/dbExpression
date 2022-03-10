@@ -118,9 +118,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
 
             builder.Appender.Indent().Write("AS ")
                     .Write(context.Configuration.IdentifierDelimiter.Begin)
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-                    .Write((expression.BaseEntity as ISqlMetadataIdentifierProvider).Identifier) //TODO: interface
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
+                    .Write(expression.BaseEntity!.Identifier)
                     .Write(context.Configuration.IdentifierDelimiter.End)
                     .LineBreak()
                 .Indentation--.Indent().Write("WHERE").LineBreak()

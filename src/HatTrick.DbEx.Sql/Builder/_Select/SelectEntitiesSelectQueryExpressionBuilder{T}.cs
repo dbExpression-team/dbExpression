@@ -46,7 +46,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
 
         #region methods
-        protected override void ApplyFrom<T>(Entity<T> entity)
+        protected override void ApplyFrom<T>(Table<T> entity)
         {
             base.ApplyFrom(entity);
             Expression.Select = new SelectExpressionSet(entity.BuildInclusiveSelectExpression());
@@ -67,7 +67,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        SelectEntitiesContinuation<TEntity> SelectEntities<TEntity>.From(Entity<TEntity> entity)
+        SelectEntitiesContinuation<TEntity> SelectEntities<TEntity>.From(Table<TEntity> entity)
         {
             ApplyFrom(entity);
             return this;
@@ -121,9 +121,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <inheritdoc />
         JoinOnWithAlias<SelectEntitiesContinuation<TEntity>> SelectEntitiesContinuation<TEntity>.InnerJoin(AnySelectSubquery subquery)
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-            => new SelectEntitiesJoinExpressionBuilder<TEntity>(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.INNER, this); //TODO: interface
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
+            => new SelectEntitiesJoinExpressionBuilder<TEntity>(Expression, subquery.Expression, JoinOperationExpressionOperator.INNER, this);
 
         /// <inheritdoc />
         JoinOn<SelectEntitiesContinuation<TEntity>> SelectEntitiesContinuation<TEntity>.LeftJoin(AnyEntity entity)
@@ -131,9 +129,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <inheritdoc />
         JoinOnWithAlias<SelectEntitiesContinuation<TEntity>> SelectEntitiesContinuation<TEntity>.LeftJoin(AnySelectSubquery subquery)
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-            => new SelectEntitiesJoinExpressionBuilder<TEntity>(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.LEFT, this); //TODO: interface
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
+            => new SelectEntitiesJoinExpressionBuilder<TEntity>(Expression, subquery.Expression, JoinOperationExpressionOperator.LEFT, this);
 
         /// <inheritdoc />
         JoinOn<SelectEntitiesContinuation<TEntity>> SelectEntitiesContinuation<TEntity>.RightJoin(AnyEntity entity)
@@ -141,9 +137,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <inheritdoc />
         JoinOnWithAlias<SelectEntitiesContinuation<TEntity>> SelectEntitiesContinuation<TEntity>.RightJoin(AnySelectSubquery subquery)
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-            => new SelectEntitiesJoinExpressionBuilder<TEntity>(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.RIGHT, this); //TODO: interface
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
+            => new SelectEntitiesJoinExpressionBuilder<TEntity>(Expression, subquery.Expression, JoinOperationExpressionOperator.RIGHT, this);
 
         /// <inheritdoc />
         JoinOn<SelectEntitiesContinuation<TEntity>> SelectEntitiesContinuation<TEntity>.FullJoin(AnyEntity entity)
@@ -151,9 +145,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <inheritdoc />
         JoinOnWithAlias<SelectEntitiesContinuation<TEntity>> SelectEntitiesContinuation<TEntity>.FullJoin(AnySelectSubquery subquery)
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-            => new SelectEntitiesJoinExpressionBuilder<TEntity>(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.FULL, this); //TODO: interface
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
+            => new SelectEntitiesJoinExpressionBuilder<TEntity>(Expression, subquery.Expression, JoinOperationExpressionOperator.FULL, this);
 
         /// <inheritdoc />
         SelectEntitiesContinuation<TEntity> SelectEntitiesContinuation<TEntity>.CrossJoin(AnyEntity entity)

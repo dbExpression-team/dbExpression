@@ -28,7 +28,7 @@ namespace HatTrick.DbEx.Sql.Expression
         where T : class
     {
         #region constructors
-        protected NullableObjectFieldExpression(string identifier, string name, EntityExpression entity) : base(identifier, name, typeof(T), entity)
+        protected NullableObjectFieldExpression(string identifier, string name, Table entity) : base(identifier, name, typeof(T), entity)
         {
 
         }

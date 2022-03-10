@@ -31,20 +31,18 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region interface
-        public IExpressionElement Expression { get; }
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-        Type IExpressionTypeProvider.DeclaredType => (Expression as IExpressionTypeProvider).DeclaredType; //TODO: interface
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
+        public AnyElement Expression { get; }
+        Type IExpressionTypeProvider.DeclaredType => Expression.DeclaredType;
         string? IExpressionAliasProvider.Alias => Alias;
         #endregion
 
         #region constructors
-        public SelectExpression(IExpressionElement expression) : this(expression, null)
+        public SelectExpression(AnyElement expression) : this(expression, null)
         {
 
         }
 
-        public SelectExpression(IExpressionElement expression, string? alias)
+        public SelectExpression(AnyElement expression, string? alias)
         {
             Expression = expression ?? throw new ArgumentNullException(nameof(expression));
             this.Alias = alias;

@@ -34,7 +34,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<NullableByteArrayFieldExpression>
     {
         #region constructors
-        protected NullableByteArrayFieldExpression(string identifier, string name, EntityExpression entity) : base(identifier, name, typeof(byte[]), entity)
+        protected NullableByteArrayFieldExpression(string identifier, string name, Table entity) : base(identifier, name, typeof(byte[]), entity)
         {
 
         }

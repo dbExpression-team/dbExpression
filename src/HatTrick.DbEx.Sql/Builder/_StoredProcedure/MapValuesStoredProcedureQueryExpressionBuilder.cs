@@ -41,17 +41,13 @@ namespace HatTrick.DbEx.Sql.Builder
 
         #region constructors
         public MapValuesStoredProcedureQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, StoredProcedureQueryExpression expression)
-#pragma warning disable CS8604 // Possible null reference argument.
-            : base(config, expression, expression.BaseEntity as StoredProcedureExpression) //TODO: interface
-#pragma warning restore CS8604 // Possible null reference argument.
+            : base(config, expression, expression.BaseEntity!)
         {
             this.map = _ => { };
         }
 
         public MapValuesStoredProcedureQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, StoredProcedureQueryExpression expression, Action<ISqlFieldReader> map)
-#pragma warning disable CS8604 // Possible null reference argument.
-            : base(config, expression, expression.BaseEntity as StoredProcedureExpression) //TODO: interface
-#pragma warning restore CS8604 // Possible null reference argument.
+            : base(config, expression, expression.BaseEntity!)
         {
             this.map = map ?? throw new ArgumentNullException(nameof(map));
         }

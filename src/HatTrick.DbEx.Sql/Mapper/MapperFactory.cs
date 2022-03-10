@@ -39,7 +39,7 @@ namespace HatTrick.DbEx.Sql.Mapper
             entityMappers.AddOrUpdate(typeof(TEntity), () => new EntityMapper<TEntity>(converter), (t, f) => () => new EntityMapper<TEntity>(converter));
         }
 
-        public IEntityMapper<TEntity> CreateEntityMapper<TEntity>(IEntityExpression<TEntity> entity)
+        public IEntityMapper<TEntity> CreateEntityMapper<TEntity>(Table<TEntity> entity)
             where TEntity : class, IDbEntity
         {
             if (entityMappers.TryGetValue(typeof(TEntity), out Func<IMapper>? provider))

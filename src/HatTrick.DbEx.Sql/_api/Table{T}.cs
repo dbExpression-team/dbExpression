@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,16 +16,18 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Expression;
+using HatTrick.DbEx.Sql.Executor;
+using HatTrick.DbEx.Sql.Expression;
 
-namespace HatTrick.DbEx.Sql.Pipeline
+namespace HatTrick.DbEx.Sql
 {
-    public class UpdateFieldDescriptor : FieldDescriptor
+#pragma warning disable IDE1006 // Naming Styles
+    public interface Table<TEntity> : Table, Entity<TEntity>
+#pragma warning restore IDE1006 // Naming Styles
+        where TEntity : class, IDbEntity
     {
-        public IExpressionElement Assignment { get; private set; }
-        public UpdateFieldDescriptor(FieldExpression field, IExpressionElement assignment) : base(field)
-        {
-            Assignment = assignment;
-        }
+        InsertExpressionSet<TEntity> BuildInclusiveInsertExpression(TEntity entity);
+        AssignmentExpressionSet BuildAssignmentExpression(TEntity from, TEntity to);
+        void HydrateEntity(ISqlFieldReader reader, TEntity entity);
     }
 }
