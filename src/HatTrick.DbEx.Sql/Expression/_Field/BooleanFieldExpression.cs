@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<BooleanFieldExpression>
     {
         #region constructors
-        protected BooleanFieldExpression(string identifier, string name, EntityExpression entity) : base(identifier, name, typeof(bool), entity)
+        protected BooleanFieldExpression(string identifier, string name, Table entity) : base(identifier, name, typeof(bool), entity)
         {
 
         }

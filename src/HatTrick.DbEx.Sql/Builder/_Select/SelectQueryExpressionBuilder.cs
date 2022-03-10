@@ -46,12 +46,10 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
 
         #region methods
-        protected virtual void ApplyFrom<T>(Entity<T> entity)
+        protected virtual void ApplyFrom<T>(Table<T> entity)
             where T : class, IDbEntity
         {
-            if (entity is not EntityExpression e)
-                throw new DbExpressionException($"Expected {nameof(entity)} to be of type {nameof(EntityExpression)}.");          
-            Expression.BaseEntity = e;
+            Expression.BaseEntity = entity ?? throw new ArgumentNullException(nameof(entity));
         }
 
         protected void ApplyTop(int value)

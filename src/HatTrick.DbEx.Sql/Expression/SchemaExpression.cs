@@ -22,24 +22,22 @@ using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public abstract class SchemaExpression : 
-        IExpressionElement,
-        ISqlMetadataIdentifierProvider,
-        IExpressionListProvider<IEntityExpression>,
+    public abstract class SchemaExpression :
+        Schema,
         IEquatable<SchemaExpression>
     {
         #region internals
         protected readonly string identifier;
-        protected Dictionary<string, IEntityExpression> Entities { get; } = new();
+        protected Dictionary<string, EntityExpression> Entities { get; } = new();
         #endregion
 
         #region interface
         public string Identifier => identifier;
-        IEnumerable<IEntityExpression> IExpressionListProvider<IEntityExpression>.Expressions => Entities.Values;
+        IEnumerable<Table> Schema.Entities => Entities.Values;
         #endregion
 
         #region constructors
-        protected SchemaExpression(string identifier, string? alias) //TODO: nullable, remove alias parameter via code gen
+        protected SchemaExpression(string identifier)
         {
             this.identifier = identifier ?? throw new ArgumentNullException(nameof(identifier));
         }

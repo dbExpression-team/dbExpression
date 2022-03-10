@@ -20,32 +20,26 @@
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public abstract class FieldExpression : 
-        AnyElement,
-        AnyOrderByClause,
-        AnyGroupByClause,
-        IExpressionTypeProvider,
-        ISqlMetadataIdentifierProvider,
-        IExpressionNameProvider,
-        IExpressionProvider<EntityExpression>,
+    public abstract class FieldExpression :
+        Field,
         IEquatable<FieldExpression>
     {
         #region internals
         protected readonly string identifier;
         protected readonly Type declaredType;
         protected readonly string name;
-        protected readonly EntityExpression entity;
+        protected readonly Table entity;
         #endregion
 
         #region interface
         string ISqlMetadataIdentifierProvider.Identifier => identifier;
         string IExpressionNameProvider.Name => name;
         Type IExpressionTypeProvider.DeclaredType => declaredType;
-        EntityExpression IExpressionProvider<EntityExpression>.Expression => entity;
+        Table Field.Table => entity;
         #endregion
 
         #region constructors
-        protected FieldExpression(string identifier, string name, Type declaredType, EntityExpression entity)
+        protected FieldExpression(string identifier, string name, Type declaredType, Table entity)
         {
             this.identifier = identifier ?? throw new ArgumentNullException(nameof(identifier));
             this.name = name ?? throw new ArgumentNullException(nameof(name));

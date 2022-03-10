@@ -42,7 +42,7 @@ namespace HatTrick.DbEx.Sql
         /// </summary>
         /// <param name="entity">The database representation of the entity, for example "dbo.<typeparamref name="TEntity"/>" when the entity is of type <typeparamref name="TEntity"/>.</param>
         /// <returns><see cref="DeleteEntitiesContinuation{TEntity}"/>, a fluent continuation for the construction of a sql DELETE query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
-        DeleteEntitiesContinuation<TEntity> From<TEntity>(Entity<TEntity> entity)
+        DeleteEntitiesContinuation<TEntity> From<TEntity>(Table<TEntity> entity)
             where TEntity : class, IDbEntity;
     }
 }

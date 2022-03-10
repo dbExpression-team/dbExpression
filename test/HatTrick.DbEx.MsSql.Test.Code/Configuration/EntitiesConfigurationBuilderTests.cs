@@ -141,7 +141,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
         {
             public IExpandoObjectMapper CreateExpandoObjectMapper() => throw new NotImplementedException();
 
-            IEntityMapper<TEntity> IMapperFactory.CreateEntityMapper<TEntity>(IEntityExpression<TEntity> entity) => throw new NotImplementedException();
+            IEntityMapper<TEntity> IMapperFactory.CreateEntityMapper<TEntity>(Table<TEntity> entity) => throw new NotImplementedException();
         }
     }
 }

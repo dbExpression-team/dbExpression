@@ -26,12 +26,12 @@ namespace HatTrick.DbEx.Sql.Builder
         where TEntity : class, IDbEntity
     {
         #region internals
-        private readonly Entity<TEntity> entity;
+        private readonly Table<TEntity> entity;
         private TEntity? oldStateOfEntity;
         #endregion
 
         #region constructors
-        public EntityComparisonAssignmentBuilder(Entity<TEntity> entity)
+        public EntityComparisonAssignmentBuilder(Table<TEntity> entity)
         {
             this.entity = entity ?? throw new ArgumentNullException(nameof(entity));
         }

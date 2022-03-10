@@ -27,13 +27,13 @@ namespace HatTrick.DbEx.Sql.Pipeline
     public class AfterUpdatePipelineExecutionContext : PipelineExecutionContext, IPipelineExecutionContext
     {
         public SqlStatement Statement { get; private set; }
-        public IEnumerable<UpdateFieldDescriptor> Fields { get; private set; }
+        public IEnumerable<AssignmentExpression> Fields { get; private set; }
 
         public AfterUpdatePipelineExecutionContext(RuntimeSqlDatabaseConfiguration database, UpdateQueryExpression expression, SqlStatement statement)
             : base(database, expression)
         {
             Statement = statement ?? throw new ArgumentNullException(nameof(statement));
-            Fields = expression.Assign.Expressions.Select(x => new UpdateFieldDescriptor((x as IAssignmentExpressionProvider).Assignee, (x as IAssignmentExpressionProvider).Assignment)).ToList().AsReadOnly();
+            Fields = expression.Assign.Expressions.ToList().AsReadOnly();
         }
     }
 }

@@ -18,8 +18,8 @@ namespace HatTrick.DbEx.MsSql.Test.Expression
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp1 = new StoredProcedureExpression("id", "name", new dboSchemaExpression("id"), new List<ParameterExpression>());
-            var exp2 = new StoredProcedureExpression("id", "name", new dboSchemaExpression("id"), new List<ParameterExpression>());
+            var exp1 = new StoredProcedureExpression("id", "name", new dboSchemaExpression("id"));
+            var exp2 = new StoredProcedureExpression("id", "name", new dboSchemaExpression("id"));
 
             //then
             Assert.True(exp1.Equals(exp2));
@@ -49,9 +49,8 @@ namespace HatTrick.DbEx.MsSql.Test.Expression
             var exp1 = new StoredProcedureExpression(
                 "id",
                 "name",
-                new dboSchemaExpression("id"),
-                new List<ParameterExpression>()
-            ); 
+                new dboSchemaExpression("id")
+            );
             
             var exp2 = new StoredProcedureExpression(
                 "id", 

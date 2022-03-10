@@ -53,26 +53,25 @@ namespace HatTrick.DbEx.Sql.Builder
 
         #region methods
         /// <inheritdoc />
-        InsertEntityTermination<TEntity> InsertEntity<TEntity>.Into(Entity<TEntity> entity)
+        InsertEntityTermination<TEntity> InsertEntity<TEntity>.Into(Table<TEntity> entity)
         {
             Into(entity);
             return this;
         }
 
         /// <inheritdoc />
-        InsertEntitiesTermination<TEntity> InsertEntities<TEntity>.Into(Entity<TEntity> entity)
+        InsertEntitiesTermination<TEntity> InsertEntities<TEntity>.Into(Table<TEntity> entity)
         {
             Into(entity);
             return this;
         }
 
-        protected virtual void Into(Entity<TEntity> entity)
+        protected virtual void Into(Table<TEntity> entity)
         {
             var i = 0;
-            var insertEntity = entity as IEntityExpression<TEntity> ?? throw new InvalidOperationException($"Expected {nameof(entity)} to be of type {typeof(IEntityExpression<TEntity>)}.");
-            Expression.BaseEntity = entity as EntityExpression<TEntity> ?? throw new InvalidOperationException($"Expected {nameof(entity)} to be of type {typeof(EntityExpression<TEntity>)}");
-            Expression.Inserts = instances.ToDictionary(x => i++, x => new InsertExpressionSet(x, (insertEntity.BuildInclusiveInsertExpression(x) as IExpressionListProvider<InsertExpression>).Expressions));
-            Expression.Outputs = insertEntity.BuildInclusiveSelectExpression().Expressions.Select(x => x.AsFieldExpression()).Where(x => x is not null).Cast<FieldExpression>().ToList();
+            Expression.BaseEntity = entity;
+            Expression.Inserts = instances.ToDictionary(x => i++, x => new InsertExpressionSet(x, (entity.BuildInclusiveInsertExpression(x) as IExpressionListProvider<InsertExpression>).Expressions));
+            Expression.Outputs = entity.BuildInclusiveSelectExpression().Expressions.Select(x => x.AsFieldExpression()).Where(x => x is not null).Cast<FieldExpression>().ToList();
         }
 
         #region InsertEntityTerminationExpressionBuilder

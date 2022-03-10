@@ -16,9 +16,18 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿namespace HatTrick.DbEx.Sql.Expression
+using System.Collections.Generic;
+
+namespace HatTrick.DbEx.Sql.Expression
 {
-    public interface IEntityExpression : IExpressionElement
+    public interface IEntityExpression<T> : IEntityExpression
+        where T : class, IDbEntity
     {
+
+    }
+
+    public interface IEntityExpression : IExpressionElement 
+    {
+        IEnumerable<IExpressionElement> Expressions { get; }
     }
 }

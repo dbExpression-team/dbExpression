@@ -1498,7 +1498,7 @@ namespace DbEx.dboDataService
         #endregion
 
         #region constructors
-        public dboSchemaExpression(string identifier) : base(identifier, null)
+        public dboSchemaExpression(string identifier) : base(identifier)
         {
             Entities.Add($"{identifier}.AccessAuditLog", AccessAuditLog = new AccessAuditLogEntity($"{identifier}.AccessAuditLog", "AccessAuditLog", this));
             Entities.Add($"{identifier}.Address", Address = new AddressEntity($"{identifier}.Address", "Address", this));
@@ -6573,16 +6573,10 @@ namespace DbEx.dboDataService
             string identifier
             ,SchemaExpression schema
             ,int? P1
-        ) : base(
-                $"{identifier}.SelectPerson_As_Dynamic_With_Input"
-                ,"SelectPerson_As_Dynamic_With_Input"
-                ,schema
-                ,new List<ParameterExpression> 
-                { 
-                    new ParameterExpression<int?>($"{identifier}.SelectPerson_As_Dynamic_With_Input.@P1", "P1", P1, ParameterDirection.Input)
-                }
-            )
-        { }
+        ) : base($"{identifier}.SelectPerson_As_Dynamic_With_Input", "SelectPerson_As_Dynamic_With_Input", schema)
+        { 
+            Parameters.Add("P1", new ParameterExpression<int?>($"{identifier}.SelectPerson_As_Dynamic_With_Input.@P1", "P1", P1, ParameterDirection.Input));
+        }
     }
     #endregion
 
@@ -6595,18 +6589,11 @@ namespace DbEx.dboDataService
             ,int? P1
             ,int? CreditLimit
             ,Action<ISqlOutputParameterList> outputParameters
-        ) : base(
-                $"{identifier}.SelectPerson_As_Dynamic_With_Input_And_InputOutput"
-                ,"SelectPerson_As_Dynamic_With_Input_And_InputOutput"
-                ,schema
-                ,new List<ParameterExpression> 
-                { 
-                    new ParameterExpression<int?>($"{identifier}.SelectPerson_As_Dynamic_With_Input_And_InputOutput.@P1", "P1", P1, ParameterDirection.Input)
-                    ,new ParameterExpression<int?>($"{identifier}.SelectPerson_As_Dynamic_With_Input_And_InputOutput.@CreditLimit", "CreditLimit", CreditLimit, ParameterDirection.InputOutput)
-                }
-                ,outputParameters
-            )
-        { }
+        ) : base($"{identifier}.SelectPerson_As_Dynamic_With_Input_And_InputOutput", "SelectPerson_As_Dynamic_With_Input_And_InputOutput", schema, outputParameters)
+        { 
+            Parameters.Add("P1", new ParameterExpression<int?>($"{identifier}.SelectPerson_As_Dynamic_With_Input_And_InputOutput.@P1", "P1", P1, ParameterDirection.Input));
+            Parameters.Add("CreditLimit", new ParameterExpression<int?>($"{identifier}.SelectPerson_As_Dynamic_With_Input_And_InputOutput.@CreditLimit", "CreditLimit", CreditLimit, ParameterDirection.InputOutput));
+        }
     }
     #endregion
 
@@ -6618,18 +6605,11 @@ namespace DbEx.dboDataService
             ,SchemaExpression schema
             ,int? P1
             ,Action<ISqlOutputParameterList> outputParameters
-        ) : base(
-                $"{identifier}.SelectPerson_As_Dynamic_With_Input_And_Output"
-                ,"SelectPerson_As_Dynamic_With_Input_And_Output"
-                ,schema
-                ,new List<ParameterExpression> 
-                { 
-                    new ParameterExpression<int?>($"{identifier}.SelectPerson_As_Dynamic_With_Input_And_Output.@P1", "P1", P1, ParameterDirection.Input)
-                    ,new ParameterExpression<int?>($"{identifier}.SelectPerson_As_Dynamic_With_Input_And_Output.@Count", "Count", ParameterDirection.Output)
-                }
-                ,outputParameters
-            )
-        { }
+        ) : base($"{identifier}.SelectPerson_As_Dynamic_With_Input_And_Output", "SelectPerson_As_Dynamic_With_Input_And_Output", schema, outputParameters)
+        { 
+            Parameters.Add("P1", new ParameterExpression<int?>($"{identifier}.SelectPerson_As_Dynamic_With_Input_And_Output.@P1", "P1", P1, ParameterDirection.Input));
+            Parameters.Add("Count", new ParameterExpression<int?>($"{identifier}.SelectPerson_As_Dynamic_With_Input_And_Output.@Count", "Count", ParameterDirection.Output));
+        }
     }
     #endregion
 
@@ -6640,16 +6620,10 @@ namespace DbEx.dboDataService
             string identifier
             ,SchemaExpression schema
             ,int? P1
-        ) : base(
-                $"{identifier}.SelectPerson_As_DynamicList_With_Input"
-                ,"SelectPerson_As_DynamicList_With_Input"
-                ,schema
-                ,new List<ParameterExpression> 
-                { 
-                    new ParameterExpression<int?>($"{identifier}.SelectPerson_As_DynamicList_With_Input.@P1", "P1", P1, ParameterDirection.Input)
-                }
-            )
-        { }
+        ) : base($"{identifier}.SelectPerson_As_DynamicList_With_Input", "SelectPerson_As_DynamicList_With_Input", schema)
+        { 
+            Parameters.Add("P1", new ParameterExpression<int?>($"{identifier}.SelectPerson_As_DynamicList_With_Input.@P1", "P1", P1, ParameterDirection.Input));
+        }
     }
     #endregion
 
@@ -6662,18 +6636,11 @@ namespace DbEx.dboDataService
             ,int? P1
             ,int? CreditLimit
             ,Action<ISqlOutputParameterList> outputParameters
-        ) : base(
-                $"{identifier}.SelectPerson_As_DynamicList_With_Input_And_InputOutput"
-                ,"SelectPerson_As_DynamicList_With_Input_And_InputOutput"
-                ,schema
-                ,new List<ParameterExpression> 
-                { 
-                    new ParameterExpression<int?>($"{identifier}.SelectPerson_As_DynamicList_With_Input_And_InputOutput.@P1", "P1", P1, ParameterDirection.Input)
-                    ,new ParameterExpression<int?>($"{identifier}.SelectPerson_As_DynamicList_With_Input_And_InputOutput.@CreditLimit", "CreditLimit", CreditLimit, ParameterDirection.InputOutput)
-                }
-                ,outputParameters
-            )
-        { }
+        ) : base($"{identifier}.SelectPerson_As_DynamicList_With_Input_And_InputOutput", "SelectPerson_As_DynamicList_With_Input_And_InputOutput", schema, outputParameters)
+        { 
+            Parameters.Add("P1", new ParameterExpression<int?>($"{identifier}.SelectPerson_As_DynamicList_With_Input_And_InputOutput.@P1", "P1", P1, ParameterDirection.Input));
+            Parameters.Add("CreditLimit", new ParameterExpression<int?>($"{identifier}.SelectPerson_As_DynamicList_With_Input_And_InputOutput.@CreditLimit", "CreditLimit", CreditLimit, ParameterDirection.InputOutput));
+        }
     }
     #endregion
 
@@ -6685,18 +6652,11 @@ namespace DbEx.dboDataService
             ,SchemaExpression schema
             ,int? P1
             ,Action<ISqlOutputParameterList> outputParameters
-        ) : base(
-                $"{identifier}.SelectPerson_As_DynamicList_With_Input_And_Output"
-                ,"SelectPerson_As_DynamicList_With_Input_And_Output"
-                ,schema
-                ,new List<ParameterExpression> 
-                { 
-                    new ParameterExpression<int?>($"{identifier}.SelectPerson_As_DynamicList_With_Input_And_Output.@P1", "P1", P1, ParameterDirection.Input)
-                    ,new ParameterExpression<int?>($"{identifier}.SelectPerson_As_DynamicList_With_Input_And_Output.@Count", "Count", ParameterDirection.Output)
-                }
-                ,outputParameters
-            )
-        { }
+        ) : base($"{identifier}.SelectPerson_As_DynamicList_With_Input_And_Output", "SelectPerson_As_DynamicList_With_Input_And_Output", schema, outputParameters)
+        { 
+            Parameters.Add("P1", new ParameterExpression<int?>($"{identifier}.SelectPerson_As_DynamicList_With_Input_And_Output.@P1", "P1", P1, ParameterDirection.Input));
+            Parameters.Add("Count", new ParameterExpression<int?>($"{identifier}.SelectPerson_As_DynamicList_With_Input_And_Output.@Count", "Count", ParameterDirection.Output));
+        }
     }
     #endregion
 
@@ -6707,16 +6667,10 @@ namespace DbEx.dboDataService
             string identifier
             ,SchemaExpression schema
             ,int? P1
-        ) : base(
-                $"{identifier}.SelectPersonId_As_ScalarValue_With_Input"
-                ,"SelectPersonId_As_ScalarValue_With_Input"
-                ,schema
-                ,new List<ParameterExpression> 
-                { 
-                    new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValue_With_Input.@P1", "P1", P1, ParameterDirection.Input)
-                }
-            )
-        { }
+        ) : base($"{identifier}.SelectPersonId_As_ScalarValue_With_Input", "SelectPersonId_As_ScalarValue_With_Input", schema)
+        { 
+            Parameters.Add("P1", new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValue_With_Input.@P1", "P1", P1, ParameterDirection.Input));
+        }
     }
     #endregion
 
@@ -6726,15 +6680,9 @@ namespace DbEx.dboDataService
         public SelectPersonId_As_ScalarValue_With_Input_And_Default_ValueStoredProcedure(
             string identifier
             ,SchemaExpression schema
-        ) : base(
-                $"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_Default_Value"
-                ,"SelectPersonId_As_ScalarValue_With_Input_And_Default_Value"
-                ,schema
-                ,new List<ParameterExpression> 
-                { 
-                }
-            )
-        { }
+        ) : base($"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_Default_Value", "SelectPersonId_As_ScalarValue_With_Input_And_Default_Value", schema)
+        { 
+        }
     }
     #endregion
 
@@ -6747,18 +6695,11 @@ namespace DbEx.dboDataService
             ,int? P1
             ,int? CreditLimit
             ,Action<ISqlOutputParameterList> outputParameters
-        ) : base(
-                $"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput"
-                ,"SelectPersonId_As_ScalarValue_With_Input_And_InputOutput"
-                ,schema
-                ,new List<ParameterExpression> 
-                { 
-                    new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput.@P1", "P1", P1, ParameterDirection.Input)
-                    ,new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput.@CreditLimit", "CreditLimit", CreditLimit, ParameterDirection.InputOutput)
-                }
-                ,outputParameters
-            )
-        { }
+        ) : base($"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput", "SelectPersonId_As_ScalarValue_With_Input_And_InputOutput", schema, outputParameters)
+        { 
+            Parameters.Add("P1", new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput.@P1", "P1", P1, ParameterDirection.Input));
+            Parameters.Add("CreditLimit", new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput.@CreditLimit", "CreditLimit", CreditLimit, ParameterDirection.InputOutput));
+        }
     }
     #endregion
 
@@ -6770,18 +6711,11 @@ namespace DbEx.dboDataService
             ,SchemaExpression schema
             ,int? P1
             ,Action<ISqlOutputParameterList> outputParameters
-        ) : base(
-                $"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_Output"
-                ,"SelectPersonId_As_ScalarValue_With_Input_And_Output"
-                ,schema
-                ,new List<ParameterExpression> 
-                { 
-                    new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_Output.@P1", "P1", P1, ParameterDirection.Input)
-                    ,new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_Output.@Count", "Count", ParameterDirection.Output)
-                }
-                ,outputParameters
-            )
-        { }
+        ) : base($"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_Output", "SelectPersonId_As_ScalarValue_With_Input_And_Output", schema, outputParameters)
+        { 
+            Parameters.Add("P1", new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_Output.@P1", "P1", P1, ParameterDirection.Input));
+            Parameters.Add("Count", new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_Output.@Count", "Count", ParameterDirection.Output));
+        }
     }
     #endregion
 
@@ -6792,16 +6726,10 @@ namespace DbEx.dboDataService
             string identifier
             ,SchemaExpression schema
             ,int? P1
-        ) : base(
-                $"{identifier}.SelectPersonId_As_ScalarValueList_With_Input"
-                ,"SelectPersonId_As_ScalarValueList_With_Input"
-                ,schema
-                ,new List<ParameterExpression> 
-                { 
-                    new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValueList_With_Input.@P1", "P1", P1, ParameterDirection.Input)
-                }
-            )
-        { }
+        ) : base($"{identifier}.SelectPersonId_As_ScalarValueList_With_Input", "SelectPersonId_As_ScalarValueList_With_Input", schema)
+        { 
+            Parameters.Add("P1", new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValueList_With_Input.@P1", "P1", P1, ParameterDirection.Input));
+        }
     }
     #endregion
 
@@ -6814,18 +6742,11 @@ namespace DbEx.dboDataService
             ,int? P1
             ,int? CreditLimit
             ,Action<ISqlOutputParameterList> outputParameters
-        ) : base(
-                $"{identifier}.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput"
-                ,"SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput"
-                ,schema
-                ,new List<ParameterExpression> 
-                { 
-                    new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput.@P1", "P1", P1, ParameterDirection.Input)
-                    ,new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput.@CreditLimit", "CreditLimit", CreditLimit, ParameterDirection.InputOutput)
-                }
-                ,outputParameters
-            )
-        { }
+        ) : base($"{identifier}.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput", "SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput", schema, outputParameters)
+        { 
+            Parameters.Add("P1", new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput.@P1", "P1", P1, ParameterDirection.Input));
+            Parameters.Add("CreditLimit", new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput.@CreditLimit", "CreditLimit", CreditLimit, ParameterDirection.InputOutput));
+        }
     }
     #endregion
 
@@ -6837,18 +6758,11 @@ namespace DbEx.dboDataService
             ,SchemaExpression schema
             ,int? P1
             ,Action<ISqlOutputParameterList> outputParameters
-        ) : base(
-                $"{identifier}.SelectPersonId_As_ScalarValueList_With_Input_And_Output"
-                ,"SelectPersonId_As_ScalarValueList_With_Input_And_Output"
-                ,schema
-                ,new List<ParameterExpression> 
-                { 
-                    new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValueList_With_Input_And_Output.@P1", "P1", P1, ParameterDirection.Input)
-                    ,new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValueList_With_Input_And_Output.@Count", "Count", ParameterDirection.Output)
-                }
-                ,outputParameters
-            )
-        { }
+        ) : base($"{identifier}.SelectPersonId_As_ScalarValueList_With_Input_And_Output", "SelectPersonId_As_ScalarValueList_With_Input_And_Output", schema, outputParameters)
+        { 
+            Parameters.Add("P1", new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValueList_With_Input_And_Output.@P1", "P1", P1, ParameterDirection.Input));
+            Parameters.Add("Count", new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValueList_With_Input_And_Output.@Count", "Count", ParameterDirection.Output));
+        }
     }
     #endregion
 
@@ -6860,17 +6774,11 @@ namespace DbEx.dboDataService
             ,SchemaExpression schema
             ,int? P1
             ,int? CreditLimit
-        ) : base(
-                $"{identifier}.UpdatePersonCreditLimit_With_Inputs"
-                ,"UpdatePersonCreditLimit_With_Inputs"
-                ,schema
-                ,new List<ParameterExpression> 
-                { 
-                    new ParameterExpression<int?>($"{identifier}.UpdatePersonCreditLimit_With_Inputs.@P1", "P1", P1, ParameterDirection.Input)
-                    ,new ParameterExpression<int?>($"{identifier}.UpdatePersonCreditLimit_With_Inputs.@CreditLimit", "CreditLimit", CreditLimit, ParameterDirection.Input)
-                }
-            )
-        { }
+        ) : base($"{identifier}.UpdatePersonCreditLimit_With_Inputs", "UpdatePersonCreditLimit_With_Inputs", schema)
+        { 
+            Parameters.Add("P1", new ParameterExpression<int?>($"{identifier}.UpdatePersonCreditLimit_With_Inputs.@P1", "P1", P1, ParameterDirection.Input));
+            Parameters.Add("CreditLimit", new ParameterExpression<int?>($"{identifier}.UpdatePersonCreditLimit_With_Inputs.@CreditLimit", "CreditLimit", CreditLimit, ParameterDirection.Input));
+        }
     }
     #endregion
 
@@ -7112,7 +7020,7 @@ namespace DbEx.secDataService
         #endregion
 
         #region constructors
-        public secSchemaExpression(string identifier) : base(identifier, null)
+        public secSchemaExpression(string identifier) : base(identifier)
         {
             Entities.Add($"{identifier}.Person", Person = new PersonEntity($"{identifier}.Person", "Person", this));
         }

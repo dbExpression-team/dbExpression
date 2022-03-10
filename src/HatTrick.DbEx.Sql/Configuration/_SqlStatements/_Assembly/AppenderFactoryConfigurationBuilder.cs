@@ -47,9 +47,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         {
             if (configuration.AppenderFactory is not TAppenderFactory)
                 configuration.AppenderFactory = new TAppenderFactory();
-#pragma warning disable CS8604 // Possible null reference argument.
-            configureFactory?.Invoke(configuration.AppenderFactory as TAppenderFactory); //TODO: interface
-#pragma warning restore CS8604 // Possible null reference argument.
+            configureFactory?.Invoke((configuration.AppenderFactory as TAppenderFactory)!);
             return caller;
         }
 

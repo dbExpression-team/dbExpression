@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         {
             if (context.EntityExpressionAppendStyle != EntityExpressionAppendStyle.None)
             {
-                builder.AppendElement((expression as IExpressionProvider<EntityExpression>).Expression, context);
+                builder.AppendElement((expression as Field).Table, context);
                 builder.Appender.Write(".");
             }
 

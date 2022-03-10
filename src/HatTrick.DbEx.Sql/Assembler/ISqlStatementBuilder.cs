@@ -32,10 +32,10 @@ namespace HatTrick.DbEx.Sql.Assembler
         void AppendElement<T>(T element, AssemblyContext context)
             where T : class, IExpressionElement;
         string GenerateAlias();
-        ISqlSchemaMetadata? FindMetadata(SchemaExpression schema);
-        ISqlEntityMetadata? FindMetadata(EntityExpression entity);
-        ISqlFieldMetadata? FindMetadata(FieldExpression field);
-        ISqlParameterMetadata? FindMetadata(ParameterExpression parameter);
+        ISqlSchemaMetadata? FindMetadata(Schema schema);
+        ISqlEntityMetadata? FindMetadata(Table entity);
+        ISqlFieldMetadata? FindMetadata(Field field);
+        ISqlParameterMetadata? FindMetadata(QueryParameter parameter);
         #endregion
     }
 }

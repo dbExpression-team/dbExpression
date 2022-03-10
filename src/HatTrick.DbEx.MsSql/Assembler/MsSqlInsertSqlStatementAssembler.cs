@@ -16,6 +16,7 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
+using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Expression;
 using System.Linq;
@@ -36,9 +37,8 @@ namespace HatTrick.DbEx.MsSql.Assembler
             const string insertValuesName = "__values";
 
             var template = expression.Inserts.First().Value;
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-            var identity = (expression.BaseEntity as IExpressionListProvider<FieldExpression>).Expressions.SingleOrDefault(x => builder.FindMetadata(x).IsIdentity); //TODO: interface
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
+            var identityField = expression.BaseEntity!.Fields.SingleOrDefault(x => builder.FindMetadata(x)?.IsIdentity == true);
+            var identity = identityField is not null ? identityField as FieldExpression ?? throw new DbExpressionException($"Expected identity field to be of type {typeof(FieldExpression)}") : null;
 
             builder.Appender.Indent().Write("SET NOCOUNT ON;").LineBreak();
             builder.Appender.Indent().Write("MERGE ");
@@ -57,7 +57,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
                 var inserts = (insert.Value as IExpressionListProvider<InsertExpression>).Expressions.ToList();
                 for (var j = 0; j < inserts.Count; j++)
                 {
-                    if (identity is object && (inserts[j] as IAssignmentExpressionProvider).Assignee == identity)
+                    if (identity is not null && (inserts[j] as IAssignmentExpressionProvider).Assignee == identity)
                         continue; //don't emit identity columns with the values; they can't be inserted into the table
 
                     var originalTryShareParameterSetting = context.TrySharingExistingParameter;
@@ -93,7 +93,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
             var templateInserts = (template as IExpressionListProvider<InsertExpression>).Expressions.ToList();
             for (var i = 0; i < templateInserts.Count; i++)
             {
-                if (identity is object && (templateInserts[i] as IAssignmentExpressionProvider).Assignee == identity)
+                if (identity is not null && (templateInserts[i] as IAssignmentExpressionProvider).Assignee == identity)
                     continue; //don't emit identity columns with the values; they can't be inserted into the table
 
                 builder.Appender.Indent();
@@ -117,7 +117,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
 
             for (var i = 0; i < templateInserts.Count; i++)
             {
-                if (identity is object && (templateInserts[i] as IAssignmentExpressionProvider).Assignee == identity)
+                if (identity is not null && (templateInserts[i] as IAssignmentExpressionProvider).Assignee == identity)
                     continue; //don't emit identity columns with the values; they can't be inserte into the table
 
                 builder.Appender.Indent();

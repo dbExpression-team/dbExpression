@@ -104,9 +104,9 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public string GenerateAlias() => $"_t{++_currentAliasCounter}";
 
-        public ISqlSchemaMetadata? FindMetadata(SchemaExpression schema) => databaseMetadata.FindSchemaMetadata((schema as ISqlMetadataIdentifierProvider).Identifier);
-        public ISqlEntityMetadata? FindMetadata(EntityExpression entity) => databaseMetadata.FindEntityMetadata((entity as ISqlMetadataIdentifierProvider).Identifier);
-        public ISqlFieldMetadata? FindMetadata(FieldExpression field) => databaseMetadata.FindFieldMetadata((field as ISqlMetadataIdentifierProvider).Identifier);
-        public ISqlParameterMetadata? FindMetadata(ParameterExpression parameter) => databaseMetadata.FindParameterMetadata((parameter as ISqlMetadataIdentifierProvider).Identifier);
+        public ISqlSchemaMetadata? FindMetadata(Schema schema) => databaseMetadata.FindSchemaMetadata(schema.Identifier);
+        public ISqlEntityMetadata? FindMetadata(Table entity) => databaseMetadata.FindEntityMetadata(entity.Identifier);
+        public ISqlFieldMetadata? FindMetadata(Field field) => databaseMetadata.FindFieldMetadata(field.Identifier);
+        public ISqlParameterMetadata? FindMetadata(QueryParameter parameter) => databaseMetadata.FindParameterMetadata(parameter.Identifier);
     }
 }

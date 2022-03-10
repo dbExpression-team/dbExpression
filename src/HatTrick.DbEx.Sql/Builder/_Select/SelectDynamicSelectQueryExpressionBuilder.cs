@@ -47,7 +47,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #region methods
         #region SelectDynamic
         /// <inheritdoc />
-        SelectDynamicContinuation SelectDynamic.From<TEntity>(Entity<TEntity> entity)
+        SelectDynamicContinuation SelectDynamic.From<TEntity>(Table<TEntity> entity)
         {
             ApplyFrom(entity);
             return this;
@@ -82,9 +82,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <inheritdoc />
         JoinOnWithAlias<SelectDynamicContinuation> SelectDynamicContinuation.InnerJoin(AnySelectSubquery subquery)
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-            => new SelectDynamicJoinBuilder(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.INNER, this); //TODO: interface
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
+            => new SelectDynamicJoinBuilder(Expression, subquery.Expression, JoinOperationExpressionOperator.INNER, this); 
 
         /// <inheritdoc />
         JoinOn<SelectDynamicContinuation> SelectDynamicContinuation.LeftJoin(AnyEntity entity)
@@ -92,9 +90,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <inheritdoc />
         JoinOnWithAlias<SelectDynamicContinuation> SelectDynamicContinuation.LeftJoin(AnySelectSubquery subquery)
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-            => new SelectDynamicJoinBuilder(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.LEFT, this); //TODO: interface
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
+            => new SelectDynamicJoinBuilder(Expression, subquery.Expression, JoinOperationExpressionOperator.LEFT, this);
 
         /// <inheritdoc />
         JoinOn<SelectDynamicContinuation> SelectDynamicContinuation.RightJoin(AnyEntity entity)
@@ -102,9 +98,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <inheritdoc />
         JoinOnWithAlias<SelectDynamicContinuation> SelectDynamicContinuation.RightJoin(AnySelectSubquery subquery)
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-            => new SelectDynamicJoinBuilder(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.RIGHT, this); //TODO: interface
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
+            => new SelectDynamicJoinBuilder(Expression, subquery.Expression, JoinOperationExpressionOperator.RIGHT, this);
 
         /// <inheritdoc />
         JoinOn<SelectDynamicContinuation> SelectDynamicContinuation.FullJoin(AnyEntity entity)
@@ -112,9 +106,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <inheritdoc />
         JoinOnWithAlias<SelectDynamicContinuation> SelectDynamicContinuation.FullJoin(AnySelectSubquery subquery)
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-            => new SelectDynamicJoinBuilder(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.FULL, this); //TODO: inerface
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
+            => new SelectDynamicJoinBuilder(Expression, subquery.Expression, JoinOperationExpressionOperator.FULL, this);
 
         /// <inheritdoc />
         SelectDynamicContinuation SelectDynamicContinuation.CrossJoin(AnyEntity entity)

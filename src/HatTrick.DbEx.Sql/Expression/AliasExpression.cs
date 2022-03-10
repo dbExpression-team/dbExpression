@@ -21,22 +21,27 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class AliasExpression :
-        IExpressionElement,
-        AnyOrderByClause,
-        AnyGroupByClause,
+        AnyElement,
         IExpressionProvider<AliasExpression.AliasExpressionElements>,
         IEquatable<AliasExpression>
     {
         #region internals
         private readonly AliasExpressionElements alias;
+        private readonly Type declaredType;
         #endregion
 
         #region interface
         AliasExpressionElements IExpressionProvider<AliasExpressionElements>.Expression => alias;
+        Type IExpressionTypeProvider.DeclaredType => declaredType;
         #endregion
 
         #region constructors
-        public AliasExpression(string tableAlias, string fieldAlias)
+        public AliasExpression(string tableAlias, string fieldAlias) : this(tableAlias, fieldAlias, typeof(object))
+        {
+
+        }
+
+        public AliasExpression(string tableAlias, string fieldAlias, Type declaredType)
         {
             if (string.IsNullOrWhiteSpace(tableAlias))
                 throw new ArgumentException($"{nameof(tableAlias)} is required.");
@@ -47,6 +52,7 @@ namespace HatTrick.DbEx.Sql.Expression
                 TableAlias = tableAlias,
                 FieldAlias = fieldAlias
             };
+            this.declaredType = declaredType ?? throw new ArgumentNullException(nameof(declaredType));
         }
         #endregion
 

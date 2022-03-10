@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.Sql.Expression
     {
         #region interface
         public object Expression { get; private set; }
-        public FieldExpression? Field { get; private set; }
+        public Field? Field { get; private set; }
         #endregion
 
         #region constructors
@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.Sql.Expression
             Expression = expression is not null ? expression : DBNull.Value;
         }
 
-        protected LiteralExpression(object? expression, FieldExpression field)
+        protected LiteralExpression(object? expression, Field field)
         {
             Expression = expression is not null ? expression : DBNull.Value;
             Field = field ?? throw new ArgumentNullException(nameof(field));
