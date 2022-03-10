@@ -142,7 +142,9 @@ namespace HatTrick.DbEx.Sql
                 if ((fieldExpression as Field).Table != update.BaseEntity)
                     return true;
 
-                var field = entity.Fields.SingleOrDefault(x => x == fieldExpression as Field);
+                var field = entity.Fields.SingleOrDefault(x => (FieldExpression)x == fieldExpression);
+                if (field is null)
+                     throw new InvalidOperationException($"Expected {nameof(update.BaseEntity)} to have a field of type {typeof(FieldExpression)} with name {(fieldExpression as IExpressionNameProvider).Name}");
 
                 var existing = update.Assign.Expressions.SingleOrDefault(x => ((x as IAssignmentExpressionProvider).Assignee as IExpressionNameProvider).Name == field.Name);
                 if (existing is not null)

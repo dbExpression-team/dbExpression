@@ -59,5 +59,14 @@ namespace HatTrick.DbEx.Sql.Expression
         public override int GetHashCode()
             => base.GetHashCode();
         #endregion
+
+        #region fields
+        public static FilterExpressionSet operator ==(NullableStringFieldExpression a, NullableStringFieldExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(NullableStringFieldExpression a, NullableStringFieldExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(NullableStringFieldExpression a, NullableStringFieldExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator >(NullableStringFieldExpression a, NullableStringFieldExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator <=(NullableStringFieldExpression a, NullableStringFieldExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >=(NullableStringFieldExpression a, NullableStringFieldExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual));
+        #endregion
     }
 }
