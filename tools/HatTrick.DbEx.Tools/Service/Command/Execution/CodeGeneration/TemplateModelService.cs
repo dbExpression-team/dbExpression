@@ -43,9 +43,10 @@ namespace HatTrick.DbEx.Tools.Service
         }
         #endregion
 
-        public DatabasePairModel CreateModel(MsSqlModel database, TemplateModelService helpers, LanguageFeatures features)
+        public DatabasePairModel CreateModel(string platform, MsSqlModel database, TemplateModelService helpers, LanguageFeatures features)
         {
             var databasePair = new DatabasePairModel(
+                    platform,
                     database,
                     new DatabaseExpressionModel(
                          features,

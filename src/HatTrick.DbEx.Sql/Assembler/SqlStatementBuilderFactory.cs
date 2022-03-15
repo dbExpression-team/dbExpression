@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Assembler
     public class SqlStatementBuilderFactory : ISqlStatementBuilderFactory
     {
         #region methods
-        public virtual ISqlStatementBuilder CreateSqlStatementBuilder(RuntimeSqlDatabaseConfiguration database, QueryExpression expression)
+        public virtual ISqlStatementBuilder CreateSqlStatementBuilder(SqlDatabaseRuntimeConfiguration database, QueryExpression expression)
             => new SqlStatementBuilder(
                 expression,
                 database.MetadataProvider ?? throw new DbExpressionConfigurationException($"Could not resolve a metadata provider, please ensure a metadata provider has been registered during startup initialization of dbExpression."),

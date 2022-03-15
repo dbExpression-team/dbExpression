@@ -32,7 +32,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="element">A <see cref="StringElement"/> for determining the number of characters, excluding trailing spaces.</param>
         /// <returns><see cref="Int64LengthFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>.</returns>
-        public static Int64LengthFunctionExpression Len(StringElement element)
+        public Int64LengthFunctionExpression Len(StringElement element)
             => new(element);
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="element">A <see cref="NullableStringElement"/> for determining the number of characters, excluding trailing spaces.</param>
         /// <returns><see cref="NullableInt64LengthFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>?.</returns>
-        public static NullableInt64LengthFunctionExpression Len(NullableStringElement element)
+        public NullableInt64LengthFunctionExpression Len(NullableStringElement element)
             => new(element);
     }
 }

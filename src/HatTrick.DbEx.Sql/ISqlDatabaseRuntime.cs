@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,20 +16,11 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.MsSql.Expression.DependencyInjection.Internal;
-using HatTrick.DbEx.Sql.Configuration;
-using Microsoft.AspNetCore.Builder;
 
-namespace Microsoft.Extensions.DependencyInjection
+namespace HatTrick.DbEx.Sql
 {
-    public static class ApplicationBuilderExtensions
-    {
-        public static void UseDbExpression(this IApplicationBuilder builder)
-        {
-            foreach (var runtime in builder.ApplicationServices.GetServices<RuntimeSqlDatabaseConfigurationDependencyInjectionShim>())
-            {
-                runtime.Database.UseConfigurationFactory(new DelegateRuntimeSqlDatabaseConfigurationFactory(runtime.ConfigurationFactory));
-            }
-        }
+    public interface ISqlDatabaseRuntime
+    { 
+    
     }
 }

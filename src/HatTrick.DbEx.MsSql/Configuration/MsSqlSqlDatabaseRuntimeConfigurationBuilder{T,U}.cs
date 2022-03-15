@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,21 +16,21 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql;
+using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using System;
 
-namespace HatTrick.DbEx.MsSql.Microsoft.Extensions.DependencyInjection.Builder
+namespace HatTrick.DbEx.MsSql.Configuration
 {
-    internal sealed class ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder : RuntimeSqlDatabaseConfigurationBuilder, IDbExpressionConfigurationBuilder
+    public class MsSqlSqlDatabaseRuntimeConfigurationBuilder<TDatabase, TConfig> : SqlDatabaseRuntimeConfigurationBuilder<TDatabase, TConfig>
+        where TDatabase : class, ISqlDatabaseRuntime<TConfig>, new()
+        where TConfig : MsSqlSqlDatabaseRuntimeConfiguration
     {
-        public IServiceCollection Services { get; private set; }
-        public IRuntimeEnvironmentSqlDatabase? Environment { get; set; }
-
-        public ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder(IServiceCollection services, RuntimeSqlDatabaseConfiguration configuration) : base(configuration)
+        #region constructors
+        public MsSqlSqlDatabaseRuntimeConfigurationBuilder(TDatabase database, TConfig config)
+            : base(database, config)
         {
-            Services = services ?? throw new ArgumentNullException(nameof(services));
-        }        
+
+        }
+        #endregion
     }
 }

@@ -31,13 +31,13 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
 
         #region constructors
-        public UpdateQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, UpdateQueryExpression expression)
+        public UpdateQueryExpressionBuilder(SqlDatabaseRuntimeConfiguration config, UpdateQueryExpression expression)
             : base(config, expression)
         {
             Expression = expression ?? throw new ArgumentNullException(nameof(expression));
         }
 
-        protected UpdateQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, UpdateQueryExpression expression, Table entity)
+        protected UpdateQueryExpressionBuilder(SqlDatabaseRuntimeConfiguration config, UpdateQueryExpression expression, Table entity)
             : base(config, expression)
         {
             Expression = expression ?? throw new ArgumentNullException(nameof(expression));
@@ -57,7 +57,7 @@ namespace HatTrick.DbEx.Sql.Builder
             return this;
         }
 
-        protected static UpdateEntitiesContinuation<TEntity> CreateTypedBuilder<TEntity>(RuntimeSqlDatabaseConfiguration configuration, UpdateQueryExpression expression, EntityExpression<TEntity> entity)
+        protected static UpdateEntitiesContinuation<TEntity> CreateTypedBuilder<TEntity>(SqlDatabaseRuntimeConfiguration configuration, UpdateQueryExpression expression, EntityExpression<TEntity> entity)
             where TEntity : class, IDbEntity
             => new UpdateEntitiesUpdateQueryExpressionBuilder<TEntity>(configuration, expression, entity);
 

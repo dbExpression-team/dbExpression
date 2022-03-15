@@ -33,9 +33,7 @@
         <None Remove="Resources\Templates\Partials\EntityMetadata.htt" />
         <None Remove="Resources\Templates\Partials\FieldExpression.Documentation.htt" />
         <None Remove="Resources\Templates\Partials\FieldExpression.htt" />
-        <None Remove="Resources\Templates\Partials\Fx.htt" />
         <None Remove="Resources\Templates\Partials\RuntimeDb.htt" />
-        <None Remove="Resources\Templates\Partials\RuntimeEnvironmentDb.htt" />
         <None Remove="Resources\Templates\Partials\Schema.htt" />
         <None Remove="Resources\Templates\Partials\SchemaExpression.htt" />
         <None Remove="Resources\Templates\Partials\SchemaMetadata.htt" />
@@ -58,10 +56,8 @@
         <EmbeddedResource Include="Resources\Templates\Partials\EntityMetadata.htt" />
         <EmbeddedResource Include="Resources\Templates\Partials\FieldExpression.htt" />
         <EmbeddedResource Include="Resources\Templates\Partials\FieldExpression.Documentation.htt" />
-        <EmbeddedResource Include="Resources\Templates\Partials\Fx.htt" />
         <EmbeddedResource Include="Resources\Templates\Partials\StoredProcedureExpression.htt" />
         <EmbeddedResource Include="Resources\Templates\Partials\RuntimeDb.htt" />
-        <EmbeddedResource Include="Resources\Templates\Partials\RuntimeEnvironmentDb.htt" />
         <EmbeddedResource Include="Resources\Templates\Partials\Schema.htt" />
         <EmbeddedResource Include="Resources\Templates\Partials\SchemaExpression.htt" />
         <EmbeddedResource Include="Resources\Templates\Partials\SchemaMetadata.htt" />

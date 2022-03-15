@@ -16,6 +16,8 @@ namespace ServerSideBlazorApp.Service
     /// </summary>
     public class ProductService
     {
+        private readonly CRMDatabase CRMDatabase;
+        
         //variable to hold dbExpression order by elements.  Stored as a variable as it's used more than once and to demonstrate that order by elements can be treated like most any other .NET object
         private static readonly IDictionary<string, AnyElement> ProductSummarySortingFields = new Dictionary<string, AnyElement>
         {
@@ -26,14 +28,19 @@ namespace ServerSideBlazorApp.Service
             { nameof(ProductSummaryModel.QuantityOnHand), dbo.Product.Quantity }
         };
 
+        public ProductService(CRMDatabase crmDatabase)
+        {
+            this.CRMDatabase = crmDatabase ?? throw new ArgumentNullException(nameof(crmDatabase));
+        }
+
         /// <summary>
         /// Search for orders, and retrieve a paged list using the supplied paging parameters.
         /// </summary>
         /// <param name="pagingParameters">A set of parameters specifying the offset, limit, and sorting criteria used in the SQL statement.</param>
         public async Task<Page<ProductSummaryModel>> GetSummaryPageAsync(PagingParameters pagingParameters)
         { 
-            var products = await 
-                db.SelectMany(
+            var products = await
+                CRMDatabase.SelectMany(
                     dbo.Product.Id,
                     dbo.Product.ProductCategoryType,
                     dbo.Product.Name,
@@ -59,7 +66,7 @@ namespace ServerSideBlazorApp.Service
                 );
 
             var countOfProducts = await
-                db.SelectOne(
+                CRMDatabase.SelectOne(
                     db.fx.Count()
                 )
                 .From(dbo.Product)
@@ -78,7 +85,7 @@ namespace ServerSideBlazorApp.Service
         public async Task<ProductDetailModel?> GetProductDetailAsync(int productId)
         {
             return await
-                db.SelectOne(
+                CRMDatabase.SelectOne(
                     dbo.Product.Id,
                     dbo.Product.ProductCategoryType,
                     dbo.Product.Name,
@@ -111,7 +118,7 @@ namespace ServerSideBlazorApp.Service
                     model.Depth = reader.ReadField()!.GetValue<decimal?>();
                     model.Weight = reader.ReadField()!.GetValue<decimal?>();
                     model.ShippingWeight = reader.ReadField()!.GetValue<decimal>();
-                    model.Image = Convert.ToBase64String(reader.ReadField()!.GetValue<byte[]>() ?? new byte[0]);
+                    model.Image = Convert.ToBase64String(reader.ReadField()!.GetValue<byte[]>() ?? Array.Empty<byte>());
                     return model;
                 });
         }
@@ -121,7 +128,7 @@ namespace ServerSideBlazorApp.Service
         /// </summary>
         public async Task UpdatePrice(int productId, double percentage)
         {
-            await db.Update(
+            await CRMDatabase.Update(
                 //this is not good sound business logic, but for demonstration to show how dbExpression elements can be intermixed with things like ternarys.
                 dbo.Product.Price.Set(dbo.Product.Price * (1 + (percentage > 1 ? percentage / 100 : percentage)))
             )

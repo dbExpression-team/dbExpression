@@ -25,18 +25,18 @@ namespace HatTrick.DbEx.Sql.Assembler
     public class DelegateSqlStatementBuilderFactory : ISqlStatementBuilderFactory
     {
         #region internals
-        private readonly Func<RuntimeSqlDatabaseConfiguration, QueryExpression, ISqlStatementBuilder> factory;
+        private readonly Func<SqlDatabaseRuntimeConfiguration, QueryExpression, ISqlStatementBuilder> factory;
         #endregion
 
         #region constructors
-        public DelegateSqlStatementBuilderFactory(Func<RuntimeSqlDatabaseConfiguration, QueryExpression, ISqlStatementBuilder> factory)
+        public DelegateSqlStatementBuilderFactory(Func<SqlDatabaseRuntimeConfiguration, QueryExpression, ISqlStatementBuilder> factory)
         {
             this.factory = factory ?? throw new DbExpressionConfigurationException($"{nameof(factory)} is required to initialize a sql statement builder.");
         }
         #endregion
 
         #region methods
-        public ISqlStatementBuilder CreateSqlStatementBuilder(RuntimeSqlDatabaseConfiguration database, QueryExpression expression)
+        public ISqlStatementBuilder CreateSqlStatementBuilder(SqlDatabaseRuntimeConfiguration database, QueryExpression expression)
             => factory(database, expression) ?? throw new DbExpressionConfigurationException("Could not resolve a statement builder, please ensure an statement builder factory has been properly registered.");
         #endregion
     }

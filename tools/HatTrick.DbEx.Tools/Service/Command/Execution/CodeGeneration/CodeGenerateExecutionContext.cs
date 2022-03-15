@@ -356,6 +356,9 @@ namespace HatTrick.DbEx.Tools.Service
         #region ensure render safe
         private static void EnsureRenderSafe(DbExConfig config, MsSqlModel model)
         {
+            if (config?.Source?.Type != "MsSql")
+                throw new CommandException($"dbex.config error: source.type: dbExpression only supports a value of MsSql.");
+
             if (config.Overrides is null)
                 return;
 
@@ -594,7 +597,7 @@ namespace HatTrick.DbEx.Tools.Service
             TemplateModelService templateService = new(config);
             TemplateHelpers lambdaService = new(templateService);
             LanguageFeatures languageFeatures = new(config.Nullable);
-            DatabasePairModel databaseModel = templateService.CreateModel(sqlModel, templateService, languageFeatures);
+            DatabasePairModel databaseModel = templateService.CreateModel(config.Source?.Type!, sqlModel, templateService, languageFeatures);
 
             for (int i = 0; i < names.Length; i++)
             {
@@ -615,6 +618,7 @@ namespace HatTrick.DbEx.Tools.Service
             engine.TrimWhitespace = true;
 
             LambdaRepository repo = engine.LambdaRepo;
+            repo.Register(nameof(helpers.ToLower), (Func<string?, string?>)helpers.ToLower);
             repo.Register(nameof(helpers.ToCamelCase), (Func<string?, string?>)helpers.ToCamelCase);
             repo.Register(nameof(helpers.InsertSpaceOnCapitalization), (Func<string?, string?>)helpers.InsertSpaceOnCapitalization);
             repo.Register(nameof(helpers.InsertSpaceOnCapitalizationAndToLower), (Func<string?, string?>)helpers.InsertSpaceOnCapitalizationAndToLower);

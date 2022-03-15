@@ -12,16 +12,6 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
     public class RuntimeSqlDatabaseConfigurationTests : TestBase
     {
         [Fact]
-        public void Does_bypassing_configuring_for_a_sql_server_version_return_null_configuration()
-        {
-            //given
-            var dbInstance = new db() as IRuntimeSqlDatabase;
-
-            //when & then
-            var ex = Assert.Throws<ArgumentNullException>(() => dbInstance.UseConfigurationFactory(null!));
-        }
-
-        [Fact]
         public void Does_bypassing_configuring_for_a_sql_server_version_throw_correct_exception_on_query_execution()
         {
             //given

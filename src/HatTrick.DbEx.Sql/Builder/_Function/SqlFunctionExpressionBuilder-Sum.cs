@@ -31,8 +31,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}"/>, the value to use for calculating the sum function result.</param>
         /// <returns><see cref="Int32SumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>.</returns>
-        public static Int32SumFunctionExpression Sum(AnyElement<byte> element)
-            => new Int32SumFunctionExpression(element);
+        public Int32SumFunctionExpression Sum(AnyElement<byte> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the SUM transact sql function.
@@ -40,8 +40,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}"/>?, the value to use for calculating the sum function result.</param>
         /// <returns><see cref="NullableInt32SumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32SumFunctionExpression Sum(AnyElement<byte?> element)
-            => new NullableInt32SumFunctionExpression(element);
+        public NullableInt32SumFunctionExpression Sum(AnyElement<byte?> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the SUM transact sql function.
@@ -49,8 +49,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}"/>, the value to use for calculating the sum function result.</param>
         /// <returns><see cref="Int32SumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>.</returns>
-        public static Int32SumFunctionExpression Sum(AnyElement<short> element)
-            => new Int32SumFunctionExpression(element);
+        public Int32SumFunctionExpression Sum(AnyElement<short> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the SUM transact sql function.
@@ -58,8 +58,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}"/>?, the value to use for calculating the sum function result.</param>
         /// <returns><see cref="NullableInt32SumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32SumFunctionExpression Sum(AnyElement<short?> element)
-            => new NullableInt32SumFunctionExpression(element);
+        public NullableInt32SumFunctionExpression Sum(AnyElement<short?> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the SUM transact sql function.
@@ -67,8 +67,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}"/>, the value to use for calculating the sum function result.</param>
         /// <returns><see cref="Int32SumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>.</returns>
-        public static Int32SumFunctionExpression Sum(AnyElement<int> element)
-            => new Int32SumFunctionExpression(element);
+        public Int32SumFunctionExpression Sum(AnyElement<int> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the SUM transact sql function.
@@ -76,8 +76,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}"/>?, the value to use for calculating the sum function result.</param>
         /// <returns><see cref="NullableInt32SumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32SumFunctionExpression Sum(AnyElement<int?> element)
-            => new NullableInt32SumFunctionExpression(element);
+        public NullableInt32SumFunctionExpression Sum(AnyElement<int?> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the SUM transact sql function.
@@ -85,7 +85,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}"/>, the value to use for calculating the sum function result.</param>
         /// <returns><see cref="Int64SumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>.</returns>
-        public static Int64SumFunctionExpression Sum(AnyElement<long> element)
+        public Int64SumFunctionExpression Sum(AnyElement<long> element)
             => new Int64SumFunctionExpression(element);
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}"/>?, the value to use for calculating the sum function result.</param>
         /// <returns><see cref="NullableInt64SumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>?.</returns>
-        public static NullableInt64SumFunctionExpression Sum(AnyElement<long?> element)
+        public NullableInt64SumFunctionExpression Sum(AnyElement<long?> element)
             => new NullableInt64SumFunctionExpression(element);
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Double}"/>, the value to use for calculating the sum function result.</param>
         /// <returns><see cref="DoubleSumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Double}"/>.</returns>
-        public static DoubleSumFunctionExpression Sum(AnyElement<double> element)
+        public DoubleSumFunctionExpression Sum(AnyElement<double> element)
             => new DoubleSumFunctionExpression(element);
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Double}"/>?, the value to use for calculating the sum function result.</param>
         /// <returns><see cref="NullableDoubleSumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Double}"/>?.</returns>
-        public static NullableDoubleSumFunctionExpression Sum(AnyElement<double?> element)
+        public NullableDoubleSumFunctionExpression Sum(AnyElement<double?> element)
             => new NullableDoubleSumFunctionExpression(element);
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}"/>, the value to use for calculating the sum function result.</param>
         /// <returns><see cref="DecimalSumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Decimal}"/>.</returns>
-        public static DecimalSumFunctionExpression Sum(AnyElement<decimal> element)
+        public DecimalSumFunctionExpression Sum(AnyElement<decimal> element)
             => new DecimalSumFunctionExpression(element);
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}"/>?, the value to use for calculating the sum function result.</param>
         /// <returns><see cref="NullableDecimalSumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Decimal}"/>?.</returns>
-        public static NullableDecimalSumFunctionExpression Sum(AnyElement<decimal?> element)
+        public NullableDecimalSumFunctionExpression Sum(AnyElement<decimal?> element)
             => new NullableDecimalSumFunctionExpression(element);
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}"/>, the value to use for calculating the sum function result.</param>
         /// <returns><see cref="SingleSumFunctionExpression"/> for use with any operation accepting a  <see cref="AnyElement{Single}"/>?.</returns>
-        public static SingleSumFunctionExpression Sum(AnyElement<float> element)
+        public SingleSumFunctionExpression Sum(AnyElement<float> element)
             => new SingleSumFunctionExpression(element);
 
         /// <summary>
@@ -148,7 +148,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}"/>?, the value to use for calculating the sum function result.</param>
         /// <returns><see cref="NullableSingleSumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>?.</returns>
-        public static NullableSingleSumFunctionExpression Sum(AnyElement<float?> element)
+        public NullableSingleSumFunctionExpression Sum(AnyElement<float?> element)
             => new NullableSingleSumFunctionExpression(element);
     }
 }

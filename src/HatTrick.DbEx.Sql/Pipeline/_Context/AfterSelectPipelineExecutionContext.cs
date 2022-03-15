@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 {
     public class AfterSelectPipelineExecutionContext : PipelineExecutionContext, IPipelineExecutionContext
     {
-        public AfterSelectPipelineExecutionContext(RuntimeSqlDatabaseConfiguration database, SelectQueryExpression expression)
+        public AfterSelectPipelineExecutionContext(SqlDatabaseRuntimeConfiguration database, SelectQueryExpression expression)
             : base(database, expression)
         {
 

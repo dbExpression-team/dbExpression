@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Assembler
     public interface ISqlStatementBuilderFactory
     {
         ISqlStatementBuilder CreateSqlStatementBuilder(
-            RuntimeSqlDatabaseConfiguration database,
+            SqlDatabaseRuntimeConfiguration database,
             QueryExpression expression
         );
     }

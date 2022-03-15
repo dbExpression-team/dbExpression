@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Builder
     public abstract class SelectValueSelectQueryExpressionBuilder : SelectQueryExpressionBuilder
     {
         #region constructors
-        protected SelectValueSelectQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, SelectQueryExpression expression) : base(config, expression)
+        protected SelectValueSelectQueryExpressionBuilder(SqlDatabaseRuntimeConfiguration config, SelectQueryExpression expression) : base(config, expression)
         {
 
         }

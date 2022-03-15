@@ -31,7 +31,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/sysutcdatetimeoffset-transact-sql">Microsoft docs on SYSUTCDATETIME</see></para>
         /// </summary>
         /// <returns><see cref="SysUtcDateTimeFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{DateTime}"/>.</returns>
-        public static SysUtcDateTimeFunctionExpression SysUtcDateTime()
-            => new SysUtcDateTimeFunctionExpression();
+        public SysUtcDateTimeFunctionExpression SysUtcDateTime()
+            => new();
     }
 }

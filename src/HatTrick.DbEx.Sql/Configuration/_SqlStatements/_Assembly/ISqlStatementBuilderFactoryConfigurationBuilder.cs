@@ -39,7 +39,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         /// Use a custom factory for creating a builder responsible for creating a sql statement from a query expression.
         /// </summary>
         /// <param name="factory">A delegate responsible for creating a <see cref="ISqlStatementBuilder"/> given a plethora of other things.</param>
-        ISqlStatementAssemblyGroupingConfigurationBuilders Use(Func<RuntimeSqlDatabaseConfiguration, QueryExpression, ISqlStatementBuilder> factory);
+        ISqlStatementAssemblyGroupingConfigurationBuilders Use(Func<SqlDatabaseRuntimeConfiguration, QueryExpression, ISqlStatementBuilder> factory);
 
         /// <summary>
         /// Use the default factory for creating a builder responsible for creating a sql statement from a query expression.

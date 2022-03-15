@@ -24,11 +24,11 @@ namespace HatTrick.DbEx.Sql.Configuration
     public class ConnectionStringFactoryConfigurationBuilder : IConnectionStringFactoryConfigurationBuilder
     {
         #region internals
-        private readonly RuntimeSqlDatabaseConfiguration configuration;
+        private readonly SqlDatabaseRuntimeConfiguration configuration;
         #endregion
 
         #region constructors
-        public ConnectionStringFactoryConfigurationBuilder(RuntimeSqlDatabaseConfiguration configuration)
+        public ConnectionStringFactoryConfigurationBuilder(SqlDatabaseRuntimeConfiguration configuration)
         {
             this.configuration = configuration;
         }

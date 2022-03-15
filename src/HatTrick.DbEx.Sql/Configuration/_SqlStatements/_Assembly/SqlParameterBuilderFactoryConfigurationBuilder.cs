@@ -24,9 +24,9 @@ namespace HatTrick.DbEx.Sql.Configuration
     public class SqlParameterBuilderFactoryConfigurationBuilder : ISqlParameterBuilderFactoryConfigurationBuilder
     {
         private readonly ISqlStatementAssemblyGroupingConfigurationBuilders caller;
-        private readonly RuntimeSqlDatabaseConfiguration configuration;
+        private readonly SqlDatabaseRuntimeConfiguration configuration;
 
-        public SqlParameterBuilderFactoryConfigurationBuilder(ISqlStatementAssemblyGroupingConfigurationBuilders caller, RuntimeSqlDatabaseConfiguration configuration)
+        public SqlParameterBuilderFactoryConfigurationBuilder(ISqlStatementAssemblyGroupingConfigurationBuilders caller, SqlDatabaseRuntimeConfiguration configuration)
         {
             this.caller = caller ?? throw new ArgumentNullException(nameof(caller));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));

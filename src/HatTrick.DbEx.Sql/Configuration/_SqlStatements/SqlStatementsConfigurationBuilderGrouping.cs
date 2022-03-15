@@ -23,7 +23,7 @@ namespace HatTrick.DbEx.Sql.Configuration
     public class SqlStatementsConfigurationBuilderGrouping : ISqlStatementsConfigurationBuilderGrouping
     {
         #region internals
-        private readonly RuntimeSqlDatabaseConfiguration configuration;
+        private readonly SqlDatabaseRuntimeConfiguration configuration;
         private ISqlStatementAssemblyGroupingConfigurationBuilders? _assembly;
         private ISqlStatementExecutionGroupingConfigurationBuilders? _execution;
         #endregion
@@ -34,7 +34,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         #endregion
 
         #region constructors
-        public SqlStatementsConfigurationBuilderGrouping(RuntimeSqlDatabaseConfiguration configuration)
+        public SqlStatementsConfigurationBuilderGrouping(SqlDatabaseRuntimeConfiguration configuration)
         {
             this.configuration = configuration;
         }

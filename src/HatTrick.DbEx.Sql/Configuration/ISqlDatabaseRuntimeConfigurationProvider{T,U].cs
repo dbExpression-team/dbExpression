@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,12 +16,13 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using HatTrick.DbEx.Sql.Builder;
-
-namespace HatTrick.DbEx.MsSql.Builder
+﻿namespace HatTrick.DbEx.Sql.Configuration
 {
-    /// <inheritdoc/>
-    public partial class MsSqlStoredProcedureExpressionBuilder : SqlStoredProcedureExpressionBuilder
+    public interface ISqlDatabaseRuntimeConfigurationProvider<TDatabase, TConfig>
+        where TDatabase : ISqlDatabaseRuntime<TConfig>
+        where TConfig : SqlDatabaseRuntimeConfiguration
     {
+        TDatabase Database { get; }
+        TConfig Configuration { get; }
     }
 }

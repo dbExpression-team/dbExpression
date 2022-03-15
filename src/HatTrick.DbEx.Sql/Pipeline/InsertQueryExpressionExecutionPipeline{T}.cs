@@ -33,7 +33,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         where TEntity : class, IDbEntity
     {
         #region internals
-        private readonly RuntimeSqlDatabaseConfiguration database;
+        private readonly SqlDatabaseRuntimeConfiguration database;
         private readonly PipelineEventHook<BeforeAssemblyPipelineExecutionContext> beforeAssembly;
         private readonly PipelineEventHook<BeforeInsertAssemblyPipelineExecutionContext> beforeInsertAssembly;
         private readonly PipelineEventHook<AfterAssemblyPipelineExecutionContext> afterAssembly;
@@ -45,7 +45,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
         #region constructors
         public InsertQueryExpressionExecutionPipeline(
-            RuntimeSqlDatabaseConfiguration database,
+            SqlDatabaseRuntimeConfiguration database,
             PipelineEventHook<BeforeAssemblyPipelineExecutionContext> beforeAssembly,
             PipelineEventHook<BeforeInsertAssemblyPipelineExecutionContext> beforeInsertAssembly,
             PipelineEventHook<AfterAssemblyPipelineExecutionContext> afterAssembly,

@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.Sql.Builder
         where TEntity : class, IDbEntity, new()
     {
         #region constructors
-        public SelectEntityQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, SelectQueryExpression expression) : base(config, expression)
+        public SelectEntityQueryExpressionBuilder(SqlDatabaseRuntimeConfiguration config, SelectQueryExpression expression) : base(config, expression)
         {
 
         }

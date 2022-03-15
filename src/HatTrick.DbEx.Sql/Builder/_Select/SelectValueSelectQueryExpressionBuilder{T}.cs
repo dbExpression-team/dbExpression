@@ -34,7 +34,7 @@ namespace HatTrick.DbEx.Sql.Builder
         SelectValueContinuation<TValue>
     {
         #region constructors
-        public SelectValueSelectQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, SelectQueryExpression expression) : base(config, expression)
+        public SelectValueSelectQueryExpressionBuilder(SqlDatabaseRuntimeConfiguration config, SelectQueryExpression expression) : base(config, expression)
         {
 
         }

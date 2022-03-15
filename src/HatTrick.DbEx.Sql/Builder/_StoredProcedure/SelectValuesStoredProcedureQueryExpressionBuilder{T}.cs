@@ -32,7 +32,7 @@ namespace HatTrick.DbEx.Sql.Builder
         SelectValuesStoredProcedureContinuation<TValue>
     {
         #region constructors
-        public SelectValuesStoredProcedureQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, StoredProcedureQueryExpression expression)
+        public SelectValuesStoredProcedureQueryExpressionBuilder(SqlDatabaseRuntimeConfiguration config, StoredProcedureQueryExpression expression)
             : base(config, expression, expression.BaseEntity!)
         {
 

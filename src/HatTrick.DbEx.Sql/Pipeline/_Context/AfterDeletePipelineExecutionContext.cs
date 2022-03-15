@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 {
     public class AfterDeletePipelineExecutionContext : PipelineExecutionContext, IPipelineExecutionContext
     {
-        public AfterDeletePipelineExecutionContext(RuntimeSqlDatabaseConfiguration database, DeleteQueryExpression expression)
+        public AfterDeletePipelineExecutionContext(SqlDatabaseRuntimeConfiguration database, DeleteQueryExpression expression)
             : base(database, expression)
         {
 

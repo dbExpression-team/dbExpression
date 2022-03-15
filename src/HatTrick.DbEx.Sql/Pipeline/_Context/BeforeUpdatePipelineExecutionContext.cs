@@ -31,7 +31,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         public IEnumerable<AssignmentExpression> Fields { get; private set; }
         public SqlStatement SqlStatement { get; private set; }
 
-        public BeforeUpdatePipelineExecutionContext(RuntimeSqlDatabaseConfiguration database, UpdateQueryExpression expression, SqlStatement statement, ISqlParameterBuilder parameterBuilder)
+        public BeforeUpdatePipelineExecutionContext(SqlDatabaseRuntimeConfiguration database, UpdateQueryExpression expression, SqlStatement statement, ISqlParameterBuilder parameterBuilder)
             : base(database, expression)
         {
             SqlStatement = statement ?? throw new ArgumentNullException(nameof(statement));

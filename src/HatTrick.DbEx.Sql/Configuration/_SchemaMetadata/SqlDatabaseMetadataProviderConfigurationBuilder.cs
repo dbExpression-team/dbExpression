@@ -23,11 +23,11 @@ namespace HatTrick.DbEx.Sql.Configuration
     public class SqlDatabaseMetadataProviderConfigurationBuilder : ISqlDatabaseMetadataProviderConfigurationBuilder
     {
         #region internals
-        private readonly RuntimeSqlDatabaseConfiguration configuration;
+        private readonly SqlDatabaseRuntimeConfiguration configuration;
         #endregion
 
         #region constructors
-        public SqlDatabaseMetadataProviderConfigurationBuilder(RuntimeSqlDatabaseConfiguration configuration)
+        public SqlDatabaseMetadataProviderConfigurationBuilder(SqlDatabaseRuntimeConfiguration configuration)
         {
             this.configuration = configuration;
         }

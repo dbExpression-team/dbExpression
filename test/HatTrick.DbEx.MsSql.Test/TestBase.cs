@@ -11,18 +11,18 @@ namespace HatTrick.DbEx.MsSql.Test
 {
     public abstract class TestBase
     {
-        public virtual RuntimeSqlDatabaseConfiguration ConfigureForMsSqlVersion(int version, Action<IRuntimeSqlDatabaseConfigurationBuilder>? postConfigure = null)
+        public virtual SqlDatabaseRuntimeConfiguration ConfigureForMsSqlVersion(int version, Action<ISqlDatabaseRuntimeConfigurationBuilder>? postConfigure = null)
             => ConfigureForMsSqlVersion(version, ConfigurationProvider.ConnectionString, postConfigure);
 
-        public virtual RuntimeSqlDatabaseConfiguration ConfigureForMsSqlVersion(int version, string connectionString)
+        public virtual SqlDatabaseRuntimeConfiguration ConfigureForMsSqlVersion(int version, string connectionString)
             => ConfigureForMsSqlVersion(version, connectionString, null);
 
-        public virtual RuntimeSqlDatabaseConfiguration ConfigureForMsSqlVersion(int version, string connectionString, Action<IRuntimeSqlDatabaseConfigurationBuilder>? postConfigure = null)
+        public virtual SqlDatabaseRuntimeConfiguration ConfigureForMsSqlVersion(int version, string connectionString, Action<ISqlDatabaseRuntimeConfigurationBuilder>? postConfigure = null)
         {
-            RuntimeSqlDatabaseConfiguration? config = default;
-            void configureRuntime(IRuntimeSqlDatabaseConfigurationBuilder database)
+            SqlDatabaseRuntimeConfiguration? config = default;
+            void configureRuntime(ISqlDatabaseRuntimeConfigurationBuilder database)
             {
-                config = database.Configuration;
+                config = (database as ISqlDatabaseRuntimeConfigurationProvider<MsSqlDb, MsSqlSqlDatabaseRuntimeConfiguration>)!.Configuration;
                 database.ConnectionString.Use(connectionString);
 
                 database.SqlStatements.Assembly.ConfigureOutputSettings(

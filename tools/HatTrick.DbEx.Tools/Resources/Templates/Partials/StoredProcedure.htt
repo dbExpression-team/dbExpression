@@ -1,23 +1,67 @@
-﻿        #region sp
-        /// <inheritdoc />
-        public partial class sp : MsSqlStoredProcedureExpressionBuilder
+﻿{?var:databaseName = $.DatabaseExpression.Name}
+        #region sp
+        public class {:databaseName}StoredProcedures
         {{
+            #region internals
             {-#each $.Schemas}
-            {?var :schemaName = $.SchemaExpression.Name}
-            /// <summary>
-            /// Accessors to construct and execute stored procedure query expressions in the {:schemaName} schema.
-            /// </summary>
-            public partial class {:schemaName}
-            {{
-                {#each $.StoredProcedures}
-                {?var:isFirstParameter = true}
-                {>("StoredProcedureExpression.Documentation") => GetTemplatePartial+}
-                public static StoredProcedureContinuation {$.StoredProcedureExpression.Name}({#each $.Parameters}{#if $.ParameterExpression.RequiresInput}{#if !:isFirstParameter}, {/if}{?:isFirstParameter = false}{$.ParameterExpression.Type.NullableAlias} {($.ParameterExpression.Name, "@") => TrimStart}{/if}{/each}{#if $.HasOutputParameters}{#if $.HasInputParameters}, {+/if}Action<ISqlOutputParameterList> outputParameters{/if})
-                    => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, new {$.StoredProcedureExpression.Name}StoredProcedure("{:schemaName}", schemas.Single(s => s.Identifier == "dbo"){#each $.Parameters}{#if $.ParameterExpression.RequiresInput}, {($.ParameterExpression.Name, "@") => TrimStart}{/if}{/each}{#if $.HasOutputParameters}{#if $.HasInputParameters}, {+/if}outputParameters{/if}));
+            private readonly {$.SchemaExpression.Name}StoredProcedures _{$.SchemaExpression.Name}StoredProcedures;
+            {/each}
+            #endregion
 
-                {/each}
-            }}
+            #region interface
+            {-#each $.Schemas}
+            /// <summary>
+            /// Accessors to construct and execute stored procedure query expressions in the {$.SchemaExpression.Name} schema.
+            /// </summary>
+            public {$.SchemaExpression.Name}StoredProcedures {$.SchemaExpression.Name} => _{$.SchemaExpression.Name}StoredProcedures;
 
             {/each}
+            #endregion
+
+            #region constructors
+            public {:databaseName}StoredProcedures({:databaseName} database, IEnumerable<SchemaExpression> schemas)
+            {{
+                if (database is null)
+                    throw new ArgumentNullException(nameof(database));
+                {-#each $.Schemas}
+                _{$.SchemaExpression.Name}StoredProcedures = new {$.SchemaExpression.Name}StoredProcedures(database, schemas.Single(s => s.Identifier == "{$.SchemaExpression.Name}"));
+                {/each}
+            }}
+            #endregion
         }}
+
+        #region classes
+        {-#each $.Schemas}
+        {?var:schemaName = $.SchemaExpression.Name}
+        /// <summary>
+        /// Accessors to construct and execute stored procedure query expressions in the {$.SchemaExpression.Name} schema.
+        /// </summary>
+        public class {$.SchemaExpression.Name}StoredProcedures
+        {{
+            #region internals
+            private readonly {:databaseName} _database;
+            private readonly SchemaExpression _{$.SchemaExpression.Name};
+            #endregion
+
+            #region constructors
+            public {$.SchemaExpression.Name}StoredProcedures({:databaseName} database, SchemaExpression schema)
+            {{
+                _database = database ?? throw new ArgumentNullException(nameof(database));
+                _{$.SchemaExpression.Name} = schema ?? throw new ArgumentNullException(nameof(schema));
+            }}
+            #endregion
+
+            #region methods
+            {#each $.StoredProcedures}
+            {?var:isFirstParameter = true}
+            {>("StoredProcedureExpression.Documentation") => GetTemplatePartial+}
+            public StoredProcedureContinuation {$.StoredProcedureExpression.Name}({#each $.Parameters}{#if $.ParameterExpression.RequiresInput}{#if !:isFirstParameter}, {/if}{?:isFirstParameter = false}{$.ParameterExpression.Type.NullableAlias} {($.ParameterExpression.Name, "@") => TrimStart}{/if}{/each}{#if $.HasOutputParameters}{#if $.HasInputParameters}, {+/if}Action<ISqlOutputParameterList> outputParameters{/if})
+                => _database.QueryExpressionBuilder.CreateStoredProcedureBuilder(_database.Configuration, new {$.StoredProcedureExpression.Name}StoredProcedure("{:schemaName}", _{:schemaName}{#each $.Parameters}{#if $.ParameterExpression.RequiresInput}, {($.ParameterExpression.Name, "@") => TrimStart}{/if}{/each}{#if $.HasOutputParameters}{#if $.HasInputParameters}, {+/if}outputParameters{/if}));
+
+            {/each}
+            #endregion
+        }}
+
+        {/each}
+        #endregion
         #endregion

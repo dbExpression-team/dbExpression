@@ -24,14 +24,18 @@ namespace HatTrick.DbEx.Tools.Model
 {
     public class DatabasePairModel
     { 
+        public string? Platform { get; set; }
+        public LanguageFeatures LanguageFeatures { get; set; }
         public MsSqlModel Database { get; set; }
         public DatabaseExpressionModel DatabaseExpression { get; set; }
-        public LanguageFeatures LanguageFeatures { get; set; }
         public IList<SchemaPairModel> Schemas { get; set; } = new List<SchemaPairModel>();
         public DocumentationItemsModel? Documentation { get; set; }
 
-        public DatabasePairModel(MsSqlModel database, DatabaseExpressionModel databaseExpression, LanguageFeatures features)
+        public DatabasePairModel(string platform, MsSqlModel database, DatabaseExpressionModel databaseExpression, LanguageFeatures features)
         {
+            if (string.IsNullOrWhiteSpace(platform))
+                throw new ArgumentException($"{nameof(platform)} is required.");
+            Platform = platform;
             Database = database ?? throw new ArgumentNullException(nameof(database));
             DatabaseExpression = databaseExpression ?? throw new ArgumentNullException(nameof(databaseExpression));
             LanguageFeatures = features ?? throw new ArgumentNullException(nameof(features));

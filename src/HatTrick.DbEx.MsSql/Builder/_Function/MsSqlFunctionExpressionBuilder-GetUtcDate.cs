@@ -31,7 +31,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/getutcdate-transact-sql">Microsoft docs on GETUTCDATE</see></para>
         /// </summary>
         /// <returns><see cref="GetUtcDateFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{DateTime}"/>.</returns>
-        public static GetUtcDateFunctionExpression GetUtcDate()
-            => new GetUtcDateFunctionExpression();
+        public GetUtcDateFunctionExpression GetUtcDate()
+            => new();
     }
 }

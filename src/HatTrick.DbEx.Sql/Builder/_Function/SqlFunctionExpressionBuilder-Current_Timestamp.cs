@@ -30,7 +30,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/current-timestamp-transact-sql">Microsoft docs on CURRENT_TIMESTAMP</see></para>
         /// </summary>
         /// <returns><see cref="CurrentTimestampFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{DateTime}"/>.</returns>
-        public static CurrentTimestampFunctionExpression Current_Timestamp
-            => new CurrentTimestampFunctionExpression();
+        public CurrentTimestampFunctionExpression Current_Timestamp
+            => new();
     }
 }

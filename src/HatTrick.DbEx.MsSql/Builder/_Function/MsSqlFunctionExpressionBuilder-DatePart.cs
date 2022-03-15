@@ -33,8 +33,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="datePart">A <see cref="DateParts"/> specifying the date value to extract from <paramref name="element"/>.</param>
         /// <param name="element">Any expression of type <see cref="AnyElement{DateTime}"/>.</param>
         /// <returns><see cref="Int32DatePartFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>.</returns>
-        public static Int32DatePartFunctionExpression DatePart(DateParts datePart, AnyElement<DateTime> element)
-            => new Int32DatePartFunctionExpression(new DatePartsExpression<DateParts>(datePart), element);
+        public Int32DatePartFunctionExpression DatePart(DateParts datePart, AnyElement<DateTime> element)
+            => new(new DatePartsExpression<DateParts>(datePart), element);
 
         /// <summary>
         /// Construct an expression for the DATEPART transact sql function.
@@ -43,8 +43,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="datePart">A <see cref="DateParts"/> specifying the date value to extract from <paramref name="element"/>.</param>
         /// <param name="element">Any expression of type <see cref="AnyElement{DateTime}"/>?.</param>
         /// <returns><see cref="NullableInt32DatePartFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32DatePartFunctionExpression DatePart(DateParts datePart, AnyElement<DateTime?> element)
-            => new NullableInt32DatePartFunctionExpression(new DatePartsExpression<DateParts>(datePart), element);
+        public NullableInt32DatePartFunctionExpression DatePart(DateParts datePart, AnyElement<DateTime?> element)
+            => new(new DatePartsExpression<DateParts>(datePart), element);
 
         /// <summary>
         /// Construct an expression for the DATEPART transact sql function.
@@ -53,8 +53,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="datePart">A <see cref="DateParts"/> specifying the date value to extract from <paramref name="element"/>.</param>
         /// <param name="element">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>.</param>
         /// <returns><see cref="Int32DatePartFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>.</returns>
-        public static Int32DatePartFunctionExpression DatePart(DateParts datePart, AnyElement<DateTimeOffset> element)
-            => new Int32DatePartFunctionExpression(new DatePartsExpression<DateParts>(datePart), element);
+        public Int32DatePartFunctionExpression DatePart(DateParts datePart, AnyElement<DateTimeOffset> element)
+            => new(new DatePartsExpression<DateParts>(datePart), element);
 
         /// <summary>
         /// Construct an expression for the DATEPART transact sql function.
@@ -63,7 +63,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="datePart">A <see cref="DateParts"/> specifying the date value to extract from <paramref name="element"/>.</param>
         /// <param name="element">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>?.</param>
         /// <returns><see cref="NullableInt32DatePartFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32DatePartFunctionExpression DatePart(DateParts datePart, AnyElement<DateTimeOffset?> element)
-            => new NullableInt32DatePartFunctionExpression(new DatePartsExpression<DateParts>(datePart), element);
+        public NullableInt32DatePartFunctionExpression DatePart(DateParts datePart, AnyElement<DateTimeOffset?> element)
+            => new(new DatePartsExpression<DateParts>(datePart), element);
     }
 }

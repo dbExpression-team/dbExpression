@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,11 +16,20 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿namespace HatTrick.DbEx.Sql
+
+namespace HatTrick.DbEx.Tools.Model
 {
-    public interface IRuntimeEnvironmentSqlDatabase
+    public class NullableLanguageFeature
     {
-        IRuntimeSqlDatabase Database { get; }
-        ISqlDatabaseMetadataProvider Metadata { get; }
+        private NullableFeature? _nullableFeature;
+        public bool IsFeatureEnabled => _nullableFeature == NullableFeature.Enable;
+        public string Directive => _nullableFeature is not null ? $"#nullable {_nullableFeature.Value.ToString().ToLower()}" : string.Empty;
+        public string Annotation => _nullableFeature == NullableFeature.Enable ? "?" : string.Empty;
+        public string ForgivingOperator => _nullableFeature == NullableFeature.Enable ? "!" : string.Empty;
+
+        public NullableLanguageFeature(NullableFeature? nullableFeature)
+        {
+            _nullableFeature = nullableFeature;
+        }
     }
 }

@@ -25,11 +25,11 @@ namespace HatTrick.DbEx.Sql.Configuration
     public class ValueConverterFactoryConfigurationBuilder : IValueConverterFactoryConfigurationBuilder
     {
         #region internals
-        private readonly RuntimeSqlDatabaseConfiguration configuration;
+        private readonly SqlDatabaseRuntimeConfiguration configuration;
         #endregion
 
         #region constructors
-        public ValueConverterFactoryConfigurationBuilder(RuntimeSqlDatabaseConfiguration configuration)
+        public ValueConverterFactoryConfigurationBuilder(SqlDatabaseRuntimeConfiguration configuration)
         {
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }

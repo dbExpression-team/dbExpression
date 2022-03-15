@@ -82,7 +82,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
 
         #region methods
-        public virtual IInsertQueryExpressionExecutionPipeline CreateQueryExecutionPipeline<T>(RuntimeSqlDatabaseConfiguration database, InsertQueryExpression expression)
+        public virtual IInsertQueryExpressionExecutionPipeline CreateQueryExecutionPipeline<T>(SqlDatabaseRuntimeConfiguration database, InsertQueryExpression expression)
             where T : class, IDbEntity
         {
             return new InsertQueryExpressionExecutionPipeline<T>(
@@ -97,7 +97,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             );
         }
 
-        public virtual IUpdateQueryExpressionExecutionPipeline CreateQueryExecutionPipeline(RuntimeSqlDatabaseConfiguration database, UpdateQueryExpression expression)
+        public virtual IUpdateQueryExpressionExecutionPipeline CreateQueryExecutionPipeline(SqlDatabaseRuntimeConfiguration database, UpdateQueryExpression expression)
         {
             return new UpdateQueryExpressionExecutionPipeline(
                 database,
@@ -111,7 +111,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             );
         }
 
-        public virtual IDeleteQueryExpressionExecutionPipeline CreateQueryExecutionPipeline(RuntimeSqlDatabaseConfiguration database, DeleteQueryExpression expression)
+        public virtual IDeleteQueryExpressionExecutionPipeline CreateQueryExecutionPipeline(SqlDatabaseRuntimeConfiguration database, DeleteQueryExpression expression)
         {
             return new DeleteQueryExpressionExecutionPipeline(
                 database,
@@ -124,7 +124,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             );
         }
 
-        public virtual ISelectQueryExpressionExecutionPipeline CreateQueryExecutionPipeline(RuntimeSqlDatabaseConfiguration database, SelectQueryExpression expression)
+        public virtual ISelectQueryExpressionExecutionPipeline CreateQueryExecutionPipeline(SqlDatabaseRuntimeConfiguration database, SelectQueryExpression expression)
         {
             return new SelectQueryExpressionExecutionPipeline(
                 database,
@@ -137,7 +137,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             );
         }
 
-        public IStoredProcedureQueryExpressionExecutionPipeline CreateQueryExecutionPipeline(RuntimeSqlDatabaseConfiguration database, StoredProcedureQueryExpression expression)
+        public IStoredProcedureQueryExpressionExecutionPipeline CreateQueryExecutionPipeline(SqlDatabaseRuntimeConfiguration database, StoredProcedureQueryExpression expression)
         {
             return new StoredProcedureQueryExpressionExecutionPipeline(
                 database,

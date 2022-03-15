@@ -35,7 +35,7 @@ namespace HatTrick.DbEx.Sql.Builder
         private readonly Func<ISqlFieldReader, T> map;
         Func<ISqlFieldReader, T> SelectObjectStoredProcedureTermination<T>.Map => map;
 
-        public SelectObjectStoredProcedureQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, StoredProcedureQueryExpression expression, Func<ISqlFieldReader, T> map)
+        public SelectObjectStoredProcedureQueryExpressionBuilder(SqlDatabaseRuntimeConfiguration config, StoredProcedureQueryExpression expression, Func<ISqlFieldReader, T> map)
             : base(config, expression, expression.BaseEntity!)
         {
             this.map = map ?? throw new ArgumentNullException(nameof(map));
