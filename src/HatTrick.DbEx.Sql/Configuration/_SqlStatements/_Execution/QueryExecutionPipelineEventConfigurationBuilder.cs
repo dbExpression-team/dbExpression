@@ -26,11 +26,11 @@ namespace HatTrick.DbEx.Sql.Configuration
     public class QueryExecutionPipelineEventConfigurationBuilder : IQueryExecutionPipelineEventConfigurationBuilder
     {
         #region internals
-        private readonly RuntimeSqlDatabaseConfiguration configuration;
+        private readonly SqlDatabaseRuntimeConfiguration configuration;
         #endregion
 
         #region constructors
-        public QueryExecutionPipelineEventConfigurationBuilder(RuntimeSqlDatabaseConfiguration configuration)
+        public QueryExecutionPipelineEventConfigurationBuilder(SqlDatabaseRuntimeConfiguration configuration)
         {
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }

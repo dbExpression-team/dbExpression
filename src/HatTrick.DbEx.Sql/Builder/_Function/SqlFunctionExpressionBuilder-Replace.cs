@@ -33,7 +33,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <param name="pattern">A <see cref="string"/> literal to match in <paramref name="element"/>.</param>
         /// <param name="replacement">An expression of type <see cref="string"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
         /// <returns><see cref="StringReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
-        public static StringReplaceFunctionExpression Replace(StringElement element, string pattern, string replacement)
+        public StringReplaceFunctionExpression Replace(StringElement element, string pattern, string replacement)
         {
             if (string.IsNullOrWhiteSpace(pattern))
                 throw new ArgumentException($"{nameof(pattern)} cannot be null or empty.", nameof(pattern));
@@ -50,7 +50,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <param name="pattern">A <see cref="AnyElement{String}"/> to match in <paramref name="element"/>.</param>
         /// <param name="replacement">An expression of type <see cref="string"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
         /// <returns><see cref="StringReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
-        public static StringReplaceFunctionExpression Replace(StringElement element, StringElement pattern, string replacement)
+        public StringReplaceFunctionExpression Replace(StringElement element, StringElement pattern, string replacement)
         {
             if (string.IsNullOrWhiteSpace(replacement))
                 throw new ArgumentException($"{nameof(replacement)} cannot be null or empty.", nameof(replacement));
@@ -65,7 +65,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <param name="pattern">A <see cref="string"/> literal to match in <paramref name="element"/>.</param>
         /// <param name="replacement">An expression of type <see cref="AnyElement{String}"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
         /// <returns><see cref="StringReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
-        public static StringReplaceFunctionExpression Replace(StringElement element, string pattern, StringElement replacement)
+        public StringReplaceFunctionExpression Replace(StringElement element, string pattern, StringElement replacement)
         {
             if (string.IsNullOrWhiteSpace(pattern))
                 throw new ArgumentException($"{nameof(pattern)} cannot be null or empty.", nameof(pattern));
@@ -80,7 +80,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <param name="pattern">A <see cref="AnyElement{String}"/> literal to match in <paramref name="element"/>.</param>
         /// <param name="replacement">An expression of type <see cref="AnyElement{String}"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
         /// <returns><see cref="StringReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
-        public static StringReplaceFunctionExpression Replace(StringElement element, StringElement pattern, StringElement replacement)
+        public StringReplaceFunctionExpression Replace(StringElement element, StringElement pattern, StringElement replacement)
             => new(element, pattern, replacement);
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <param name="pattern">A <see cref="string"/>? literal to match in <paramref name="element"/>.</param>
         /// <param name="replacement">An expression of type <see cref="string"/>? which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
         /// <returns><see cref="NullableStringReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>?.</returns>
-        public static NullableStringReplaceFunctionExpression Replace(NullableStringElement element, string? pattern, string? replacement)
+        public NullableStringReplaceFunctionExpression Replace(NullableStringElement element, string? pattern, string? replacement)
             => new(element, new NullableStringExpressionMediator(new LiteralExpression<string?>(pattern)), new NullableStringExpressionMediator(new LiteralExpression<string?>(replacement)));
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <param name="pattern">A <see cref="AnyElement{String}"/> to match in <paramref name="element"/>.</param>
         /// <param name="replacement">An expression of type <see cref="string"/>? which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
         /// <returns><see cref="NullableStringReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>?.</returns>
-        public static NullableStringReplaceFunctionExpression Replace(NullableStringElement element, StringElement pattern, string? replacement)
+        public NullableStringReplaceFunctionExpression Replace(NullableStringElement element, StringElement pattern, string? replacement)
             => new(element, pattern, new NullableStringExpressionMediator(new LiteralExpression<string?>(replacement)));
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <param name="pattern">A <see cref="string"/>? literal to match in <paramref name="element"/>.</param>
         /// <param name="replacement">An expression of type <see cref="StringElement"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
         /// <returns><see cref="NullableStringReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>?.</returns>
-        public static NullableStringReplaceFunctionExpression Replace(NullableStringElement element, string? pattern, StringElement replacement)
+        public NullableStringReplaceFunctionExpression Replace(NullableStringElement element, string? pattern, StringElement replacement)
             => new(element, new NullableStringExpressionMediator(new LiteralExpression<string?>(pattern)), replacement);
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <param name="pattern">A <see cref=AnyStringElement"/> to match in <paramref name="element"/>.</param>
         /// <param name="replacement">An expression of type <see cref="string"/>? which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
         /// <returns><see cref="NullableStringReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>?.</returns>
-        public static NullableStringReplaceFunctionExpression Replace(NullableStringElement element, AnyStringElement pattern, string? replacement)
+        public NullableStringReplaceFunctionExpression Replace(NullableStringElement element, AnyStringElement pattern, string? replacement)
             => new(element, pattern, new NullableStringExpressionMediator(new LiteralExpression<string?>(replacement)));
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <param name="pattern">A <see cref="string"/>? literal to match in <paramref name="element"/>.</param>
         /// <param name="replacement">An expression of type <see cref="AnyStringElement"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
         /// <returns><see cref="NullableStringReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>?.</returns>
-        public static NullableStringReplaceFunctionExpression Replace(NullableStringElement element, string? pattern, AnyStringElement replacement)
+        public NullableStringReplaceFunctionExpression Replace(NullableStringElement element, string? pattern, AnyStringElement replacement)
             => new(element, new NullableStringExpressionMediator(new LiteralExpression<string?>(pattern)), replacement);
 
         /// <summary>
@@ -146,7 +146,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <param name="pattern">A <see cref="AnyStringElement"/> literal to match in <paramref name="element"/>.</param>
         /// <param name="replacement">An expression of type <see cref="AnyStringElement"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
         /// <returns><see cref="NullableStringReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>?.</returns>
-        public static NullableStringReplaceFunctionExpression Replace(NullableStringElement element, AnyStringElement pattern, AnyStringElement replacement)
+        public NullableStringReplaceFunctionExpression Replace(NullableStringElement element, AnyStringElement pattern, AnyStringElement replacement)
             => new(element, pattern, replacement);
     }
 }

@@ -33,7 +33,7 @@ namespace HatTrick.DbEx.Sql.Builder
         where TEntity : class, IDbEntity
     {
         #region constructors
-        public DeleteEntitiesDeleteQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, DeleteQueryExpression expression, Table<TEntity> entity) : base(config, expression, entity)
+        public DeleteEntitiesDeleteQueryExpressionBuilder(SqlDatabaseRuntimeConfiguration config, DeleteQueryExpression expression, Table<TEntity> entity) : base(config, expression, entity)
         {
 
         }

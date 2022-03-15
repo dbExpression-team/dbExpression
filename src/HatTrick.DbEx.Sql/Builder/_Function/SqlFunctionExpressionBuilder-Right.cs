@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <param name="element">An expression of type <see cref="StringElement"/> to take the number of characters from.</param>
         /// <param name="characterCount">An expression of type <see cref="int"/> providing the number of characters to return from the right of <paramref name="element"/>.</param>
         /// <returns><see cref="StringRightFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
-        public static StringRightFunctionExpression Right(StringElement element, int characterCount)
+        public StringRightFunctionExpression Right(StringElement element, int characterCount)
             => new(element, new LiteralExpression<int>(characterCount));
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <param name="element">An expression of type <see cref="StringElement"/> to take the number of characters from.</param>
         /// <param name="characterCount">An expression of type <see cref="AnyElement{Int32}"/> providing the number of characters to return from the right of <paramref name="element"/>.</param>
         /// <returns><see cref="StringRightFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
-        public static StringRightFunctionExpression Right(StringElement element, AnyElement<int> characterCount)
+        public StringRightFunctionExpression Right(StringElement element, AnyElement<int> characterCount)
             => new(element, characterCount);
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <param name="element">An expression of type <see cref="NullableStringElement"/>? to take the number of characters from.</param>
         /// <param name="characterCount">An expression of type <see cref="int"/> providing the number of characters to return from the right of <paramref name="element"/>.</param>
         /// <returns><see cref="NullableStringRightFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
-        public static NullableStringRightFunctionExpression Right(NullableStringElement element, int characterCount)
+        public NullableStringRightFunctionExpression Right(NullableStringElement element, int characterCount)
             => new(element, new LiteralExpression<int>(characterCount));
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <param name="element">An expression of type <see cref="NullableStringElement"/>? to take the number of characters from.</param>
         /// <param name="characterCount">An expression of type <see cref="int"/> providing the number of characters to return from the right of <paramref name="element"/>.</param>
         /// <returns><see cref="NullableStringRightFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
-        public static NullableStringRightFunctionExpression Right(NullableStringElement element, int? characterCount)
+        public NullableStringRightFunctionExpression Right(NullableStringElement element, int? characterCount)
             => new(element, new LiteralExpression<int?>(characterCount));
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <param name="element">An expression of type <see cref="NullableStringElement"/>? to take the number of characters from.</param>
         /// <param name="characterCount">An expression of type <see cref="AnyElement{Int32}"/> providing the number of characters to return from the right of <paramref name="element"/>.</param>
         /// <returns><see cref="NullableStringRightFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
-        public static NullableStringRightFunctionExpression Right(NullableStringElement element, AnyElement<int> characterCount)
+        public NullableStringRightFunctionExpression Right(NullableStringElement element, AnyElement<int> characterCount)
             => new(element, characterCount);
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <param name="element">An expression of type <see cref="StringElement"/> to take the number of characters from.</param>
         /// <param name="characterCount">An expression of type <see cref="AnyElement{Int32}"/>? providing the number of characters to return from the right of <paramref name="element"/>.</param>
         /// <returns><see cref="NullableStringRightFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
-        public static NullableStringRightFunctionExpression Right(StringElement element, AnyElement<int?> characterCount)
+        public NullableStringRightFunctionExpression Right(StringElement element, AnyElement<int?> characterCount)
             => new(element, characterCount);
     }
 }

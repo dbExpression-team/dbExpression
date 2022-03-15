@@ -1,20 +1,1339 @@
-﻿    #region runtime db
-    public abstract partial class {$.DatabaseExpression.Name}RuntimeSqlDatabase : IRuntimeSqlDatabase, IExpressionListProvider<SchemaExpression>
+﻿    {?var:nullableAnnotation = $.DatabaseExpression.LanguageFeatures.Nullable.Annotation}
+    #region {$.DatabaseExpression.Name}
+    public class {$.DatabaseExpression.Name} : SqlDatabaseRuntime<{$.Platform}SqlDatabaseRuntimeConfiguration>
     {{
         #region internals
-        protected static readonly MsSqlQueryExpressionBuilderFactory expressionBuilderFactory = new MsSqlQueryExpressionBuilderFactory();
-        protected static readonly IList<SchemaExpression> schemas = new List<SchemaExpression>();
-        protected static RuntimeSqlDatabaseConfiguration configuration => configurationFactory{$.LanguageFeatures.Nullable.Annotation}.CreateConfiguration() ?? throw new DbExpressionConfigurationException($"Configuration factory returned a null value for configuration ({{nameof(RuntimeSqlDatabaseConfiguration)}}).  Cannot build and execute queries without valid configuration.");
-        private static IRuntimeSqlDatabaseConfigurationFactory{$.LanguageFeatures.Nullable.Annotation} configurationFactory;
+        private static List<SchemaExpression> _schemas = new List<SchemaExpression>();
+        private static SqlDatabaseMetadataProvider _metadata = new SqlDatabaseMetadataProvider(new {$.DatabaseExpression.Name}SqlDatabaseMetadata("{$.DatabaseExpression.Name}", "{$.Database.Name}"));
+        private {$.DatabaseExpression.Name}StoredProcedures{:nullableAnnotation} _sp;
+        internal {$.Platform}QueryExpressionBuilder QueryExpressionBuilder
+            => Configuration.QueryExpressionBuilder ?? throw new DbExpressionConfigurationException($"Query builder is required.  Cannot build and execute queries without valid configuration.");
+
+        internal {$.Platform}FunctionExpressionBuilder FunctionExpressionBuilder
+            => Configuration.FunctionExpressionBuilder ?? throw new DbExpressionConfigurationException($"Query builder is required.  Cannot build and execute queries without valid configuration.");
         #endregion
 
         #region interface
-        IEnumerable<SchemaExpression> IExpressionListProvider<SchemaExpression>.Expressions => schemas;
+        public {$.Platform}FunctionExpressionBuilder fx
+            => FunctionExpressionBuilder;
+
+        public {$.DatabaseExpression.Name}StoredProcedures sp => _sp ?? (_sp = new {$.DatabaseExpression.Name}StoredProcedures(this, _schemas));
+        #endregion
+
+        #region constructors
+        public {$.DatabaseExpression.Name}()
+        {{
+
+        }}
         #endregion
 
         #region methods
-        void IRuntimeSqlDatabase.UseConfigurationFactory(IRuntimeSqlDatabaseConfigurationFactory configurationFactory)
-            => {$.DatabaseExpression.Name}RuntimeSqlDatabase.configurationFactory = configurationFactory ?? throw new ArgumentNullException(nameof(configurationFactory));
+        public override void UseConfiguration({$.Platform}SqlDatabaseRuntimeConfiguration configuration)
+        {{
+            if (!_schemas.Any())
+            {{
+                {#each $.Schemas}
+                var {$.SchemaExpression.Name}Schema = new _{$.SchemaExpression.Name}DataService.{$.SchemaExpression.Name}SchemaExpression("{$.Schema.Name}");
+                _schemas.Add({$.SchemaExpression.Name}Schema);
+                _{$.SchemaExpression.Name}DataService.{$.SchemaExpression.Name}.UseSchema({$.SchemaExpression.Name}Schema);
+
+                {/each}
+            }}
+
+            if (configuration.MetadataProvider is null)
+                configuration.MetadataProvider = _metadata;
+
+            configuration.Validate();
+
+            base.UseConfiguration(configuration);
+            {$.DatabaseExpression.AccessorName}.UseDatabase(this);
+        }}
+
+        #region select one
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single entity.
+        /// <para>
+        /// To retrieve a <see cref="{$.Documentation.AnyEntityExpression.NamespaceRoot}Data.{$.Documentation.AnyEntityExpression.Name}" />, use a type param of <see cref="{$.Documentation.AnyEntityExpression.NamespaceRoot}Data.{$.Documentation.AnyEntityExpression.Name}" />
+        /// </para>
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <returns><see cref="SelectEntity{{TEntity}}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
+        /// <typeparam name="TEntity">The entity type to select.</typeparam>
+        public SelectEntity<TEntity> SelectOne<TEntity>()
+            where TEntity : class, IDbEntity, new()
+            => QueryExpressionBuilder.CreateSelectEntityBuilder<TEntity>(Configuration);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="TEnum"/> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{TEnum}}" />
+        {#if $.Documentation.AnyEnumColumnExpression}
+        {?var:column = $.Documentation.AnyEnumColumnExpression}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}      
+        /// </param>
+        /// <returns><see cref="Sql.SelectValue{{TEnum}}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
+        /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
+        public SelectValue<TEnum> SelectOne<TEnum>(AnyElement<TEnum> element)
+            where TEnum : struct, Enum, IComparable
+            => QueryExpressionBuilder.CreateSelectValueBuilder<TEnum>(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="TEnum"/>? value.  
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{TEnum}}" />?
+        {#if $.Documentation.AnyNullableEnumColumnExpression}
+        {?var:column = $.Documentation.AnyNullableEnumColumnExpression}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}
+        /// </param>
+        /// <returns><see cref="SelectValue{{TEnum}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
+        public SelectValue<TEnum?> SelectOne<TEnum>(AnyElement<TEnum?> element)
+            where TEnum : struct, Enum, IComparable
+            => QueryExpressionBuilder.CreateSelectValueBuilder<TEnum>(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="ObjectElement" />
+        {#if $.Documentation.AnyObjectColumnExpression}
+        {?var:column = $.Documentation.AnyObjectColumnExpression}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}      
+        /// </param>
+        /// <returns><see cref="SelectValue{{object}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<object>{:nullableAnnotation} SelectOne(ObjectElement element)
+            => QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/>{:nullableAnnotation} value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableObjectElement" />
+        {#if $.Documentation.AnyObjectColumnExpression}
+        {?var:column = $.Documentation.AnyObjectColumnExpression}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}      
+        /// </param>
+        /// <returns><see cref="SelectValue{{object}}"/>{:nullableAnnotation}, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<object{:nullableAnnotation}> SelectOne(NullableObjectElement element)
+            => QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="ObjectElement{{T}}" />
+        {#if $.Documentation.AnyObjectColumnExpression}
+        {?var:column = $.Documentation.AnyObjectColumnExpression}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}      
+        /// </param>
+        /// <returns><see cref="SelectValues{{T}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <typeparam name="T">The type of the object to select.</typeparam>
+        public SelectValue<T> SelectOne<T>(ObjectElement<T> element)
+            => QueryExpressionBuilder.CreateSelectValueBuilder<T>(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/>{:nullableAnnotation} value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableObjectElement{{T}}" />{:nullableAnnotation}
+        {#if $.Documentation.AnyObjectColumnExpression}
+        {?var:column = $.Documentation.AnyObjectColumnExpression}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}      
+        /// </param>
+        /// <returns><see cref="SelectValue{{T}}"/>{:nullableAnnotation}, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <typeparam name="T">The type of the object to select.</typeparam>
+        public SelectValue<T{:nullableAnnotation}> SelectOne<T>(NullableObjectElement<T> element)
+            => QueryExpressionBuilder.CreateSelectValueBuilder<T>(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="bool" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Boolean}}" />
+        {#if $.Documentation.AnyColumnOfTypeBoolean}
+        {?var:column = $.Documentation.AnyColumnOfTypeBoolean}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, false)
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<bool> SelectOne(AnyElement<bool> element)
+            => QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="bool" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Boolean}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableBoolean}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableBoolean}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}""
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<bool?> SelectOne(AnyElement<bool?> element)
+            => QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="byte" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Byte}}" />
+        {#if $.Documentation.AnyColumnOfTypeByte}
+        {?var:column = $.Documentation.AnyColumnOfTypeByte}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, byte.MinValue)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<byte> SelectOne(AnyElement<byte> element)
+            => QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="byte" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Byte}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableByte}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableByte}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<byte?> SelectOne(AnyElement<byte?> element)
+            => QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[] value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Byte[]}}" />
+        {#if $.Documentation.AnyColumnOfTypeByteArray}
+        {?var:column = $.Documentation.AnyColumnOfTypeByteArray}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, new byte[0])"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<byte[]> SelectOne(AnyElement<byte[]> element)
+            => QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="DateTime" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{DateTime}}" />
+        {#if $.Documentation.AnyColumnOfTypeDateTime}
+        {?var:column = $.Documentation.AnyColumnOfTypeDateTime}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}", "db.fx.DateAdd(DateParts.Year, 1, {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}) or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, DateTime.Now)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<DateTime> SelectOne(AnyElement<DateTime> element)
+            => QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="DateTime" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{DateTime}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableDateTime}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableDateTime}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.DateAdd(DateParts.Year, 1, {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<DateTime?> SelectOne(AnyElement<DateTime?> field)
+            => QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, field);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="DateTimeOffset" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{DateTimeOffset}}" />
+        {#if $.Documentation.AnyColumnOfTypeDateTimeOffset}
+        {?var:column = $.Documentation.AnyColumnOfTypeDateTimeOffset}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}", "db.fx.DateAdd(DateParts.Year, 1, {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, DateTimeOffset.Now)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<DateTimeOffset> SelectOne(AnyElement<DateTimeOffset> element)
+            => QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="DateTimeOffset" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{DateTimeOffset}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableDateTimeOffset}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableDateTimeOffset}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.DateAdd(DateParts.Year, 1, {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})" 
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<DateTimeOffset?> SelectOne(AnyElement<DateTimeOffset?> element)
+            => QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="decimal" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Decimal}}" />
+        {#if $.Documentation.AnyColumnOfTypeDecimal}
+        {?var:column = $.Documentation.AnyColumnOfTypeDecimal}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, decimal.MinValue)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<decimal> SelectOne(AnyElement<decimal> element)
+            => QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="decimal" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Decimal}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableDecimal}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableDecimal}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Min({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<decimal?> SelectOne(AnyElement<decimal?> element)
+            => QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="double" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Double}}" />
+        {#if $.Documentation.AnyColumnOfTypeDouble}
+        {?var:column = $.Documentation.AnyColumnOfTypeDouble}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, double.MinValue)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<double> SelectOne(AnyElement<double> element)
+            => QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="double" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Double}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableDouble}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableDouble}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Min({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<double?> SelectOne(AnyElement<double?> element)
+            => QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="Guid" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Guid}}" />
+        {#if $.Documentation.AnyColumnOfTypeGuid}
+        {?var:column = $.Documentation.AnyColumnOfTypeGuid}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, Guid.Empty)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<Guid> SelectOne(AnyElement<Guid> element)
+            => QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="Guid" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Guid}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableGuid}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableGuid}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<Guid?> SelectOne(AnyElement<Guid?> element)
+            => QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="short" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Int16}}" />
+        {#if $.Documentation.AnyColumnOfTypeInt16}
+        {?var:column = $.Documentation.AnyColumnOfTypeInt16}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, short.MinValue)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<short> SelectOne(AnyElement<short> element)
+            => QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="short" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Int16}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableInt16}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableInt16}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Max({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<short?> SelectOne(AnyElement<short?> element)
+            => QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="int" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Int32}}" />?
+        {#if $.Documentation.AnyColumnOfTypeInt32}  
+        {?var:column = $.Documentation.AnyColumnOfTypeInt32}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Avg({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<int> SelectOne(AnyElement<int> element)
+            => QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="int" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Int32}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableInt32}  
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableInt32}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Avg({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<int?> SelectOne(AnyElement<int?> element)
+            => QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="long" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Int64}}" />
+        {#if $.Documentation.AnyColumnOfTypeInt64}
+        {?var:column = $.Documentation.AnyColumnOfTypeInt64}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, long.MinValue)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<long> SelectOne(AnyElement<long> element)
+            => QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="long" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Int64}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableInt64}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableInt64}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Max({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<long?> SelectOne(AnyElement<long?> element)
+            => QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="float" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Single}}" />
+        {#if $.Documentation.AnyColumnOfTypeSingle}
+        {?var:column = $.Documentation.AnyColumnOfTypeSingle}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, float.MinValue)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<float> SelectOne(AnyElement<float> element)
+            => QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="float" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Single}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableSingle}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableSingle}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Max({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<float?> SelectOne(AnyElement<float?> element)
+            => QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="string" />{:nullableAnnotation} value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{String}}" />{:nullableAnnotation}
+        {#if $.Documentation.AnyColumnOfTypeString}
+        {?var:column = $.Documentation.AnyColumnOfTypeString}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Concat("Value: ", {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{String}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<string> SelectOne(StringElement element) 
+            => QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="string" />{:nullableAnnotation} value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{String}}" />{:nullableAnnotation}
+        {#if $.Documentation.AnyColumnOfTypeString}
+        {?var:column = $.Documentation.AnyColumnOfTypeString}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Concat("Value: ", {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{String}}"/>{:nullableAnnotation}, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<string{:nullableAnnotation}> SelectOne(NullableStringElement element) 
+            => QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{TimeSpan}}" />
+        {#if $.Documentation.AnyColumnOfTypeTimeSpan}
+        {?var:column = $.Documentation.AnyColumnOfTypeTimeSpan}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}", "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, TimeSpan.MinValue)" or "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name} + DateTime.Now"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<TimeSpan> SelectOne(AnyElement<TimeSpan> element)
+            => QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{TimeSpan}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableTimeSpan}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableTimeSpan}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<TimeSpan?> SelectOne(AnyElement<TimeSpan?> element)
+            => QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element1">Any expression</param>
+        /// <param name="element2">Any expression</param>
+        /// <param name="elements">Any expression</param>
+        /// <returns><see cref="SelectDynamic"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectDynamic SelectOne(AnyElement element1, AnyElement element2, params AnyElement[] elements)
+            => QueryExpressionBuilder.CreateSelectDynamicBuilder(Configuration, element1, element2, elements);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element1">Any expression</param>
+        /// <param name="elements">A list of any expression</param>
+        /// <returns><see cref="SelectDynamic"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectDynamic SelectOne(IEnumerable<AnyElement> elements)
+            => QueryExpressionBuilder.CreateSelectDynamicBuilder(Configuration, elements);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="elements">A list of any expression that is valid for a SELECT query expression.</param>
+        /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
+        /// <returns><see cref="SelectDynamics"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectDynamic SelectOne(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
+            => QueryExpressionBuilder.CreateSelectDynamicBuilder(Configuration, (elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
         #endregion
+
+        #region select many
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of entities.
+        /// <para>
+        /// To retrieve a list of <see cref="{$.Documentation.AnyEntityExpression.NamespaceRoot}Data.{$.Documentation.AnyEntityExpression.Name}" />(s), use a type param of <see cref="{$.Documentation.AnyEntityExpression.NamespaceRoot}Data.{$.Documentation.AnyEntityExpression.Name}" />
+        /// </para>
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <returns><see cref="SelectEntities{{TEntity}}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
+        /// <typeparam name="TEntity">The entity type to select.</typeparam>
+        public SelectEntities<TEntity> SelectMany<TEntity>()
+           where TEntity : class, IDbEntity, new()
+           => QueryExpressionBuilder.CreateSelectEntitiesBuilder<TEntity>(Configuration);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="TEnum"/> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{TEnum}}" />
+        {#if $.Documentation.AnyEnumColumnExpression}
+        {?var:column = $.Documentation.AnyEnumColumnExpression}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}      
+        /// </param>
+        /// <returns><see cref="SelectValues{{TEnum}}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
+        public SelectValues<TEnum> SelectMany<TEnum>(AnyElement<TEnum> element)
+            where TEnum : struct, Enum, IComparable
+            => QueryExpressionBuilder.CreateSelectValuesBuilder<TEnum>(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="TEnum"/>? values.
+        /// </summary>
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// <param name="element">An expression of type <see cref="AnyElement{{TEnum}}" />?
+        {#if $.Documentation.AnyNullableEnumColumnExpression}
+        {?var:column = $.Documentation.AnyNullableEnumColumnExpression}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}      
+        /// </param>
+        /// <returns><see cref="SelectValues{{TEnum}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<TEnum?> SelectMany<TEnum>(AnyElement<TEnum?> element)
+            where TEnum : struct, Enum, IComparable
+            => QueryExpressionBuilder.CreateSelectValuesBuilder<TEnum>(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="ObjectElement" />
+        {#if $.Documentation.AnyObjectColumnExpression}
+        {?var:column = $.Documentation.AnyObjectColumnExpression}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}      
+        /// </param>
+        /// <returns><see cref="SelectValues{{object}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<object>{:nullableAnnotation} SelectMany(ObjectElement element)
+            => QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/>{:nullableAnnotation} values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableObjectElement" />
+        {#if $.Documentation.AnyObjectColumnExpression}
+        {?var:column = $.Documentation.AnyObjectColumnExpression}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}      
+        /// </param>
+        /// <returns><see cref="SelectValues{{object}}"/>{:nullableAnnotation}, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<object{:nullableAnnotation}> SelectMany(NullableObjectElement element)
+            => QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="ObjectElement{{T}}" />
+        {#if $.Documentation.AnyObjectColumnExpression}
+        {?var:column = $.Documentation.AnyObjectColumnExpression}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}      
+        /// </param>
+        /// <returns><see cref="SelectValues{{T}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <typeparam name="T">The type of the object to select.</typeparam>
+        public SelectValues<T> SelectMany<T>(ObjectElement<T> element)
+            => QueryExpressionBuilder.CreateSelectValuesBuilder<T>(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/>{:nullableAnnotation} values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableObjectElement{{T}}" />{:nullableAnnotation}
+        {#if $.Documentation.AnyObjectColumnExpression}
+        {?var:column = $.Documentation.AnyObjectColumnExpression}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}      
+        /// </param>
+        /// <returns><see cref="SelectValues{{T}}"/>{:nullableAnnotation}, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <typeparam name="T">The type of the object to select.</typeparam>
+        public SelectValues<T{:nullableAnnotation}> SelectMany<T>(NullableObjectElement<T> element)
+            => QueryExpressionBuilder.CreateSelectValuesBuilder<T>(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="bool" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Boolean}}" />
+        {#if $.Documentation.AnyColumnOfTypeBoolean}
+        {?var:column = $.Documentation.AnyColumnOfTypeBoolean}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, false)
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<bool> SelectMany(AnyElement<bool> element)
+            => QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="bool" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Boolean}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableBoolean}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableBoolean}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}""
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<bool?> SelectMany(AnyElement<bool?> element)
+            => QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="byte" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Byte}}" />
+        {#if $.Documentation.AnyColumnOfTypeByte}
+        {?var:column = $.Documentation.AnyColumnOfTypeByte}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, byte.MinValue)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<byte> SelectMany(AnyElement<byte> element)
+            => QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Byte}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableByte}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableByte}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<byte?> SelectMany(AnyElement<byte?> element)
+            => QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[] values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Byte[]}}" />
+        {#if $.Documentation.AnyColumnOfTypeByteArray}
+        {?var:column = $.Documentation.AnyColumnOfTypeByteArray}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, new byte[0])"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<byte[]> SelectMany(AnyElement<byte[]> element)
+            => QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="DateTime" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{DateTime}}" />
+        {#if $.Documentation.AnyColumnOfTypeDateTime}
+        {?var:column = $.Documentation.AnyColumnOfTypeDateTime}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}", "db.fx.DateAdd(DateParts.Year, 1, {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}) or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, DateTime.Now)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<DateTime> SelectMany(AnyElement<DateTime> element)
+            => QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="DateTime" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{DateTime}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableDateTime}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableDateTime}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.DateAdd(DateParts.Year, 1, {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<DateTime?> SelectMany(AnyElement<DateTime?> element)
+            => QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="DateTimeOffset" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{DateTimeOffset}}" />
+        {#if $.Documentation.AnyColumnOfTypeDateTimeOffset}
+        {?var:column = $.Documentation.AnyColumnOfTypeDateTimeOffset}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}", "db.fx.DateAdd(DateParts.Year, 1, {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, DateTimeOffset.Now)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<DateTimeOffset> SelectMany(AnyElement<DateTimeOffset> element)
+            => QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="DateTimeOffset" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{DateTimeOffset}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableDateTimeOffset}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableDateTimeOffset}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.DateAdd(DateParts.Year, 1, {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})" 
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<DateTimeOffset?> SelectMany(AnyElement<DateTimeOffset?> element)
+            => QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="decimal" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Decimal}}" />
+        {#if $.Documentation.AnyColumnOfTypeDecimal}
+        {?var:column = $.Documentation.AnyColumnOfTypeDecimal}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, decimal.MinValue)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<decimal> SelectMany(AnyElement<decimal> element)
+            => QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="decimal" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Decimal}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableDecimal}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableDecimal}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<decimal?> SelectMany(AnyElement<decimal?> element)
+            => QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="double" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Double}}" />
+        {#if $.Documentation.AnyColumnOfTypeDouble}
+        {?var:column = $.Documentation.AnyColumnOfTypeDouble}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, double.MinValue)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<double> SelectMany(AnyElement<double> element)
+            => QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="double" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Double}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableDouble}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableDouble}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<double?> SelectMany(AnyElement<double?> element)
+            => QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="Guid" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Guid}}" />
+        {#if $.Documentation.AnyColumnOfTypeGuid}
+        {?var:column = $.Documentation.AnyColumnOfTypeGuid}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, Guid.Empty)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<Guid> SelectMany(AnyElement<Guid> element)
+            => QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="Guid" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Guid}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableGuid}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableGuid}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<Guid?> SelectMany(AnyElement<Guid?> element)
+            => QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="short" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Int16}}" />
+        {#if $.Documentation.AnyColumnOfTypeInt16}
+        {?var:column = $.Documentation.AnyColumnOfTypeInt16}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, short.MinValue)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<short> SelectMany(AnyElement<short> element)
+            => QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="short" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Int16}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableInt16}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableInt16}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<short?> SelectMany(AnyElement<short?> element)
+            => QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="int" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Int32}}" />
+        {#if $.Documentation.AnyColumnOfTypeInt32}  
+        {?var:column = $.Documentation.AnyColumnOfTypeInt32}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<int> SelectMany(AnyElement<int> element)
+            => QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="int" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Int32}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableInt32}  
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableInt32}
+        ///, for example "{:column.Entity.Schema.Name}.:column.Entity.Name}.{:column.Name}"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<int?> SelectMany(AnyElement<int?> element)
+            => QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="long" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Int64}}" />
+        {#if $.Documentation.AnyColumnOfTypeInt64}
+        {?var:column = $.Documentation.AnyColumnOfTypeInt64}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, long.MinValue)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<long> SelectMany(AnyElement<long> element)
+            => QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="long" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Int64}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableInt64}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableInt64}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<long?> SelectMany(AnyElement<long?> element)
+            => QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="float" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Single}}" />
+        {#if $.Documentation.AnyColumnOfTypeSingle}
+        {?var:column = $.Documentation.AnyColumnOfTypeSingle}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, float.MinValue)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<float> SelectMany(AnyElement<float> element)
+            => QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="float" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Single}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableSingle}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableSingle}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<float?> SelectMany(AnyElement<float?> element)
+            => QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="string" />{:nullableAnnotation} values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{String}}" />{:nullableAnnotation}
+        {#if $.Documentation.AnyColumnOfTypeString}
+        {?var:column = $.Documentation.AnyColumnOfTypeString}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Concat("Value: ", {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{String}}"/>{:nullableAnnotation}, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<string> SelectMany(StringElement element)
+            => QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="string" />{:nullableAnnotation} values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{String}}" />{:nullableAnnotation}
+        {#if $.Documentation.AnyColumnOfTypeString}
+        {?var:column = $.Documentation.AnyColumnOfTypeString}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Concat("Value: ", {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{String}}"/>{:nullableAnnotation}, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<string{:nullableAnnotation}> SelectMany(NullableStringElement element)
+            => QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{TimeSpan}}" />
+        {#if $.Documentation.AnyColumnOfTypeTimeSpan}
+        {?var:column = $.Documentation.AnyColumnOfTypeTimeSpan}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}", "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, TimeSpan.MinValue)" or "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name} + DateTime.Now"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<TimeSpan> SelectMany(AnyElement<TimeSpan> element)
+            => QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{TimeSpan}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableTimeSpan}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableTimeSpan}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<TimeSpan?> SelectMany(AnyElement<TimeSpan?> element)
+            => QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element1">Any expression</param>
+        /// <param name="element2">Any expression</param>
+        /// <param name="elements">Any expression</param>
+        /// <returns><see cref="SelectDynamics"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectDynamics SelectMany(AnyElement element1, AnyElement element2, params AnyElement[] elements)
+            => QueryExpressionBuilder.CreateSelectDynamicsBuilder(Configuration, element1, element2, elements);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="elements">A list of any expression</param>
+        /// <returns><see cref="SelectDynamics"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectDynamics SelectMany(IEnumerable<AnyElement> elements)
+            => QueryExpressionBuilder.CreateSelectDynamicsBuilder(Configuration, elements);
+
+            /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="elements">A list of any expression that is valid for a SELECT query expression.</param>
+        /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
+        /// <returns><see cref="SelectDynamics"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectDynamics SelectMany(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
+            => QueryExpressionBuilder.CreateSelectDynamicsBuilder(Configuration, (elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
+        #endregion
+
+        #region update
+        /// <summary>
+        /// Start constructing a sql UPDATE query expression to update record(s).
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/update-transact-sql">Microsoft docs on UPDATE</see>
+        /// </para>
+        /// </summary>
+        /// <param name="assignment">A <see cref="EntityFieldAssignment" /> assigning a database field/column a new value.  
+        {#if $.Documentation.AnyColumnOfTypeString}
+        {?var:column = $.Documentation.AnyColumnOfTypeString}
+        /// For example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}.Set("new value")"
+        {/if}
+        {#if $.Documentation.AnyColumnOfTypeNullableInt32}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableInt32}
+        /// or "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}.Set({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name} + 10)"
+        {/if}
+        ///</param>
+        /// <param name="assignments">An additional list of <see cref="EntityFieldAssignment" />(s) assigning database fields/columns new values.  </param>
+        /// <returns><see cref="UpdateEntities"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
+        public UpdateEntities Update(EntityFieldAssignment assignment, params EntityFieldAssignment[] assignments)
+            => QueryExpressionBuilder.CreateUpdateExpressionBuilder(Configuration, assignment, assignments);
+
+        /// <summary>
+        /// Start constructing a sql UPDATE query expression to update records.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/update-transact-sql">Microsoft docs on UPDATE</see>
+        /// </para>
+        /// </summary>
+        /// <param name="assignments">A list of <see cref="EntityFieldAssignment" />(s) that assign a database field/column a new value.  
+        {#if $.Documentation.AnyColumnOfTypeString}
+        {?var:column = $.Documentation.AnyColumnOfTypeString}
+        /// For example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}.Set("new value")"
+        {/if}
+        {#if $.Documentation.AnyColumnOfTypeNullableInt32}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableInt32}
+        /// or "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}.Set({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name} + 10)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="UpdateEntities"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
+        public UpdateEntities Update(IEnumerable<EntityFieldAssignment> assignments)
+            => QueryExpressionBuilder.CreateUpdateExpressionBuilder(Configuration, assignments);   
+        #endregion
+
+        #region delete
+        /// <summary>
+        /// Start constructing a sql DELETE query expression to remove records.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/statements/delete-transact-sql">Microsoft docs on DELETE</see>
+        /// </para>
+        /// </summary>
+        /// <returns><see cref="DeleteEntities"/>, a fluent builder for constructing a sql DELETE statement.</returns>
+        public DeleteEntities Delete()
+            => QueryExpressionBuilder.CreateDeleteExpressionBulder(Configuration);
+        #endregion
+
+        #region insert
+        /// <summary>
+        /// Start constructing a sql INSERT query expression to insert a record.  Property values from the <paramref name="entity"/> instance are used to create the record values for the INSERT statement. 
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/statements/insert-transact-sql">Microsoft docs on INSERT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="entity">The entity supplying the property values.
+        /// </param>
+        /// <returns><see cref="InsertEntity{{TEntity}}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
+        /// <typeparam name="TEntity">The entity type of the entity to insert.</typeparam>
+        public InsertEntity<TEntity> Insert<TEntity>(TEntity entity)
+            where TEntity : class, IDbEntity
+            => QueryExpressionBuilder.CreateInsertExpressionBuilder(Configuration, entity);
+
+        /// <summary>
+        /// Start constructing a sql INSERT query expression to insert one or more record.  The property values from each <paramref name="entities"/> entity instance are used to create the new record values for the INSERT statement.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/statements/insert-transact-sql">Microsoft docs on INSERT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="entities">A list of entities.
+        /// </param>
+        /// <returns><see cref="InsertEntities{{TEntity}}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
+        /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
+        public InsertEntities<TEntity> InsertMany<TEntity>(TEntity entity, params TEntity[] entities)
+            where TEntity : class, IDbEntity
+            => QueryExpressionBuilder.CreateInsertExpressionBuilder(Configuration, entity, entities);
+
+        /// <summary>
+        /// Start constructing a sql INSERT query expression to insert one or more record.  The property values from each <paramref name="entities"/> entity instance are used to create the new record values for the INSERT statement.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/statements/insert-transact-sql">Microsoft docs on INSERT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="entities">A list of entities.
+        /// </param>
+        /// <returns><see cref="InsertEntities{{TEntity}}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
+        /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
+        public InsertEntities<TEntity> InsertMany<TEntity>(IEnumerable<TEntity> entities)
+            where TEntity : class, IDbEntity
+            => QueryExpressionBuilder.CreateInsertExpressionBuilder(Configuration, entities);
+        #endregion
+
+        #region get connection
+        /// <summary>
+        /// Creates a connection to the database.
+        /// <para>
+        /// The connection has not been opened, use <see cref="System.Data.IDbConnection.Open"/> or <see cref="Connection.ISqlConnection.EnsureOpen"/> to ensure an open connection to the database prior to operations like <see cref="System.Data.IDbConnection.BeginTransaction"/>.
+        /// </para>
+        /// </summary>
+        /// <returns><see cref="ISqlConnection"/>, a connection to the database.</returns>
+        public ISqlConnection GetConnection()
+            => new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+        #endregion
+        #endregion
+
+{+>("StoredProcedure") => GetTemplatePartial+}
     }}
     #endregion

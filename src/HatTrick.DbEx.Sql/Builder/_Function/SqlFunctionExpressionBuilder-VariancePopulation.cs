@@ -31,8 +31,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}"/>, the value to use for calculating the population variance function result.</param>
         /// <returns><see cref="SinglePopulationVarianceFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
-        public static SinglePopulationVarianceFunctionExpression VarP(AnyElement<byte> element)
-            => new SinglePopulationVarianceFunctionExpression(element);
+        public SinglePopulationVarianceFunctionExpression VarP(AnyElement<byte> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the VARP transact sql function.
@@ -40,8 +40,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}"/>?, the value to use for calculating the population variance function result.</param>
         /// <returns><see cref="NullableSinglePopulationVarianceFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>?.</returns>
-        public static NullableSinglePopulationVarianceFunctionExpression VarP(AnyElement<byte?> element)
-            => new NullableSinglePopulationVarianceFunctionExpression(element);
+        public NullableSinglePopulationVarianceFunctionExpression VarP(AnyElement<byte?> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the VARP transact sql function.
@@ -49,8 +49,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}"/>, the value to use for calculating the population variance function result.</param>
         /// <returns><see cref="SinglePopulationVarianceFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
-        public static SinglePopulationVarianceFunctionExpression VarP(AnyElement<short> element)
-            => new SinglePopulationVarianceFunctionExpression(element);
+        public SinglePopulationVarianceFunctionExpression VarP(AnyElement<short> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the VARP transact sql function.
@@ -58,8 +58,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}"/>?, the value to use for calculating the population variance function result.</param>
         /// <returns><see cref="NullableSinglePopulationVarianceFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>?.</returns>
-        public static NullableSinglePopulationVarianceFunctionExpression VarP(AnyElement<short?> element)
-            => new NullableSinglePopulationVarianceFunctionExpression(element);
+        public NullableSinglePopulationVarianceFunctionExpression VarP(AnyElement<short?> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the VARP transact sql function.
@@ -67,8 +67,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}"/>, the value to use for calculating the population variance function result.</param>
         /// <returns><see cref="SinglePopulationVarianceFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>?.</returns>
-        public static SinglePopulationVarianceFunctionExpression VarP(AnyElement<int> element)
-            => new SinglePopulationVarianceFunctionExpression(element);
+        public SinglePopulationVarianceFunctionExpression VarP(AnyElement<int> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the VARP transact sql function.
@@ -76,8 +76,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}"/>?, the value to use for calculating the population variance function result.</param>
         /// <returns><see cref="NullableSinglePopulationVarianceFunctionExpression"/> for use with any operation accepting a <see cref="NullableSingleElement"/>.</returns>
-        public static NullableSinglePopulationVarianceFunctionExpression VarP(AnyElement<int?> element)
-            => new NullableSinglePopulationVarianceFunctionExpression(element);
+        public NullableSinglePopulationVarianceFunctionExpression VarP(AnyElement<int?> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the VARP transact sql function.
@@ -85,8 +85,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}"/>, the value to use for calculating the population variance function result.</param>
         /// <returns><see cref="SinglePopulationVarianceFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
-        public static SinglePopulationVarianceFunctionExpression VarP(AnyElement<long> element)
-            => new SinglePopulationVarianceFunctionExpression(element);
+        public SinglePopulationVarianceFunctionExpression VarP(AnyElement<long> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the VARP transact sql function.
@@ -94,8 +94,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}"/>?, the value to use for calculating the population variance function result.</param>
         /// <returns><see cref="NullableSinglePopulationVarianceFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>?.</returns>
-        public static NullableSinglePopulationVarianceFunctionExpression VarP(AnyElement<long?> element)
-            => new NullableSinglePopulationVarianceFunctionExpression(element);
+        public NullableSinglePopulationVarianceFunctionExpression VarP(AnyElement<long?> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the VARP transact sql function.
@@ -103,8 +103,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Double}"/>, the value to use for calculating the population variance function result.</param>
         /// <returns><see cref="SinglePopulationVarianceFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
-        public static SinglePopulationVarianceFunctionExpression VarP(DoubleElement element)
-            => new SinglePopulationVarianceFunctionExpression(element);
+        public SinglePopulationVarianceFunctionExpression VarP(DoubleElement element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the VARP transact sql function.
@@ -112,8 +112,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Double}"/>?, the value to use for calculating the population variance function result.</param>
         /// <returns><see cref="NullableSinglePopulationVarianceFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>?.</returns>
-        public static NullableSinglePopulationVarianceFunctionExpression VarP(AnyElement<double?> element)
-            => new NullableSinglePopulationVarianceFunctionExpression(element);
+        public NullableSinglePopulationVarianceFunctionExpression VarP(AnyElement<double?> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the VARP transact sql function.
@@ -121,8 +121,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}"/>, the value to use for calculating the population variance function result.</param>
         /// <returns><see cref="SinglePopulationVarianceFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
-        public static SinglePopulationVarianceFunctionExpression VarP(AnyElement<decimal> element)
-            => new SinglePopulationVarianceFunctionExpression(element);
+        public SinglePopulationVarianceFunctionExpression VarP(AnyElement<decimal> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the VARP transact sql function.
@@ -130,8 +130,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}"/>?, the value to use for calculating the population variance function result.</param>
         /// <returns><see cref="NullableSinglePopulationVarianceFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>?.</returns>
-        public static NullableSinglePopulationVarianceFunctionExpression VarP(AnyElement<decimal?> element)
-            => new NullableSinglePopulationVarianceFunctionExpression(element);
+        public NullableSinglePopulationVarianceFunctionExpression VarP(AnyElement<decimal?> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the VARP transact sql function.
@@ -139,8 +139,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="SingleElement"/>, the value to use for calculating the population variance function result.</param>
         /// <returns><see cref="SinglePopulationVarianceFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
-        public static SinglePopulationVarianceFunctionExpression VarP(AnyElement<float> element)
-            => new SinglePopulationVarianceFunctionExpression(element);
+        public SinglePopulationVarianceFunctionExpression VarP(AnyElement<float> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the VARP transact sql function.
@@ -148,7 +148,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableSingleElement"/>, the value to use for calculating the population variance function result.</param>
         /// <returns><see cref="NullableSinglePopulationVarianceFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>?.</returns>
-        public static NullableSinglePopulationVarianceFunctionExpression VarP(AnyElement<float?> element)
-            => new NullableSinglePopulationVarianceFunctionExpression(element);
+        public NullableSinglePopulationVarianceFunctionExpression VarP(AnyElement<float?> element)
+            => new(element);
     }
 }

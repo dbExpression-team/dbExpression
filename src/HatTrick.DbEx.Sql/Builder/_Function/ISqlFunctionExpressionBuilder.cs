@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,10 +16,18 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿namespace HatTrick.DbEx.Sql.Configuration
+using HatTrick.DbEx.Sql.Expression;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace HatTrick.DbEx.Sql.Builder
 {
-    public interface IRuntimeSqlDatabaseConfigurationFactory
+    /// <summary>
+    /// Methods to construct database platform aggregation and conversion functions, for example "Min", "Max" "Avg".
+    /// </summary>
+    public interface ISqlFunctionExpressionBuilder
     {
-        RuntimeSqlDatabaseConfiguration CreateConfiguration();
+
     }
 }

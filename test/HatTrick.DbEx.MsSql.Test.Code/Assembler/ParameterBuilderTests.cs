@@ -1,4 +1,5 @@
-﻿using DbEx.dboDataService;
+﻿using DbEx.DataService;
+using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Assembler;
@@ -532,7 +533,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
         {
             //given
             var value = new byte[] { 1, 2, 3 };
-            var database = ConfigureForMsSqlVersion(version);
+            var database = ConfigureForMsSqlVersion(version, builder => builder.SchemaMetadata.Use(new SqlDatabaseMetadataProvider(new MsSqlDbSqlDatabaseMetadata("MsSqlDb", "MsSqlDbExTest"))));
             var context = new AssemblyContext(database.AssemblerConfiguration);
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var parameter = parameterBuilder.CreateInputParameter(value, typeof(byte[]), context);
@@ -551,7 +552,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
         public void Does_a_parameter_for_product_name_create_correct_dbtype_and_size_for_filter_expression(int version)
         {
             //given
-            var database = ConfigureForMsSqlVersion(version);
+            var database = ConfigureForMsSqlVersion(version, builder => builder.SchemaMetadata.Use(new SqlDatabaseMetadataProvider(new MsSqlDbSqlDatabaseMetadata("MsSqlDb", "MsSqlDbExTest"))));
             var builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, database.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>());
             var context = new AssemblyContext(database.AssemblerConfiguration);
             string productName = "1234";
@@ -577,7 +578,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
         public void Does_a_parameter_for_person_firstname_create_correct_dbtype_and_size_for_filter_expression(int version)
         {
             //given
-            var database = ConfigureForMsSqlVersion(version);
+            var database = ConfigureForMsSqlVersion(version, builder => builder.SchemaMetadata.Use(new SqlDatabaseMetadataProvider(new MsSqlDbSqlDatabaseMetadata("MsSqlDb", "MsSqlDbExTest"))));
             var builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, database.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>());
             var context = new AssemblyContext(database.AssemblerConfiguration);
             string firstName = "xxx";
@@ -603,7 +604,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
         public void Does_a_parameter_for_product_price_create_correct_dbtype_for_filter_expression(int version)
         {
             //given
-            var database = ConfigureForMsSqlVersion(version);
+            var database = ConfigureForMsSqlVersion(version, builder => builder.SchemaMetadata.Use(new SqlDatabaseMetadataProvider(new MsSqlDbSqlDatabaseMetadata("MsSqlDb", "MsSqlDbExTest"))));
             var builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, database.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>());
             var context = new AssemblyContext(database.AssemblerConfiguration);
             double productPrice = 12.99;
@@ -628,7 +629,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
         public void Does_a_parameter_for_product_image_create_correct_dbtype_for_filter_expression(int version)
         {
             //given
-            var database = ConfigureForMsSqlVersion(version);
+            var database = ConfigureForMsSqlVersion(version, builder => builder.SchemaMetadata.Use(new SqlDatabaseMetadataProvider(new MsSqlDbSqlDatabaseMetadata("MsSqlDb", "MsSqlDbExTest"))));
             var builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, database.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>());
             var context = new AssemblyContext(database.AssemblerConfiguration);
             byte[] image = new byte[] { 1, 2, 3 };

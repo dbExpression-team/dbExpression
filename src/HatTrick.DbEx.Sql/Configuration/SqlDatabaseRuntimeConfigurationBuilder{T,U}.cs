@@ -16,29 +16,32 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using System;
+using System;
 
 namespace HatTrick.DbEx.Sql.Configuration
 {
-    public class EntitiesConfigurationBuilderGrouping : IEntitiesConfigurationBuilderGrouping
+    public class SqlDatabaseRuntimeConfigurationBuilder<TDatabase, TConfig> : SqlDatabaseRuntimeConfigurationBuilder,
+        ISqlDatabaseRuntimeConfigurationBuilder<TDatabase, TConfig>
+        where TDatabase : ISqlDatabaseRuntime<TConfig>
+        where TConfig : SqlDatabaseRuntimeConfiguration
     {
         #region internals
-        private readonly SqlDatabaseRuntimeConfiguration configuration;
-        private IMapperFactoryConfigurationBuilder? _mapper;
-        private IEntityFactoryConfigurationBuilder? _entity;
+        private readonly TDatabase database;
+        private readonly TConfig configuration;
         #endregion
 
         #region interface
-        public IEntityFactoryConfigurationBuilder Creation => _entity ??= new EntityFactoryConfigurationBuilder(this, configuration);
-        public IMapperFactoryConfigurationBuilder Mapping => _mapper ??= new MapperFactoryConfigurationBuilder(this, configuration);
+        TDatabase ISqlDatabaseRuntimeConfigurationProvider<TDatabase, TConfig>.Database => database;
+        TConfig ISqlDatabaseRuntimeConfigurationProvider<TDatabase, TConfig>.Configuration => configuration;
         #endregion
 
         #region constructors
-        public EntitiesConfigurationBuilderGrouping(SqlDatabaseRuntimeConfiguration configuration)
+        protected SqlDatabaseRuntimeConfigurationBuilder(TDatabase database, TConfig configuration)
+            : base(configuration)
         {
+            this.database = database ?? throw new ArgumentNullException(nameof(database));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
         #endregion
-
     }
 }

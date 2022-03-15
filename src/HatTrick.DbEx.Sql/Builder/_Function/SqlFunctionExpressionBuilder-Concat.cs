@@ -31,7 +31,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="elements">A list of expressions of type <see cref="AnyStringElement"/> to join into a single string.</param>
         /// <returns><see cref="StringConcatFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
-        public static StringConcatFunctionExpression Concat(params AnyStringElement[] elements)
+        public StringConcatFunctionExpression Concat(params AnyStringElement[] elements)
             => new(elements);
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <param name="value">The beginning part of the joined string.</param>
         /// <param name="elements">A list of expressions of type <see cref="AnyStringElement"/> to add to the string after <paramref name="value"/>.</param>
         /// <returns><see cref="StringConcatFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/>.</returns>
-        public static StringConcatFunctionExpression Concat(string? value, params AnyStringElement[] elements)
+        public StringConcatFunctionExpression Concat(string? value, params AnyStringElement[] elements)
             => new(new List<AnyStringElement> { new NullableStringExpressionMediator(new LiteralExpression<string?>(value)) }.Concat(elements).ToArray());
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <param name="value">The part of the joined string after <paramref name="element1"/>.</param>
         /// <param name="elements">A list of expressions of type <see cref="AnyStringElement"/> to add to the string after <paramref name="value"/>.</param>
         /// <returns><see cref="StringConcatFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
-        public static StringConcatFunctionExpression Concat(AnyStringElement element1, string? value, params AnyStringElement[] elements)
+        public StringConcatFunctionExpression Concat(AnyStringElement element1, string? value, params AnyStringElement[] elements)
             => new(new List<AnyStringElement> { element1, new NullableStringExpressionMediator(new LiteralExpression<string?>(value)) }.Concat(elements).ToArray());
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <param name="value">The part of the joined string after <paramref name="element2"/>.</param>
         /// <param name="elements">A list of expressions of type <see cref="AnyElement{String}"/> to add to the string after <paramref name="value"/>.</param>
         /// <returns><see cref="StringConcatFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
-        public static StringConcatFunctionExpression Concat(AnyStringElement element1, AnyStringElement element2, string? value, params AnyStringElement[] elements)
+        public StringConcatFunctionExpression Concat(AnyStringElement element1, AnyStringElement element2, string? value, params AnyStringElement[] elements)
             => new(new List<AnyStringElement> { element1, element2, new NullableStringExpressionMediator(new LiteralExpression<string?>(value)) }.Concat(elements).ToArray());
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <param name="value">The part of the joined string after <paramref name="element3"/>.</param>
         /// <param name="elements">A list of expressions of type <see cref="AnyElement{String}"/> to add to the string after <paramref name="value"/>.</param>
         /// <returns><see cref="StringConcatFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
-        public static StringConcatFunctionExpression Concat(AnyStringElement element1, AnyStringElement element2, AnyStringElement element3, string? value, params AnyStringElement[] elements)
+        public StringConcatFunctionExpression Concat(AnyStringElement element1, AnyStringElement element2, AnyStringElement element3, string? value, params AnyStringElement[] elements)
             => new(new List<AnyStringElement> { element1, element2, element3, new NullableStringExpressionMediator(new LiteralExpression<string?>(value)) }.Concat(elements).ToArray());
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <param name="value">The part of the joined string after <paramref name="element4"/>.</param>
         /// <param name="elements">A list of expressions of type <see cref="AnyElement{String}"/> to add to the string after <paramref name="value"/>.</param>
         /// <returns><see cref="StringConcatFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
-        public static StringConcatFunctionExpression Concat(AnyStringElement element1, AnyStringElement element2, AnyStringElement element3, AnyStringElement element4, string? value, params AnyStringElement[] elements)
+        public StringConcatFunctionExpression Concat(AnyStringElement element1, AnyStringElement element2, AnyStringElement element3, AnyStringElement element4, string? value, params AnyStringElement[] elements)
             => new(new List<AnyStringElement> { element1, element2, element3, element4, new NullableStringExpressionMediator(new LiteralExpression<string?>(value)) }.Concat(elements).ToArray());
     }
 }

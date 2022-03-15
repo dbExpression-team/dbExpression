@@ -24,9 +24,9 @@ namespace HatTrick.DbEx.Sql.Configuration
     public class AppenderFactoryConfigurationBuilder : IAppenderFactoryConfigurationBuilder
     {
         private readonly ISqlStatementAssemblyGroupingConfigurationBuilders caller;
-        private readonly RuntimeSqlDatabaseConfiguration configuration;
+        private readonly SqlDatabaseRuntimeConfiguration configuration;
 
-        public AppenderFactoryConfigurationBuilder(ISqlStatementAssemblyGroupingConfigurationBuilders caller, RuntimeSqlDatabaseConfiguration configuration)
+        public AppenderFactoryConfigurationBuilder(ISqlStatementAssemblyGroupingConfigurationBuilders caller, SqlDatabaseRuntimeConfiguration configuration)
         {
             this.caller = caller ?? throw new ArgumentNullException(nameof(caller));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));

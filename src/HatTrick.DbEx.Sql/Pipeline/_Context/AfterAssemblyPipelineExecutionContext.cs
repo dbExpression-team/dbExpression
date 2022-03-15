@@ -28,7 +28,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         public ISqlParameterBuilder ParameterBuilder { get; private set; }
         public SqlStatement SqlStatement { get; private set; }
 
-        public AfterAssemblyPipelineExecutionContext(RuntimeSqlDatabaseConfiguration database, QueryExpression expression, ISqlParameterBuilder parameterBuilder, SqlStatement statement)
+        public AfterAssemblyPipelineExecutionContext(SqlDatabaseRuntimeConfiguration database, QueryExpression expression, ISqlParameterBuilder parameterBuilder, SqlStatement statement)
             : base(database, expression)
         {
             ParameterBuilder = parameterBuilder ?? throw new ArgumentNullException(nameof(parameterBuilder));

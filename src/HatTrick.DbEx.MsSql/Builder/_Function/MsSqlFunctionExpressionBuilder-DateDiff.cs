@@ -35,8 +35,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">The starting date used for calculation.</param>
         /// <param name="endDate">Any expression of type <see cref="AnyElement{DateTime}"/>, the ending date used for calculation.</param>
         /// <returns><see cref="Int32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>.</returns>
-        public static Int32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTime startDate, AnyElement<DateTime> endDate)
-            => new Int32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<DateTime>(startDate), endDate);
+        public Int32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTime startDate, AnyElement<DateTime> endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<DateTime>(startDate), endDate);
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -46,8 +46,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">The starting date used for calculation.</param>
         /// <param name="endDate">Any expression of type <see cref="AnyElement{DateTime}"/>?, the ending date used for calculation.</param>
         /// <returns><see cref="NullableInt32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTime startDate, AnyElement<DateTime?> endDate)
-            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<DateTime>(startDate), endDate);
+        public NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTime startDate, AnyElement<DateTime?> endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<DateTime>(startDate), endDate);
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -57,8 +57,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">The starting date used for calculation.</param>
         /// <param name="endDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>, the ending date used for calculation.</param>
         /// <returns><see cref="Int32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>.</returns>
-        public static Int32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTime startDate, AnyElement<DateTimeOffset> endDate)
-            => new Int32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<DateTime>(startDate), endDate);
+        public Int32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTime startDate, AnyElement<DateTimeOffset> endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<DateTime>(startDate), endDate);
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -68,8 +68,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">The starting date used for calculation.</param>
         /// <param name="endDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>?, the ending date used for calculation.</param>
         /// <returns><see cref="NullableInt32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTime startDate, AnyElement<DateTimeOffset?> endDate)
-            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<DateTime>(startDate), endDate);
+        public NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTime startDate, AnyElement<DateTimeOffset?> endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<DateTime>(startDate), endDate);
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -79,8 +79,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">The starting date used for calculation.</param>
         /// <param name="endDate">Any expression of type <see cref="AnyElement{DateTime}"/>, the ending date used for calculation.</param>
         /// <returns><see cref="NullableInt32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTime? startDate, AnyElement<DateTime> endDate)
-            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<DateTime?>(startDate), endDate);
+        public NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTime? startDate, AnyElement<DateTime> endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<DateTime?>(startDate), endDate);
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -90,8 +90,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">The starting date used for calculation.</param>
         /// <param name="endDate">Any expression of type <see cref="AnyElement{DateTime}"/>?, the ending date used for calculation.</param>
         /// <returns><see cref="NullableInt32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTime? startDate, AnyElement<DateTime?> endDate)
-            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<DateTime?>(startDate), endDate);
+        public NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTime? startDate, AnyElement<DateTime?> endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<DateTime?>(startDate), endDate);
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -101,8 +101,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">The starting date used for calculation.</param>
         /// <param name="endDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>, the ending date used for calculation.</param>
         /// <returns><see cref="NullableInt32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTime? startDate, AnyElement<DateTimeOffset> endDate)
-            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<DateTime?>(startDate), endDate);
+        public NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTime? startDate, AnyElement<DateTimeOffset> endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<DateTime?>(startDate), endDate);
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -112,8 +112,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">The starting date used for calculation.</param>
         /// <param name="endDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>?, the ending date used for calculation.</param>
         /// <returns><see cref="NullableInt32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTime? startDate, AnyElement<DateTimeOffset?> endDate)
-            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<DateTime?>(startDate), endDate);
+        public NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTime? startDate, AnyElement<DateTimeOffset?> endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<DateTime?>(startDate), endDate);
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -123,8 +123,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTime}"/>?, the starting date used for calculation.</param>
         /// <param name="endDate">The ending date used for calculation.</param>
         /// <returns><see cref="NullableInt32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTime?> startDate, DateTime endDate)
-            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, new LiteralExpression<DateTime>(endDate));
+        public NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTime?> startDate, DateTime endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), startDate, new LiteralExpression<DateTime>(endDate));
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -134,8 +134,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTime}"/>?, the starting date used for calculation.</param>
         /// <param name="endDate">The ending date used for calculation.</param>
         /// <returns><see cref="NullableInt32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTime?> startDate, DateTime? endDate)
-            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, new LiteralExpression<DateTime?>(endDate));
+        public NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTime?> startDate, DateTime? endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), startDate, new LiteralExpression<DateTime?>(endDate));
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -145,8 +145,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTime}"/>?, the starting date used for calculation.</param>
         /// <param name="endDate">The ending date used for calculation.</param>
         /// <returns><see cref="NullableInt32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTime?> startDate, DateTimeOffset endDate)
-            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, new LiteralExpression<DateTimeOffset>(endDate));
+        public NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTime?> startDate, DateTimeOffset endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), startDate, new LiteralExpression<DateTimeOffset>(endDate));
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -156,8 +156,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTime}"/>?, the starting date used for calculation.</param>
         /// <param name="endDate">The ending date used for calculation.</param>
         /// <returns><see cref="NullableInt32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTime?> startDate, DateTimeOffset? endDate)
-            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, new LiteralExpression<DateTimeOffset?>(endDate));
+        public NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTime?> startDate, DateTimeOffset? endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), startDate, new LiteralExpression<DateTimeOffset?>(endDate));
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -167,8 +167,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTime}"/>, the starting date used for calculation.</param>
         /// <param name="endDate">The ending date used for calculation.</param>
         /// <returns><see cref="NullableInt32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTime> startDate, DateTime? endDate)
-            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, new LiteralExpression<DateTime?>(endDate));
+        public NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTime> startDate, DateTime? endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), startDate, new LiteralExpression<DateTime?>(endDate));
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -178,8 +178,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTime}"/>, the starting date used for calculation.</param>
         /// <param name="endDate">The ending date used for calculation.</param>
         /// <returns><see cref="Int32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>.</returns>
-        public static Int32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTime> startDate, DateTime endDate)
-            => new Int32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, new LiteralExpression<DateTime>(endDate));
+        public Int32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTime> startDate, DateTime endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), startDate, new LiteralExpression<DateTime>(endDate));
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -189,8 +189,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTime}"/>, the starting date used for calculation.</param>
         /// <param name="endDate">Any expression of type <see cref="AnyElement{DateTime}"/>, the ending date used for calculation.</param>
         /// <returns><see cref="Int32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>.</returns>
-        public static Int32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTime> startDate, AnyElement<DateTime> endDate)
-            => new Int32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
+        public Int32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTime> startDate, AnyElement<DateTime> endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -200,8 +200,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTime}"/>, the starting date used for calculation.</param>
         /// <param name="endDate">The ending date used for calculation.</param>
         /// <returns><see cref="NullableInt32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTime> startDate, DateTimeOffset? endDate)
-            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, new LiteralExpression<DateTimeOffset?>(endDate));
+        public NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTime> startDate, DateTimeOffset? endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), startDate, new LiteralExpression<DateTimeOffset?>(endDate));
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -211,8 +211,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTime}"/>, the starting date used for calculation.</param>
         /// <param name="endDate">The ending date used for calculation.</param>
         /// <returns><see cref="Int32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>.</returns>
-        public static Int32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTime> startDate, DateTimeOffset endDate)
-            => new Int32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, new LiteralExpression<DateTimeOffset>(endDate));
+        public Int32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTime> startDate, DateTimeOffset endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), startDate, new LiteralExpression<DateTimeOffset>(endDate));
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -222,8 +222,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTime}"/>, the starting date used for calculation.</param>
         /// <param name="endDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>, the ending date used for calculation.</param>
         /// <returns><see cref="Int32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>.</returns>
-        public static Int32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTime> startDate, AnyElement<DateTimeOffset> endDate)
-            => new Int32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
+        public Int32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTime> startDate, AnyElement<DateTimeOffset> endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -233,8 +233,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTime}"/>, the starting date used for calculation.</param>
         /// <param name="endDate">Any expression of type <see cref="AnyElement{DateTime}"/>?, the ending date used for calculation.</param>
         /// <returns><see cref="NullableInt32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTime> startDate, AnyElement<DateTime?> endDate)
-            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
+        public NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTime> startDate, AnyElement<DateTime?> endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -244,8 +244,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTime}"/>, the starting date used for calculation.</param>
         /// <param name="endDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>?, the ending date used for calculation.</param>
         /// <returns><see cref="NullableInt32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTime> startDate, AnyElement<DateTimeOffset?> endDate)
-            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
+        public NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTime> startDate, AnyElement<DateTimeOffset?> endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -255,8 +255,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTime}"/>?, the starting date used for calculation.</param>
         /// <param name="endDate">Any expression of type <see cref="AnyElement{DateTime}"/>, the ending date used for calculation.</param>
         /// <returns><see cref="NullableInt32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTime?> startDate, AnyElement<DateTime> endDate)
-            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
+        public NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTime?> startDate, AnyElement<DateTime> endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -266,8 +266,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTime}"/>?, the starting date used for calculation.</param>
         /// <param name="endDate">Any expression of type <see cref="AnyElement{DateTime}"/>?, the ending date used for calculation.</param>
         /// <returns><see cref="NullableInt32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTime?> startDate, AnyElement<DateTime?> endDate)
-            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
+        public NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTime?> startDate, AnyElement<DateTime?> endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -277,8 +277,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTime}"/>?, the starting date used for calculation.</param>
         /// <param name="endDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>, the ending date used for calculation.</param>
         /// <returns><see cref="NullableInt32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTime?> startDate, AnyElement<DateTimeOffset> endDate)
-            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
+        public NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTime?> startDate, AnyElement<DateTimeOffset> endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -288,8 +288,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTime}"/>?, the starting date used for calculation.</param>
         /// <param name="endDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>?, the ending date used for calculation.</param>
         /// <returns><see cref="NullableInt32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTime?> startDate, AnyElement<DateTimeOffset?> endDate)
-            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
+        public NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTime?> startDate, AnyElement<DateTimeOffset?> endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
         #endregion
 
         #region DateTimeOffset
@@ -301,8 +301,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">The starting date used for calculation.</param>
         /// <param name="endDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>, the ending date used for calculation.</param>
         /// <returns><see cref="Int32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>.</returns>
-        public static Int32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeOffset startDate, AnyElement<DateTimeOffset> endDate)
-            => new Int32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<DateTimeOffset>(startDate), endDate);
+        public Int32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeOffset startDate, AnyElement<DateTimeOffset> endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<DateTimeOffset>(startDate), endDate);
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -312,8 +312,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">The starting date used for calculation.</param>
         /// <param name="endDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>?, the ending date used for calculation.</param>
         /// <returns><see cref="NullableInt32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeOffset startDate, AnyElement<DateTimeOffset?> endDate)
-            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<DateTimeOffset>(startDate), endDate);
+        public NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeOffset startDate, AnyElement<DateTimeOffset?> endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<DateTimeOffset>(startDate), endDate);
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -323,8 +323,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">The starting date used for calculation.</param>
         /// <param name="endDate">Any expression of type <see cref="AnyElement{DateTime}"/>, the ending date used for calculation.</param>
         /// <returns><see cref="Int32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>.</returns>
-        public static Int32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeOffset startDate, AnyElement<DateTime> endDate)
-            => new Int32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<DateTimeOffset>(startDate), endDate);
+        public Int32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeOffset startDate, AnyElement<DateTime> endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<DateTimeOffset>(startDate), endDate);
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -334,8 +334,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">The starting date used for calculation.</param>
         /// <param name="endDate">Any expression of type <see cref="AnyElement{DateTime}"/>?, the ending date used for calculation.</param>
         /// <returns><see cref="NullableInt32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeOffset startDate, AnyElement<DateTime?> endDate)
-            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<DateTimeOffset>(startDate), endDate);
+        public NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeOffset startDate, AnyElement<DateTime?> endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<DateTimeOffset>(startDate), endDate);
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -345,8 +345,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">The starting date used for calculation.</param>
         /// <param name="endDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>, the ending date used for calculation.</param>
         /// <returns><see cref="NullableInt32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeOffset? startDate, AnyElement<DateTimeOffset> endDate)
-            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<DateTimeOffset?>(startDate), endDate);
+        public NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeOffset? startDate, AnyElement<DateTimeOffset> endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<DateTimeOffset?>(startDate), endDate);
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -356,8 +356,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">The starting date used for calculation.</param>
         /// <param name="endDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>?, the ending date used for calculation.</param>
         /// <returns><see cref="NullableInt32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeOffset? startDate, AnyElement<DateTimeOffset?> endDate)
-            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<DateTimeOffset?>(startDate), endDate);
+        public NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeOffset? startDate, AnyElement<DateTimeOffset?> endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<DateTimeOffset?>(startDate), endDate);
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -367,8 +367,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">The starting date used for calculation.</param>
         /// <param name="endDate">Any expression of type <see cref="AnyElement{DateTime}"/>, the ending date used for calculation.</param>
         /// <returns><see cref="NullableInt32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeOffset? startDate, AnyElement<DateTime> endDate)
-            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<DateTimeOffset?>(startDate), endDate);
+        public NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeOffset? startDate, AnyElement<DateTime> endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<DateTimeOffset?>(startDate), endDate);
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -378,8 +378,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">The starting date used for calculation.</param>
         /// <param name="endDate">Any expression of type <see cref="AnyElement{DateTime}"/>?, the ending date used for calculation.</param>
         /// <returns><see cref="NullableInt32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeOffset? startDate, AnyElement<DateTime?> endDate)
-            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<DateTimeOffset?>(startDate), endDate);
+        public NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeOffset? startDate, AnyElement<DateTime?> endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<DateTimeOffset?>(startDate), endDate);
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -389,8 +389,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>?, the starting date used for calculation.</param>
         /// <param name="endDate">The ending date used for calculation.</param>
         /// <returns><see cref="NullableInt32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTimeOffset?> startDate, DateTimeOffset endDate)
-            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, new LiteralExpression<DateTimeOffset>(endDate));
+        public NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTimeOffset?> startDate, DateTimeOffset endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), startDate, new LiteralExpression<DateTimeOffset>(endDate));
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -400,8 +400,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>?, the starting date used for calculation.</param>
         /// <param name="endDate">The ending date used for calculation.</param>
         /// <returns><see cref="NullableInt32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTimeOffset?> startDate, DateTimeOffset? endDate)
-            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, new LiteralExpression<DateTimeOffset?>(endDate));
+        public NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTimeOffset?> startDate, DateTimeOffset? endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), startDate, new LiteralExpression<DateTimeOffset?>(endDate));
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -411,8 +411,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>?, the starting date used for calculation.</param>
         /// <param name="endDate">The ending date used for calculation.</param>
         /// <returns><see cref="NullableInt32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTimeOffset?> startDate, DateTime endDate)
-            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, new LiteralExpression<DateTime>(endDate));
+        public NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTimeOffset?> startDate, DateTime endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), startDate, new LiteralExpression<DateTime>(endDate));
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -422,8 +422,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>?, the starting date used for calculation.</param>
         /// <param name="endDate">The ending date used for calculation.</param>
         /// <returns><see cref="NullableInt32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTimeOffset?> startDate, DateTime? endDate)
-            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, new LiteralExpression<DateTime?>(endDate));
+        public NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTimeOffset?> startDate, DateTime? endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), startDate, new LiteralExpression<DateTime?>(endDate));
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -433,8 +433,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>, the starting date used for calculation.</param>
         /// <param name="endDate">The ending date used for calculation.</param>
         /// <returns><see cref="NullableInt32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTimeOffset> startDate, DateTimeOffset? endDate)
-            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, new LiteralExpression<DateTimeOffset?>(endDate));
+        public NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTimeOffset> startDate, DateTimeOffset? endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), startDate, new LiteralExpression<DateTimeOffset?>(endDate));
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -444,8 +444,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>, the starting date used for calculation.</param>
         /// <param name="endDate">The ending date used for calculation.</param>
         /// <returns><see cref="Int32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>.</returns>
-        public static Int32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTimeOffset> startDate, DateTimeOffset endDate)
-            => new Int32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, new LiteralExpression<DateTimeOffset>(endDate));
+        public Int32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTimeOffset> startDate, DateTimeOffset endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), startDate, new LiteralExpression<DateTimeOffset>(endDate));
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -455,8 +455,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>, the starting date used for calculation.</param>
         /// <param name="endDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>, the ending date used for calculation.</param>
         /// <returns><see cref="Int32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>.</returns>
-        public static Int32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTimeOffset> startDate, AnyElement<DateTimeOffset> endDate)
-            => new Int32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
+        public Int32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTimeOffset> startDate, AnyElement<DateTimeOffset> endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -466,8 +466,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>, the starting date used for calculation.</param>
         /// <param name="endDate">The ending date used for calculation.</param>
         /// <returns><see cref="NullableInt32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTimeOffset> startDate, DateTime? endDate)
-            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, new LiteralExpression<DateTime?>(endDate));
+        public NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTimeOffset> startDate, DateTime? endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), startDate, new LiteralExpression<DateTime?>(endDate));
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -477,8 +477,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>, the starting date used for calculation.</param>
         /// <param name="endDate">The ending date used for calculation.</param>
         /// <returns><see cref="Int32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>.</returns>
-        public static Int32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTimeOffset> startDate, DateTime endDate)
-            => new Int32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, new LiteralExpression<DateTime>(endDate));
+        public Int32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTimeOffset> startDate, DateTime endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), startDate, new LiteralExpression<DateTime>(endDate));
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -488,8 +488,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>, the starting date used for calculation.</param>
         /// <param name="endDate">Any expression of type <see cref="AnyElement{DateTime}"/>, the ending date used for calculation.</param>
         /// <returns><see cref="Int32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>.</returns>
-        public static Int32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTimeOffset> startDate, AnyElement<DateTime> endDate)
-            => new Int32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
+        public Int32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTimeOffset> startDate, AnyElement<DateTime> endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -499,8 +499,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>, the starting date used for calculation.</param>
         /// <param name="endDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>?, the ending date used for calculation.</param>
         /// <returns><see cref="NullableInt32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTimeOffset> startDate, AnyElement<DateTimeOffset?> endDate)
-            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
+        public NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTimeOffset> startDate, AnyElement<DateTimeOffset?> endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -510,8 +510,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>, the starting date used for calculation.</param>
         /// <param name="endDate">Any expression of type <see cref="AnyElement{DateTime}"/>?, the ending date used for calculation.</param>
         /// <returns><see cref="NullableInt32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTimeOffset> startDate, AnyElement<DateTime?> endDate)
-            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
+        public NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTimeOffset> startDate, AnyElement<DateTime?> endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -521,8 +521,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>?, the starting date used for calculation.</param>
         /// <param name="endDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>, the ending date used for calculation.</param>
         /// <returns><see cref="NullableInt32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTimeOffset?> startDate, AnyElement<DateTimeOffset> endDate)
-            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
+        public NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTimeOffset?> startDate, AnyElement<DateTimeOffset> endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -532,8 +532,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>?, the starting date used for calculation.</param>
         /// <param name="endDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>?, the ending date used for calculation.</param>
         /// <returns><see cref="NullableInt32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTimeOffset?> startDate, AnyElement<DateTimeOffset?> endDate)
-            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
+        public NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTimeOffset?> startDate, AnyElement<DateTimeOffset?> endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -543,8 +543,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>?, the starting date used for calculation.</param>
         /// <param name="endDate">Any expression of type <see cref="AnyElement{DateTime}"/>, the ending date used for calculation.</param>
         /// <returns><see cref="NullableInt32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTimeOffset?> startDate, AnyElement<DateTime> endDate)
-            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
+        public NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTimeOffset?> startDate, AnyElement<DateTime> endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
@@ -554,8 +554,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>?, the starting date used for calculation.</param>
         /// <param name="endDate">Any expression of type <see cref="AnyElement{DateTime}"/>?, the ending date used for calculation.</param>
         /// <returns><see cref="NullableInt32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTimeOffset?> startDate, AnyElement<DateTime?> endDate)
-            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
+        public NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, AnyElement<DateTimeOffset?> startDate, AnyElement<DateTime?> endDate)
+            => new(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
         #endregion
     }
 }

@@ -31,7 +31,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/sysutcdatetimeoffset-transact-sql">Microsoft docs on NEWID</see></para>
         /// </summary>
         /// <returns><see cref="NewIdFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Guid}"/>.</returns>
-        public static NewIdFunctionExpression NewId()
-             => new NewIdFunctionExpression();
+        public NewIdFunctionExpression NewId()
+             => new();
     }
 }

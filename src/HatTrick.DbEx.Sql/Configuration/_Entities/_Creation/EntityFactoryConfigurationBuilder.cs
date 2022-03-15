@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.Sql.Configuration
     {
         #region internals
         private readonly IEntitiesConfigurationBuilderGrouping caller;
-        private readonly RuntimeSqlDatabaseConfiguration configuration;
+        private readonly SqlDatabaseRuntimeConfiguration configuration;
         #endregion
 
         #region interface
@@ -35,7 +35,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         #endregion
 
         #region constructors
-        public EntityFactoryConfigurationBuilder(IEntitiesConfigurationBuilderGrouping caller, RuntimeSqlDatabaseConfiguration configuration)
+        public EntityFactoryConfigurationBuilder(IEntitiesConfigurationBuilderGrouping caller, SqlDatabaseRuntimeConfiguration configuration)
         {
             this.caller = caller ?? throw new ArgumentNullException(nameof(caller));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));

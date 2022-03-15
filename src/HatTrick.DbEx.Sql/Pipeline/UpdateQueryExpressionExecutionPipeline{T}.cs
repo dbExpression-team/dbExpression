@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
     public class UpdateQueryExpressionExecutionPipeline : IUpdateQueryExpressionExecutionPipeline
     {
         #region internals
-        private readonly RuntimeSqlDatabaseConfiguration database;
+        private readonly SqlDatabaseRuntimeConfiguration database;
         private readonly PipelineEventHook<BeforeAssemblyPipelineExecutionContext> beforeAssembly;
         private readonly PipelineEventHook<BeforeUpdateAssemblyPipelineExecutionContext> beforeUpdateAssembly;
         private readonly PipelineEventHook<AfterAssemblyPipelineExecutionContext> afterAssembly;
@@ -41,7 +41,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
         #region constructors
         public UpdateQueryExpressionExecutionPipeline(
-            RuntimeSqlDatabaseConfiguration database,
+            SqlDatabaseRuntimeConfiguration database,
             PipelineEventHook<BeforeAssemblyPipelineExecutionContext> beforeAssembly,
             PipelineEventHook<BeforeUpdateAssemblyPipelineExecutionContext> beforeUpdateAssembly,
             PipelineEventHook<AfterAssemblyPipelineExecutionContext> afterAssembly,

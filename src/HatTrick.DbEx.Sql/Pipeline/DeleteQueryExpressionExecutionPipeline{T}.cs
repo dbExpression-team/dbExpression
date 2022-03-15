@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
     public class DeleteQueryExpressionExecutionPipeline : IDeleteQueryExpressionExecutionPipeline
     {
         #region internals
-        private readonly RuntimeSqlDatabaseConfiguration database;
+        private readonly SqlDatabaseRuntimeConfiguration database;
         private readonly PipelineEventHook<BeforeAssemblyPipelineExecutionContext> beforeAssembly;
         private readonly PipelineEventHook<AfterAssemblyPipelineExecutionContext> afterAssembly;
         private readonly PipelineEventHook<BeforeExecutionPipelineExecutionContext> beforeExecution;
@@ -40,7 +40,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
         #region constructors
         public DeleteQueryExpressionExecutionPipeline(
-            RuntimeSqlDatabaseConfiguration database,
+            SqlDatabaseRuntimeConfiguration database,
             PipelineEventHook<BeforeAssemblyPipelineExecutionContext> beforeAssembly,
             PipelineEventHook<AfterAssemblyPipelineExecutionContext> afterAssembly,
             PipelineEventHook<BeforeExecutionPipelineExecutionContext> beforeExecution,

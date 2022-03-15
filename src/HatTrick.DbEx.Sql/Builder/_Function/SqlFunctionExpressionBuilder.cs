@@ -26,9 +26,7 @@ namespace HatTrick.DbEx.Sql.Builder
     /// <summary>
     /// Methods to construct database platform aggregation and conversion functions, for example "Min", "Max" "Avg".
     /// </summary>
-#pragma warning disable CA1052 // Static holder types should be Static or NotInheritable
-    public partial class SqlFunctionExpressionBuilder
-#pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
+    public partial class SqlFunctionExpressionBuilder : ISqlFunctionExpressionBuilder
     {
 
     }

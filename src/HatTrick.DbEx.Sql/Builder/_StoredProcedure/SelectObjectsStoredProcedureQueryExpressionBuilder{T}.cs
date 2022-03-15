@@ -41,7 +41,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
 
         #region constructors
-        public SelectObjectsStoredProcedureQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, StoredProcedureQueryExpression expression, Func<ISqlFieldReader, T> map)
+        public SelectObjectsStoredProcedureQueryExpressionBuilder(SqlDatabaseRuntimeConfiguration config, StoredProcedureQueryExpression expression, Func<ISqlFieldReader, T> map)
             : base(config, expression, expression.BaseEntity!)
         {
             this.map = map ?? throw new ArgumentNullException(nameof(map));

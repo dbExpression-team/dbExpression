@@ -16,34 +16,41 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Configuration;
-using HatTrick.DbEx.Sql.Expression;
+using HatTrick.DbEx.Sql.Builder;
+using HatTrick.DbEx.Sql.Configuration;
 using System;
 
-namespace HatTrick.DbEx.Sql.Pipeline
+namespace HatTrick.DbEx.Sql
 {
-    public class AfterInsertPipelineExecutionContext : PipelineExecutionContext, IPipelineExecutionContext
+    public abstract class SqlDatabaseRuntime<T> : ISqlDatabaseRuntime<T>
+        where T : SqlDatabaseRuntimeConfiguration, new()
     {
         #region internals
-        private readonly IDbEntity entity;
+        private T? _configuration;
         #endregion
 
         #region interface
-        public override Type EntityType => entity.GetType();
+        protected T Configuration => _configuration ?? throw new DbExpressionConfigurationException($"the database '{GetType()}' has not been properly configured for runtime use with dbExpression.");
+
         #endregion
 
         #region constructors
-        public AfterInsertPipelineExecutionContext(SqlDatabaseRuntimeConfiguration database, InsertQueryExpression expression, IDbEntity entity)
-            : base(database, expression)
+        protected SqlDatabaseRuntime()
         {
-            this.entity = entity ?? throw new ArgumentNullException(nameof(entity));
+
+        }
+
+        protected SqlDatabaseRuntime(T configuration)
+        {
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
         #endregion
 
         #region methods
-        public TEntity? GetEntity<TEntity>()
-            where TEntity : class, IDbEntity
-            => entity as TEntity;
+        public virtual void UseConfiguration(T configuration)
+        {
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+        }
         #endregion
     }
 }

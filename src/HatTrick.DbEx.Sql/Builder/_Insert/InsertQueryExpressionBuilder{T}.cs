@@ -44,7 +44,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
 
         #region constructors
-        public InsertQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, IEnumerable<TEntity> instances, InsertQueryExpression expression) : base(configuration, expression)
+        public InsertQueryExpressionBuilder(SqlDatabaseRuntimeConfiguration configuration, IEnumerable<TEntity> instances, InsertQueryExpression expression) : base(configuration, expression)
         {
             Expression = expression;
             this.instances = instances;

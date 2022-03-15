@@ -24,11 +24,11 @@ namespace HatTrick.DbEx.Sql.Configuration
     public class QueryExpressionFactoryConfigurationBuilder : IQueryExpressionFactoryConfigurationBuilder
     {
         #region internals
-        private readonly RuntimeSqlDatabaseConfiguration configuration;
+        private readonly SqlDatabaseRuntimeConfiguration configuration;
         #endregion
 
         #region constructors
-        public QueryExpressionFactoryConfigurationBuilder(RuntimeSqlDatabaseConfiguration configuration)
+        public QueryExpressionFactoryConfigurationBuilder(SqlDatabaseRuntimeConfiguration configuration)
         {
             this.configuration = configuration;
         }

@@ -31,8 +31,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}"/>, the value to use for calculating the floor function result.</param>
         /// <returns><see cref="ByteFloorFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Byte}"/>.</returns>
-        public static ByteFloorFunctionExpression Floor(AnyElement<byte> element)
-            => new ByteFloorFunctionExpression(element);
+        public ByteFloorFunctionExpression Floor(AnyElement<byte> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the FLOOR transact sql function.
@@ -40,8 +40,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}"/>?, the value to use for calculating the floor function result.</param>
         /// <returns><see cref="NullableByteFloorFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Byte}"/>?.</returns>
-        public static NullableByteFloorFunctionExpression Floor(AnyElement<byte?> element)
-            => new NullableByteFloorFunctionExpression(element);
+        public NullableByteFloorFunctionExpression Floor(AnyElement<byte?> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the FLOOR transact sql function.
@@ -49,8 +49,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}"/>, the value to use for calculating the floor function result.</param>
         /// <returns><see cref="Int16FloorFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int16}"/>.</returns>
-        public static Int16FloorFunctionExpression Floor(AnyElement<short> element)
-            => new Int16FloorFunctionExpression(element);
+        public Int16FloorFunctionExpression Floor(AnyElement<short> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the FLOOR transact sql function.
@@ -58,8 +58,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}"/>?, the value to use for calculating the floor function result.</param>
         /// <returns><see cref="NullableInt16FloorFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int16}"/>?.</returns>
-        public static NullableInt16FloorFunctionExpression Floor(AnyElement<short?> element)
-            => new NullableInt16FloorFunctionExpression(element);
+        public NullableInt16FloorFunctionExpression Floor(AnyElement<short?> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the FLOOR transact sql function.
@@ -67,8 +67,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}"/>, the value to use for calculating the floor function result.</param>
         /// <returns><see cref="Int32FloorFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>.</returns>
-        public static Int32FloorFunctionExpression Floor(AnyElement<int> element)
-            => new Int32FloorFunctionExpression(element);
+        public Int32FloorFunctionExpression Floor(AnyElement<int> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the FLOOR transact sql function.
@@ -76,8 +76,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}"/>?, the value to use for calculating the floor function result.</param>
         /// <returns><see cref="NullableInt32FloorFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32FloorFunctionExpression Floor(AnyElement<int?> element)
-            => new NullableInt32FloorFunctionExpression(element);
+        public NullableInt32FloorFunctionExpression Floor(AnyElement<int?> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the FLOOR transact sql function.
@@ -85,8 +85,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}"/>, the value to use for calculating the floor function result.</param>
         /// <returns><see cref="Int64FloorFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>.</returns>
-        public static Int64FloorFunctionExpression Floor(AnyElement<long> element)
-            => new Int64FloorFunctionExpression(element);
+        public Int64FloorFunctionExpression Floor(AnyElement<long> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the FLOOR transact sql function.
@@ -94,8 +94,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}"/>?, the value to use for calculating the floor function result.</param>
         /// <returns><see cref="NullableInt64FloorFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>?.</returns>
-        public static NullableInt64FloorFunctionExpression Floor(AnyElement<long?> element)
-            => new NullableInt64FloorFunctionExpression(element);
+        public NullableInt64FloorFunctionExpression Floor(AnyElement<long?> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the FLOOR transact sql function.
@@ -103,8 +103,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}"/>, the value to use for calculating the floor function result.</param>
         /// <returns><see cref="SingleFloorFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
-        public static SingleFloorFunctionExpression Floor(AnyElement<float> element)
-            => new SingleFloorFunctionExpression(element);
+        public SingleFloorFunctionExpression Floor(AnyElement<float> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the FLOOR transact sql function.
@@ -112,8 +112,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}"/>?, the value to use for calculating the floor function result.</param>
         /// <returns><see cref="NullableSingleFloorFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>?.</returns>
-        public static NullableSingleFloorFunctionExpression Floor(AnyElement<float?> element)
-            => new NullableSingleFloorFunctionExpression(element);
+        public NullableSingleFloorFunctionExpression Floor(AnyElement<float?> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the FLOOR transact sql function.
@@ -121,8 +121,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Double}"/>, the value to use for calculating the floor function result.</param>
         /// <returns><see cref="DoubleFloorFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Double}"/>.</returns>
-        public static DoubleFloorFunctionExpression Floor(AnyElement<double> element)
-            => new DoubleFloorFunctionExpression(element);
+        public DoubleFloorFunctionExpression Floor(AnyElement<double> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the FLOOR transact sql function.
@@ -130,8 +130,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Double}"/>?, the value to use for calculating the floor function result.</param>
         /// <returns><see cref="NullableDoubleFloorFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Double}"/>?.</returns>
-        public static NullableDoubleFloorFunctionExpression Floor(AnyElement<double?> element)
-            => new NullableDoubleFloorFunctionExpression(element);
+        public NullableDoubleFloorFunctionExpression Floor(AnyElement<double?> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the FLOOR transact sql function.
@@ -139,8 +139,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}"/>, the value to use for calculating the floor function result.</param>
         /// <returns><see cref="DecimalFloorFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Decimal}"/>.</returns>
-        public static DecimalFloorFunctionExpression Floor(AnyElement<decimal> element)
-            => new DecimalFloorFunctionExpression(element);
+        public DecimalFloorFunctionExpression Floor(AnyElement<decimal> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the FLOOR transact sql function.
@@ -148,7 +148,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}"/>?, the value to use for calculating the floor function result.</param>
         /// <returns><see cref="NullableDecimalFloorFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Decimal}"/>?.</returns>
-        public static NullableDecimalFloorFunctionExpression Floor(AnyElement<decimal?> element)
-            => new NullableDecimalFloorFunctionExpression(element);
+        public NullableDecimalFloorFunctionExpression Floor(AnyElement<decimal?> element)
+            => new(element);
     }
 }

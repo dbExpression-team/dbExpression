@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Configuration
     {
         #region internals
         private readonly ISqlStatementsConfigurationBuilderGrouping caller;
-        private readonly RuntimeSqlDatabaseConfiguration configuration;
+        private readonly SqlDatabaseRuntimeConfiguration configuration;
         private IExpressionElementAppenderFactoryConfigurationBuilder? _elementAppender;
         private IAppenderFactoryConfigurationBuilder? _appender;
         private ISqlParameterBuilderFactoryConfigurationBuilder? _parameter;
@@ -42,7 +42,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         #endregion
 
         #region constructors
-        public SqlStatementAssemblyGroupingConfigurationBuilders(ISqlStatementsConfigurationBuilderGrouping caller, RuntimeSqlDatabaseConfiguration configuration)
+        public SqlStatementAssemblyGroupingConfigurationBuilders(ISqlStatementsConfigurationBuilderGrouping caller, SqlDatabaseRuntimeConfiguration configuration)
         {
             this.caller = caller ?? throw new ArgumentNullException(nameof(caller));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));

@@ -16,25 +16,12 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using System;
-
 namespace HatTrick.DbEx.Sql.Configuration
 {
-    public class DelegateRuntimeSqlDatabaseConfigurationFactory : IRuntimeSqlDatabaseConfigurationFactory
+    public interface IDbExpressionConfigurationBuilder<TDatabase, TConfig> : IDbExpressionConfigurationBuilder
+        where TDatabase : ISqlDatabaseRuntime<TConfig>
+        where TConfig : SqlDatabaseRuntimeConfiguration
     {
-        #region interface
-        public Func<RuntimeSqlDatabaseConfiguration> ConfigurationFactory { get; private set; }
-        #endregion
 
-        #region constructors
-        public DelegateRuntimeSqlDatabaseConfigurationFactory(Func<RuntimeSqlDatabaseConfiguration> configurationFactory)
-        {
-            this.ConfigurationFactory = configurationFactory ?? throw new ArgumentNullException(nameof(configurationFactory));
-        }
-        #endregion
-
-        #region methods
-        public virtual RuntimeSqlDatabaseConfiguration CreateConfiguration() => ConfigurationFactory();
-        #endregion
     }
 }

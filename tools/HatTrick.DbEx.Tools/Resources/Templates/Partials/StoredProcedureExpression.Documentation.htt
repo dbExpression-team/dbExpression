@@ -3,7 +3,7 @@
                 /// </summary>
                 {#each $.Parameters}
                 {#if !$.Parameter.IsOutput}
-                /// <param name="{($.ParameterExpression.Name, "@") => TrimStart}">The value to use for creating the database parameter {$.Parameter.Name}.
+                /// <param name="{($.ParameterExpression.Name, "@") => TrimStart}">The value to use for creating the stored procedure parameter {$.Parameter.Name}.
                 /// <para>Database Properties:
                 /// <list type="table">
                 {#each $.Parameter.Properties}

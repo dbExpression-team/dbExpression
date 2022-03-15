@@ -28,18 +28,4 @@ namespace HatTrick.DbEx.Tools.Model
             Nullable = new NullableLanguageFeature(nullableFeature);
         }
     }
-
-    public class NullableLanguageFeature
-    {
-        private NullableFeature? _nullableFeature;
-        public bool IsFeatureEnabled => _nullableFeature == NullableFeature.Enable;
-        public string Directive => _nullableFeature is not null ? $"#nullable {_nullableFeature.Value.ToString().ToLower()}" : string.Empty;
-        public string Annotation => _nullableFeature == NullableFeature.Enable ? "?" : string.Empty;
-        public string ForgivingOperator => _nullableFeature == NullableFeature.Enable ? "!" : string.Empty;
-
-        public NullableLanguageFeature(NullableFeature? nullableFeature)
-        {
-            _nullableFeature = nullableFeature;
-        }
-    }
 }

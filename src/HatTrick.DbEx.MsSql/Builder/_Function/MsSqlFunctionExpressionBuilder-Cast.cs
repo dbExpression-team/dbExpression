@@ -33,7 +33,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="element">Any expression of type <see cref="ObjectElement{{T}}"/> to convert to a different sql data type.</param>
         /// <returns><see cref="Cast"/> to specify the sql data type to convert to.</returns>
-        public static MsSqlCast Cast<T>(ObjectElement<T> element)
+        public MsSqlCast Cast<T>(ObjectElement<T> element)
             => new MsSqlCastFunctionExpressionBuilder(element);
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="element">Any expression of type <see cref="NullableObjectElement{{T}}"/> to convert to a different sql data type.</param>
         /// <returns><see cref="Cast"/> to specify the sql data type to convert to.</returns>
-        public static MsSqlCast Cast<T>(NullableObjectElement<T> element)
+        public MsSqlCast Cast<T>(NullableObjectElement<T> element)
             => new MsSqlCastFunctionExpressionBuilder(element);
         #endregion
 
@@ -53,7 +53,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{Boolean}"/> to convert to a different sql data type.</param>
         /// <returns><see cref="Cast"/> to specify the sql data type to convert to.</returns>
-        public static MsSqlCast Cast(AnyElement<bool> element)
+        public MsSqlCast Cast(AnyElement<bool> element)
             => new MsSqlCastFunctionExpressionBuilder(element);
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{Boolean}"/>? to convert to a different sql data type.</param>
         /// <returns><see cref="NullableCast"/> to specify the sql data type to convert to.</returns>
-        public static NullableCast Cast(AnyElement<bool?> element)
+        public NullableCast Cast(AnyElement<bool?> element)
            => new MsSqlNullableCastFunctionExpressionBuilder(element);
         #endregion
 
@@ -73,7 +73,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{Byte}"/> to convert to a different sql data type.</param>
         /// <returns><see cref="Cast"/> to specify the sql data type to convert to.</returns>
-        public static MsSqlCast Cast(AnyElement<byte> element)
+        public MsSqlCast Cast(AnyElement<byte> element)
             => new MsSqlCastFunctionExpressionBuilder(element);
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{Byte}"/>? to convert to a different sql data type.</param>
         /// <returns><see cref="NullableCast"/> to specify the sql data type to convert to.</returns>
-        public static NullableCast Cast(AnyElement<byte?> element)
+        public NullableCast Cast(AnyElement<byte?> element)
            => new MsSqlNullableCastFunctionExpressionBuilder(element);
         #endregion
 
@@ -93,7 +93,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{DateTime}"/> to convert to a different sql data type.</param>
         /// <returns><see cref="Cast"/> to specify the sql data type to convert to.</returns>
-        public static MsSqlCast Cast(AnyElement<DateTime> element)
+        public MsSqlCast Cast(AnyElement<DateTime> element)
             => new MsSqlCastFunctionExpressionBuilder(element);
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{DateTime}"/>? to convert to a different sql data type.</param>
         /// <returns><see cref="NullableCast"/> to specify the sql data type to convert to.</returns>
-        public static NullableCast Cast(AnyElement<DateTime?> element)
+        public NullableCast Cast(AnyElement<DateTime?> element)
            => new MsSqlNullableCastFunctionExpressionBuilder(element);
         #endregion
 
@@ -113,7 +113,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{DateTimeOffset}"/> to convert to a different sql data type.</param>
         /// <returns><see cref="Cast"/> to specify the sql data type to convert to.</returns>
-        public static MsSqlCast Cast(AnyElement<DateTimeOffset> element)
+        public MsSqlCast Cast(AnyElement<DateTimeOffset> element)
             => new MsSqlCastFunctionExpressionBuilder(element);
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>? to convert to a different sql data type.</param>
         /// <returns><see cref="NullableCast"/> to specify the sql data type to convert to.</returns>
-        public static NullableCast Cast(AnyElement<DateTimeOffset?> element)
+        public NullableCast Cast(AnyElement<DateTimeOffset?> element)
            => new MsSqlNullableCastFunctionExpressionBuilder(element);
         #endregion
 
@@ -133,7 +133,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{Decimal}"/> to convert to a different sql data type.</param>
         /// <returns><see cref="Cast"/> to specify the sql data type to convert to.</returns>
-        public static MsSqlCast Cast(AnyElement<decimal> element)
+        public MsSqlCast Cast(AnyElement<decimal> element)
             => new MsSqlCastFunctionExpressionBuilder(element);
 
         /// <summary>
@@ -142,7 +142,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{Decimal}"/>? to convert to a different sql data type.</param>
         /// <returns><see cref="NullableCast"/> to specify the sql data type to convert to.</returns>
-        public static NullableCast Cast(AnyElement<decimal?> element)
+        public NullableCast Cast(AnyElement<decimal?> element)
            => new MsSqlNullableCastFunctionExpressionBuilder(element);
         #endregion
 
@@ -153,7 +153,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{Double}"/> to convert to a different sql data type.</param>
         /// <returns><see cref="Cast"/> to specify the sql data type to convert to.</returns>
-        public static MsSqlCast Cast(AnyElement<double> element)
+        public MsSqlCast Cast(AnyElement<double> element)
             => new MsSqlCastFunctionExpressionBuilder(element);
 
         /// <summary>
@@ -162,7 +162,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{Double}"/>? to convert to a different sql data type.</param>
         /// <returns><see cref="NullableCast"/> to specify the sql data type to convert to.</returns>
-        public static NullableCast Cast(AnyElement<double?> element)
+        public NullableCast Cast(AnyElement<double?> element)
            => new MsSqlNullableCastFunctionExpressionBuilder(element);
         #endregion
 
@@ -173,7 +173,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="element">Any expression of type <see cref="EnumElement{TEnum}"/> to convert to a different sql data type.</param>
         /// <returns><see cref="Cast"/> to specify the sql data type to convert to.</returns>
-        public static MsSqlCast Cast<TEnum>(AnyElement<TEnum> element)
+        public MsSqlCast Cast<TEnum>(AnyElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
             => new MsSqlCastFunctionExpressionBuilder(element);
 
@@ -183,7 +183,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="element">Any expression of type <see cref="NullableEnumElement{TEnum}"/> to convert to a different sql data type.</param>
         /// <returns><see cref="NullableCast"/> to specify the sql data type to convert to.</returns>
-        public static NullableCast Cast<TEnum>(AnyElement<TEnum?> element)
+        public NullableCast Cast<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable
             => new MsSqlNullableCastFunctionExpressionBuilder(element);
         #endregion
@@ -195,7 +195,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{Single}"/> to convert to a different sql data type.</param>
         /// <returns><see cref="Cast"/> to specify the sql data type to convert to.</returns>
-        public static MsSqlCast Cast(AnyElement<float> element)
+        public MsSqlCast Cast(AnyElement<float> element)
             => new MsSqlCastFunctionExpressionBuilder(element);
 
         /// <summary>
@@ -204,7 +204,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{Single}"/>? to convert to a different sql data type.</param>
         /// <returns><see cref="NullableCast"/> to specify the sql data type to convert to.</returns>
-        public static NullableCast Cast(AnyElement<float?> element)
+        public NullableCast Cast(AnyElement<float?> element)
            => new MsSqlNullableCastFunctionExpressionBuilder(element);
         #endregion
 
@@ -215,7 +215,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{Guid}"/> to convert to a different sql data type.</param>
         /// <returns><see cref="Cast"/> to specify the sql data type to convert to.</returns>
-        public static MsSqlCast Cast(AnyElement<Guid> element)
+        public MsSqlCast Cast(AnyElement<Guid> element)
             => new MsSqlCastFunctionExpressionBuilder(element);
 
         /// <summary>
@@ -224,7 +224,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{Guid}"/>? to convert to a different sql data type.</param>
         /// <returns><see cref="NullableCast"/> to specify the sql data type to convert to.</returns>
-        public static NullableCast Cast(AnyElement<Guid?> element)
+        public NullableCast Cast(AnyElement<Guid?> element)
            => new MsSqlNullableCastFunctionExpressionBuilder(element);
         #endregion
 
@@ -235,7 +235,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{Int16}"/> to convert to a different sql data type.</param>
         /// <returns><see cref="Cast"/> to specify the sql data type to convert to.</returns>
-        public static MsSqlCast Cast(AnyElement<short> element)
+        public MsSqlCast Cast(AnyElement<short> element)
             => new MsSqlCastFunctionExpressionBuilder(element);
 
         /// <summary>
@@ -244,7 +244,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{Int16}"/>? to convert to a different sql data type.</param>
         /// <returns><see cref="NullableCast"/> to specify the sql data type to convert to.</returns>
-        public static NullableCast Cast(AnyElement<short?> element)
+        public NullableCast Cast(AnyElement<short?> element)
            => new MsSqlNullableCastFunctionExpressionBuilder(element);
         #endregion
 
@@ -255,7 +255,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{Int32}"/> to convert to a different sql data type.</param>
         /// <returns><see cref="Cast"/> to specify the sql data type to convert to.</returns>
-        public static MsSqlCast Cast(AnyElement<int> element)
+        public MsSqlCast Cast(AnyElement<int> element)
             => new MsSqlCastFunctionExpressionBuilder(element);
 
         /// <summary>
@@ -264,7 +264,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{Int32}"/>? to convert to a different sql data type.</param>
         /// <returns><see cref="NullableCast"/> to specify the sql data type to convert to.</returns>
-        public static NullableCast Cast(AnyElement<int?> element)
+        public NullableCast Cast(AnyElement<int?> element)
            => new MsSqlNullableCastFunctionExpressionBuilder(element);
         #endregion
 
@@ -275,7 +275,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{Int64}"/> to convert to a different sql data type.</param>
         /// <returns><see cref="Cast"/> to specify the sql data type to convert to.</returns>
-        public static MsSqlCast Cast(AnyElement<long> element)
+        public MsSqlCast Cast(AnyElement<long> element)
             => new MsSqlCastFunctionExpressionBuilder(element);
 
         /// <summary>
@@ -284,7 +284,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{Int64}"/>? to convert to a different sql data type.</param>
         /// <returns><see cref="NullableCast"/> to specify the sql data type to convert to.</returns>
-        public static NullableCast Cast(AnyElement<long?> element)
+        public NullableCast Cast(AnyElement<long?> element)
            => new MsSqlNullableCastFunctionExpressionBuilder(element);
         #endregion
 
@@ -295,7 +295,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{String}"/> to convert to a different sql data type.</param>
         /// <returns><see cref="NullableCast"/> to specify the sql data type to convert to.</returns>
-        public static MsSqlCast Cast(AnyElement<string> element)
+        public MsSqlCast Cast(AnyElement<string> element)
             => new MsSqlCastFunctionExpressionBuilder(element);
 
         /// <summary>
@@ -304,7 +304,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="element">Any expression of type <see cref="NullableStringElement"/> to convert to a different sql data type.</param>
         /// <returns><see cref="NullableCast"/> to specify the sql data type to convert to.</returns>
-        public static NullableCast Cast(NullableStringElement element)
+        public NullableCast Cast(NullableStringElement element)
             => new MsSqlNullableCastFunctionExpressionBuilder(element);
         #endregion
 
@@ -315,7 +315,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{TimeSpan}"/> to convert to a different sql data type.</param>
         /// <returns><see cref="Cast"/> to specify the sql data type to convert to.</returns>
-        public static MsSqlCast Cast(AnyElement<TimeSpan> element)
+        public MsSqlCast Cast(AnyElement<TimeSpan> element)
             => new MsSqlCastFunctionExpressionBuilder(element);
 
         /// <summary>
@@ -324,7 +324,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{TimeSpan}"/>? to convert to a different sql data type.</param>
         /// <returns><see cref="NullableCast"/> to specify the sql data type to convert to.</returns>
-        public static NullableCast Cast(AnyElement<TimeSpan?> element)
+        public NullableCast Cast(AnyElement<TimeSpan?> element)
            => new MsSqlNullableCastFunctionExpressionBuilder(element);
         #endregion
     }

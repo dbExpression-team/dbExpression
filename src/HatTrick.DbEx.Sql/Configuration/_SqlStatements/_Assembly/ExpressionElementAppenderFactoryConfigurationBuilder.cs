@@ -25,11 +25,11 @@ namespace HatTrick.DbEx.Sql.Configuration
     {
         #region internals
         private readonly ISqlStatementAssemblyGroupingConfigurationBuilders caller;
-        private readonly RuntimeSqlDatabaseConfiguration configuration;
+        private readonly SqlDatabaseRuntimeConfiguration configuration;
         #endregion
 
         #region constructors
-        public ExpressionElementAppenderFactoryConfigurationBuilder(ISqlStatementAssemblyGroupingConfigurationBuilders caller, RuntimeSqlDatabaseConfiguration configuration)
+        public ExpressionElementAppenderFactoryConfigurationBuilder(ISqlStatementAssemblyGroupingConfigurationBuilders caller, SqlDatabaseRuntimeConfiguration configuration)
         {
             this.caller = caller ?? throw new ArgumentNullException(nameof(caller));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));

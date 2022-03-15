@@ -16,19 +16,14 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using System;
-
-namespace HatTrick.DbEx.Sql
+namespace HatTrick.DbEx.Sql.Configuration
 {
-    public abstract class RuntimeEnvironmentSqlDatabase : IRuntimeEnvironmentSqlDatabase
+    public interface ISqlDatabaseRuntimeConfigurationBuilder<TDatabase, TConfig> :
+        ISqlDatabaseRuntimeConfigurationBuilder,
+        ISqlDatabaseRuntimeConfigurationProvider<TDatabase, TConfig>
+        where TDatabase : ISqlDatabaseRuntime<TConfig>
+        where TConfig : SqlDatabaseRuntimeConfiguration
     {
-        public IRuntimeSqlDatabase Database { get; private set; }
-        public ISqlDatabaseMetadataProvider Metadata { get; private set; }
-
-        protected RuntimeEnvironmentSqlDatabase(IRuntimeSqlDatabase database, ISqlDatabaseMetadataProvider metadata)
-        {
-            Database = database ?? throw new ArgumentNullException(nameof(database));
-            Metadata = metadata ?? throw new ArgumentNullException(nameof(metadata));
-        }
+        
     }
 }

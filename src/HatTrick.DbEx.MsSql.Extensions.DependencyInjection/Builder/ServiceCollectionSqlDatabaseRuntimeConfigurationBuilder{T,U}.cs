@@ -16,23 +16,21 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Configuration;
-using HatTrick.DbEx.Sql.Expression;
-using System;
-using System.Data;
+using HatTrick.DbEx.MsSql.Configuration;
+using HatTrick.DbEx.Sql;
 
-namespace HatTrick.DbEx.Sql.Pipeline
+namespace HatTrick.DbEx.MsSql.Microsoft.Extensions.DependencyInjection.Builder
 {
-    public class BeforeExecutionPipelineExecutionContext : PipelineExecutionContext, IPipelineExecutionContext
+    internal sealed class ServiceCollectionSqlDatabaseRuntimeConfigurationBuilder<TDatabase, TConfig>
+        : MsSqlSqlDatabaseRuntimeConfigurationBuilder<TDatabase, TConfig>
+        where TDatabase : class, ISqlDatabaseRuntime<TConfig>, new()
+        where TConfig : MsSqlSqlDatabaseRuntimeConfiguration
     {
-        public IDbCommand DbCommand { get; private set; }
-        public SqlStatement Statement { get; private set; }
 
-        public BeforeExecutionPipelineExecutionContext(SqlDatabaseRuntimeConfiguration database, QueryExpression expression, IDbCommand command, SqlStatement statement)
-            : base(database, expression)
+        public ServiceCollectionSqlDatabaseRuntimeConfigurationBuilder(TDatabase database, TConfig config)
+            : base(database, config)
         {
-            DbCommand = command ?? throw new ArgumentNullException(nameof(command));
-            Statement = statement ?? throw new ArgumentNullException(nameof(statement));
+
         }
     }
 }

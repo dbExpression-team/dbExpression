@@ -16,9 +16,10 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.MsSql.Assembler;
+using HatTrick.DbEx.MsSql.Assembler;
+using HatTrick.DbEx.MsSql.Builder;
+using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.MsSql.Connection;
-using HatTrick.DbEx.MsSql.Expression.DependencyInjection.Internal;
 using HatTrick.DbEx.MsSql.Microsoft.Extensions.DependencyInjection.Builder;
 using HatTrick.DbEx.MsSql.Types;
 using HatTrick.DbEx.Sql;
@@ -46,32 +47,32 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <typeparam name="T">The (code-generated) database you want to configure for use.</typeparam>
         /// <param name="builder">The <see cref="IDbExpressionConfigurationBuilder" />, the fluent entry point for configuring the runtime environment for <typeparam name="T">. </param>
         /// <param name="configureRuntime">
-        ///     <para>A delegate to configure the <see cref="RuntimeSqlDatabaseConfiguration" /> for query operations using a <see cref="IRuntimeSqlDatabaseConfigurationBuilder"/>.  The delegate provides a <see cref="IServiceProvider"/> to resolve any required services for configuration.</para>
+        ///     <para>A delegate to configure the <see cref="MsSqlSqlDatabaseRuntimeConfiguration" /> for query operations using a <see cref="ISqlDatabaseRuntimeConfigurationBuilder"/>.  The delegate provides a <see cref="IServiceProvider"/> to resolve any required services for configuration.</para>
         /// </param>        
-        /// <param name="configurationLifetime">
-        ///     <para>The lifetime of the configuration in the container.  <see cref="RuntimeSqlDatabaseConfiguration"/> is used to provide the settings and behavior of queries executed against the SqlServer database.</para>
+        /// <param name="lifetime">
+        ///     <para>The lifetime of the configuration in the container.  <see cref="MsSqlSqlDatabaseRuntimeConfiguration"/> is used to provide the settings and behavior of queries executed against the SqlServer database.</para>
         ///     <para>It is preferable to configure per request, per custom lifetime scope, etc. operations within a specific factory and use a service lifetime of singleton.
         ///         While creating a configuration object per query operation, or some other scope is not inherently expensive, it is more performant to use a service lifetime of singleton.
         ///     </para>
         /// </param>
-        public static void AddMsSql2005Database<T>(this IDbExpressionConfigurationBuilder builder, Action<IServiceProvider, IRuntimeSqlDatabaseConfigurationBuilder> configureRuntime, ServiceLifetime configurationLifetime = ServiceLifetime.Singleton)
-            where T : class, IRuntimeEnvironmentSqlDatabase, new()
+        public static void AddMsSql2005Database<T>(this IDbExpressionConfigurationBuilder builder, Action<IServiceProvider, ISqlDatabaseRuntimeConfigurationBuilder> configureRuntime, ServiceLifetime lifetime = ServiceLifetime.Singleton)
+            where T : class, ISqlDatabaseRuntime<MsSqlSqlDatabaseRuntimeConfiguration>, new()
         {
             if (configureRuntime is null)
                 throw new ArgumentNullException(nameof(configureRuntime));
 
-            var services = builder as ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder ?? throw new DbExpressionConfigurationException($"Expected {nameof(builder)} to be of type {typeof(ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder)}, but actual type is {builder.GetType()}");
+            var services = builder as ServiceCollectionSqlDatabaseRuntimeConfigurationBuilder ?? throw new DbExpressionConfigurationException($"Expected {nameof(builder)} to be of type {typeof(ServiceCollectionSqlDatabaseRuntimeConfigurationBuilder)}, but actual type is {builder.GetType()}");
             services.Services.TryAddSingleton<HatTrick.DbEx.MsSql.Assembler.v2005.MsSqlStatementAssemblerFactory>();
             services.Services.TryAdd(ServiceDescriptor.Singleton<ISqlStatementAssemblerFactory>(sp => sp.GetRequiredService<HatTrick.DbEx.MsSql.Assembler.v2005.MsSqlStatementAssemblerFactory>()));
 
-            services.AddMsSql<T>(
+            services.AddMsSql<T, MsSqlSqlDatabaseRuntimeConfiguration>(
                 (serviceProvider, configBuilder) =>
                 {
                     configBuilder.SqlStatements.Assembly.StatementAssembler.Use(serviceProvider.GetRequiredService<HatTrick.DbEx.MsSql.Assembler.v2005.MsSqlStatementAssemblerFactory>());
                     configBuilder.SqlStatements.Assembly.ElementAppender.Use<MsSqlExpressionElementAppenderFactory>(f => f.RegisterElementAppender<TrimFunctionExpression, HatTrick.DbEx.MsSql.Assembler.v2005.TrimFunctionExpressionAppender>());
                     configureRuntime.Invoke(serviceProvider, configBuilder);
                 },
-                configurationLifetime
+                lifetime
             );
         }
         #endregion
@@ -83,32 +84,32 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <typeparam name="T">The (code-generated) database you want to configure for use.</typeparam>
         /// <param name="builder">The <see cref="IDbExpressionConfigurationBuilder" />, the fluent entry point for configuring the runtime environment for <typeparam name="T">. </param>
         /// <param name="configureRuntime">
-        ///     <para>A delegate to configure the <see cref="RuntimeSqlDatabaseConfiguration" /> for query operations using a <see cref="IRuntimeSqlDatabaseConfigurationBuilder"/>.  The delegate provides a <see cref="IServiceProvider"/> to resolve any required services for configuration.</para>
+        ///     <para>A delegate to configure the <see cref="MsSqlSqlDatabaseRuntimeConfiguration" /> for query operations using a <see cref="ISqlDatabaseRuntimeConfigurationBuilder"/>.  The delegate provides a <see cref="IServiceProvider"/> to resolve any required services for configuration.</para>
         /// </param>        
-        /// <param name="configurationLifetime">
-        ///     <para>The lifetime of the configuration in the container.  <see cref="RuntimeSqlDatabaseConfiguration"/> is used to provide the settings and behavior of queries executed against the SqlServer database.</para>
+        /// <param name="lifetime">
+        ///     <para>The lifetime of the configuration in the container.  <see cref="MsSqlSqlDatabaseRuntimeConfiguration"/> is used to provide the settings and behavior of queries executed against the SqlServer database.</para>
         ///     <para>It is preferable to configure per request, per custom lifetime scope, etc. operations within a specific factory and use a service lifetime of singleton.
         ///         While creating a configuration object per query operation, or some other scope is not inherently expensive, it is more performant to use a service lifetime of singleton.
         ///     </para>
         /// </param>
-        public static void AddMsSql2008Database<T>(this IDbExpressionConfigurationBuilder builder, Action<IServiceProvider, IRuntimeSqlDatabaseConfigurationBuilder> configureRuntime, ServiceLifetime configurationLifetime = ServiceLifetime.Singleton)
-            where T : class, IRuntimeEnvironmentSqlDatabase, new()
+        public static void AddMsSql2008Database<T>(this IDbExpressionConfigurationBuilder builder, Action<IServiceProvider, ISqlDatabaseRuntimeConfigurationBuilder> configureRuntime, ServiceLifetime lifetime = ServiceLifetime.Singleton)
+            where T : class, ISqlDatabaseRuntime<MsSqlSqlDatabaseRuntimeConfiguration>, new()
         {
             if (configureRuntime is null)
                 throw new ArgumentNullException(nameof(configureRuntime));
 
-            var services = builder as ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder ?? throw new DbExpressionConfigurationException($"Expected {nameof(builder)} to be of type {typeof(ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder)}, but actual type is {builder.GetType()}");
+            var services = builder as ServiceCollectionSqlDatabaseRuntimeConfigurationBuilder ?? throw new DbExpressionConfigurationException($"Expected {nameof(builder)} to be of type {typeof(ServiceCollectionSqlDatabaseRuntimeConfigurationBuilder)}, but actual type is {builder.GetType()}");
             services.Services.TryAddSingleton<HatTrick.DbEx.MsSql.Assembler.v2008.MsSqlStatementAssemblerFactory>();
             services.Services.TryAdd(ServiceDescriptor.Singleton<ISqlStatementAssemblerFactory>(sp => sp.GetRequiredService<HatTrick.DbEx.MsSql.Assembler.v2008.MsSqlStatementAssemblerFactory>()));
 
-            services.AddMsSql<T>(
+            services.AddMsSql<T, MsSqlSqlDatabaseRuntimeConfiguration>(
                 (serviceProvider, configBuilder) =>
                 {
                     configBuilder.SqlStatements.Assembly.StatementAssembler.Use(serviceProvider.GetRequiredService<HatTrick.DbEx.MsSql.Assembler.v2008.MsSqlStatementAssemblerFactory>());
                     configBuilder.SqlStatements.Assembly.ElementAppender.Use<MsSqlExpressionElementAppenderFactory>(f => f.RegisterElementAppender<TrimFunctionExpression, HatTrick.DbEx.MsSql.Assembler.v2008.TrimFunctionExpressionAppender>());
                     configureRuntime.Invoke(serviceProvider, configBuilder);
                 },
-                configurationLifetime
+                lifetime
             );
         }
         #endregion
@@ -120,32 +121,32 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <typeparam name="T">The (code-generated) database you want to configure for use.</typeparam>
         /// <param name="builder">The <see cref="IDbExpressionConfigurationBuilder" />, the fluent entry point for configuring the runtime environment for <typeparam name="T">. </param>
         /// <param name="configureRuntime">
-        ///     <para>A delegate to configure the <see cref="RuntimeSqlDatabaseConfiguration" /> for query operations using a <see cref="IRuntimeSqlDatabaseConfigurationBuilder"/>.  The delegate provides a <see cref="IServiceProvider"/> to resolve any required services for configuration.</para>
+        ///     <para>A delegate to configure the <see cref="MsSqlSqlDatabaseRuntimeConfiguration" /> for query operations using a <see cref="ISqlDatabaseRuntimeConfigurationBuilder"/>.  The delegate provides a <see cref="IServiceProvider"/> to resolve any required services for configuration.</para>
         /// </param>        
-        /// <param name="configurationLifetime">
-        ///     <para>The lifetime of the configuration in the container.  <see cref="RuntimeSqlDatabaseConfiguration"/> is used to provide the settings and behavior of queries executed against the SqlServer database.</para>
+        /// <param name="lifetime">
+        ///     <para>The lifetime of the configuration in the container.  <see cref="MsSqlSqlDatabaseRuntimeConfiguration"/> is used to provide the settings and behavior of queries executed against the SqlServer database.</para>
         ///     <para>It is preferable to configure per request, per custom lifetime scope, etc. operations within a specific factory and use a service lifetime of singleton.
         ///         While creating a configuration object per query operation, or some other scope is not inherently expensive, it is more performant to use a service lifetime of singleton.
         ///     </para>
         /// </param>
-        public static void AddMsSql2012Database<T>(this IDbExpressionConfigurationBuilder builder, Action<IServiceProvider, IRuntimeSqlDatabaseConfigurationBuilder> configureRuntime, ServiceLifetime configurationLifetime = ServiceLifetime.Singleton)
-            where T : class, IRuntimeEnvironmentSqlDatabase, new()
+        public static void AddMsSql2012Database<T>(this IDbExpressionConfigurationBuilder builder, Action<IServiceProvider, ISqlDatabaseRuntimeConfigurationBuilder> configureRuntime, ServiceLifetime lifetime = ServiceLifetime.Singleton)
+            where T : class, ISqlDatabaseRuntime<MsSqlSqlDatabaseRuntimeConfiguration>, new()
         {
             if (configureRuntime is null)
                 throw new ArgumentNullException(nameof(configureRuntime));
 
-            var services = builder as ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder ?? throw new DbExpressionConfigurationException($"Expected {nameof(builder)} to be of type {typeof(ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder)}, but actual type is {builder.GetType()}");
+            var services = builder as ServiceCollectionSqlDatabaseRuntimeConfigurationBuilder ?? throw new DbExpressionConfigurationException($"Expected {nameof(builder)} to be of type {typeof(ServiceCollectionSqlDatabaseRuntimeConfigurationBuilder)}, but actual type is {builder.GetType()}");
             services.Services.TryAddSingleton<MsSqlStatementAssemblerFactory>();
             services.Services.TryAdd(ServiceDescriptor.Singleton<ISqlStatementAssemblerFactory>(sp => sp.GetRequiredService<MsSqlStatementAssemblerFactory>()));
 
-            services.AddMsSql<T>(
+            services.AddMsSql<T, MsSqlSqlDatabaseRuntimeConfiguration>(
                 (serviceProvider, configBuilder) =>
                 {
                     configBuilder.SqlStatements.Assembly.StatementAssembler.Use(serviceProvider.GetRequiredService<MsSqlStatementAssemblerFactory>());
                     configBuilder.SqlStatements.Assembly.ElementAppender.Use<MsSqlExpressionElementAppenderFactory>(f => f.RegisterElementAppender<TrimFunctionExpression, HatTrick.DbEx.MsSql.Assembler.v2012.TrimFunctionExpressionAppender>());
                     configureRuntime.Invoke(serviceProvider, configBuilder);
                 },
-                configurationLifetime
+                lifetime
             );
         }
         #endregion
@@ -157,32 +158,32 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <typeparam name="T">The (code-generated) database you want to configure for use.</typeparam>
         /// <param name="builder">The <see cref="IDbExpressionConfigurationBuilder" />, the fluent entry point for configuring the runtime environment for <typeparam name="T">. </param>
         /// <param name="configureRuntime">
-        ///     <para>A delegate to configure the <see cref="RuntimeSqlDatabaseConfiguration" /> for query operations using a <see cref="IRuntimeSqlDatabaseConfigurationBuilder"/>.  The delegate provides a <see cref="IServiceProvider"/> to resolve any required services for configuration.</para>
+        ///     <para>A delegate to configure the <see cref="MsSqlSqlDatabaseRuntimeConfiguration" /> for query operations using a <see cref="ISqlDatabaseRuntimeConfigurationBuilder"/>.  The delegate provides a <see cref="IServiceProvider"/> to resolve any required services for configuration.</para>
         /// </param>        
-        /// <param name="configurationLifetime">
-        ///     <para>The lifetime of the configuration in the container.  <see cref="RuntimeSqlDatabaseConfiguration"/> is used to provide the settings and behavior of queries executed against the SqlServer database.</para>
+        /// <param name="lifetime">
+        ///     <para>The lifetime of the configuration in the container.  <see cref="MsSqlSqlDatabaseRuntimeConfiguration"/> is used to provide the settings and behavior of queries executed against the SqlServer database.</para>
         ///     <para>It is preferable to configure per request, per custom lifetime scope, etc. operations within a specific factory and use a service lifetime of singleton.
         ///         While creating a configuration object per query operation, or some other scope is not inherently expensive, it is more performant to use a service lifetime of singleton.
         ///     </para>
         /// </param>
-        public static void AddMsSql2014Database<T>(this IDbExpressionConfigurationBuilder builder, Action<IServiceProvider, IRuntimeSqlDatabaseConfigurationBuilder> configureRuntime, ServiceLifetime configurationLifetime = ServiceLifetime.Singleton)
-            where T : class, IRuntimeEnvironmentSqlDatabase, new()
+        public static void AddMsSql2014Database<T>(this IDbExpressionConfigurationBuilder builder, Action<IServiceProvider, ISqlDatabaseRuntimeConfigurationBuilder> configureRuntime, ServiceLifetime lifetime = ServiceLifetime.Singleton)
+            where T : class, ISqlDatabaseRuntime<MsSqlSqlDatabaseRuntimeConfiguration>, new()
         {
             if (configureRuntime is null)
                 throw new ArgumentNullException(nameof(configureRuntime));
 
-            var services = builder as ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder ?? throw new DbExpressionConfigurationException($"Expected {nameof(builder)} to be of type {typeof(ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder)}, but actual type is {builder.GetType()}");
+            var services = builder as ServiceCollectionSqlDatabaseRuntimeConfigurationBuilder ?? throw new DbExpressionConfigurationException($"Expected {nameof(builder)} to be of type {typeof(ServiceCollectionSqlDatabaseRuntimeConfigurationBuilder)}, but actual type is {builder.GetType()}");
             services.Services.TryAddSingleton<MsSqlStatementAssemblerFactory>();
             services.Services.TryAdd(ServiceDescriptor.Singleton<ISqlStatementAssemblerFactory>(sp => sp.GetRequiredService<MsSqlStatementAssemblerFactory>()));
 
-            services.AddMsSql<T>(
+            services.AddMsSql<T, MsSqlSqlDatabaseRuntimeConfiguration>(
                 (serviceProvider, configBuilder) =>
                 {
                     configBuilder.SqlStatements.Assembly.StatementAssembler.Use(serviceProvider.GetRequiredService<MsSqlStatementAssemblerFactory>());
                     configBuilder.SqlStatements.Assembly.ElementAppender.Use<MsSqlExpressionElementAppenderFactory>(f => f.RegisterElementAppender<TrimFunctionExpression, HatTrick.DbEx.MsSql.Assembler.v2014.TrimFunctionExpressionAppender>());
                     configureRuntime.Invoke(serviceProvider, configBuilder);
                 },
-                configurationLifetime
+                lifetime
             );
         }
         #endregion
@@ -194,32 +195,32 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <typeparam name="T">The (code-generated) database you want to configure for use.</typeparam>
         /// <param name="builder">The <see cref="IDbExpressionConfigurationBuilder" />, the fluent entry point for configuring the runtime environment for <typeparam name="T">. </param>
         /// <param name="configureRuntime">
-        ///     <para>A delegate to configure the <see cref="RuntimeSqlDatabaseConfiguration" /> for query operations using a <see cref="IRuntimeSqlDatabaseConfigurationBuilder"/>.  The delegate provides a <see cref="IServiceProvider"/> to resolve any required services for configuration.</para>
+        ///     <para>A delegate to configure the <see cref="MsSqlSqlDatabaseRuntimeConfiguration" /> for query operations using a <see cref="ISqlDatabaseRuntimeConfigurationBuilder"/>.  The delegate provides a <see cref="IServiceProvider"/> to resolve any required services for configuration.</para>
         /// </param>        
-        /// <param name="configurationLifetime">
-        ///     <para>The lifetime of the configuration in the container.  <see cref="RuntimeSqlDatabaseConfiguration"/> is used to provide the settings and behavior of queries executed against the SqlServer database.</para>
+        /// <param name="lifetime">
+        ///     <para>The lifetime of the configuration in the container.  <see cref="MsSqlSqlDatabaseRuntimeConfiguration"/> is used to provide the settings and behavior of queries executed against the SqlServer database.</para>
         ///     <para>It is preferable to configure per request, per custom lifetime scope, etc. operations within a specific factory and use a service lifetime of singleton.
         ///         While creating a configuration object per query operation, or some other scope is not inherently expensive, it is more performant to use a service lifetime of singleton.
         ///     </para>
         /// </param>
-        public static void AddMsSql2016Database<T>(this IDbExpressionConfigurationBuilder builder, Action<IServiceProvider, IRuntimeSqlDatabaseConfigurationBuilder> configureRuntime, ServiceLifetime configurationLifetime = ServiceLifetime.Singleton)
-            where T : class, IRuntimeEnvironmentSqlDatabase, new()
+        public static void AddMsSql2016Database<T>(this IDbExpressionConfigurationBuilder builder, Action<IServiceProvider, ISqlDatabaseRuntimeConfigurationBuilder> configureRuntime, ServiceLifetime lifetime = ServiceLifetime.Singleton)
+            where T : class, ISqlDatabaseRuntime<MsSqlSqlDatabaseRuntimeConfiguration>, new()
         {
             if (configureRuntime is null)
                 throw new ArgumentNullException(nameof(configureRuntime));
 
-            var services = builder as ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder ?? throw new DbExpressionConfigurationException($"Expected {nameof(builder)} to be of type {typeof(ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder)}, but actual type is {builder.GetType()}");
+            var services = builder as ServiceCollectionSqlDatabaseRuntimeConfigurationBuilder ?? throw new DbExpressionConfigurationException($"Expected {nameof(builder)} to be of type {typeof(ServiceCollectionSqlDatabaseRuntimeConfigurationBuilder)}, but actual type is {builder.GetType()}");
             services.Services.TryAddSingleton<MsSqlStatementAssemblerFactory>();
             services.Services.TryAdd(ServiceDescriptor.Singleton<ISqlStatementAssemblerFactory>(sp => sp.GetRequiredService<MsSqlStatementAssemblerFactory>()));
 
-            services.AddMsSql<T>(
+            services.AddMsSql<T, MsSqlSqlDatabaseRuntimeConfiguration>(
                 (serviceProvider, configBuilder) =>
                 {
                     configBuilder.SqlStatements.Assembly.StatementAssembler.Use(serviceProvider.GetRequiredService<MsSqlStatementAssemblerFactory>());
                     configBuilder.SqlStatements.Assembly.ElementAppender.Use<MsSqlExpressionElementAppenderFactory>(f => f.RegisterElementAppender<TrimFunctionExpression, HatTrick.DbEx.MsSql.Assembler.v2016.TrimFunctionExpressionAppender>());
                     configureRuntime.Invoke(serviceProvider, configBuilder);
                 },
-                configurationLifetime
+                lifetime
             );
         }
         #endregion
@@ -231,31 +232,31 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <typeparam name="T">The (code-generated) database you want to configure for use.</typeparam>
         /// <param name="builder">The <see cref="IDbExpressionConfigurationBuilder" />, the fluent entry point for configuring the runtime environment for <typeparam name="T">. </param>
         /// <param name="configureRuntime">
-        ///     <para>A delegate to configure the <see cref="RuntimeSqlDatabaseConfiguration" /> for query operations using a <see cref="IRuntimeSqlDatabaseConfigurationBuilder"/>.  The delegate provides a <see cref="IServiceProvider"/> to resolve any required services for configuration.</para>
+        ///     <para>A delegate to configure the <see cref="MsSqlSqlDatabaseRuntimeConfiguration" /> for query operations using a <see cref="ISqlDatabaseRuntimeConfigurationBuilder"/>.  The delegate provides a <see cref="IServiceProvider"/> to resolve any required services for configuration.</para>
         /// </param>        
-        /// <param name="configurationLifetime">
-        ///     <para>The lifetime of the configuration in the container.  <see cref="RuntimeSqlDatabaseConfiguration"/> is used to provide the settings and behavior of queries executed against the SqlServer database.</para>
+        /// <param name="lifetime">
+        ///     <para>The lifetime of the configuration in the container.  <see cref="MsSqlSqlDatabaseRuntimeConfiguration"/> is used to provide the settings and behavior of queries executed against the SqlServer database.</para>
         ///     <para>It is preferable to configure per request, per custom lifetime scope, etc. operations within a specific factory and use a service lifetime of singleton.
         ///         While creating a configuration object per query operation, or some other scope is not inherently expensive, it is more performant to use a service lifetime of singleton.
         ///     </para>
         /// </param>
-        public static void AddMsSql2017Database<T>(this IDbExpressionConfigurationBuilder builder, Action<IServiceProvider, IRuntimeSqlDatabaseConfigurationBuilder> configureRuntime, ServiceLifetime configurationLifetime = ServiceLifetime.Singleton)
-            where T : class, IRuntimeEnvironmentSqlDatabase, new()
+        public static void AddMsSql2017Database<T>(this IDbExpressionConfigurationBuilder builder, Action<IServiceProvider, ISqlDatabaseRuntimeConfigurationBuilder> configureRuntime, ServiceLifetime lifetime = ServiceLifetime.Singleton)
+            where T : class, ISqlDatabaseRuntime<MsSqlSqlDatabaseRuntimeConfiguration>, new()
         {
             if (configureRuntime is null)
                 throw new ArgumentNullException(nameof(configureRuntime));
 
-            var services = builder as ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder ?? throw new DbExpressionConfigurationException($"Expected {nameof(builder)} to be of type {typeof(ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder)}, but actual type is {builder.GetType()}");
+            var services = builder as ServiceCollectionSqlDatabaseRuntimeConfigurationBuilder ?? throw new DbExpressionConfigurationException($"Expected {nameof(builder)} to be of type {typeof(ServiceCollectionSqlDatabaseRuntimeConfigurationBuilder)}, but actual type is {builder.GetType()}");
             services.Services.TryAddSingleton<MsSqlStatementAssemblerFactory>();
             services.Services.TryAdd(ServiceDescriptor.Singleton<ISqlStatementAssemblerFactory>(sp => sp.GetRequiredService<MsSqlStatementAssemblerFactory>()));
 
-            services.AddMsSql<T>(
+            services.AddMsSql<T, MsSqlSqlDatabaseRuntimeConfiguration>(
                 (serviceProvider, configBuilder) =>
                 {
                     configBuilder.SqlStatements.Assembly.StatementAssembler.Use(serviceProvider.GetRequiredService<MsSqlStatementAssemblerFactory>());
                     configureRuntime.Invoke(serviceProvider, configBuilder);
                 },
-                configurationLifetime
+                lifetime
             );
         }
         #endregion
@@ -267,46 +268,50 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <typeparam name="T">The (code-generated) database you want to configure for use.</typeparam>
         /// <param name="builder">The <see cref="IDbExpressionConfigurationBuilder" />, the fluent entry point for configuring the runtime environment for <typeparam name="T">. </param>
         /// <param name="configureRuntime">
-        ///     <para>A delegate to configure the <see cref="RuntimeSqlDatabaseConfiguration" /> for query operations using a <see cref="IRuntimeSqlDatabaseConfigurationBuilder"/>.  The delegate provides a <see cref="IServiceProvider"/> to resolve any required services for configuration.</para>
+        ///     <para>A delegate to configure the <see cref="MsSqlSqlDatabaseRuntimeConfiguration" /> for query operations using a <see cref="ISqlDatabaseRuntimeConfigurationBuilder"/>.  The delegate provides a <see cref="IServiceProvider"/> to resolve any required services for configuration.</para>
         /// </param>        
-        /// <param name="configurationLifetime">
-        ///     <para>The lifetime of the configuration in the container.  <see cref="RuntimeSqlDatabaseConfiguration"/> is used to provide the settings and behavior of queries executed against the SqlServer database.</para>
+        /// <param name="lifetime">
+        ///     <para>The lifetime of the configuration in the container.  <see cref="MsSqlSqlDatabaseRuntimeConfiguration"/> is used to provide the settings and behavior of queries executed against the SqlServer database.</para>
         ///     <para>It is preferable to configure per request, per custom lifetime scope, etc. operations within a specific factory and use a service lifetime of singleton.
         ///         While creating a configuration object per query operation, or some other scope is not inherently expensive, it is more performant to use a service lifetime of singleton.
         ///     </para>
         /// </param>
-        public static void AddMsSql2019Database<T>(this IDbExpressionConfigurationBuilder builder, Action<IServiceProvider, IRuntimeSqlDatabaseConfigurationBuilder> configureRuntime, ServiceLifetime configurationLifetime = ServiceLifetime.Singleton)
-            where T : class, IRuntimeEnvironmentSqlDatabase, new()
+        public static void AddMsSql2019Database<T>(this IDbExpressionConfigurationBuilder builder, Action<IServiceProvider, ISqlDatabaseRuntimeConfigurationBuilder> configureRuntime, ServiceLifetime lifetime = ServiceLifetime.Singleton)
+            where T : class, ISqlDatabaseRuntime<MsSqlSqlDatabaseRuntimeConfiguration>, new()
         {
             if (configureRuntime is null)
                 throw new ArgumentNullException(nameof(configureRuntime));
 
-            var services = builder as ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder ?? throw new DbExpressionConfigurationException($"Expected {nameof(builder)} to be of type {typeof(ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder)}, but actual type is {builder.GetType()}");
+            var services = builder as ServiceCollectionSqlDatabaseRuntimeConfigurationBuilder ?? throw new DbExpressionConfigurationException($"Expected {nameof(builder)} to be of type {typeof(ServiceCollectionSqlDatabaseRuntimeConfigurationBuilder<T, MsSqlSqlDatabaseRuntimeConfiguration>)}, but actual type is {builder.GetType()}");
             services.Services.TryAddSingleton<MsSqlStatementAssemblerFactory>();
             services.Services.TryAdd(ServiceDescriptor.Singleton<ISqlStatementAssemblerFactory>(sp => sp.GetRequiredService<MsSqlStatementAssemblerFactory>()));
 
-            services.AddMsSql<T>(
+            services.AddMsSql<T, MsSqlSqlDatabaseRuntimeConfiguration>(
                 (serviceProvider, configBuilder) =>
                 {
                     configBuilder.SqlStatements.Assembly.StatementAssembler.Use(serviceProvider.GetRequiredService<MsSqlStatementAssemblerFactory>());
                     configureRuntime.Invoke(serviceProvider, configBuilder);
                 },
-                configurationLifetime
+                lifetime
             );
         }
         #endregion
 
-        private static void AddMsSql<T>(
-            this ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder builder,
-            Action<IServiceProvider, IRuntimeSqlDatabaseConfigurationBuilder> configuration,
-            ServiceLifetime configurationLifetime = ServiceLifetime.Singleton
+        private static void AddMsSql<TDatabase, TConfig>(
+            this ServiceCollectionSqlDatabaseRuntimeConfigurationBuilder builder,
+            Action<IServiceProvider, ISqlDatabaseRuntimeConfigurationBuilder> configureServices,
+            ServiceLifetime lifetime = ServiceLifetime.Singleton
         )
-            where T : class, IRuntimeEnvironmentSqlDatabase, new()
+            where TDatabase : class, ISqlDatabaseRuntime<TConfig>, new()
+            where TConfig : MsSqlSqlDatabaseRuntimeConfiguration, new()
         {
-            if (configuration is null)
-                throw new ArgumentNullException(nameof(configuration));
+            if (configureServices is null)
+                throw new ArgumentNullException(nameof(configureServices));
 
-            builder.Environment = new T();
+            builder.Services.TryAdd(ServiceDescriptor.Transient(sp => new ServiceCollectionSqlDatabaseRuntimeConfigurationBuilder(builder.Services)));
+
+            builder.Services.TryAdd(ServiceDescriptor.Singleton<MsSqlQueryExpressionBuilder, MsSqlQueryExpressionBuilder>());
+            builder.Services.TryAdd(ServiceDescriptor.Singleton<MsSqlFunctionExpressionBuilder, MsSqlFunctionExpressionBuilder>());
 
             //sql
             builder.Services.TryAdd(ServiceDescriptor.Singleton<IQueryExpressionFactory, QueryExpressionFactory>());
@@ -327,21 +332,25 @@ namespace Microsoft.Extensions.DependencyInjection
 
             builder.Services.TryAdd(
                 new ServiceDescriptor(
-                    typeof(RuntimeSqlDatabaseConfigurationFor<T>),
+                    typeof(TDatabase),
                     serviceProvider =>
                     {
-                        builder.SchemaMetadata.Use(builder.Environment.Metadata);
+                        var config = new TConfig();
+                        var db = new TDatabase();
 
-                        builder.QueryExpressions.Use(serviceProvider.GetService<IQueryExpressionFactory>()!);
+                        var typedBuilder = new ServiceCollectionSqlDatabaseRuntimeConfigurationBuilder<TDatabase, TConfig>(db, config);
 
-                        builder.Entities
+                        typedBuilder.QueryExpressions.Use(serviceProvider.GetService<IQueryExpressionFactory>()!);
+
+                        typedBuilder.Entities
                             .Creation.Use(serviceProvider.GetService<IEntityFactory>()!)
                             .Mapping.Use(serviceProvider.GetService<IMapperFactory>()!);
 
-                        builder.Conversions.Use(serviceProvider.GetService<IValueConverterFactory>()!);
+                        typedBuilder.Conversions.Use(serviceProvider.GetService<IValueConverterFactory>()!);
 
-                        builder.SqlStatements
+                        typedBuilder.SqlStatements
                             .Assembly
+                                .StatementAssembler.Use<MsSqlStatementAssemblerFactory>()
                                 .StatementBuilder.Use(serviceProvider.GetService<ISqlStatementBuilderFactory>()!)
                                 .StatementAppender.Use(serviceProvider.GetService<IAppenderFactory>()!)
                                 .ElementAppender.Use(serviceProvider.GetService<IExpressionElementAppenderFactory>()!)
@@ -351,28 +360,15 @@ namespace Microsoft.Extensions.DependencyInjection
                                 .Connection.Use(serviceProvider.GetService<ISqlConnectionFactory>()!)
                                 .Pipeline.Use(serviceProvider.GetService<IQueryExecutionPipelineFactory>()!);
 
-                        configuration.Invoke(serviceProvider, builder);
+                        configureServices.Invoke(serviceProvider, typedBuilder);
 
-                        var config = (builder as IRuntimeSqlDatabaseConfigurationProvider).Configuration;
-                        config.Validate();
+                        db.UseConfiguration(config);
 
-                        return new RuntimeSqlDatabaseConfigurationFor<T>(
-                            (builder.Environment as T)!,
-                            config
-                        );
+                        return db;
                     },
-                    configurationLifetime
+                    lifetime
                 )
             );
-
-
-            builder.Services.AddSingleton(serviceProvider =>
-            {
-                return new RuntimeSqlDatabaseConfigurationDependencyInjectionShim(
-                    builder.Environment.Database,
-                    () => serviceProvider.GetRequiredService<RuntimeSqlDatabaseConfigurationFor<T>>().Configuration
-                );
-            });
         }
     }
 }

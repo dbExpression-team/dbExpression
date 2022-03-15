@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,13 +16,17 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Configuration;
+using HatTrick.DbEx.MsSql.Builder;
+using HatTrick.DbEx.Sql.Configuration;
 using System;
 
-namespace HatTrick.DbEx.Sql
+namespace HatTrick.DbEx.MsSql.Configuration
 {
-    public interface IRuntimeSqlDatabase
+    public class MsSqlSqlDatabaseRuntimeConfiguration : SqlDatabaseRuntimeConfiguration
     {
-        void UseConfigurationFactory(IRuntimeSqlDatabaseConfigurationFactory configurationFactory);
+        #region interface
+        public MsSqlQueryExpressionBuilder QueryExpressionBuilder { get; set; } = new();
+        public MsSqlFunctionExpressionBuilder FunctionExpressionBuilder { get; set; } = new();
+        #endregion
     }
 }

@@ -31,7 +31,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="StringElement"/> to trim leading and trailing spaces from.</param>
         /// <returns><see cref="StringTrimFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
-        public static StringTrimFunctionExpression Trim(StringElement element)
+        public StringTrimFunctionExpression Trim(StringElement element)
             => new(element);
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableStringElement"/> to trim leading and trailing spaces from.</param>
         /// <returns><see cref="NullableStringTrimFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public static NullableStringTrimFunctionExpression Trim(NullableStringElement element)
+        public NullableStringTrimFunctionExpression Trim(NullableStringElement element)
             => new(element);
     }
 }

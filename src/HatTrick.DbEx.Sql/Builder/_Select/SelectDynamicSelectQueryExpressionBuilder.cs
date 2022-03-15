@@ -37,7 +37,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
 
         #region constructors
-        public SelectDynamicSelectQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, SelectQueryExpression expression)
+        public SelectDynamicSelectQueryExpressionBuilder(SqlDatabaseRuntimeConfiguration config, SelectQueryExpression expression)
             : base(config, expression)
         {
 

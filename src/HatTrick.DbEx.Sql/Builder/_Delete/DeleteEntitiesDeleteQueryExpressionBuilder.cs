@@ -31,13 +31,13 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
 
         #region constructors
-        public DeleteQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, DeleteQueryExpression expression)
+        public DeleteQueryExpressionBuilder(SqlDatabaseRuntimeConfiguration config, DeleteQueryExpression expression)
             : base(config, expression)
         {
             Expression = expression;
         }
 
-        protected DeleteQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, DeleteQueryExpression expression, Table entity)
+        protected DeleteQueryExpressionBuilder(SqlDatabaseRuntimeConfiguration config, DeleteQueryExpression expression, Table entity)
             : base(config, expression)
         {
             Expression = expression ?? throw new ArgumentNullException(nameof(expression));
@@ -57,7 +57,7 @@ namespace HatTrick.DbEx.Sql.Builder
             return this;
         }
 
-        protected virtual DeleteEntitiesContinuation<TEntity> CreateTypedBuilder<TEntity>(RuntimeSqlDatabaseConfiguration configuration, DeleteQueryExpression expression, Table<TEntity> entity)
+        protected virtual DeleteEntitiesContinuation<TEntity> CreateTypedBuilder<TEntity>(SqlDatabaseRuntimeConfiguration configuration, DeleteQueryExpression expression, Table<TEntity> entity)
             where TEntity : class, IDbEntity
             => new DeleteEntitiesDeleteQueryExpressionBuilder<TEntity>(configuration, expression, entity);
 
