@@ -1158,7 +1158,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     db.SelectOne(dbo.Product.Id)
                         .From(dbo.Product)
                         .OrderBy(dbo.Product.Id)
-                ).As("top1").On(dbo.Product.Id == dbex.Alias("top1", nameof(dbo.Product.Id)))
+                ).As("top1").On(dbo.Product.Id == ("top1", nameof(dbo.Product.Id)))
                 .Execute();
 
             var updated = db.SelectOne<Product>()
@@ -1167,7 +1167,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     db.SelectOne(dbo.Product.Id)
                     .From(dbo.Product)
                     .OrderBy(dbo.Product.Id)
-                ).As("top1").On(dbo.Product.Id == dbex.Alias("top1", nameof(dbo.Product.Id)))
+                ).As("top1").On(dbo.Product.Id == ("top1", nameof(dbo.Product.Id)))
                 .Execute();
 
             //then

@@ -28,12 +28,32 @@ namespace HatTrick.DbEx.MsSql.Expression
         IEquatable<Int32RoundFunctionExpression>
     {
         #region constructors
-        public Int32RoundFunctionExpression(AnyElement<int> expression, IntegralNumericElement length) : base(expression, length)
+        public Int32RoundFunctionExpression(AnyElement<byte> expression, AnyElement length) : base(expression, length)
         {
 
         }
 
-        public Int32RoundFunctionExpression(AnyElement<int> expression, IntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
+        public Int32RoundFunctionExpression(AnyElement<byte> expression, AnyElement length, AnyElement function) : base(expression, length, function)
+        {
+
+        }
+
+        public Int32RoundFunctionExpression(AnyElement<short> expression, AnyElement length) : base(expression, length)
+        {
+
+        }
+
+        public Int32RoundFunctionExpression(AnyElement<short> expression, AnyElement length, AnyElement function) : base(expression, length, function)
+        {
+
+        }
+
+        public Int32RoundFunctionExpression(AnyElement<int> expression, AnyElement length) : base(expression, length)
+        {
+
+        }
+
+        public Int32RoundFunctionExpression(AnyElement<int> expression, AnyElement length, AnyElement function) : base(expression, length, function)
         {
 
         }

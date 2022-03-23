@@ -48,7 +48,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new(Expression, new DbTypeExpression<DbType>(DbType.DateTimeOffset));
 
         NullableDecimalCastFunctionExpression NullableCast.AsDecimal(int precision, int scale)
-            => new(Expression, new DbTypeExpression<DbType>(DbType.Decimal));
+            => new(Expression, new DbTypeExpression<DbType>(DbType.Decimal), precision, scale);
 
         NullableSingleCastFunctionExpression NullableCast.AsFloat()
             => new(Expression, new DbTypeExpression<DbType>(DbType.Single));
@@ -65,16 +65,16 @@ namespace HatTrick.DbEx.Sql.Builder
         NullableInt64CastFunctionExpression NullableCast.AsBigInt()
             => new(Expression, new DbTypeExpression<DbType>(DbType.Int64));
 
-        StringCastFunctionExpression NullableCast.AsVarChar(int size)
+        NullableStringCastFunctionExpression NullableCast.AsVarChar(int size)
             => new(Expression, new DbTypeExpression<DbType>(DbType.String), size);
 
-        StringCastFunctionExpression NullableCast.AsChar(int size)
+        NullableStringCastFunctionExpression NullableCast.AsChar(int size)
             => new(Expression, new DbTypeExpression<DbType>(DbType.String), size);
 
-        StringCastFunctionExpression NullableCast.AsNVarChar(int size)
+        NullableStringCastFunctionExpression NullableCast.AsNVarChar(int size)
             => new(Expression, new DbTypeExpression<DbType>(DbType.AnsiString), size);
 
-        StringCastFunctionExpression NullableCast.AsNChar(int size)
+        NullableStringCastFunctionExpression NullableCast.AsNChar(int size)
             => new(Expression, new DbTypeExpression<DbType>(DbType.AnsiString), size);
 
         NullableTimeSpanCastFunctionExpression NullableCast.AsTime()

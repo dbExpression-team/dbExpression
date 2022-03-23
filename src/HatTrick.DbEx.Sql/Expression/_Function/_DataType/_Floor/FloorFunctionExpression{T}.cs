@@ -21,13 +21,19 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class FloorFunctionExpression<TValue> : FloorFunctionExpression,
-        IExpressionElement<TValue>
+        IExpressionElement<TValue>,
+        AnyElement<TValue>
     {
         #region constructors
         protected FloorFunctionExpression(IExpressionElement expression) : base(expression, typeof(TValue))
         {
 
         }
+        #endregion
+
+        #region as
+        public AnyElement<TValue> As(string alias)
+            => new SelectExpression<TValue>(this).As(alias);
         #endregion
     }
 }

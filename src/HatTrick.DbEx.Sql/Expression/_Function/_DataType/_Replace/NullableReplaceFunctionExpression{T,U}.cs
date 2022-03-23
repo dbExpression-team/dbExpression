@@ -25,7 +25,12 @@ namespace HatTrick.DbEx.Sql.Expression
         where TValue : IComparable
     {
         #region constructors
-        protected NullableReplaceFunctionExpression(AnyStringElement expression, AnyStringElement pattern, AnyStringElement replacement) : base(expression, pattern, replacement, typeof(TNullableValue))
+        protected NullableReplaceFunctionExpression(AnyStringElement expression, AnyElement pattern, AnyElement replacement) : base(expression, pattern, replacement, typeof(TNullableValue))
+        {
+
+        }
+
+        protected NullableReplaceFunctionExpression(AnyElement<string?> expression, AnyElement pattern, AnyElement replacement) : base(expression, pattern, replacement, typeof(TNullableValue))
         {
 
         }

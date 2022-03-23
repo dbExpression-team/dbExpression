@@ -31,6 +31,12 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
+
+        public NullableInt64LengthFunctionExpression(AnyElement<string?> expression)
+            : base(expression)
+        {
+
+        }
         #endregion
 
         #region as

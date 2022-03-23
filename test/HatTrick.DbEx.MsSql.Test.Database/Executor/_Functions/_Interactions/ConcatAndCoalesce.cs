@@ -4,6 +4,7 @@ using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
+using System.Collections.Generic;
 using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
@@ -24,7 +25,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ).From(dbo.Purchase);
 
             //when               
-            var purchases = exp.Execute();
+            IList<string> purchases = exp.Execute();
 
             //then
             purchases.Should().HaveCount(expectedCount);
@@ -42,7 +43,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ).From(dbo.Purchase);
 
             //when               
-            var purchases = exp.Execute();
+            IList<string> purchases = exp.Execute();
 
             //then
             purchases.Should().HaveCount(expectedCount);
@@ -63,7 +64,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Where(dbo.Purchase.PaymentSourceType == PaymentSourceType.Web);
 
             //when               
-            var values = exp.Execute();
+            IList<string> values = exp.Execute();
 
             //then
             values.Should().HaveCount(expected);

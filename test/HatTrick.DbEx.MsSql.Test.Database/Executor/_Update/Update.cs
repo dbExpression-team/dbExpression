@@ -383,13 +383,13 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             var anticipatedCount = await db.SelectOne(db.fx.Count())
                 .From(dbo.Person)
-                .InnerJoin(subquery).As("newCreditLimit").On(dbo.Person.Id == dbex.Alias("newCreditLimit", nameof(dbo.Purchase.PersonId)))
+                .InnerJoin(subquery).As("newCreditLimit").On(dbo.Person.Id == ("newCreditLimit", nameof(dbo.Purchase.PersonId)))
                 .ExecuteAsync();
 
             //when
             var affectedCount = await db.Update(dbo.Person.CreditLimit.Set(1000))
                 .From(dbo.Person)
-                .InnerJoin(subquery).As("newCreditLimit").On(dbo.Person.Id == dbex.Alias("newCreditLimit", nameof(dbo.Purchase.PersonId)))
+                .InnerJoin(subquery).As("newCreditLimit").On(dbo.Person.Id == ("newCreditLimit", nameof(dbo.Purchase.PersonId)))
                 .ExecuteAsync();
 
             //then

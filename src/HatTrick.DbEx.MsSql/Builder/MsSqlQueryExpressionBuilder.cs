@@ -164,7 +164,10 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         public virtual SelectValue<string?> CreateSelectValueBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, NullableStringElement field)
            => CreateSelectValueBuilder<string?>(configuration, field);
-        
+
+        public virtual SelectValue<string?> CreateSelectValueBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, SelectExpression<string?> field)
+           => CreateSelectValueBuilder<string?>(configuration, field);
+
         public virtual SelectValue<TimeSpan> CreateSelectValueBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<TimeSpan> field)
             => CreateSelectValueBuilder<TimeSpan>(configuration, field);
 
@@ -309,6 +312,9 @@ namespace HatTrick.DbEx.MsSql.Builder
             => CreateSelectValuesBuilder<string>(configuration, field);
 
         public virtual SelectValues<string?> CreateSelectValuesBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, NullableStringElement field)
+            => CreateSelectValuesBuilder<string?>(configuration, field);
+
+        public virtual SelectValues<string?> CreateSelectValuesBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, SelectExpression<string?> field)
             => CreateSelectValuesBuilder<string?>(configuration, field);
 
         public virtual SelectValues<TimeSpan> CreateSelectValuesBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<TimeSpan> field)

@@ -26,7 +26,12 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<NullableStringReplaceFunctionExpression>
     {
         #region constructors
-        public NullableStringReplaceFunctionExpression(AnyStringElement expression, AnyStringElement pattern, AnyStringElement replacement) : base(expression, pattern, replacement)
+        public NullableStringReplaceFunctionExpression(AnyStringElement expression, AnyElement pattern, AnyElement replacement) : base(expression, pattern, replacement)
+        {
+
+        }
+
+        public NullableStringReplaceFunctionExpression(AnyElement<string?> expression, AnyElement pattern, AnyElement replacement) : base(expression, pattern, replacement)
         {
 
         }

@@ -37,17 +37,17 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public StringElement As(string alias)
-            => new StringSelectExpression(this as StringElement).As(alias);
-        #endregion
-
         #region distinct
         public StringMaximumFunctionExpression Distinct()
         {
             IsDistinct = true;
             return this;
         }
+        #endregion
+
+        #region as
+        public new StringElement As(string alias)
+            => new StringSelectExpression(this).As(alias);
         #endregion
 
         #region equals

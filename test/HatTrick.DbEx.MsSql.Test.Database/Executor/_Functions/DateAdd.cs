@@ -2,6 +2,7 @@
 using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Expression;
+using HatTrick.DbEx.MsSql.Expression.Alias;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
 using System;
@@ -127,6 +128,62 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     db.fx.DateAdd(DateParts.Year, 1, dbo.Purchase.ShipDate).As("alias")
                 ).From(dbo.Purchase)
                 .OrderBy(db.fx.DateAdd(DateParts.Year, 1, dbo.Purchase.ShipDate).Desc);
+
+            //when               
+            DateTime? result = exp.Execute();
+
+            //then
+            result.Should().NotBeNull();
+            result!.Value.Year.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Operation", "ORDER BY")]
+        public void Can_select_date_add_of_aliased_value(int version, int expected = 2020)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectOne(
+                    db.fx.DateAdd(DateParts.Year, 1, ("other", "DateCreated")).As("alias")
+                ).From(dbo.PurchaseLine)
+                .InnerJoin(
+                    db.SelectOne(
+                        dbo.PurchaseLine.PurchaseId,
+                        dbo.PurchaseLine.DateCreated
+                    )
+                    .From(dbo.PurchaseLine)
+                    .OrderBy(dbo.PurchaseLine.Id)
+                ).As("other").On(dbo.PurchaseLine.PurchaseId == ("other", "PurchaseId"));
+
+            //when               
+            DateTime? result = exp.Execute();
+
+            //then
+            result.Should().NotBeNull();
+            result!.Value.Year.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Operation", "ORDER BY")]
+        public void Can_select_date_add_of_aliased_value_and_aliased_field(int version, int expected = 2020)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectOne(
+                    db.fx.DateAdd(DateParts.Year, ("other", "PurchaseId"), ("other", "DateCreated")).As("alias")
+                ).From(dbo.PurchaseLine)
+                .InnerJoin(
+                    db.SelectOne(
+                        dbo.PurchaseLine.PurchaseId,
+                        dbo.PurchaseLine.DateCreated
+                    )
+                    .From(dbo.PurchaseLine)
+                    .OrderBy(dbo.PurchaseLine.Id)
+                ).As("other").On(dbo.PurchaseLine.PurchaseId == ("other", "PurchaseId"));
 
             //when               
             DateTime? result = exp.Execute();

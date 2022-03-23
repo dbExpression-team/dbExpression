@@ -32,11 +32,6 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public AnyElement<short> As(string alias)
-            => new SelectExpression<short>(this).As(alias);
-        #endregion
-
         #region distinct
         public Int16MinimumFunctionExpression Distinct()
         {

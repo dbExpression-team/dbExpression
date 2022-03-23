@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
 
         public override void Generate(string templatePath, string outputSubdirectory)
         {
-            foreach (var @type in TypeBuilder.CreateBuilder().AddAllTypes().Except(typeof(string), typeof(object)).ToList())
+            foreach (var @type in TypeBuilder.CreateBuilder().AddAllTypes().Except(typeof(object)).ToList())
                 Generate(templatePath, outputSubdirectory, $"Nullable{@type.Name}{functionName}FunctionExpression.generated.cs", CreateModel("HatTrick.DbEx.Sql.Expression", @type));
         }
     }

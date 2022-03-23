@@ -32,11 +32,6 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public AnyElement<double> As(string alias)
-            => new SelectExpression<double>(this).As(alias);
-        #endregion
-
         #region distinct
         public DoubleMaximumFunctionExpression Distinct()
         {

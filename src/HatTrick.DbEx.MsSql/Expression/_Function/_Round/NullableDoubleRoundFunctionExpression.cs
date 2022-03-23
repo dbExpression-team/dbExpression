@@ -28,32 +28,12 @@ namespace HatTrick.DbEx.MsSql.Expression
         IEquatable<NullableDoubleRoundFunctionExpression>
     {
         #region constructors
-        public NullableDoubleRoundFunctionExpression(AnyElement<double?> expression, IntegralNumericElement length) : base(expression, length)
+        public NullableDoubleRoundFunctionExpression(AnyElement<double?> expression, AnyElement length) : base(expression, length)
         {
 
         }
 
-        public NullableDoubleRoundFunctionExpression(AnyElement<double?> expression, IntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
-        {
-
-        }
-
-        public NullableDoubleRoundFunctionExpression(AnyElement<double?> expression, NullableIntegralNumericElement length) : base(expression, length)
-        {
-
-        }
-
-        public NullableDoubleRoundFunctionExpression(AnyElement<double?> expression, NullableIntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
-        {
-
-        }
-
-        public NullableDoubleRoundFunctionExpression(AnyElement<double?> expression, IntegralNumericElement length, NullableIntegralNumericElement function) : base(expression, length, function)
-        {
-
-        }
-
-        public NullableDoubleRoundFunctionExpression(AnyElement<double?> expression, NullableIntegralNumericElement length, NullableIntegralNumericElement function) : base(expression, length, function)
+        public NullableDoubleRoundFunctionExpression(AnyElement<double?> expression, AnyElement length, AnyElement function) : base(expression, length, function)
         {
 
         }

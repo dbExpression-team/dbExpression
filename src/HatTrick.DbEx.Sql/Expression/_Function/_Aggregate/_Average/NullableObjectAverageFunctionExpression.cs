@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,39 +17,40 @@
 #endregion
 
 using System;
-using HatTrick.DbEx.Sql;
-using HatTrick.DbEx.Sql.Expression;
 
-namespace HatTrick.DbEx.MsSql.Expression
+namespace HatTrick.DbEx.Sql.Expression
 {
-    public partial class Int16RoundFunctionExpression :
-        RoundFunctionExpression<short>,
-        Int16Element,
-        IEquatable<Int16RoundFunctionExpression>
+    public partial class NullableObjectAverageFunctionExpression :
+        AverageFunctionExpression<object?>,
+        NullableObjectElement<object?>,
+        IEquatable<NullableObjectAverageFunctionExpression>
     {
         #region constructors
-        public Int16RoundFunctionExpression(AnyElement<short> expression, IntegralNumericElement length) : base(expression, length)
-        {
-
-        }
-
-        public Int16RoundFunctionExpression(AnyElement<short> expression, IntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
+        public NullableObjectAverageFunctionExpression(AnyElement expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public AnyElement<short> As(string alias)
-            => new SelectExpression<short>(this).As(alias);
+        public NullableObjectElement<object?> As(string alias)
+            => new NullableObjectSelectExpression<object?>(this).As(alias);
+        #endregion
+
+        #region distinct
+        public NullableObjectAverageFunctionExpression Distinct()
+        {
+            IsDistinct = true;
+            return this;
+        }
         #endregion
 
         #region equals
-        public bool Equals(Int16RoundFunctionExpression? obj)
+        public bool Equals(NullableObjectAverageFunctionExpression? obj)
             => obj is not null && base.Equals(obj);
 
         public override bool Equals(object? obj)
-            => obj is Int16RoundFunctionExpression exp && Equals(exp);
+            => obj is NullableObjectAverageFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

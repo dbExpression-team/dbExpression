@@ -31,7 +31,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}"/>, the value to use for calculating the standard deviation function result.</param>
         /// <returns><see cref="SingleStandardDeviationFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Byte}"/>.</returns>
-        public SingleStandardDeviationFunctionExpression StDev(AnyElement<byte> element)
+        public virtual SingleStandardDeviationFunctionExpression StDev(AnyElement<byte> element)
             => new(element);
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}"/>?, the value to use for calculating the standard deviation function result.</param>
         /// <returns><see cref="NullableSingleStandardDeviationFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>?.</returns>
-        public NullableSingleStandardDeviationFunctionExpression StDev(AnyElement<byte?> element)
+        public virtual NullableSingleStandardDeviationFunctionExpression StDev(AnyElement<byte?> element)
             => new(element);
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}"/>, the value to use for calculating the standard deviation function result.</param>
         /// <returns><see cref="SingleStandardDeviationFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
-        public SingleStandardDeviationFunctionExpression StDev(AnyElement<short> element)
+        public virtual SingleStandardDeviationFunctionExpression StDev(AnyElement<short> element)
             => new(element);
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}"/>?, the value to use for calculating the standard deviation function result.</param>
         /// <returns><see cref="NullableSingleStandardDeviationFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>?.</returns>
-        public NullableSingleStandardDeviationFunctionExpression StDev(AnyElement<short?> element)
+        public virtual NullableSingleStandardDeviationFunctionExpression StDev(AnyElement<short?> element)
             => new(element);
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}"/>, the value to use for calculating the standard deviation function result.</param>
         /// <returns><see cref="SingleStandardDeviationFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
-        public SingleStandardDeviationFunctionExpression StDev(AnyElement<int> element)
+        public virtual SingleStandardDeviationFunctionExpression StDev(AnyElement<int> element)
             => new(element);
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}"/>?, the value to use for calculating the standard deviation function result.</param>
         /// <returns><see cref="NullableSingleStandardDeviationFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>?.</returns>
-        public NullableSingleStandardDeviationFunctionExpression StDev(AnyElement<int?> element)
+        public virtual NullableSingleStandardDeviationFunctionExpression StDev(AnyElement<int?> element)
             => new(element);
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}"/>, the value to use for calculating the standard deviation function result.</param>
         /// <returns><see cref="SingleStandardDeviationFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
-        public SingleStandardDeviationFunctionExpression StDev(AnyElement<long> element)
+        public virtual SingleStandardDeviationFunctionExpression StDev(AnyElement<long> element)
             => new(element);
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}"/>?, the value to use for calculating the standard deviation function result.</param>
         /// <returns><see cref="NullableSingleStandardDeviationFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>?.</returns>
-        public NullableSingleStandardDeviationFunctionExpression StDev(AnyElement<long?> element)
+        public virtual NullableSingleStandardDeviationFunctionExpression StDev(AnyElement<long?> element)
             => new(element);
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Double}"/>, the value to use for calculating the standard deviation function result.</param>
         /// <returns><see cref="SingleStandardDeviationFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
-        public SingleStandardDeviationFunctionExpression StDev(AnyElement<double> element)
+        public virtual SingleStandardDeviationFunctionExpression StDev(AnyElement<double> element)
             => new(element);
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Double}"/>?, the value to use for calculating the standard deviation function result.</param>
         /// <returns><see cref="NullableSingleStandardDeviationFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>?.</returns>
-        public NullableSingleStandardDeviationFunctionExpression StDev(AnyElement<double?> element)
+        public virtual NullableSingleStandardDeviationFunctionExpression StDev(AnyElement<double?> element)
             => new(element);
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}"/>, the value to use for calculating the standard deviation function result.</param>
         /// <returns><see cref="SingleStandardDeviationFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
-        public SingleStandardDeviationFunctionExpression StDev(AnyElement<decimal> element)
+        public virtual SingleStandardDeviationFunctionExpression StDev(AnyElement<decimal> element)
             => new(element);
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}"/>?, the value to use for calculating the standard deviation function result.</param>
         /// <returns><see cref="NullableSingleStandardDeviationFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>?.</returns>
-        public NullableSingleStandardDeviationFunctionExpression StDev(AnyElement<decimal?> element)
+        public virtual NullableSingleStandardDeviationFunctionExpression StDev(AnyElement<decimal?> element)
             => new(element);
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}"/>, the value to use for calculating the standard deviation function result.</param>
         /// <returns><see cref="SingleStandardDeviationFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
-        public SingleStandardDeviationFunctionExpression StDev(AnyElement<float> element)
+        public virtual SingleStandardDeviationFunctionExpression StDev(AnyElement<float> element)
             => new(element);
 
         /// <summary>
@@ -148,7 +148,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}"/>?, the value to use for calculating the standard deviation function result.</param>
         /// <returns><see cref="NullableSingleStandardDeviationFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>?.</returns>
-        public NullableSingleStandardDeviationFunctionExpression StDev(AnyElement<float?> element)
+        public virtual NullableSingleStandardDeviationFunctionExpression StDev(AnyElement<float?> element)
             => new(element);
     }
 }

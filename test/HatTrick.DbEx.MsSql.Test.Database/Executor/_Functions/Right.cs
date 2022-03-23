@@ -4,6 +4,7 @@ using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
+using HatTrick.DbEx.Sql.Builder.Alias;
 using System;
 using Xunit;
 
@@ -56,29 +57,28 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             right.Should().HaveLength(rightLength);
         }
 
-        //TODO: aliasing
-        //[Theory]
-        //[MsSqlVersions.AllVersions]
-        //[Trait("Operation", "SUBQUERY")]
-        //public void Does_right_of_aliased_field_succeed(int version, int rightLength = 6, string expected = "1st St")
-        //{
-        //    //given
-        //    ConfigureForMsSqlVersion(version);
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Operation", "SUBQUERY")]
+        public void Does_right_of_aliased_field_succeed(int version, int rightLength = 6, string expected = "1st St")
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
 
-        //    var exp = db.SelectOne(
-        //            db.fx.Right(dbex.Alias<string?>("_address", "Line1"), rightLength).As("address_line1")
-        //        ).From(dbo.Address)
-        //        .InnerJoin(
-        //            db.SelectOne<Address>()
-        //            .From(dbo.Address)
-        //            .Where(dbo.Address.Id == 1)
-        //        ).As("_address").On(dbo.Address.Id == ("_address", "Id"));
+            var exp = db.SelectOne(
+                    db.fx.Right(("_address", "Line1"), rightLength).As("address_line1")
+                ).From(dbo.Address)
+                .InnerJoin(
+                    db.SelectOne<Address>()
+                    .From(dbo.Address)
+                    .Where(dbo.Address.Id == 1)
+                ).As("_address").On(dbo.Address.Id == ("_address", "Id"));
 
-        //    //when               
-        //    object? result = exp.Execute();
+            //when               
+            object? result = exp.Execute();
 
-        //    //then
-        //    result.Should().BeOfType<string>().Which.Should().Be(expected);
-        //}
+            //then
+            result.Should().BeOfType<string>().Which.Should().Be(expected);
+        }
     }
 }

@@ -2,6 +2,7 @@
 using DbEx.dboData;
 using DbEx.dboDataService;
 using FluentAssertions;
+using HatTrick.DbEx.MsSql.Expression.Alias;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
 using System;
@@ -88,7 +89,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void xDoes_patindex_of_person_first_name_with_static_value_pattern_succeed(int version, string pattern = "K%", int expected = 3)
+        public void Does_where_clause_with_patindex_of_person_first_name_with_static_value_pattern_succeed(int version, string pattern = "K%", int expected = 3)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -104,29 +105,28 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             persons.Should().HaveCount(expected);
         }
 
-        //TODO: aliasing
-        //[Theory]
-        //[MsSqlVersions.AllVersions]
-        //[Trait("Operation", "SUBQUERY")]
-        //public void Does_patindex_of_aliased_field_succeed(int version, int expected = 0)
-        //{
-        //    //given
-        //    ConfigureForMsSqlVersion(version);
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Operation", "SUBQUERY")]
+        public void Does_patindex_of_aliased_field_succeed(int version, int expected = 0)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
 
-        //    var exp = db.SelectOne(
-        //            db.fx.PatIndex("P", dbex.Alias<string>("_address", "Line1")).As("address_line1")
-        //        ).From(dbo.Address)
-        //        .InnerJoin(
-        //            db.SelectOne<Address>()
-        //            .From(dbo.Address)
-        //            .Where(dbo.Address.Id == 1)
-        //        ).As("_address").On(dbo.Address.Id == ("_address", "Id"));
+            var exp = db.SelectOne(
+                    db.fx.PatIndex("P", ("_address", "Line1")).As("address_line1")
+                ).From(dbo.Address)
+                .InnerJoin(
+                    db.SelectOne<Address>()
+                    .From(dbo.Address)
+                    .Where(dbo.Address.Id == 1)
+                ).As("_address").On(dbo.Address.Id == ("_address", "Id"));
 
-        //    //when               
-        //    object result = exp.Execute();
+            //when               
+            long? result = exp.Execute();
 
-        //    //then
-        //    result.Should().BeOfType<long>().Which.Should().Be(expected);
-        //}
+            //then
+            result.Should().Be(expected);
+        }
     }
 }

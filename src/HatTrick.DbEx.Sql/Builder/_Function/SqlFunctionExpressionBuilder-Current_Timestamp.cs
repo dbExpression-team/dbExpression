@@ -17,20 +17,19 @@
 #endregion
 
 using HatTrick.DbEx.Sql.Expression;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
     public partial class SqlFunctionExpressionBuilder
     {
+        private static readonly CurrentTimestampFunctionExpression _expression = new();
+
         /// <summary>
         /// Construct an expression for the CURRENT_TIMESTAMP transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/current-timestamp-transact-sql">Microsoft docs on CURRENT_TIMESTAMP</see></para>
         /// </summary>
         /// <returns><see cref="CurrentTimestampFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{DateTime}"/>.</returns>
         public CurrentTimestampFunctionExpression Current_Timestamp
-            => new();
+            => _expression;
     }
 }

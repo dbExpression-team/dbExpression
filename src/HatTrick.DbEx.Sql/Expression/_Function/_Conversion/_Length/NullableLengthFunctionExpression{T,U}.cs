@@ -30,6 +30,12 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
+
+        protected NullableLengthFunctionExpression(AnyElement<string?> expression)
+            : base(expression, typeof(TNullableValue))
+        {
+
+        }
         #endregion
     }
 }

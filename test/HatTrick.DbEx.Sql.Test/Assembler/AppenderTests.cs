@@ -10,9 +10,6 @@ namespace HatTrick.DbEx.Sql.Test.Assembler
         [Fact]
         public void Does_appender_write_value()
         {
-            new StringSelectExpression(dbex.Alias<string?>("foo", "bar"));
-
-
             //given
             var appender = new Appender();
 

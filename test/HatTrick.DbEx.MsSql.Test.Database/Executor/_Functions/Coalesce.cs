@@ -1,4 +1,5 @@
-﻿using DbEx.DataService;
+﻿using DbEx.Data;
+using DbEx.DataService;
 using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
@@ -391,6 +392,63 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //then
             dates.Should().OnlyContain(x => x == null);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_coalesce_of_productcategorytype_for_product_and_terminate_with_null_succeed(int version, int expectedCount = 1)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectMany(
+                    db.fx.Coalesce(dbo.Product.ProductCategoryType, dbo.Product.ProductCategoryType, (ProductCategoryType?)null!).As("relevant")
+                ).From(dbo.Product)
+                .Where(dbo.Product.ProductCategoryType == DBNull.Value);
+
+            //when               
+            IList<ProductCategoryType?> types = exp.Execute();
+
+            //then
+            types.Should().OnlyContain(x => x == null).And.HaveCount(expectedCount);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_coalesce_of_productcategorytype_for_product_and_terminate_with_valid_productcategorytype_succeed(int version, int expectedCount = 1)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectMany(
+                    db.fx.Coalesce(dbo.Product.ProductCategoryType, dbo.Product.ProductCategoryType, ProductCategoryType.Books).As("relevant")
+                ).From(dbo.Product)
+                .Where(dbo.Product.ProductCategoryType == DBNull.Value);
+
+            //when               
+            IList<ProductCategoryType> types = exp.Execute();
+
+            //then
+            types.Should().OnlyContain(x => x == ProductCategoryType.Books).And.HaveCount(expectedCount);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_coalesce_of_productcategorytype_for_product_and_terminate_with_productcategorytype_succeed(int version, int expectedCount = 1)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectMany(
+                    db.fx.Coalesce(dbo.Product.ProductCategoryType, dbo.Product.ProductCategoryType, dbo.Product.ProductCategoryType).As("relevant")
+                ).From(dbo.Product)
+                .Where(dbo.Product.ProductCategoryType == DBNull.Value);
+
+            //when               
+            IList<ProductCategoryType?> types = exp.Execute();
+
+            //then
+            types.Should().OnlyContain(x => x == null).And.HaveCount(expectedCount);
         }
     }
 }

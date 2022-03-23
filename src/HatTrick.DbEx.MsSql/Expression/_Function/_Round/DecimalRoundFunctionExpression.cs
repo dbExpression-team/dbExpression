@@ -28,12 +28,12 @@ namespace HatTrick.DbEx.MsSql.Expression
         IEquatable<DecimalRoundFunctionExpression>
     {
         #region constructors
-        public DecimalRoundFunctionExpression(AnyElement<decimal> expression, IntegralNumericElement length) : base(expression, length)
+        public DecimalRoundFunctionExpression(AnyElement<decimal> expression, AnyElement length) : base(expression, length)
         {
 
         }
 
-        public DecimalRoundFunctionExpression(AnyElement<decimal> expression, IntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
+        public DecimalRoundFunctionExpression(AnyElement<decimal> expression, AnyElement length, AnyElement function) : base(expression, length, function)
         {
 
         }

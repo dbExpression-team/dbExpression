@@ -37,6 +37,18 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
+
+        public NullableStringIsNullFunctionExpression(AnyElement<string?> expression, NullableStringElement value)
+            : base(expression, value)
+        {
+
+        }
+
+        public NullableStringIsNullFunctionExpression(AnyElement<string?> expression, AnyElement<string?> value)
+            : base(expression, value)
+        {
+
+        }
         #endregion
 
         #region as

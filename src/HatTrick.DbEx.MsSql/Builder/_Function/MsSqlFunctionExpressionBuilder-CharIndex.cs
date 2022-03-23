@@ -364,55 +364,11 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
         /// </summary>
         /// <param name="pattern">A <see cref="AnyElement{String}"/>? to search for in <paramref name="element"/>.</param>
-        /// <param name="element">A <see cref="AnyElement{String}"/>? the expression to search.</param>
-        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
-        /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>?.</returns>
-        //public NullableInt64CharIndexFunctionExpression CharIndex(NullableStringElement pattern, AnyStringElement element, AnyElement<int> startSearchPosition)
-        //    => new(pattern, element, startSearchPosition);
-
-        /// <summary>
-        /// Construct an expression for the CHARINDEX transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
-        /// </summary>
-        /// <param name="pattern">A <see cref="AnyElement{String}"/>? to search for in <paramref name="element"/>.</param>
-        /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
-        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
-        /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>?.</returns>
-        //public NullableInt64CharIndexFunctionExpression CharIndex(NullableStringElement pattern, AnyStringElement element, long startSearchPosition)
-        //    => new(pattern, element, new LiteralExpression<long>(startSearchPosition));
-
-        /// <summary>
-        /// Construct an expression for the CHARINDEX transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
-        /// </summary>
-        /// <param name="pattern">A <see cref="AnyElement{String}"/>? to search for in <paramref name="element"/>.</param>
         /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
         /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
         /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>?.</returns>
         public NullableInt64CharIndexFunctionExpression CharIndex(NullableStringElement pattern, AnyStringElement element, AnyElement<long> startSearchPosition)
             => new(pattern, element, startSearchPosition);
-
-        /// <summary>
-        /// Construct an expression for the CHARINDEX transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
-        /// </summary>
-        /// <param name="pattern">A <see cref="AnyElement{String}"/>? to search for in <paramref name="element"/>.</param>
-        /// <param name="element">A <see cref="AnyElement{String}"/>? the expression to search.</param>
-        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
-        /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>?.</returns>
-        //public NullableInt64CharIndexFunctionExpression CharIndex(AnyElement<string?> pattern, AnyStringElement element, AnyElement<long> startSearchPosition)
-        //    => new(pattern, element, startSearchPosition);
-
-        /// <summary>
-        /// Construct an expression for the CHARINDEX transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
-        /// </summary>
-        /// <param name="pattern">A <see cref="AnyElement{String}"/>? to search for in <paramref name="element"/>.</param>
-        /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
-        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
-        /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>?.</returns>
-        //public NullableInt64CharIndexFunctionExpression CharIndex(NullableStringElement pattern, AnyStringElement element, int startSearchPosition)
-        //    => new(pattern, element, new LiteralExpression<int>(startSearchPosition));
 
         /// <summary>
         /// Construct an expression for the CHARINDEX transact sql function.
@@ -435,16 +391,5 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>?.</returns>
         public NullableInt64CharIndexFunctionExpression CharIndex(NullableStringElement pattern, AnyStringElement element, AnyElement<long?> startSearchPosition)
             => new(pattern, element, startSearchPosition);
-
-        /// <summary>
-        /// Construct an expression for the CHARINDEX transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
-        /// </summary>
-        /// <param name="pattern">A <see cref="AnyElement{String}"/>? to search for in <paramref name="element"/>.</param>
-        /// <param name="element">A <see cref="AnyElement{String}"/>? the expression to search.</param>
-        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
-        /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>?.</returns>
-        //public NullableInt64CharIndexFunctionExpression CharIndex(NullableStringElement pattern, AnyStringElement element, AnyElement<int?> startSearchPosition)
-        //    => new(pattern, element, startSearchPosition);
     }
 }
