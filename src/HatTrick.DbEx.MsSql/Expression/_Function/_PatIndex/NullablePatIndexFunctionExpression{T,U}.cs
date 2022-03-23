@@ -27,26 +27,8 @@ namespace HatTrick.DbEx.MsSql.Expression
         where TValue : IComparable
     {
         #region constructors
-        protected NullablePatIndexFunctionExpression(StringElement pattern, NullableStringElement expression)
+        protected NullablePatIndexFunctionExpression(AnyElement pattern, AnyElement expression)
             : base(pattern, expression, typeof(TNullableValue))
-        {
-
-        }
-
-        protected NullablePatIndexFunctionExpression(NullableStringElement pattern, AnyStringElement expression)
-            : base(pattern, expression, typeof(TNullableValue))
-        {
-
-        }
-
-        protected NullablePatIndexFunctionExpression(NullableStringElement pattern, NullableStringElement expression)
-           : base(pattern, expression, typeof(TNullableValue))
-        {
-
-        }
-
-        protected NullablePatIndexFunctionExpression(AnyStringElement pattern, NullableStringElement expression)
-           : base(pattern, expression, typeof(TNullableValue))
         {
 
         }

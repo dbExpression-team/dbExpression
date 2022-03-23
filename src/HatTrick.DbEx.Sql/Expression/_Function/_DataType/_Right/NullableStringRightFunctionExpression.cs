@@ -43,6 +43,18 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
+
+        public NullableStringRightFunctionExpression(AnyElement<string?> expression, AnyElement<int> characterCount)
+            : base(expression, characterCount)
+        {
+
+        }
+
+        public NullableStringRightFunctionExpression(AnyElement<string?> expression, AnyElement<int?> characterCount)
+            : base(expression, characterCount)
+        {
+
+        }
         #endregion
 
         #region as

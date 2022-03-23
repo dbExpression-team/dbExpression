@@ -68,8 +68,8 @@ namespace HatTrick.DbEx.MsSql.Expression
         #region alias
         public static FilterExpressionSet operator ==(NewIdFunctionExpression a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal));
         public static FilterExpressionSet operator !=(NewIdFunctionExpression a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator ==(NewIdFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NewIdFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(NewIdFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression<object>(b), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(NewIdFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression<object>(b), FilterExpressionOperator.NotEqual));
         #endregion
         #endregion
     }

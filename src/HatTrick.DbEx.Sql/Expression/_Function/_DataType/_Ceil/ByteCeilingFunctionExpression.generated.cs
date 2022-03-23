@@ -403,16 +403,16 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region alias
-        public static ObjectExpressionMediator operator +(ByteCeilingFunctionExpression a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(ByteCeilingFunctionExpression a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(ByteCeilingFunctionExpression a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(ByteCeilingFunctionExpression a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(ByteCeilingFunctionExpression a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
-        public static ObjectExpressionMediator operator +(ByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression(b.TableName, b.FieldName), ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(ByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression(b.TableName, b.FieldName), ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(ByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression(b.TableName, b.FieldName), ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(ByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression(b.TableName, b.FieldName), ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(ByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression(b.TableName, b.FieldName), ArithmeticExpressionOperator.Modulo));
+        public static ByteExpressionMediator operator +(ByteCeilingFunctionExpression a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static ByteExpressionMediator operator -(ByteCeilingFunctionExpression a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static ByteExpressionMediator operator *(ByteCeilingFunctionExpression a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        public static ByteExpressionMediator operator /(ByteCeilingFunctionExpression a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        public static ByteExpressionMediator operator %(ByteCeilingFunctionExpression a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static NullableByteExpressionMediator operator +(ByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression<byte>(b), ArithmeticExpressionOperator.Add));
+        public static NullableByteExpressionMediator operator -(ByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression<byte>(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableByteExpressionMediator operator *(ByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression<byte>(b), ArithmeticExpressionOperator.Multiply));
+        public static NullableByteExpressionMediator operator /(ByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression<byte>(b), ArithmeticExpressionOperator.Divide));
+        public static NullableByteExpressionMediator operator %(ByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression<byte>(b), ArithmeticExpressionOperator.Modulo));
         #endregion
         #endregion
 
@@ -489,12 +489,12 @@ namespace HatTrick.DbEx.Sql.Expression
         public static FilterExpressionSet operator >(ByteCeilingFunctionExpression a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan));
         public static FilterExpressionSet operator <=(ByteCeilingFunctionExpression a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual));
         public static FilterExpressionSet operator >=(ByteCeilingFunctionExpression a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual));
-        public static FilterExpressionSet operator ==(ByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(ByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator <(ByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator >(ByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.GreaterThan));
-        public static FilterExpressionSet operator <=(ByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.LessThanOrEqual));
-        public static FilterExpressionSet operator >=(ByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.GreaterThanOrEqual));
+        public static FilterExpressionSet operator ==(ByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression<byte>(b), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(ByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression<byte>(b), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(ByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression<byte>(b), FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator >(ByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression<byte>(b), FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator <=(ByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression<byte>(b), FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >=(ByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression<byte>(b), FilterExpressionOperator.GreaterThanOrEqual));
         #endregion
         #endregion
     }

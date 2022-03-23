@@ -6,6 +6,7 @@ using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
@@ -22,7 +23,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             //when
-            var purchases = db.SelectMany<Purchase>()
+            IList<Purchase> purchases = db.SelectMany<Purchase>()
                 .From(dbo.Purchase)
                 .Where(dbo.Purchase.PaymentMethodType == PaymentMethodType.PayPal)
                 .Execute();
@@ -40,7 +41,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             //when
-            var purchases = db.SelectMany(dbo.Purchase.PaymentMethodType)
+            IList<PaymentMethodType> purchases = db.SelectMany(dbo.Purchase.PaymentMethodType)
                 .From(dbo.Purchase)
                 .Where(dbo.Purchase.PaymentMethodType == PaymentMethodType.PayPal)
                 .Execute();
@@ -58,7 +59,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             //when
-            var purchases = db.SelectMany(db.fx.Cast(dbo.Purchase.PaymentMethodType).AsVarChar(20))
+            IList<string> purchases = db.SelectMany(db.fx.Cast(dbo.Purchase.PaymentMethodType).AsVarChar(20))
                 .From(dbo.Purchase)
                 .Where(dbo.Purchase.PaymentMethodType == PaymentMethodType.PayPal)
                 .Execute();
@@ -76,7 +77,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             //when
-            var purchases = db.SelectMany(dbo.Purchase.PaymentMethodType)
+            IList<PaymentMethodType> purchases = db.SelectMany(dbo.Purchase.PaymentMethodType)
                 .From(dbo.Purchase)
                 .Where(db.fx.Cast(dbo.Purchase.PaymentMethodType).AsVarChar(20) == PaymentMethodType.PayPal.ToString())
                 .Execute();
@@ -115,7 +116,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             //when
-            var sources = db.SelectMany(db.fx.Coalesce(dbo.Purchase.PaymentSourceType, PaymentSourceType.Web))
+            IList<PaymentSourceType> sources = db.SelectMany(db.fx.Coalesce(dbo.Purchase.PaymentSourceType, PaymentSourceType.Web))
                 .From(dbo.Purchase)
                 .Where(dbo.Purchase.PaymentSourceType == DBNull.Value)
                 .Execute();
@@ -133,7 +134,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             //when
-            var sources = db.SelectMany(db.fx.Coalesce(dbo.Purchase.PaymentSourceType, PaymentSourceType.Web))
+            IList<PaymentSourceType> sources = db.SelectMany(db.fx.Coalesce(dbo.Purchase.PaymentSourceType, PaymentSourceType.Web))
                 .From(dbo.Purchase)
                 .Where(dbo.Purchase.PaymentSourceType == DBNull.Value | dbo.Purchase.PaymentSourceType.In(PaymentSourceType.Web))
                 .Execute();
@@ -151,7 +152,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             //when
-            var sources = db.SelectMany(db.fx.IsNull(dbo.Purchase.PaymentSourceType, PaymentSourceType.Web))
+            IList<PaymentSourceType> sources = db.SelectMany(db.fx.IsNull(dbo.Purchase.PaymentSourceType, PaymentSourceType.Web))
                 .From(dbo.Purchase)
                 .Where(dbo.Purchase.PaymentSourceType == DBNull.Value)
                 .Execute();

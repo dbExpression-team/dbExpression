@@ -26,6 +26,12 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<NullableStringLeftFunctionExpression>
     {
         #region constructors
+        public NullableStringLeftFunctionExpression(AnyElement<string?> expression, AnyElement<int> characterCount)
+            : base(expression, characterCount)
+        {
+
+        }
+
         public NullableStringLeftFunctionExpression(NullableStringElement expression, AnyElement<int> characterCount)
             : base(expression, characterCount)
         {

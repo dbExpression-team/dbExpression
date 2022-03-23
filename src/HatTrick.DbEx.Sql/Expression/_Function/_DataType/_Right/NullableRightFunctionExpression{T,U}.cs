@@ -42,6 +42,18 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
+
+        protected NullableRightFunctionExpression(AnyElement<string?> expression, AnyElement<int> characterCount)
+            : base(expression, characterCount, typeof(TNullableValue))
+        {
+
+        }
+
+        protected NullableRightFunctionExpression(AnyElement<string?> expression, AnyElement<int?> characterCount)
+            : base(expression, characterCount, typeof(TNullableValue))
+        {
+
+        }
         #endregion
     }
 }

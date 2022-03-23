@@ -459,6 +459,19 @@ namespace DbEx.DataService
             => MsSqlDb.SelectOne(element);
 
         /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="string" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
+        ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
+        ///</param>
+        /// <returns><see cref="SelectValue{String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<string?> SelectOne(SelectExpression<string?> element) 
+            => MsSqlDb.SelectOne(element);
+
+        /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" /> value.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
@@ -939,6 +952,19 @@ namespace DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValues{String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<string?> SelectMany(NullableStringElement element)
+            => MsSqlDb.SelectMany(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="string" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
+        ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
+        ///</param>
+        /// <returns><see cref="SelectValues{String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<string?> SelectMany(SelectExpression<string?> element)
             => MsSqlDb.SelectMany(element);
 
         /// <summary>
@@ -1581,6 +1607,19 @@ namespace DbEx.DataService
             => QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
 
         /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="string" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
+        ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
+        ///</param>
+        /// <returns><see cref="SelectValue{String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<string?> SelectOne(SelectExpression<string?> element) 
+            => QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" /> value.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
@@ -2061,6 +2100,19 @@ namespace DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValues{String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<string?> SelectMany(NullableStringElement element)
+            => QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="string" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
+        ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
+        ///</param>
+        /// <returns><see cref="SelectValues{String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<string?> SelectMany(SelectExpression<string?> element)
             => QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
 
         /// <summary>

@@ -26,12 +26,14 @@ namespace HatTrick.DbEx.MsSql.Builder
 {
     public partial class MsSqlFunctionExpressionBuilder
     {
+        private static readonly GetDateFunctionExpression getDate = new();
+
         /// <summary>
         /// Construct an expression for the GETDATE transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/getdate-transact-sql">Microsoft docs on GETDATE</see></para>
         /// </summary>
         /// <returns><see cref="GetDateFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{DateTime}"/>.</returns>
         public GetDateFunctionExpression GetDate()
-            => new();
+            => getDate;
     }
 }

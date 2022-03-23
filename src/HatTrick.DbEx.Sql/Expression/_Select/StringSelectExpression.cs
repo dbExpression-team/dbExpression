@@ -27,12 +27,6 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
 
-        public StringSelectExpression(ExpressionMediator<string> expression)
-            : base(expression)
-        {
-
-        }
-
         #region as
         public new StringElement As(string alias)
         {

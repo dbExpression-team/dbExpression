@@ -568,6 +568,22 @@
             => QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
 
         /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="string" />{:nullableAnnotation} value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{String}}" />{:nullableAnnotation}
+        {#if $.Documentation.AnyColumnOfTypeString}
+        {?var:column = $.Documentation.AnyColumnOfTypeString}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Concat("Value: ", {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{String}}"/>{:nullableAnnotation}, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<string{:nullableAnnotation}> SelectOne(SelectExpression<string{:nullableAnnotation}> element) 
+            => QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" /> value.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
@@ -1151,6 +1167,22 @@
         ///</param>
         /// <returns><see cref="SelectValues{{String}}"/>{:nullableAnnotation}, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<string{:nullableAnnotation}> SelectMany(NullableStringElement element)
+            => QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="string" />{:nullableAnnotation} values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{String}}" />{:nullableAnnotation}
+        {#if $.Documentation.AnyColumnOfTypeString}
+        {?var:column = $.Documentation.AnyColumnOfTypeString}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Concat("Value: ", {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{String}}"/>{:nullableAnnotation}, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<string{:nullableAnnotation}> SelectMany(SelectExpression<string{:nullableAnnotation}> element)
             => QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
 
         /// <summary>

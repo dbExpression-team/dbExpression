@@ -204,7 +204,7 @@ namespace ServerSideBlazorApp.Service
                 .InnerJoin(dbo.CustomerAddress).On(dbo.CustomerAddress.AddressId == dbo.Address.Id)
                 .InnerJoin(dbo.Purchase).On(dbo.CustomerAddress.CustomerId == dbo.Purchase.CustomerId)
                 .Where(dbo.Purchase.Id == orderId & dbo.Address.AddressType == AddressType.Billing)
-            ).As(billingAddress).On(dbo.Customer.Id == dbex.Alias(billingAddress, nameof(OrderDetailModel.CustomerId)))
+            ).As(billingAddress).On(dbo.Customer.Id == (billingAddress, nameof(OrderDetailModel.CustomerId)))
             .LeftJoin(
                 CRMDatabase.SelectOne(
                     dbo.CustomerAddress.CustomerId.As(nameof(OrderDetailModel.CustomerId)),
@@ -218,7 +218,7 @@ namespace ServerSideBlazorApp.Service
                 .InnerJoin(dbo.CustomerAddress).On(dbo.CustomerAddress.AddressId == dbo.Address.Id)
                 .InnerJoin(dbo.Purchase).On(dbo.CustomerAddress.CustomerId == dbo.Purchase.CustomerId)
                 .Where(dbo.Purchase.Id == orderId & dbo.Address.AddressType == AddressType.Shipping)
-            ).As(shippingAddress).On(dbo.Customer.Id == dbex.Alias(shippingAddress, nameof(OrderDetailModel.CustomerId)))
+            ).As(shippingAddress).On(dbo.Customer.Id == (shippingAddress, nameof(OrderDetailModel.CustomerId)))
             .Where(dbo.Purchase.Id == orderId)
             .ExecuteAsync(
                 reader => new OrderDetailModel

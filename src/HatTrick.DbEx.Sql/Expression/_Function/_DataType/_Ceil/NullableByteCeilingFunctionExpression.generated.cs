@@ -31,137 +31,137 @@ namespace HatTrick.DbEx.Sql.Expression
         #region arithmetic operators
         #region data types
         #region byte
-        public static NullableInt32ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, byte b) => new(new ArithmeticExpression(a, new LiteralExpression<byte>(b), ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, byte b) => new(new ArithmeticExpression(a, new LiteralExpression<byte>(b), ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, byte b) => new(new ArithmeticExpression(a, new LiteralExpression<byte>(b), ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, byte b) => new(new ArithmeticExpression(a, new LiteralExpression<byte>(b), ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, byte b) => new(new ArithmeticExpression(a, new LiteralExpression<byte>(b), ArithmeticExpressionOperator.Modulo));
+        public static NullableByteExpressionMediator operator +(NullableByteCeilingFunctionExpression a, byte b) => new(new ArithmeticExpression(a, new LiteralExpression<byte>(b), ArithmeticExpressionOperator.Add));
+        public static NullableByteExpressionMediator operator -(NullableByteCeilingFunctionExpression a, byte b) => new(new ArithmeticExpression(a, new LiteralExpression<byte>(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableByteExpressionMediator operator *(NullableByteCeilingFunctionExpression a, byte b) => new(new ArithmeticExpression(a, new LiteralExpression<byte>(b), ArithmeticExpressionOperator.Multiply));
+        public static NullableByteExpressionMediator operator /(NullableByteCeilingFunctionExpression a, byte b) => new(new ArithmeticExpression(a, new LiteralExpression<byte>(b), ArithmeticExpressionOperator.Divide));
+        public static NullableByteExpressionMediator operator %(NullableByteCeilingFunctionExpression a, byte b) => new(new ArithmeticExpression(a, new LiteralExpression<byte>(b), ArithmeticExpressionOperator.Modulo));
 
-        public static NullableInt32ExpressionMediator operator +(byte a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<byte>(a), b, ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(byte a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<byte>(a), b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(byte a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<byte>(a), b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(byte a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<byte>(a), b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(byte a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<byte>(a), b, ArithmeticExpressionOperator.Modulo));
+        public static NullableByteExpressionMediator operator +(byte a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<byte>(a), b, ArithmeticExpressionOperator.Add));
+        public static NullableByteExpressionMediator operator -(byte a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<byte>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static NullableByteExpressionMediator operator *(byte a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<byte>(a), b, ArithmeticExpressionOperator.Multiply));
+        public static NullableByteExpressionMediator operator /(byte a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<byte>(a), b, ArithmeticExpressionOperator.Divide));
+        public static NullableByteExpressionMediator operator %(byte a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<byte>(a), b, ArithmeticExpressionOperator.Modulo));
 
-        public static NullableInt32ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, byte? b) => new(new ArithmeticExpression(a, new LiteralExpression<byte?>(b), ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, byte? b) => new(new ArithmeticExpression(a, new LiteralExpression<byte?>(b), ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, byte? b) => new(new ArithmeticExpression(a, new LiteralExpression<byte?>(b), ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, byte? b) => new(new ArithmeticExpression(a, new LiteralExpression<byte?>(b), ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, byte? b) => new(new ArithmeticExpression(a, new LiteralExpression<byte?>(b), ArithmeticExpressionOperator.Modulo));
+        public static NullableByteExpressionMediator operator +(NullableByteCeilingFunctionExpression a, byte? b) => new(new ArithmeticExpression(a, new LiteralExpression<byte?>(b), ArithmeticExpressionOperator.Add));
+        public static NullableByteExpressionMediator operator -(NullableByteCeilingFunctionExpression a, byte? b) => new(new ArithmeticExpression(a, new LiteralExpression<byte?>(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableByteExpressionMediator operator *(NullableByteCeilingFunctionExpression a, byte? b) => new(new ArithmeticExpression(a, new LiteralExpression<byte?>(b), ArithmeticExpressionOperator.Multiply));
+        public static NullableByteExpressionMediator operator /(NullableByteCeilingFunctionExpression a, byte? b) => new(new ArithmeticExpression(a, new LiteralExpression<byte?>(b), ArithmeticExpressionOperator.Divide));
+        public static NullableByteExpressionMediator operator %(NullableByteCeilingFunctionExpression a, byte? b) => new(new ArithmeticExpression(a, new LiteralExpression<byte?>(b), ArithmeticExpressionOperator.Modulo));
 
-        public static NullableInt32ExpressionMediator operator +(byte? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<byte?>(a), b, ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(byte? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<byte?>(a), b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(byte? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<byte?>(a), b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(byte? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<byte?>(a), b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(byte? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<byte?>(a), b, ArithmeticExpressionOperator.Modulo));
+        public static NullableByteExpressionMediator operator +(byte? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<byte?>(a), b, ArithmeticExpressionOperator.Add));
+        public static NullableByteExpressionMediator operator -(byte? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<byte?>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static NullableByteExpressionMediator operator *(byte? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<byte?>(a), b, ArithmeticExpressionOperator.Multiply));
+        public static NullableByteExpressionMediator operator /(byte? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<byte?>(a), b, ArithmeticExpressionOperator.Divide));
+        public static NullableByteExpressionMediator operator %(byte? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<byte?>(a), b, ArithmeticExpressionOperator.Modulo));
         
         #endregion
         
         #region decimal
-        public static NullableInt32ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, decimal b) => new(new ArithmeticExpression(a, new LiteralExpression<decimal>(b), ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, decimal b) => new(new ArithmeticExpression(a, new LiteralExpression<decimal>(b), ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, decimal b) => new(new ArithmeticExpression(a, new LiteralExpression<decimal>(b), ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, decimal b) => new(new ArithmeticExpression(a, new LiteralExpression<decimal>(b), ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, decimal b) => new(new ArithmeticExpression(a, new LiteralExpression<decimal>(b), ArithmeticExpressionOperator.Modulo));
+        public static NullableDecimalExpressionMediator operator +(NullableByteCeilingFunctionExpression a, decimal b) => new(new ArithmeticExpression(a, new LiteralExpression<decimal>(b), ArithmeticExpressionOperator.Add));
+        public static NullableDecimalExpressionMediator operator -(NullableByteCeilingFunctionExpression a, decimal b) => new(new ArithmeticExpression(a, new LiteralExpression<decimal>(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableDecimalExpressionMediator operator *(NullableByteCeilingFunctionExpression a, decimal b) => new(new ArithmeticExpression(a, new LiteralExpression<decimal>(b), ArithmeticExpressionOperator.Multiply));
+        public static NullableDecimalExpressionMediator operator /(NullableByteCeilingFunctionExpression a, decimal b) => new(new ArithmeticExpression(a, new LiteralExpression<decimal>(b), ArithmeticExpressionOperator.Divide));
+        public static NullableDecimalExpressionMediator operator %(NullableByteCeilingFunctionExpression a, decimal b) => new(new ArithmeticExpression(a, new LiteralExpression<decimal>(b), ArithmeticExpressionOperator.Modulo));
 
-        public static NullableInt32ExpressionMediator operator +(decimal a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<decimal>(a), b, ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(decimal a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<decimal>(a), b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(decimal a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<decimal>(a), b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(decimal a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<decimal>(a), b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(decimal a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<decimal>(a), b, ArithmeticExpressionOperator.Modulo));
+        public static NullableDecimalExpressionMediator operator +(decimal a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<decimal>(a), b, ArithmeticExpressionOperator.Add));
+        public static NullableDecimalExpressionMediator operator -(decimal a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<decimal>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static NullableDecimalExpressionMediator operator *(decimal a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<decimal>(a), b, ArithmeticExpressionOperator.Multiply));
+        public static NullableDecimalExpressionMediator operator /(decimal a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<decimal>(a), b, ArithmeticExpressionOperator.Divide));
+        public static NullableDecimalExpressionMediator operator %(decimal a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<decimal>(a), b, ArithmeticExpressionOperator.Modulo));
 
-        public static NullableInt32ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, decimal? b) => new(new ArithmeticExpression(a, new LiteralExpression<decimal?>(b), ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, decimal? b) => new(new ArithmeticExpression(a, new LiteralExpression<decimal?>(b), ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, decimal? b) => new(new ArithmeticExpression(a, new LiteralExpression<decimal?>(b), ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, decimal? b) => new(new ArithmeticExpression(a, new LiteralExpression<decimal?>(b), ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, decimal? b) => new(new ArithmeticExpression(a, new LiteralExpression<decimal?>(b), ArithmeticExpressionOperator.Modulo));
+        public static NullableDecimalExpressionMediator operator +(NullableByteCeilingFunctionExpression a, decimal? b) => new(new ArithmeticExpression(a, new LiteralExpression<decimal?>(b), ArithmeticExpressionOperator.Add));
+        public static NullableDecimalExpressionMediator operator -(NullableByteCeilingFunctionExpression a, decimal? b) => new(new ArithmeticExpression(a, new LiteralExpression<decimal?>(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableDecimalExpressionMediator operator *(NullableByteCeilingFunctionExpression a, decimal? b) => new(new ArithmeticExpression(a, new LiteralExpression<decimal?>(b), ArithmeticExpressionOperator.Multiply));
+        public static NullableDecimalExpressionMediator operator /(NullableByteCeilingFunctionExpression a, decimal? b) => new(new ArithmeticExpression(a, new LiteralExpression<decimal?>(b), ArithmeticExpressionOperator.Divide));
+        public static NullableDecimalExpressionMediator operator %(NullableByteCeilingFunctionExpression a, decimal? b) => new(new ArithmeticExpression(a, new LiteralExpression<decimal?>(b), ArithmeticExpressionOperator.Modulo));
 
-        public static NullableInt32ExpressionMediator operator +(decimal? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<decimal?>(a), b, ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(decimal? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<decimal?>(a), b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(decimal? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<decimal?>(a), b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(decimal? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<decimal?>(a), b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(decimal? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<decimal?>(a), b, ArithmeticExpressionOperator.Modulo));
+        public static NullableDecimalExpressionMediator operator +(decimal? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<decimal?>(a), b, ArithmeticExpressionOperator.Add));
+        public static NullableDecimalExpressionMediator operator -(decimal? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<decimal?>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static NullableDecimalExpressionMediator operator *(decimal? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<decimal?>(a), b, ArithmeticExpressionOperator.Multiply));
+        public static NullableDecimalExpressionMediator operator /(decimal? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<decimal?>(a), b, ArithmeticExpressionOperator.Divide));
+        public static NullableDecimalExpressionMediator operator %(decimal? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<decimal?>(a), b, ArithmeticExpressionOperator.Modulo));
         
         #endregion
         
         #region double
-        public static NullableInt32ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, double b) => new(new ArithmeticExpression(a, new LiteralExpression<double>(b), ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, double b) => new(new ArithmeticExpression(a, new LiteralExpression<double>(b), ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, double b) => new(new ArithmeticExpression(a, new LiteralExpression<double>(b), ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, double b) => new(new ArithmeticExpression(a, new LiteralExpression<double>(b), ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, double b) => new(new ArithmeticExpression(a, new LiteralExpression<double>(b), ArithmeticExpressionOperator.Modulo));
+        public static NullableDoubleExpressionMediator operator +(NullableByteCeilingFunctionExpression a, double b) => new(new ArithmeticExpression(a, new LiteralExpression<double>(b), ArithmeticExpressionOperator.Add));
+        public static NullableDoubleExpressionMediator operator -(NullableByteCeilingFunctionExpression a, double b) => new(new ArithmeticExpression(a, new LiteralExpression<double>(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableDoubleExpressionMediator operator *(NullableByteCeilingFunctionExpression a, double b) => new(new ArithmeticExpression(a, new LiteralExpression<double>(b), ArithmeticExpressionOperator.Multiply));
+        public static NullableDoubleExpressionMediator operator /(NullableByteCeilingFunctionExpression a, double b) => new(new ArithmeticExpression(a, new LiteralExpression<double>(b), ArithmeticExpressionOperator.Divide));
+        public static NullableDoubleExpressionMediator operator %(NullableByteCeilingFunctionExpression a, double b) => new(new ArithmeticExpression(a, new LiteralExpression<double>(b), ArithmeticExpressionOperator.Modulo));
 
-        public static NullableInt32ExpressionMediator operator +(double a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<double>(a), b, ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(double a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<double>(a), b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(double a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<double>(a), b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(double a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<double>(a), b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(double a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<double>(a), b, ArithmeticExpressionOperator.Modulo));
+        public static NullableDoubleExpressionMediator operator +(double a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<double>(a), b, ArithmeticExpressionOperator.Add));
+        public static NullableDoubleExpressionMediator operator -(double a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<double>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static NullableDoubleExpressionMediator operator *(double a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<double>(a), b, ArithmeticExpressionOperator.Multiply));
+        public static NullableDoubleExpressionMediator operator /(double a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<double>(a), b, ArithmeticExpressionOperator.Divide));
+        public static NullableDoubleExpressionMediator operator %(double a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<double>(a), b, ArithmeticExpressionOperator.Modulo));
 
-        public static NullableInt32ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, double? b) => new(new ArithmeticExpression(a, new LiteralExpression<double?>(b), ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, double? b) => new(new ArithmeticExpression(a, new LiteralExpression<double?>(b), ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, double? b) => new(new ArithmeticExpression(a, new LiteralExpression<double?>(b), ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, double? b) => new(new ArithmeticExpression(a, new LiteralExpression<double?>(b), ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, double? b) => new(new ArithmeticExpression(a, new LiteralExpression<double?>(b), ArithmeticExpressionOperator.Modulo));
+        public static NullableDoubleExpressionMediator operator +(NullableByteCeilingFunctionExpression a, double? b) => new(new ArithmeticExpression(a, new LiteralExpression<double?>(b), ArithmeticExpressionOperator.Add));
+        public static NullableDoubleExpressionMediator operator -(NullableByteCeilingFunctionExpression a, double? b) => new(new ArithmeticExpression(a, new LiteralExpression<double?>(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableDoubleExpressionMediator operator *(NullableByteCeilingFunctionExpression a, double? b) => new(new ArithmeticExpression(a, new LiteralExpression<double?>(b), ArithmeticExpressionOperator.Multiply));
+        public static NullableDoubleExpressionMediator operator /(NullableByteCeilingFunctionExpression a, double? b) => new(new ArithmeticExpression(a, new LiteralExpression<double?>(b), ArithmeticExpressionOperator.Divide));
+        public static NullableDoubleExpressionMediator operator %(NullableByteCeilingFunctionExpression a, double? b) => new(new ArithmeticExpression(a, new LiteralExpression<double?>(b), ArithmeticExpressionOperator.Modulo));
 
-        public static NullableInt32ExpressionMediator operator +(double? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<double?>(a), b, ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(double? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<double?>(a), b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(double? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<double?>(a), b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(double? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<double?>(a), b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(double? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<double?>(a), b, ArithmeticExpressionOperator.Modulo));
+        public static NullableDoubleExpressionMediator operator +(double? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<double?>(a), b, ArithmeticExpressionOperator.Add));
+        public static NullableDoubleExpressionMediator operator -(double? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<double?>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static NullableDoubleExpressionMediator operator *(double? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<double?>(a), b, ArithmeticExpressionOperator.Multiply));
+        public static NullableDoubleExpressionMediator operator /(double? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<double?>(a), b, ArithmeticExpressionOperator.Divide));
+        public static NullableDoubleExpressionMediator operator %(double? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<double?>(a), b, ArithmeticExpressionOperator.Modulo));
         
         #endregion
         
         #region float
-        public static NullableInt32ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, float b) => new(new ArithmeticExpression(a, new LiteralExpression<float>(b), ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, float b) => new(new ArithmeticExpression(a, new LiteralExpression<float>(b), ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, float b) => new(new ArithmeticExpression(a, new LiteralExpression<float>(b), ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, float b) => new(new ArithmeticExpression(a, new LiteralExpression<float>(b), ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, float b) => new(new ArithmeticExpression(a, new LiteralExpression<float>(b), ArithmeticExpressionOperator.Modulo));
+        public static NullableSingleExpressionMediator operator +(NullableByteCeilingFunctionExpression a, float b) => new(new ArithmeticExpression(a, new LiteralExpression<float>(b), ArithmeticExpressionOperator.Add));
+        public static NullableSingleExpressionMediator operator -(NullableByteCeilingFunctionExpression a, float b) => new(new ArithmeticExpression(a, new LiteralExpression<float>(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableSingleExpressionMediator operator *(NullableByteCeilingFunctionExpression a, float b) => new(new ArithmeticExpression(a, new LiteralExpression<float>(b), ArithmeticExpressionOperator.Multiply));
+        public static NullableSingleExpressionMediator operator /(NullableByteCeilingFunctionExpression a, float b) => new(new ArithmeticExpression(a, new LiteralExpression<float>(b), ArithmeticExpressionOperator.Divide));
+        public static NullableSingleExpressionMediator operator %(NullableByteCeilingFunctionExpression a, float b) => new(new ArithmeticExpression(a, new LiteralExpression<float>(b), ArithmeticExpressionOperator.Modulo));
 
-        public static NullableInt32ExpressionMediator operator +(float a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<float>(a), b, ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(float a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<float>(a), b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(float a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<float>(a), b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(float a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<float>(a), b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(float a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<float>(a), b, ArithmeticExpressionOperator.Modulo));
+        public static NullableSingleExpressionMediator operator +(float a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<float>(a), b, ArithmeticExpressionOperator.Add));
+        public static NullableSingleExpressionMediator operator -(float a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<float>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static NullableSingleExpressionMediator operator *(float a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<float>(a), b, ArithmeticExpressionOperator.Multiply));
+        public static NullableSingleExpressionMediator operator /(float a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<float>(a), b, ArithmeticExpressionOperator.Divide));
+        public static NullableSingleExpressionMediator operator %(float a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<float>(a), b, ArithmeticExpressionOperator.Modulo));
 
-        public static NullableInt32ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, float? b) => new(new ArithmeticExpression(a, new LiteralExpression<float?>(b), ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, float? b) => new(new ArithmeticExpression(a, new LiteralExpression<float?>(b), ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, float? b) => new(new ArithmeticExpression(a, new LiteralExpression<float?>(b), ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, float? b) => new(new ArithmeticExpression(a, new LiteralExpression<float?>(b), ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, float? b) => new(new ArithmeticExpression(a, new LiteralExpression<float?>(b), ArithmeticExpressionOperator.Modulo));
+        public static NullableSingleExpressionMediator operator +(NullableByteCeilingFunctionExpression a, float? b) => new(new ArithmeticExpression(a, new LiteralExpression<float?>(b), ArithmeticExpressionOperator.Add));
+        public static NullableSingleExpressionMediator operator -(NullableByteCeilingFunctionExpression a, float? b) => new(new ArithmeticExpression(a, new LiteralExpression<float?>(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableSingleExpressionMediator operator *(NullableByteCeilingFunctionExpression a, float? b) => new(new ArithmeticExpression(a, new LiteralExpression<float?>(b), ArithmeticExpressionOperator.Multiply));
+        public static NullableSingleExpressionMediator operator /(NullableByteCeilingFunctionExpression a, float? b) => new(new ArithmeticExpression(a, new LiteralExpression<float?>(b), ArithmeticExpressionOperator.Divide));
+        public static NullableSingleExpressionMediator operator %(NullableByteCeilingFunctionExpression a, float? b) => new(new ArithmeticExpression(a, new LiteralExpression<float?>(b), ArithmeticExpressionOperator.Modulo));
 
-        public static NullableInt32ExpressionMediator operator +(float? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<float?>(a), b, ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(float? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<float?>(a), b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(float? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<float?>(a), b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(float? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<float?>(a), b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(float? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<float?>(a), b, ArithmeticExpressionOperator.Modulo));
+        public static NullableSingleExpressionMediator operator +(float? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<float?>(a), b, ArithmeticExpressionOperator.Add));
+        public static NullableSingleExpressionMediator operator -(float? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<float?>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static NullableSingleExpressionMediator operator *(float? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<float?>(a), b, ArithmeticExpressionOperator.Multiply));
+        public static NullableSingleExpressionMediator operator /(float? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<float?>(a), b, ArithmeticExpressionOperator.Divide));
+        public static NullableSingleExpressionMediator operator %(float? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<float?>(a), b, ArithmeticExpressionOperator.Modulo));
         
         #endregion
         
         #region short
-        public static NullableInt32ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, short b) => new(new ArithmeticExpression(a, new LiteralExpression<short>(b), ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, short b) => new(new ArithmeticExpression(a, new LiteralExpression<short>(b), ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, short b) => new(new ArithmeticExpression(a, new LiteralExpression<short>(b), ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, short b) => new(new ArithmeticExpression(a, new LiteralExpression<short>(b), ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, short b) => new(new ArithmeticExpression(a, new LiteralExpression<short>(b), ArithmeticExpressionOperator.Modulo));
+        public static NullableInt16ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, short b) => new(new ArithmeticExpression(a, new LiteralExpression<short>(b), ArithmeticExpressionOperator.Add));
+        public static NullableInt16ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, short b) => new(new ArithmeticExpression(a, new LiteralExpression<short>(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableInt16ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, short b) => new(new ArithmeticExpression(a, new LiteralExpression<short>(b), ArithmeticExpressionOperator.Multiply));
+        public static NullableInt16ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, short b) => new(new ArithmeticExpression(a, new LiteralExpression<short>(b), ArithmeticExpressionOperator.Divide));
+        public static NullableInt16ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, short b) => new(new ArithmeticExpression(a, new LiteralExpression<short>(b), ArithmeticExpressionOperator.Modulo));
 
-        public static NullableInt32ExpressionMediator operator +(short a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<short>(a), b, ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(short a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<short>(a), b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(short a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<short>(a), b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(short a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<short>(a), b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(short a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<short>(a), b, ArithmeticExpressionOperator.Modulo));
+        public static NullableInt16ExpressionMediator operator +(short a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<short>(a), b, ArithmeticExpressionOperator.Add));
+        public static NullableInt16ExpressionMediator operator -(short a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<short>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static NullableInt16ExpressionMediator operator *(short a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<short>(a), b, ArithmeticExpressionOperator.Multiply));
+        public static NullableInt16ExpressionMediator operator /(short a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<short>(a), b, ArithmeticExpressionOperator.Divide));
+        public static NullableInt16ExpressionMediator operator %(short a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<short>(a), b, ArithmeticExpressionOperator.Modulo));
 
-        public static NullableInt32ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, short? b) => new(new ArithmeticExpression(a, new LiteralExpression<short?>(b), ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, short? b) => new(new ArithmeticExpression(a, new LiteralExpression<short?>(b), ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, short? b) => new(new ArithmeticExpression(a, new LiteralExpression<short?>(b), ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, short? b) => new(new ArithmeticExpression(a, new LiteralExpression<short?>(b), ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, short? b) => new(new ArithmeticExpression(a, new LiteralExpression<short?>(b), ArithmeticExpressionOperator.Modulo));
+        public static NullableInt16ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, short? b) => new(new ArithmeticExpression(a, new LiteralExpression<short?>(b), ArithmeticExpressionOperator.Add));
+        public static NullableInt16ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, short? b) => new(new ArithmeticExpression(a, new LiteralExpression<short?>(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableInt16ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, short? b) => new(new ArithmeticExpression(a, new LiteralExpression<short?>(b), ArithmeticExpressionOperator.Multiply));
+        public static NullableInt16ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, short? b) => new(new ArithmeticExpression(a, new LiteralExpression<short?>(b), ArithmeticExpressionOperator.Divide));
+        public static NullableInt16ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, short? b) => new(new ArithmeticExpression(a, new LiteralExpression<short?>(b), ArithmeticExpressionOperator.Modulo));
 
-        public static NullableInt32ExpressionMediator operator +(short? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<short?>(a), b, ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(short? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<short?>(a), b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(short? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<short?>(a), b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(short? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<short?>(a), b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(short? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<short?>(a), b, ArithmeticExpressionOperator.Modulo));
+        public static NullableInt16ExpressionMediator operator +(short? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<short?>(a), b, ArithmeticExpressionOperator.Add));
+        public static NullableInt16ExpressionMediator operator -(short? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<short?>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static NullableInt16ExpressionMediator operator *(short? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<short?>(a), b, ArithmeticExpressionOperator.Multiply));
+        public static NullableInt16ExpressionMediator operator /(short? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<short?>(a), b, ArithmeticExpressionOperator.Divide));
+        public static NullableInt16ExpressionMediator operator %(short? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<short?>(a), b, ArithmeticExpressionOperator.Modulo));
         
         #endregion
         
@@ -193,29 +193,29 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
         
         #region long
-        public static NullableInt32ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, long b) => new(new ArithmeticExpression(a, new LiteralExpression<long>(b), ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, long b) => new(new ArithmeticExpression(a, new LiteralExpression<long>(b), ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, long b) => new(new ArithmeticExpression(a, new LiteralExpression<long>(b), ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, long b) => new(new ArithmeticExpression(a, new LiteralExpression<long>(b), ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, long b) => new(new ArithmeticExpression(a, new LiteralExpression<long>(b), ArithmeticExpressionOperator.Modulo));
+        public static NullableInt64ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, long b) => new(new ArithmeticExpression(a, new LiteralExpression<long>(b), ArithmeticExpressionOperator.Add));
+        public static NullableInt64ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, long b) => new(new ArithmeticExpression(a, new LiteralExpression<long>(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableInt64ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, long b) => new(new ArithmeticExpression(a, new LiteralExpression<long>(b), ArithmeticExpressionOperator.Multiply));
+        public static NullableInt64ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, long b) => new(new ArithmeticExpression(a, new LiteralExpression<long>(b), ArithmeticExpressionOperator.Divide));
+        public static NullableInt64ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, long b) => new(new ArithmeticExpression(a, new LiteralExpression<long>(b), ArithmeticExpressionOperator.Modulo));
 
-        public static NullableInt32ExpressionMediator operator +(long a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<long>(a), b, ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(long a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<long>(a), b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(long a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<long>(a), b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(long a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<long>(a), b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(long a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<long>(a), b, ArithmeticExpressionOperator.Modulo));
+        public static NullableInt64ExpressionMediator operator +(long a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<long>(a), b, ArithmeticExpressionOperator.Add));
+        public static NullableInt64ExpressionMediator operator -(long a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<long>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static NullableInt64ExpressionMediator operator *(long a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<long>(a), b, ArithmeticExpressionOperator.Multiply));
+        public static NullableInt64ExpressionMediator operator /(long a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<long>(a), b, ArithmeticExpressionOperator.Divide));
+        public static NullableInt64ExpressionMediator operator %(long a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<long>(a), b, ArithmeticExpressionOperator.Modulo));
 
-        public static NullableInt32ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, long? b) => new(new ArithmeticExpression(a, new LiteralExpression<long?>(b), ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, long? b) => new(new ArithmeticExpression(a, new LiteralExpression<long?>(b), ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, long? b) => new(new ArithmeticExpression(a, new LiteralExpression<long?>(b), ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, long? b) => new(new ArithmeticExpression(a, new LiteralExpression<long?>(b), ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, long? b) => new(new ArithmeticExpression(a, new LiteralExpression<long?>(b), ArithmeticExpressionOperator.Modulo));
+        public static NullableInt64ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, long? b) => new(new ArithmeticExpression(a, new LiteralExpression<long?>(b), ArithmeticExpressionOperator.Add));
+        public static NullableInt64ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, long? b) => new(new ArithmeticExpression(a, new LiteralExpression<long?>(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableInt64ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, long? b) => new(new ArithmeticExpression(a, new LiteralExpression<long?>(b), ArithmeticExpressionOperator.Multiply));
+        public static NullableInt64ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, long? b) => new(new ArithmeticExpression(a, new LiteralExpression<long?>(b), ArithmeticExpressionOperator.Divide));
+        public static NullableInt64ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, long? b) => new(new ArithmeticExpression(a, new LiteralExpression<long?>(b), ArithmeticExpressionOperator.Modulo));
 
-        public static NullableInt32ExpressionMediator operator +(long? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<long?>(a), b, ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(long? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<long?>(a), b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(long? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<long?>(a), b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(long? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<long?>(a), b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(long? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<long?>(a), b, ArithmeticExpressionOperator.Modulo));
+        public static NullableInt64ExpressionMediator operator +(long? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<long?>(a), b, ArithmeticExpressionOperator.Add));
+        public static NullableInt64ExpressionMediator operator -(long? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<long?>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static NullableInt64ExpressionMediator operator *(long? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<long?>(a), b, ArithmeticExpressionOperator.Multiply));
+        public static NullableInt64ExpressionMediator operator /(long? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<long?>(a), b, ArithmeticExpressionOperator.Divide));
+        public static NullableInt64ExpressionMediator operator %(long? a, NullableByteCeilingFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<long?>(a), b, ArithmeticExpressionOperator.Modulo));
         
         #endregion
         
@@ -223,69 +223,69 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region fields
         #region byte
-        public static NullableInt32ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, ByteFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, ByteFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, ByteFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, ByteFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, ByteFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static NullableByteExpressionMediator operator +(NullableByteCeilingFunctionExpression a, ByteFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static NullableByteExpressionMediator operator -(NullableByteCeilingFunctionExpression a, ByteFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static NullableByteExpressionMediator operator *(NullableByteCeilingFunctionExpression a, ByteFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        public static NullableByteExpressionMediator operator /(NullableByteCeilingFunctionExpression a, ByteFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        public static NullableByteExpressionMediator operator %(NullableByteCeilingFunctionExpression a, ByteFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
 
-        public static NullableInt32ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, NullableByteFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, NullableByteFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, NullableByteFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, NullableByteFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, NullableByteFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static NullableByteExpressionMediator operator +(NullableByteCeilingFunctionExpression a, NullableByteFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static NullableByteExpressionMediator operator -(NullableByteCeilingFunctionExpression a, NullableByteFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static NullableByteExpressionMediator operator *(NullableByteCeilingFunctionExpression a, NullableByteFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        public static NullableByteExpressionMediator operator /(NullableByteCeilingFunctionExpression a, NullableByteFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        public static NullableByteExpressionMediator operator %(NullableByteCeilingFunctionExpression a, NullableByteFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
         #endregion        
         #region decimal
-        public static NullableInt32ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, DecimalFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, DecimalFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, DecimalFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, DecimalFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, DecimalFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static NullableDecimalExpressionMediator operator +(NullableByteCeilingFunctionExpression a, DecimalFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static NullableDecimalExpressionMediator operator -(NullableByteCeilingFunctionExpression a, DecimalFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static NullableDecimalExpressionMediator operator *(NullableByteCeilingFunctionExpression a, DecimalFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        public static NullableDecimalExpressionMediator operator /(NullableByteCeilingFunctionExpression a, DecimalFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        public static NullableDecimalExpressionMediator operator %(NullableByteCeilingFunctionExpression a, DecimalFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
 
-        public static NullableInt32ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, NullableDecimalFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, NullableDecimalFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, NullableDecimalFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, NullableDecimalFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, NullableDecimalFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static NullableDecimalExpressionMediator operator +(NullableByteCeilingFunctionExpression a, NullableDecimalFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static NullableDecimalExpressionMediator operator -(NullableByteCeilingFunctionExpression a, NullableDecimalFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static NullableDecimalExpressionMediator operator *(NullableByteCeilingFunctionExpression a, NullableDecimalFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        public static NullableDecimalExpressionMediator operator /(NullableByteCeilingFunctionExpression a, NullableDecimalFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        public static NullableDecimalExpressionMediator operator %(NullableByteCeilingFunctionExpression a, NullableDecimalFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
         #endregion        
         #region double
-        public static NullableInt32ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, DoubleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, DoubleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, DoubleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, DoubleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, DoubleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static NullableDoubleExpressionMediator operator +(NullableByteCeilingFunctionExpression a, DoubleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static NullableDoubleExpressionMediator operator -(NullableByteCeilingFunctionExpression a, DoubleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static NullableDoubleExpressionMediator operator *(NullableByteCeilingFunctionExpression a, DoubleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        public static NullableDoubleExpressionMediator operator /(NullableByteCeilingFunctionExpression a, DoubleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        public static NullableDoubleExpressionMediator operator %(NullableByteCeilingFunctionExpression a, DoubleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
 
-        public static NullableInt32ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, NullableDoubleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, NullableDoubleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, NullableDoubleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, NullableDoubleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, NullableDoubleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static NullableDoubleExpressionMediator operator +(NullableByteCeilingFunctionExpression a, NullableDoubleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static NullableDoubleExpressionMediator operator -(NullableByteCeilingFunctionExpression a, NullableDoubleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static NullableDoubleExpressionMediator operator *(NullableByteCeilingFunctionExpression a, NullableDoubleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        public static NullableDoubleExpressionMediator operator /(NullableByteCeilingFunctionExpression a, NullableDoubleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        public static NullableDoubleExpressionMediator operator %(NullableByteCeilingFunctionExpression a, NullableDoubleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
         #endregion        
         #region float
-        public static NullableInt32ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, SingleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, SingleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, SingleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, SingleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, SingleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static NullableSingleExpressionMediator operator +(NullableByteCeilingFunctionExpression a, SingleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static NullableSingleExpressionMediator operator -(NullableByteCeilingFunctionExpression a, SingleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static NullableSingleExpressionMediator operator *(NullableByteCeilingFunctionExpression a, SingleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        public static NullableSingleExpressionMediator operator /(NullableByteCeilingFunctionExpression a, SingleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        public static NullableSingleExpressionMediator operator %(NullableByteCeilingFunctionExpression a, SingleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
 
-        public static NullableInt32ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static NullableSingleExpressionMediator operator +(NullableByteCeilingFunctionExpression a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static NullableSingleExpressionMediator operator -(NullableByteCeilingFunctionExpression a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static NullableSingleExpressionMediator operator *(NullableByteCeilingFunctionExpression a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        public static NullableSingleExpressionMediator operator /(NullableByteCeilingFunctionExpression a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        public static NullableSingleExpressionMediator operator %(NullableByteCeilingFunctionExpression a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
         #endregion        
         #region short
-        public static NullableInt32ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, Int16FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, Int16FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, Int16FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, Int16FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, Int16FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static NullableInt16ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, Int16FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static NullableInt16ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, Int16FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static NullableInt16ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, Int16FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        public static NullableInt16ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, Int16FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        public static NullableInt16ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, Int16FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
 
-        public static NullableInt32ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, NullableInt16FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, NullableInt16FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, NullableInt16FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, NullableInt16FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, NullableInt16FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static NullableInt16ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, NullableInt16FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static NullableInt16ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, NullableInt16FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static NullableInt16ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, NullableInt16FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        public static NullableInt16ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, NullableInt16FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        public static NullableInt16ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, NullableInt16FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
         #endregion        
         #region int
         public static NullableInt32ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, Int32FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
@@ -301,89 +301,89 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableInt32ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, NullableInt32FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
         #endregion        
         #region long
-        public static NullableInt32ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, Int64FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, Int64FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, Int64FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, Int64FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, Int64FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static NullableInt64ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, Int64FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static NullableInt64ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, Int64FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static NullableInt64ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, Int64FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        public static NullableInt64ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, Int64FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        public static NullableInt64ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, Int64FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
 
-        public static NullableInt32ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, NullableInt64FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, NullableInt64FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, NullableInt64FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, NullableInt64FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, NullableInt64FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static NullableInt64ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, NullableInt64FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static NullableInt64ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, NullableInt64FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static NullableInt64ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, NullableInt64FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        public static NullableInt64ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, NullableInt64FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        public static NullableInt64ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, NullableInt64FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
         #endregion        
         #endregion
 
         #region mediator
         #region byte
-        public static NullableInt32ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, ByteExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, ByteExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, ByteExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, ByteExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, ByteExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static NullableByteExpressionMediator operator +(NullableByteCeilingFunctionExpression a, ByteExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static NullableByteExpressionMediator operator -(NullableByteCeilingFunctionExpression a, ByteExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static NullableByteExpressionMediator operator *(NullableByteCeilingFunctionExpression a, ByteExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        public static NullableByteExpressionMediator operator /(NullableByteCeilingFunctionExpression a, ByteExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        public static NullableByteExpressionMediator operator %(NullableByteCeilingFunctionExpression a, ByteExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
 
-        public static NullableInt32ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, NullableByteExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, NullableByteExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, NullableByteExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, NullableByteExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, NullableByteExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static NullableByteExpressionMediator operator +(NullableByteCeilingFunctionExpression a, NullableByteExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static NullableByteExpressionMediator operator -(NullableByteCeilingFunctionExpression a, NullableByteExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static NullableByteExpressionMediator operator *(NullableByteCeilingFunctionExpression a, NullableByteExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        public static NullableByteExpressionMediator operator /(NullableByteCeilingFunctionExpression a, NullableByteExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        public static NullableByteExpressionMediator operator %(NullableByteCeilingFunctionExpression a, NullableByteExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
         #endregion
         
         #region decimal
-        public static NullableInt32ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, DecimalExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, DecimalExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, DecimalExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, DecimalExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, DecimalExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static NullableDecimalExpressionMediator operator +(NullableByteCeilingFunctionExpression a, DecimalExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static NullableDecimalExpressionMediator operator -(NullableByteCeilingFunctionExpression a, DecimalExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static NullableDecimalExpressionMediator operator *(NullableByteCeilingFunctionExpression a, DecimalExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        public static NullableDecimalExpressionMediator operator /(NullableByteCeilingFunctionExpression a, DecimalExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        public static NullableDecimalExpressionMediator operator %(NullableByteCeilingFunctionExpression a, DecimalExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
 
-        public static NullableInt32ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, NullableDecimalExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, NullableDecimalExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, NullableDecimalExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, NullableDecimalExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, NullableDecimalExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static NullableDecimalExpressionMediator operator +(NullableByteCeilingFunctionExpression a, NullableDecimalExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static NullableDecimalExpressionMediator operator -(NullableByteCeilingFunctionExpression a, NullableDecimalExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static NullableDecimalExpressionMediator operator *(NullableByteCeilingFunctionExpression a, NullableDecimalExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        public static NullableDecimalExpressionMediator operator /(NullableByteCeilingFunctionExpression a, NullableDecimalExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        public static NullableDecimalExpressionMediator operator %(NullableByteCeilingFunctionExpression a, NullableDecimalExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
         #endregion
         
         #region double
-        public static NullableInt32ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, DoubleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, DoubleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, DoubleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, DoubleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, DoubleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static NullableDoubleExpressionMediator operator +(NullableByteCeilingFunctionExpression a, DoubleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static NullableDoubleExpressionMediator operator -(NullableByteCeilingFunctionExpression a, DoubleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static NullableDoubleExpressionMediator operator *(NullableByteCeilingFunctionExpression a, DoubleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        public static NullableDoubleExpressionMediator operator /(NullableByteCeilingFunctionExpression a, DoubleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        public static NullableDoubleExpressionMediator operator %(NullableByteCeilingFunctionExpression a, DoubleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
 
-        public static NullableInt32ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, NullableDoubleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, NullableDoubleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, NullableDoubleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, NullableDoubleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, NullableDoubleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static NullableDoubleExpressionMediator operator +(NullableByteCeilingFunctionExpression a, NullableDoubleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static NullableDoubleExpressionMediator operator -(NullableByteCeilingFunctionExpression a, NullableDoubleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static NullableDoubleExpressionMediator operator *(NullableByteCeilingFunctionExpression a, NullableDoubleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        public static NullableDoubleExpressionMediator operator /(NullableByteCeilingFunctionExpression a, NullableDoubleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        public static NullableDoubleExpressionMediator operator %(NullableByteCeilingFunctionExpression a, NullableDoubleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
         #endregion
         
         #region float
-        public static NullableInt32ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, SingleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, SingleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, SingleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, SingleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, SingleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static NullableSingleExpressionMediator operator +(NullableByteCeilingFunctionExpression a, SingleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static NullableSingleExpressionMediator operator -(NullableByteCeilingFunctionExpression a, SingleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static NullableSingleExpressionMediator operator *(NullableByteCeilingFunctionExpression a, SingleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        public static NullableSingleExpressionMediator operator /(NullableByteCeilingFunctionExpression a, SingleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        public static NullableSingleExpressionMediator operator %(NullableByteCeilingFunctionExpression a, SingleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
 
-        public static NullableInt32ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, NullableSingleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, NullableSingleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, NullableSingleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, NullableSingleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, NullableSingleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static NullableSingleExpressionMediator operator +(NullableByteCeilingFunctionExpression a, NullableSingleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static NullableSingleExpressionMediator operator -(NullableByteCeilingFunctionExpression a, NullableSingleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static NullableSingleExpressionMediator operator *(NullableByteCeilingFunctionExpression a, NullableSingleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        public static NullableSingleExpressionMediator operator /(NullableByteCeilingFunctionExpression a, NullableSingleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        public static NullableSingleExpressionMediator operator %(NullableByteCeilingFunctionExpression a, NullableSingleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
         #endregion
         
         #region short
-        public static NullableInt32ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, Int16ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, Int16ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, Int16ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, Int16ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, Int16ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static NullableInt16ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, Int16ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static NullableInt16ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, Int16ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static NullableInt16ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, Int16ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        public static NullableInt16ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, Int16ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        public static NullableInt16ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, Int16ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
 
-        public static NullableInt32ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, NullableInt16ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, NullableInt16ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, NullableInt16ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, NullableInt16ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, NullableInt16ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static NullableInt16ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, NullableInt16ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static NullableInt16ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, NullableInt16ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static NullableInt16ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, NullableInt16ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        public static NullableInt16ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, NullableInt16ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        public static NullableInt16ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, NullableInt16ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
         #endregion
         
         #region int
@@ -401,32 +401,32 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
         
         #region long
-        public static NullableInt32ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, Int64ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, Int64ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, Int64ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, Int64ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, Int64ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static NullableInt64ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, Int64ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static NullableInt64ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, Int64ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static NullableInt64ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, Int64ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        public static NullableInt64ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, Int64ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        public static NullableInt64ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, Int64ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
 
-        public static NullableInt32ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, NullableInt64ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableInt32ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, NullableInt64ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt32ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, NullableInt64ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt32ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, NullableInt64ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt32ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, NullableInt64ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static NullableInt64ExpressionMediator operator +(NullableByteCeilingFunctionExpression a, NullableInt64ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static NullableInt64ExpressionMediator operator -(NullableByteCeilingFunctionExpression a, NullableInt64ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static NullableInt64ExpressionMediator operator *(NullableByteCeilingFunctionExpression a, NullableInt64ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        public static NullableInt64ExpressionMediator operator /(NullableByteCeilingFunctionExpression a, NullableInt64ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        public static NullableInt64ExpressionMediator operator %(NullableByteCeilingFunctionExpression a, NullableInt64ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
         #endregion
         
         #endregion
 
         #region alias
-        public static ObjectExpressionMediator operator +(NullableByteCeilingFunctionExpression a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(NullableByteCeilingFunctionExpression a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(NullableByteCeilingFunctionExpression a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(NullableByteCeilingFunctionExpression a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(NullableByteCeilingFunctionExpression a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
-        public static ObjectExpressionMediator operator +(NullableByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression(b.TableName, b.FieldName), ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(NullableByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression(b.TableName, b.FieldName), ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(NullableByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression(b.TableName, b.FieldName), ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(NullableByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression(b.TableName, b.FieldName), ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(NullableByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression(b.TableName, b.FieldName), ArithmeticExpressionOperator.Modulo));
+        public static NullableByteExpressionMediator operator +(NullableByteCeilingFunctionExpression a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static NullableByteExpressionMediator operator -(NullableByteCeilingFunctionExpression a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static NullableByteExpressionMediator operator *(NullableByteCeilingFunctionExpression a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        public static NullableByteExpressionMediator operator /(NullableByteCeilingFunctionExpression a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        public static NullableByteExpressionMediator operator %(NullableByteCeilingFunctionExpression a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static NullableByteExpressionMediator operator +(NullableByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression<byte?>(b), ArithmeticExpressionOperator.Add));
+        public static NullableByteExpressionMediator operator -(NullableByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression<byte?>(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableByteExpressionMediator operator *(NullableByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression<byte?>(b), ArithmeticExpressionOperator.Multiply));
+        public static NullableByteExpressionMediator operator /(NullableByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression<byte?>(b), ArithmeticExpressionOperator.Divide));
+        public static NullableByteExpressionMediator operator %(NullableByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression<byte?>(b), ArithmeticExpressionOperator.Modulo));
         #endregion
         #endregion
 
@@ -510,12 +510,12 @@ namespace HatTrick.DbEx.Sql.Expression
         public static FilterExpressionSet operator >(NullableByteCeilingFunctionExpression a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan));
         public static FilterExpressionSet operator <=(NullableByteCeilingFunctionExpression a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual));
         public static FilterExpressionSet operator >=(NullableByteCeilingFunctionExpression a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual));
-        public static FilterExpressionSet operator ==(NullableByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator <(NullableByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator >(NullableByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.GreaterThan));
-        public static FilterExpressionSet operator <=(NullableByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.LessThanOrEqual));
-        public static FilterExpressionSet operator >=(NullableByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.GreaterThanOrEqual));
+        public static FilterExpressionSet operator ==(NullableByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression<byte?>(b), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(NullableByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression<byte?>(b), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(NullableByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression<byte?>(b), FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator >(NullableByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression<byte?>(b), FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator <=(NullableByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression<byte?>(b), FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >=(NullableByteCeilingFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression<byte?>(b), FilterExpressionOperator.GreaterThanOrEqual));
         #endregion
 
         #endregion

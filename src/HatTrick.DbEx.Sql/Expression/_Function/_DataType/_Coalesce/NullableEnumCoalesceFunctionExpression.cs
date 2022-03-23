@@ -35,13 +35,13 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
 
-        public NullableEnumCoalesceFunctionExpression(IList<NullableEnumElement<TEnum>> expressions, AnyElement<TEnum> termination) 
+        public NullableEnumCoalesceFunctionExpression(IList<NullableEnumElement<TEnum>> expressions, AnyElement<TEnum?> termination)
             : base(expressions?.Concat(new IExpressionElement[1] { termination }) ?? new IExpressionElement[1] { termination })
         {
 
         }
 
-        public NullableEnumCoalesceFunctionExpression(IList<NullableEnumElement<TEnum>> expressions, AnyElement<TEnum?> termination) 
+        public NullableEnumCoalesceFunctionExpression(IList<AnyElement<TEnum?>> expressions, AnyElement<TEnum?> termination) 
             : base(expressions?.Concat(new IExpressionElement[1] { termination }) ?? new IExpressionElement[1] { termination })
         {
 

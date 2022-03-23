@@ -187,7 +187,7 @@ namespace ServerSideBlazorApp.Service
                     .From(dbo.Address)
                     .InnerJoin(dbo.CustomerAddress).On(dbo.CustomerAddress.AddressId == dbo.Address.Id)
                     .Where(dbo.CustomerAddress.CustomerId == customerId & dbo.Address.AddressType == AddressType.Mailing)
-                ).As(mailingAddress).On(dbo.Customer.Id == dbex.Alias(nameof(CustomerDetailModel.MailingAddress), nameof(CustomerSummaryModel.Id)))
+                ).As(mailingAddress).On(dbo.Customer.Id == (nameof(CustomerDetailModel.MailingAddress), nameof(CustomerSummaryModel.Id)))
                 .LeftJoin(
                     CRMDatabase.SelectOne(
                         dbo.CustomerAddress.CustomerId.As(nameof(CustomerSummaryModel.Id)),
@@ -200,7 +200,7 @@ namespace ServerSideBlazorApp.Service
                     .From(dbo.Address)
                     .InnerJoin(dbo.CustomerAddress).On(dbo.CustomerAddress.AddressId == dbo.Address.Id)
                     .Where(dbo.CustomerAddress.CustomerId == customerId & dbo.Address.AddressType == AddressType.Billing)
-                ).As(billingAddress).On(dbo.Customer.Id == dbex.Alias(nameof(CustomerDetailModel.BillingAddress), nameof(CustomerSummaryModel.Id)))
+                ).As(billingAddress).On(dbo.Customer.Id == (nameof(CustomerDetailModel.BillingAddress), nameof(CustomerSummaryModel.Id)))
                 .LeftJoin(
                     CRMDatabase.SelectOne(
                         dbo.CustomerAddress.CustomerId.As(nameof(CustomerSummaryModel.Id)),
@@ -213,7 +213,7 @@ namespace ServerSideBlazorApp.Service
                     .From(dbo.Address)
                     .InnerJoin(dbo.CustomerAddress).On(dbo.CustomerAddress.AddressId == dbo.Address.Id)
                     .Where(dbo.CustomerAddress.CustomerId == customerId & dbo.Address.AddressType == AddressType.Shipping)
-                ).As(shippingAddress).On(dbo.Customer.Id == dbex.Alias(nameof(CustomerDetailModel.ShippingAddress), nameof(CustomerSummaryModel.Id)))
+                ).As(shippingAddress).On(dbo.Customer.Id == (nameof(CustomerDetailModel.ShippingAddress), nameof(CustomerSummaryModel.Id)))
                 .Where(dbo.Customer.Id == customerId)
                 .ExecuteAsync(
                     reader => 

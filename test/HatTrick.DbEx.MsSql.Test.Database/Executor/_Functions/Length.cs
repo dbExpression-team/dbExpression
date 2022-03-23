@@ -1,6 +1,7 @@
 ﻿using DbEx.DataService;
 using DbEx.dboDataService;
 using FluentAssertions;
+using HatTrick.DbEx.MsSql.Expression.Alias;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
 using Xunit;
@@ -47,6 +48,33 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //then
             length.Should().BeNull();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Operation", "SUBQUERY")]
+        public void Can_datepart_of_aliased_field_succeed(int version, long expected = 10)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectOne(
+                    db.fx.Len(("other", "Line1")).As("alias")
+                ).From(dbo.Address)
+                .InnerJoin(
+                    db.SelectOne(
+                            dbo.Address.Id,
+                            dbo.Address.Line1
+                        )
+                        .From(dbo.Address)
+                        .Where(dbo.Address.Line1 == "100 1st St")
+                ).As("other").On(dbo.Address.Id == ("other", "Id"));
+
+            //when               
+            long? result = exp.Execute();
+
+            //then
+            result.Should().Be(expected);
         }
     }
 }

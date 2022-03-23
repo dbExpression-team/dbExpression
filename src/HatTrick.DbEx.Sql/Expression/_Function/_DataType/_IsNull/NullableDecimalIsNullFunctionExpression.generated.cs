@@ -532,16 +532,16 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region alias
-        public static ObjectExpressionMediator operator +(NullableDecimalIsNullFunctionExpression a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(NullableDecimalIsNullFunctionExpression a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(NullableDecimalIsNullFunctionExpression a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(NullableDecimalIsNullFunctionExpression a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(NullableDecimalIsNullFunctionExpression a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
-        public static ObjectExpressionMediator operator +(NullableDecimalIsNullFunctionExpression a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression(b.TableName, b.FieldName), ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(NullableDecimalIsNullFunctionExpression a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression(b.TableName, b.FieldName), ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(NullableDecimalIsNullFunctionExpression a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression(b.TableName, b.FieldName), ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(NullableDecimalIsNullFunctionExpression a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression(b.TableName, b.FieldName), ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(NullableDecimalIsNullFunctionExpression a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression(b.TableName, b.FieldName), ArithmeticExpressionOperator.Modulo));
+        public static NullableDecimalExpressionMediator operator +(NullableDecimalIsNullFunctionExpression a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static NullableDecimalExpressionMediator operator -(NullableDecimalIsNullFunctionExpression a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static NullableDecimalExpressionMediator operator *(NullableDecimalIsNullFunctionExpression a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        public static NullableDecimalExpressionMediator operator /(NullableDecimalIsNullFunctionExpression a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        public static NullableDecimalExpressionMediator operator %(NullableDecimalIsNullFunctionExpression a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static NullableDecimalExpressionMediator operator +(NullableDecimalIsNullFunctionExpression a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression<decimal?>(b), ArithmeticExpressionOperator.Add));
+        public static NullableDecimalExpressionMediator operator -(NullableDecimalIsNullFunctionExpression a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression<decimal?>(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableDecimalExpressionMediator operator *(NullableDecimalIsNullFunctionExpression a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression<decimal?>(b), ArithmeticExpressionOperator.Multiply));
+        public static NullableDecimalExpressionMediator operator /(NullableDecimalIsNullFunctionExpression a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression<decimal?>(b), ArithmeticExpressionOperator.Divide));
+        public static NullableDecimalExpressionMediator operator %(NullableDecimalIsNullFunctionExpression a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression<decimal?>(b), ArithmeticExpressionOperator.Modulo));
         #endregion
         #endregion
 
@@ -625,12 +625,12 @@ namespace HatTrick.DbEx.Sql.Expression
         public static FilterExpressionSet operator >(NullableDecimalIsNullFunctionExpression a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan));
         public static FilterExpressionSet operator <=(NullableDecimalIsNullFunctionExpression a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual));
         public static FilterExpressionSet operator >=(NullableDecimalIsNullFunctionExpression a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual));
-        public static FilterExpressionSet operator ==(NullableDecimalIsNullFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableDecimalIsNullFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator <(NullableDecimalIsNullFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator >(NullableDecimalIsNullFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.GreaterThan));
-        public static FilterExpressionSet operator <=(NullableDecimalIsNullFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.LessThanOrEqual));
-        public static FilterExpressionSet operator >=(NullableDecimalIsNullFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.GreaterThanOrEqual));
+        public static FilterExpressionSet operator ==(NullableDecimalIsNullFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression<decimal?>(b), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(NullableDecimalIsNullFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression<decimal?>(b), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(NullableDecimalIsNullFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression<decimal?>(b), FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator >(NullableDecimalIsNullFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression<decimal?>(b), FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator <=(NullableDecimalIsNullFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression<decimal?>(b), FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >=(NullableDecimalIsNullFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression<decimal?>(b), FilterExpressionOperator.GreaterThanOrEqual));
         #endregion
 
         #endregion

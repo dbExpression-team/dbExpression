@@ -26,26 +26,12 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<StringReplaceFunctionExpression>
     {
         #region constructors
-        public StringReplaceFunctionExpression(AnyElement<string> expression, AnyElement<string> pattern, AnyElement<string> replacement) : base(expression, pattern, replacement)
+        public StringReplaceFunctionExpression(AnyStringElement expression, AnyElement pattern, AnyElement replacement) : base(expression, pattern, replacement)
         {
 
         }
 
-        public StringReplaceFunctionExpression(StringElement expression, AnyElement<string> pattern, AnyElement<string> replacement) : base(expression, pattern, replacement)
-        {
-
-        }
-
-        public StringReplaceFunctionExpression(StringElement expression, StringElement pattern, AnyElement<string> replacement) : base(expression, pattern, replacement)
-        {
-
-        }
-
-        public StringReplaceFunctionExpression(StringElement expression, StringElement pattern, StringElement replacement) : base(expression, pattern, replacement)
-        {
-
-        }
-        public StringReplaceFunctionExpression(StringElement expression, AnyElement<string> pattern, StringElement replacement) : base(expression, pattern, replacement)
+        public StringReplaceFunctionExpression(AnyElement<string?> expression, AnyElement pattern, AnyElement replacement) : base(expression, pattern, replacement)
         {
 
         }
@@ -53,7 +39,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public StringElement As(string alias)
-            => new StringSelectExpression(this as StringElement).As(alias);
+            => new StringSelectExpression(this).As(alias);
         #endregion
 
         #region like

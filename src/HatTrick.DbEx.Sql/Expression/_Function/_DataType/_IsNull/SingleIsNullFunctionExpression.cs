@@ -32,11 +32,6 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public AnyElement<float> As(string alias)
-            => new SelectExpression<float>(this).As(alias);
-        #endregion
-
         #region equals
         public bool Equals(SingleIsNullFunctionExpression? obj)
             => obj is not null && base.Equals(obj);

@@ -28,26 +28,8 @@ namespace HatTrick.DbEx.MsSql.Expression
         IEquatable<NullableInt64PatIndexFunctionExpression>
     {
         #region constructors
-        public NullableInt64PatIndexFunctionExpression(StringElement pattern, NullableStringElement expression) 
+        public NullableInt64PatIndexFunctionExpression(AnyElement pattern, AnyElement expression) 
             : base(pattern, expression)
-        {
-
-        }
-
-        public NullableInt64PatIndexFunctionExpression(NullableStringElement pattern, AnyStringElement expression)
-            : base(pattern, expression)
-        {
-
-        }
-
-        public NullableInt64PatIndexFunctionExpression(NullableStringElement pattern, NullableStringElement expression)
-           : base(pattern, expression)
-        {
-
-        }
-
-        public NullableInt64PatIndexFunctionExpression(AnyStringElement pattern, NullableStringElement expression)
-           : base(pattern, expression)
         {
 
         }

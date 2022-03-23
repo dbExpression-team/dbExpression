@@ -26,83 +26,12 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<NullableStringSubstringFunctionExpression>
     {
         #region constructors
-        public NullableStringSubstringFunctionExpression(AnyStringElement expression, AnyElement<int?> start, AnyElement<int?> length) : base(expression, start, length)
+        public NullableStringSubstringFunctionExpression(AnyElement<string?> expression, AnyElement start, AnyElement length) : base(expression, start, length)
         {
 
         }
 
-        public NullableStringSubstringFunctionExpression(AnyStringElement expression, AnyElement<int?> start, AnyElement<long?> length) : base(expression, start, length)
-        {
-
-        }
-
-        public NullableStringSubstringFunctionExpression(AnyStringElement expression, AnyElement<long?> start, AnyElement<int?> length) : base(expression, start, length)
-        {
-
-        }
-
-        public NullableStringSubstringFunctionExpression(AnyStringElement expression, AnyElement<long?> start, AnyElement<long?> length) : base(expression, start, length)
-        {
-
-        }
-
-
-        public NullableStringSubstringFunctionExpression(AnyStringElement expression, AnyElement<int> start, AnyElement<int?> length) : base(expression, start, length)
-        {
-
-        }
-
-        public NullableStringSubstringFunctionExpression(AnyStringElement expression, AnyElement<int> start, AnyElement<long?> length) : base(expression, start, length)
-        {
-
-        }
-
-        public NullableStringSubstringFunctionExpression(AnyStringElement expression, AnyElement<long> start, AnyElement<int?> length) : base(expression, start, length)
-        {
-
-        }
-
-        public NullableStringSubstringFunctionExpression(AnyStringElement expression, AnyElement<long> start, AnyElement<long?> length) : base(expression, start, length)
-        {
-
-        }
-
-        public NullableStringSubstringFunctionExpression(AnyStringElement expression, AnyElement<int?> start, AnyElement<int> length) : base(expression, start, length)
-        {
-
-        }
-
-        public NullableStringSubstringFunctionExpression(AnyStringElement expression, AnyElement<int?> start, AnyElement<long> length) : base(expression, start, length)
-        {
-
-        }
-
-        public NullableStringSubstringFunctionExpression(AnyStringElement expression, AnyElement<long?> start, AnyElement<int> length) : base(expression, start, length)
-        {
-
-        }
-
-        public NullableStringSubstringFunctionExpression(AnyStringElement expression, AnyElement<long?> start, AnyElement<long> length) : base(expression, start, length)
-        {
-
-        }
-
-        public NullableStringSubstringFunctionExpression(AnyStringElement expression, AnyElement<int> start, AnyElement<int> length) : base(expression, start, length)
-        {
-
-        }
-
-        public NullableStringSubstringFunctionExpression(AnyStringElement expression, AnyElement<int> start, AnyElement<long> length) : base(expression, start, length)
-        {
-
-        }
-
-        public NullableStringSubstringFunctionExpression(AnyStringElement expression, AnyElement<long> start, AnyElement<int> length) : base(expression, start, length)
-        {
-
-        }
-
-        public NullableStringSubstringFunctionExpression(AnyStringElement expression, AnyElement<long> start, AnyElement<long> length) : base(expression, start, length)
+        public NullableStringSubstringFunctionExpression(AnyStringElement expression, AnyElement start, AnyElement length) : base(expression, start, length)
         {
 
         }

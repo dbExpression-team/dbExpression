@@ -26,7 +26,13 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<NullableStringTrimFunctionExpression>
     {
         #region constructors
-        public NullableStringTrimFunctionExpression(NullableStringElement expression) 
+        public NullableStringTrimFunctionExpression(AnyElement<string?> expression) 
+            : base(expression)
+        {
+
+        }
+
+        public NullableStringTrimFunctionExpression(NullableStringElement expression)
             : base(expression)
         {
 

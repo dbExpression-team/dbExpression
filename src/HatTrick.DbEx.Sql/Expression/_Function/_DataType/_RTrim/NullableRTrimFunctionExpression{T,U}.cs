@@ -25,6 +25,12 @@ namespace HatTrick.DbEx.Sql.Expression
         where TValue : IComparable
     {
         #region constructors
+        protected NullableRTrimFunctionExpression(AnyElement<string?> expression)
+            : base(expression, typeof(TNullableValue))
+        {
+
+        }
+
         protected NullableRTrimFunctionExpression(NullableStringElement expression)
             : base(expression, typeof(TNullableValue))
         {

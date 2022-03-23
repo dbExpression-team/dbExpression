@@ -32,11 +32,6 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public AnyElement<TimeSpan> As(string alias)
-            => new SelectExpression<TimeSpan>(this).As(alias);
-        #endregion
-
         #region equals
         public bool Equals(TimeSpanIsNullFunctionExpression? obj)
             => obj is not null && base.Equals(obj);

@@ -34,7 +34,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public StringSubstringFunctionExpression Substring(StringElement expression, int start, int length)
+        public virtual StringSubstringFunctionExpression Substring(StringElement expression, int start, int length)
             => new(expression, new LiteralExpression<int>(start), new LiteralExpression<int>(length));
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int32}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public StringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int> start, int length)
+        public virtual StringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int> start, int length)
             => new(expression, start, new LiteralExpression<int>(length));
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int32}"/>, the number of characters to take.</param>
         /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public StringSubstringFunctionExpression Substring(StringElement expression, int start, AnyElement<int> length)
+        public virtual StringSubstringFunctionExpression Substring(StringElement expression, int start, AnyElement<int> length)
             => new(expression, new LiteralExpression<int>(start), length);
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int32}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int32}"/>, the number of characters to take.</param>
         /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public StringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int> start, AnyElement<int> length)
+        public virtual StringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int> start, AnyElement<int> length)
             => new(expression, start, length);
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public StringSubstringFunctionExpression Substring(StringElement expression, long start, long length)
+        public virtual StringSubstringFunctionExpression Substring(StringElement expression, long start, long length)
             => new(expression, new LiteralExpression<long>(start), new LiteralExpression<long>(length));
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public StringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long> start, long length)
+        public virtual StringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long> start, long length)
             => new(expression, start, new LiteralExpression<long>(length));
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int64}"/>, the number of characters to take.</param>
         /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public StringSubstringFunctionExpression Substring(StringElement expression, long start, AnyElement<long> length)
+        public virtual StringSubstringFunctionExpression Substring(StringElement expression, long start, AnyElement<long> length)
             => new(expression, new LiteralExpression<long>(start), length);
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int64}"/>, the number of characters to take.</param>
         /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public StringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long> start, AnyElement<long> length)
+        public virtual StringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long> start, AnyElement<long> length)
             => new(expression, start, length);
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public StringSubstringFunctionExpression Substring(StringElement expression, int start, long length)
+        public virtual StringSubstringFunctionExpression Substring(StringElement expression, int start, long length)
             => new(expression, new LiteralExpression<long>(start), new LiteralExpression<long>(length));
 
         /// <summary>
@@ -133,7 +133,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int32}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public StringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int> start, long length)
+        public virtual StringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int> start, long length)
             => new(expression, start, new LiteralExpression<long>(length));
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int64}"/>, the number of characters to take.</param>
         /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public StringSubstringFunctionExpression Substring(StringElement expression, int start, AnyElement<long> length)
+        public virtual StringSubstringFunctionExpression Substring(StringElement expression, int start, AnyElement<long> length)
             => new(expression, new LiteralExpression<long>(start), length);
 
         /// <summary>
@@ -155,7 +155,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int32}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int64}"/>, the number of characters to take.</param>
         /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public StringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int> start, AnyElement<long> length)
+        public virtual StringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int> start, AnyElement<long> length)
             => new(expression, start, length);
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public StringSubstringFunctionExpression Substring(StringElement expression, long start, int length)
+        public virtual StringSubstringFunctionExpression Substring(StringElement expression, long start, int length)
             => new(expression, new LiteralExpression<long>(start), new LiteralExpression<long>(length));
 
         /// <summary>
@@ -177,7 +177,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public StringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long> start, int length)
+        public virtual StringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long> start, int length)
             => new(expression, start, new LiteralExpression<long>(length));
 
         /// <summary>
@@ -188,7 +188,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int32}"/>, the number of characters to take.</param>
         /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public StringSubstringFunctionExpression Substring(StringElement expression, long start, AnyElement<int> length)
+        public virtual StringSubstringFunctionExpression Substring(StringElement expression, long start, AnyElement<int> length)
             => new(expression, new LiteralExpression<long>(start), length);
 
         /// <summary>
@@ -199,7 +199,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int64}"/>, the number of characters to take.</param>
         /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public StringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long> start, AnyElement<int> length)
+        public virtual StringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long> start, AnyElement<int> length)
             => new(expression, start, length);
 
         /// <summary>
@@ -210,7 +210,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, int? start, int? length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, int? start, int? length)
             => new(expression, new LiteralExpression<int?>(start), new LiteralExpression<int?>(length));
 
 
@@ -222,7 +222,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, int start, int? length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, int start, int? length)
             => new(expression, new LiteralExpression<int?>(start), new LiteralExpression<int?>(length));
 
         /// <summary>
@@ -233,7 +233,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, int? start, int length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, int? start, int length)
             => new(expression, new LiteralExpression<int?>(start), new LiteralExpression<int?>(length));
 
         /// <summary>
@@ -244,7 +244,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int32}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int?> start, int length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int?> start, int length)
             => new(expression, start, new LiteralExpression<int>(length));
 
         /// <summary>
@@ -255,7 +255,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int32}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int> start, int? length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int> start, int? length)
             => new(expression, start, new LiteralExpression<int?>(length));
 
         /// <summary>
@@ -266,7 +266,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int32}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int?> start, int? length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int?> start, int? length)
             => new(expression, start, new LiteralExpression<int?>(length));
 
         /// <summary>
@@ -277,7 +277,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int32}"/>, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, int? start, AnyElement<int> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, int? start, AnyElement<int> length)
             => new(expression, new LiteralExpression<int?>(start), length);
 
         /// <summary>
@@ -288,7 +288,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int32}"/>?, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, int start, AnyElement<int?> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, int start, AnyElement<int?> length)
             => new(expression, new LiteralExpression<int>(start), length);
 
         /// <summary>
@@ -299,7 +299,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int32}"/>?, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, int? start, AnyElement<int?> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, int? start, AnyElement<int?> length)
             => new(expression, new LiteralExpression<int?>(start), length);
 
         /// <summary>
@@ -310,7 +310,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int32}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int32}"/>, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int?> start, AnyElement<int> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int?> start, AnyElement<int> length)
             => new(expression, start, length);
 
         /// <summary>
@@ -321,7 +321,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int32}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int32}"/>?, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int> start, AnyElement<int?> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int> start, AnyElement<int?> length)
             => new(expression, start, length);
 
         /// <summary>
@@ -332,7 +332,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int32}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int32}"/>?, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int?> start, AnyElement<int?> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int?> start, AnyElement<int?> length)
             => new(expression, start, length);
 
         /// <summary>
@@ -343,7 +343,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, long? start, long length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, long? start, long length)
             => new(expression, new LiteralExpression<long?>(start), new LiteralExpression<long>(length));
 
         /// <summary>
@@ -354,7 +354,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, long start, long? length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, long start, long? length)
             => new(expression, new LiteralExpression<long>(start), new LiteralExpression<long?>(length));
 
         /// <summary>
@@ -365,7 +365,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, long? start, long? length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, long? start, long? length)
             => new(expression, new LiteralExpression<long?>(start), new LiteralExpression<long?>(length));
 
         /// <summary>
@@ -376,7 +376,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int64}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long?> start, long length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long?> start, long length)
             => new(expression, start, new LiteralExpression<long>(length));
 
         /// <summary>
@@ -387,7 +387,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long> start, long? length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long> start, long? length)
             => new(expression, start, new LiteralExpression<long?>(length));
 
         /// <summary>
@@ -398,7 +398,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int64}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long?> start, long? length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long?> start, long? length)
             => new(expression, start, new LiteralExpression<long?>(length));
 
         /// <summary>
@@ -409,7 +409,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int64}"/>, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, long? start, AnyElement<long> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, long? start, AnyElement<long> length)
             => new(expression, new LiteralExpression<long?>(start), length);
 
         /// <summary>
@@ -420,7 +420,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int64}"/>?, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, long start, AnyElement<long?> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, long start, AnyElement<long?> length)
             => new(expression, new LiteralExpression<long>(start), length);
 
         /// <summary>
@@ -431,7 +431,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int64}"/>?, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, long? start, AnyElement<long?> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, long? start, AnyElement<long?> length)
             => new(expression, new LiteralExpression<long?>(start), length);
 
         /// <summary>
@@ -442,7 +442,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int64}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int64}"/>, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long?> start, AnyElement<long> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long?> start, AnyElement<long> length)
             => new(expression, start, length);
 
         /// <summary>
@@ -453,7 +453,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int64}"/>?, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long> start, AnyElement<long?> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long> start, AnyElement<long?> length)
             => new(expression, start, length);
 
         /// <summary>
@@ -464,7 +464,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int64}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int64}"/>?, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long?> start, AnyElement<long?> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long?> start, AnyElement<long?> length)
             => new(expression, start, length);
 
         /// <summary>
@@ -475,7 +475,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, int? start, long length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, int? start, long length)
             => new(expression, new LiteralExpression<int?>(start), new LiteralExpression<long>(length));
 
         /// <summary>
@@ -486,7 +486,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, int start, long? length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, int start, long? length)
             => new(expression, new LiteralExpression<int>(start), new LiteralExpression<long?>(length));
 
         /// <summary>
@@ -497,7 +497,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, int? start, long? length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, int? start, long? length)
             => new(expression, new LiteralExpression<int?>(start), new LiteralExpression<long?>(length));
 
         /// <summary>
@@ -508,7 +508,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int32}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int?> start, long length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int?> start, long length)
             => new(expression, start, new LiteralExpression<long>(length));
 
         /// <summary>
@@ -519,7 +519,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int32}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int> start, long? length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int> start, long? length)
             => new(expression, start, new LiteralExpression<long?>(length));
 
         /// <summary>
@@ -530,7 +530,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int32}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int?> start, long? length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int?> start, long? length)
             => new(expression, start, new LiteralExpression<long?>(length));
 
         /// <summary>
@@ -541,7 +541,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int64}"/>?, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, int? start, AnyElement<long?> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, int? start, AnyElement<long?> length)
             => new(expression, new LiteralExpression<int?>(start), length);
 
         /// <summary>
@@ -552,7 +552,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int64}"/>?, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, int start, AnyElement<long?> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, int start, AnyElement<long?> length)
             => new(expression, new LiteralExpression<int>(start), length);
 
         /// <summary>
@@ -563,7 +563,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int64}"/>, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, int? start, AnyElement<long> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, int? start, AnyElement<long> length)
             => new(expression, new LiteralExpression<int?>(start), length);
 
         /// <summary>
@@ -574,7 +574,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int32}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int64}"/>, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int?> start, AnyElement<long> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int?> start, AnyElement<long> length)
             => new(expression, start, length);
 
         /// <summary>
@@ -585,7 +585,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int32}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int64}"/>?, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int> start, AnyElement<long?> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int> start, AnyElement<long?> length)
             => new(expression, start, length);
 
         /// <summary>
@@ -596,7 +596,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int32}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int64}"/>?, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int?> start, AnyElement<long?> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<int?> start, AnyElement<long?> length)
             => new(expression, start, length);
 
         /// <summary>
@@ -607,7 +607,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, long? start, int length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, long? start, int length)
             => new(expression, new LiteralExpression<long?>(start), new LiteralExpression<long>(length));
 
         /// <summary>
@@ -618,7 +618,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, long start, int? length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, long start, int? length)
             => new(expression, new LiteralExpression<long>(start), new LiteralExpression<long?>(length));
 
         /// <summary>
@@ -629,7 +629,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, long? start, int? length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, long? start, int? length)
             => new(expression, new LiteralExpression<long?>(start), new LiteralExpression<long?>(length));
 
         /// <summary>
@@ -640,7 +640,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long?> start, int length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long?> start, int length)
             => new(expression, start, new LiteralExpression<long>(length));
 
         /// <summary>
@@ -651,7 +651,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long> start, int? length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long> start, int? length)
             => new(expression, start, new LiteralExpression<long?>(length));
 
         /// <summary>
@@ -662,7 +662,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long?> start, int? length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long?> start, int? length)
             => new(expression, start, new LiteralExpression<long?>(length));
 
         /// <summary>
@@ -673,7 +673,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int32}"/>, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, long? start, AnyElement<int> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, long? start, AnyElement<int> length)
             => new(expression, new LiteralExpression<long?>(start), length);
 
         /// <summary>
@@ -684,7 +684,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int32}"/>?, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, long start, AnyElement<int?> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, long start, AnyElement<int?> length)
             => new(expression, new LiteralExpression<long>(start), length);
 
         /// <summary>
@@ -695,7 +695,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int32}"/>?, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, long? start, AnyElement<int?> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, long? start, AnyElement<int?> length)
             => new(expression, new LiteralExpression<long?>(start), length);
 
         /// <summary>
@@ -706,7 +706,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int64}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int64}"/>, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long?> start, AnyElement<int> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long?> start, AnyElement<int> length)
             => new(expression, start, length);
 
         /// <summary>
@@ -717,7 +717,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int64}"/>?, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long> start, AnyElement<int?> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long> start, AnyElement<int?> length)
             => new(expression, start, length);
 
         /// <summary>
@@ -728,7 +728,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int64}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int64}"/>?, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long?> start, AnyElement<int?> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(StringElement expression, AnyElement<long?> start, AnyElement<int?> length)
             => new(expression, start, length);
 
         /// <summary>
@@ -739,7 +739,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int? start, int? length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int? start, int? length)
             => new(expression, new LiteralExpression<int?>(start), new LiteralExpression<int?>(length));
 
 
@@ -751,7 +751,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int start, int? length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int start, int? length)
             => new(expression, new LiteralExpression<int?>(start), new LiteralExpression<int?>(length));
 
         /// <summary>
@@ -762,7 +762,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int? start, int length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int? start, int length)
             => new(expression, new LiteralExpression<int?>(start), new LiteralExpression<int?>(length));
 
         /// <summary>
@@ -773,7 +773,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int start, int length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int start, int length)
             => new(expression, new LiteralExpression<int?>(start), new LiteralExpression<int?>(length));
 
         /// <summary>
@@ -784,7 +784,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int32}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int> start, int length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int> start, int length)
             => new(expression, start, new LiteralExpression<int>(length));
 
         /// <summary>
@@ -795,7 +795,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int32}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int?> start, int length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int?> start, int length)
             => new(expression, start, new LiteralExpression<int>(length));
 
         /// <summary>
@@ -806,7 +806,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int32}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int> start, int? length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int> start, int? length)
             => new(expression, start, new LiteralExpression<int?>(length));
 
         /// <summary>
@@ -817,7 +817,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int32}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int?> start, int? length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int?> start, int? length)
             => new(expression, start, new LiteralExpression<int?>(length));
 
         /// <summary>
@@ -828,7 +828,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int32}"/>, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int start, AnyElement<int> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int start, AnyElement<int> length)
             => new(expression, new LiteralExpression<int>(start), length);
 
         /// <summary>
@@ -839,7 +839,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int32}"/>, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int? start, AnyElement<int> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int? start, AnyElement<int> length)
             => new(expression, new LiteralExpression<int?>(start), length);
 
         /// <summary>
@@ -850,7 +850,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int32}"/>?, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int start, AnyElement<int?> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int start, AnyElement<int?> length)
             => new(expression, new LiteralExpression<int>(start), length);
 
         /// <summary>
@@ -861,7 +861,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int32}"/>?, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int? start, AnyElement<int?> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int? start, AnyElement<int?> length)
             => new(expression, new LiteralExpression<int?>(start), length);
 
         /// <summary>
@@ -872,7 +872,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int32}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int32}"/>, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int> start, AnyElement<int> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int> start, AnyElement<int> length)
             => new(expression, start, length);
 
         /// <summary>
@@ -883,7 +883,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int32}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int32}"/>, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int?> start, AnyElement<int> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int?> start, AnyElement<int> length)
             => new(expression, start, length);
 
         /// <summary>
@@ -894,7 +894,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int32}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int32}"/>?, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int> start, AnyElement<int?> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int> start, AnyElement<int?> length)
             => new(expression, start, length);
 
         /// <summary>
@@ -905,7 +905,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int32}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int32}"/>?, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int?> start, AnyElement<int?> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int?> start, AnyElement<int?> length)
             => new(expression, start, length);
 
         /// <summary>
@@ -916,7 +916,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long start, long length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long start, long length)
             => new(expression, new LiteralExpression<long>(start), new LiteralExpression<long>(length));
 
         /// <summary>
@@ -927,7 +927,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long? start, long length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long? start, long length)
             => new(expression, new LiteralExpression<long?>(start), new LiteralExpression<long>(length));
 
         /// <summary>
@@ -938,7 +938,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long start, long? length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long start, long? length)
             => new(expression, new LiteralExpression<long>(start), new LiteralExpression<long?>(length));
 
         /// <summary>
@@ -949,7 +949,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long? start, long? length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long? start, long? length)
             => new(expression, new LiteralExpression<long?>(start), new LiteralExpression<long?>(length));
 
         /// <summary>
@@ -960,7 +960,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long> start, long length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long> start, long length)
             => new(expression, start, new LiteralExpression<long>(length));
 
         /// <summary>
@@ -971,7 +971,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int64}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long?> start, long length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long?> start, long length)
             => new(expression, start, new LiteralExpression<long>(length));
 
         /// <summary>
@@ -982,7 +982,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long> start, long? length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long> start, long? length)
             => new(expression, start, new LiteralExpression<long?>(length));
 
         /// <summary>
@@ -993,7 +993,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int64}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long?> start, long? length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long?> start, long? length)
             => new(expression, start, new LiteralExpression<long?>(length));
 
         /// <summary>
@@ -1004,7 +1004,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int64}"/>, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long start, AnyElement<long> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long start, AnyElement<long> length)
             => new(expression, new LiteralExpression<long>(start), length);
 
         /// <summary>
@@ -1015,7 +1015,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int64}"/>, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long? start, AnyElement<long> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long? start, AnyElement<long> length)
             => new(expression, new LiteralExpression<long?>(start), length);
 
         /// <summary>
@@ -1026,7 +1026,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int64}"/>?, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long start, AnyElement<long?> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long start, AnyElement<long?> length)
             => new(expression, new LiteralExpression<long>(start), length);
 
         /// <summary>
@@ -1037,7 +1037,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int64}"/>?, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long? start, AnyElement<long?> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long? start, AnyElement<long?> length)
             => new(expression, new LiteralExpression<long?>(start), length);
 
         /// <summary>
@@ -1048,7 +1048,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int64}"/>, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long> start, AnyElement<long> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long> start, AnyElement<long> length)
             => new(expression, start, length);
 
         /// <summary>
@@ -1059,7 +1059,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int64}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int64}"/>, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long?> start, AnyElement<long> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long?> start, AnyElement<long> length)
             => new(expression, start, length);
 
         /// <summary>
@@ -1070,7 +1070,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int64}"/>?, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long> start, AnyElement<long?> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long> start, AnyElement<long?> length)
             => new(expression, start, length);
 
         /// <summary>
@@ -1081,7 +1081,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int64}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int64}"/>?, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long?> start, AnyElement<long?> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long?> start, AnyElement<long?> length)
             => new(expression, start, length);
 
         /// <summary>
@@ -1092,7 +1092,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int start, long length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int start, long length)
             => new(expression, new LiteralExpression<int>(start), new LiteralExpression<long>(length));
 
         /// <summary>
@@ -1103,7 +1103,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int? start, long length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int? start, long length)
             => new(expression, new LiteralExpression<int?>(start), new LiteralExpression<long>(length));
 
         /// <summary>
@@ -1114,7 +1114,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int start, long? length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int start, long? length)
             => new(expression, new LiteralExpression<int>(start), new LiteralExpression<long?>(length));
 
         /// <summary>
@@ -1125,7 +1125,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int? start, long? length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int? start, long? length)
             => new(expression, new LiteralExpression<int?>(start), new LiteralExpression<long?>(length));
 
         /// <summary>
@@ -1136,7 +1136,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int32}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int> start, long length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int> start, long length)
             => new(expression, start, new LiteralExpression<long>(length));
 
         /// <summary>
@@ -1147,7 +1147,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int32}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int?> start, long length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int?> start, long length)
             => new(expression, start, new LiteralExpression<long>(length));
 
         /// <summary>
@@ -1158,7 +1158,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int32}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int> start, long? length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int> start, long? length)
             => new(expression, start, new LiteralExpression<long?>(length));
 
         /// <summary>
@@ -1169,7 +1169,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int32}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int?> start, long? length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int?> start, long? length)
             => new(expression, start, new LiteralExpression<long?>(length));
 
         /// <summary>
@@ -1180,7 +1180,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int64}"/>, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int start, AnyElement<long> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int start, AnyElement<long> length)
             => new(expression, new LiteralExpression<int>(start), length);
 
         /// <summary>
@@ -1191,7 +1191,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int64}"/>?, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int? start, AnyElement<long?> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int? start, AnyElement<long?> length)
             => new(expression, new LiteralExpression<int?>(start), length);
 
         /// <summary>
@@ -1202,7 +1202,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int64}"/>?, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int start, AnyElement<long?> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int start, AnyElement<long?> length)
             => new(expression, new LiteralExpression<int>(start), length);
 
         /// <summary>
@@ -1213,7 +1213,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int64}"/>, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int? start, AnyElement<long> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, int? start, AnyElement<long> length)
             => new(expression, new LiteralExpression<int?>(start), length);
 
         /// <summary>
@@ -1224,7 +1224,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int32}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int64}"/>, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int> start, AnyElement<long> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int> start, AnyElement<long> length)
             => new(expression, start, length);
 
         /// <summary>
@@ -1235,7 +1235,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int32}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int64}"/>, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int?> start, AnyElement<long> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int?> start, AnyElement<long> length)
             => new(expression, start, length);
 
         /// <summary>
@@ -1246,7 +1246,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int32}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int64}"/>?, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int> start, AnyElement<long?> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int> start, AnyElement<long?> length)
             => new(expression, start, length);
 
         /// <summary>
@@ -1257,7 +1257,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int32}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int64}"/>?, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int?> start, AnyElement<long?> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<int?> start, AnyElement<long?> length)
             => new(expression, start, length);
 
         /// <summary>
@@ -1268,7 +1268,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long start, int length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long start, int length)
             => new(expression, new LiteralExpression<long>(start), new LiteralExpression<long>(length));
 
         /// <summary>
@@ -1279,7 +1279,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long? start, int length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long? start, int length)
             => new(expression, new LiteralExpression<long?>(start), new LiteralExpression<long>(length));
 
         /// <summary>
@@ -1290,7 +1290,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long start, int? length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long start, int? length)
             => new(expression, new LiteralExpression<long>(start), new LiteralExpression<long?>(length));
 
         /// <summary>
@@ -1301,7 +1301,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long? start, int? length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long? start, int? length)
             => new(expression, new LiteralExpression<long?>(start), new LiteralExpression<long?>(length));
 
         /// <summary>
@@ -1312,7 +1312,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int64}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long> start, int length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long> start, int length)
             => new(expression, start, new LiteralExpression<long>(length));
 
         /// <summary>
@@ -1323,7 +1323,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long?> start, int length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long?> start, int length)
             => new(expression, start, new LiteralExpression<long>(length));
 
         /// <summary>
@@ -1334,7 +1334,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long> start, int? length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long> start, int? length)
             => new(expression, start, new LiteralExpression<long?>(length));
 
         /// <summary>
@@ -1345,7 +1345,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">The number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long?> start, int? length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long?> start, int? length)
             => new(expression, start, new LiteralExpression<long?>(length));
 
         /// <summary>
@@ -1356,7 +1356,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int32}"/>?, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long start, AnyElement<int> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long start, AnyElement<int> length)
             => new(expression, new LiteralExpression<long>(start), length);
 
         /// <summary>
@@ -1367,7 +1367,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int32}"/>, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long? start, AnyElement<int> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long? start, AnyElement<int> length)
             => new(expression, new LiteralExpression<long?>(start), length);
 
         /// <summary>
@@ -1378,7 +1378,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int32}"/>?, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long start, AnyElement<int?> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long start, AnyElement<int?> length)
             => new(expression, new LiteralExpression<long>(start), length);
 
         /// <summary>
@@ -1389,7 +1389,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
         /// <param name="length">A <see cref="AnyElement{Int32}"/>?, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long? start, AnyElement<int?> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, long? start, AnyElement<int?> length)
             => new(expression, new LiteralExpression<long?>(start), length);
 
         /// <summary>
@@ -1398,9 +1398,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
-        /// <param name="length">A <see cref="AnyElement{Int64}"/>, the number of characters to take.</param>
+        /// <param name="length">A <see cref="AnyElement{Int32}"/>, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long> start, AnyElement<int> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long> start, AnyElement<int> length)
             => new(expression, start, length);
 
         /// <summary>
@@ -1409,9 +1409,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int64}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
-        /// <param name="length">A <see cref="AnyElement{Int64}"/>, the number of characters to take.</param>
+        /// <param name="length">A <see cref="AnyElement{Int32}"/>, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long?> start, AnyElement<int> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long?> start, AnyElement<int> length)
             => new(expression, start, length);
 
         /// <summary>
@@ -1420,9 +1420,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
-        /// <param name="length">A <see cref="AnyElement{Int64}"/>?, the number of characters to take.</param>
+        /// <param name="length">A <see cref="AnyElement{Int32}"/>?, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long> start, AnyElement<int?> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long> start, AnyElement<int?> length)
             => new(expression, start, length);
 
         /// <summary>
@@ -1431,9 +1431,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="expression">A <see cref="NullableStringElement"/> to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int64}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
-        /// <param name="length">A <see cref="AnyElement{Int64}"/>?, the number of characters to take.</param>
+        /// <param name="length">A <see cref="AnyElement{Int32}"/>?, the number of characters to take.</param>
         /// <returns><see cref="NullableStringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long?> start, AnyElement<int?> length)
+        public virtual NullableStringSubstringFunctionExpression Substring(NullableStringElement expression, AnyElement<long?> start, AnyElement<int?> length)
             => new(expression, start, length);
     }
 }

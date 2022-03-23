@@ -4,6 +4,7 @@ using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
+using HatTrick.DbEx.Sql.Builder.Alias;
 using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
@@ -155,7 +156,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.Count(dbex.Alias<int>("lines","PurchaseId")).Distinct().As("alias")
+                    db.fx.Count(("lines","PurchaseId")).Distinct().As("alias")
                 ).From(dbo.Purchase)
                 .InnerJoin(
                     db.SelectMany<PurchaseLine>()
@@ -163,10 +164,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ).As("lines").On(dbo.Purchase.Id == ("lines", "PurchaseId"));
 
             //when               
-            int result = exp.Execute();
+            object? result = exp.Execute();
 
             //then
-            result.Should().Be(expected);
+            result.Should().BeOfType<int>().And.Be(expected);
         }
     }
 }

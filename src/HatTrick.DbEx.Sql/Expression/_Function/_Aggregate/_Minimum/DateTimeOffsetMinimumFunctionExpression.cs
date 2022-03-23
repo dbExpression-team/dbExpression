@@ -32,11 +32,6 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public AnyElement<DateTimeOffset> As(string alias)
-            => new SelectExpression<DateTimeOffset>(this).As(alias);
-        #endregion
-
         #region distinct
         public DateTimeOffsetMinimumFunctionExpression Distinct()
         {

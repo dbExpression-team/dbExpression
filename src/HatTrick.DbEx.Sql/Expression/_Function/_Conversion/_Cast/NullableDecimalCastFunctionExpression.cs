@@ -26,8 +26,8 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<NullableDecimalCastFunctionExpression>
     {
         #region constructors
-        public NullableDecimalCastFunctionExpression(AnyElement expression, DbTypeExpression convertToDbType)
-            : base(expression, convertToDbType)
+        public NullableDecimalCastFunctionExpression(AnyElement expression, DbTypeExpression convertToDbType, int precision, int scale)
+            : base(expression, convertToDbType, precision, scale)
         {
 
         }

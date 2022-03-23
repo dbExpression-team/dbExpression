@@ -430,7 +430,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                         sec.Person.SocialSecurityNumber
                     )
                     .From(sec.Person)
-                ).As("secPerson").On(sec.Person.SocialSecurityNumber == dbex.Alias("secPerson", "SocialSecurityNumber"))
+                ).As("secPerson").On(sec.Person.SocialSecurityNumber == ("secPerson", "SocialSecurityNumber"))
                 .ExecuteAsync();
 
             //then
@@ -456,7 +456,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                         sec.Person.SocialSecurityNumber.As("foo")
                     )
                     .From(sec.Person)
-                ).As("secPerson").On(sec.Person.SocialSecurityNumber == dbex.Alias("secPerson", "foo"))
+                ).As("secPerson").On(sec.Person.SocialSecurityNumber == ("secPerson", "foo"))
                 .ExecuteAsync();
 
             //then

@@ -21,13 +21,7 @@ namespace HatTrick.DbEx.Sql.Expression
     public class NullableObjectSelectExpression : SelectExpression<object?>,
         NullableObjectElement
     {
-        public NullableObjectSelectExpression(NullableObjectElement expression)
-            : base(expression)
-        {
-
-        }
-
-        public NullableObjectSelectExpression(ExpressionMediator<object?> expression)
+        public NullableObjectSelectExpression(AnyElement expression)
             : base(expression)
         {
 

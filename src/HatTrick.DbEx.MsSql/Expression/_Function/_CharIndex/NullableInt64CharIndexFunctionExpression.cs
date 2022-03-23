@@ -77,6 +77,29 @@ namespace HatTrick.DbEx.MsSql.Expression
         {
 
         }
+
+        public NullableInt64CharIndexFunctionExpression(NullableStringExpressionMediator pattern, NullableStringExpressionMediator expression) : base(pattern, expression)
+        {
+
+        }
+        public NullableInt64CharIndexFunctionExpression(NullableStringExpressionMediator pattern, NullableStringExpressionMediator expression, AnyElement<int> startSearchPosition) : base(pattern, expression, startSearchPosition)
+        {
+
+        }
+
+        public NullableInt64CharIndexFunctionExpression(NullableStringExpressionMediator pattern, NullableStringExpressionMediator expression, AnyElement<int?> startSearchPosition) : base(pattern, expression, startSearchPosition)
+        {
+
+        }
+        
+        public NullableInt64CharIndexFunctionExpression(NullableStringExpressionMediator pattern, NullableStringExpressionMediator expression, AnyElement<long> startSearchPosition) : base(pattern, expression, startSearchPosition)
+        {
+
+        }
+        public NullableInt64CharIndexFunctionExpression(NullableStringExpressionMediator pattern, NullableStringExpressionMediator expression, AnyElement<long?> startSearchPosition) : base(pattern, expression, startSearchPosition)
+        {
+
+        }
         #endregion
 
         #region as

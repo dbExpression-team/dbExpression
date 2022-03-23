@@ -29,6 +29,16 @@ namespace HatTrick.DbEx.Sql.Expression
         where TEnum : struct, Enum, IComparable
     {
         #region constructors
+        public EnumCoalesceFunctionExpression(IList<AnyElement<TEnum?>> expressions, AnyElement<TEnum> termination) : base(expressions.Concat(new AnyElement[1] { termination }).ToList())
+        {
+
+        }
+
+        public EnumCoalesceFunctionExpression(IList<AnyElement<TEnum>> expressions, AnyElement<TEnum> termination) : base(expressions.Concat(new AnyElement[1] { termination }).ToList())
+        {
+
+        }
+
         public EnumCoalesceFunctionExpression(IList<EnumElement<TEnum>> expressions, AnyElement<TEnum> termination) : base(expressions.Concat(new AnyElement[1] { termination }).ToList())
         {
 
