@@ -86,17 +86,19 @@ namespace HatTrick.DbEx.Sql.Executor
             return default;
         }
 
-        protected IValueConverter FindConverter(ISqlField field, Type requestedType)
+        protected IValueConverter? FindConverter(ISqlField field, Type requestedType)
         {
             if (fieldConverters.ContainsKey(field.Index))
                 return fieldConverters[field.Index];
 
             if (requestedType == typeof(object))
-            {
                 requestedType = field.DataType.IsConvertibleToNullableType() ? typeof(Nullable<>).MakeGenericType(field.DataType) : field.DataType;
-            }
+
             var converter = Converters.FindConverter(field.Index, requestedType, field.RawValue);
-            fieldConverters.Add(field.Index, converter);
+
+            if (converter is not null)
+                fieldConverters.Add(field.Index, converter);
+
             return converter;
         }
 

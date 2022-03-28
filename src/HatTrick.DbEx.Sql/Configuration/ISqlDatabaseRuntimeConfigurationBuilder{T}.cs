@@ -16,21 +16,13 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using HatTrick.DbEx.MsSql.Configuration;
-using HatTrick.DbEx.Sql;
-
-namespace HatTrick.DbEx.MsSql.Microsoft.Extensions.DependencyInjection.Builder
+namespace HatTrick.DbEx.Sql.Configuration
 {
-    internal sealed class ServiceCollectionSqlDatabaseRuntimeConfigurationBuilder<TDatabase, TConfig>
-        : MsSqlSqlDatabaseRuntimeConfigurationBuilder<TDatabase, TConfig>
-        where TDatabase : class, ISqlDatabaseRuntime<TConfig>, new()
-        where TConfig : MsSqlSqlDatabaseRuntimeConfiguration
+    public interface ISqlDatabaseRuntimeConfigurationBuilder<TConfig> :
+        ISqlDatabaseRuntimeConfigurationBuilder,
+        ISqlDatabaseRuntimeConfigurationProvider<TConfig>
+        where TConfig : SqlDatabaseRuntimeConfiguration
     {
-
-        public ServiceCollectionSqlDatabaseRuntimeConfigurationBuilder(TDatabase database, TConfig config)
-            : base(database, config)
-        {
-
-        }
+        
     }
 }

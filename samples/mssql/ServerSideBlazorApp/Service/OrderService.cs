@@ -21,10 +21,11 @@ namespace ServerSideBlazorApp.Service
     /// </remarks>
     public class OrderService
     {
-        private readonly CRMDatabase CRMDatabase;
+        private readonly CRMDatabase db;
 
         //variable to hold dbExpression order by elements.  Stored as a variable as it's used more than once and to demonstrate that order by elements can be treated like most any other .NET object
-        private static readonly IDictionary<string, AnyElement> OrderSummarySortingFields = new Dictionary<string, AnyElement>
+        private Dictionary<string, AnyElement>? _orderSummarySortingFields;
+        private Dictionary<string, AnyElement> OrderSummarySortingFields => _orderSummarySortingFields ??= new()
         {
             { nameof(OrderSummaryModel.OrderNumber), dbo.Purchase.OrderNumber },
             { nameof(OrderSummaryModel.CustomerName), dbo.Customer.FirstName + " " + dbo.Customer.LastName },
@@ -34,9 +35,9 @@ namespace ServerSideBlazorApp.Service
             { nameof(OrderSummaryModel.ShipDate), dbo.Purchase.ShipDate }
         };
 
-        public OrderService(CRMDatabase crmDatabase)
+        public OrderService(CRMDatabase db)
         {
-            this.CRMDatabase = crmDatabase ?? throw new ArgumentNullException(nameof(crmDatabase));
+            this.db = db ?? throw new ArgumentNullException(nameof(db));
         }
 
         /// <summary>
@@ -46,7 +47,7 @@ namespace ServerSideBlazorApp.Service
         public async Task<Page<OrderSummaryModel>> GetOrdersPageAsync(PagingParameters pagingParameters)
         {
             var orders = await
-                CRMDatabase.SelectMany(
+                db.SelectMany(
                     dbo.Purchase.Id,
                     dbo.Purchase.CustomerId,
                     dbo.Customer.FirstName + " " + dbo.Customer.LastName,
@@ -83,7 +84,7 @@ namespace ServerSideBlazorApp.Service
                 );
 
             var countOfOrders = await
-                CRMDatabase.SelectOne(
+                db.SelectOne(
                     db.fx.Count()
                 )
                 .From(dbo.Purchase)
@@ -104,7 +105,7 @@ namespace ServerSideBlazorApp.Service
         public async Task<Page<OrderSummaryModel>> GetCustomerOrdersPageAsync(int customerId, PagingParameters pagingParameters)
         {
             var orders = await
-                CRMDatabase.SelectMany(
+                db.SelectMany(
                     dbo.Purchase.Id,
                     dbo.Purchase.CustomerId,
                     dbo.Customer.FirstName + " " + dbo.Customer.LastName,
@@ -142,7 +143,7 @@ namespace ServerSideBlazorApp.Service
                 );
 
             var countOfOrders = await
-                CRMDatabase.SelectOne(
+                db.SelectOne(
                     db.fx.Count()
                 )
                 .From(dbo.Purchase)
@@ -165,7 +166,7 @@ namespace ServerSideBlazorApp.Service
             var shippingAddress = nameof(OrderDetailModel.ShippingAddress);
 
             //get the root order, passing a mapping function to execute
-            var order = await CRMDatabase.SelectOne(
+            var order = await db.SelectOne(
                 dbo.Purchase.Id,
                 dbo.Customer.Id.As(nameof(OrderDetailModel.CustomerId)),
                 (dbo.Customer.FirstName + " " + dbo.Customer.LastName).As(nameof(OrderDetailModel.CustomerName)),
@@ -192,7 +193,7 @@ namespace ServerSideBlazorApp.Service
             .InnerJoin(dbo.Customer).On(dbo.Purchase.CustomerId == dbo.Customer.Id)
             .LeftJoin(dbo.PersonTotalPurchasesView).On(dbo.Customer.Id == dbo.PersonTotalPurchasesView.Id)
             .LeftJoin(
-                CRMDatabase.SelectOne(
+                db.SelectOne(
                     dbo.CustomerAddress.CustomerId.As(nameof(OrderDetailModel.CustomerId)),
                     dbo.Address.Line1,
                     dbo.Address.Line2,
@@ -206,7 +207,7 @@ namespace ServerSideBlazorApp.Service
                 .Where(dbo.Purchase.Id == orderId & dbo.Address.AddressType == AddressType.Billing)
             ).As(billingAddress).On(dbo.Customer.Id == (billingAddress, nameof(OrderDetailModel.CustomerId)))
             .LeftJoin(
-                CRMDatabase.SelectOne(
+                db.SelectOne(
                     dbo.CustomerAddress.CustomerId.As(nameof(OrderDetailModel.CustomerId)),
                     dbo.Address.Line1,
                     dbo.Address.Line2,
@@ -259,7 +260,7 @@ namespace ServerSideBlazorApp.Service
                 return null;
 
             //get all of the order lines for the order
-            var orderLines = await CRMDatabase.SelectMany(
+            var orderLines = await db.SelectMany(
                 dbo.Product.ProductCategoryType,
                 dbo.Product.Name,
                 dbo.PurchaseLine.PurchasePrice,
@@ -295,7 +296,7 @@ namespace ServerSideBlazorApp.Service
         /// </summary>
         public async Task<IList<dynamic>> GetRecentSalesByDay()
         {
-            return await CRMDatabase.SelectMany(
+            return await db.SelectMany(
                 db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate).As("Year"),
                 db.fx.DatePart(DateParts.Month, dbo.Purchase.PurchaseDate).As("Month"),
                 db.fx.DatePart(DateParts.Day, dbo.Purchase.PurchaseDate).As("Day"),
@@ -315,7 +316,7 @@ namespace ServerSideBlazorApp.Service
         /// </summary>
         public async Task<IList<dynamic>> GetSalesByProductCategory()
         {
-            return await CRMDatabase.SelectMany(
+            return await db.SelectMany(
                 dbo.Product.ProductCategoryType,
                 db.fx.Sum(dbo.PurchaseLine.PurchasePrice * dbo.PurchaseLine.Quantity).As("TotalSales")
             )

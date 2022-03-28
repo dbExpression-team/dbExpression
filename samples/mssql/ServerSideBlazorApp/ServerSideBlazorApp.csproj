@@ -26,13 +26,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Blazorise.Charts" Version="0.9.5.2" />
-		<PackageReference Include="Blazorise.Components" Version="0.9.5.2" />
-		<PackageReference Include="Blazorise.DataGrid" Version="0.9.5.2" />
-		<PackageReference Include="Blazorise.Icons.FontAwesome" Version="0.9.5.2" />
-		<PackageReference Include="Blazorise.Icons.Material" Version="0.9.5.2" />
-		<PackageReference Include="Blazorise.Material" Version="0.9.5.2" />
-		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.0" />
+		<PackageReference Include="Blazorise.Charts" Version="1.0.1" />
+		<PackageReference Include="Blazorise.Components" Version="1.0.1" />
+		<PackageReference Include="Blazorise.DataGrid" Version="1.0.1" />
+		<PackageReference Include="Blazorise.Icons.FontAwesome" Version="1.0.1" />
+		<PackageReference Include="Blazorise.Icons.Material" Version="1.0.1" />
+		<PackageReference Include="Blazorise.Material" Version="1.0.1" />
+		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.2" />
 	</ItemGroup>
 
 </Project>

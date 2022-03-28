@@ -56,7 +56,7 @@
             {?var:isFirstParameter = true}
             {>("StoredProcedureExpression.Documentation") => GetTemplatePartial+}
             public StoredProcedureContinuation {$.StoredProcedureExpression.Name}({#each $.Parameters}{#if $.ParameterExpression.RequiresInput}{#if !:isFirstParameter}, {/if}{?:isFirstParameter = false}{$.ParameterExpression.Type.NullableAlias} {($.ParameterExpression.Name, "@") => TrimStart}{/if}{/each}{#if $.HasOutputParameters}{#if $.HasInputParameters}, {+/if}Action<ISqlOutputParameterList> outputParameters{/if})
-                => _database.QueryExpressionBuilder.CreateStoredProcedureBuilder(_database.Configuration, new {$.StoredProcedureExpression.Name}StoredProcedure("{:schemaName}", _{:schemaName}{#each $.Parameters}{#if $.ParameterExpression.RequiresInput}, {($.ParameterExpression.Name, "@") => TrimStart}{/if}{/each}{#if $.HasOutputParameters}{#if $.HasInputParameters}, {+/if}outputParameters{/if}));
+                => _database.Configuration.QueryExpressionBuilder.CreateStoredProcedureBuilder(_database.Configuration, new {$.StoredProcedureExpression.Name}StoredProcedure("{:schemaName}", _{:schemaName}{#each $.Parameters}{#if $.ParameterExpression.RequiresInput}, {($.ParameterExpression.Name, "@") => TrimStart}{/if}{/each}{#if $.HasOutputParameters}{#if $.HasInputParameters}, {+/if}outputParameters{/if}));
 
             {/each}
             #endregion

@@ -16,14 +16,11 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using HatTrick.DbEx.Sql.Configuration;
-using System;
-
-namespace HatTrick.DbEx.Sql
+﻿namespace HatTrick.DbEx.Sql.Configuration
 {
-    public interface ISqlDatabaseRuntime<TConfig> : ISqlDatabaseRuntime
+    public interface ISqlDatabaseRuntimeConfigurationProvider<TConfig>
         where TConfig : SqlDatabaseRuntimeConfiguration
     {
-        void UseConfiguration(TConfig configuration);
+        TConfig Configuration { get; }
     }
 }

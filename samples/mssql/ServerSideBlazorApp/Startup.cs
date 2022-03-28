@@ -1,14 +1,17 @@
 using Blazorise;
 using Blazorise.Icons.Material;
 using Blazorise.Material;
+using HatTrick.DbEx.Sql.Expression;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ServerSideBlazorApp.Data;
 using ServerSideBlazorApp.DataService;
 using ServerSideBlazorApp.Service;
+using System.Text.Json;
 
 namespace ServerSideBlazorApp
 {
@@ -27,6 +30,7 @@ namespace ServerSideBlazorApp
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            services.AddHttpContextAccessor();
 
             //add dbExpression dependencies to the service collection.  Note in the configuration of a specific database,
             //the delegate contains the ServiceProvider, which can be used to resolve services
@@ -46,16 +50,20 @@ namespace ServerSideBlazorApp
                                 //description for a product is stored as serialized json.  Note the clrType override in dbex.config.json that generates a property type of 'ServerSideBlazorApp.Data.ProductDescription'
                                 database.Conversions.UseDefaultFactory(x =>
                                     x.OverrideForReferenceType<ProductDescription>().Use(
-                                        pd => pd is null ? null : System.Text.Json.JsonSerializer.Serialize(pd), //serialize to json as it goes in to the database
-                                        o => string.IsNullOrWhiteSpace(o as string) ? default : System.Text.Json.JsonSerializer.Deserialize<ProductDescription>((o as string)!)) //deserialize to ProductDescription as it comes from the database
+                                        productDescription => productDescription is null ? null : JsonSerializer.Serialize(productDescription), //serialize to json as it goes in to the database
+                                        dbValue => string.IsNullOrWhiteSpace(dbValue as string) ? default : JsonSerializer.Deserialize<ProductDescription>((dbValue as string)!)) //deserialize to ProductDescription as it comes from the database
                                     );
-                            }, 
-                            ServiceLifetime.Scoped //could easily be ommitted and the default of "Singleton" would be applied; including as an example of creating a lifetime for the database as "Scoped"
-                        ); 
+                            },
+                            lifetime: ServiceLifetime.Scoped //could easily be ommitted and the default of "Singleton" would be applied; including as an example of creating a lifetime for the database as "Scoped"
+                        );
                     }
                 );
 
-            services.AddBlazorise(options => options.ChangeTextOnKeyPress = true)
+            services.AddBlazorise(options =>
+                {
+                    options.Debounce = true;
+                    options.DebounceInterval = 300;
+                })
               .AddMaterialProviders()
               .AddMaterialIcons();
 
