@@ -8,7 +8,7 @@
         #endregion
 
         #region interface
-        public static {$.Platform}FunctionExpressionBuilder fx => {$.DatabaseExpression.Name}.FunctionExpressionBuilder;
+        public static {$.Platform}FunctionExpressionBuilder fx => {$.DatabaseExpression.Name}.fx;
         public static {$.DatabaseExpression.Name}.{$.DatabaseExpression.Name}StoredProcedures sp => {$.DatabaseExpression.Name}.sp;
         #endregion
 

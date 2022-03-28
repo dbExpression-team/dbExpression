@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,20 +16,26 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using HatTrick.DbEx.Sql;
-using HatTrick.DbEx.Sql.Configuration;
+using System;
 
-namespace HatTrick.DbEx.MsSql.Configuration
+namespace HatTrick.DbEx.Sql.Configuration
 {
-    public class MsSqlSqlDatabaseRuntimeConfigurationBuilder<TDatabase, TConfig> : SqlDatabaseRuntimeConfigurationBuilder<TDatabase, TConfig>
-        where TDatabase : class, ISqlDatabaseRuntime<TConfig>, new()
-        where TConfig : MsSqlSqlDatabaseRuntimeConfiguration
+    public class SqlDatabaseRuntimeConfigurationBuilder<TConfig> : SqlDatabaseRuntimeConfigurationBuilder,
+        ISqlDatabaseRuntimeConfigurationBuilder<TConfig>
+        where TConfig : SqlDatabaseRuntimeConfiguration
     {
-        #region constructors
-        public MsSqlSqlDatabaseRuntimeConfigurationBuilder(TDatabase database, TConfig config)
-            : base(database, config)
-        {
+        #region internals
+        private readonly TConfig configuration;
+        #endregion
 
+        #region interface
+        TConfig ISqlDatabaseRuntimeConfigurationProvider<TConfig>.Configuration => configuration;
+        #endregion
+
+        #region constructors
+        protected SqlDatabaseRuntimeConfigurationBuilder(TConfig configuration) : base(configuration)
+        {
+            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
         #endregion
     }

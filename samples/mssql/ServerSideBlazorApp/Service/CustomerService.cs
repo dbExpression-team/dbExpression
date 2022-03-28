@@ -23,32 +23,35 @@ namespace ServerSideBlazorApp.Service
     /// </remarks>
     public class CustomerService
     {
-        private readonly  CRMDatabase CRMDatabase;
+        private readonly CRMDatabase db;
 
         //dbExpression element to approximate a person's current age.  Stored as a variable as it's used more than once.
-        private static readonly AnyElement<short?> currentAgeApproximation = db.fx.Cast(db.fx.Floor(db.fx.DateDiff(DateParts.Day, dbo.Customer.BirthDate, db.fx.GetUtcDate()) / 365.25)).AsSmallInt();
+        private AnyElement<short?>? _currentAgeApproximation;
+        private AnyElement<short?> CurrentAgeApproximation => _currentAgeApproximation ??= db.fx.Cast(db.fx.Floor(db.fx.DateDiff(DateParts.Day, dbo.Customer.BirthDate, db.fx.GetUtcDate()) / 365.25)).AsSmallInt();
 
         #region customer summary
         //variable to hold dbExpression select elements.  Stored as a variable as it's used more than once and to demonstrate that select elements can be treated like most any other .NET object
-        private static readonly IList<AnyElement> CustomerSummarySelectClauseElements = new List<AnyElement>
+        private List<AnyElement>? _customerSummarySelectClauseElements;
+        private List<AnyElement> CustomerSummarySelectClauseElements => _customerSummarySelectClauseElements ??= new()
         {
             dbo.Customer.Id,
             (dbo.Customer.FirstName + " " + dbo.Customer.LastName).As(nameof(CustomerSummaryModel.Name)),
             db.fx.IsNull(dbo.PersonTotalPurchasesView.TotalAmount, 0).As(nameof(CustomerSummaryModel.LifetimeValue)),
-            currentAgeApproximation.As(nameof(CustomerSummaryModel.CurrentAge))
+            CurrentAgeApproximation.As(nameof(CustomerSummaryModel.CurrentAge))
         };
 
         //variable to hold dbExpression order by elements.  Stored as a variable as it's used more than once and to demonstrate that order by elements can be treated like most any other .NET object
-        private static readonly IDictionary<string, AnyElement> CustomerSummaryOrderByClauseElements = new Dictionary<string, AnyElement>
+        private Dictionary<string, AnyElement>? _customerSummaryOrderByClauseElements;
+        private Dictionary<string, AnyElement> CustomerSummaryOrderByClauseElements => _customerSummaryOrderByClauseElements ??= new()
         {
             { nameof(CustomerSummaryModel.Name), dbo.Customer.FirstName + " " + dbo.Customer.LastName },
             { nameof(CustomerSummaryModel.LifetimeValue), dbo.PersonTotalPurchasesView.TotalAmount },
-            { nameof(CustomerSummaryModel.CurrentAge), currentAgeApproximation }
+            { nameof(CustomerSummaryModel.CurrentAge), CurrentAgeApproximation }
         };
 
-        public CustomerService(CRMDatabase crmDatabase)
+        public CustomerService(CRMDatabase db)
         {
-            this.CRMDatabase = crmDatabase ?? throw new ArgumentNullException(nameof(crmDatabase));
+            this.db = db ?? throw new ArgumentNullException(nameof(db));
         }
 
         /// <summary>
@@ -60,7 +63,7 @@ namespace ServerSideBlazorApp.Service
             var customer = dbo.Customer;
             var ptpv = dbo.PersonTotalPurchasesView;
 
-            return await CRMDatabase.SelectMany(
+            return await db.SelectMany(
                     CustomerSummarySelectClauseElements
                 )
                 .Top(count)
@@ -82,7 +85,7 @@ namespace ServerSideBlazorApp.Service
                     : dbo.Customer.FirstName.Like(pagingParameters.SearchPhrase + '%') | dbo.Customer.LastName.Like(pagingParameters.SearchPhrase + '%');
 
             var customers = await
-                CRMDatabase.SelectMany(
+                db.SelectMany(
                     CustomerSummarySelectClauseElements
                 )
                 .From(dbo.Customer)
@@ -98,7 +101,7 @@ namespace ServerSideBlazorApp.Service
                 .ExecuteAsync(MapToCustomerSummary);
 
             var countOfCustomers = await
-                CRMDatabase.SelectOne(
+                db.SelectOne(
                     db.fx.Count()
                 )
                 .From(dbo.Customer)
@@ -147,7 +150,7 @@ namespace ServerSideBlazorApp.Service
             var customer = new CustomerDetailModel();
 
             //query will select data for the customer, and append fields to include all of their addresses 
-            await CRMDatabase.SelectOne(
+            await db.SelectOne(
                     dbo.Customer.Id,
                     dbo.Customer.FirstName,
                     dbo.Customer.LastName,
@@ -156,7 +159,7 @@ namespace ServerSideBlazorApp.Service
                     dbo.Customer.CreditLimit,
                     dbo.Customer.YearOfLastCreditLimitReview,
                     dbo.Customer.BirthDate,
-                    currentAgeApproximation.As(nameof(CustomerSummaryModel.CurrentAge)),
+                    CurrentAgeApproximation.As(nameof(CustomerSummaryModel.CurrentAge)),
                     dbex.Alias<string>(mailingAddress, nameof(AddressModel.Line1)),
                     dbex.Alias<string>(mailingAddress, nameof(AddressModel.Line2)),
                     dbex.Alias<string>(mailingAddress, nameof(AddressModel.City)),
@@ -176,7 +179,7 @@ namespace ServerSideBlazorApp.Service
                 .From(dbo.Customer)
                 .LeftJoin(dbo.PersonTotalPurchasesView).On(dbo.Customer.Id == dbo.PersonTotalPurchasesView.Id)
                 .LeftJoin(
-                    CRMDatabase.SelectOne(
+                    db.SelectOne(
                         dbo.CustomerAddress.CustomerId.As(nameof(CustomerSummaryModel.Id)),
                         dbo.Address.Line1,
                         dbo.Address.Line2,
@@ -189,7 +192,7 @@ namespace ServerSideBlazorApp.Service
                     .Where(dbo.CustomerAddress.CustomerId == customerId & dbo.Address.AddressType == AddressType.Mailing)
                 ).As(mailingAddress).On(dbo.Customer.Id == (nameof(CustomerDetailModel.MailingAddress), nameof(CustomerSummaryModel.Id)))
                 .LeftJoin(
-                    CRMDatabase.SelectOne(
+                    db.SelectOne(
                         dbo.CustomerAddress.CustomerId.As(nameof(CustomerSummaryModel.Id)),
                         dbo.Address.Line1,
                         dbo.Address.Line2,
@@ -202,7 +205,7 @@ namespace ServerSideBlazorApp.Service
                     .Where(dbo.CustomerAddress.CustomerId == customerId & dbo.Address.AddressType == AddressType.Billing)
                 ).As(billingAddress).On(dbo.Customer.Id == (nameof(CustomerDetailModel.BillingAddress), nameof(CustomerSummaryModel.Id)))
                 .LeftJoin(
-                    CRMDatabase.SelectOne(
+                    db.SelectOne(
                         dbo.CustomerAddress.CustomerId.As(nameof(CustomerSummaryModel.Id)),
                         dbo.Address.Line1,
                         dbo.Address.Line2,
@@ -292,7 +295,7 @@ namespace ServerSideBlazorApp.Service
         }
 
         private async Task<Address?> GetAddressAsync(int customerId, AddressType addressType)
-            => await CRMDatabase.SelectOne<Address>()
+            => await db.SelectOne<Address>()
                 .From(dbo.Address)
                 .InnerJoin(dbo.CustomerAddress).On(dbo.Address.Id == dbo.CustomerAddress.AddressId)
                 .Where(dbo.CustomerAddress.CustomerId == customerId & dbo.Address.AddressType == addressType)
@@ -306,7 +309,7 @@ namespace ServerSideBlazorApp.Service
             //if there are differences, execute an update.
             if (assignments.Any())
             {
-                await CRMDatabase.Update(
+                await db.Update(
                     assignments
                 )
                 .From(dbo.Address)
@@ -317,7 +320,7 @@ namespace ServerSideBlazorApp.Service
 
         private async Task InsertAddressAsync(int customerId, Address address)
         {
-            using var conn = CRMDatabase.GetConnection();
+            using var conn = db.GetConnection();
             conn.Open();
             try
             {
@@ -325,12 +328,12 @@ namespace ServerSideBlazorApp.Service
                 conn.BeginTransaction();
 
                 //insert into Address table
-                await CRMDatabase.Insert(address)
+                await db.Insert(address)
                     .Into(dbo.Address)
                     .ExecuteAsync(conn);
 
                 //insert into mapping table
-                await CRMDatabase.Insert(
+                await db.Insert(
                         new CustomerAddress
                         {
                             CustomerId = customerId,

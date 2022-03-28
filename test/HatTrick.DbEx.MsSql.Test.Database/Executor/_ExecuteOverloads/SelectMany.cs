@@ -72,7 +72,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             exp.Execute(conn);
 
             //then
-            usedConnection.Should().Equals(conn);
+            usedConnection.Should().Be(conn.DbConnection);
         }
 
         [Theory]
@@ -113,10 +113,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person);
 
             //when               
-            exp.Execute(expected);
+            exp.Execute(conn, expected);
 
             //then
-            usedConnection.Should().Equals(conn);
+            usedConnection.Should().Be(conn.DbConnection);
             usedCommandTimeout.Should().Be(expected);
         }
 
@@ -196,7 +196,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             exp.Execute(conn);
 
             //then
-            usedConnection.Should().Equals(conn);
+            usedConnection.Should().Be(conn.DbConnection);
         }
         
         [Theory]
@@ -237,10 +237,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person);
 
             //when               
-            exp.Execute(expected);
+            exp.Execute(conn, expected);
 
             //then
-            usedConnection.Should().Equals(conn);
+            usedConnection.Should().Be(conn.DbConnection);
             usedCommandTimeout.Should().Be(expected);
         }
 
@@ -440,7 +440,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             exp.Execute(conn);
 
             //then
-            usedConnection.Should().Equals(conn);
+            usedConnection.Should().Be(conn.DbConnection);
         }
 
         [Theory]
@@ -487,10 +487,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person);
 
             //when               
-            exp.Execute(expected);
+            exp.Execute(conn, expected);
 
             //then
-            usedConnection.Should().Equals(conn);
+            usedConnection.Should().Be(conn.DbConnection);
             usedCommandTimeout.Should().Be(expected);
         }
 
@@ -591,7 +591,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             exp.Execute(conn, row => row.ReadField()!.GetValue<int>());
 
             //then
-            usedConnection.Should().Equals(conn);
+            usedConnection.Should().Be(conn.DbConnection);
         }
 
         [Theory]
@@ -644,7 +644,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             exp.Execute(conn, expected, row => row.ReadField()!.GetValue<int>());
 
             //then
-            usedConnection.Should().Equals(conn);
+            usedConnection.Should().Be(conn.DbConnection);
             usedCommandTimeout.Should().Be(expected);
         }
 
@@ -729,7 +729,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             await exp.ExecuteAsync(conn);
 
             //then
-            usedConnection.Should().Equals(conn);
+            usedConnection.Should().Be(conn.DbConnection);
         }
 
         [Theory]
@@ -770,10 +770,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person);
 
             //when               
-            await exp.ExecuteAsync(expected);
+            await exp.ExecuteAsync(conn, expected);
 
             //then
-            usedConnection.Should().Equals(conn);
+            usedConnection.Should().Be(conn.DbConnection);
             usedCommandTimeout.Should().Be(expected);
         }
 
@@ -852,7 +852,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             await exp.ExecuteAsync(conn);
 
             //then
-            usedConnection.Should().Equals(conn);
+            usedConnection.Should().Be(conn.DbConnection);
         }
 
         [Theory]
@@ -893,10 +893,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person);
 
             //when               
-            await exp.ExecuteAsync(expected);
+            await exp.ExecuteAsync(conn, expected);
 
             //then
-            usedConnection.Should().Equals(conn);
+            usedConnection.Should().Be(conn.DbConnection);
             usedCommandTimeout.Should().Be(expected);
         }
 
@@ -1449,7 +1449,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             await exp.ExecuteAsync(conn);
 
             //then
-            usedConnection.Should().Equals(conn);
+            usedConnection.Should().Be(conn.DbConnection);
         }
 
         [Theory]
@@ -1617,7 +1617,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             await exp.ExecuteAsync(conn, expected, row => row.ReadField()!.GetValue<int>());
 
             //then
-            usedConnection.Should().Equals(conn);
+            usedConnection.Should().Be(conn.DbConnection);
             usedCommandTimeout.Should().Be(expected);
         }
 

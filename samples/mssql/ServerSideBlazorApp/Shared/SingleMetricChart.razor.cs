@@ -15,6 +15,7 @@ namespace ServerSideBlazorApp.Shared
         private PieChart<object> pieChart = new();
         private BarChart<object> barChart = new();
         private DoughnutChart<object> doughnutChart = new();
+        private PolarAreaChart<object> polarAreaChart = new();
 
         private readonly List<string> backgroundColors = new()
         { 
@@ -36,17 +37,21 @@ namespace ServerSideBlazorApp.Shared
             ChartColor.FromRgba(255, 159, 64, 1f) 
         };
 
-        private object ChartOptions => new
+        private LineChartOptions LineChartOptions => BuildChartOptions<LineChartOptions>();
+        private PieChartOptions PieChartOptions => BuildChartOptions<PieChartOptions>();
+        private BarChartOptions BarChartOptions => BuildChartOptions<BarChartOptions>();
+
+        private T BuildChartOptions<T>()
+            where T : ChartOptions, new()
         {
-            Legend = new 
-            {  
-                Display = ShowLegend
-            },
-            Title = new
+            T options = new();
+            options.Plugins = new()
             {
-                Display = true
-            }
-        };
+                Legend = new() { Display = ShowLegend },
+                Title = new() { Display = true }
+            };
+            return options;
+        }
 
         [Parameter] public Func<Task<IEnumerable<SingleMetricDatasetModel>>> Data { get; set; } = new Func<Task<IEnumerable<SingleMetricDatasetModel>>>(() => Task.FromResult(Enumerable.Empty<SingleMetricDatasetModel>()));
         [Parameter] public ChartType Type { get; set; }
@@ -68,6 +73,7 @@ namespace ServerSideBlazorApp.Shared
                 case ChartType.Pie: await RedrawPieChart(); break;
                 case ChartType.Bar: await RedrawBarChart(); break;
                 case ChartType.Doughnut: await RedrawDoughnutChart(); break;
+                case ChartType.PolarArea: await RedrawPolarAreaChart(); break;
                 default: throw new NotImplementedException($"{Type} has not been implemented.");
             }
         }
@@ -129,6 +135,22 @@ namespace ServerSideBlazorApp.Shared
             await doughnutChart.AddLabelsDatasetsAndUpdate(
                 data.Select(x => x.Label).ToList().AsReadOnly(),
                 new DoughnutChartDataset<object>
+                {
+                    Data = data.Where(x => x is not null).Select(x => x.Value).ToList()!,
+                    BackgroundColor = data.Select((x, i) => backgroundColors[i % backgroundColors.Count]).ToList(),
+                    BorderColor = data.Select((x, i) => borderColors[i % borderColors.Count]).ToList()
+                }
+            );
+        }
+
+        private async Task RedrawPolarAreaChart()
+        {
+            await polarAreaChart.Clear();
+            var data = (await Data()).ToList();
+
+            await polarAreaChart.AddLabelsDatasetsAndUpdate(
+                data.Select(x => x.Label).ToList().AsReadOnly(),
+                new PolarAreaChartDataset<object>
                 {
                     Data = data.Where(x => x is not null).Select(x => x.Value).ToList()!,
                     BackgroundColor = data.Select((x, i) => backgroundColors[i % backgroundColors.Count]).ToList(),

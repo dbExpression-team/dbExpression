@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,12 +16,24 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-namespace HatTrick.DbEx.Sql.Configuration
-{
-    public interface IDbExpressionConfigurationBuilder<TDatabase, TConfig> : IDbExpressionConfigurationBuilder
-        where TDatabase : ISqlDatabaseRuntime<TConfig>
-        where TConfig : SqlDatabaseRuntimeConfiguration
-    {
+using HatTrick.DbEx.Sql;
+using System;
 
+namespace Microsoft.Extensions.DependencyInjection
+{
+    public class DatabaseService<TDatabase, TService>
+        where TDatabase : class, ISqlDatabaseRuntime
+    {
+        public virtual TService? Service { get; }
+
+        protected DatabaseService()
+        { 
+        
+        }
+
+        public DatabaseService(TService service)
+        {
+            Service = service ?? throw new ArgumentNullException(nameof(service));
+        }
     }
 }

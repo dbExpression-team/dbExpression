@@ -16,10 +16,11 @@ namespace ServerSideBlazorApp.Service
     /// </summary>
     public class ProductService
     {
-        private readonly CRMDatabase CRMDatabase;
-        
+        private readonly CRMDatabase db;
+
         //variable to hold dbExpression order by elements.  Stored as a variable as it's used more than once and to demonstrate that order by elements can be treated like most any other .NET object
-        private static readonly IDictionary<string, AnyElement> ProductSummarySortingFields = new Dictionary<string, AnyElement>
+        private Dictionary<string, AnyElement>? _productSummarySortingFields;
+        private Dictionary<string, AnyElement> ProductSummarySortingFields => _productSummarySortingFields ??= new ()
         {
             { nameof(ProductSummaryModel.Category), dbo.Product.ProductCategoryType },
             { nameof(ProductSummaryModel.Name), dbo.Product.Name },
@@ -28,9 +29,9 @@ namespace ServerSideBlazorApp.Service
             { nameof(ProductSummaryModel.QuantityOnHand), dbo.Product.Quantity }
         };
 
-        public ProductService(CRMDatabase crmDatabase)
+        public ProductService(CRMDatabase db)
         {
-            this.CRMDatabase = crmDatabase ?? throw new ArgumentNullException(nameof(crmDatabase));
+            this.db = db ?? throw new ArgumentNullException(nameof(db));
         }
 
         /// <summary>
@@ -40,7 +41,7 @@ namespace ServerSideBlazorApp.Service
         public async Task<Page<ProductSummaryModel>> GetSummaryPageAsync(PagingParameters pagingParameters)
         { 
             var products = await
-                CRMDatabase.SelectMany(
+                db.SelectMany(
                     dbo.Product.Id,
                     dbo.Product.ProductCategoryType,
                     dbo.Product.Name,
@@ -66,7 +67,7 @@ namespace ServerSideBlazorApp.Service
                 );
 
             var countOfProducts = await
-                CRMDatabase.SelectOne(
+                db.SelectOne(
                     db.fx.Count()
                 )
                 .From(dbo.Product)
@@ -85,7 +86,7 @@ namespace ServerSideBlazorApp.Service
         public async Task<ProductDetailModel?> GetProductDetailAsync(int productId)
         {
             return await
-                CRMDatabase.SelectOne(
+                db.SelectOne(
                     dbo.Product.Id,
                     dbo.Product.ProductCategoryType,
                     dbo.Product.Name,
@@ -128,8 +129,8 @@ namespace ServerSideBlazorApp.Service
         /// </summary>
         public async Task UpdatePrice(int productId, double percentage)
         {
-            await CRMDatabase.Update(
-                //this is not good sound business logic, but for demonstration to show how dbExpression elements can be intermixed with things like ternarys.
+            await db.Update(
+                //this is not the best logic/implementation, but for demonstration to show how dbExpression elements can be intermixed with things like ternarys.
                 dbo.Product.Price.Set(dbo.Product.Price * (1 + (percentage > 1 ? percentage / 100 : percentage)))
             )
             .From(dbo.Product)
