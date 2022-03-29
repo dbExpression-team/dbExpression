@@ -12,7 +12,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.Dapper
     [RankColumn]
     public class DapperBenchmarks : PlatformBenchmarksBase
     {
-        private SqlConnection? connection;
+        private SqlConnection connection;
 
         [GlobalSetup]
         public void ConfigureDbExpression()
@@ -24,25 +24,25 @@ namespace HatTrick.DbEx.MsSql.Benchmark.Dapper
         [Benchmark(Description = "Select First Record")]
         public Person SelectOneQueryExpression()
         {
-            return connection!.Query<Person>("select top(1) * from Person", buffered: true).First();
+            return connection.Query<Person>("select top(1) * from Person", buffered: true).First();
         }
 
         [Benchmark(Description = "Select First Record With Join Condition")]
         public Person SelectOneWithJoinsQueryExpression()
         {
-            return connection!.Query<Person>("select top(1) * from Person inner join Person_Address on Person.Id = Person_Address.Id", buffered: true).First();
+            return connection.Query<Person>("select top(1) * from Person inner join Person_Address on Person.Id = Person_Address.Id", buffered: true).First();
         }
 
         [Benchmark(Description = "Select First Record With Where Clause")]
         public Person SelectOneWithWhereClauseQueryExpression()
         {
-            return connection!.Query<Person>("select top(1) * from Person where Id = @Id", new { Id = 1 }, buffered: true).First();
+            return connection.Query<Person>("select top(1) * from Person where Id = @Id", new { Id = 1 }, buffered: true).First();
         }
 
         [Benchmark(Description = "Select First Record With Scalar Return")]
         public int SelectOneWithFieldAliasQueryExpression()
         {
-            return connection!.Query<int>("select top(1) Id from Person where Id = @Id", new { Id = 1 }, buffered: true).First();
+            return connection.Query<int>("select top(1) Id from Person where Id = @Id", new { Id = 1 }, buffered: true).First();
         }
 
         [Benchmark(Description = "Select First Record With Dynamic Return")]

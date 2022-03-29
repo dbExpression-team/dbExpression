@@ -51,7 +51,7 @@
                                 <FieldBody>
                                     <Select @bind-SelectedValue="@Address.State">
                                         <ChildContent>
-                                            <SelectItem Value="@((string)null)">(Select State)</SelectItem>
+                                            <SelectItem Value="@((string?)null)">(Select State)</SelectItem>
                                             @foreach (var state in ListProvider.States)
                                             {
                                                 <SelectItem Value="@state.Key">@($"{state.Value} ({state.Key})")</SelectItem>
