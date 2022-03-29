@@ -4,10 +4,7 @@ using HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService;
 using HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboData;
 using HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService;
 using HatTrick.DbEx.MsSql.Configuration;
-using HatTrick.DbEx.Sql.Benchmark.dbExpression.DataService;
-using HatTrick.DbEx.Sql.Benchmark.dbExpression.dboDataService;
 using HatTrick.DbEx.Sql.Connection;
-using HatTrick.DbEx.Sql.Benchmark.dbExpression.dboData;
 using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.MsSql.Benchmark

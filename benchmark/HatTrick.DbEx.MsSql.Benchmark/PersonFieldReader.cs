@@ -1,5 +1,4 @@
-﻿using HatTrick.DbEx.Sql.Benchmark.dbExpression;
-using HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboData;
+﻿using HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboData;
 using HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService;
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Executor;
