@@ -56,7 +56,7 @@ namespace HatTrick.DbEx.Sql.Converter
 
         private static readonly IValueConverter objectConverter = new ObjectConverter();
 
-        private readonly ConcurrentDictionary<Type, Func<IValueConverter>> valueConverters = new ConcurrentDictionary<Type, Func<IValueConverter>>();
+        private readonly ConcurrentDictionary<Type, Func<IValueConverter>> valueConverters = new();
         #endregion
 
         #region methods
@@ -124,13 +124,13 @@ namespace HatTrick.DbEx.Sql.Converter
 
         public virtual IValueConverter CreateConverter(Type type)
         {
-            if (valueConverters.TryGetValue(type, out Func<IValueConverter> converter))
+            if (valueConverters.TryGetValue(type, out Func<IValueConverter>? converter))
                 return converter();
 
-            if (TryCreateEnumValueConverter(type, out IValueConverter enumConverter))
+            if (TryCreateEnumValueConverter(type, out IValueConverter? enumConverter))
             {
-                valueConverters.TryAdd(type, () => enumConverter);
-                return enumConverter;
+                valueConverters.TryAdd(type, () => enumConverter!);
+                return enumConverter!;
             }
 
             throw new DbExpressionConfigurationException($"Could not resolve a converter for type '{type}', please ensure a converter has been registered.");
@@ -139,13 +139,13 @@ namespace HatTrick.DbEx.Sql.Converter
         public virtual IValueConverter CreateConverter<T>()
             => CreateConverter(typeof(T));
 
-        protected virtual bool TryCreateEnumValueConverter(Type enumType, out IValueConverter converter)
+        protected virtual bool TryCreateEnumValueConverter(Type enumType, out IValueConverter? converter)
         {
-            converter = null;
+            converter = default;
             try
             {
                 converter = CreateEnumValueConverter(enumType);
-                return converter is object;
+                return converter is not null;
             }
             catch
             {
@@ -153,21 +153,16 @@ namespace HatTrick.DbEx.Sql.Converter
             }
         }
 
-        protected virtual EnumValueConverter CreateEnumValueConverter(Type enumType)
+        protected virtual IValueConverter? CreateEnumValueConverter(Type enumType)
             => CreateEnumValueConverter(enumType, enumType, false);
 
-        protected virtual EnumValueConverter CreateEnumValueConverter(Type enumType, Type rootType, bool isNullable)
+        protected virtual IValueConverter? CreateEnumValueConverter(Type enumType, Type rootType, bool isNullable)
         {
             if (enumType.IsEnum)
-            {
-                if (isNullable)
-                {
-                    return new NullableEnumValueConverter(rootType);
-                }
-                return new EnumValueConverter(rootType);
-            }
-            enumType = Nullable.GetUnderlyingType(enumType);
-            return enumType is null ? null : CreateEnumValueConverter(enumType, rootType, true);
+                return isNullable ? new NullableEnumValueConverter(enumType) : new EnumValueConverter(rootType);
+
+            var underlying = Nullable.GetUnderlyingType(enumType);
+            return underlying is null ? null : CreateEnumValueConverter(underlying, rootType, true);
         }
         #endregion
     }

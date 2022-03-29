@@ -28,7 +28,7 @@ namespace HatTrick.DbEx.MsSql.Expression
         IEquatable<NullableInt64PatIndexFunctionExpression>
     {
         #region constructors
-        public NullableInt64PatIndexFunctionExpression(AnyElement<string> pattern, NullableStringElement expression) 
+        public NullableInt64PatIndexFunctionExpression(AnyElement pattern, AnyElement expression) 
             : base(pattern, expression)
         {
 
@@ -41,11 +41,11 @@ namespace HatTrick.DbEx.MsSql.Expression
         #endregion
 
         #region equals
-        public bool Equals(NullableInt64PatIndexFunctionExpression obj)
-            => obj is NullableInt64PatIndexFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableInt64PatIndexFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableInt64PatIndexFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableInt64PatIndexFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

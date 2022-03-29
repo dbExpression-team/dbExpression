@@ -40,11 +40,11 @@ namespace HatTrick.DbEx.Sql.Assembler
                 //append the subquery alias
                 builder.Appender.Indentation--.Indent().Write(") AS ")
                     .Write(context.Configuration.IdentifierDelimiter.Begin)
-                    .Write((expression as IExpressionAliasProvider).Alias)
+                    .Write((expression as IExpressionAliasProvider).Alias!)
                     .Write(context.Configuration.IdentifierDelimiter.End)
                     .Write(" ON ");
 
-                builder.AppendElement(expression.JoinOnExpression, context);
+                builder.AppendElement(expression.JoinOnExpression!, context);
 
                 return;
             }
@@ -57,7 +57,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 return;
 
             builder.Appender.Write(" ON ");
-            builder.AppendElement(expression.JoinOnExpression, context);
+            builder.AppendElement(expression.JoinOnExpression!, context);
         }
     }
 }

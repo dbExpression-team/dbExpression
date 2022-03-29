@@ -19,19 +19,19 @@
 using System;
 using System.Collections.Generic;
 
+#nullable enable
+
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableBooleanFieldExpression
     {
         #region in value set
-        public override FilterExpressionSet In(params bool[] value) => value is object ? new FilterExpressionSet(new FilterExpression<bool>(this, new InExpression<bool>(this, value), FilterExpressionOperator.None)) : null;
-        public override FilterExpressionSet In(IEnumerable<bool> value) => value is object ? new FilterExpression<bool>(this, new InExpression<bool>(this, value), FilterExpressionOperator.None) : null;
-        public override FilterExpressionSet In(params bool?[] value) => value is object ? new FilterExpressionSet(new FilterExpression<bool?>(this, new InExpression<bool?>(this, value), FilterExpressionOperator.None)) : null;
-        public override FilterExpressionSet In(IEnumerable<bool?> value) => value is object ? new FilterExpressionSet(new FilterExpression<bool?>(this, new InExpression<bool?>(this, value), FilterExpressionOperator.None)) : null;
+        public override FilterExpressionSet In(params bool?[] value) => new(new FilterExpression<bool?>(this, new InExpression<bool?>(this, value), FilterExpressionOperator.None));
+        public override FilterExpressionSet In(IEnumerable<bool?> value) => new(new FilterExpression<bool?>(this, new InExpression<bool?>(this, value), FilterExpressionOperator.None));
         #endregion
 
         #region implicit operators
-        public static implicit operator NullableBooleanExpressionMediator(NullableBooleanFieldExpression a) => new NullableBooleanExpressionMediator(a);
+        public static implicit operator NullableBooleanExpressionMediator(NullableBooleanFieldExpression a) => new(a);
         #endregion
 
         #region arithmetic operators
@@ -50,49 +50,49 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region filter operators
         #region DBNull
-        public static FilterExpressionSet operator ==(NullableBooleanFieldExpression a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<bool?>(b, a), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableBooleanFieldExpression a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<bool?>(b, a), FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator ==(DBNull a, NullableBooleanFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<bool?>(a, b), b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(DBNull a, NullableBooleanFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<bool?>(a, b), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(NullableBooleanFieldExpression a, DBNull b) => new(new FilterExpression<bool?>(a, new LiteralExpression<bool?>(b, a), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(NullableBooleanFieldExpression a, DBNull b) => new(new FilterExpression<bool?>(a, new LiteralExpression<bool?>(b, a), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(DBNull a, NullableBooleanFieldExpression b) => new(new FilterExpression<bool?>(new LiteralExpression<bool?>(a, b), b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(DBNull a, NullableBooleanFieldExpression b) => new(new FilterExpression<bool?>(new LiteralExpression<bool?>(a, b), b, FilterExpressionOperator.NotEqual));
         #endregion
 
         #region data types
         #region bool
-        public static FilterExpressionSet operator ==(NullableBooleanFieldExpression a, bool b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<bool>(b, a), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableBooleanFieldExpression a, bool b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<bool>(b, a), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(NullableBooleanFieldExpression a, bool b) => new(new FilterExpression<bool?>(a, new LiteralExpression<bool>(b, a), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(NullableBooleanFieldExpression a, bool b) => new(new FilterExpression<bool?>(a, new LiteralExpression<bool>(b, a), FilterExpressionOperator.NotEqual));
 
-        public static FilterExpressionSet operator ==(bool a, NullableBooleanFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<bool?>(a, b), b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(bool a, NullableBooleanFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<bool?>(a, b), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(bool a, NullableBooleanFieldExpression b) => new(new FilterExpression<bool?>(new LiteralExpression<bool?>(a, b), b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(bool a, NullableBooleanFieldExpression b) => new(new FilterExpression<bool?>(new LiteralExpression<bool?>(a, b), b, FilterExpressionOperator.NotEqual));
 
-        public static FilterExpressionSet operator ==(NullableBooleanFieldExpression a, bool? b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<bool?>(b, a), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableBooleanFieldExpression a, bool? b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<bool?>(b, a), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(NullableBooleanFieldExpression a, bool? b) => new(new FilterExpression<bool?>(a, new LiteralExpression<bool?>(b, a), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(NullableBooleanFieldExpression a, bool? b) => new(new FilterExpression<bool?>(a, new LiteralExpression<bool?>(b, a), FilterExpressionOperator.NotEqual));
 
-        public static FilterExpressionSet operator ==(bool? a, NullableBooleanFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<bool?>(a, b), b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(bool? a, NullableBooleanFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<bool?>(a, b), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(bool? a, NullableBooleanFieldExpression b) => new(new FilterExpression<bool?>(new LiteralExpression<bool?>(a, b), b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(bool? a, NullableBooleanFieldExpression b) => new(new FilterExpression<bool?>(new LiteralExpression<bool?>(a, b), b, FilterExpressionOperator.NotEqual));
         #endregion
         #endregion
 
         #region fields
-        public static FilterExpressionSet operator ==(NullableBooleanFieldExpression a, BooleanFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableBooleanFieldExpression a, BooleanFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(NullableBooleanFieldExpression a, BooleanFieldExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(NullableBooleanFieldExpression a, BooleanFieldExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual));
 
-        public static FilterExpressionSet operator ==(NullableBooleanFieldExpression a, NullableBooleanFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableBooleanFieldExpression a, NullableBooleanFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(NullableBooleanFieldExpression a, NullableBooleanFieldExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(NullableBooleanFieldExpression a, NullableBooleanFieldExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual));
         #endregion
         
         #region mediators
-        public static FilterExpressionSet operator ==(NullableBooleanFieldExpression a, BooleanExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableBooleanFieldExpression a, BooleanExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(NullableBooleanFieldExpression a, BooleanExpressionMediator b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(NullableBooleanFieldExpression a, BooleanExpressionMediator b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual));
 
-        public static FilterExpressionSet operator ==(NullableBooleanFieldExpression a, NullableBooleanExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableBooleanFieldExpression a, NullableBooleanExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(NullableBooleanFieldExpression a, NullableBooleanExpressionMediator b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(NullableBooleanFieldExpression a, NullableBooleanExpressionMediator b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual));
         #endregion
 
         #region alias
-        public static FilterExpressionSet operator ==(NullableBooleanFieldExpression a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableBooleanFieldExpression a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator ==(NullableBooleanFieldExpression a, (string TableName, string FieldName) b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableBooleanFieldExpression a, (string TableName, string FieldName) b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(NullableBooleanFieldExpression a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(NullableBooleanFieldExpression a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(NullableBooleanFieldExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression<bool?>(b), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(NullableBooleanFieldExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression<bool?>(b), FilterExpressionOperator.NotEqual));
         #endregion
         #endregion
     }

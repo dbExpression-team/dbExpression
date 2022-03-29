@@ -22,6 +22,6 @@ namespace HatTrick.DbEx.Sql.Assembler
 {
     public interface IExpressionElementAppenderFactory
     {
-        IExpressionElementAppender CreateElementAppender(IExpressionElement element);
+        IExpressionElementAppender? CreateElementAppender(IExpressionElement element);
     }
 }

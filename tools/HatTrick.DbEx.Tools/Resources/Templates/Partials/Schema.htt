@@ -5,12 +5,12 @@
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
     {{
-        private static {$.SchemaExpression.Name}SchemaExpression schema;
+        private static {$.SchemaExpression.Name}SchemaExpression{$.SchemaExpression.LanguageFeatures.Nullable.Annotation} schema;
 
         #region interface
         {#each $.Entities}
         {>("EntityExpression.Documentation") => GetTemplatePartial+}
-        public static {$.EntityExpression.Name}Entity {$.EntityExpression.Name} {{ get; private set; }}
+        public static {$.EntityExpression.Name}Entity {$.EntityExpression.Name} {{ get; private set; }}{$.EntityExpression.EntityInitializer}
 
 		{/each}
         #endregion

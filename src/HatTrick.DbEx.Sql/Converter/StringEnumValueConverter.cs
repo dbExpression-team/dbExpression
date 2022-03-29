@@ -31,13 +31,13 @@ namespace HatTrick.DbEx.Sql.Converter
                 throw new ArgumentException($"Expected {nameof(enumType)} to be of type Enum.");
         }
 
-        public virtual object ConvertFromDatabase(object value)
-            => value is null ? default : Enum.Parse(type, value as string, true);
+        public virtual object? ConvertFromDatabase(object? value)
+            => value is null ? default : Enum.Parse(type, value as string ?? throw new DbExpressionException("Expected a string value for conversion from the database."), true);
 
-        public virtual T ConvertFromDatabase<T>(object value)
-            => (T)Enum.Parse(typeof(T), value as string);
+        public virtual T? ConvertFromDatabase<T>(object? value)
+            => (T)Enum.Parse(typeof(T), value as string ?? throw new DbExpressionException("Expected a string value for conversion from the database."));
 
-        public virtual (Type Type, object ConvertedValue) ConvertToDatabase(object value)
-            => (typeof(string), value.ToString());
+        public virtual (Type Type, object? ConvertedValue) ConvertToDatabase(object? value)
+            => (typeof(string), value?.ToString());
     }
 }

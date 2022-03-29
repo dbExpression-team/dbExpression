@@ -23,26 +23,26 @@ namespace HatTrick.DbEx.Sql.Configuration
     public class SqlStatementAssemblyGroupingConfigurationBuilders : ISqlStatementAssemblyGroupingConfigurationBuilders
     {
         #region internals
-        private ISqlStatementsConfigurationBuilderGrouping caller;
-        private readonly RuntimeSqlDatabaseConfiguration configuration;
-        private IExpressionElementAppenderFactoryConfigurationBuilder _elementAppender;
-        private IAppenderFactoryConfigurationBuilder _appender;
-        private ISqlParameterBuilderFactoryConfigurationBuilder _parameter;
-        private ISqlStatementBuilderFactoryConfigurationBuilder _statement;
-        private ISqlStatementAssemblerFactoryConfigurationBuilder _assembler;
+        private readonly ISqlStatementsConfigurationBuilderGrouping caller;
+        private readonly SqlDatabaseRuntimeConfiguration configuration;
+        private IExpressionElementAppenderFactoryConfigurationBuilder? _elementAppender;
+        private IAppenderFactoryConfigurationBuilder? _appender;
+        private ISqlParameterBuilderFactoryConfigurationBuilder? _parameter;
+        private ISqlStatementBuilderFactoryConfigurationBuilder? _statement;
+        private ISqlStatementAssemblerFactoryConfigurationBuilder? _assembler;
         #endregion
 
         #region interface
-        public IExpressionElementAppenderFactoryConfigurationBuilder ElementAppender => _elementAppender ?? (_elementAppender = new ExpressionElementAppenderFactoryConfigurationBuilder(this, configuration));
-        public IAppenderFactoryConfigurationBuilder StatementAppender => _appender ?? (_appender = new AppenderFactoryConfigurationBuilder(this, configuration));
-        public ISqlParameterBuilderFactoryConfigurationBuilder ParameterBuilder => _parameter ?? (_parameter = new SqlParameterBuilderFactoryConfigurationBuilder(this, configuration));
-        public ISqlStatementBuilderFactoryConfigurationBuilder StatementBuilder => _statement ?? (_statement = new SqlStatementBuilderFactoryConfigurationBuilder(this, configuration));
-        public ISqlStatementAssemblerFactoryConfigurationBuilder StatementAssembler => _assembler ?? (_assembler = new SqlStatementAssemblerFactoryConfigurationBuilder(this, configuration));
-        public ISqlStatementExecutionGroupingConfigurationBuilders Execution => caller.Execution;
+        public IExpressionElementAppenderFactoryConfigurationBuilder ElementAppender => _elementAppender ??= new ExpressionElementAppenderFactoryConfigurationBuilder(this, configuration);
+        public IAppenderFactoryConfigurationBuilder StatementAppender => _appender ??= new AppenderFactoryConfigurationBuilder(this, configuration);
+        public ISqlParameterBuilderFactoryConfigurationBuilder ParameterBuilder => _parameter ??= new SqlParameterBuilderFactoryConfigurationBuilder(this, configuration);
+        public ISqlStatementBuilderFactoryConfigurationBuilder StatementBuilder => _statement ??= new SqlStatementBuilderFactoryConfigurationBuilder(this, configuration);
+        public ISqlStatementAssemblerFactoryConfigurationBuilder StatementAssembler => _assembler ??= new SqlStatementAssemblerFactoryConfigurationBuilder(this, configuration);
+        public ISqlStatementExecutionGroupingConfigurationBuilders QueryExecution => caller.QueryExecution;
         #endregion
 
         #region constructors
-        public SqlStatementAssemblyGroupingConfigurationBuilders(ISqlStatementsConfigurationBuilderGrouping caller, RuntimeSqlDatabaseConfiguration configuration)
+        public SqlStatementAssemblyGroupingConfigurationBuilders(ISqlStatementsConfigurationBuilderGrouping caller, SqlDatabaseRuntimeConfiguration configuration)
         {
             this.caller = caller ?? throw new ArgumentNullException(nameof(caller));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));

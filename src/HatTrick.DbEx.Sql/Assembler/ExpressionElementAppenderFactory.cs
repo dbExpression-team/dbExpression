@@ -25,60 +25,60 @@ namespace HatTrick.DbEx.Sql.Assembler
     public class ExpressionElementAppenderFactory : IExpressionElementAppenderFactory
     {
         #region internals
-        private static readonly SchemaExpressionAppender schemaAppender = new SchemaExpressionAppender();
-        private static readonly EntityExpressionAppender entityAppender = new EntityExpressionAppender();
-        private static readonly FieldExpressionAppender fieldAppender = new FieldExpressionAppender();
-        private static readonly AssignmentExpressionAppender assignmentAppender = new AssignmentExpressionAppender();
-        private static readonly AssignmentExpressionSetAppender assignmentSetAppender = new AssignmentExpressionSetAppender();
-        private static readonly SelectExpressionAppender selectAppender = new SelectExpressionAppender();
-        private static readonly SelectExpressionSetAppender selectSetAppender = new SelectExpressionSetAppender();
-        private static readonly FilterExpressionAppender filterAppender = new FilterExpressionAppender();
-        private static readonly FilterExpressionSetAppender filterSetAppender = new FilterExpressionSetAppender();
-        private static readonly JoinExpressionAppender joinAppender = new JoinExpressionAppender();
-        private static readonly JoinExpressionSetAppender joinSetAppender = new JoinExpressionSetAppender();
-        private static readonly JoinOnExpressionSetAppender joinOnSetAppender = new JoinOnExpressionSetAppender();
-        private static readonly JoinOnExpressionAppender joinOnClauseAppender = new JoinOnExpressionAppender();
-        private static readonly GroupByExpressionAppender groupByAppender = new GroupByExpressionAppender();
-        private static readonly GroupByExpressionSetAppender groupBySetAppender = new GroupByExpressionSetAppender();
-        private static readonly HavingExpressionAppender havingClauseAppender = new HavingExpressionAppender();
-        private static readonly OrderByExpressionAppender orderByAppender = new OrderByExpressionAppender();
-        private static readonly OrderByExpressionSetAppender orderBySetAppender = new OrderByExpressionSetAppender();
-        private static readonly ArithmeticExpressionAppender arithmeticAppender = new ArithmeticExpressionAppender();
-        private static readonly ExpressionMediatorAppender expressionMediatorAppender = new ExpressionMediatorAppender();
-        private static readonly CastFunctionExpressionAppender castFunctionAppender = new CastFunctionExpressionAppender();
-        private static readonly CoalesceFunctionExpressionAppender coalesceFunctionAppender = new CoalesceFunctionExpressionAppender();
-        private static readonly ConcatFunctionExpressionAppender concatFunctionAppender = new ConcatFunctionExpressionAppender();
-        private static readonly IsNullFunctionExpressionAppender isNullFunctionAppender = new IsNullFunctionExpressionAppender();
-        private static readonly AverageFunctionExpressionAppender averageFunctionAppender = new AverageFunctionExpressionAppender();
-        private static readonly MinimumFunctionExpressionAppender minimumFunctionAppender = new MinimumFunctionExpressionAppender();
-        private static readonly MaximumFunctionExpressionAppender maximumFunctionAppender = new MaximumFunctionExpressionAppender();
-        private static readonly CountFunctionExpressionAppender countFunctionAppender = new CountFunctionExpressionAppender();
-        private static readonly SumFunctionExpressionAppender sumFunctionAppender = new SumFunctionExpressionAppender();
-        private static readonly StandardDeviationFunctionExpressionAppender standardDeviationFunctionAppender = new StandardDeviationFunctionExpressionAppender();
-        private static readonly PopulationStandardDeviationFunctionExpressionAppender populationStandardDeviationFunctionAppender = new PopulationStandardDeviationFunctionExpressionAppender();
-        private static readonly VarianceFunctionExpressionAppender varianceFunctionAppender = new VarianceFunctionExpressionAppender();
-        private static readonly PopulationVarianceFunctionExpressionAppender populationVarianceFunctionAppender = new PopulationVarianceFunctionExpressionAppender();
-        private static readonly CurrentTimestampFunctionExpressionAppender currentTimestampFunctionAppender = new CurrentTimestampFunctionExpressionAppender();
-        private static readonly FloorFunctionExpressionAppender floorFunctionAppender = new FloorFunctionExpressionAppender();
-        private static readonly CeilingFunctionExpressionAppender ceilingFunctionAppender = new CeilingFunctionExpressionAppender();
-        private static readonly TrimFunctionExpressionAppender trimFunctionAppender = new TrimFunctionExpressionAppender();
-        private static readonly LTrimFunctionExpressionAppender lTrimFunctionAppender = new LTrimFunctionExpressionAppender();
-        private static readonly RTrimFunctionExpressionAppender rTrimFunctionAppender = new RTrimFunctionExpressionAppender();
-        private static readonly LeftFunctionExpressionAppender leftFunctionAppender = new LeftFunctionExpressionAppender();
-        private static readonly RightFunctionExpressionAppender rightFunctionAppender = new RightFunctionExpressionAppender();
-        private static readonly AbsFunctionExpressionAppender absFunctionAppender = new AbsFunctionExpressionAppender();
-        private static readonly SubstringFunctionExpressionAppender substringFunctionAppender = new SubstringFunctionExpressionAppender();
-        private static readonly ReplaceFunctionExpressionAppender replaceFunctionAppender = new ReplaceFunctionExpressionAppender();
-        private static readonly LiteralExpressionAppender literalAppender = new LiteralExpressionAppender();
-        private static readonly RawExpressionAppender rawAppender = new RawExpressionAppender();
-        private static readonly AliasExpressionAppender aliasAppender = new AliasExpressionAppender();
-        private static readonly InExpressionAppender inAppender = new InExpressionAppender();
-        private static readonly LikeExpressionAppender likeAppender = new LikeExpressionAppender();
-        private static readonly DbTypeExpressionAppender dbTypeAppender = new DbTypeExpressionAppender();
-        private static readonly StoredProcedureExpressionAppender storedProcedureAppender = new StoredProcedureExpressionAppender();
-        private static readonly ParameterExpressionAppender parameterAppender = new ParameterExpressionAppender();
+        private static readonly SchemaExpressionAppender schemaAppender = new();
+        private static readonly EntityExpressionAppender entityAppender = new();
+        private static readonly FieldExpressionAppender fieldAppender = new();
+        private static readonly AssignmentExpressionAppender assignmentAppender = new();
+        private static readonly AssignmentExpressionSetAppender assignmentSetAppender = new();
+        private static readonly SelectExpressionAppender selectAppender = new();
+        private static readonly SelectExpressionSetAppender selectSetAppender = new();
+        private static readonly FilterExpressionAppender filterAppender = new();
+        private static readonly FilterExpressionSetAppender filterSetAppender = new();
+        private static readonly JoinExpressionAppender joinAppender = new();
+        private static readonly JoinExpressionSetAppender joinSetAppender = new();
+        private static readonly JoinOnExpressionSetAppender joinOnSetAppender = new();
+        private static readonly JoinOnExpressionAppender joinOnClauseAppender = new();
+        private static readonly GroupByExpressionAppender groupByAppender = new();
+        private static readonly GroupByExpressionSetAppender groupBySetAppender = new();
+        private static readonly HavingExpressionAppender havingClauseAppender = new();
+        private static readonly OrderByExpressionAppender orderByAppender = new();
+        private static readonly OrderByExpressionSetAppender orderBySetAppender = new();
+        private static readonly ArithmeticExpressionAppender arithmeticAppender = new();
+        private static readonly ExpressionMediatorAppender expressionMediatorAppender = new();
+        private static readonly CastFunctionExpressionAppender castFunctionAppender = new();
+        private static readonly CoalesceFunctionExpressionAppender coalesceFunctionAppender = new();
+        private static readonly ConcatFunctionExpressionAppender concatFunctionAppender = new();
+        private static readonly IsNullFunctionExpressionAppender isNullFunctionAppender = new();
+        private static readonly AverageFunctionExpressionAppender averageFunctionAppender = new();
+        private static readonly MinimumFunctionExpressionAppender minimumFunctionAppender = new();
+        private static readonly MaximumFunctionExpressionAppender maximumFunctionAppender = new();
+        private static readonly CountFunctionExpressionAppender countFunctionAppender = new();
+        private static readonly SumFunctionExpressionAppender sumFunctionAppender = new();
+        private static readonly StandardDeviationFunctionExpressionAppender standardDeviationFunctionAppender = new();
+        private static readonly PopulationStandardDeviationFunctionExpressionAppender populationStandardDeviationFunctionAppender = new();
+        private static readonly VarianceFunctionExpressionAppender varianceFunctionAppender = new();
+        private static readonly PopulationVarianceFunctionExpressionAppender populationVarianceFunctionAppender = new();
+        private static readonly CurrentTimestampFunctionExpressionAppender currentTimestampFunctionAppender = new();
+        private static readonly FloorFunctionExpressionAppender floorFunctionAppender = new();
+        private static readonly CeilingFunctionExpressionAppender ceilingFunctionAppender = new();
+        private static readonly TrimFunctionExpressionAppender trimFunctionAppender = new();
+        private static readonly LTrimFunctionExpressionAppender lTrimFunctionAppender = new();
+        private static readonly RTrimFunctionExpressionAppender rTrimFunctionAppender = new();
+        private static readonly LeftFunctionExpressionAppender leftFunctionAppender = new();
+        private static readonly RightFunctionExpressionAppender rightFunctionAppender = new();
+        private static readonly AbsFunctionExpressionAppender absFunctionAppender = new();
+        private static readonly SubstringFunctionExpressionAppender substringFunctionAppender = new();
+        private static readonly ReplaceFunctionExpressionAppender replaceFunctionAppender = new();
+        private static readonly LiteralExpressionAppender literalAppender = new();
+        private static readonly RawExpressionAppender rawAppender = new();
+        private static readonly AliasExpressionAppender aliasAppender = new();
+        private static readonly InExpressionAppender inAppender = new();
+        private static readonly LikeExpressionAppender likeAppender = new();
+        private static readonly DbTypeExpressionAppender dbTypeAppender = new();
+        private static readonly StoredProcedureExpressionAppender storedProcedureAppender = new();
+        private static readonly ParameterExpressionAppender parameterAppender = new();
 
-        private readonly ConcurrentDictionary<Type, Func<IExpressionElementAppender>> elementAppenders = new ConcurrentDictionary<Type, Func<IExpressionElementAppender>>();
+        private readonly ConcurrentDictionary<Type, Func<IExpressionElementAppender>> elementAppenders = new();
         #endregion
 
         #region constructors
@@ -140,7 +140,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         #endregion
 
         #region methods
-        public virtual IExpressionElementAppender CreateElementAppender(IExpressionElement element)
+        public virtual IExpressionElementAppender? CreateElementAppender(IExpressionElement element)
             => ResolveElementAppender(element.GetType());
 
         public virtual void RegisterElementAppender<T, U>()
@@ -159,15 +159,15 @@ namespace HatTrick.DbEx.Sql.Assembler
             where T : IExpressionElement
             => elementAppenders.AddOrUpdate(typeof(T), appenderFactory, (t, f) => appenderFactory);
 
-        private IExpressionElementAppender ResolveElementAppender(Type current)
+        private IExpressionElementAppender? ResolveElementAppender(Type current)
         {
             var factory = ResolveElementAppenderFactory(current, current);
-            return factory is object ? factory() : null;
+            return factory is not null ? factory() : null;
         }
 
-        private Func<IExpressionElementAppender> ResolveElementAppenderFactory(Type current, Type original)
+        private Func<IExpressionElementAppender>? ResolveElementAppenderFactory(Type current, Type original)
         {
-            if (elementAppenders.TryGetValue(current, out Func<IExpressionElementAppender> factory))
+            if (elementAppenders.TryGetValue(current, out Func<IExpressionElementAppender>? factory))
                 return factory;
 
             if (current.BaseType is null)
@@ -175,7 +175,7 @@ namespace HatTrick.DbEx.Sql.Assembler
 
             factory = ResolveElementAppenderFactory(current.BaseType, original);
 
-            if (factory is object && current == original)
+            if (factory is not null && current == original)
                 //reduce runtime recursion by "registering" the original with the found appender
                 elementAppenders.TryAdd(original, factory);
 

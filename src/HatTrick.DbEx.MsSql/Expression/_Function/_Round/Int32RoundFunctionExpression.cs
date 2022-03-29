@@ -28,12 +28,32 @@ namespace HatTrick.DbEx.MsSql.Expression
         IEquatable<Int32RoundFunctionExpression>
     {
         #region constructors
-        public Int32RoundFunctionExpression(AnyElement<int> expression, IntegralNumericElement length) : base(expression, length)
+        public Int32RoundFunctionExpression(AnyElement<byte> expression, AnyElement length) : base(expression, length)
         {
 
         }
 
-        public Int32RoundFunctionExpression(AnyElement<int> expression, IntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
+        public Int32RoundFunctionExpression(AnyElement<byte> expression, AnyElement length, AnyElement function) : base(expression, length, function)
+        {
+
+        }
+
+        public Int32RoundFunctionExpression(AnyElement<short> expression, AnyElement length) : base(expression, length)
+        {
+
+        }
+
+        public Int32RoundFunctionExpression(AnyElement<short> expression, AnyElement length, AnyElement function) : base(expression, length, function)
+        {
+
+        }
+
+        public Int32RoundFunctionExpression(AnyElement<int> expression, AnyElement length) : base(expression, length)
+        {
+
+        }
+
+        public Int32RoundFunctionExpression(AnyElement<int> expression, AnyElement length, AnyElement function) : base(expression, length, function)
         {
 
         }
@@ -45,11 +65,11 @@ namespace HatTrick.DbEx.MsSql.Expression
         #endregion
 
         #region equals
-        public bool Equals(Int32RoundFunctionExpression obj)
-            => obj is Int32RoundFunctionExpression && base.Equals(obj);
+        public bool Equals(Int32RoundFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is Int32RoundFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is Int32RoundFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

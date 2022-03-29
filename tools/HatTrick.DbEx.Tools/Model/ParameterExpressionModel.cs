@@ -15,11 +15,11 @@ namespace HatTrick.DbEx.Tools.Model
 		public ParameterDirection Direction { get; }
 		public bool RequiresInput => (Direction == ParameterDirection.Input || Direction == ParameterDirection.InputOutput);
 
-		public ParameterExpressionModel(StoredProcedureExpressionModel procedureExpression, MsSqlParameter parameter, string name, string clrTypeOverride, bool isEnum, ParameterDirection direction)
+		public ParameterExpressionModel(LanguageFeatures features, StoredProcedureExpressionModel procedureExpression, MsSqlParameter parameter, string name, string? clrTypeOverride, bool isEnum, ParameterDirection direction)
 		{
 			ProcedureExpression = procedureExpression;
 			Name = name;
-			Type = TypeModelBuilder.CreateTypeModel(parameter.SqlType, clrTypeOverride, parameter.IsNullable, isEnum);
+			Type = TypeModelBuilder.CreateTypeModel(features, parameter.SqlType, clrTypeOverride, parameter.IsNullable, isEnum ? TypeSpecialCase.Enum : null);
 			Direction = direction;
 		}
 

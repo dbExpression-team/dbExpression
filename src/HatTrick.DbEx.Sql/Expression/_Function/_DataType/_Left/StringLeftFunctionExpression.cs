@@ -30,19 +30,24 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
+
+        public StringLeftFunctionExpression(StringElement expression, AnyElement<int> characterCount) : base(expression, characterCount)
+        {
+
+        }
         #endregion
 
         #region as
-        public AnyElement<string> As(string alias)
-            => new SelectExpression<string>(this).As(alias);
+        public StringElement As(string alias)
+            => new StringSelectExpression(this as StringElement).As(alias);
         #endregion
 
         #region equals
-        public bool Equals(StringLeftFunctionExpression obj)
-            => obj is StringLeftFunctionExpression && base.Equals(obj);
+        public bool Equals(StringLeftFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is StringLeftFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is StringLeftFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();
@@ -50,7 +55,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region like
         public FilterExpressionSet Like(string phrase)
-            => new FilterExpressionSet(new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
+            => new(new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
         #endregion
     }
 }

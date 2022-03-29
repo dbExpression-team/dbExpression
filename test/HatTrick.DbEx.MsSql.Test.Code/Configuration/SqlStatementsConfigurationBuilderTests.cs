@@ -14,7 +14,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
         public void Does_configuration_for_appender_factory_using_instance_method_with_null_instance_throw_expected_exception(int version)
         {
             //given & when & then
-            Assert.Throws<DbExpressionConfigurationException>(() => ConfigureForMsSqlVersion(version, builder => builder.SqlStatements.Assembly.StatementAppender.Use((IAppenderFactory)null)));
+            Assert.Throws<DbExpressionConfigurationException>(() => ConfigureForMsSqlVersion(version, builder => builder.SqlStatements.Assembly.StatementAppender.Use((IAppenderFactory)null!)));
         }
 
         [Theory]
@@ -54,7 +54,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
             var config = ConfigureForMsSqlVersion(version, builder => builder.SqlStatements.Assembly.StatementAppender.UseDefaultFactory());
 
             //when
-            var matchingType = config.AppenderFactory is IAppenderFactory;
+            var matchingType = config.AppenderFactory is not null;
 
             //then
             matchingType.Should().BeTrue();
@@ -66,7 +66,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
         public void Does_configuration_for_element_appender_factory_using_instance_method_with_null_instance_throw_expected_exception(int version)
         {
             //given & when & then
-            Assert.Throws<DbExpressionConfigurationException>(() => ConfigureForMsSqlVersion(version, builder => builder.SqlStatements.Assembly.ElementAppender.Use((IExpressionElementAppenderFactory)null)));
+            Assert.Throws<DbExpressionConfigurationException>(() => ConfigureForMsSqlVersion(version, builder => builder.SqlStatements.Assembly.ElementAppender.Use((IExpressionElementAppenderFactory)null!)));
         }
 
         [Theory]
@@ -106,7 +106,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
             var config = ConfigureForMsSqlVersion(version, builder => builder.SqlStatements.Assembly.ElementAppender.UseDefaultFactory());
 
             //when
-            var matchingType = config.ExpressionElementAppenderFactory is IExpressionElementAppenderFactory;
+            var matchingType = config.ExpressionElementAppenderFactory is not null;
 
             //then
             matchingType.Should().BeTrue();
@@ -118,7 +118,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
         public void Does_configuration_for_parameter_builder_factory_using_instance_method_with_null_instance_throw_expected_exception(int version)
         {
             //given & when & then
-            Assert.Throws<DbExpressionConfigurationException>(() => ConfigureForMsSqlVersion(version, builder => builder.SqlStatements.Assembly.ParameterBuilder.Use((ISqlParameterBuilderFactory)null)));
+            Assert.Throws<DbExpressionConfigurationException>(() => ConfigureForMsSqlVersion(version, builder => builder.SqlStatements.Assembly.ParameterBuilder.Use((ISqlParameterBuilderFactory)null!)));
         }
 
         [Theory]
@@ -154,7 +154,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
         public void Does_configuration_for_appender_output_settings_with_null_configuration_action_succeed(int version)
         {
             //given & when & then
-            ConfigureForMsSqlVersion(version, builder => builder.SqlStatements.Assembly.ConfigureOutputSettings(null));
+            ConfigureForMsSqlVersion(version, builder => builder.SqlStatements.Assembly.ConfigureOutputSettings(null!));
         }
 
         [Theory]

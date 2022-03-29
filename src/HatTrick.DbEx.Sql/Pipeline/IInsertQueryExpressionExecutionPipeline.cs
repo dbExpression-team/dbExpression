@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 {
     public interface IInsertQueryExpressionExecutionPipeline
     {
-        void ExecuteInsert(InsertQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand);
-        Task ExecuteInsertAsync(InsertQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct);
+        void ExecuteInsert(InsertQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand);
+        Task ExecuteInsertAsync(InsertQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, CancellationToken ct);
     }
 }

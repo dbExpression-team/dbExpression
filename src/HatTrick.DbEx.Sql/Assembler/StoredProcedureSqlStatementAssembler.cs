@@ -31,7 +31,7 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         protected virtual void AssembleStatement(StoredProcedureQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            builder.AppendElement(expression.BaseEntity, context);
+            builder.AppendElement(expression.BaseEntity ?? throw new DbExpressionException("Expected base entity to not be null"), context);
         }
     }
 }

@@ -46,18 +46,19 @@ namespace HatTrick.DbEx.MsSql.Expression
         #endregion
 
         #region equals
-        public bool Equals(PatIndexFunctionExpression obj)
+        public bool Equals(PatIndexFunctionExpression? obj)
         {
-            if (!base.Equals(obj)) return false;
+            if (obj is null) return false;
+            if (ReferenceEquals(this, obj)) return true;
 
             if (elements is null && obj.elements is object) return false;
             if (elements is object && obj.elements is null) return false;
-            if (!elements.Equals(obj.elements)) return false;
+            if (elements is object && !elements.Equals(obj.elements)) return false;
 
             return true;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
          => obj is PatIndexFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
@@ -91,21 +92,24 @@ namespace HatTrick.DbEx.MsSql.Expression
             #endregion
 
             #region equals
-            public bool Equals(PatIndexFunctionExpressionElements obj)
+            public bool Equals(PatIndexFunctionExpressionElements? obj)
             {
+                if (obj is null) return false;
+                if (ReferenceEquals(this, obj)) return true;
+
                 if (Pattern is null && obj.Pattern is object) return false;
                 if (Pattern is object && obj.Pattern is null) return false;
-                if (!Pattern.Equals(obj.Pattern)) return false;
+                if (Pattern is object && !Pattern.Equals(obj.Pattern)) return false;
 
                 if (ToSearch is null && obj.ToSearch is object) return false;
                 if (ToSearch is object && obj.ToSearch is null) return false;
-                if (!ToSearch.Equals(obj.ToSearch)) return false;
+                if (ToSearch is object && !ToSearch.Equals(obj.ToSearch)) return false;
 
                 return true;
             }
 
-            public override bool Equals(object obj)
-                => Equals(obj as PatIndexFunctionExpressionElements);
+            public override bool Equals(object? obj)
+                => obj is PatIndexFunctionExpressionElements && Equals(obj);
 
             public override int GetHashCode()
             {

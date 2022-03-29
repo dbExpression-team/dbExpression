@@ -26,23 +26,19 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<StringFieldExpression<TEntity>>
         where TEntity : class, IDbEntity
     {
-        #region internals
-        public FilterExpression LikePhrase { get; set; }
-        #endregion
-
         #region constructors
-        public StringFieldExpression(string identifier, string name, EntityExpression entity) : base(identifier, name, entity)
+        public StringFieldExpression(string identifier, string name, Table entity) : base(identifier, name, entity)
         {
 
         }
         #endregion
 
         #region equals
-        public bool Equals(StringFieldExpression<TEntity> obj)
-            => obj is StringFieldExpression<TEntity> && base.Equals(obj);
+        public bool Equals(StringFieldExpression<TEntity>? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is StringFieldExpression<TEntity> exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is StringFieldExpression<TEntity> exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

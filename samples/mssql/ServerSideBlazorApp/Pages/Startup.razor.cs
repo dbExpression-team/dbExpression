@@ -46,23 +46,21 @@ namespace ServerSideBlazorApp.Pages
         private string GetColor(int step)
             => $"color:{(successStep >= step ? "green" : "red")}";
 
-        private bool EvaluateCanConnect()
+        private static bool EvaluateCanConnect()
         {
-            using (var conn = db.GetConnection())
+            using var conn = db.GetConnection();
+            try
             {
-                try
-                {
-                    conn.Open();
-                }
-                catch (SqlException)
-                {
-                    return false;
-                }
+                conn.Open();
+            }
+            catch (SqlException)
+            {
+                return false;
             }
             return true;
         }
 
-        private async Task<bool> EvaluateHasSchema()
+        private static async Task<bool> EvaluateHasSchema()
         {
             try
             {
@@ -75,10 +73,10 @@ namespace ServerSideBlazorApp.Pages
             return true;
         }
 
-        private async Task<bool> EvaluateHasACustomer()
+        private static async Task<bool> EvaluateHasACustomer()
             => await db.SelectOne(db.fx.Count()).From(dbo.Customer).ExecuteAsync() > 0;
 
-        private async Task<bool> EvaluateHasAnImage()
+        private static async Task<bool> EvaluateHasAnImage()
             => await db.SelectOne(db.fx.Count()).From(dbo.Product).Where(dbo.Product.Image != DBNull.Value).ExecuteAsync() > 0;
     }
 }

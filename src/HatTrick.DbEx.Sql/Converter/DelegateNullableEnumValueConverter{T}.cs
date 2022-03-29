@@ -22,9 +22,10 @@ namespace HatTrick.DbEx.Sql.Converter
 {
     public class DelegateNullableEnumValueConverter<TEnum> : IValueConverter
     {
-        private readonly Func<TEnum, object> convertToDatabase;
-        private readonly Func<object, TEnum> convertFromDatabase;
-        public DelegateNullableEnumValueConverter(Func<TEnum, object> convertToDatabase, Func<object, TEnum> convertFromDatabase)
+        private readonly Func<TEnum?, object?> convertToDatabase;
+        private readonly Func<object?, TEnum?> convertFromDatabase;
+
+        public DelegateNullableEnumValueConverter(Func<TEnum?, object?> convertToDatabase, Func<object?, TEnum?> convertFromDatabase)
         {
             if (!typeof(TEnum).IsNullableType() || !typeof(TEnum).GetGenericArguments()[0].IsEnum)
                 throw new DbExpressionConfigurationException($"The type {typeof(TEnum)} must be of type nullable Enum.");
@@ -33,13 +34,13 @@ namespace HatTrick.DbEx.Sql.Converter
             this.convertFromDatabase = convertFromDatabase ?? throw new ArgumentNullException(nameof(convertFromDatabase));
         }
 
-        public (Type Type, object ConvertedValue) ConvertToDatabase(object value)
+        public (Type Type, object? ConvertedValue) ConvertToDatabase(object? value)
             => (typeof(TEnum), convertToDatabase(value is null ? default : (TEnum)Enum.ToObject(typeof(TEnum), value)));
 
-        public object ConvertFromDatabase(object value)
+        public object? ConvertFromDatabase(object? value)
             => convertFromDatabase(value);
 
-        public U ConvertFromDatabase<U>(object value)
-            => (U)(object)convertFromDatabase(value);
+        public U? ConvertFromDatabase<U>(object? value)
+            => (U?)(object?)convertFromDatabase(value);
     }
 }

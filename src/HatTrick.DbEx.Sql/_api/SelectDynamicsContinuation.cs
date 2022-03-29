@@ -33,7 +33,7 @@ namespace HatTrick.DbEx.Sql
         /// </summary>
         /// <param name="where">Any filter predicate of type <see cref="AnyWhereClause"/>.</param>
         /// <returns><see cref="SelectValuesContinuation{TValue}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="System.Dynamic.ExpandoObject"/> values.</returns>
-        SelectDynamicsContinuation Where(AnyWhereClause where);
+        SelectDynamicsContinuation Where(AnyWhereClause? where);
 
         /// <summary>
         /// Construct the ORDER BY clause of a sql SELECT query expression for a list of <typeparamref name="System.Dynamic.ExpandoObject"/> values.
@@ -53,7 +53,7 @@ namespace HatTrick.DbEx.Sql
         /// </summary>
         /// <param name="orderBy">A list of expressions of type <see cref="AnyOrderByClause"/> specifying the order and direction for sorting.</param>
         /// <returns><see cref="SelectDynamicsContinuation"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="System.Dynamic.ExpandoObject"/> values.</returns>
-        SelectDynamicsOrderByContinuation OrderBy(IEnumerable<AnyOrderByClause> orderBy);
+        SelectDynamicsOrderByContinuation OrderBy(IEnumerable<AnyOrderByClause>? orderBy);
 
         /// <summary>
         /// Construct the GROUP BY clause of a sql SELECT query expression for a list of <typeparamref name="System.Dynamic.ExpandoObject"/> values.
@@ -73,7 +73,7 @@ namespace HatTrick.DbEx.Sql
         /// </summary>
         /// <param name="groupBy">A list of expressions of type <see cref="AnyGroupByClause"/> specifying how to group the selected results.</param>
         /// <returns><see cref="SelectValuesContinuation{TValue}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="System.Dynamic.ExpandoObject"/> values.</returns>
-        SelectDynamicsContinuation GroupBy(IEnumerable<AnyGroupByClause> groupBy);
+        SelectDynamicsContinuation GroupBy(IEnumerable<AnyGroupByClause>? groupBy);
 
         /// <summary>
         /// Construct the HAVING clause of a sql SELECT query expression for a list of <typeparamref name="System.Dynamic.ExpandoObject"/> values.
@@ -83,7 +83,7 @@ namespace HatTrick.DbEx.Sql
         /// </summary>
         /// <param name="having">A list of expressions of type <see cref="AnyHavingClause"/> specifying conditions on the grouping or aggregation of selected results.</param>
         /// <returns><see cref="SelectValuesContinuation{TValue}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="System.Dynamic.ExpandoObject"/> values.</returns>
-        SelectDynamicsContinuation Having(AnyHavingClause having);
+        SelectDynamicsContinuation Having(AnyHavingClause? having);
 
         /// <summary>
         /// Construct an INNER JOIN clause of a sql SELECT query expression for a list of <typeparamref name="System.Dynamic.ExpandoObject"/> values.

@@ -4,6 +4,7 @@ using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
+using HatTrick.DbEx.Sql.Builder.Alias;
 using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
@@ -78,16 +79,16 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.Abs(dbex.Alias<decimal>("lines", "PurchasePrice")).As("alias")
+                    db.fx.Abs(("lines", "PurchasePrice")).As("alias")
                 ).From(dbo.Purchase)
                 .InnerJoin(
                     db.SelectOne<PurchaseLine>()
                     .From(dbo.PurchaseLine)
                     .Where(dbo.PurchaseLine.Id == 1)
-                ).As("lines").On(dbo.Purchase.Id == dbex.Alias("lines", "PurchaseId"));
+                ).As("lines").On(dbo.Purchase.Id == ("lines", "PurchaseId"));
 
             //when               
-            object result = exp.Execute();
+            object? result = exp.Execute();
 
             //then
             result.Should().BeOfType<decimal>().Which.Should().Be(expected);

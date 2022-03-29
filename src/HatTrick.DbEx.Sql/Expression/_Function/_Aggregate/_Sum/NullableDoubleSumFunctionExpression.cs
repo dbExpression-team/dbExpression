@@ -46,11 +46,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(NullableDoubleSumFunctionExpression obj)
-            => obj is NullableDoubleSumFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableDoubleSumFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableDoubleSumFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableDoubleSumFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

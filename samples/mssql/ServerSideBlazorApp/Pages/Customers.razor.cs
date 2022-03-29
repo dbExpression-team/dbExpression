@@ -18,7 +18,7 @@ namespace ServerSideBlazorApp.Pages
         private readonly Timer searchTimer = new(800);
         private bool isFromReturnUrl;
         private bool ShowProgressBar { get; set; } = false;
-        private Page<CustomerSummaryModel, PagingParametersWithSearch> CurrentPage { get; set; } = new Page<CustomerSummaryModel, PagingParametersWithSearch>(PagingParametersWithSearch.CreateDefault(DefaultSort), null, 0);
+        private Page<CustomerSummaryModel, PagingParametersWithSearch> CurrentPage { get; set; } = new Page<CustomerSummaryModel, PagingParametersWithSearch>(PagingParametersWithSearch.CreateDefault(DefaultSort), null!, 0);
         #endregion 
 
         #region methods
@@ -56,7 +56,7 @@ namespace ServerSideBlazorApp.Pages
             if (CurrentPage.PagingParameters != requested)
             {
                 CurrentPage.PagingParameters = requested;
-                CurrentPage.Data = null;
+                CurrentPage.Data = null!;
             }
             if (CurrentPage.Data is null)
                 await FetchCurrentPageAsync();
@@ -68,7 +68,7 @@ namespace ServerSideBlazorApp.Pages
             if (CurrentPage.PagingParameters != requested)
             {
                 CurrentPage.PagingParameters = requested;
-                CurrentPage.Data = null;
+                CurrentPage.Data = null!;
             }
         }
 
@@ -78,26 +78,26 @@ namespace ServerSideBlazorApp.Pages
             {
                 CurrentPage.PagingParameters.Limit = pageSize;
                 CurrentPage.PagingParameters.Offset = 0;
-                CurrentPage.Data = null;
+                CurrentPage.Data = null!;
             }
         }
 
-        private void OnSearch(string searchPhrase)
+        private void OnSearch(string? searchPhrase)
         {
             CurrentPage.PagingParameters.SearchPhrase = searchPhrase;
-            CurrentPage.Data = null;
+            CurrentPage.Data = null!;
             searchTimer.Stop();
             searchTimer.Start();
         }
 
-        private void OnSearch(object source, ElapsedEventArgs e)
+        private void OnSearch(object? source, ElapsedEventArgs e)
         {
             InvokeAsync(async () =>
             {
                 CurrentPage.PagingParameters.Offset = 0;
                 if (CurrentPage.PagingParameters.Offset == 0)
                 {
-                    CurrentPage.Data = null;
+                    CurrentPage.Data = null!;
                     await FetchCurrentPageAsync();
                     StateHasChanged();
                 }
@@ -119,9 +119,9 @@ namespace ServerSideBlazorApp.Pages
 
         public async override Task SetParametersAsync(ParameterView parameters)
         {
-            if (NavigationManager.TryGetPagingParametersFromReturnUrl(out PagingParametersWithSearch page))
+            if (NavigationManager.TryGetPagingParametersFromReturnUrl(out PagingParametersWithSearch? page))
             {
-                CurrentPage.PagingParameters = page;
+                CurrentPage.PagingParameters = page!;
                 isFromReturnUrl = true;
             }
 

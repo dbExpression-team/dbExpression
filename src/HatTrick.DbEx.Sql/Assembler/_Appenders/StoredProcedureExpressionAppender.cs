@@ -26,14 +26,14 @@ namespace HatTrick.DbEx.Sql.Assembler
         {
             if (context.Configuration.IncludeSchemaName)
             {
-                builder.AppendElement((expression as IExpressionProvider<SchemaExpression>).Expression, context);
+                builder.AppendElement((expression as StoredProcedure).Schema, context);
                 builder.Appender.Write(".");
             }
             builder.Appender.Write(context.Configuration.IdentifierDelimiter.Begin);
             builder.Appender.Write((expression as IExpressionNameProvider).Name);
             builder.Appender.Write(context.Configuration.IdentifierDelimiter.End);
 
-            var parameters = (expression as IExpressionListProvider<ParameterExpression>).Expressions;
+            var parameters = (expression as StoredProcedure).Parameters;
 
             foreach (var parameter in parameters)
                 builder.AppendElement(parameter, context);

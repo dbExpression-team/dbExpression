@@ -42,6 +42,51 @@ namespace HatTrick.DbEx.MsSql.Expression
         {
 
         }
+
+        public Int64CharIndexFunctionExpression(StringElement pattern, AnyElement<string> expression) : base(pattern, expression)
+        {
+
+        }
+
+        public Int64CharIndexFunctionExpression(StringElement pattern, AnyElement<string> expression, AnyElement<long> startSearchPosition) : base(pattern, expression, startSearchPosition)
+        {
+
+        }
+
+        public Int64CharIndexFunctionExpression(StringElement pattern, AnyElement<string> expression, AnyElement<int> startSearchPosition) : base(pattern, expression, startSearchPosition)
+        {
+
+        }
+
+        public Int64CharIndexFunctionExpression(StringElement pattern, StringElement expression) : base(pattern, expression)
+        {
+
+        }
+
+        public Int64CharIndexFunctionExpression(StringElement pattern, StringElement expression, AnyElement<long> startSearchPosition) : base(pattern, expression, startSearchPosition)
+        {
+
+        }
+
+        public Int64CharIndexFunctionExpression(StringElement pattern, StringElement expression, AnyElement<int> startSearchPosition) : base(pattern, expression, startSearchPosition)
+        {
+
+        }
+
+        public Int64CharIndexFunctionExpression(AnyElement<string> pattern, StringElement expression) : base(pattern, expression)
+        {
+
+        }
+
+        public Int64CharIndexFunctionExpression(AnyElement<string> pattern, StringElement expression, AnyElement<long> startSearchPosition) : base(pattern, expression, startSearchPosition)
+        {
+
+        }
+
+        public Int64CharIndexFunctionExpression(AnyElement<string> pattern, StringElement expression, AnyElement<int> startSearchPosition) : base(pattern, expression, startSearchPosition)
+        {
+
+        }
         #endregion
 
         #region as
@@ -50,11 +95,11 @@ namespace HatTrick.DbEx.MsSql.Expression
         #endregion
 
         #region equals
-        public bool Equals(Int64CharIndexFunctionExpression obj)
-            => obj is Int64CharIndexFunctionExpression && base.Equals(obj);
+        public bool Equals(Int64CharIndexFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is Int64CharIndexFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is Int64CharIndexFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

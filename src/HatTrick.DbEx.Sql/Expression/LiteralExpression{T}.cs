@@ -25,13 +25,17 @@ namespace HatTrick.DbEx.Sql.Expression
         AnyElement<TValue>,
         IEquatable<LiteralExpression<TValue>>
     {
+        #region interface
+        Type IExpressionTypeProvider.DeclaredType => typeof(TValue);
+        #endregion
+
         #region constructors
         public LiteralExpression(TValue value) : base(value)
         {
 
         }
 
-        public LiteralExpression(TValue value, FieldExpression field) : base(value, field)
+        public LiteralExpression(TValue value, Field field) : base(value, field)
         {
 
         }
@@ -41,7 +45,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
 
-        public LiteralExpression(DBNull value, FieldExpression field) : base(value, field)
+        public LiteralExpression(DBNull value, Field field) : base(value, field)
         {
 
         }
@@ -53,17 +57,16 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region order by
-        OrderByExpression AnyElement.Asc => new OrderByExpression(this, OrderExpressionDirection.ASC);
-
-        OrderByExpression AnyElement.Desc => new OrderByExpression(this, OrderExpressionDirection.DESC);
+        OrderByExpression AnyElement.Asc => new(this, OrderExpressionDirection.ASC);
+        OrderByExpression AnyElement.Desc => new(this, OrderExpressionDirection.DESC);        
         #endregion
 
         #region equals
-        public bool Equals(LiteralExpression<TValue> obj)
-            => obj is LiteralExpression<TValue> && base.Equals(obj);
+        public bool Equals(LiteralExpression<TValue>? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is LiteralExpression<TValue> exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is LiteralExpression<TValue> exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

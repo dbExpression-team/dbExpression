@@ -28,138 +28,142 @@ namespace HatTrick.DbEx.Sql.Executor
 {
     public class SqlStatementExecutor : ISqlStatementExecutor
     {
-        public virtual int ExecuteNonQuery(SqlStatement statement, ISqlConnection connection, Action<IDbCommand> beforeExecution, Action<IDbCommand> afterExecution)
+        public virtual int ExecuteNonQuery(SqlStatement statement, ISqlConnection connection, Action<IDbCommand>? beforeExecution, Action<IDbCommand>? afterExecution)
         {
             int @return = 0;
-            using (IDbCommand cmd = connection.CreateCommand())
-            {
-                cmd.Connection = connection.DbConnection;
-                cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
-                cmd.CommandType = CommandType.Text;
-                (cmd.Parameters as DbParameterCollection).AddRange(statement.Parameters.Select(x => x.Parameter).ToArray());
 
-                beforeExecution?.Invoke(cmd);
+            using IDbCommand cmd = connection.CreateCommand();
+            cmd.Connection = connection.DbConnection;
+            cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
+            cmd.CommandType = CommandType.Text;
+            foreach (var parameter in statement.Parameters.Select(x => x.Parameter))
+                cmd.Parameters.Add(parameter);
 
-                if (string.IsNullOrWhiteSpace(cmd.CommandText))
-                    cmd.CommandText = statement.CommandTextWriter.ToString();
+            beforeExecution?.Invoke(cmd);
 
-                connection.EnsureOpen();
-                @return = cmd.ExecuteNonQuery();
-                afterExecution?.Invoke(cmd);
-            }
+            if (string.IsNullOrWhiteSpace(cmd.CommandText))
+                cmd.CommandText = statement.CommandTextWriter.ToString();
+
+            connection.EnsureOpen();
+            @return = cmd.ExecuteNonQuery();
+            afterExecution?.Invoke(cmd);
+
             return @return;
         }
 
-        public virtual async Task<int> ExecuteNonQueryAsync(SqlStatement statement, ISqlConnection connection, Action<IDbCommand> beforeExecution, Action<IDbCommand> afterExecution, CancellationToken ct)
+        public virtual async Task<int> ExecuteNonQueryAsync(SqlStatement statement, ISqlConnection connection, Action<IDbCommand>? beforeExecution, Action<IDbCommand>? afterExecution, CancellationToken ct)
         {
             int @return = 0;
-            using (IDbCommand cmd = connection.CreateCommand())
-            {
-                cmd.Connection = connection.DbConnection;
-                cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
+            using IDbCommand cmd = connection.CreateCommand();
+            cmd.Connection = connection.DbConnection;
+            cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
+            cmd.CommandText = statement.CommandTextWriter.ToString();
+            cmd.CommandType = CommandType.Text;
+            foreach (var parameter in statement.Parameters.Select(x => x.Parameter))
+                cmd.Parameters.Add(parameter);
+
+            beforeExecution?.Invoke(cmd);
+            ct.ThrowIfCancellationRequested();
+
+            if (string.IsNullOrWhiteSpace(cmd.CommandText))
                 cmd.CommandText = statement.CommandTextWriter.ToString();
-                cmd.CommandType = CommandType.Text;
-                (cmd.Parameters as DbParameterCollection).AddRange(statement.Parameters.Select(x => x.Parameter).ToArray());
 
-                beforeExecution?.Invoke(cmd);
-                ct.ThrowIfCancellationRequested();
+            await connection.EnsureOpenAsync(ct).ConfigureAwait(false);
+            @return = cmd is DbCommand dbCommand ? await dbCommand.ExecuteNonQueryAsync(ct).ConfigureAwait(false) : throw new DbExpressionException($"Async query execution requires a command of type {typeof(DbCommand)}, but a command of type {cmd.GetType()} was provided.");
 
-                if (string.IsNullOrWhiteSpace(cmd.CommandText))
-                    cmd.CommandText = statement.CommandTextWriter.ToString();
-
-                await connection.EnsureOpenAsync(ct).ConfigureAwait(false);
-                @return = await (cmd as DbCommand).ExecuteNonQueryAsync(ct).ConfigureAwait(false);
-                afterExecution?.Invoke(cmd);
-                ct.ThrowIfCancellationRequested();
-            }
+            afterExecution?.Invoke(cmd);
+            ct.ThrowIfCancellationRequested();
             return @return;
         }
 
-        public virtual ISqlRowReader ExecuteQuery(SqlStatement statement, ISqlConnection connection, IValueConverterProvider finder, Action<IDbCommand> beforeExecution, Action<IDbCommand> afterExecution)
+        public virtual ISqlRowReader ExecuteQuery(SqlStatement statement, ISqlConnection connection, IValueConverterProvider finder, Action<IDbCommand>? beforeExecution, Action<IDbCommand>? afterExecution)
         {
-            using (IDbCommand cmd = connection.CreateCommand())
-            {
-                cmd.Connection = connection.DbConnection;
-                cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
-                cmd.CommandType = CommandType.Text;
-                (cmd.Parameters as DbParameterCollection).AddRange(statement.Parameters.Select(x => x.Parameter).ToArray());
+            using IDbCommand cmd = connection.CreateCommand();
+            cmd.Connection = connection.DbConnection;
+            cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
+            cmd.CommandType = CommandType.Text;
+            foreach (var parameter in statement.Parameters.Select(x => x.Parameter))
+                cmd.Parameters.Add(parameter);
 
-                beforeExecution?.Invoke(cmd);
+            beforeExecution?.Invoke(cmd);
 
-                if (string.IsNullOrWhiteSpace(cmd.CommandText))
-                    cmd.CommandText = statement.CommandTextWriter.ToString();
-
-                connection.EnsureOpen();
-                var reader = cmd.ExecuteReader();
-                afterExecution?.Invoke(cmd);
-                return new DataReaderWrapper(connection, reader, finder);
-            }
-        }
-
-        public virtual async Task<IAsyncSqlRowReader> ExecuteQueryAsync(SqlStatement statement, ISqlConnection connection, IValueConverterProvider finder, Action<IDbCommand> beforeExecution, Action<IDbCommand> afterExecution, CancellationToken ct)
-        {
-            using (IDbCommand cmd = connection.CreateCommand())
-            {
-                cmd.Connection = connection.DbConnection;
-                cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
+            if (string.IsNullOrWhiteSpace(cmd.CommandText))
                 cmd.CommandText = statement.CommandTextWriter.ToString();
-                cmd.CommandType = CommandType.Text;
-                (cmd.Parameters as DbParameterCollection).AddRange(statement.Parameters.Select(x => x.Parameter).ToArray());
 
-                beforeExecution?.Invoke(cmd);
-                ct.ThrowIfCancellationRequested();
-
-                if (string.IsNullOrWhiteSpace(cmd.CommandText))
-                    cmd.CommandText = statement.CommandTextWriter.ToString();
-
-                await connection.EnsureOpenAsync(ct).ConfigureAwait(false);
-                var reader = await (cmd as DbCommand).ExecuteReaderAsync(ct).ConfigureAwait(false);
-                afterExecution?.Invoke(cmd);
-                ct.ThrowIfCancellationRequested();
-                return new AsyncDataReaderWrapper(connection, reader, finder, ct);
-            }
+            connection.EnsureOpen();
+            var reader = cmd.ExecuteReader();
+            afterExecution?.Invoke(cmd);
+            return new DataReaderWrapper(connection, reader, finder);
         }
 
-        public virtual T ExecuteScalar<T>(SqlStatement statement, ISqlConnection connection, Action<IDbCommand> beforeExecution, Action<IDbCommand> afterExecution)
+        public virtual async Task<IAsyncSqlRowReader> ExecuteQueryAsync(SqlStatement statement, ISqlConnection connection, IValueConverterProvider finder, Action<IDbCommand>? beforeExecution, Action<IDbCommand>? afterExecution, CancellationToken ct)
         {
-            object output = null;
-            using (IDbCommand cmd = connection.CreateCommand())
-            {
-                cmd.Connection = connection.DbConnection;
-                cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
-                cmd.CommandType = CommandType.Text;
-                (cmd.Parameters as DbParameterCollection).AddRange(statement.Parameters.Select(x => x.Parameter).ToArray());
+            using IDbCommand cmd = connection.CreateCommand();
+            cmd.Connection = connection.DbConnection;
+            cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
+            cmd.CommandText = statement.CommandTextWriter.ToString();
+            cmd.CommandType = CommandType.Text;
+            foreach (var parameter in statement.Parameters.Select(x => x.Parameter))
+                cmd.Parameters.Add(parameter);
 
-                beforeExecution?.Invoke(cmd);
+            beforeExecution?.Invoke(cmd);
+            ct.ThrowIfCancellationRequested();
 
-                if (string.IsNullOrWhiteSpace(cmd.CommandText))
-                    cmd.CommandText = statement.CommandTextWriter.ToString();
+            if (string.IsNullOrWhiteSpace(cmd.CommandText))
+                cmd.CommandText = statement.CommandTextWriter.ToString();
 
-                connection.EnsureOpen();
-                output = cmd.ExecuteScalar();
-                afterExecution?.Invoke(cmd);
-            }
+            await connection.EnsureOpenAsync(ct).ConfigureAwait(false);
+            var reader = cmd is DbCommand dbCommand ? await dbCommand.ExecuteReaderAsync(ct).ConfigureAwait(false) : throw new DbExpressionException($"Async query execution requires a command of type {typeof(DbCommand)}, but a command of type {cmd.GetType()} was provided.");
+
+            afterExecution?.Invoke(cmd);
+            ct.ThrowIfCancellationRequested();
+            return new AsyncDataReaderWrapper(connection, reader, finder, ct);
+        }
+
+        public virtual T? ExecuteScalar<T>(SqlStatement statement, ISqlConnection connection, Action<IDbCommand>? beforeExecution, Action<IDbCommand>? afterExecution)
+        {
+            using IDbCommand cmd = connection.CreateCommand();
+            cmd.Connection = connection.DbConnection;
+            cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
+            cmd.CommandType = CommandType.Text;
+            foreach (var parameter in statement.Parameters.Select(x => x.Parameter))
+                cmd.Parameters.Add(parameter);
+
+            beforeExecution?.Invoke(cmd);
+
+            if (string.IsNullOrWhiteSpace(cmd.CommandText))
+                cmd.CommandText = statement.CommandTextWriter.ToString();
+
+            connection.EnsureOpen();
+            var output = cmd.ExecuteScalar();
+            afterExecution?.Invoke(cmd);
+
+            if (output is null)
+                return default;
+
             return (T)Convert.ChangeType(output, typeof(T));
         }
 
-        public virtual async Task<T> ExecuteScalarAsync<T>(SqlStatement statement, ISqlConnection connection, Action<IDbCommand> beforeExecution, Action<IDbCommand> afterExecution, CancellationToken ct)
+        public virtual async Task<T?> ExecuteScalarAsync<T>(SqlStatement statement, ISqlConnection connection, Action<IDbCommand>? beforeExecution, Action<IDbCommand>? afterExecution, CancellationToken ct)
         {
-            object output = null;
-            using (IDbCommand cmd = connection.CreateCommand())
-            {
-                cmd.Connection = connection.DbConnection;
-                cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
-                cmd.CommandText = statement.CommandTextWriter.ToString();
-                cmd.CommandType = CommandType.Text;
-                (cmd.Parameters as DbParameterCollection).AddRange(statement.Parameters.Select(x => x.Parameter).ToArray());
+            using IDbCommand cmd = connection.CreateCommand();
+            cmd.Connection = connection.DbConnection;
+            cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
+            cmd.CommandText = statement.CommandTextWriter.ToString();
+            cmd.CommandType = CommandType.Text;
+            foreach (var parameter in statement.Parameters.Select(x => x.Parameter))
+                cmd.Parameters.Add(parameter);
 
-                beforeExecution?.Invoke(cmd);
-                ct.ThrowIfCancellationRequested();
-                connection.EnsureOpen();
-                output = await (cmd as DbCommand).ExecuteScalarAsync(ct).ConfigureAwait(false);
-                afterExecution?.Invoke(cmd);
-                ct.ThrowIfCancellationRequested();
-            }
+            beforeExecution?.Invoke(cmd);
+            ct.ThrowIfCancellationRequested();
+            connection.EnsureOpen();
+            var output = cmd is DbCommand dbCommand ? await dbCommand.ExecuteScalarAsync(ct).ConfigureAwait(false) : throw new DbExpressionException($"Async query execution requires a command of type {typeof(DbCommand)}, but a command of type {cmd.GetType()} was provided.");
+            afterExecution?.Invoke(cmd);
+            ct.ThrowIfCancellationRequested();
+
+            if (output is null)
+                return default;
+
             return (T)Convert.ChangeType(output, typeof(T));
         }
     }

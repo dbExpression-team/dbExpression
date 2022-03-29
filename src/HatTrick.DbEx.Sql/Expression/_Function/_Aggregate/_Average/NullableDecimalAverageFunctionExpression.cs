@@ -46,11 +46,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(NullableDecimalAverageFunctionExpression obj)
-            => obj is NullableDecimalAverageFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableDecimalAverageFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableDecimalAverageFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableDecimalAverageFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

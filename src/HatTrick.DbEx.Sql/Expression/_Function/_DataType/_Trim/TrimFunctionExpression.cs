@@ -40,21 +40,22 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region to string
-        public override string ToString() => $"TRIM({expression})";
+        public override string? ToString() => $"TRIM({expression})";
         #endregion
 
         #region equals
-        public bool Equals(TrimFunctionExpression obj)
+        public bool Equals(TrimFunctionExpression? obj)
         {
-            if (!base.Equals(obj)) return false;
+            if (obj is null) return false;
+            if (ReferenceEquals(this, obj)) return true;
 
             if (expression != obj.expression) return false;
 
             return true;
         }
 
-        public override bool Equals(object obj)
-            => obj is TrimFunctionExpression exp ? Equals(exp) : false;
+        public override bool Equals(object? obj)
+            => obj is TrimFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

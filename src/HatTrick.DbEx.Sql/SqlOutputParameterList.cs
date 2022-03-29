@@ -24,14 +24,20 @@ namespace HatTrick.DbEx.Sql
     public class SqlOutputParameterList : List<ISqlOutputParameter>, ISqlOutputParameterList
     {
         /// <inheritdoc/>
-        public ISqlOutputParameter this[string parameterName]
+        public ISqlOutputParameter? this[string parameterName]
         {
             get
             {
+                if (parameterName is null)
+                    return null;
+
+                if (string.IsNullOrWhiteSpace(parameterName))
+                    return null;
+
                 if ((parameterName?.Length ?? 0) == 0)
                     return null;
 
-                if (parameterName[0] == '@')
+                if (parameterName?[0] == '@')
                     return this.SingleOrDefault(x => string.Compare(x.Name, parameterName, true) == 0);
 
                 parameterName = $"@{parameterName}";
@@ -40,7 +46,7 @@ namespace HatTrick.DbEx.Sql
         }
 
         /// <inheritdoc/>
-        public ISqlOutputParameter FindByName(string name)
+        public ISqlOutputParameter? FindByName(string name)
             => this[name];
     }
 }

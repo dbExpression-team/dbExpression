@@ -22,63 +22,46 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class AliasExpression<T> : AliasExpression,
         AnyElement<T>,
-        IExpressionTypeProvider,
         IEquatable<AliasExpression<T>>
     {
-        #region internals
-        private readonly Type declaredType = typeof(T);
-        #endregion
-
-        #region interface
-        Type IExpressionTypeProvider.DeclaredType => declaredType;
-        #endregion
-
         #region constructors
-        public AliasExpression(string tableAlias, string fieldAlias)
-            : base(tableAlias, fieldAlias)
+        public AliasExpression((string TableName, string FieldName) alias)
+            : base(alias, typeof(T))
         {
 
         }
 
-        public AliasExpression(string tableAlias, string fieldAlias, Type declaredType)
-            : base(tableAlias, fieldAlias)
+        public AliasExpression((string TableName, string FieldName) alias, Type declaredType)
+            : base(alias, declaredType)
         {
-            this.declaredType = declaredType ?? throw new ArgumentNullException(nameof(declaredType));
+
         }
         #endregion
 
         #region as
-        public AnyElement<T> As(string alias)
-            => new SelectExpression<T>(this, alias);
+        public SelectExpression<T> As(string alias)
+            => new(this, alias);
+
+        AnyElement<T> AnyElement<T>.As(string alias)
+            => new SelectExpression<T>(this).As(alias);
         #endregion
 
         #region equals
-        public bool Equals(AliasExpression<T> obj)
+        public bool Equals(AliasExpression<T>? obj)
         {
             if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
 
-            if (declaredType != obj.declaredType) return false;
+            if (base.Equals(obj)) return false;
 
-            return base.Equals(obj);
+            return true;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
             => obj is AliasExpression<T> exp && Equals(exp);
 
         public override int GetHashCode()
-        {
-            unchecked
-            {
-                const int @base = (int)2166136261;
-                const int multiplier = 16777619;
-
-                int hash = @base;
-                hash = (hash * multiplier) ^ base.GetHashCode();
-                hash = (hash * multiplier) ^ declaredType.GetHashCode();
-                return hash;
-            }
-        }
+            => base.GetHashCode();
         #endregion
     }
 }

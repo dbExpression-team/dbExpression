@@ -32,17 +32,12 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public AnyElement<int> As(string alias)
-            => new SelectExpression<int>(this).As(alias);
-        #endregion
-
         #region equals
-        public bool Equals(Int32FloorFunctionExpression obj)
-            => obj is Int32FloorFunctionExpression && base.Equals(obj);
+        public bool Equals(Int32FloorFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is Int32FloorFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is Int32FloorFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

@@ -118,7 +118,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region to string
-        public override string ToString() 
+        public override string? ToString() 
 		=> $"FLOOR({Expression})";
         #endregion
 

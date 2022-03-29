@@ -33,7 +33,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
 
         #region constructors
-        public BeforeInsertAssemblyPipelineExecutionContext(RuntimeSqlDatabaseConfiguration database, InsertQueryExpression expression, ISqlParameterBuilder parameterBuilder)
+        public BeforeInsertAssemblyPipelineExecutionContext(SqlDatabaseRuntimeConfiguration database, InsertQueryExpression expression, ISqlParameterBuilder parameterBuilder)
             : base(database, expression)
         {
             ParameterBuilder = parameterBuilder ?? throw new ArgumentNullException(nameof(parameterBuilder));

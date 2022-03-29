@@ -19,13 +19,18 @@
 using HatTrick.DbEx.Sql.Attribute;
 using HatTrick.DbEx.Sql.Expression;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
     public class ArithmeticExpressionAppender : ExpressionElementAppender<ArithmeticExpression>
     {
-        private static IDictionary<ArithmeticExpressionOperator, string> _arithmeticOperatorMap;
-        private static IDictionary<ArithmeticExpressionOperator, string> ArithmeticOperatorMap => _arithmeticOperatorMap ?? (_arithmeticOperatorMap = typeof(ArithmeticExpressionOperator).GetValuesAndArithmeticOperators(x => string.IsNullOrWhiteSpace(x) ? " " : $" {x} "));
+        private static readonly Dictionary<ArithmeticExpressionOperator, string> arithmeticOperatorMap;
+
+        static ArithmeticExpressionAppender()
+        {
+            arithmeticOperatorMap = typeof(ArithmeticExpressionOperator).GetValuesAndArithmeticOperators(x => string.IsNullOrWhiteSpace(x) ? " " : $" {x} ").ToDictionary(k => k.Key, v => v.Value!);
+        }
 
         public override void AppendElement(ArithmeticExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
@@ -45,7 +50,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             }
 
             //append the operator
-            builder.Appender.Write(ArithmeticOperatorMap[expression.ExpressionOperator]);
+            builder.Appender.Write(arithmeticOperatorMap[expression.ExpressionOperator]);
 
             //right part of arithmetic operation
             if (expression.RightArg is LiteralExpression rightLiteral)

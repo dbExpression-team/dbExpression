@@ -48,31 +48,32 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region to string
-        public override string ToString() => $"DateAdd({datePart}, {number}, {date})";
+        public override string? ToString() => $"DateAdd({datePart}, {number}, {date})";
         #endregion
 
         #region equals
-        public bool Equals(DateAddFunctionExpression obj)
+        public bool Equals(DateAddFunctionExpression? obj)
         {
-            if (!base.Equals(obj)) return false;
+            if (obj is null) return false;
+            if (ReferenceEquals(this, obj)) return true;
 
-            if (datePart is null && obj.datePart is object) return false;
-            if (datePart is object && obj.datePart is null) return false;
-            if (!datePart.Equals(obj.datePart)) return false;
+            if (datePart is null && obj.datePart is not null) return false;
+            if (datePart is not null && obj.datePart is null) return false;
+            if (datePart is not null && !datePart.Equals(obj.datePart)) return false;
 
-            if (this.number is null && obj.number is object) return false;
-            if (this.number is object && obj.number is null) return false;
-            if (!this.number.Equals(obj.number)) return false;
+            if (number is null && obj.number is not null) return false;
+            if (number is not null && obj.number is null) return false;
+            if (number is not null && !number.Equals(obj.number)) return false;
 
-            if (this.date is null && obj.date is object) return false;
-            if (this.date is object && obj.date is null) return false;
-            if (!this.date.Equals(obj.date)) return false;
+            if (date is null && obj.date is not null) return false;
+            if (date is not null && obj.date is null) return false;
+            if (date is not null && !date.Equals(obj.date)) return false;
 
             return true;
         }
 
-        public override bool Equals(object obj)
-            => obj is DateAddFunctionExpression exp ? Equals(exp) : false;
+        public override bool Equals(object? obj)
+            => obj is DateAddFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
         {
@@ -81,9 +82,9 @@ namespace HatTrick.DbEx.Sql.Expression
                 const int multiplier = 16777619;
 
                 int hash = base.GetHashCode();
-                hash = (hash * multiplier) ^ (datePart is object ? datePart.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ (number is object ? number.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ (date is object ? date.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (datePart is not null ? datePart.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (number is not null ? number.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (date is not null ? date.GetHashCode() : 0);
                 return hash;
             }
         }

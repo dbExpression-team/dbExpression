@@ -32,11 +32,6 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public AnyElement<int> As(string alias)
-            => new SelectExpression<int>(this).As(alias);
-        #endregion
-
         #region distinct
         public Int32MaximumFunctionExpression Distinct()
         {
@@ -46,11 +41,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(Int32MaximumFunctionExpression obj)
-            => obj is Int32MaximumFunctionExpression && base.Equals(obj);
+        public bool Equals(Int32MaximumFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is Int32MaximumFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is Int32MaximumFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

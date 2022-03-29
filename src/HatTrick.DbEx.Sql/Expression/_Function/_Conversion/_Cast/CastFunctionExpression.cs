@@ -39,18 +39,14 @@ namespace HatTrick.DbEx.Sql.Expression
         protected CastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType, Type convertToType) : base(convertToType)
         {
             this.expression = expression ?? throw new ArgumentNullException(nameof(expression));
-            options = new CastFunctionExpressionOptions
-            {
-                ConvertToDbType = convertToDbType ?? throw new ArgumentNullException(nameof(convertToDbType))
-            };
+            options = new CastFunctionExpressionOptions(convertToDbType ?? throw new ArgumentNullException(nameof(convertToDbType)));
         }
 
         protected CastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType, Type convertToType, int size) : base(convertToType)
         {
             this.expression = expression ?? throw new ArgumentNullException(nameof(expression));
-            options = new CastFunctionExpressionOptions
+            options = new CastFunctionExpressionOptions(convertToDbType ?? throw new ArgumentNullException(nameof(convertToDbType)))
             {
-                ConvertToDbType = convertToDbType ?? throw new ArgumentNullException(nameof(convertToDbType)),
                 Size = size
             }; 
         }
@@ -58,9 +54,8 @@ namespace HatTrick.DbEx.Sql.Expression
         protected CastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType, Type convertToType, int precision, int? scale) : base(convertToType)
         {
             this.expression = expression ?? throw new ArgumentNullException(nameof(expression));
-            options = new CastFunctionExpressionOptions
+            options = new CastFunctionExpressionOptions(convertToDbType ?? throw new ArgumentNullException(nameof(convertToDbType)))
             {
-                ConvertToDbType = convertToDbType ?? throw new ArgumentNullException(nameof(convertToDbType)),
                 Precision = precision,
                 Scale = scale
             };
@@ -68,28 +63,28 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region to string
-        public override string ToString()
+        public override string? ToString()
             => $"CAST({expression} AS {options.ConvertToDbType}{(options.Size.HasValue ? $"({options.Size})" : "")})";
         #endregion
 
         #region equals
-        public bool Equals(CastFunctionExpression obj)
+        public bool Equals(CastFunctionExpression? obj)
         {
-            if (!base.Equals(obj)) return false;
+            if (obj is null) return false;
+            if (ReferenceEquals(this, obj)) return true;
 
-            if (expression is null && obj.expression is object) return false;
-            if (expression is object && obj.expression is null) return false;
-            if (!expression.Equals(obj.expression)) return false;
+            if (expression is null && obj.expression is not null) return false;
+            if (expression is not null && obj.expression is null) return false;
+            if (expression is not null && !expression.Equals(obj.expression)) return false;
 
-            if (this.options is null && obj.options is object) return false;
-            if (this.options is object && obj.options is null) return false;
-            if (!this.options.Equals(obj.options)) return false;
+            if (obj.options is null) return false;
+            if (!options.Equals(obj.options)) return false;
 
             return true;
         }
 
-        public override bool Equals(object obj)
-            => obj is CastFunctionExpression exp ? Equals(exp) : false;
+        public override bool Equals(object? obj)
+            => obj is CastFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
         {
@@ -98,45 +93,55 @@ namespace HatTrick.DbEx.Sql.Expression
                 const int multiplier = 16777619;
 
                 int hash = base.GetHashCode();
-                hash = (hash * multiplier) ^ (expression is object ? expression.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ (options is object ? options.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (expression is not null ? expression.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (options is not null ? options.GetHashCode() : 0);
                 return hash;
             }
         }
         #endregion
 
         #region classes
-        public class CastFunctionExpressionOptions : 
+        public class CastFunctionExpressionOptions :
             IExpressionElement,
             IEquatable<CastFunctionExpressionOptions>
         {
-            public DbTypeExpression ConvertToDbType { get; set; }
+            #region interface
+            public DbTypeExpression ConvertToDbType { get; private set; }
             public int? Size { get; set; }
             public int? Precision { get; set; }
             public int? Scale { get; set; }
+            #endregion
+
+            #region constructors
+            public CastFunctionExpressionOptions(DbTypeExpression convertToDbType)
+            {
+                ConvertToDbType = convertToDbType;
+            }
+            #endregion
 
             #region equals
-            public bool Equals(CastFunctionExpressionOptions obj)
+            public bool Equals(CastFunctionExpressionOptions? obj)
             {
-                if (!base.Equals(obj)) return false;
+                if (obj is null) return false;
+                if (ReferenceEquals(this, obj)) return true;
 
-                if (this.ConvertToDbType is null && obj.ConvertToDbType is object) return false;
-                if (this.ConvertToDbType is object && obj.ConvertToDbType is null) return false;
-                if (!this.ConvertToDbType.Equals(obj.ConvertToDbType)) return false;
+                if (ConvertToDbType is null && obj.ConvertToDbType is not null) return false;
+                if (ConvertToDbType is not null && obj.ConvertToDbType is null) return false;
+                if (ConvertToDbType is not null && !ConvertToDbType.Equals(obj.ConvertToDbType)) return false;
 
-                if (this.Size is null && obj.Size is object) return false;
-                if (this.Size is object && obj.Size is null) return false;
-                if (!this.Size.Equals(obj.Size)) return false;
+                if (Size is null && obj.Size is not null) return false;
+                if (Size is not null && obj.Size is null) return false;
+                if (Size is not null && !Size.Equals(obj.Size)) return false;
 
-                if (this.Scale is null && obj.Scale is object) return false;
-                if (this.Scale is object && obj.Scale is null) return false;
-                if (!this.Scale.Equals(obj.Scale)) return false;
+                if (Scale is null && obj.Scale is not null) return false;
+                if (Scale is not null && obj.Scale is null) return false;
+                if (Scale is not null && !Scale.Equals(obj.Scale)) return false;
 
                 return true;
             }
 
-            public override bool Equals(object obj)
-                => obj is CastFunctionExpressionOptions exp ? Equals(exp) : false;
+            public override bool Equals(object? obj)
+                => obj is CastFunctionExpressionOptions exp && Equals(exp);
 
             public override int GetHashCode()
             {
@@ -145,10 +150,10 @@ namespace HatTrick.DbEx.Sql.Expression
                     const int multiplier = 16777619;
 
                     int hash = base.GetHashCode();
-                    hash = (hash * multiplier) ^ (ConvertToDbType is object ? ConvertToDbType.GetHashCode() : 0);
-                    hash = (hash * multiplier) ^ (Size is object ? Size?.GetHashCode() ?? 0 : 0);
-                    hash = (hash * multiplier) ^ (Precision is object ? Precision?.GetHashCode() ?? 0 : 0);
-                    hash = (hash * multiplier) ^ (Scale is object ? Scale?.GetHashCode() ?? 0 : 0);
+                    hash = (hash * multiplier) ^ (ConvertToDbType is not null ? ConvertToDbType.GetHashCode() : 0);
+                    hash = (hash * multiplier) ^ (Size is not null ? Size?.GetHashCode() ?? 0 : 0);
+                    hash = (hash * multiplier) ^ (Precision is not null ? Precision?.GetHashCode() ?? 0 : 0);
+                    hash = (hash * multiplier) ^ (Scale is not null ? Scale?.GetHashCode() ?? 0 : 0);
                     return hash;
                 }
             }

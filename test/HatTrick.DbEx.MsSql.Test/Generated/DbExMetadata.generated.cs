@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using DbEx.dboDataService;
 using DbEx.secDataService;
-
+#nullable enable
 namespace DbEx.DataService
 {
     #region db meta

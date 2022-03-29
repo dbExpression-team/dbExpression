@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
 
         #region constructors
-        public BeforeInsertPipelineExecutionContext(RuntimeSqlDatabaseConfiguration database, InsertQueryExpression expression, IDbEntity entity, ISqlParameterBuilder parameterBuilder, SqlStatement statement)
+        public BeforeInsertPipelineExecutionContext(SqlDatabaseRuntimeConfiguration database, InsertQueryExpression expression, IDbEntity entity, ISqlParameterBuilder parameterBuilder, SqlStatement statement)
             : base(database, expression)
         {
             ParameterBuilder = parameterBuilder ?? throw new ArgumentNullException(nameof(parameterBuilder));
@@ -46,7 +46,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
 
         #region methods
-        public TEntity GetEntity<TEntity>()
+        public TEntity? GetEntity<TEntity>()
             where TEntity : class, IDbEntity
             => entity as TEntity;
         #endregion

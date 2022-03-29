@@ -33,10 +33,6 @@ namespace HatTrick.DbEx.Sql.Expression
         public Int16ExpressionMediator(IExpressionElement expression) : base(expression)
         {
         }
-
-        protected Int16ExpressionMediator(IExpressionElement expression, string alias) : base(expression, alias)
-        {
-        }
         #endregion
 
         #region as
@@ -45,11 +41,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(Int16ExpressionMediator obj)
-            => obj is Int16ExpressionMediator && base.Equals(obj);
+        public bool Equals(Int16ExpressionMediator? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is Int16ExpressionMediator exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is Int16ExpressionMediator exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

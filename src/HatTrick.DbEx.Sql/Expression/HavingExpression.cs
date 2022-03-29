@@ -22,41 +22,73 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public class HavingExpression :
         AnyHavingClause,
-        IFilterExpressionElement
+        IExpressionProvider<FilterExpressionSet>,
+        IFilterExpressionElement,
+        IEquatable<HavingExpression>
     {
+        #region internals
+        private FilterExpressionSet? expression;
+        #endregion
+
         #region interface
-        public FilterExpressionSet Expression { get; private set; }
+        FilterExpressionSet IExpressionProvider<FilterExpressionSet>.Expression => expression!;
         #endregion
 
         #region constructors
-        private HavingExpression()
-        { 
-        
-        }
-
         public HavingExpression(FilterExpressionSet havingCondition)
         {
-            Expression = havingCondition ?? throw new ArgumentNullException(nameof(havingCondition));
+            expression = havingCondition ?? throw new ArgumentNullException(nameof(havingCondition));
         }
         #endregion
 
         #region to string
-        public override string ToString() => Expression.ToString();
+        public override string? ToString() => expression?.ToString();
         #endregion
 
         #region conditional & operator
-        public static HavingExpression operator &(HavingExpression a, HavingExpression b)
+        public static HavingExpression? operator &(HavingExpression? a, HavingExpression? b)
         {
-            if (a?.Expression is null)
+            if (a?.expression is null)
                 return b;
 
-            if (b?.Expression is null)
+            if (b?.expression is null)
                 return a;
 
-            a.Expression &= new FilterExpressionSet(a.Expression, b.Expression, ConditionalExpressionOperator.And);
+            a.expression &= new FilterExpressionSet(a.expression, b.expression, ConditionalExpressionOperator.And);
+
             return a;
         }
         #endregion
+
+        #region equals
+        public bool Equals(HavingExpression? obj)
+        {
+            if (obj is null) return false;
+            if (ReferenceEquals(this, obj)) return true;
+
+            if (expression is null && obj.expression is not null) return false;
+            if (expression is not null && obj.expression is null) return false;
+            if (expression is not null && !expression.Equals(obj.expression)) return false;
+
+            return true;
+        }
+
+        public override bool Equals(object? obj)
+            => obj is HavingExpression exp && Equals(exp);
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                const int @base = (int)2166136261;
+                const int multiplier = 16777619;
+
+                int hash = @base;
+                hash = (hash * multiplier) ^ (expression is not null ? expression.GetHashCode() : 0);
+                return hash;
+            }
+        }
+        #endregion
     }
-    
+
 }

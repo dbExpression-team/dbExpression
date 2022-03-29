@@ -22,8 +22,8 @@ namespace HatTrick.DbEx.Sql.Converter
 {
     public interface IValueConverter
     {
-        (Type Type, object ConvertedValue) ConvertToDatabase(object value);
-        object ConvertFromDatabase(object value);
-        T ConvertFromDatabase<T>(object value);
+        (Type Type, object? ConvertedValue) ConvertToDatabase(object? value);
+        object? ConvertFromDatabase(object? value);
+        T? ConvertFromDatabase<T>(object? value);
     }
 }

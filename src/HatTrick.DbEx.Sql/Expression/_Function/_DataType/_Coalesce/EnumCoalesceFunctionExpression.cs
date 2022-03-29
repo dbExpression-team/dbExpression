@@ -29,6 +29,16 @@ namespace HatTrick.DbEx.Sql.Expression
         where TEnum : struct, Enum, IComparable
     {
         #region constructors
+        public EnumCoalesceFunctionExpression(IList<AnyElement<TEnum?>> expressions, AnyElement<TEnum> termination) : base(expressions.Concat(new AnyElement[1] { termination }).ToList())
+        {
+
+        }
+
+        public EnumCoalesceFunctionExpression(IList<AnyElement<TEnum>> expressions, AnyElement<TEnum> termination) : base(expressions.Concat(new AnyElement[1] { termination }).ToList())
+        {
+
+        }
+
         public EnumCoalesceFunctionExpression(IList<EnumElement<TEnum>> expressions, AnyElement<TEnum> termination) : base(expressions.Concat(new AnyElement[1] { termination }).ToList())
         {
 
@@ -41,11 +51,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(EnumCoalesceFunctionExpression<TEnum> obj)
-            => obj is EnumCoalesceFunctionExpression<TEnum> && base.Equals(obj);
+        public bool Equals(EnumCoalesceFunctionExpression<TEnum>? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is EnumCoalesceFunctionExpression<TEnum> exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is EnumCoalesceFunctionExpression<TEnum> exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

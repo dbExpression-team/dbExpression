@@ -14,7 +14,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Converter
         {
             //given
             var database = ConfigureForMsSqlVersion(version);
-            (database.ValueConverterFactory as ValueConverterFactory).RegisterConverter<int, SomeValueConverter>();
+            (database.ValueConverterFactory as ValueConverterFactory)!.RegisterConverter<int, SomeValueConverter>();
 
             //when
             var converter = database.ValueConverterFactory.CreateConverter<int>();
@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Converter
         {
             //given
             var database = ConfigureForMsSqlVersion(version);
-            (database.ValueConverterFactory as ValueConverterFactory).RegisterConverter<int?, SomeValueConverter>();
+            (database.ValueConverterFactory as ValueConverterFactory)!.RegisterConverter<int?, SomeValueConverter>();
 
             //when
             var converter = database.ValueConverterFactory.CreateConverter<int?>();
@@ -44,7 +44,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Converter
         {
             //given
             var database = ConfigureForMsSqlVersion(version);
-            (database.ValueConverterFactory as ValueConverterFactory).RegisterConverter<AddressType, SomeValueConverter>();
+            (database.ValueConverterFactory as ValueConverterFactory)!.RegisterConverter<AddressType, SomeValueConverter>();
 
             //when
             var converter = database.ValueConverterFactory.CreateConverter<AddressType>();
@@ -59,7 +59,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Converter
         {
             //given
             var database = ConfigureForMsSqlVersion(version);
-            (database.ValueConverterFactory as ValueConverterFactory).RegisterConverter<AddressType?, SomeValueConverter>();
+            (database.ValueConverterFactory as ValueConverterFactory)!.RegisterConverter<AddressType?, SomeValueConverter>();
 
             //when
             var converter = database.ValueConverterFactory.CreateConverter<AddressType?>();
@@ -74,7 +74,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Converter
         {
             //given
             var database = ConfigureForMsSqlVersion(version);
-            (database.ValueConverterFactory as ValueConverterFactory).RegisterConverter<AddressType?, SomeValueConverter>();
+            (database.ValueConverterFactory as ValueConverterFactory)!.RegisterConverter<AddressType?, SomeValueConverter>();
 
             //when
             var converter = database.ValueConverterFactory.CreateConverter<int?>();
@@ -85,9 +85,9 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Converter
         
         private class SomeValueConverter : IValueConverter
         {
-            public object ConvertFromDatabase(object value) => throw new NotImplementedException();
-            public T ConvertFromDatabase<T>(object value) => throw new NotImplementedException();
-            public (Type, object) ConvertToDatabase(object value) => throw new NotImplementedException();
+            public object? ConvertFromDatabase(object? value) => throw new NotImplementedException();
+            public T? ConvertFromDatabase<T>(object? value) => throw new NotImplementedException();
+            public (Type, object?) ConvertToDatabase(object? value) => throw new NotImplementedException();
         }
     }
 }

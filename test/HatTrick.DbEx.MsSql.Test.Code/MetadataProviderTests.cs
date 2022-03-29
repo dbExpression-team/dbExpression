@@ -1,6 +1,8 @@
-﻿using DbEx.dboDataService;
+﻿using DbEx.DataService;
+using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Expression;
+using HatTrick.DbEx.Sql;
 using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Code
@@ -12,7 +14,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code
         public void Can_resolve_metadata_for_a_schema(int version, string identifier = "dbo")
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
+            var config = ConfigureForMsSqlVersion(version, builder => builder.SchemaMetadata.Use(new SqlDatabaseMetadataProvider(new MsSqlDbSqlDatabaseMetadata("MsSqlDb", "MsSqlDbExTest"))));
 
             var schemaMetadata = config.MetadataProvider.FindSchemaMetadata(identifier);
 
@@ -25,7 +27,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code
         public void Can_resolve_metadata_for_an_entity(int version, string identifier = "dbo.Address")
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
+            var config = ConfigureForMsSqlVersion(version, builder => builder.SchemaMetadata.Use(new SqlDatabaseMetadataProvider(new MsSqlDbSqlDatabaseMetadata("MsSqlDb", "MsSqlDbExTest"))));
 
             var entityMetadata = config.MetadataProvider.FindEntityMetadata(identifier);
 
@@ -38,7 +40,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code
         public void Can_resolve_metadata_for_an_entity_that_was_generated_with_name_override(int version, string identifier = "dbo.Person_Address")
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
+            var config = ConfigureForMsSqlVersion(version, builder => builder.SchemaMetadata.Use(new SqlDatabaseMetadataProvider(new MsSqlDbSqlDatabaseMetadata("MsSqlDb", "MsSqlDbExTest"))));
 
             var entityMetadata = config.MetadataProvider.FindEntityMetadata(identifier);
 
@@ -51,7 +53,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code
         public void Can_resolve_metadata_for_a_field(int version, string identifier = "dbo.Address.Id")
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
+            var config = ConfigureForMsSqlVersion(version, builder => builder.SchemaMetadata.Use(new SqlDatabaseMetadataProvider(new MsSqlDbSqlDatabaseMetadata("MsSqlDb", "MsSqlDbExTest"))));
 
             var fieldMetadata = config.MetadataProvider.FindFieldMetadata(identifier);
 

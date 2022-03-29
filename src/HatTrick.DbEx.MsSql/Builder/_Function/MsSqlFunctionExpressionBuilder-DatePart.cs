@@ -31,39 +31,39 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/datepart-transact-sql">Microsoft docs on DATEPART</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the date value to extract from <paramref name="element"/>.</param>
-        /// <param name="element">Any expression of type <see cref="AnyElement{DateTime}"/>.</param>
+        /// <param name="element">Any expression of type <see cref="AnyElement{DateTime}"/> to return the <paramref name="datePart"/> from.</param>
         /// <returns><see cref="Int32DatePartFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>.</returns>
-        public static Int32DatePartFunctionExpression DatePart(DateParts datePart, AnyElement<DateTime> element)
-            => new Int32DatePartFunctionExpression(new DatePartsExpression<DateParts>(datePart), element);
+        public virtual Int32DatePartFunctionExpression DatePart(DateParts datePart, AnyElement<DateTime> element)
+            => new(new DatePartsExpression<DateParts>(datePart), element);
 
         /// <summary>
         /// Construct an expression for the DATEPART transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/datepart-transact-sql">Microsoft docs on DATEPART</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the date value to extract from <paramref name="element"/>.</param>
-        /// <param name="element">Any expression of type <see cref="AnyElement{DateTime}"/>?.</param>
+        /// <param name="element">Any expression of type <see cref="AnyElement{DateTime}"/>? to return the <paramref name="datePart"/> from.</param>
         /// <returns><see cref="NullableInt32DatePartFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32DatePartFunctionExpression DatePart(DateParts datePart, AnyElement<DateTime?> element)
-            => new NullableInt32DatePartFunctionExpression(new DatePartsExpression<DateParts>(datePart), element);
+        public virtual NullableInt32DatePartFunctionExpression DatePart(DateParts datePart, AnyElement<DateTime?> element)
+            => new(new DatePartsExpression<DateParts>(datePart), element);
 
         /// <summary>
         /// Construct an expression for the DATEPART transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/datepart-transact-sql">Microsoft docs on DATEPART</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the date value to extract from <paramref name="element"/>.</param>
-        /// <param name="element">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>.</param>
+        /// <param name="element">Any expression of type <see cref="AnyElement{DateTimeOffset}"/> to return the <paramref name="datePart"/> from.</param>
         /// <returns><see cref="Int32DatePartFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>.</returns>
-        public static Int32DatePartFunctionExpression DatePart(DateParts datePart, AnyElement<DateTimeOffset> element)
-            => new Int32DatePartFunctionExpression(new DatePartsExpression<DateParts>(datePart), element);
+        public virtual Int32DatePartFunctionExpression DatePart(DateParts datePart, AnyElement<DateTimeOffset> element)
+            => new(new DatePartsExpression<DateParts>(datePart), element);
 
         /// <summary>
         /// Construct an expression for the DATEPART transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/datepart-transact-sql">Microsoft docs on DATEPART</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the date value to extract from <paramref name="element"/>.</param>
-        /// <param name="element">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>?.</param>
+        /// <param name="element">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>? to return the <paramref name="datePart"/> from.</param>
         /// <returns><see cref="NullableInt32DatePartFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32DatePartFunctionExpression DatePart(DateParts datePart, AnyElement<DateTimeOffset?> element)
-            => new NullableInt32DatePartFunctionExpression(new DatePartsExpression<DateParts>(datePart), element);
+        public virtual NullableInt32DatePartFunctionExpression DatePart(DateParts datePart, AnyElement<DateTimeOffset?> element)
+            => new(new DatePartsExpression<DateParts>(datePart), element);
     }
 }

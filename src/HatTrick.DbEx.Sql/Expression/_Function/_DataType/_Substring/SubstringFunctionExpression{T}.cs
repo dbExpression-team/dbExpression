@@ -22,22 +22,22 @@ namespace HatTrick.DbEx.Sql.Expression
         IExpressionElement<TValue>
     {
         #region constructors
-        protected SubstringFunctionExpression(AnyElement<string> expression, AnyElement<int> start, AnyElement<int> length) : base(expression, start, length, typeof(TValue))
+        protected SubstringFunctionExpression(StringElement expression, AnyElement<int> start, AnyElement<int> length) : base(expression, start, length, typeof(TValue))
         {
 
         }
 
-        protected SubstringFunctionExpression(AnyElement<string> expression, AnyElement<int> start, AnyElement<long> length) : base(expression, start, length, typeof(TValue))
+        protected SubstringFunctionExpression(StringElement expression, AnyElement<int> start, AnyElement<long> length) : base(expression, start, length, typeof(TValue))
         {
 
         }
 
-        protected SubstringFunctionExpression(AnyElement<string> expression, AnyElement<long> start, AnyElement<int> length) : base(expression, start, length, typeof(TValue))
+        protected SubstringFunctionExpression(StringElement expression, AnyElement<long> start, AnyElement<int> length) : base(expression, start, length, typeof(TValue))
         {
 
         }
 
-        protected SubstringFunctionExpression(AnyElement<string> expression, AnyElement<long> start, AnyElement<long> length) : base(expression, start, length, typeof(TValue))
+        protected SubstringFunctionExpression(StringElement expression, AnyElement<long> start, AnyElement<long> length) : base(expression, start, length, typeof(TValue))
         {
 
         }

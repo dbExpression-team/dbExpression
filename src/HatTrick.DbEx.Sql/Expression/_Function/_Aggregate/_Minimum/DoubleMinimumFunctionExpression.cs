@@ -32,11 +32,6 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public AnyElement<double> As(string alias)
-            => new SelectExpression<double>(this).As(alias);
-        #endregion
-
         #region distinct
         public DoubleMinimumFunctionExpression Distinct()
         {
@@ -46,11 +41,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(DoubleMinimumFunctionExpression obj)
-            => obj is DoubleMinimumFunctionExpression && base.Equals(obj);
+        public bool Equals(DoubleMinimumFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is DoubleMinimumFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is DoubleMinimumFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

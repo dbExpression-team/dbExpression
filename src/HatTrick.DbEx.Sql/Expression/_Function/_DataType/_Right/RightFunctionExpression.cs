@@ -22,21 +22,21 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class RightFunctionExpression : DataTypeFunctionExpression,
         IExpressionProvider<IExpressionElement>,
-        IExpressionProvider<AnyElement<int>>,
+        IExpressionProvider<AnyElement>,
         IEquatable<RightFunctionExpression>
     {
         #region internals
         private readonly IExpressionElement expression;
-        private readonly AnyElement<int> characterCount;
+        private readonly AnyElement characterCount;
         #endregion
 
         #region interface
         IExpressionElement IExpressionProvider<IExpressionElement>.Expression => expression;
-        AnyElement<int> IExpressionProvider<AnyElement<int>>.Expression => characterCount;
+        AnyElement IExpressionProvider<AnyElement>.Expression => characterCount;
         #endregion
 
         #region constructors
-        protected RightFunctionExpression(IExpressionElement expression, AnyElement<int> characterCount, Type declaredType)
+        protected RightFunctionExpression(IExpressionElement expression, AnyElement characterCount, Type declaredType)
             : base(declaredType)
         {
             this.expression = expression ?? throw new ArgumentNullException(nameof(expression));
@@ -45,26 +45,27 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region to string
-        public override string ToString() => $"RIGHT({expression})";
+        public override string? ToString() => $"RIGHT({expression})";
         #endregion
 
         #region equals
-        public bool Equals(RightFunctionExpression obj)
+        public bool Equals(RightFunctionExpression? obj)
         {
-            if (!base.Equals(obj)) return false;
+            if (obj is null) return false;
+            if (ReferenceEquals(this, obj)) return true;
 
-            if (expression is null && obj.expression is object) return false;
-            if (expression is object && obj.expression is null) return false;
-            if (!expression.Equals(obj.expression)) return false;
+            if (expression is null && obj.expression is not null) return false;
+            if (expression is not null && obj.expression is null) return false;
+            if (expression is not null && !expression.Equals(obj.expression)) return false;
 
-            if (characterCount is null && obj.characterCount is object) return false;
-            if (characterCount is object && obj.characterCount is null) return false;
-            if (!characterCount.Equals(obj.characterCount)) return false;
+            if (characterCount is null && obj.characterCount is not null) return false;
+            if (characterCount is not null && obj.characterCount is null) return false;
+            if (characterCount is not null && !characterCount.Equals(obj.characterCount)) return false;
 
             return true;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
          => obj is RightFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
@@ -74,8 +75,8 @@ namespace HatTrick.DbEx.Sql.Expression
                 const int multiplier = 16777619;
 
                 int hash = base.GetHashCode();
-                hash = (hash * multiplier) ^ (expression is object ? expression.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ (characterCount is object ? characterCount.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (expression is not null ? expression.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (characterCount is not null ? characterCount.GetHashCode() : 0);
                 return hash;
             }
         }

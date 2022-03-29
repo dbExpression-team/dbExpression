@@ -32,17 +32,12 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public AnyElement<double> As(string alias)
-            => new SelectExpression<double>(this).As(alias);
-        #endregion
-
         #region equals
-        public bool Equals(DoubleIsNullFunctionExpression obj)
-            => obj is DoubleIsNullFunctionExpression && base.Equals(obj);
+        public bool Equals(DoubleIsNullFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is DoubleIsNullFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is DoubleIsNullFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

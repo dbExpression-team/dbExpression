@@ -26,18 +26,18 @@ namespace HatTrick.DbEx.Sql.Expression
         where TEntity : class, IDbEntity
     {
         #region constructors
-        public DecimalFieldExpression(string identifier, string name, EntityExpression entity) : base(identifier, name, entity)
+        public DecimalFieldExpression(string identifier, string name, Table entity) : base(identifier, name, entity)
         {
 
         }
         #endregion
 
         #region equals
-        public bool Equals(DecimalFieldExpression<TEntity> obj)
-            => obj is DecimalFieldExpression<TEntity> && base.Equals(obj);
+        public bool Equals(DecimalFieldExpression<TEntity>? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is DecimalFieldExpression<TEntity> exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is DecimalFieldExpression<TEntity> exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

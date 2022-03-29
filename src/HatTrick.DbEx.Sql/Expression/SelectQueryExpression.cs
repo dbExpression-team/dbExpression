@@ -23,20 +23,20 @@ namespace HatTrick.DbEx.Sql.Expression
     public class SelectQueryExpression : QueryExpression
     {
         #region interface
-        public SelectExpressionSet Select { get; set; }
+        public SelectExpressionSet Select { get; set; } = new SelectExpressionSet();
         public bool? Distinct { get; set; }
         public int? Top { get; set; }
         public int? Offset { get; set; }
         public int? Limit { get; set; }
-        public FilterExpressionSet Where { get; set; }
-        public JoinExpressionSet Joins { get; set; }
-        public OrderByExpressionSet OrderBy { get; set; }
-        public GroupByExpressionSet GroupBy { get; set; }
-        public HavingExpression Having { get; set; }
+        public FilterExpressionSet? Where { get; set; }
+        public JoinExpressionSet? Joins { get; set; }
+        public OrderByExpressionSet? OrderBy { get; set; }
+        public GroupByExpressionSet? GroupBy { get; set; }
+        public HavingExpression? Having { get; set; }
         #endregion
 
         #region to string
-        public override string ToString()
+        public override string? ToString()
         {
             var sb = new StringBuilder("SELECT ");
             if (Distinct.HasValue && Distinct.Value)
@@ -45,30 +45,30 @@ namespace HatTrick.DbEx.Sql.Expression
             {
                 sb.Append("TOP ");
                 sb.Append(Top);
-                sb.Append(" ");
+                sb.Append(' ');
             }
             sb.Append(Select);
             sb.Append(" FROM ");
             sb.Append(BaseEntity);
-            sb.Append(" ");
+            sb.Append(' ');
             sb.Append(Joins);
-            sb.Append(" ");
-            if (Where?.LeftArg is object)
+            sb.Append(' ');
+            if (!(Where as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>)?.Expression?.IsEmpty is not null)
             {
                 sb.Append("WHERE ");
                 sb.Append(Where);
             }
-            if (OrderBy?.Expressions is object)
+            if (OrderBy?.Expressions is not null)
             {
                 sb.Append("ORDER BY ");
                 sb.Append(OrderBy);
             }
-            if (GroupBy?.Expressions is object)
+            if (GroupBy?.Expressions is not null)
             {
                 sb.Append("GROUP BY ");
                 sb.Append(GroupBy);
             }
-            if (Having is object)
+            if (Having is not null)
             {
                 sb.Append("HAVING ");
                 sb.Append(Having);
@@ -79,104 +79,104 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region operators
-        public static SelectQueryExpression operator &(SelectQueryExpression query, SelectExpression select)
+        public static SelectQueryExpression operator &(SelectQueryExpression? query, SelectExpression select)
         {
-            if (query is object)
+            if (query is not null)
             {
                 if (query.Select is null) { query.Select = new SelectExpressionSet(select); }
                 else { query.Select &= select; }
             }
-            return query;
+            return query ?? new();
         }
 
-        public static SelectQueryExpression operator &(SelectQueryExpression query, SelectExpressionSet select)
+        public static SelectQueryExpression operator &(SelectQueryExpression? query, SelectExpressionSet select)
         {
-            if (query is object)
+            if (query is not null)
             {
                 if (query.Select is null) { query.Select = select; }
                 else { query.Select &= select; }
             }
-            return query;
+            return query ?? new();
         }
 
-        public static SelectQueryExpression operator &(SelectQueryExpression query, JoinExpression join)
+        public static SelectQueryExpression operator &(SelectQueryExpression? query, JoinExpression join)
         {
-            if (query is object)
+            if (query is not null)
             {
                 if (query.Joins is null) { query.Joins = new JoinExpressionSet(join); }
                 else { query.Joins &= join; }
             }
-            return query;
+            return query ?? new();
         }
 
-        public static SelectQueryExpression operator &(SelectQueryExpression query, FilterExpression filter)
+        public static SelectQueryExpression operator &(SelectQueryExpression? query, FilterExpression filter)
         {
-            if (query is object)
+            if (query is not null)
             {
                 if (query.Where is null) { query.Where = new FilterExpressionSet(filter); }
                 else { query.Where &= filter; }
             }
-            return query;
+            return query ?? new();
         }
 
-        public static QueryExpression operator &(SelectQueryExpression query, FilterExpressionSet filter)
+        public static QueryExpression operator &(SelectQueryExpression? query, FilterExpressionSet filter)
         {
-            if (query is object)
+            if (query is not null)
             {
                 if (query.Where is null) { query.Where = filter; }
                 else { query.Where &= filter; }
             }
-            return query;
+            return query ?? new();
         }
 
-        public static SelectQueryExpression operator &(SelectQueryExpression query, OrderByExpression orderBy)
+        public static SelectQueryExpression operator &(SelectQueryExpression? query, OrderByExpression orderBy)
         {
-            if (query is object)
+            if (query is not null)
             {
                 if (query.OrderBy is null) { query.OrderBy = new OrderByExpressionSet(orderBy); }
                 else { query.OrderBy &= orderBy; }
             }
-            return query;
+            return query ?? new();
         }
 
-        public static SelectQueryExpression operator &(SelectQueryExpression query, OrderByExpressionSet orderBy)
+        public static SelectQueryExpression operator &(SelectQueryExpression? query, OrderByExpressionSet orderBy)
         {
-            if (query is object)
+            if (query is not null)
             {
                 if (query.OrderBy is null) { query.OrderBy = orderBy; }
                 else { query.OrderBy &= orderBy; }
             }
-            return query;
+            return query ?? new();
         }
 
-        public static SelectQueryExpression operator &(SelectQueryExpression query, GroupByExpression groupBy)
+        public static SelectQueryExpression operator &(SelectQueryExpression? query, GroupByExpression groupBy)
         {
-            if (query is object)
+            if (query is not null)
             {
                 if (query.GroupBy is null) { query.GroupBy = new GroupByExpressionSet(groupBy); }
                 else { query.GroupBy &= groupBy; }
             }
-            return query;
+            return query ?? new();
         }
 
-        public static SelectQueryExpression operator &(SelectQueryExpression query, GroupByExpressionSet groupBy)
+        public static SelectQueryExpression operator &(SelectQueryExpression? query, GroupByExpressionSet groupBy)
         {
-            if (query is object)
+            if (query is not null)
             {
                 if (query.GroupBy is null) { query.GroupBy = groupBy; }
                 else { query.GroupBy &= groupBy; }
             }
-            return query;
+            return query ?? new();
         }
 
-        public static SelectQueryExpression operator &(SelectQueryExpression query, HavingExpression having)
+        public static SelectQueryExpression operator &(SelectQueryExpression? query, HavingExpression having)
         {
-            if (query is object)
+            if (query is not null)
             {
                 if (query.Having is null) { query.Having = having; }
                 else { query.Having &= having; }
             }
-            return query;
+            return query ?? new();
         }
         #endregion
     }

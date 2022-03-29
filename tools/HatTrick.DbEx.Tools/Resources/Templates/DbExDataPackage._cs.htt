@@ -1,6 +1,6 @@
 ﻿using System;
 using HatTrick.DbEx.Sql;
-
+{$.LanguageFeatures.Nullable.Directive}
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 {#each $.Schemas}
 namespace {$.SchemaExpression.NamespaceRoot}Data

@@ -29,31 +29,31 @@ namespace HatTrick.DbEx.Sql.Builder
         /// Construct an expression for the CONCAT transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/concat-transact-sql">Microsoft docs on CONCAT</see></para>
         /// </summary>
-        /// <param name="elements">A list of expressions of type <see cref="AnyElement{String}"/> to join into a single string.</param>
+        /// <param name="elements">A list of expressions of type <see cref="AnyStringElement"/> to join into a single string.</param>
         /// <returns><see cref="StringConcatFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
-        public static StringConcatFunctionExpression Concat(params AnyElement<string>[] elements)
-            => new StringConcatFunctionExpression(elements);
+        public StringConcatFunctionExpression Concat(params AnyStringElement[] elements)
+            => new(elements);
 
         /// <summary>
         /// Construct an expression for the CONCAT transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/concat-transact-sql">Microsoft docs on CONCAT</see></para>
         /// </summary>
         /// <param name="value">The beginning part of the joined string.</param>
-        /// <param name="elements">A list of expressions of type <see cref="AnyElement{String}"/> to add to the string after <paramref name="value"/>.</param>
-        /// <returns><see cref="StringConcatFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
-        public static StringConcatFunctionExpression Concat(string value, params AnyElement<string>[] elements)
-            => new StringConcatFunctionExpression(new List<AnyElement<string>> { new LiteralExpression<string>(value) }.Concat(elements).ToArray());
+        /// <param name="elements">A list of expressions of type <see cref="AnyStringElement"/> to add to the string after <paramref name="value"/>.</param>
+        /// <returns><see cref="StringConcatFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/>.</returns>
+        public StringConcatFunctionExpression Concat(string? value, params AnyStringElement[] elements)
+            => new(new List<AnyStringElement> { new NullableStringExpressionMediator(new LiteralExpression<string?>(value)) }.Concat(elements).ToArray());
 
         /// <summary>
         /// Construct an expression for the CONCAT transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/concat-transact-sql">Microsoft docs on CONCAT</see></para>
         /// </summary>
-        /// <param name="element1">An expression of type <see cref="AnyElement{String}"/>, the beginning part of the joined string.</param>
+        /// <param name="element1">An expression of type <see cref="AnyStringElement"/>, the beginning part of the joined string.</param>
         /// <param name="value">The part of the joined string after <paramref name="element1"/>.</param>
-        /// <param name="elements">A list of expressions of type <see cref="AnyElement{String}"/> to add to the string after <paramref name="value"/>.</param>
+        /// <param name="elements">A list of expressions of type <see cref="AnyStringElement"/> to add to the string after <paramref name="value"/>.</param>
         /// <returns><see cref="StringConcatFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
-        public static StringConcatFunctionExpression Concat(AnyElement<string> element1, string value, params AnyElement<string>[] elements)
-            => new StringConcatFunctionExpression(new List<AnyElement<string>> { element1, new LiteralExpression<string>(value) }.Concat(elements).ToArray());
+        public StringConcatFunctionExpression Concat(AnyStringElement element1, string? value, params AnyStringElement[] elements)
+            => new(new List<AnyStringElement> { element1, new NullableStringExpressionMediator(new LiteralExpression<string?>(value)) }.Concat(elements).ToArray());
 
         /// <summary>
         /// Construct an expression for the CONCAT transact sql function.
@@ -64,8 +64,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <param name="value">The part of the joined string after <paramref name="element2"/>.</param>
         /// <param name="elements">A list of expressions of type <see cref="AnyElement{String}"/> to add to the string after <paramref name="value"/>.</param>
         /// <returns><see cref="StringConcatFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
-        public static StringConcatFunctionExpression Concat(AnyElement<string> element1, AnyElement<string> element2, string value, params AnyElement<string>[] elements)
-            => new StringConcatFunctionExpression(new List<AnyElement<string>> { element1, element2, new LiteralExpression<string>(value) }.Concat(elements).ToArray());
+        public StringConcatFunctionExpression Concat(AnyStringElement element1, AnyStringElement element2, string? value, params AnyStringElement[] elements)
+            => new(new List<AnyStringElement> { element1, element2, new NullableStringExpressionMediator(new LiteralExpression<string?>(value)) }.Concat(elements).ToArray());
 
         /// <summary>
         /// Construct an expression for the CONCAT transact sql function.
@@ -77,8 +77,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <param name="value">The part of the joined string after <paramref name="element3"/>.</param>
         /// <param name="elements">A list of expressions of type <see cref="AnyElement{String}"/> to add to the string after <paramref name="value"/>.</param>
         /// <returns><see cref="StringConcatFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
-        public static StringConcatFunctionExpression Concat(AnyElement<string> element1, AnyElement<string> element2, AnyElement<string> element3, string value, params AnyElement<string>[] elements)
-            => new StringConcatFunctionExpression(new List<AnyElement<string>> { element1, element2, element3, new LiteralExpression<string>(value) }.Concat(elements).ToArray());
+        public StringConcatFunctionExpression Concat(AnyStringElement element1, AnyStringElement element2, AnyStringElement element3, string? value, params AnyStringElement[] elements)
+            => new(new List<AnyStringElement> { element1, element2, element3, new NullableStringExpressionMediator(new LiteralExpression<string?>(value)) }.Concat(elements).ToArray());
 
         /// <summary>
         /// Construct an expression for the CONCAT transact sql function.
@@ -91,7 +91,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <param name="value">The part of the joined string after <paramref name="element4"/>.</param>
         /// <param name="elements">A list of expressions of type <see cref="AnyElement{String}"/> to add to the string after <paramref name="value"/>.</param>
         /// <returns><see cref="StringConcatFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
-        public static StringConcatFunctionExpression Concat(AnyElement<string> element1, AnyElement<string> element2, AnyElement<string> element3, AnyElement<string> element4, string value, params AnyElement<string>[] elements)
-            => new StringConcatFunctionExpression(new List<AnyElement<string>> { element1, element2, element3, element4, new LiteralExpression<string>(value) }.Concat(elements).ToArray());
+        public StringConcatFunctionExpression Concat(AnyStringElement element1, AnyStringElement element2, AnyStringElement element3, AnyStringElement element4, string? value, params AnyStringElement[] elements)
+            => new(new List<AnyStringElement> { element1, element2, element3, element4, new NullableStringExpressionMediator(new LiteralExpression<string?>(value)) }.Concat(elements).ToArray());
     }
 }

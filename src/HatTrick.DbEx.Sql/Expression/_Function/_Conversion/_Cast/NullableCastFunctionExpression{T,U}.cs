@@ -31,6 +31,12 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
 
+        protected NullableCastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType, int size)
+            : base(expression, convertToDbType, typeof(TNullableValue), size)
+        {
+
+        }
+
         protected NullableCastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType, int precision, int? scale)
             : base(expression, convertToDbType, typeof(TNullableValue), precision, scale)
         {

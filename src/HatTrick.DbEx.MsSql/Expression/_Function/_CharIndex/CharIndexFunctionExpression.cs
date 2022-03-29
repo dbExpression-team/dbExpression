@@ -40,7 +40,7 @@ namespace HatTrick.DbEx.MsSql.Expression
             this.elements = new CharIndexFunctionExpressionElements(pattern, expression, null);
         }
 
-        protected CharIndexFunctionExpression(IExpressionElement pattern, IExpressionElement expression, IExpressionElement startSearchPosition, Type convertToType)
+        protected CharIndexFunctionExpression(IExpressionElement pattern, IExpressionElement expression, IExpressionElement? startSearchPosition, Type convertToType)
             : base(convertToType)
         {
             this.elements = new CharIndexFunctionExpressionElements(pattern, expression, startSearchPosition);
@@ -52,18 +52,19 @@ namespace HatTrick.DbEx.MsSql.Expression
         #endregion
 
         #region equals
-        public bool Equals(CharIndexFunctionExpression obj)
+        public bool Equals(CharIndexFunctionExpression? obj)
         {
-            if (!base.Equals(obj)) return false;
+            if (obj is null) return false;
+            if (ReferenceEquals(this, obj)) return true;
 
-            if (elements is null && obj.elements is object) return false;
-            if (elements is object && obj.elements is null) return false;
-            if (!elements.Equals(obj.elements)) return false;
+            if (elements is null && obj.elements is not null) return false;
+            if (elements is not null && obj.elements is null) return false;
+            if (elements is not null && !elements.Equals(obj.elements)) return false;
 
             return true;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
          => obj is CharIndexFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
@@ -86,11 +87,11 @@ namespace HatTrick.DbEx.MsSql.Expression
             #region interface
             public IExpressionElement Pattern { get; private set; }
             public IExpressionElement ToSearch { get; private set; }
-            public IExpressionElement StartSearchPosition { get; private set; }
+            public IExpressionElement? StartSearchPosition { get; private set; }
             #endregion
 
             #region constructors
-            public CharIndexFunctionExpressionElements(IExpressionElement pattern, IExpressionElement toSearch, IExpressionElement startSearchPosition)
+            public CharIndexFunctionExpressionElements(IExpressionElement pattern, IExpressionElement toSearch, IExpressionElement? startSearchPosition)
             {
                 this.Pattern = pattern ?? throw new ArgumentNullException(nameof(pattern));
                 this.ToSearch = toSearch ?? throw new ArgumentNullException(nameof(toSearch));
@@ -99,25 +100,28 @@ namespace HatTrick.DbEx.MsSql.Expression
             #endregion
 
             #region equals
-            public bool Equals(CharIndexFunctionExpressionElements obj)
+            public bool Equals(CharIndexFunctionExpressionElements? obj)
             {
+                if (obj is null) return false;
+                if (ReferenceEquals(this, obj)) return true;
+
                 if (Pattern is null && obj.Pattern is object) return false;
                 if (Pattern is object && obj.Pattern is null) return false;
-                if (!Pattern.Equals(obj.Pattern)) return false;
+                if (Pattern is object && !Pattern.Equals(obj.Pattern)) return false;
 
                 if (ToSearch is null && obj.ToSearch is object) return false;
                 if (ToSearch is object && obj.ToSearch is null) return false;
-                if (!ToSearch.Equals(obj.ToSearch)) return false;
+                if (ToSearch is object && !ToSearch.Equals(obj.ToSearch)) return false;
 
                 if (StartSearchPosition is null && obj.StartSearchPosition is object) return false;
                 if (StartSearchPosition is object && obj.StartSearchPosition is null) return false;
-                if (!StartSearchPosition.Equals(obj.StartSearchPosition)) return false;
+                if (StartSearchPosition is object && !StartSearchPosition.Equals(obj.StartSearchPosition)) return false;
 
                 return true;
             }
 
-            public override bool Equals(object obj)
-                => Equals(obj as CharIndexFunctionExpressionElements);
+            public override bool Equals(object? obj)
+                => obj is CharIndexFunctionExpressionElements exp && Equals(exp);
 
             public override int GetHashCode()
             {

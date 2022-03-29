@@ -39,11 +39,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(NullableInt16IsNullFunctionExpression obj)
-            => obj is NullableInt16IsNullFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableInt16IsNullFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableInt16IsNullFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableInt16IsNullFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

@@ -32,17 +32,12 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public AnyElement<DateTimeOffset> As(string alias)
-            => new SelectExpression<DateTimeOffset>(this).As(alias);
-        #endregion
-
         #region equals
-        public bool Equals(DateTimeOffsetIsNullFunctionExpression obj)
-            => obj is DateTimeOffsetIsNullFunctionExpression && base.Equals(obj);
+        public bool Equals(DateTimeOffsetIsNullFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is DateTimeOffsetIsNullFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is DateTimeOffsetIsNullFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

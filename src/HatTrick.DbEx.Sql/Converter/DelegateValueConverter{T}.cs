@@ -23,12 +23,12 @@ namespace HatTrick.DbEx.Sql.Converter
     public class DelegateValueConverter<T> : IValueConverter
     {
         #region internals
-        private readonly Func<object, object> convertToDatabase;
-        private readonly Func<object, object> convertFromDatabase;
+        private readonly Func<object?, object?> convertToDatabase;
+        private readonly Func<object?, object?> convertFromDatabase;
         #endregion
 
         #region constructors
-        public DelegateValueConverter(Func<T, object> convertToDatabase, Func<object, T> convertFromDatabase)
+        public DelegateValueConverter(Func<T?, object?> convertToDatabase, Func<object?, T?> convertFromDatabase)
         {
             if (convertToDatabase is null)
                 throw new ArgumentNullException(nameof(convertToDatabase));
@@ -36,20 +36,20 @@ namespace HatTrick.DbEx.Sql.Converter
             if (convertFromDatabase is null)
                 throw new ArgumentNullException(nameof(convertFromDatabase));
 
-            this.convertToDatabase = o => convertToDatabase((T)o);
+            this.convertToDatabase = o => convertToDatabase((T?)o);
             this.convertFromDatabase = o => convertFromDatabase(o);
         }
         #endregion
 
         #region methods
-        public (Type Type, object ConvertedValue) ConvertToDatabase(object value)
+        public (Type Type, object? ConvertedValue) ConvertToDatabase(object? value)
             => (typeof(T), convertToDatabase(value));
 
-        public object ConvertFromDatabase(object value)
-            => convertFromDatabase(value);
+        public object? ConvertFromDatabase(object? value)
+            => value is null ? null : convertFromDatabase(value);
 
-        public U ConvertFromDatabase<U>(object value)
-            => (U)convertFromDatabase(value);
+        public U? ConvertFromDatabase<U>(object? value)
+            => (U?)convertFromDatabase(value);
         #endregion
     }
 }

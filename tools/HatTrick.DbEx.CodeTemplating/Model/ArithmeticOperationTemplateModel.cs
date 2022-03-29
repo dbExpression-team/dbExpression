@@ -6,7 +6,7 @@ namespace HatTrick.DbEx.CodeTemplating
 {
     public class ArithmeticOperationTemplateModel
     {
-        public string ArithmeticOperatorSymbol { get; set; }
-        public string ArithmeticOperatorName { get; set; }
+        public string? ArithmeticOperatorSymbol { get; set; }
+        public string? ArithmeticOperatorName { get; set; }
     }
 }

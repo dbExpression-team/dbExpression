@@ -25,12 +25,12 @@ namespace HatTrick.DbEx.Sql.Assembler
     {
         public override void AppendElement(LiteralExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            if (expression.Field is object)
+            if (expression.Field is not null)
             {
                 var param = builder.Parameters.CreateInputParameter(
                     expression.Expression,
                     (expression.Field as IExpressionTypeProvider).DeclaredType,
-                    builder.FindMetadata(expression.Field),
+                    builder.FindMetadata(expression.Field) ?? throw new DbExpressionException($"Expected to find metadata for {expression.Field}, but metadata is actually null."),
                     context
                 );
                 builder.Parameters.AddParameter(param);

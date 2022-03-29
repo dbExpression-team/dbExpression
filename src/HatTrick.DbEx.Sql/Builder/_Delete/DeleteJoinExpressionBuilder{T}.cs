@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.Sql.Builder
         private readonly DeleteQueryExpression expression;
         private readonly IExpressionElement joinTo;
         private readonly JoinOperationExpressionOperator joinType;
-        private string alias;
+        private string? alias;
         #endregion
 
         #region constructors
@@ -47,7 +47,7 @@ namespace HatTrick.DbEx.Sql.Builder
             var join = new JoinExpression(joinTo, joinType, joinOn);
 
             if (!string.IsNullOrWhiteSpace(alias))
-                join = join.As(alias);
+                join = join.As(alias!);
 
             expression.Joins = expression.Joins is null ?
                 new JoinExpressionSet(join)

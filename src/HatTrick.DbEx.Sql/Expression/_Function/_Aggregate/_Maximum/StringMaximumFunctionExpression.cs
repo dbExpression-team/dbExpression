@@ -30,11 +30,11 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
-        #endregion
 
-        #region as
-        public AnyElement<string> As(string alias)
-            => new SelectExpression<string>(this).As(alias);
+        public StringMaximumFunctionExpression(StringElement expression) : base(expression)
+        {
+
+        }
         #endregion
 
         #region distinct
@@ -45,12 +45,17 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region equals
-        public bool Equals(StringMaximumFunctionExpression obj)
-            => obj is StringMaximumFunctionExpression && base.Equals(obj);
+        #region as
+        public new StringElement As(string alias)
+            => new StringSelectExpression(this).As(alias);
+        #endregion
 
-        public override bool Equals(object obj)
-            => obj is StringMaximumFunctionExpression exp && base.Equals(exp);
+        #region equals
+        public bool Equals(StringMaximumFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
+
+        public override bool Equals(object? obj)
+            => obj is StringMaximumFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

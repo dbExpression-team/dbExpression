@@ -39,7 +39,7 @@
         /// </para>
         /// </summary>
         /// <returns><see cref="UpdateEntitiesContinuation{TEntity}"/>, a fluent continuation for the construction of a sql UPDATE query expression for updating <typeparamref name="TEntity"/> entities.</returns>
-        UpdateEntitiesContinuation<TEntity> From<TEntity>(Entity<TEntity> entity)
+        UpdateEntitiesContinuation<TEntity> From<TEntity>(Table<TEntity> entity)
             where TEntity : class, IDbEntity;
     }
 }

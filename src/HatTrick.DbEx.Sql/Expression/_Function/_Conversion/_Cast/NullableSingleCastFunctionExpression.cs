@@ -39,11 +39,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(NullableSingleCastFunctionExpression obj)
-            => obj is NullableSingleCastFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableSingleCastFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableSingleCastFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableSingleCastFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

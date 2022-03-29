@@ -44,11 +44,11 @@ namespace HatTrick.DbEx.MsSql.Expression
         #endregion
 
         #region equals
-        public bool Equals(SysUtcDateTimeFunctionExpression obj)
-            => base.Equals(obj);
+        public bool Equals(SysUtcDateTimeFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is SysUtcDateTimeFunctionExpression exp ? Equals(exp) : false;
+        public override bool Equals(object? obj)
+            => obj is SysUtcDateTimeFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

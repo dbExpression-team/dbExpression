@@ -21,29 +21,63 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class GroupByExpression :
-        AnyGroupByClause
+        AnyGroupByClause,
+        IExpressionProvider<IExpressionElement>,
+        IEquatable<GroupByExpression>
     {
+        #region internals
+        private readonly IExpressionElement expression;
+        #endregion
+
         #region interface
-        public IExpressionElement Expression { get; private set; }
+        IExpressionElement IExpressionProvider<IExpressionElement>.Expression => expression;
         #endregion
 
         #region constructors
         public GroupByExpression(IExpressionElement expression)
         {
-            Expression = expression ?? throw new ArgumentNullException(nameof(expression));
+            this.expression = expression ?? throw new ArgumentNullException(nameof(expression));
         }
         #endregion
 
         #region to string
-        public override string ToString() => Expression.ToString();
+        public override string? ToString() => expression.ToString();
         #endregion
 
         #region conditional & operator
-        public static GroupByExpressionSet operator &(GroupByExpression a, GroupByExpression b) => new GroupByExpressionSet(a, b);
+        public static GroupByExpressionSet operator &(GroupByExpression a, GroupByExpression b) => new(a, b);
+        #endregion
+
+        #region equals
+        public bool Equals(GroupByExpression? obj)
+        {
+            if (obj is null) return false;
+            if (ReferenceEquals(this, obj)) return true;
+
+            if (!expression.Equals(obj.expression)) return false;
+
+            return true;
+        }
+
+        public override bool Equals(object? obj)
+            => obj is GroupByExpression exp && Equals(exp);
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                const int @base = (int)2166136261;
+                const int multiplier = 16777619;
+
+                int hash = @base;
+                hash = (hash * multiplier) ^ expression.GetHashCode();
+                return hash;
+            }
+        }
         #endregion
 
         #region implicit group by expression set operator
-        public static implicit operator GroupByExpressionSet(GroupByExpression a) => new GroupByExpressionSet(a);
+        public static implicit operator GroupByExpressionSet(GroupByExpression a) => new(a);
         #endregion
     }
     

@@ -52,7 +52,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public async Task Can_omit_setting_field_value_before_insert_assembly_event_when_inserting_an_entity_not_containing_the_field(int version, string expected = "XXX")
         {
             //given
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(dbo.Product.Name, expected)));
+            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(dbo.Product.Name, "ZZZ")));
             var person = new Person { FirstName = expected, LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow };
 
             //when

@@ -15,7 +15,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
         public void Does_configuration_using_instance_method_with_null_instance_throw_expected_exception(int version)
         {
             //given & when & then
-            Assert.Throws<DbExpressionConfigurationException>(() => ConfigureForMsSqlVersion(version, builder => builder.Entities.Creation.Use((IEntityFactory)null)));
+            Assert.Throws<DbExpressionConfigurationException>(() => ConfigureForMsSqlVersion(version, builder => builder.Entities.Creation.Use((IEntityFactory)null!)));
         }
 
         [Theory]
@@ -55,7 +55,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
             var config = ConfigureForMsSqlVersion(version, builder => builder.Entities.Creation.UseDefaultFactory());
 
             //when
-            var matchingType = config.EntityFactory is IEntityFactory;
+            var matchingType = config.EntityFactory is not null;
 
             //then
             matchingType.Should().BeTrue();
@@ -112,7 +112,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
             var config = ConfigureForMsSqlVersion(version, builder => builder.Entities.Mapping.UseDefaultFactory());
 
             //when
-            var matchingType = config.MapperFactory is IMapperFactory;
+            var matchingType = config.MapperFactory is not null;
 
             //then
             matchingType.Should().BeTrue();
@@ -141,7 +141,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
         {
             public IExpandoObjectMapper CreateExpandoObjectMapper() => throw new NotImplementedException();
 
-            IEntityMapper<TEntity> IMapperFactory.CreateEntityMapper<TEntity>(IEntityExpression<TEntity> entity) => throw new NotImplementedException();
+            IEntityMapper<TEntity> IMapperFactory.CreateEntityMapper<TEntity>(Table<TEntity> entity) => throw new NotImplementedException();
         }
     }
 }

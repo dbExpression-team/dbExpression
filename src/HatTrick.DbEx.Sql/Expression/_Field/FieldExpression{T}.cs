@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<FieldExpression<TValue>>
     {
         #region constructors
-        protected FieldExpression(string identifier, string name, Type declaredType, EntityExpression entity) : base(identifier, name, declaredType, entity)
+        protected FieldExpression(string identifier, string name, Type declaredType, Table entity) : base(identifier, name, declaredType, entity)
         {
 
         }
@@ -39,10 +39,10 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(FieldExpression<TValue> obj)
-            => obj is FieldExpression<TValue> && base.Equals(obj);
+        public bool Equals(FieldExpression<TValue>? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
             => obj is FieldExpression<TValue> exp && base.Equals(exp);
 
         public override int GetHashCode()

@@ -33,10 +33,6 @@ namespace HatTrick.DbEx.Sql.Expression
         public TimeSpanExpressionMediator(IExpressionElement expression) : base(expression)
         {
         }
-
-        protected TimeSpanExpressionMediator(IExpressionElement expression, string alias) : base(expression, alias)
-        {
-        }
         #endregion
 
         #region as
@@ -45,11 +41,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(TimeSpanExpressionMediator obj)
-            => obj is TimeSpanExpressionMediator && base.Equals(obj);
+        public bool Equals(TimeSpanExpressionMediator? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is TimeSpanExpressionMediator exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is TimeSpanExpressionMediator exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

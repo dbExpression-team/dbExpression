@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ).From(dbo.Purchase);
 
             //when               
-            IList<string> results = exp.Execute();
+            IList<string?> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);

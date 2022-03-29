@@ -28,12 +28,12 @@ namespace HatTrick.DbEx.MsSql.Expression
         IEquatable<DecimalRoundFunctionExpression>
     {
         #region constructors
-        public DecimalRoundFunctionExpression(AnyElement<decimal> expression, IntegralNumericElement length) : base(expression, length)
+        public DecimalRoundFunctionExpression(AnyElement<decimal> expression, AnyElement length) : base(expression, length)
         {
 
         }
 
-        public DecimalRoundFunctionExpression(AnyElement<decimal> expression, IntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
+        public DecimalRoundFunctionExpression(AnyElement<decimal> expression, AnyElement length, AnyElement function) : base(expression, length, function)
         {
 
         }
@@ -45,11 +45,11 @@ namespace HatTrick.DbEx.MsSql.Expression
         #endregion
 
         #region equals
-        public bool Equals(DecimalRoundFunctionExpression obj)
-            => obj is DecimalRoundFunctionExpression && base.Equals(obj);
+        public bool Equals(DecimalRoundFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is DecimalRoundFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is DecimalRoundFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

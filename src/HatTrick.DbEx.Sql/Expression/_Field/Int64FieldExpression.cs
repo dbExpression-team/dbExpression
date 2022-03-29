@@ -26,18 +26,18 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<Int64FieldExpression>
     {
         #region constructors
-        protected Int64FieldExpression(string identifier, string name, EntityExpression entity) : base(identifier, name, typeof(long), entity)
+        protected Int64FieldExpression(string identifier, string name, Table entity) : base(identifier, name, typeof(long), entity)
         {
 
         }
         #endregion
 
         #region equals
-        public bool Equals(Int64FieldExpression obj)
-            => obj is Int64FieldExpression && base.Equals(obj);
+        public bool Equals(Int64FieldExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is Int64FieldExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is Int64FieldExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

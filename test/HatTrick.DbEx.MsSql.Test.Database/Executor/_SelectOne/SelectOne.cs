@@ -30,10 +30,11 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Where(dbo.Person.Id == 1);
 
             //when               
-            var person = exp.Execute();
+            Person? person = exp.Execute();
 
             //then
-            person.FirstName.Should().Be("Kenny");
+            person.Should().NotBeNull();
+            person!.FirstName.Should().Be("Kenny");
         }
 
         [Theory]
@@ -49,10 +50,11 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Where(dbo.Person.Id == 1);
 
             //when               
-            var person = await exp.ExecuteAsync();
+            Person? person = await exp.ExecuteAsync();
 
             //then
-            person.FirstName.Should().Be("Kenny");
+            person.Should().NotBeNull();
+            person!.FirstName.Should().Be("Kenny");
         }
 
         [Theory]
@@ -81,14 +83,15 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var person = await db.SelectOne(
+            dynamic? person = await db.SelectOne(
                     sec.Person.Id, 
                     sec.Person.SocialSecurityNumber
                 )
                 .From(sec.Person).ExecuteAsync();
 
             //then
-            ((string)person.SocialSecurityNumber).Should().NotBeNull();
+            ((object?)person).Should().NotBeNull();
+            ((string)person!.SocialSecurityNumber).Should().NotBeNull();
         }
 
         [Theory]
@@ -114,7 +117,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            dynamic person = await db.SelectOne(
+            dynamic? person = await db.SelectOne(
                     new List<AnyElement>() {
                         dbo.Person.Id,
                         dbo.Person.FirstName,
@@ -125,7 +128,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person).ExecuteAsync();
 
             //then
-            (person as object).Should().NotBeNull();
+            ((object?)person).Should().NotBeNull();
         }
 
         [Theory]
@@ -135,7 +138,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var person = await db.SelectOne(
+            dynamic? person = await db.SelectOne(
                     new List<AnyElement>() {
                         dbo.Person.Id,
                         dbo.Person.FirstName,
@@ -149,9 +152,126 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person).ExecuteAsync();
 
             //then
-            (person as object).Should().NotBeNull();
-            ((int?)person.Id).Should().NotBeNull();
+            ((object?)person).Should().NotBeNull();
+            ((int?)person!.Id).Should().NotBeNull();
             ((DateTime?)person.DateCreated).Should().NotBeNull();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_an_overriden_property_type_return_the_correct_data_type_when_selecting_value(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //when
+            ProductDescription? value = await db.SelectOne(
+                    dbo.Product.Description
+                )
+                .From(dbo.Product)
+                .Where(dbo.Product.Description != DBNull.Value)
+                .ExecuteAsync();
+
+            //then
+            value.Should().NotBeNull();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_an_overriden_property_type_and_aliased_return_the_correct_data_type_when_selecting_value(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //when
+            ProductDescription? value = await db.SelectOne(
+                    dbo.Product.Description.As("foo")
+                )
+                .From(dbo.Product)
+                .Where(dbo.Product.Description != DBNull.Value)
+                .ExecuteAsync();
+
+            //then
+            value.Should().NotBeNull();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_select_dynamic_with_an_overriden_property_type_return_the_correct_data_type_when_selecting_value(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //when
+            dynamic? value = await db.SelectOne(
+                    dbo.Product.Id,
+                    dbo.Product.Description
+                )
+                .From(dbo.Product)
+                .Where(dbo.Product.Description != DBNull.Value)
+                .ExecuteAsync();
+
+            //then
+            (value?.Description as ProductDescription).Should().NotBeNull();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_select_dynamic_with_an_overriden_property_type_and_aliased_return_the_correct_data_type_when_selecting_value(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //when
+            dynamic? value = await db.SelectOne(
+                    dbo.Product.Id,
+                    dbo.Product.Description.As("foo")
+                )
+                .From(dbo.Product)
+                .Where(dbo.Product.Description != DBNull.Value)
+                .ExecuteAsync();
+
+            //then
+            (value?.foo as ProductDescription).Should().NotBeNull();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_select_count_of_bytearray_when_equal_to_dbnull(int version, int expected = 9)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+            AppendImagesToProductsInDatabase();
+
+            //when
+            int value = await db.SelectOne(db.fx.Count())
+                .From(dbo.Product)
+                .Where(dbo.Product.Image != DBNull.Value)
+                .ExecuteAsync();
+
+            //then
+            value.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_select_aliased_bytearray_when_equal_to_dbnull(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+            AppendImagesToProductsInDatabase();
+
+            //when
+            dynamic? value = await db.SelectOne(
+                    dbo.Product.Id,
+                    dbo.Product.Image.As("foo")
+                )
+                .From(dbo.Product)
+                .Where(dbo.Product.Image != DBNull.Value)
+                .ExecuteAsync();
+
+            //then
+            (value!.foo as byte[]).Should().NotBeEmpty();
         }
     }
 }

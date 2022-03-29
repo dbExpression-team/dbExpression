@@ -28,8 +28,8 @@ namespace HatTrick.DbEx.Sql.Assembler
     public class AssemblyContext
     {
         #region internals
-        private readonly Stack<FieldExpressionAppendStyle> fieldStyles = new Stack<FieldExpressionAppendStyle>();
-        private readonly Stack<EntityExpressionAppendStyle> entityStyles = new Stack<EntityExpressionAppendStyle>();
+        private readonly Stack<FieldExpressionAppendStyle> fieldStyles = new();
+        private readonly Stack<EntityExpressionAppendStyle> entityStyles = new();
         private readonly IDictionary<Type,object> state = new ConcurrentDictionary<Type,object>();
         #endregion
 
@@ -91,7 +91,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             where T : class
             => this.state.Add(typeof(T), state);
 
-        public T GetState<T>()
+        public T? GetState<T>()
             where T : class
         {
             if (state.TryGetValue(typeof(T), out var s))
@@ -99,11 +99,11 @@ namespace HatTrick.DbEx.Sql.Assembler
             return default;
         }
 
-        public T RemoveState<T>()
+        public T? RemoveState<T>()
             where T : class
         {
             var existing = GetState<T>();
-            if (existing is object)
+            if (existing is not null)
                 state.Remove(typeof(T));
             return existing;
         }

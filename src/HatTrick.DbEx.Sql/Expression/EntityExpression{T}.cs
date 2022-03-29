@@ -16,23 +16,22 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Executor;
-using System;
+using HatTrick.DbEx.Sql.Executor;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public abstract class EntityExpression<T> : 
+    public abstract class EntityExpression<T> :
         EntityExpression, 
-        Entity<T>
+        Table<T>
         where T : class, IDbEntity
     {
         #region constructors
-        private EntityExpression() : base(null, null, typeof(T), null, null)
-        { 
-        
+        private EntityExpression()
+        {
+
         }
 
-        protected EntityExpression(string identifier, string name, SchemaExpression schema, string alias)
+        protected EntityExpression(string identifier, string name, SchemaExpression schema, string? alias)
             : base(identifier, name, typeof(T), schema, alias)
         {
 
@@ -40,21 +39,15 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region interface
-        SelectExpressionSet IEntityExpression<T>.BuildInclusiveSelectExpression()
-            => GetInclusiveSelectExpression();
-        SelectExpressionSet IEntityExpression<T>.BuildInclusiveSelectExpression(Func<string, string> alias)
-            => GetInclusiveSelectExpression(alias);
-        InsertExpressionSet<T> IEntityExpression<T>.BuildInclusiveInsertExpression(T entity)
-            => GetInclusiveInsertExpression(entity);
-        AssignmentExpressionSet IEntityExpression<T>.BuildAssignmentExpression(T target, T source)
+        AssignmentExpressionSet Table<T>.BuildAssignmentExpression(T target, T source)
             => GetAssignmentExpression(target, source);
-        void IEntityExpression<T>.HydrateEntity(ISqlFieldReader reader, T entity)
+        InsertExpressionSet<T> Table<T>.BuildInclusiveInsertExpression(T entity)
+            => GetInclusiveInsertExpression(entity);
+        void Table<T>.HydrateEntity(ISqlFieldReader reader, T entity)
             => HydrateEntity(reader, entity);
         #endregion
 
         #region methods
-        protected abstract SelectExpressionSet GetInclusiveSelectExpression();
-        protected abstract SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias);
         protected abstract InsertExpressionSet<T> GetInclusiveInsertExpression(T entity);
         protected abstract AssignmentExpressionSet GetAssignmentExpression(T from, T to);
         protected abstract void HydrateEntity(ISqlFieldReader reader, T entity);

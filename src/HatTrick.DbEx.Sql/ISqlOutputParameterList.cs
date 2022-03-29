@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.Sql
         /// </summary>
         /// <param name="parameterName">The name of the output parameter.  The "@" prefix on the name is optional.</param>
         /// <returns></returns>
-        ISqlOutputParameter this[string parameterName] { get; }
+        ISqlOutputParameter? this[string parameterName] { get; }
         /// <summary>
         /// Gets the output parameter with the name provided by <paramref name="parameterName"/>.
         /// </summary>
@@ -41,6 +41,6 @@ namespace HatTrick.DbEx.Sql
         /// </code>
         /// </example>
         /// </remarks>
-        ISqlOutputParameter FindByName(string parameterName);
+        ISqlOutputParameter? FindByName(string parameterName);
     }
 }

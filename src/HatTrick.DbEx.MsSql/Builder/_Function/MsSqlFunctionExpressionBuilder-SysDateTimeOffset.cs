@@ -26,12 +26,14 @@ namespace HatTrick.DbEx.MsSql.Builder
 {
     public partial class MsSqlFunctionExpressionBuilder
     {
+        private static readonly SysDateTimeOffsetFunctionExpression sysDateTimeOffset = new();
+
         /// <summary>
         /// Construct an expression for the SYSDATETIMEOFFSET transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/sysdatetimeoffset-transact-sql">Microsoft docs on SYSDATETIMEOFFSET</see></para>
         /// </summary>
         /// <returns><see cref="SysDateTimeOffsetFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{DateTime}"/>.</returns>
-        public static SysDateTimeOffsetFunctionExpression SysDateTimeOffset()
-            => new SysDateTimeOffsetFunctionExpression();
+        public SysDateTimeOffsetFunctionExpression SysDateTimeOffset()
+            => sysDateTimeOffset;
     }
 }

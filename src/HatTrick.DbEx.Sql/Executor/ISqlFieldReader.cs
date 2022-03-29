@@ -26,13 +26,13 @@ namespace HatTrick.DbEx.Sql.Executor
         /// Get a rowset field and increments the current field index.  The next call to this method would return the next field in the rowset.
         /// </summary>
         /// <returns>An <see cref="ISqlField"/> containing the retrieved value and metadata for the field.</returns>
-        ISqlField ReadField();
+        ISqlField? ReadField();
 
         /// <summary>
         /// Get a rowset field at the provided index.
         /// </summary>
         /// <returns>The <see cref="ISqlField"/> value of the field converted to <typeparamref name="T"/>.</returns>
-        T GetValue<T>(int index);
+        T? GetValue<T>(int index);
 
         /// <summary>
         /// Get all fields from the rowset.  This method does NOT increment the current index of the reader.

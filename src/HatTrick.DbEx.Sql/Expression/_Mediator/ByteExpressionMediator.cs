@@ -33,10 +33,6 @@ namespace HatTrick.DbEx.Sql.Expression
         public ByteExpressionMediator(IExpressionElement expression) : base(expression)
         {
         }
-
-        protected ByteExpressionMediator(IExpressionElement expression, string alias) : base(expression, alias)
-        {
-        }
         #endregion
 
         #region as
@@ -45,11 +41,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(ByteExpressionMediator obj)
-            => obj is ByteExpressionMediator && base.Equals(obj);
+        public bool Equals(ByteExpressionMediator? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is ByteExpressionMediator exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is ByteExpressionMediator exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

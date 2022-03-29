@@ -37,55 +37,55 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         #region methods
         NullableBooleanCastFunctionExpression NullableCast.AsBit()
-            => new NullableBooleanCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.Bit));
+            => new(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.Bit));
 
         NullableByteCastFunctionExpression NullableCast.AsTinyInt()
-            => new NullableByteCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.Bit));
+            => new(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.Bit));
 
         NullableDateTimeCastFunctionExpression NullableCast.AsDateTime()
-            => new NullableDateTimeCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.DateTime));
+            => new(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.DateTime));
 
         NullableDateTimeOffsetCastFunctionExpression NullableCast.AsDateTimeOffset()
-            => new NullableDateTimeOffsetCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.DateTimeOffset));
+            => new(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.DateTimeOffset));
 
         NullableDecimalCastFunctionExpression NullableCast.AsDecimal(int precision, int scale)
-            => new NullableDecimalCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.Decimal));
+            => new(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.Decimal), precision, scale);
 
         NullableDoubleCastFunctionExpression MsSqlNullableCast.AsMoney()
-            => new NullableDoubleCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.Money));
+            => new(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.Money));
 
         NullableDoubleCastFunctionExpression MsSqlNullableCast.AsSmallMoney()
-            => new NullableDoubleCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.SmallMoney));
+            => new(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.SmallMoney));
 
         NullableSingleCastFunctionExpression NullableCast.AsFloat()
-            => new NullableSingleCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.Float));
+            => new(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.Float));
 
         NullableGuidCastFunctionExpression NullableCast.AsUniqueIdentifier()
-            => new NullableGuidCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.UniqueIdentifier));
+            => new(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.UniqueIdentifier));
 
         NullableInt16CastFunctionExpression NullableCast.AsSmallInt()
-            => new NullableInt16CastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.SmallInt));
+            => new(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.SmallInt));
 
         NullableInt32CastFunctionExpression NullableCast.AsInt()
-            => new NullableInt32CastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.Int));
+            => new(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.Int));
 
         NullableInt64CastFunctionExpression NullableCast.AsBigInt()
-            => new NullableInt64CastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.BigInt));
+            => new(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.BigInt));
 
-        StringCastFunctionExpression NullableCast.AsVarChar(int size)
-            => new StringCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.VarChar), size);
+        NullableStringCastFunctionExpression NullableCast.AsVarChar(int size)
+            => new(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.VarChar), size);
 
-        StringCastFunctionExpression NullableCast.AsChar(int size)
-            => new StringCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.Char), size);
+        NullableStringCastFunctionExpression NullableCast.AsChar(int size)
+            => new(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.Char), size);
 
-        StringCastFunctionExpression NullableCast.AsNVarChar(int size)
-            => new StringCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.NVarChar), size);
+        NullableStringCastFunctionExpression NullableCast.AsNVarChar(int size)
+            => new(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.NVarChar), size);
 
-        StringCastFunctionExpression NullableCast.AsNChar(int size)
-            => new StringCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.NChar), size);
+        NullableStringCastFunctionExpression NullableCast.AsNChar(int size)
+            => new(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.NChar), size);
 
         NullableTimeSpanCastFunctionExpression NullableCast.AsTime()
-            => new NullableTimeSpanCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.Time));
+            => new(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.Time));
         #endregion
     }
 }

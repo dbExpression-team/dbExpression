@@ -26,18 +26,18 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<NullableDecimalFieldExpression>
     {
         #region constructors
-        protected NullableDecimalFieldExpression(string identifier, string name, EntityExpression entity) : base(identifier, name, entity)
+        protected NullableDecimalFieldExpression(string identifier, string name, Table entity) : base(identifier, name, entity)
         {
 
         }
         #endregion
 
         #region equals
-        public bool Equals(NullableDecimalFieldExpression obj)
-            => obj is NullableDecimalFieldExpression && base.Equals(obj);
+        public bool Equals(NullableDecimalFieldExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableDecimalFieldExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableDecimalFieldExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

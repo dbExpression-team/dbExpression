@@ -146,10 +146,10 @@ namespace HatTrick.DbEx.MsSql.Assembler
             return new ParameterizedExpression(valueType, parameter);
         }
 
-        protected virtual (Type Type, object ConvertedValue) ConvertDbParameterValue<T>(Type type, T value)
+        protected virtual (Type Type, object? ConvertedValue) ConvertDbParameterValue<T>(Type type, T? value)
             => ConvertDbParameterValue(type, value, valueConverterFactory.CreateConverter(type));
 
-        protected virtual (Type Type, object ConvertedValue) ConvertDbParameterValue(Type type, object value)
+        protected virtual (Type Type, object? ConvertedValue) ConvertDbParameterValue(Type type, object? value)
         {
             if ((value is DBNull || value is null) && !type.IsNullableType())
             {
@@ -159,9 +159,9 @@ namespace HatTrick.DbEx.MsSql.Assembler
             return ConvertDbParameterValue(type, value, converter);
         }
 
-        protected virtual (Type Type, object ConvertedValue) ConvertDbParameterValue(Type type, object value, IValueConverter converter)
+        protected virtual (Type Type, object? ConvertedValue) ConvertDbParameterValue(Type type, object? value, IValueConverter converter)
         {
-            var converted = value is DBNull || !(value is object) ? converter.ConvertToDatabase(null) : converter.ConvertToDatabase(value);
+            var converted = value is DBNull || !(value is not null) ? converter.ConvertToDatabase(null) : converter.ConvertToDatabase(value);
             if (converted.ConvertedValue is null)
                 converted.ConvertedValue = DBNull.Value;
             return converted;

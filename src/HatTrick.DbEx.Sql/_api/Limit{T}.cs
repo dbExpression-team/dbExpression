@@ -40,6 +40,6 @@ namespace HatTrick.DbEx.Sql
         /// </summary>
         /// <param name="having">A list of expressions of type <see cref="AnyHavingClause"/> specifying conditions on the grouping or aggregation of selected results.</param>
         /// <returns><see cref="{TCaller}"/>, a fluent continuation for the construction of a sql SELECT query expression.</returns>
-        TCaller Having(AnyHavingClause having);
+        TCaller Having(AnyHavingClause? having);
     }
 }

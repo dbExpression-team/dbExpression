@@ -1,6 +1,6 @@
 ﻿@namespace ServerSideBlazorApp.Shared
 
-<Card>
+<Card ColumnSize="@ColumnSize">
     <CardBody>
         <CardTitle>
             @(Address.Type) Address<Button Class="@(Mode == UIControlMode.Edit ? "d-none" : string.Empty)" Clicked="ToggleMode" Color="Color.Link"><i class="fas fa-edit"></i>&nbsp;Edit</Button>
@@ -75,7 +75,7 @@
                             </Field>
                         </Validation>
                         <Paragraph Alignment="TextAlignment.End" Margin="Margin.Is5.FromTop">
-                            <Button Margin="Margin.Is3.FromRight" Type="ButtonType.Submit" Color="Color.Primary" PreventDefaultOnSubmit="true" Clicked="Save" Disabled="@(!IsValid)">Save</Button><Button Type="ButtonType.Reset" Clicked="@Cancel">Cancel</Button>
+                            <Button Margin="Margin.Is3.FromEnd" Type="ButtonType.Submit" Color="Color.Primary" PreventDefaultOnSubmit="true" Clicked="Save" Disabled="@(!IsValid)">Save</Button><Button Type="ButtonType.Reset" Clicked="@Cancel">Cancel</Button>
                         </Paragraph>
                     </Validations>
                 </Form>

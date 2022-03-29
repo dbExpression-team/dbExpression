@@ -40,15 +40,15 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region to string
-        public override string ToString() => "CURRENT_TIMESTAMP";
+        public override string? ToString() => "CURRENT_TIMESTAMP";
         #endregion
 
         #region equals
-        public bool Equals(CurrentTimestampFunctionExpression obj)
+        public bool Equals(CurrentTimestampFunctionExpression? obj)
             => base.Equals(obj);
 
-        public override bool Equals(object obj)
-         => obj is CurrentTimestampFunctionExpression exp ? Equals(exp) : false;
+        public override bool Equals(object? obj)
+         => obj is CurrentTimestampFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

@@ -30,6 +30,6 @@ namespace HatTrick.DbEx.Sql.Expression
             this.Expression = value;
         }
 
-        public override string ToString() => Expression.ToString();
+        public override string? ToString() => Expression.ToString();
     }
 }

@@ -29,18 +29,18 @@ namespace HatTrick.DbEx.Sql.Builder
         /// Construct an expression for the LTRIM transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/ltrim-transact-sql">Microsoft docs on LTRIM</see></para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{String}"/> to trim leading spaces from.</param>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to trim leading spaces from.</param>
         /// <returns><see cref="StringLTrimFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
-        public static StringLTrimFunctionExpression LTrim(AnyElement<string> element)
-            => new StringLTrimFunctionExpression(element);
+        public StringLTrimFunctionExpression LTrim(StringElement element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the LTRIM transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/ltrim-transact-sql">Microsoft docs on LTRIM</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableStringElement"/> to trim leading spaces from.</param>
-        /// <returns><see cref="NullableStringLTrimFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>
-        public static NullableStringLTrimFunctionExpression LTrim(NullableStringElement element)
-            => new NullableStringLTrimFunctionExpression(element);
+        /// <returns><see cref="NullableStringLTrimFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>?.</returns>
+        public NullableStringLTrimFunctionExpression LTrim(NullableStringElement element)
+            => new(element);
     }
 }

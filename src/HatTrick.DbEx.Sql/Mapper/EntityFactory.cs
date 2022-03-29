@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Mapper
     public class EntityFactory : IEntityFactory
     {
         #region interface
-        private readonly ConcurrentDictionary<Type, Func<IDbEntity>> typeFactories = new ConcurrentDictionary<Type, Func<IDbEntity>>();
+        private readonly ConcurrentDictionary<Type, Func<IDbEntity>> typeFactories = new();
         #endregion
 
         #region methods
@@ -41,7 +41,7 @@ namespace HatTrick.DbEx.Sql.Mapper
             where TEntity : class, IDbEntity, new()
         {
             if (typeFactories.TryGetValue(typeof(TEntity), out var factory))
-                return factory.Invoke() as TEntity;
+                return factory.Invoke() as TEntity ?? throw new DbExpressionException($"Expected entity factory to return an entity of type {typeof(TEntity)}.");
 
             return new TEntity();
         }

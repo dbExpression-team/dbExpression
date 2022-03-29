@@ -26,18 +26,18 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<NullableDateTimeOffsetFieldExpression>
     {
         #region constructors
-        protected NullableDateTimeOffsetFieldExpression(string identifier, string name, EntityExpression entity) : base(identifier, name, entity)
+        protected NullableDateTimeOffsetFieldExpression(string identifier, string name, Table entity) : base(identifier, name, entity)
         {
 
         }
         #endregion
 
         #region equals
-        public bool Equals(NullableDateTimeOffsetFieldExpression obj)
-            => obj is NullableDateTimeOffsetFieldExpression && base.Equals(obj);
+        public bool Equals(NullableDateTimeOffsetFieldExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableDateTimeOffsetFieldExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableDateTimeOffsetFieldExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

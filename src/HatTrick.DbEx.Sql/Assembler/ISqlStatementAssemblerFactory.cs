@@ -22,6 +22,6 @@ namespace HatTrick.DbEx.Sql.Assembler
 {
     public interface ISqlStatementAssemblerFactory
     {
-        ISqlStatementAssembler CreateSqlStatementAssembler(QueryExpression expression);
+        ISqlStatementAssembler? CreateSqlStatementAssembler(QueryExpression expression);
     }
 }

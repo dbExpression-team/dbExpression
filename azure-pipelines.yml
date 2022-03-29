@@ -88,10 +88,10 @@ stages:
           testRunTitle: 'MSSQL (Core)'
           mergeTestResults: true
           failTaskOnFailedTests: true
-      - task: Palmmedia.reportgenerator.reportgenerator-build-release-task.reportgenerator@4
+      - task: reportgenerator@5
         displayName: 'Generate Code Coverage Report'
         inputs:
-          reports: $(Pipeline.Workspace)/$(stageLocationName)/test/HatTrick.DbEx.MsSql.Test.Code/**/coverage.cobertura.xml
+          reports: $(Pipeline.Workspace)/$(stageLocationName)/test/HatTrick.DbEx.MsSql.Test.Code/**/coverage*.xml
           targetdir: $(Pipeline.Workspace)/$(stageLocationName)/results/coverage
           reporttypes: 'HtmlInline_AzurePipelines;Cobertura;Badges'          
 #      - task: PublishCodeCoverageResults@1

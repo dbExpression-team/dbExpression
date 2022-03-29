@@ -32,11 +32,6 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public AnyElement<TimeSpan> As(string alias)
-            => new SelectExpression<TimeSpan>(this).As(alias);
-        #endregion
-
         #region distinct
         public TimeSpanMinimumFunctionExpression Distinct()
         {
@@ -46,11 +41,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(TimeSpanMinimumFunctionExpression obj)
-            => obj is TimeSpanMinimumFunctionExpression && base.Equals(obj);
+        public bool Equals(TimeSpanMinimumFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is TimeSpanMinimumFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is TimeSpanMinimumFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

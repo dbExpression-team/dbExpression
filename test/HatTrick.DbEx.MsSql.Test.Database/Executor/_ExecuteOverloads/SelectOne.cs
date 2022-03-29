@@ -1,16 +1,13 @@
-﻿using DbEx.dboDataService;
-using DbEx.DataService;
+﻿using DbEx.DataService;
+using DbEx.dboData;
+using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
-using HatTrick.DbEx.Sql;
-using System.Data.Common;
+using HatTrick.DbEx.Sql.Connection;
+using System;
+using System.Data;
 using System.Threading.Tasks;
 using Xunit;
-using DbEx.dboData;
-using Moq;
-using HatTrick.DbEx.Sql.Connection;
-using System.Data;
-using System;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 {
@@ -60,7 +57,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public void Does_execute_value_with_connection_override_have_correct_connection_on_execution(int version)
         {
             //given
-            IDbConnection usedConnection = null;
+            IDbConnection? usedConnection = null;
             var config = ConfigureForMsSqlVersion(version,
                 c => c.Events.OnBeforeSqlStatementExecution(e => usedConnection = e.DbCommand.Connection)
             );
@@ -73,7 +70,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             exp.Execute(conn);
 
             //then
-            usedConnection.Should().Equals(conn);
+            usedConnection.Should().Be(conn.DbConnection);
         }
 
         [Theory]
@@ -100,7 +97,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public void Does_execute_value_with_connection_and_commandTimeout_override_have_correct_connection_and_commandTimeout_on_execution(int version, int expected = 50)
         {
             //given
-            IDbConnection usedConnection = null;
+            IDbConnection? usedConnection = null;
             var usedCommandTimeout = 0;
             var config = ConfigureForMsSqlVersion(version,
                 c => c.Events.OnAfterSqlStatementExecution(e =>
@@ -115,10 +112,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person);
 
             //when               
-            exp.Execute(expected);
+            exp.Execute(conn, expected);
 
             //then
-            usedConnection.Should().Equals(conn);
+            usedConnection.Should().Be(conn.DbConnection);
             usedCommandTimeout.Should().Be(expected);
         }
 
@@ -148,7 +145,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             var config = ConfigureForMsSqlVersion(version);
             var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
-            object value = default;
+            object? value = default;
 
             var exp = db.SelectOne(dbo.Person.Id, dbo.Person.FirstName)
                 .From(dbo.Person)
@@ -156,7 +153,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //when               
             await exp.ExecuteAsync(o =>
-                { value = o.ReadField().GetValue<int>(); }
+                { value = o.ReadField()!.GetValue<int>(); }
             );
 
             //then
@@ -188,7 +185,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_execute_type_with_commandTimeout_override_succeed(int version, int expected = 1)
+        public void Does_execute_type_with_commandTimeout_override_succeed(int version, int? expected = 1)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -198,11 +195,11 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Where(dbo.Person.Id == expected);
 
             //when               
-            var person = exp.Execute(45);
+            Person? person = exp.Execute(45);
 
             //then
-            int id = person.Id;
-            id.Should().Be(expected);
+            person.Should().NotBeNull();
+            person!.Id.Should().Be(expected);
         }
 
         [Theory]
@@ -210,7 +207,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public void Does_execute_type_with_connection_override_have_correct_connection_on_execution(int version)
         {
             //given
-            IDbConnection usedConnection = null;
+            IDbConnection? usedConnection = null;
             var config = ConfigureForMsSqlVersion(version,
                 c => c.Events.OnBeforeSqlStatementExecution(e => usedConnection = e.DbCommand.Connection)
             );
@@ -223,12 +220,12 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             exp.Execute(conn);
 
             //then
-            usedConnection.Should().Equals(conn);
+            usedConnection.Should().Be(conn.DbConnection);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_execute_type_with_connection_override_succeed(int version, int expected = 1)
+        public void Does_execute_type_with_connection_override_succeed(int version, int? expected = 1)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
@@ -239,11 +236,11 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Where(dbo.Person.Id == expected);
 
             //when               
-            var person = exp.Execute(conn);
+            Person? person = exp.Execute(conn);
 
             //then
-            int id = person.Id;
-            id.Should().Be(expected);
+            person.Should().NotBeNull();
+            person!.Id.Should().Be(expected);
         }
 
         [Theory]
@@ -251,7 +248,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public void Does_execute_type_with_connection_and_commandTimeout_override_have_correct_connection_and_commandTimeout_on_execution(int version, int expected = 50)
         {
             //given
-            IDbConnection usedConnection = null;
+            IDbConnection? usedConnection = null;
             var usedCommandTimeout = 0;
             var config = ConfigureForMsSqlVersion(version,
                 c => c.Events.OnAfterSqlStatementExecution(e =>
@@ -266,16 +263,16 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person);
 
             //when               
-            exp.Execute(expected);
+            exp.Execute(conn, expected);
 
             //then
-            usedConnection.Should().Equals(conn);
+            usedConnection.Should().Be(conn.DbConnection);
             usedCommandTimeout.Should().Be(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_execute_type_with_connection_and_commandTimeout_overrides_succeed(int version, int expected = 1)
+        public void Does_execute_type_with_connection_and_commandTimeout_overrides_succeed(int version, int? expected = 1)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
@@ -286,11 +283,11 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Where(dbo.Person.Id == expected);
 
             //when               
-            var person = exp.Execute(conn, 45);
+            Person? person = exp.Execute(conn, 45);
 
             //then
-            int id = person.Id;
-            id.Should().Be(expected);
+            person.Should().NotBeNull();
+            person!.Id.Should().Be(expected);
         }
 
         [Theory]
@@ -305,7 +302,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person);
 
             //when               
-            exp.Execute(row => id = row.ReadField().GetValue<int>());
+            exp.Execute(row => id = row.ReadField()!.GetValue<int>());
 
             //then
             id.Should().NotBe(0);
@@ -324,7 +321,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person);
 
             //when               
-            exp.Execute(45, row => id = row.ReadField().GetValue<int>());
+            exp.Execute(45, row => id = row.ReadField()!.GetValue<int>());
 
             //then
             id.Should().NotBe(0);
@@ -343,7 +340,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person);
 
             //when               
-            exp.Execute(conn, 45, row => id = row.ReadField().GetValue<int>());
+            exp.Execute(conn, 45, row => id = row.ReadField()!.GetValue<int>());
 
             //then
             id.Should().NotBe(0);
@@ -360,11 +357,11 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person);
 
             //when               
-            var person = exp.Execute((row, person) => person.Id = row.ReadField().GetValue<int>());
+             Person? person = exp.Execute((row, person) => person.Id = row.ReadField()!.GetValue<int>());
 
             //then
             person.Should().NotBeNull();
-            person.Id.Should().NotBe(0);
+            person!.Id.Should().NotBe(0);
         }
 
         [Theory]
@@ -378,11 +375,11 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person);
 
             //when               
-            var person = exp.Execute((row, person) => person.Id = row.ReadField().GetValue<int>());
+             Person? person = exp.Execute((row, person) => person.Id = row.ReadField()!.GetValue<int>());
 
             //then
             person.Should().NotBeNull();
-            person.Id.Should().NotBe(0);
+            person!.Id.Should().NotBe(0);
         }
 
 
@@ -397,11 +394,11 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person);
 
             //when               
-            var person = exp.Execute((row, person) => person.Id = row.ReadField().GetValue<int>());
+             Person? person = exp.Execute((row, person) => person.Id = row.ReadField()!.GetValue<int>());
 
             //then
             person.Should().NotBeNull();
-            person.Id.Should().NotBe(0);
+            person!.Id.Should().NotBe(0);
         }
         #endregion
 
@@ -448,7 +445,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var d = exp.Execute(45);
 
             //then
-            int id = d.Id;
+            int id = d!.Id;
             id.Should().Be(expected);
         }
 
@@ -457,7 +454,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public void Does_execute_dynamic_with_connection_override_have_correct_connection_on_execution(int version)
         {
             //given
-            IDbConnection usedConnection = null;
+            IDbConnection? usedConnection = null;
             var config = ConfigureForMsSqlVersion(version,
                 c => c.Events.OnBeforeSqlStatementExecution(e => usedConnection = e.DbCommand.Connection)
             );
@@ -473,7 +470,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             exp.Execute(conn);
 
             //then
-            usedConnection.Should().Equals(conn);
+            usedConnection.Should().Be(conn.DbConnection);
         }
 
         [Theory]
@@ -495,7 +492,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var d = exp.Execute(conn);
 
             //then
-            int id = d.Id;
+            int id = d!.Id;
             id.Should().Be(expected);
         }
 
@@ -504,7 +501,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public void Does_execute_dynamic_with_connection_and_commandTimeout_override_have_correct_connection_and_commandTimeout_on_execution(int version, int expected = 50)
         {
             //given
-            IDbConnection usedConnection = null;
+            IDbConnection? usedConnection = null;
             var usedCommandTimeout = 0;
             var config = ConfigureForMsSqlVersion(version,
                 c => c.Events.OnAfterSqlStatementExecution(e =>
@@ -522,10 +519,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person);
 
             //when               
-            exp.Execute(expected);
+            exp.Execute(conn, expected);
 
             //then
-            usedConnection.Should().Equals(conn);
+            usedConnection.Should().Be(conn.DbConnection);
             usedCommandTimeout.Should().Be(expected);
         }
 
@@ -548,7 +545,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var d = exp.Execute(conn, 45);
 
             //then
-            int id = d.Id;
+            int id = d!.Id;
             id.Should().Be(expected);
         }
 
@@ -567,7 +564,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //when               
             var id = 0;
-            var @returned = exp.Execute(row => { var i = row.ReadField().GetValue<int>(); id = i; return i; });
+            var @returned = exp.Execute(row => { var i = row.ReadField()!.GetValue<int>(); id = i; return i; });
 
             //then
             id.Should().Be(@returned);
@@ -591,7 +588,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //when               
             var id = 0;
-            var @returned = exp.Execute(expectedCommandTimeout, row => { var i = row.ReadField().GetValue<int>(); id = i; return i; });
+            var @returned = exp.Execute(expectedCommandTimeout, row => { var i = row.ReadField()!.GetValue<int>(); id = i; return i; });
 
             //then
             usedCommandTimeout.Should().Be(expectedCommandTimeout);
@@ -603,7 +600,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public void Does_execute_dynamic_with_connection_and_map_overrides_have_correct_connection_on_execution(int version)
         {
             //given
-            IDbConnection usedConnection = null;
+            IDbConnection? usedConnection = null;
             var usedCommandTimeout = 0;
             var config = ConfigureForMsSqlVersion(version,
                 c => c.Events.OnBeforeSqlStatementExecution(e =>
@@ -621,10 +618,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person);
 
             //when               
-            exp.Execute(conn, row => row.ReadField().GetValue<int>());
+            exp.Execute(conn, row => row.ReadField()!.GetValue<int>());
 
             //then
-            usedConnection.Should().Equals(conn);
+            usedConnection.Should().Be(conn.DbConnection);
         }
 
         [Theory]
@@ -643,7 +640,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //when               
             var id = 0;
-            var @returned = exp.Execute(45, row => { var i = row.ReadField().GetValue<int>(); id = i; return i; });
+            var @returned = exp.Execute(45, row => { var i = row.ReadField()!.GetValue<int>(); id = i; return i; });
 
             //then
             id.Should().Be(@returned);
@@ -654,7 +651,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public void Does_execute_dynamic_with_connection_and_commandTimeout_and_map_overrides_have_correct_connection_and_commandTimeout_on_execution(int version, int expected = 45)
         {
             //given
-            IDbConnection usedConnection = null;
+            IDbConnection? usedConnection = null;
             var usedCommandTimeout = 0;
             var config = ConfigureForMsSqlVersion(version,
                 c => c.Events.OnAfterSqlStatementExecution(e =>
@@ -672,10 +669,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person);
 
             //when               
-            exp.Execute(conn, expected, row => row.ReadField().GetValue<int>());
+            exp.Execute(conn, expected, row => row.ReadField()!.GetValue<int>());
 
             //then
-            usedConnection.Should().Equals(conn);
+            usedConnection.Should().Be(conn.DbConnection);
             usedCommandTimeout.Should().Be(expected);
         }
 
@@ -695,7 +692,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //when               
             var id = 0;
-            var @returned = exp.Execute(conn, 45, row => { var i = row.ReadField().GetValue<int>(); id = i; return i; });
+            var @returned = exp.Execute(conn, 45, row => { var i = row.ReadField()!.GetValue<int>(); id = i; return i; });
 
             //then
             id.Should().Be(@returned);
@@ -746,7 +743,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public async Task Does_execute_async_value_with_connection_override_have_correct_connection_on_execution(int version)
         {
             //given
-            IDbConnection usedConnection = null;
+            IDbConnection? usedConnection = null;
             var config = ConfigureForMsSqlVersion(version,
                 c => c.Events.OnBeforeSqlStatementExecution(e => usedConnection = e.DbCommand.Connection)
             );
@@ -759,7 +756,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             await exp.ExecuteAsync(conn);
 
             //then
-            usedConnection.Should().Equals(conn);
+            usedConnection.Should().Be(conn.DbConnection);
         }
 
         [Theory]
@@ -786,7 +783,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public async Task Does_execute_async_value_with_connection_and_commandTimeout_overrides_have_correct_connection_and_commandTimeout_on_execution(int version, int expected = 50)
         {
             //given
-            IDbConnection usedConnection = null;
+            IDbConnection? usedConnection = null;
             var usedCommandTimeout = 0;
             var config = ConfigureForMsSqlVersion(version,
                 c => c.Events.OnAfterSqlStatementExecution(e =>
@@ -801,10 +798,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person);
 
             //when               
-            await exp.ExecuteAsync(expected);
+            await exp.ExecuteAsync(conn, expected);
 
             //then
-            usedConnection.Should().Equals(conn);
+            usedConnection.Should().Be(conn.DbConnection);
             usedCommandTimeout.Should().Be(expected);
         }
 
@@ -861,11 +858,11 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Where(dbo.Person.Id == expected);
 
             //when               
-            var person = await exp.ExecuteAsync(45);
+             Person? person = await exp.ExecuteAsync(45);
 
             //then
-            int id = person.Id;
-            id.Should().Be(expected);
+            person.Should().NotBeNull();
+            person!.Id.Should().Be(expected);
         }
 
         [Theory]
@@ -873,7 +870,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public async Task Does_execute_async_type_with_connection_override_have_correct_connection_on_execution(int version)
         {
             //given
-            IDbConnection usedConnection = null;
+            IDbConnection? usedConnection = null;
             var config = ConfigureForMsSqlVersion(version,
                 c => c.Events.OnBeforeSqlStatementExecution(e => usedConnection = e.DbCommand.Connection)
             );
@@ -886,7 +883,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             await exp.ExecuteAsync(conn);
 
             //then
-            usedConnection.Should().Equals(conn);
+            usedConnection.Should().Be(conn.DbConnection);
         }
 
         [Theory]
@@ -902,11 +899,11 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Where(dbo.Person.Id == expected);
 
             //when               
-            var person = await exp.ExecuteAsync(conn);
+             Person? person = await exp.ExecuteAsync(conn);
 
             //then
-            int id = person.Id;
-            id.Should().Be(expected);
+            person.Should().NotBeNull();
+            person!.Id.Should().Be(expected);
         }
 
         [Theory]
@@ -914,7 +911,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public async Task Does_execute_async_type_with_connection_and_commandTimeout_overrides_have_correct_connection_and_commandTimeout_on_execution(int version, int expected = 50)
         {
             //given
-            IDbConnection usedConnection = null;
+            IDbConnection? usedConnection = null;
             var usedCommandTimeout = 0;
             var config = ConfigureForMsSqlVersion(version,
                 c => c.Events.OnAfterSqlStatementExecution(e =>
@@ -929,10 +926,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person);
 
             //when               
-            await exp.ExecuteAsync(expected);
+            await exp.ExecuteAsync(conn, expected);
 
             //then
-            usedConnection.Should().Equals(conn);
+            usedConnection.Should().Be(conn.DbConnection);
             usedCommandTimeout.Should().Be(expected);
         }
 
@@ -949,11 +946,11 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Where(dbo.Person.Id == expected);
 
             //when               
-            var person = await exp.ExecuteAsync(conn, 45);
+            Person? person = await exp.ExecuteAsync(conn, 45);
 
             //then
-            int id = person.Id;
-            id.Should().Be(expected);
+            person.Should().NotBeNull();
+            person!.Id.Should().Be(expected);
         }
 
         [Theory]
@@ -968,7 +965,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person);
 
             //when               
-            await exp.ExecuteAsync(row => id = row.ReadField().GetValue<int>());
+            await exp.ExecuteAsync(row => id = row.ReadField()!.GetValue<int>());
 
             //then
             id.Should().NotBe(0);
@@ -987,7 +984,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person);
 
             //when               
-            await exp.ExecuteAsync(45, row => id = row.ReadField().GetValue<int>());
+            await exp.ExecuteAsync(45, row => id = row.ReadField()!.GetValue<int>());
 
             //then
             id.Should().NotBe(0);
@@ -1006,7 +1003,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person);
 
             //when               
-            await exp.ExecuteAsync(conn, row => id = row.ReadField().GetValue<int>());
+            await exp.ExecuteAsync(conn, row => id = row.ReadField()!.GetValue<int>());
 
             //then
             id.Should().NotBe(0);
@@ -1025,7 +1022,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person);
 
             //when               
-            await exp.ExecuteAsync(conn, 45, row => id = row.ReadField().GetValue<int>());
+            await exp.ExecuteAsync(conn, 45, row => id = row.ReadField()!.GetValue<int>());
 
             //then
             id.Should().NotBe(0);
@@ -1042,11 +1039,11 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person);
 
             //when               
-            var person = await exp.ExecuteAsync((row, person) => person.Id = row.ReadField().GetValue<int>());
+             Person? person = await exp.ExecuteAsync((row, person) => person.Id = row.ReadField()!.GetValue<int>());
 
             //then
             person.Should().NotBeNull();
-            person.Id.Should().NotBe(0);
+            person!.Id.Should().NotBe(0);
         }
 
         [Theory]
@@ -1060,11 +1057,11 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person);
 
             //when               
-            var person = await exp.ExecuteAsync(45, (row, person) => person.Id = row.ReadField().GetValue<int>());
+             Person? person = await exp.ExecuteAsync(45, (row, person) => person.Id = row.ReadField()!.GetValue<int>());
 
             //then
             person.Should().NotBeNull();
-            person.Id.Should().NotBe(0);
+            person!.Id.Should().NotBe(0);
         }
 
         [Theory]
@@ -1079,11 +1076,11 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person);
 
             //when               
-            var person = await exp.ExecuteAsync(conn, (row, person) => person.Id = row.ReadField().GetValue<int>());
+             Person? person = await exp.ExecuteAsync(conn, (row, person) => person.Id = row.ReadField()!.GetValue<int>());
 
             //then
             person.Should().NotBeNull();
-            person.Id.Should().NotBe(0);
+            person!.Id.Should().NotBe(0);
         }
 
         [Theory]
@@ -1098,11 +1095,11 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person);
 
             //when               
-            var person = await exp.ExecuteAsync(conn, 45, (row, person) => person.Id = row.ReadField().GetValue<int>());
+             Person? person = await exp.ExecuteAsync(conn, 45, (row, person) => person.Id = row.ReadField()!.GetValue<int>());
 
             //then
             person.Should().NotBeNull();
-            person.Id.Should().NotBe(0);
+            person!.Id.Should().NotBe(0);
         }
 
         [Theory]
@@ -1116,17 +1113,17 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person);
 
             //when               
-            var person = await exp.ExecuteAsync(row =>
+             Person? person = await exp.ExecuteAsync(row =>
                 {
-                    var person = new Person();
-                    person.Id = row.ReadField().GetValue<int>();
+                     Person? person = new Person();
+                    person.Id = row.ReadField()!.GetValue<int>();
                     return person;
                 }
             );
 
             //then
             person.Should().NotBeNull();
-            person.Id.Should().NotBe(0);
+            person!.Id.Should().NotBe(0);
         }
 
         [Theory]
@@ -1140,17 +1137,17 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person);
 
             //when               
-            var person = await exp.ExecuteAsync(45, row =>
+             Person? person = await exp.ExecuteAsync(45, row =>
                 {
-                    var person = new Person();
-                    person.Id = row.ReadField().GetValue<int>();
+                     Person? person = new Person();
+                    person.Id = row.ReadField()!.GetValue<int>();
                     return person;
                 }
             );
 
             //then
             person.Should().NotBeNull();
-            person.Id.Should().NotBe(0);
+            person!.Id.Should().NotBe(0);
         }
 
         [Theory]
@@ -1165,17 +1162,17 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person);
 
             //when               
-            var person = await exp.ExecuteAsync(conn, row =>
+             Person? person = await exp.ExecuteAsync(conn, row =>
                 {
-                    var person = new Person();
-                    person.Id = row.ReadField().GetValue<int>();
+                     Person? person = new Person();
+                    person.Id = row.ReadField()!.GetValue<int>();
                     return person;
                 }
             );
 
             //then
             person.Should().NotBeNull();
-            person.Id.Should().NotBe(0);
+            person!.Id.Should().NotBe(0);
         }
 
         [Theory]
@@ -1190,17 +1187,17 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person);
 
             //when               
-            var person = await exp.ExecuteAsync(conn, 45, row =>
+             Person? person = await exp.ExecuteAsync(conn, 45, row =>
                 {
-                    var person = new Person();
-                    person.Id = row.ReadField().GetValue<int>();
+                     Person? person = new Person();
+                    person.Id = row.ReadField()!.GetValue<int>();
                     return person;
                 }
             );
 
             //then
             person.Should().NotBeNull();
-            person.Id.Should().NotBe(0);
+            person!.Id.Should().NotBe(0);
         }
 
         [Theory]
@@ -1209,7 +1206,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            Person person = default;
+            Person? person = default;
 
             var exp = db.SelectOne<Person>()
                 .From(dbo.Person);
@@ -1218,14 +1215,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             await exp.ExecuteAsync(async row =>
                 {
                     person = new Person();
-                    person.Id = row.ReadField().GetValue<int>();
+                    person.Id = row.ReadField()!.GetValue<int>();
                     await Task.Delay(TimeSpan.Zero);
                 }
             );
 
             //then
             person.Should().NotBeNull();
-            person.Id.Should().NotBe(0);
+            person!.Id.Should().NotBe(0);
         }
 
         [Theory]
@@ -1234,7 +1231,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            Person person = default;
+            Person? person = default;
 
             var exp = db.SelectOne<Person>()
                 .From(dbo.Person);
@@ -1243,14 +1240,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             await exp.ExecuteAsync(45, async row =>
                 {
                     person = new Person();
-                    person.Id = row.ReadField().GetValue<int>();
+                    person.Id = row.ReadField()!.GetValue<int>();
                     await Task.Delay(TimeSpan.Zero);
                 }
             );
 
             //then
             person.Should().NotBeNull();
-            person.Id.Should().NotBe(0);
+            person!.Id.Should().NotBe(0);
         }
 
         [Theory]
@@ -1260,7 +1257,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             var config = ConfigureForMsSqlVersion(version);
             var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
-            Person person = default;
+            Person? person = default;
 
             var exp = db.SelectOne<Person>()
                 .From(dbo.Person);
@@ -1269,14 +1266,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             await exp.ExecuteAsync(conn, async row =>
                 {
                     person = new Person();
-                    person.Id = row.ReadField().GetValue<int>();
+                    person.Id = row.ReadField()!.GetValue<int>();
                     await Task.Delay(TimeSpan.Zero);
                 }
             );
 
             //then
             person.Should().NotBeNull();
-            person.Id.Should().NotBe(0);
+            person!.Id.Should().NotBe(0);
         }
 
         [Theory]
@@ -1286,7 +1283,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             var config = ConfigureForMsSqlVersion(version);
             var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
-            Person person = default;
+            Person? person = default;
 
             var exp = db.SelectOne<Person>()
                 .From(dbo.Person);
@@ -1295,14 +1292,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             await exp.ExecuteAsync(conn, 45, async row =>
                 {
                     person = new Person();
-                    person.Id = row.ReadField().GetValue<int>();
+                    person.Id = row.ReadField()!.GetValue<int>();
                     await Task.Delay(TimeSpan.Zero);
                 }
             );
 
             //then
             person.Should().NotBeNull();
-            person.Id.Should().NotBe(0);
+            person!.Id.Should().NotBe(0);
         }
 
         [Theory]
@@ -1316,16 +1313,16 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person);
 
             //when               
-            var person = await exp.ExecuteAsync(async (row, person) =>
+             Person? person = await exp.ExecuteAsync(async (row, person) =>
                 {
-                    person.Id = row.ReadField().GetValue<int>();
+                    person.Id = row.ReadField()!.GetValue<int>();
                     await Task.Delay(TimeSpan.Zero);
                 }
             );
 
             //then
             person.Should().NotBeNull();
-            person.Id.Should().NotBe(0);
+            person!.Id.Should().NotBe(0);
         }
 
         [Theory]
@@ -1339,16 +1336,16 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person);
 
             //when               
-            var person = await exp.ExecuteAsync(45, async (row, person) =>
+             Person? person = await exp.ExecuteAsync(45, async (row, person) =>
                 {
-                    person.Id = row.ReadField().GetValue<int>();
+                    person.Id = row.ReadField()!.GetValue<int>();
                     await Task.Delay(TimeSpan.Zero);
                 }
             );
 
             //then
             person.Should().NotBeNull();
-            person.Id.Should().NotBe(0);
+            person!.Id.Should().NotBe(0);
         }
 
         [Theory]
@@ -1363,16 +1360,16 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person);
 
             //when               
-            var person = await exp.ExecuteAsync(conn, async (row, person) =>
+             Person? person = await exp.ExecuteAsync(conn, async (row, person) =>
                 {
-                    person.Id = row.ReadField().GetValue<int>();
+                    person.Id = row.ReadField()!.GetValue<int>();
                     await Task.Delay(TimeSpan.Zero);
                 }
             );
 
             //then
             person.Should().NotBeNull();
-            person.Id.Should().NotBe(0);
+            person!.Id.Should().NotBe(0);
         }
 
         [Theory]
@@ -1387,16 +1384,16 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person);
 
             //when               
-            var person = await exp.ExecuteAsync(conn, 45, async (row, person) =>
+             Person? person = await exp.ExecuteAsync(conn, 45, async (row, person) =>
                 {
-                    person.Id = row.ReadField().GetValue<int>();
+                    person.Id = row.ReadField()!.GetValue<int>();
                     await Task.Delay(TimeSpan.Zero);
                 }
             );
 
             //then
             person.Should().NotBeNull();
-            person.Id.Should().NotBe(0);
+            person!.Id.Should().NotBe(0);
         }
         #endregion
 
@@ -1440,7 +1437,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Where(dbo.Person.Id == expected);
 
             //when               
-            dynamic d = await exp.ExecuteAsync(45);
+            dynamic d = (await exp.ExecuteAsync(45))!;
 
             //then
             int id = d.Id;
@@ -1452,7 +1449,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public async Task Does_execute_async_dynamic_with_connection_override_have_correct_connection_on_execution(int version)
         {
             //given
-            IDbConnection usedConnection = null;
+            IDbConnection? usedConnection = null;
             var config = ConfigureForMsSqlVersion(version,
                 c => c.Events.OnBeforeSqlStatementExecution(e => usedConnection = e.DbCommand.Connection)
             );
@@ -1468,7 +1465,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             await exp.ExecuteAsync(conn);
 
             //then
-            usedConnection.Should().Equals(conn);
+            usedConnection.Should().Be(conn.DbConnection);
         }
 
         [Theory]
@@ -1490,7 +1487,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var d = await exp.ExecuteAsync(conn);
 
             //then
-            int id = d.Id;
+            int id = d!.Id;
             id.Should().Be(expected);
         }
 
@@ -1513,7 +1510,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var d = await exp.ExecuteAsync(conn, 45);
 
             //then
-            int id = d.Id;
+            int id = d!.Id;
             id.Should().Be(expected);
         }
 
@@ -1532,7 +1529,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //when               
             var id = 0;
-            var @returned = await exp.ExecuteAsync(row => { var i = row.ReadField().GetValue<int>(); id = i; return i; });
+            var @returned = await exp.ExecuteAsync(row => { var i = row.ReadField()!.GetValue<int>(); id = i; return i; });
 
             //then
             id.Should().Be(@returned);
@@ -1556,7 +1553,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //when               
             var id = 0;
-            var @returned = await exp.ExecuteAsync(expectedCommandTimeout, row => { var i = row.ReadField().GetValue<int>(); id = i; return i; });
+            var @returned = await exp.ExecuteAsync(expectedCommandTimeout, row => { var i = row.ReadField()!.GetValue<int>(); id = i; return i; });
 
             //then
             usedCommandTimeout.Should().Be(expectedCommandTimeout);
@@ -1578,7 +1575,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //when               
             var id = 0;
-            var @returned = await exp.ExecuteAsync(row => { var i = row.ReadField().GetValue<int>(); id = i; return i; });
+            var @returned = await exp.ExecuteAsync(row => { var i = row.ReadField()!.GetValue<int>(); id = i; return i; });
 
             //then
             id.Should().Be(@returned);
@@ -1600,7 +1597,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //when               
             var id = 0;
-            var @returned = await exp.ExecuteAsync(conn, row => { var i = row.ReadField().GetValue<int>(); id = i; return i; });
+            var @returned = await exp.ExecuteAsync(conn, row => { var i = row.ReadField()!.GetValue<int>(); id = i; return i; });
 
             //then
             id.Should().Be(@returned);
@@ -1611,7 +1608,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public async Task Does_execute_async_dynamic_with_connection_and_commandTimeout_and_map_overrides_have_correct_connection_and_commandTimeout_on_execution(int version, int expected = 45)
         {
             //given
-            IDbConnection usedConnection = null;
+            IDbConnection? usedConnection = null;
             var usedCommandTimeout = 0;
             var config = ConfigureForMsSqlVersion(version,
                 c => c.Events.OnAfterSqlStatementExecution(e =>
@@ -1629,10 +1626,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person);
 
             //when               
-            await exp.ExecuteAsync(conn, expected, row => row.ReadField().GetValue<int>());
+            await exp.ExecuteAsync(conn, expected, row => row.ReadField()!.GetValue<int>());
 
             //then
-            usedConnection.Should().Equals(conn);
+            usedConnection.Should().Be(conn.DbConnection);
             usedCommandTimeout.Should().Be(expected);
         }
 
@@ -1649,7 +1646,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //when               
             var id = 0;
-            var @returned = await exp.ExecuteAsync(conn, 45, row => { var i = row.ReadField().GetValue<int>(); id = i; return i; });
+            var @returned = await exp.ExecuteAsync(conn, 45, row => { var i = row.ReadField()!.GetValue<int>(); id = i; return i; });
 
             //then
             id.Should().Be(@returned);

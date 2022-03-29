@@ -23,6 +23,6 @@ namespace HatTrick.DbEx.Sql.Executor
 {
     public interface IValueConverterProvider
     {
-        IValueConverter FindConverter(int fieldIndex, Type requestedType, object value);
+        IValueConverter? FindConverter(int fieldIndex, Type requestedType, object value);
     }
 }

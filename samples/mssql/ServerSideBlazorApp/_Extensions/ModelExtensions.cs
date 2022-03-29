@@ -27,6 +27,9 @@ namespace ServerSideBlazorApp
         {
             var serialized = JsonSerializer.Serialize(model);
             var keysAndValues = JsonSerializer.Deserialize<Dictionary<string, string>>(serialized);
+            if (keysAndValues is null)
+                return $"returnUrl={HttpUtility.UrlEncode($"{path}")}";
+
             var queryString = keysAndValues.Aggregate(string.Empty, (acc, kvp) => $"{acc}{kvp.Key}:{kvp.Value}&");
 
             return $"returnUrl={HttpUtility.UrlEncode($"{path}?{queryString}")}";

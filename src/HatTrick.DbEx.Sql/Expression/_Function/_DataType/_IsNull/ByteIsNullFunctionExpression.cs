@@ -32,17 +32,12 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public AnyElement<byte> As(string alias)
-            => new SelectExpression<byte>(this).As(alias);
-        #endregion
-
         #region equals
-        public bool Equals(ByteIsNullFunctionExpression obj)
-            => obj is ByteIsNullFunctionExpression && base.Equals(obj);
+        public bool Equals(ByteIsNullFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is ByteIsNullFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is ByteIsNullFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

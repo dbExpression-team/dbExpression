@@ -23,11 +23,11 @@ namespace HatTrick.DbEx.Sql.Configuration
     public class SqlDatabaseMetadataProviderConfigurationBuilder : ISqlDatabaseMetadataProviderConfigurationBuilder
     {
         #region internals
-        private readonly RuntimeSqlDatabaseConfiguration configuration;
+        private readonly SqlDatabaseRuntimeConfiguration configuration;
         #endregion
 
         #region constructors
-        public SqlDatabaseMetadataProviderConfigurationBuilder(RuntimeSqlDatabaseConfiguration configuration)
+        public SqlDatabaseMetadataProviderConfigurationBuilder(SqlDatabaseRuntimeConfiguration configuration)
         {
             this.configuration = configuration;
         }
@@ -39,14 +39,14 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         public void Use<TSqlDatabaseMetadataProvider>()
             where TSqlDatabaseMetadataProvider : class, ISqlDatabaseMetadataProvider, new()
-            => Use<TSqlDatabaseMetadataProvider>(null);
+            => Use<TSqlDatabaseMetadataProvider>(_ => { });
 
         public void Use<TSqlDatabaseMetadataProvider>(Action<TSqlDatabaseMetadataProvider> configureProvider)
             where TSqlDatabaseMetadataProvider : class, ISqlDatabaseMetadataProvider, new()
         {
-            if (!(configuration.MetadataProvider is TSqlDatabaseMetadataProvider))
+            if (configuration.MetadataProvider is not TSqlDatabaseMetadataProvider)
                 configuration.MetadataProvider = new TSqlDatabaseMetadataProvider();
-            configureProvider?.Invoke(configuration.MetadataProvider as TSqlDatabaseMetadataProvider);
+            configureProvider?.Invoke((configuration.MetadataProvider as TSqlDatabaseMetadataProvider)!);
         }
         #endregion
     }

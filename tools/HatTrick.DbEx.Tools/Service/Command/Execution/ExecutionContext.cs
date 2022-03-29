@@ -28,18 +28,18 @@ namespace HatTrick.DbEx.Tools.Service
     public abstract class ExecutionContext
     {
         #region internals
-        private string _command;
-        private string _options;
-        private Stopwatch _stopWatch;
-        private readonly string _tab = new string(' ', 2);
+        private readonly string _command;
+        private readonly string? _options;
+        private readonly Stopwatch _stopWatch = new();
+        private readonly string _tab = new(' ', 2);
         #endregion
 
         #region interface
         public string Command => _command;
 
-        public Dictionary<string, string> Options { get; private set; }
+        public Dictionary<string, string> Options { get; private set; } = new();
 
-        public string WorkingDirectory 
+        public string WorkingDirectory
         { 
             get { return Directory.GetCurrentDirectory(); }
             set { Directory.SetCurrentDirectory(value); }
@@ -53,7 +53,7 @@ namespace HatTrick.DbEx.Tools.Service
         {
         }
 
-        public ExecutionContext(string command, string options)
+        public ExecutionContext(string command, string? options)
         {
             _command = command;
             _options = options;
@@ -63,7 +63,6 @@ namespace HatTrick.DbEx.Tools.Service
         #region execute
         public virtual void Execute()
         {
-            _stopWatch = new Stopwatch();
             _stopWatch.Start();
         }
 		#endregion
@@ -71,10 +70,10 @@ namespace HatTrick.DbEx.Tools.Service
 		#region ensure options
 		protected void EnsureOptions(params string[] validOptions)
         {
-            if (_options is object)
+            if (_options is not null)
             {
-                List<string> options = new List<string>();
-                Tokenizer tokenizer = new Tokenizer(new char[] { ' ' });
+                List<string> options = new();
+                Tokenizer tokenizer = new(new char[] { ' ' });
                 tokenizer.Emit += (t) =>
                 {
                     options.Add(t);
@@ -84,8 +83,8 @@ namespace HatTrick.DbEx.Tools.Service
                 if (options.Count > 0)
                 {
                     this.Options = new Dictionary<string, string>();
-                    string key = null;
-                    string value = null;
+                    string? key = null;
+                    string? value = null;
 
                     for (int i = 0; i < options.Count; i++)
                     {
@@ -110,17 +109,17 @@ namespace HatTrick.DbEx.Tools.Service
         #region requested help
         public bool HelpOptionExists()
         {
-            return this.TryGetOption(out string v, out string ku, "--help", "-?");
+            return this.TryGetOption(out string? _, out string? _, "--help", "-?");
         }
         #endregion
 
         #region try get option 
-        public bool TryGetOption(out string value, out string keyUsed, params string[] key)
+        public bool TryGetOption(out string? value, out string? keyUsed, params string[] key)
         {
             value = null;
             keyUsed = null;
             bool found = false;
-            if (this.Options is object)
+            if (this.Options is not null)
             {
                 for (int i = 0; i < key.Length; i++)
                 {
@@ -140,7 +139,7 @@ namespace HatTrick.DbEx.Tools.Service
         protected void PushProgressFeedback(string progressMessage)
         {
             int milliseconds = (int)_stopWatch.ElapsedMilliseconds;
-            svc.Feedback.Push(To.Info, $"@ {milliseconds.ToString("000")} ms\t-->\t{progressMessage}");
+            svc.Feedback.Push(To.Info, $"@ {milliseconds:000} ms\t-->\t{progressMessage}");
         }
         #endregion
 

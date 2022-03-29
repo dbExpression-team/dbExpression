@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
                 db.SelectOne(dbo.Person.FirstName.As(alias))
                     .From(dbo.Person);
 
-            SelectQueryExpression queryExpression = (exp as IQueryExpressionProvider).Expression as SelectQueryExpression;
+            SelectQueryExpression queryExpression = ((exp as IQueryExpressionProvider)!.Expression as SelectQueryExpression)!;
             ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, queryExpression);
             var context = new AssemblyContext(new SqlStatementAssemblerConfiguration());
             context.PushFieldAppendStyle(FieldExpressionAppendStyle.Declaration);
@@ -49,7 +49,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
                 db.SelectOne((dbo.Person.FirstName + " " + dbo.Person.LastName).As(alias))
                     .From(dbo.Person);
 
-            SelectQueryExpression queryExpression = (exp as IQueryExpressionProvider).Expression as SelectQueryExpression;
+            SelectQueryExpression queryExpression = ((exp as IQueryExpressionProvider)!.Expression as SelectQueryExpression)!;
             ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, queryExpression);
             var context = new AssemblyContext(new SqlStatementAssemblerConfiguration());
             context.PushFieldAppendStyle(FieldExpressionAppendStyle.Declaration);
@@ -76,13 +76,13 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
                     .From(table)
                     .GroupBy(table.FirstName);
 
-            SelectQueryExpression queryExpression = (exp as IQueryExpressionProvider).Expression as SelectQueryExpression;
-            ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, queryExpression);
+            SelectQueryExpression queryExpression = ((exp as IQueryExpressionProvider)!.Expression as SelectQueryExpression)!;
+            ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, queryExpression)!;
             var context = new AssemblyContext(new SqlStatementAssemblerConfiguration());
             context.PushFieldAppendStyle(FieldExpressionAppendStyle.Declaration);
 
             //when
-            builder.AppendElement(queryExpression.GroupBy, context);
+            builder.AppendElement(queryExpression.GroupBy!, context);
             var groupBy = builder.Appender.ToString();
 
             //then

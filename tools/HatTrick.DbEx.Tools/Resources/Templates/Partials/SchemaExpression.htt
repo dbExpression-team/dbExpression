@@ -8,7 +8,7 @@
         #endregion
 
         #region constructors
-        public {$.SchemaExpression.Name}SchemaExpression(string identifier) : base(identifier, null)
+        public {$.SchemaExpression.Name}SchemaExpression(string identifier) : base(identifier)
         {{
             {#each $.Entities}
             Entities.Add($"{{identifier}}.{$.Entity.Name}", {$.EntityExpression.Name} = new {$.EntityExpression.Name}Entity($"{{identifier}}.{$.Entity.Name}", "{$.Entity.Name}", this));

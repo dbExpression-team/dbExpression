@@ -28,18 +28,18 @@ namespace HatTrick.DbEx.Sql.Connection
     {
         #region i sql connection
         private bool disposed;
-        protected IDbConnection _dbConnection;
+        protected IDbConnection? _dbConnection;
         protected IConnectionStringFactory _connectionStringFactory;
         protected ISqlConnectionFactory _connectionFactory;
 
-        public IDbTransaction DbTransaction { get; private set; }
+        public IDbTransaction? DbTransaction { get; private set; }
 
         public IDbConnection DbConnection
         {
             get
             {
                 EnsureConnection();
-                return _dbConnection;
+                return _dbConnection!;
             }
             protected set
             {
@@ -47,7 +47,7 @@ namespace HatTrick.DbEx.Sql.Connection
             }
         }
 
-        public bool IsTransactional => DbTransaction is object;
+        public bool IsTransactional => DbTransaction is not null;
 
         public SqlConnector(IConnectionStringFactory connectionStringFactory, ISqlConnectionFactory connectionFactory)
         {
@@ -64,7 +64,7 @@ namespace HatTrick.DbEx.Sql.Connection
         public void EnsureOpen()
         {
             EnsureConnection();
-            if (_dbConnection.State != ConnectionState.Open)
+            if (_dbConnection!.State != ConnectionState.Open)
                 _dbConnection.Open();
         }
 
@@ -77,8 +77,13 @@ namespace HatTrick.DbEx.Sql.Connection
         {
             ct.ThrowIfCancellationRequested();
             EnsureConnection();
-            if (_dbConnection.State != ConnectionState.Open)
-                await (_dbConnection as DbConnection).OpenAsync(ct);
+            if (_dbConnection!.State != ConnectionState.Open)
+            {
+                if (_dbConnection is DbConnection concrete)
+                    await concrete.OpenAsync(ct);
+                else
+                    _dbConnection.Open();
+            }
         }
 
         public void CommitTransaction()
@@ -99,7 +104,7 @@ namespace HatTrick.DbEx.Sql.Connection
 
         public void RollbackTransaction()
         {
-            if (DbTransaction is object) //should allow multi rollback calls without error.
+            if (DbTransaction is not null) //should allow multi rollback calls without error.
             {
                 try
                 {
@@ -120,9 +125,12 @@ namespace HatTrick.DbEx.Sql.Connection
             get
             {
                 EnsureConnection();
-                return _dbConnection.ConnectionString;
+                return _dbConnection!.ConnectionString;
             }
-            set { throw new NotSupportedException("Overwriting connection string is not suppoted."); }
+#pragma warning disable CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
+            // System.Data.IDbConnection is a "string", not a "string?", cannot eliminate warnings.
+            set => throw new NotSupportedException("Overwriting connection string is not supported.");
+#pragma warning restore CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
         }
 
         public int ConnectionTimeout
@@ -130,7 +138,7 @@ namespace HatTrick.DbEx.Sql.Connection
             get
             {
                 EnsureConnection();
-                return _dbConnection.ConnectionTimeout;
+                return _dbConnection!.ConnectionTimeout;
             }
         }
 
@@ -139,7 +147,7 @@ namespace HatTrick.DbEx.Sql.Connection
             get
             {
                 EnsureConnection();
-                return _dbConnection.Database;
+                return _dbConnection!.Database;
             }
         }
 
@@ -148,7 +156,7 @@ namespace HatTrick.DbEx.Sql.Connection
             get
             {
                 EnsureConnection();
-                return _dbConnection.State;
+                return _dbConnection!.State;
             }
         }
 
@@ -179,31 +187,31 @@ namespace HatTrick.DbEx.Sql.Connection
         public void ChangeDatabase(string databaseName)
         {
             EnsureConnection();
-            _dbConnection.ChangeDatabase(databaseName);
+            _dbConnection!.ChangeDatabase(databaseName);
         }
 
         public void Close()
         {
-            if (DbTransaction is object)
+            if (DbTransaction is not null)
             { 
                 DbTransaction.Dispose();
                 DbTransaction = null; //ensure null, it drives the IsTransactional property
             }
 
-            if (_dbConnection is object && _dbConnection.State != ConnectionState.Closed)
+            if (_dbConnection is not null && _dbConnection.State != ConnectionState.Closed)
                 _dbConnection.Close();
         }
 
         public IDbCommand CreateCommand()
         {
             EnsureConnection();
-            return _dbConnection.CreateCommand();
+            return _dbConnection!.CreateCommand();
         }
 
         public void Open()
         {
             EnsureConnection();
-            _dbConnection.Open();
+            _dbConnection!.Open();
         }
         #endregion
 
@@ -214,13 +222,13 @@ namespace HatTrick.DbEx.Sql.Connection
             {
                 if (disposing)
                 {
-                    if (DbTransaction is object)
+                    if (DbTransaction is not null)
                     {
                         DbTransaction.Dispose();
                         DbTransaction = null; //ensure null, it drives the IsTransactional property
                     }
 
-                    if (_dbConnection is object)
+                    if (_dbConnection is not null)
                     {
                         _dbConnection.Dispose();
                         _dbConnection = null;

@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IExpressionListProvider<SelectExpression>
     {
         #region interface
-        public IEnumerable<SelectExpression> Expressions { get; private set; } = new List<SelectExpression>();
+        public IEnumerable<SelectExpression> Expressions { get; private set; } = Enumerable.Empty<SelectExpression>();
         #endregion
 
         #region constructor
@@ -48,7 +48,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public SelectExpressionSet(SelectExpressionSet selectExpressionSet)
         {
-            Expressions = selectExpressionSet?.Expressions;
+            Expressions = selectExpressionSet?.Expressions ?? Enumerable.Empty<SelectExpression>();
         }
 
         public SelectExpressionSet(IEnumerable<SelectExpression> expressions)
@@ -66,30 +66,39 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region to string
-        public override string ToString() => string.Join(", ", Expressions.Select(g => g.ToString()));
+        public override string? ToString() => string.Join(", ", Expressions.Select(g => g.ToString()));
         #endregion
 
         #region logical & operator
-        public static SelectExpressionSet operator &(SelectExpressionSet aSet, SelectExpression b)
+        public static SelectExpressionSet operator &(SelectExpressionSet? a, SelectExpression? b)
         {
-            if (aSet is null)
+            if (a is null && b is null)
+                return new();
+
+            if (a is null)
             {
-                aSet = b;
+                a = b!;
             }
-            else
+            else if (b is not null)
             {
-                aSet.Expressions = aSet.Expressions.Concat(new SelectExpression[1] { b });
+                a.Expressions = a.Expressions.Concat(new SelectExpression[1] { b });
             }
-            return aSet;
+            return a;
         }
 
-        public static SelectExpressionSet operator &(SelectExpressionSet aSet, SelectExpressionSet bSet)
+        public static SelectExpressionSet operator &(SelectExpressionSet? a, SelectExpressionSet? b)
         {
-            if (aSet is null)
-                return bSet;
+            if (a is null && b is null)
+                return new();
 
-            aSet.Expressions = aSet.Expressions.Concat(bSet?.Expressions);
-            return aSet;
+            if (a is null)
+                return b!;
+
+            if (b?.Expressions is null)
+                return a;
+
+            a.Expressions = a.Expressions.Concat(b.Expressions);
+            return a;
         }
         #endregion
     }

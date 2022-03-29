@@ -20,20 +20,24 @@ using System;
 
 namespace HatTrick.DbEx.Sql.Converter
 {
-    public class StringNullableEnumValueConverter : StringEnumValueConverter
+    public class StringNullableEnumValueConverter : IValueConverter
     {
-        public StringNullableEnumValueConverter(Type enumType) : base(Nullable.GetUnderlyingType(enumType))
-        {
+        private readonly Type type;
 
+        public StringNullableEnumValueConverter(Type enumType)
+        {
+            type = enumType ?? throw new ArgumentNullException(nameof(enumType));
+            if (!enumType.IsEnum)
+                throw new ArgumentException($"Expected {nameof(enumType)} to be of type Enum.");
         }
 
-        public override object ConvertFromDatabase(object value)
-            => value is null ? default : base.ConvertFromDatabase(value);
+        public object? ConvertFromDatabase(object? value)
+            => value is null ? default : Enum.Parse(type, (string)Convert.ChangeType(value, typeof(string)));
 
-        public override U ConvertFromDatabase<U>(object value)
-            => value is null ? default : (U)base.ConvertFromDatabase(value);
+        public T? ConvertFromDatabase<T>(object? value)
+            => value is null ? default : (T)Enum.Parse(type, (value as string)!);
 
-        public override (Type Type, object ConvertedValue) ConvertToDatabase(object value)
-            => value is null ? (typeof(string), default) : base.ConvertToDatabase(value);
+        public (Type Type, object? ConvertedValue) ConvertToDatabase(object? value)
+            => (typeof(string), value is null ? default : value.ToString());
     }
 }

@@ -65,7 +65,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Where(dbo.Address.Line2.Like("Box%"));
 
             //when               
-            IList<string> results = exp.Execute();
+            IList<string?> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);
@@ -85,7 +85,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Where((dbo.Address.Line1 + " " + dbo.Address.Line2).Like("US Highway 285 Box%"));
 
             //when               
-            IList<string> results = exp.Execute();
+            IList<string?> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);
@@ -104,7 +104,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Where(dbo.Address.Line2 == DBNull.Value);
 
             //when               
-            IList<string> results = exp.Execute();
+            IList<string?> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);
@@ -123,7 +123,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Where(DBNull.Value == dbo.Address.Line2);
 
             //when               
-            IList<string> results = exp.Execute();
+            IList<string?> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);
@@ -142,7 +142,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Where(dbo.Address.Line2 != DBNull.Value);
 
             //when               
-            IList<string> results = exp.Execute();
+            IList<string?> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);
@@ -161,7 +161,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Where(DBNull.Value != dbo.Address.Line2);
 
             //when               
-            IList<string> results = exp.Execute();
+            IList<string?> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);
@@ -180,7 +180,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Where(DBNull.Value != dbo.Address.Line2);
 
             //when               
-            string result = exp.Execute();
+            string? result = exp.Execute();
 
             //then
             result.Should().NotBeNull();

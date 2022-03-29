@@ -46,7 +46,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             DateTime? result = exp.Execute();
 
             //then
-            result.Value.Year.Should().Be(expected);
+            result!.Value.Year.Should().Be(expected);
         }
     }
 }

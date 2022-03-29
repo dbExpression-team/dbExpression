@@ -41,7 +41,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //then
             var t1 = dbo.Address.As("a");
-            var last_insert = dbex.Alias("last_insert", "identity");
+            var last_insert = dbex.Alias<int>("last_insert", "identity");
             var address = db.SelectOne<Address>()
                 .From(t1)
                 .InnerJoin(
@@ -53,7 +53,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Execute();
 
             address.Should().NotBeNull();
-            address.Line1.Should().Be("123 Main St");
+            address!.Line1.Should().Be("123 Main St");
         }
 
         [Theory]
@@ -106,15 +106,16 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //when               
             exp.Execute();
 
-            Person retrieved = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.Id == person.Id).Execute();
+            Person? retrieved = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.Id == person.Id).Execute();
 
             //then
-            retrieved.Id.Should().BeGreaterThan(0);
-            retrieved.FirstName.Should().Be(expected);
-            retrieved.FirstName.Should().Be(expected);
-            retrieved.GenderType.Should().Be(GenderType.Female);
-            retrieved.CreditLimit.Should().BeNull();
-            retrieved.BirthDate.Should().BeNull();
+            retrieved.Should().NotBeNull();
+            retrieved!.Id.Should().BeGreaterThan(0);
+            retrieved!.FirstName.Should().Be(expected);
+            retrieved!.FirstName.Should().Be(expected);
+            retrieved!.GenderType.Should().Be(GenderType.Female);
+            retrieved!.CreditLimit.Should().BeNull();
+            retrieved!.BirthDate.Should().BeNull();
         }
 
         [Theory]
@@ -139,10 +140,11 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //when               
             exp.Execute();
 
-            Person retrieved = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.Id == person.Id).Execute();
+            Person? retrieved = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.Id == person.Id).Execute();
 
             //then
-            retrieved.LastName.Should().Be(expected);
+            retrieved.Should().NotBeNull();
+            retrieved!.LastName.Should().Be(expected);
         }
 
         [Theory]
@@ -238,11 +240,11 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                         db.fx.Max(dbo.Product.Id).As("identity")
                     )
                     .From(dbo.Product)
-                ).As("last_insert").On(t1.Id == dbex.Alias("last_insert","identity"))
+                ).As("last_insert").On(t1.Id == ("last_insert","identity"))
                 .Execute();
 
             product.Should().NotBeNull();
-            product.ListPrice.Should().Be(expected);
+            product!.ListPrice.Should().Be(expected);
         }
 
         [Theory]
@@ -265,7 +267,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            Action execute = () => db.InsertMany((IEnumerable<Person>)null)
+            Action execute = () => db.InsertMany((IEnumerable<Person>)null!)
                 .Into(dbo.Person)
                 .Execute();
 

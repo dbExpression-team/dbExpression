@@ -34,7 +34,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region methods
-        public T CreateQueryExpression<T>() where T : QueryExpression, new() => factory(typeof(T)) as T;
+        public T CreateQueryExpression<T>() where T : QueryExpression, new() => factory(typeof(T)) as T  ?? throw new DbExpressionException($"Expected the query expression factory to return a query expression of type {typeof (T)}.");
         #endregion          
     }
 }

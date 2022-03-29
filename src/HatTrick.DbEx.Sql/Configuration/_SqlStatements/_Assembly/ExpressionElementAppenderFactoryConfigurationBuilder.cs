@@ -25,11 +25,11 @@ namespace HatTrick.DbEx.Sql.Configuration
     {
         #region internals
         private readonly ISqlStatementAssemblyGroupingConfigurationBuilders caller;
-        private readonly RuntimeSqlDatabaseConfiguration configuration;
+        private readonly SqlDatabaseRuntimeConfiguration configuration;
         #endregion
 
         #region constructors
-        public ExpressionElementAppenderFactoryConfigurationBuilder(ISqlStatementAssemblyGroupingConfigurationBuilders caller, RuntimeSqlDatabaseConfiguration configuration)
+        public ExpressionElementAppenderFactoryConfigurationBuilder(ISqlStatementAssemblyGroupingConfigurationBuilders caller, SqlDatabaseRuntimeConfiguration configuration)
         {
             this.caller = caller ?? throw new ArgumentNullException(nameof(caller));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
@@ -45,14 +45,14 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         public ISqlStatementAssemblyGroupingConfigurationBuilders Use<TExpressionElementAppenderFactory>()
             where TExpressionElementAppenderFactory : class, IExpressionElementAppenderFactory, new()
-            => Use<TExpressionElementAppenderFactory>(null);
+            => Use<TExpressionElementAppenderFactory>(_ => { });
 
         public ISqlStatementAssemblyGroupingConfigurationBuilders Use<TExpressionElementAppenderFactory>(Action<TExpressionElementAppenderFactory> configureFactory)
             where TExpressionElementAppenderFactory : class, IExpressionElementAppenderFactory, new()
         {
-            if (!(configuration.ExpressionElementAppenderFactory is TExpressionElementAppenderFactory))
+            if (configuration.ExpressionElementAppenderFactory is not TExpressionElementAppenderFactory)
                 configuration.ExpressionElementAppenderFactory = new TExpressionElementAppenderFactory();
-            configureFactory?.Invoke(configuration.ExpressionElementAppenderFactory as TExpressionElementAppenderFactory);
+            configureFactory?.Invoke(configuration.ExpressionElementAppenderFactory as TExpressionElementAppenderFactory ?? throw new DbExpressionException($"Expected expression element factory to return type {typeof(TExpressionElementAppenderFactory)}."));
             return caller;
         }
 

@@ -21,7 +21,8 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class OrderByExpression :
-        AnyOrderByClause
+        AnyOrderByClause,
+        IEquatable<OrderByExpression>
     {
         #region interface
         public IExpressionElement Expression { get; private set; }
@@ -37,15 +38,45 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region to string
-        public override string ToString() => $"{Expression} {Direction}";
+        public override string? ToString() => $"{Expression} {Direction}";
+        #endregion
+
+        #region equals
+        public bool Equals(OrderByExpression? obj)
+        {
+            if (obj is null) return false;
+            if (ReferenceEquals(this, obj)) return true;
+
+            if (!Expression.Equals(obj.Expression)) return false;
+            if (Direction != obj.Direction) return false;
+
+            return true;
+        }
+
+        public override bool Equals(object? obj)
+            => obj is OrderByExpression exp && Equals(exp);
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                const int @base = (int)2166136261;
+                const int multiplier = 16777619;
+
+                int hash = @base;
+                hash = (hash * multiplier) ^ (Expression is not null ? Expression.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ Direction.GetHashCode();
+                return hash;
+            }
+        }
         #endregion
 
         #region conditional & operator
-        public static OrderByExpressionSet operator &(OrderByExpression a, OrderByExpression b) => new OrderByExpressionSet(a, b);
+        public static OrderByExpressionSet operator &(OrderByExpression a, OrderByExpression b) => new(a, b);
         #endregion
 
         #region implicit order by expression set operator
-        public static implicit operator OrderByExpressionSet(OrderByExpression a) => new OrderByExpressionSet(a);
+        public static implicit operator OrderByExpressionSet(OrderByExpression a) => new(a);
         #endregion
     }
     

@@ -26,8 +26,8 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<NullableDecimalCastFunctionExpression>
     {
         #region constructors
-        public NullableDecimalCastFunctionExpression(AnyElement expression, DbTypeExpression convertToDbType)
-            : base(expression, convertToDbType)
+        public NullableDecimalCastFunctionExpression(AnyElement expression, DbTypeExpression convertToDbType, int precision, int scale)
+            : base(expression, convertToDbType, precision, scale)
         {
 
         }
@@ -39,11 +39,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(NullableDecimalCastFunctionExpression obj)
-            => obj is NullableDecimalCastFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableDecimalCastFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableDecimalCastFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableDecimalCastFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

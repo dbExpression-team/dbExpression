@@ -25,22 +25,11 @@ namespace HatTrick.DbEx.Sql.Expression
         where TValue : IComparable
     {
         #region constructors
-        protected NullableSubstringFunctionExpression(StringElement expression, Int32Element start, Int32Element length) : base(expression, start, length, typeof(TNullableValue))
+        protected NullableSubstringFunctionExpression(AnyElement<string?> expression, AnyElement start, AnyElement length) : base(expression, start, length, typeof(TNullableValue))
         {
 
         }
-
-        protected NullableSubstringFunctionExpression(StringElement expression, Int32Element start, Int64Element length) : base(expression, start, length, typeof(TNullableValue))
-        {
-
-        }
-
-        protected NullableSubstringFunctionExpression(StringElement expression, Int64Element start, Int32Element length) : base(expression, start, length, typeof(TNullableValue))
-        {
-
-        }
-
-        protected NullableSubstringFunctionExpression(StringElement expression, Int64Element start, Int64Element length) : base(expression, start, length, typeof(TNullableValue))
+        protected NullableSubstringFunctionExpression(AnyStringElement expression, AnyElement start, AnyElement length) : base(expression, start, length, typeof(TNullableValue))
         {
 
         }

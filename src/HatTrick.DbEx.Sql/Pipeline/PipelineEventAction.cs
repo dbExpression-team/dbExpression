@@ -21,9 +21,22 @@
 namespace HatTrick.DbEx.Sql.Pipeline
 {
     public class PipelineEventAction<TAsyncDelegate, TSyncDelegate, TPredicate>
-    { 
+    {
         public TAsyncDelegate AsyncDelegate { get; set; }
         public TSyncDelegate SyncDelegate { get; set; }
-        public Predicate<TPredicate> Predicate { get; set; }
+        public Predicate<TPredicate>? Predicate { get; set; }
+
+        public PipelineEventAction(TAsyncDelegate asyncDelegate, TSyncDelegate syncDelegate)
+        {
+            AsyncDelegate = asyncDelegate ?? throw new ArgumentNullException(nameof(asyncDelegate));
+            SyncDelegate = syncDelegate ?? throw new ArgumentNullException(nameof(syncDelegate));
+        }
+
+        public PipelineEventAction(TAsyncDelegate asyncDelegate, TSyncDelegate syncDelegate, Predicate<TPredicate> predicate)
+        {
+            AsyncDelegate = asyncDelegate ?? throw new ArgumentNullException(nameof(asyncDelegate));
+            SyncDelegate = syncDelegate ?? throw new ArgumentNullException(nameof(syncDelegate));
+            Predicate = predicate ?? throw new ArgumentNullException(nameof(predicate));
+        }
     }
 }

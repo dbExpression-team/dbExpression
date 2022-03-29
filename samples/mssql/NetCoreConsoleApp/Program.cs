@@ -14,7 +14,7 @@ namespace NetCoreConsoleApp
 		#region main
 		static void Main(string[] args)
         {
-            Stopwatch sw = new Stopwatch();
+            Stopwatch sw = new();
             sw.Start();
             ConfigureDbEx();
             sw.Stop();
@@ -142,7 +142,7 @@ namespace NetCoreConsoleApp
         #region run stored procedures
         static void RunStoredProcedures()
         {
-            StoredProcedures sprocs = new StoredProcedures();
+            StoredProcedures sprocs = new();
             sprocs.Execute();
         }
         #endregion

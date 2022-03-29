@@ -28,12 +28,12 @@ namespace HatTrick.DbEx.MsSql.Expression
         IEquatable<Int64RoundFunctionExpression>
     {
         #region constructors
-        public Int64RoundFunctionExpression(AnyElement<long> expression, IntegralNumericElement length) : base(expression, length)
+        public Int64RoundFunctionExpression(AnyElement<long> expression, AnyElement length) : base(expression, length)
         {
 
         }
 
-        public Int64RoundFunctionExpression(AnyElement<long> expression, IntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
+        public Int64RoundFunctionExpression(AnyElement<long> expression, AnyElement length, AnyElement function) : base(expression, length, function)
         {
 
         }
@@ -45,11 +45,11 @@ namespace HatTrick.DbEx.MsSql.Expression
         #endregion
 
         #region equals
-        public bool Equals(Int64RoundFunctionExpression obj)
-            => obj is Int64RoundFunctionExpression && base.Equals(obj);
+        public bool Equals(Int64RoundFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is Int64RoundFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is Int64RoundFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

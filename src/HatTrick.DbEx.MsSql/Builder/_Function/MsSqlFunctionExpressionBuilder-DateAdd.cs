@@ -35,8 +35,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="value">The value to add to <paramref name="element"/> to add to <paramref name="element"/>.</param>
         /// <param name="element">Any expression of type <see cref="AnyElement{DateTime}"/> to add <paramref name="value"/> to.</param>
         /// <returns><see cref="DateTimeDateAddFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{DateTime}"/>.</returns>
-        public static DateTimeDateAddFunctionExpression DateAdd(DateParts datePart, int value, AnyElement<DateTime> element)
-            => new DateTimeDateAddFunctionExpression(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<int>(value), element);
+        public DateTimeDateAddFunctionExpression DateAdd(DateParts datePart, int value, AnyElement<DateTime> element)
+            => new(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<int>(value), element);
 
         /// <summary>
         /// Construct an expression for the DATEADD transact sql function.
@@ -46,8 +46,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="value">The value to add to <paramref name="element"/> to add to <paramref name="element"/>.</param>
         /// <param name="element">Any expression of type <see cref="AnyElement{DateTime}"/>? to add <paramref name="value"/> to.</param>
         /// <returns><see cref="NullableDateTimeDateAddFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{DateTime}"/>?.</returns>
-        public static NullableDateTimeDateAddFunctionExpression DateAdd(DateParts datePart, int value, AnyElement<DateTime?> element)
-            => new NullableDateTimeDateAddFunctionExpression(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<int>(value), element);
+        public NullableDateTimeDateAddFunctionExpression DateAdd(DateParts datePart, int value, AnyElement<DateTime?> element)
+            => new(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<int>(value), element);
 
         /// <summary>
         /// Construct an expression for the DATEADD transact sql function.
@@ -57,8 +57,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="value">The value to add to <paramref name="element"/> to add to <paramref name="element"/>.</param>
         /// <param name="element">Any expression of type <see cref="AnyElement{DateTime}"/> to add <paramref name="value"/> to.</param>
         /// <returns><see cref="NullableDateTimeDateAddFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{DateTime}"/>?.</returns>
-        public static NullableDateTimeDateAddFunctionExpression DateAdd(DateParts datePart, int? value, AnyElement<DateTime> element)
-            => new NullableDateTimeDateAddFunctionExpression(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<int?>(value), element);
+        public NullableDateTimeDateAddFunctionExpression DateAdd(DateParts datePart, int? value, AnyElement<DateTime> element)
+            => new(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<int?>(value), element);
 
         /// <summary>
         /// Construct an expression for the DATEADD transact sql function.
@@ -68,8 +68,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="value">The value to add to <paramref name="element"/> to add to <paramref name="element"/>.</param>
         /// <param name="element">Any expression of type <see cref="AnyElement{DateTime}"/>? to add <paramref name="value"/> to.</param>
         /// <returns><see cref="NullableDateTimeDateAddFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{DateTime}"/>?.</returns>
-        public static NullableDateTimeDateAddFunctionExpression DateAdd(DateParts datePart, int? value, AnyElement<DateTime?> element)
-            => new NullableDateTimeDateAddFunctionExpression(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<int?>(value), element);
+        public NullableDateTimeDateAddFunctionExpression DateAdd(DateParts datePart, int? value, AnyElement<DateTime?> element)
+            => new(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<int?>(value), element);
 
         /// <summary>
         /// Construct an expression for the DATEADD transact sql function.
@@ -79,8 +79,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="value">The value to add to <paramref name="element"/> to add to <paramref name="element"/>.</param>
         /// <param name="element">Any expression of type <see cref="AnyElement{DateTime}"/> to add <paramref name="value"/> to.</param>
         /// <returns><see cref="DateTimeDateAddFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{DateTime}"/>.</returns>
-        public static DateTimeDateAddFunctionExpression DateAdd(DateParts datePart, AnyElement<int> value, AnyElement<DateTime> element)
-            => new DateTimeDateAddFunctionExpression(new DatePartsExpression<DateParts>(datePart), value, element);
+        public DateTimeDateAddFunctionExpression DateAdd(DateParts datePart, AnyElement<int> value, AnyElement<DateTime> element)
+            => new(new DatePartsExpression<DateParts>(datePart), value, element);
 
         /// <summary>
         /// Construct an expression for the DATEADD transact sql function.
@@ -90,8 +90,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="value">The value to add to <paramref name="element"/> to add to <paramref name="element"/>.</param>
         /// <param name="element">Any expression of type <see cref="AnyElement{DateTime}"/>? to add <paramref name="value"/> to.</param>
         /// <returns><see cref="NullableDateTimeDateAddFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{DateTime}"/>?.</returns>
-        public static NullableDateTimeDateAddFunctionExpression DateAdd(DateParts datePart, AnyElement<int> value, AnyElement<DateTime?> element)
-            => new NullableDateTimeDateAddFunctionExpression(new DatePartsExpression<DateParts>(datePart), value, element);
+        public NullableDateTimeDateAddFunctionExpression DateAdd(DateParts datePart, AnyElement<int> value, AnyElement<DateTime?> element)
+            => new(new DatePartsExpression<DateParts>(datePart), value, element);
 
         /// <summary>
         /// Construct an expression for the DATEADD transact sql function.
@@ -101,8 +101,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="value">Any expression of type <see cref="AnyElement{Int32}"/>? to add to <paramref name="element"/>.</param>
         /// <param name="element">Any expression of type <see cref="AnyElement{DateTime}"/> to add <paramref name="value"/> to.</param>
         /// <returns><see cref="NullableDateTimeDateAddFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{DateTime}"/>?.</returns>
-        public static NullableDateTimeDateAddFunctionExpression DateAdd(DateParts datePart, AnyElement<int?> value, AnyElement<DateTime> element)
-            => new NullableDateTimeDateAddFunctionExpression(new DatePartsExpression<DateParts>(datePart), value, element);
+        public NullableDateTimeDateAddFunctionExpression DateAdd(DateParts datePart, AnyElement<int?> value, AnyElement<DateTime> element)
+            => new(new DatePartsExpression<DateParts>(datePart), value, element);
 
         /// <summary>
         /// Construct an expression for the DATEADD transact sql function.
@@ -112,8 +112,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="value">Any expression of type <see cref="AnyElement{Int32}"/>? to add to <paramref name="element"/>.</param>
         /// <param name="element">Any expression of type <see cref="AnyElement{DateTime}"/>? to add <paramref name="value"/> to.</param>
         /// <returns><see cref="NullableDateTimeDateAddFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{DateTime}"/>?.</returns>
-        public static NullableDateTimeDateAddFunctionExpression DateAdd(DateParts datePart, AnyElement<int?> value, AnyElement<DateTime?> element)
-            => new NullableDateTimeDateAddFunctionExpression(new DatePartsExpression<DateParts>(datePart), value, element);
+        public NullableDateTimeDateAddFunctionExpression DateAdd(DateParts datePart, AnyElement<int?> value, AnyElement<DateTime?> element)
+            => new(new DatePartsExpression<DateParts>(datePart), value, element);
         #endregion
 
         #region DateTimeOffset
@@ -125,8 +125,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="value">The value to add to <paramref name="element"/> to add to <paramref name="element"/>.</param>
         /// <param name="element">Any expression of type <see cref="AnyElement{DateTimeOffset}"/> to add <paramref name="value"/> to.</param>
         /// <returns><see cref="DateTimeOffsetDateAddFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{DateTimeOffset}"/>.</returns>
-        public static DateTimeOffsetDateAddFunctionExpression DateAdd(DateParts datePart, int value, AnyElement<DateTimeOffset> element)
-            => new DateTimeOffsetDateAddFunctionExpression(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<int>(value), element);
+        public DateTimeOffsetDateAddFunctionExpression DateAdd(DateParts datePart, int value, AnyElement<DateTimeOffset> element)
+            => new(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<int>(value), element);
 
         /// <summary>
         /// Construct an expression for the DATEADD transact sql function.
@@ -136,8 +136,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="value">The value to add to <paramref name="element"/> to add to <paramref name="element"/>.</param>
         /// <param name="element">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>? to add <paramref name="value"/> to.</param>
         /// <returns><see cref="NullableDateTimeOffsetDateAddFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{DateTimeOffset}"/>?.</returns>
-        public static NullableDateTimeOffsetDateAddFunctionExpression DateAdd(DateParts datePart, int value, AnyElement<DateTimeOffset?> element)
-            => new NullableDateTimeOffsetDateAddFunctionExpression(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<int>(value), element);
+        public NullableDateTimeOffsetDateAddFunctionExpression DateAdd(DateParts datePart, int value, AnyElement<DateTimeOffset?> element)
+            => new(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<int>(value), element);
 
         /// <summary>
         /// Construct an expression for the DATEADD transact sql function.
@@ -147,8 +147,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="value">The value to add to <paramref name="element"/> to add to <paramref name="element"/>.</param>
         /// <param name="element">Any expression of type <see cref="AnyElement{DateTimeOffset}"/> to add <paramref name="value"/> to.</param>
         /// <returns><see cref="NullableDateTimeOffsetDateAddFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{DateTimeOffset}"/>?.</returns>
-        public static NullableDateTimeOffsetDateAddFunctionExpression DateAdd(DateParts datePart, int? value, AnyElement<DateTimeOffset> element)
-            => new NullableDateTimeOffsetDateAddFunctionExpression(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<int?>(value), element);
+        public NullableDateTimeOffsetDateAddFunctionExpression DateAdd(DateParts datePart, int? value, AnyElement<DateTimeOffset> element)
+            => new(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<int?>(value), element);
 
         /// <summary>
         /// Construct an expression for the DATEADD transact sql function.
@@ -158,8 +158,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="value">The value to add to <paramref name="element"/> to add to <paramref name="element"/>.</param>
         /// <param name="element">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>? to add <paramref name="value"/> to.</param>
         /// <returns><see cref="NullableDateTimeOffsetDateAddFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{DateTimeOffset}"/>?.</returns>
-        public static NullableDateTimeOffsetDateAddFunctionExpression DateAdd(DateParts datePart, int? value, AnyElement<DateTimeOffset?> element)
-            => new NullableDateTimeOffsetDateAddFunctionExpression(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<int?>(value), element);
+        public NullableDateTimeOffsetDateAddFunctionExpression DateAdd(DateParts datePart, int? value, AnyElement<DateTimeOffset?> element)
+            => new(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<int?>(value), element);
 
         /// <summary>
         /// Construct an expression for the DATEADD transact sql function.
@@ -169,8 +169,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="value">The value to add to <paramref name="element"/> to add to <paramref name="element"/>.</param>
         /// <param name="element">Any expression of type <see cref="AnyElement{DateTimeOffset}"/> to add <paramref name="value"/> to.</param>
         /// <returns><see cref="DateTimeOffsetDateAddFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{DateTimeOffset}"/>.</returns>
-        public static DateTimeOffsetDateAddFunctionExpression DateAdd(DateParts datePart, AnyElement<int> value, AnyElement<DateTimeOffset> element)
-            => new DateTimeOffsetDateAddFunctionExpression(new DatePartsExpression<DateParts>(datePart), value, element);
+        public DateTimeOffsetDateAddFunctionExpression DateAdd(DateParts datePart, AnyElement<int> value, AnyElement<DateTimeOffset> element)
+            => new(new DatePartsExpression<DateParts>(datePart), value, element);
 
         /// <summary>
         /// Construct an expression for the DATEADD transact sql function.
@@ -180,8 +180,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="value">The value to add to <paramref name="element"/> to add to <paramref name="element"/>.</param>
         /// <param name="element">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>? to add <paramref name="value"/> to.</param>
         /// <returns><see cref="NullableDateTimeOffsetDateAddFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{DateTimeOffset}"/>?.</returns>
-        public static NullableDateTimeOffsetDateAddFunctionExpression DateAdd(DateParts datePart, AnyElement<int> value, AnyElement<DateTimeOffset?> element)
-            => new NullableDateTimeOffsetDateAddFunctionExpression(new DatePartsExpression<DateParts>(datePart), value, element);
+        public NullableDateTimeOffsetDateAddFunctionExpression DateAdd(DateParts datePart, AnyElement<int> value, AnyElement<DateTimeOffset?> element)
+            => new(new DatePartsExpression<DateParts>(datePart), value, element);
 
         /// <summary>
         /// Construct an expression for the DATEADD transact sql function.
@@ -191,8 +191,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="value">Any expression of type <see cref="AnyElement{Int32}"/>? to add to <paramref name="element"/>.</param>
         /// <param name="element">Any expression of type <see cref="AnyElement{DateTimeOffset}"/> to add <paramref name="value"/> to.</param>
         /// <returns><see cref="NullableDateTimeOffsetDateAddFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{DateTimeOffset}"/>?.</returns>
-        public static NullableDateTimeOffsetDateAddFunctionExpression DateAdd(DateParts datePart, AnyElement<int?> value, AnyElement<DateTimeOffset> element)
-            => new NullableDateTimeOffsetDateAddFunctionExpression(new DatePartsExpression<DateParts>(datePart), value, element);
+        public NullableDateTimeOffsetDateAddFunctionExpression DateAdd(DateParts datePart, AnyElement<int?> value, AnyElement<DateTimeOffset> element)
+            => new(new DatePartsExpression<DateParts>(datePart), value, element);
 
         /// <summary>
         /// Construct an expression for the DATEADD transact sql function.
@@ -202,8 +202,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="value">Any expression of type <see cref="AnyElement{Int32}"/>? to add to <paramref name="element"/>.</param>
         /// <param name="element">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>? to add <paramref name="value"/> to.</param>
         /// <returns><see cref="NullableDateTimeOffsetDateAddFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{DateTimeOffset}"/>?.</returns>
-        public static NullableDateTimeOffsetDateAddFunctionExpression DateAdd(DateParts datePart, AnyElement<int?> value, AnyElement<DateTimeOffset?> element)
-            => new NullableDateTimeOffsetDateAddFunctionExpression(new DatePartsExpression<DateParts>(datePart), value, element);
+        public NullableDateTimeOffsetDateAddFunctionExpression DateAdd(DateParts datePart, AnyElement<int?> value, AnyElement<DateTimeOffset?> element)
+            => new(new DatePartsExpression<DateParts>(datePart), value, element);
         #endregion
     }
 }

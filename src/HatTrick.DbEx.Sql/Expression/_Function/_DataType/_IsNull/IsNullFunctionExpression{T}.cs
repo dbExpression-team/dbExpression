@@ -19,13 +19,19 @@
 ﻿namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class IsNullFunctionExpression<TValue> : IsNullFunctionExpression,
-        IExpressionElement<TValue>
+        IExpressionElement<TValue>,
+        AnyElement<TValue>
     {
         #region constructors
         protected IsNullFunctionExpression(IExpressionElement expression, IExpressionElement value) : base(expression, typeof(TValue), value)
         {
 
         }
+        #endregion
+
+        #region as
+        public AnyElement<TValue> As(string alias)
+            => new SelectExpression<TValue>(this).As(alias);
         #endregion
     }
 }

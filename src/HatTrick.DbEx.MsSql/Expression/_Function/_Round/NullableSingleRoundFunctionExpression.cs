@@ -28,32 +28,12 @@ namespace HatTrick.DbEx.MsSql.Expression
         IEquatable<NullableSingleRoundFunctionExpression>
     {
         #region constructors
-        public NullableSingleRoundFunctionExpression(AnyElement<float?> expression, IntegralNumericElement length) : base(expression, length)
+        public NullableSingleRoundFunctionExpression(AnyElement<float?> expression, AnyElement length) : base(expression, length)
         {
 
         }
 
-        public NullableSingleRoundFunctionExpression(AnyElement<float?> expression, IntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
-        {
-
-        }
-
-        public NullableSingleRoundFunctionExpression(AnyElement<float?> expression, NullableIntegralNumericElement length) : base(expression, length)
-        {
-
-        }
-
-        public NullableSingleRoundFunctionExpression(AnyElement<float?> expression, NullableIntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
-        {
-
-        }
-
-        public NullableSingleRoundFunctionExpression(AnyElement<float?> expression, IntegralNumericElement length, NullableIntegralNumericElement function) : base(expression, length, function)
-        {
-
-        }
-
-        public NullableSingleRoundFunctionExpression(AnyElement<float?> expression, NullableIntegralNumericElement length, NullableIntegralNumericElement function) : base(expression, length, function)
+        public NullableSingleRoundFunctionExpression(AnyElement<float?> expression, AnyElement length, AnyElement function) : base(expression, length, function)
         {
 
         }
@@ -65,11 +45,11 @@ namespace HatTrick.DbEx.MsSql.Expression
         #endregion
 
         #region equals
-        public bool Equals(NullableSingleRoundFunctionExpression obj)
-            => obj is NullableSingleRoundFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableSingleRoundFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableSingleRoundFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableSingleRoundFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

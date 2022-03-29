@@ -29,7 +29,7 @@
         <Content>
             <TabPanel Name="@Tabs.Details.Id" Padding="Padding.Is5.FromTop">
                 <CardDeck>
-                    <Card ColumnSize="ColumnSize.IsThird.OnDesktop">
+                    <Card ColumnSize="ColumnSize.Is12.Is6.OnWidescreen">
                         <CardBody>
                             <CardTitle>Demographics</CardTitle>
                             <Divider DividerType="DividerType.Dotted"></Divider>
@@ -51,7 +51,7 @@
                             </CardText>
                         </CardBody>
                     </Card>
-                    <Card>
+                    <Card ColumnSize="ColumnSize.Is12.Is6.OnWidescreen">
                         <CardBody>
                             <CardTitle>Credit Status</CardTitle>
                             <Divider DividerType="DividerType.Dotted"></Divider>
@@ -69,12 +69,12 @@
                 <CardDeck>
                     @foreach (var addressType in (AddressType[])Enum.GetValues(typeof(AddressType)))
                     {
-                        <AddressEdit Address="@ResolveAddress(addressType)" OnSave="@SaveAsync" />
+                        <AddressEdit Address="@ResolveAddress(addressType)" OnSave="@SaveAsync" ColumnSize="ColumnSize.Is12.Is4.OnDesktop"/>
                     }
                 </CardDeck>
             </TabPanel>
             <TabPanel Name="@Tabs.Orders.Id" Padding="Padding.Is5.FromTop">
-                <Card>
+                <Card ColumnSize="ColumnSize.IsFull">
                     <CardBody>
                         @if (ShowOrdersView)
                         {

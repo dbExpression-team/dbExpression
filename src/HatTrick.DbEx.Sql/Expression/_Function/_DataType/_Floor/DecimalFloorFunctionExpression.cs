@@ -32,17 +32,12 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public AnyElement<decimal> As(string alias)
-            => new SelectExpression<decimal>(this).As(alias);
-        #endregion
-
         #region equals
-        public bool Equals(DecimalFloorFunctionExpression obj)
-            => obj is DecimalFloorFunctionExpression && base.Equals(obj);
+        public bool Equals(DecimalFloorFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is DecimalFloorFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is DecimalFloorFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

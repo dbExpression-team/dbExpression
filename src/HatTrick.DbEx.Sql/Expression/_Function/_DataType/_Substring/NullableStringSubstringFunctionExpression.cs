@@ -21,48 +21,38 @@ using System;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableStringSubstringFunctionExpression :
-        NullableSubstringFunctionExpression<string,string>,
+        NullableSubstringFunctionExpression<string,string?>,
         NullableStringElement,
         IEquatable<NullableStringSubstringFunctionExpression>
     {
         #region constructors
-        protected NullableStringSubstringFunctionExpression(StringElement expression, Int32Element start, Int32Element length) : base(expression, start, length)
+        public NullableStringSubstringFunctionExpression(AnyElement<string?> expression, AnyElement start, AnyElement length) : base(expression, start, length)
         {
 
         }
 
-        protected NullableStringSubstringFunctionExpression(StringElement expression, Int32Element start, Int64Element length) : base(expression, start, length)
-        {
-
-        }
-
-        protected NullableStringSubstringFunctionExpression(StringElement expression, Int64Element start, Int32Element length) : base(expression, start, length)
-        {
-
-        }
-
-        protected NullableStringSubstringFunctionExpression(StringElement expression, Int64Element start, Int64Element length) : base(expression, start, length)
+        public NullableStringSubstringFunctionExpression(AnyStringElement expression, AnyElement start, AnyElement length) : base(expression, start, length)
         {
 
         }
         #endregion
 
         #region as
-        public  AnyElement<string> As(string alias)
-            => new SelectExpression<string>(this).As(alias);
+        public NullableStringElement As(string alias)
+            => new NullableStringSelectExpression(this).As(alias);
         #endregion
 
         #region like
         public FilterExpressionSet Like(string phrase)
-            => new FilterExpressionSet(new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
+            => new(new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
         #endregion
 
         #region equals
-        public bool Equals(NullableStringSubstringFunctionExpression obj)
-            => obj is NullableStringSubstringFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableStringSubstringFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableStringSubstringFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableStringSubstringFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

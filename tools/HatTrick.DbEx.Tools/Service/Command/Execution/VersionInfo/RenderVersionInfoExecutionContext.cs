@@ -42,7 +42,7 @@ namespace HatTrick.DbEx.Tools.Service
                
         }
 
-        public RenderVersionInfoExecutionContext(string command, string options) : base(command, options)
+        public RenderVersionInfoExecutionContext(string command, string? options) : base(command, options)
         {
             base.EnsureOptions(OPTION_KEYS);
         }
@@ -60,7 +60,7 @@ namespace HatTrick.DbEx.Tools.Service
             }
             else
             {
-                Version version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+                Version version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version!;
                 svc.Feedback.Push(To.ConsoleOnly, $"HatTrick Labs dbex cli version [{version}]");
                 svc.Feedback.Push(To.ConsoleOnly, string.Empty);
             }

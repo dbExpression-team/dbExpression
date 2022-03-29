@@ -27,9 +27,9 @@ namespace HatTrick.DbEx.Sql.Mapper
     {
         public void Map(ExpandoObject expandoObject, ISqlFieldReader reader)
         {
-            var expando = expandoObject as IDictionary<string, object>;
-            ISqlField field;
-            while ((field = reader.ReadField()) is object)
+            var expando = expandoObject as IDictionary<string, object?>;
+            ISqlField? field;
+            while ((field = reader.ReadField()) is not null)
             {
                 if (string.IsNullOrWhiteSpace(field.Name))
                 {

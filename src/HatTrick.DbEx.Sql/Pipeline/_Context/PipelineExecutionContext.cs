@@ -24,11 +24,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
 {
     public abstract class PipelineExecutionContext
     {
-        public RuntimeSqlDatabaseConfiguration Database { get; private set; }
+        public SqlDatabaseRuntimeConfiguration Database { get; private set; }
         public QueryExpression Expression { get; private set; }
-        public virtual Type EntityType => (Expression.BaseEntity as IDbEntityTypeProvider).EntityType;
+        public virtual Type EntityType => Expression.BaseEntity!.EntityType;
 
-        protected PipelineExecutionContext(RuntimeSqlDatabaseConfiguration database, QueryExpression expression)
+        protected PipelineExecutionContext(SqlDatabaseRuntimeConfiguration database, QueryExpression expression)
         {
             Database = database ?? throw new ArgumentNullException(nameof(database));
             Expression = expression ?? throw new ArgumentNullException(nameof(expression));

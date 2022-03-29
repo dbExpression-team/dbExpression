@@ -39,16 +39,6 @@ namespace HatTrick.DbEx.Sql.Converter
 
         public IValueConverter CreateConverter(Type type)
             => factory(type) ?? throw new DbExpressionConfigurationException($"Could not resolve a converter for type '{type}', please ensure a converter has been registered.");
-
-        public void RegisterConverter<T>(IValueConverter converter)
-            => throw new DbExpressionConfigurationException($"Value converters are deferred to a delegate, custom registration is not supported.");
-
-        public void RegisterConverter<T, U>()
-            where U : class, IValueConverter, new()
-            => throw new DbExpressionConfigurationException($"Value converters are deferred to a delegate, custom registration is not supported.");
-
-        public void RegisterConverter(Type type, Func<IValueConverter> converter)
-            => throw new DbExpressionConfigurationException($"Value converters are deferred to a delegate, custom registration is not supported.");
         #endregion
     }
 }

@@ -26,18 +26,18 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<Int16FieldExpression>
     {
         #region constructors
-        protected Int16FieldExpression(string identifier, string name, EntityExpression entity) : base(identifier, name, typeof(short), entity)
+        protected Int16FieldExpression(string identifier, string name, Table entity) : base(identifier, name, typeof(short), entity)
         {
 
         }
         #endregion
 
         #region equals
-        public bool Equals(Int16FieldExpression obj)
-            => obj is Int16FieldExpression && base.Equals(obj);
+        public bool Equals(Int16FieldExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is Int16FieldExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is Int16FieldExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

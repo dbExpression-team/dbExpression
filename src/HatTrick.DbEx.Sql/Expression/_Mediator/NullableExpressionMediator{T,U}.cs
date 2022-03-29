@@ -28,13 +28,9 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        protected NullableExpressionMediator(IExpressionElement expression, Type declaredType) : this(expression, declaredType, null)
+        protected NullableExpressionMediator(IExpressionElement expression) : base(expression, typeof(TNullableValue))
         {
         }
-
-        protected NullableExpressionMediator(IExpressionElement expression, Type declaredType, string alias) : base(expression, declaredType, alias)
-        {
-        } 
         #endregion
     }
 }

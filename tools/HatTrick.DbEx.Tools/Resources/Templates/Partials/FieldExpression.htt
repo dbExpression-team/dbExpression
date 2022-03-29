@@ -1,8 +1,7 @@
-﻿{?var:fieldExpressionTypeName = ($) => BuildFieldExpressionTypeName}
-{?var:expressionElementTypeName = ($) => BuildExpressionElementTypeName}
-{?var:selectExpressionTypeName = ($) => BuildSelectExpressionTypeName}
+﻿{?var:isNullableEnabled = $.FieldExpression.LanguageFeatures.Nullable.IsFeatureEnabled}
+{?var:commentBlock = true}
         #region {($.FieldExpression.Name) => InsertSpaceOnCapitalizationAndToLower} field expression
-        public partial class {$.FieldExpression.Name}Field : {:fieldExpressionTypeName}
+        public partial class {$.FieldExpression.Name}Field : {$.FieldExpression.FieldExpressionTypeName}
         {{
             #region constructors
             public {$.FieldExpression.Name}Field(string identifier, string name, {$.FieldExpression.EntityExpression.Name}Entity entity) : base(identifier, name, entity)
@@ -12,21 +11,9 @@
             #endregion
 
             #region set
-            {#if !$.Column.IsComputed}
-            {#if !$.Column.IsIdentity}
-            {#if $.FieldExpression.AllowUpdate}
-            public AssignmentExpression Set({$.FieldExpression.Type.Alias} value) => new AssignmentExpression(this, new LiteralExpression<{$.FieldExpression.Type.Alias}>(value, this));
-            public AssignmentExpression Set({(:expressionElementTypeName, "?", "") => Replace} value) => new AssignmentExpression(this, value);
-            {#if $.FieldExpression.Type.IsNullable}
-            public AssignmentExpression Set({$.FieldExpression.Type.NullableAlias} value) => new AssignmentExpression(this, new LiteralExpression<{$.FieldExpression.Type.NullableAlias}>(value, this));
-            public AssignmentExpression Set({:expressionElementTypeName} value) => new AssignmentExpression(this, value);
-            {/if}
-            {/if}
-            {/if}
-            {#if $.Column.IsNullable}
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<{$.FieldExpression.Type.Alias}>(value, this));
-            {/if}
-            {/if}
+            {#each $.FieldExpression.AssignmentMethodParameters}
+            public AssignmentExpression Set({$.Left} value) => new AssignmentExpression(this, {$.Right});
+            {/each}
             #endregion
         }}
         #endregion

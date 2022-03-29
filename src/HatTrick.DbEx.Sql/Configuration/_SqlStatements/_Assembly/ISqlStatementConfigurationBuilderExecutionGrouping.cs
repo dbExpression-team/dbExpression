@@ -23,6 +23,6 @@
         /// <summary>
         /// Configure the factories used for executing sql statements.  
         /// </summary>
-        ISqlStatementExecutionGroupingConfigurationBuilders Execution { get; }
+        ISqlStatementExecutionGroupingConfigurationBuilders QueryExecution { get; }
     }
 }

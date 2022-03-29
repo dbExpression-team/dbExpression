@@ -11,7 +11,9 @@
         <CardBody>
             <CardTitle>Recent Sales by Day</CardTitle>
             <Divider DividerType="DividerType.Dotted"></Divider>
-            <SingleMetricChart Type="ChartType.Bar" Data="@GetDailySales" ShowLegend="false" />
+            <Div Flex="Flex.JustifyContent.Center">
+                <SingleMetricChart Type="ChartType.Bar" Data="@GetDailySales" ShowLegend="false" />
+            </Div>
         </CardBody>
     </Card>
     <Card>
@@ -81,7 +83,9 @@
         <CardBody>
             <CardTitle>Total Sales by Product Category</CardTitle>
             <Divider DividerType="DividerType.Dotted"></Divider>
-            <SingleMetricChart Type="ChartType.Doughnut" Data="@GetSalesByProductCategory" />
+            <Div Flex="Flex.JustifyContent.Center">
+                <SingleMetricChart Type="ChartType.Doughnut" Data="@GetSalesByProductCategory" />
+            </Div>
         </CardBody>
     </Card>
 </CardDeck>

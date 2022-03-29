@@ -31,8 +31,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}"/>, the value to use for calculating the ceiling function result.</param>
         /// <returns><see cref="ByteCeilingFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Byte}"/>.</returns>
-        public static ByteCeilingFunctionExpression Ceiling(AnyElement<byte> element)
-            => new ByteCeilingFunctionExpression(element);
+        public ByteCeilingFunctionExpression Ceiling(AnyElement<byte> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the CEILING transact sql function.
@@ -40,8 +40,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}"/>?, the value to use for calculating the ceiling function result.</param>
         /// <returns><see cref="NullableByteCeilingFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Byte}"/>?.</returns>
-        public static NullableByteCeilingFunctionExpression Ceiling(AnyElement<byte?> element)
-            => new NullableByteCeilingFunctionExpression(element);
+        public NullableByteCeilingFunctionExpression Ceiling(AnyElement<byte?> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the CEILING transact sql function.
@@ -49,8 +49,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}"/>, the value to use for calculating the ceiling function result.</param>
         /// <returns><see cref="Int16CeilingFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int16}"/>.</returns>
-        public static Int16CeilingFunctionExpression Ceiling(AnyElement<short> element)
-            => new Int16CeilingFunctionExpression(element);
+        public Int16CeilingFunctionExpression Ceiling(AnyElement<short> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the CEILING transact sql function.
@@ -58,8 +58,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}"/>?, the value to use for calculating the ceiling function result.</param>
         /// <returns><see cref="NullableInt16CeilingFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int16}"/>?.</returns>
-        public static NullableInt16CeilingFunctionExpression Ceiling(AnyElement<short?> element)
-            => new NullableInt16CeilingFunctionExpression(element);
+        public NullableInt16CeilingFunctionExpression Ceiling(AnyElement<short?> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the CEILING transact sql function.
@@ -67,8 +67,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}"/>, the value to use for calculating the ceiling function result.</param>
         /// <returns><see cref="Int32CeilingFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>.</returns>
-        public static Int32CeilingFunctionExpression Ceiling(AnyElement<int> element)
-            => new Int32CeilingFunctionExpression(element);
+        public Int32CeilingFunctionExpression Ceiling(AnyElement<int> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the CEILING transact sql function.
@@ -76,8 +76,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}"/>?, the value to use for calculating the ceiling function result.</param>
         /// <returns><see cref="NullableInt32CeilingFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
-        public static NullableInt32CeilingFunctionExpression Ceiling(AnyElement<int?> element)
-            => new NullableInt32CeilingFunctionExpression(element);
+        public NullableInt32CeilingFunctionExpression Ceiling(AnyElement<int?> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the CEILING transact sql function.
@@ -85,8 +85,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}"/>, the value to use for calculating the ceiling function result.</param>
         /// <returns><see cref="Int64CeilingFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>.</returns>
-        public static Int64CeilingFunctionExpression Ceiling(AnyElement<long> element)
-            => new Int64CeilingFunctionExpression(element);
+        public Int64CeilingFunctionExpression Ceiling(AnyElement<long> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the CEILING transact sql function.
@@ -94,8 +94,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}"/>?, the value to use for calculating the ceiling function result.</param>
         /// <returns><see cref="NullableInt64CeilingFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>?.</returns>
-        public static NullableInt64CeilingFunctionExpression Ceiling(AnyElement<long?> element)
-            => new NullableInt64CeilingFunctionExpression(element);
+        public NullableInt64CeilingFunctionExpression Ceiling(AnyElement<long?> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the CEILING transact sql function.
@@ -103,8 +103,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}"/>, the value to use for calculating the ceiling function result.</param>
         /// <returns><see cref="SingleCeilingFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
-        public static SingleCeilingFunctionExpression Ceiling(AnyElement<float> element)
-            => new SingleCeilingFunctionExpression(element);
+        public SingleCeilingFunctionExpression Ceiling(AnyElement<float> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the CEILING transact sql function.
@@ -112,8 +112,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}"/>?, the value to use for calculating the ceiling function result.</param>
         /// <returns><see cref="NullableSingleCeilingFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>?.</returns>
-        public static NullableSingleCeilingFunctionExpression Ceiling(AnyElement<float?> element)
-            => new NullableSingleCeilingFunctionExpression(element);
+        public NullableSingleCeilingFunctionExpression Ceiling(AnyElement<float?> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the CEILING transact sql function.
@@ -121,8 +121,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Double}"/>, the value to use for calculating the ceiling function result.</param>
         /// <returns><see cref="DoubleCeilingFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Double}"/>.</returns>
-        public static DoubleCeilingFunctionExpression Ceiling(AnyElement<double> element)
-            => new DoubleCeilingFunctionExpression(element);
+        public DoubleCeilingFunctionExpression Ceiling(AnyElement<double> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the CEILING transact sql function.
@@ -130,8 +130,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Double}"/>?, the value to use for calculating the ceiling function result.</param>
         /// <returns><see cref="NullableDoubleCeilingFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Double}"/>?.</returns>
-        public static NullableDoubleCeilingFunctionExpression Ceiling(AnyElement<double?> element)
-            => new NullableDoubleCeilingFunctionExpression(element);
+        public NullableDoubleCeilingFunctionExpression Ceiling(AnyElement<double?> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the CEILING transact sql function.
@@ -139,8 +139,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}"/>, the value to use for calculating the ceiling function result.</param>
         /// <returns><see cref="DecimalCeilingFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Decimal}"/>.</returns>
-        public static DecimalCeilingFunctionExpression Ceiling(AnyElement<decimal> element)
-            => new DecimalCeilingFunctionExpression(element);
+        public DecimalCeilingFunctionExpression Ceiling(AnyElement<decimal> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the CEILING transact sql function.
@@ -148,7 +148,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}"/>?, the value to use for calculating the ceiling function result.</param>
         /// <returns><see cref="NullableDecimalCeilingFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Decimal}"/>?.</returns>
-        public static NullableDecimalCeilingFunctionExpression Ceiling(AnyElement<decimal?> element)
-            => new NullableDecimalCeilingFunctionExpression(element);
+        public NullableDecimalCeilingFunctionExpression Ceiling(AnyElement<decimal?> element)
+            => new(element);
     }
 }

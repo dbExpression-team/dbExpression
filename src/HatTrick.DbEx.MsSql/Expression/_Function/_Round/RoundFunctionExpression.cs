@@ -39,7 +39,7 @@ namespace HatTrick.DbEx.MsSql.Expression
             this.expression = new RoundFunctionExpressionElements(expression ?? throw new ArgumentNullException(nameof(expression)), length ?? throw new ArgumentNullException(nameof(length)), null);
         }
 
-        protected RoundFunctionExpression(IExpressionElement expression, IExpressionElement length, IExpressionElement function, Type declaredType) : base(declaredType)
+        protected RoundFunctionExpression(IExpressionElement expression, IExpressionElement length, IExpressionElement? function, Type declaredType) : base(declaredType)
         {
             this.expression = new RoundFunctionExpressionElements(expression ?? throw new ArgumentNullException(nameof(expression)), length ?? throw new ArgumentNullException(nameof(length)), function);
         }
@@ -50,18 +50,19 @@ namespace HatTrick.DbEx.MsSql.Expression
         #endregion
 
         #region equals
-        public bool Equals(RoundFunctionExpression obj)
+        public bool Equals(RoundFunctionExpression? obj)
         {
-            if (!base.Equals(obj)) return false;
+            if (obj is null) return false;
+            if (ReferenceEquals(this, obj)) return true;
 
-            if (expression is null && obj.expression is object) return false;
-            if (expression is object && obj.expression is null) return false;
-            if (!expression.Equals(obj.expression)) return false;
+            if (expression is null && obj.expression is not null) return false;
+            if (expression is not null && obj.expression is null) return false;
+            if (expression is not null && !expression.Equals(obj.expression)) return false;
 
             return true;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
          => obj is RoundFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
@@ -84,11 +85,11 @@ namespace HatTrick.DbEx.MsSql.Expression
             #region interface
             public IExpressionElement Expression { get; private set; }
             public IExpressionElement Length { get; private set; }
-            public IExpressionElement Function { get; private set; }
+            public IExpressionElement? Function { get; private set; }
             #endregion
 
             #region constructors
-            public RoundFunctionExpressionElements(IExpressionElement expression, IExpressionElement length, IExpressionElement function)
+            public RoundFunctionExpressionElements(IExpressionElement expression, IExpressionElement length, IExpressionElement? function)
             {
                 this.Expression = expression ?? throw new ArgumentNullException(nameof(expression));
                 this.Length = length ?? throw new ArgumentNullException(nameof(length));
@@ -97,25 +98,28 @@ namespace HatTrick.DbEx.MsSql.Expression
             #endregion
 
             #region equals
-            public bool Equals(RoundFunctionExpressionElements obj)
+            public bool Equals(RoundFunctionExpressionElements? obj)
             {
-                if (Expression is null && obj.Expression is object) return false;
-                if (Expression is object && obj.Expression is null) return false;
-                if (!Expression.Equals(obj.Expression)) return false;
+                if (obj is null) return false;
+                if (ReferenceEquals(this, obj)) return true;
 
-                if (Length is null && obj.Length is object) return false;
-                if (Length is object && obj.Length is null) return false;
-                if (!Length.Equals(obj.Length)) return false;
+                if (Expression is null && obj.Expression is not null) return false;
+                if (Expression is not null && obj.Expression is null) return false;
+                if (Expression is not null && !Expression.Equals(obj.Expression)) return false;
 
-                if (Function is null && obj.Function is object) return false;
-                if (Function is object && obj.Function is null) return false;
-                if (!Function.Equals(obj.Function)) return false;
+                if (Length is null && obj.Length is not null) return false;
+                if (Length is not null && obj.Length is null) return false;
+                if (Length is not null && !Length.Equals(obj.Length)) return false;
+
+                if (Function is null && obj.Function is not null) return false;
+                if (Function is not null && obj.Function is null) return false;
+                if (Function is not null && !Function.Equals(obj.Function)) return false;
 
                 return true;
             }
 
-            public override bool Equals(object obj)
-                => Equals(obj as RoundFunctionExpressionElements);
+            public override bool Equals(object? obj)
+                => obj is RoundFunctionExpressionElements && Equals(obj);
 
             public override int GetHashCode()
             {

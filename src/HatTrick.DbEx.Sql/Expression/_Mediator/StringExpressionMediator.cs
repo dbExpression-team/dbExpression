@@ -33,35 +33,31 @@ namespace HatTrick.DbEx.Sql.Expression
         public StringExpressionMediator(IExpressionElement expression) : base(expression)
         {
         }
-
-        protected StringExpressionMediator(IExpressionElement expression, string alias) : base(expression, alias)
-        {
-        }
         #endregion
 
         #region as
-        public AnyElement<string> As(string alias)
-            => new SelectExpression<string>(this).As(alias);
+        public StringElement As(string alias)
+            => new StringSelectExpression(this).As(alias);
         #endregion
 
         #region like
         public FilterExpressionSet Like(string phrase)
-            => new FilterExpressionSet(new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
+            => new(new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
         #endregion
 
         #region equals
-        public bool Equals(StringExpressionMediator obj)
-            => obj is StringExpressionMediator && base.Equals(obj);
+        public bool Equals(StringExpressionMediator? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is StringExpressionMediator exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is StringExpressionMediator exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();
         #endregion
 
         #region arithmetic operators
-        public static StringExpressionMediator operator +(StringExpressionMediator a, StringExpressionMediator b) => new StringExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static StringExpressionMediator operator +(StringExpressionMediator a, StringExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
         #endregion
     }
 }

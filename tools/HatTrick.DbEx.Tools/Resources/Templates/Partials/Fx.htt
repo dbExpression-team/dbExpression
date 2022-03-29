@@ -1,6 +1,0 @@
-﻿        #region fx
-        /// <inheritdoc />
-        public partial class fx : MsSqlFunctionExpressionBuilder
-        {{
-        }}
-        #endregion

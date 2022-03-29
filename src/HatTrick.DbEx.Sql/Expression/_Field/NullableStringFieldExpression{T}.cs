@@ -17,6 +17,7 @@
 #endregion
 
 ﻿using System;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -26,18 +27,23 @@ namespace HatTrick.DbEx.Sql.Expression
         where TEntity : class, IDbEntity
     {
         #region constructors
-        public NullableStringFieldExpression(string identifier, string name, EntityExpression entity) : base(identifier, name, entity)
+        public NullableStringFieldExpression(string identifier, string name, Table entity) : base(identifier, name, entity)
         {
 
         }
         #endregion
 
-        #region equals
-        public bool Equals(NullableStringFieldExpression<TEntity> obj)
-            => obj is NullableStringFieldExpression<TEntity> && base.Equals(obj);
+        #region in value set
+        public override FilterExpressionSet In(params string?[] value) => new(new FilterExpression<bool>(this, new InExpression<string?>(this, value), FilterExpressionOperator.None));
+        public override FilterExpressionSet In(IEnumerable<string?> value) => new(new FilterExpression<bool>(this, new InExpression<string?>(this, value), FilterExpressionOperator.None));
+        #endregion
 
-        public override bool Equals(object obj)
-            => obj is NullableStringFieldExpression<TEntity> exp && base.Equals(exp);
+        #region equals
+        public bool Equals(NullableStringFieldExpression<TEntity>? obj)
+            => obj is not null && base.Equals(obj);
+
+        public override bool Equals(object? obj)
+            => obj is NullableStringFieldExpression<TEntity> exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

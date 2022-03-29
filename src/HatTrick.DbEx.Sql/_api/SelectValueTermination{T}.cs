@@ -33,60 +33,60 @@ namespace HatTrick.DbEx.Sql
         /// Assemble and execute a SELECT query to retrieve a single <typeparamref name="TValue"/> value.
         /// </summary>
         /// <returns>The single <typeparamref name="TValue"/> value retrieved from execution of the sql SELECT query.</returns>
-        TValue Execute();
+        TValue? Execute();
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve a single <typeparamref name="TValue"/> value.
         /// </summary>
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
         /// <returns>The single <typeparamref name="TValue"/> value retrieved from execution of the sql SELECT query.</returns>
-        TValue Execute(int commandTimeout);
+        TValue? Execute(int commandTimeout);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve a single <typeparamref name="TValue"/> value.
         /// </summary>
         /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql SELECT query.</param>
         /// <returns>The single <typeparamref name="TValue"/> value retrieved from execution of the sql SELECT query.</returns>
-        TValue Execute(ISqlConnection connection);
-
-        /// <summary>
-        /// Assemble and execute a SELECT query to retrieve a single <typeparamref name="TValue"/> value.
-        /// </summary>
-        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql SELECT query.</param>
-        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
-        /// <returns>The single <typeparamref name="TValue"/> value retrieved from execution of the sql SELECT query.</returns>
-        TValue Execute(ISqlConnection connection, int commandTimeout);
-
-        /// <summary>
-        /// Assemble and execute a SELECT query to retrieve a single <typeparamref name="TValue"/> value.
-        /// </summary>
-        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
-        /// <returns>The single <typeparamref name="TValue"/> value retrieved from execution of the sql SELECT query.</returns>
-        Task<TValue> ExecuteAsync(CancellationToken cancellationToken = default);
-
-        /// <summary>
-        /// Assemble and execute a SELECT query to retrieve a single <typeparamref name="TValue"/> value.
-        /// </summary>
-        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
-        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
-        /// <returns>The single <typeparamref name="TValue"/> value retrieved from execution of the sql SELECT query.</returns>
-        Task<TValue> ExecuteAsync(int commandTimeout, CancellationToken cancellationToken = default);
-
-        /// <summary>
-        /// Assemble and execute a SELECT query to retrieve a single <typeparamref name="TValue"/> value.
-        /// </summary>
-        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql SELECT query.</param>
-        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
-        /// <returns>The single <typeparamref name="TValue"/> value retrieved from execution of the sql SELECT query.</returns>
-        Task<TValue> ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken = default);
+        TValue? Execute(ISqlConnection connection);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve a single <typeparamref name="TValue"/> value.
         /// </summary>
         /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql SELECT query.</param>
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
+        /// <returns>The single <typeparamref name="TValue"/> value retrieved from execution of the sql SELECT query.</returns>
+        TValue? Execute(ISqlConnection connection, int commandTimeout);
+
+        /// <summary>
+        /// Assemble and execute a SELECT query to retrieve a single <typeparamref name="TValue"/> value.
+        /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
         /// <returns>The single <typeparamref name="TValue"/> value retrieved from execution of the sql SELECT query.</returns>
-        Task<TValue> ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default);
+        Task<TValue?> ExecuteAsync(CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Assemble and execute a SELECT query to retrieve a single <typeparamref name="TValue"/> value.
+        /// </summary>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
+        /// <returns>The single <typeparamref name="TValue"/> value retrieved from execution of the sql SELECT query.</returns>
+        Task<TValue?> ExecuteAsync(int commandTimeout, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Assemble and execute a SELECT query to retrieve a single <typeparamref name="TValue"/> value.
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql SELECT query.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
+        /// <returns>The single <typeparamref name="TValue"/> value retrieved from execution of the sql SELECT query.</returns>
+        Task<TValue?> ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Assemble and execute a SELECT query to retrieve a single <typeparamref name="TValue"/> value.
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql SELECT query.</param>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
+        /// <returns>The single <typeparamref name="TValue"/> value retrieved from execution of the sql SELECT query.</returns>
+        Task<TValue?> ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default);
     }
 }

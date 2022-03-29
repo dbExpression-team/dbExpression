@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.Sql.Builder
         IQueryExpressionProvider
     {
         #region internals
-        protected RuntimeSqlDatabaseConfiguration Configuration { get; private set; }
+        protected SqlDatabaseRuntimeConfiguration Configuration { get; private set; }
         private readonly QueryExpression expression;
         #endregion
 
@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
 
         #region constructors
-        protected QueryExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, QueryExpression expression)
+        protected QueryExpressionBuilder(SqlDatabaseRuntimeConfiguration configuration, QueryExpression expression)
         {
             this.Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             this.expression = expression ?? throw new ArgumentNullException(nameof(expression));

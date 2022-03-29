@@ -26,18 +26,18 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<TimeSpanFieldExpression>
     {
         #region constructors
-        protected TimeSpanFieldExpression(string identifier, string name, EntityExpression entity) : base(identifier, name, typeof(TimeSpan), entity)
+        protected TimeSpanFieldExpression(string identifier, string name, Table entity) : base(identifier, name, typeof(TimeSpan), entity)
         {
 
         }
         #endregion
 
         #region equals
-        public bool Equals(TimeSpanFieldExpression obj)
-            => obj is TimeSpanFieldExpression && base.Equals(obj);
+        public bool Equals(TimeSpanFieldExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is TimeSpanFieldExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is TimeSpanFieldExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

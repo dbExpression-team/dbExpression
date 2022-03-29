@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.MsSql.Expression
         IExpressionElement<TValue>
     {
         #region constructors
-        protected PatIndexFunctionExpression(AnyElement<string> pattern, AnyElement<string> expression)
+        protected PatIndexFunctionExpression(StringElement pattern, StringElement expression)
             : base(pattern, expression, typeof(TValue))
         {
 

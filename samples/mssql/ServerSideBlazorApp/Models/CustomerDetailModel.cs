@@ -6,8 +6,8 @@ namespace ServerSideBlazorApp.Models
     public class CustomerDetailModel
     {
         public int Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public string FirstName { get; set; } = string.Empty;
+        public string LastName { get; set; } = string.Empty;
         public GenderType Gender { get; set; }
         public short? CurrentAge { get; set; }
         public DateTime? BirthDate { get; set; }

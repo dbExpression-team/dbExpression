@@ -26,18 +26,18 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<NullableBooleanFieldExpression>
     {
         #region constructors
-        protected NullableBooleanFieldExpression(string identifier, string name, EntityExpression entity) : base(identifier, name, entity)
+        protected NullableBooleanFieldExpression(string identifier, string name, Table entity) : base(identifier, name, entity)
         {
 
         }
         #endregion
 
         #region equals
-        public bool Equals(NullableBooleanFieldExpression obj)
-            => obj is NullableBooleanFieldExpression && base.Equals(obj);
+        public bool Equals(NullableBooleanFieldExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableBooleanFieldExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableBooleanFieldExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

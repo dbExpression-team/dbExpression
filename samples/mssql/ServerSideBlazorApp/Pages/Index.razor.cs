@@ -50,7 +50,7 @@ namespace ServerSideBlazorApp.Pages
             {
                 NavigationManager.NavigateTo("/startup", true);
             }
-            return null;
+            return Enumerable.Empty<SingleMetricDatasetModel>();
         }
 
         private async Task<IEnumerable<SingleMetricDatasetModel>> GetSalesByProductCategory()
@@ -74,7 +74,7 @@ namespace ServerSideBlazorApp.Pages
             {
                 NavigationManager.NavigateTo("/startup", true);
             }
-            return null;
+            return Enumerable.Empty<SingleMetricDatasetModel>();
         }
     }
 }

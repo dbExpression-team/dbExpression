@@ -32,11 +32,6 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public AnyElement<TimeSpan> As(string alias)
-            => new SelectExpression<TimeSpan>(this).As(alias);
-        #endregion
-
         #region distinct
         public TimeSpanMaximumFunctionExpression Distinct()
         {
@@ -46,11 +41,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(TimeSpanMaximumFunctionExpression obj)
-            => obj is TimeSpanMaximumFunctionExpression && base.Equals(obj);
+        public bool Equals(TimeSpanMaximumFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is TimeSpanMaximumFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is TimeSpanMaximumFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

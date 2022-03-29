@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.Tools.Service
     public class CommandService
     {
         #region assemble command
-        public string Assemble(string[] args)
+        public static string Assemble(string[] args)
         {
             for (int i = 0; i < args.Length; i++)
             {
@@ -41,16 +41,16 @@ namespace HatTrick.DbEx.Tools.Service
         #endregion
 
         #region is known
-        public bool IsKnown(string commandLine, out string command, out string options)
+        public static bool IsKnown(string commandLine, out string? command, out string? options)
         {
             int idx = commandLine.IndexOf(' ');
 
             command = (idx == -1) 
                 ? commandLine 
-                : commandLine.Substring(0, idx);
+                : commandLine[..idx];
 
             options = (++idx > 0) //add 1 to the idx to get past first space...
-                ? commandLine.Substring(idx, commandLine.Length - idx)
+                ? commandLine[idx..]
                 : null;
 
             bool isknown = string.IsNullOrEmpty(command)    //usage
@@ -69,26 +69,19 @@ namespace HatTrick.DbEx.Tools.Service
         #region ensure command
         public ExecutionContext EnsureCommand(string[] args)
         {
-            ExecutionContext executor = null;
-
-            string commandLine = this.Assemble(args);
-            string command = null;
-            string options = null;
-            if (!this.IsKnown(commandLine, out command, out options))
+            string commandLine = Assemble(args);
+            if (!IsKnown(commandLine, out string? command, out string? options))
             {
                 throw new CommandException($"Encountered unknown command: {commandLine}");
             }
-
-            executor = this.GetExecutionContext(command, options);
-
-            return executor;
+            return GetExecutionContext(command!, options);
         }
         #endregion
 
         #region get execution context
-        public ExecutionContext GetExecutionContext(string command, string options)
+        public static ExecutionContext GetExecutionContext(string command, string? options)
         {
-            ExecutionContext context = null;
+            ExecutionContext? context;
 
             if (string.IsNullOrEmpty(command))
             {

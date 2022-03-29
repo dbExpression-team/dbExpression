@@ -26,18 +26,18 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<SingleFieldExpression>
     {
         #region constructors
-        protected SingleFieldExpression(string identifier, string name, EntityExpression entity) : base(identifier, name, typeof(float), entity)
+        protected SingleFieldExpression(string identifier, string name, Table entity) : base(identifier, name, typeof(float), entity)
         {
 
         }
         #endregion
 
         #region equals
-        public bool Equals(SingleFieldExpression obj)
-            => obj is SingleFieldExpression && base.Equals(obj);
+        public bool Equals(SingleFieldExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is SingleFieldExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is SingleFieldExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

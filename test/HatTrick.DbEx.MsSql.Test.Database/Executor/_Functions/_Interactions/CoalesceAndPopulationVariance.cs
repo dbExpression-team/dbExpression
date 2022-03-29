@@ -60,7 +60,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ).From(dbo.Person);
 
             //when               
-            object result = exp.Execute();
+            object? result = exp.Execute();
 
             //then
             result.Should().BeAssignableTo<float?>().Which.Should().BeApproximately(expected, .0001f);
@@ -92,7 +92,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.Coalesce<float?>(db.fx.VarP(dbo.Person.CreditLimit), (float?)null)
+                    db.fx.Coalesce<float?>(db.fx.VarP(dbo.Person.CreditLimit), (float?)null!)
                 ).From(dbo.Person);
 
             //when               
@@ -110,7 +110,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.VarP(db.fx.Coalesce<int?>(dbo.Person.CreditLimit, (int?)null))
+                    db.fx.VarP(db.fx.Coalesce<int?>(dbo.Person.CreditLimit, (int?)null!))
                 ).From(dbo.Person);
 
             //when               

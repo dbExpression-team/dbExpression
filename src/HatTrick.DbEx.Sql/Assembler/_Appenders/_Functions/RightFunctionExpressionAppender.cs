@@ -28,7 +28,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             builder.Appender.Write("RIGHT(");
             builder.AppendElement((expression as IExpressionProvider<IExpressionElement>).Expression, context);
             builder.Appender.Write(", ");
-            builder.AppendElement((expression as IExpressionProvider<AnyElement<int>>).Expression, context);
+            builder.AppendElement((expression as IExpressionProvider<AnyElement>).Expression, context);
             builder.Appender.Write(")");
         }
         #endregion

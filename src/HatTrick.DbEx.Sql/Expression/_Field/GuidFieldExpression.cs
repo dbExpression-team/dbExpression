@@ -26,18 +26,18 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<GuidFieldExpression>
     {
         #region constructors
-        protected GuidFieldExpression(string identifier, string name, EntityExpression entity) : base(identifier, name, typeof(Guid), entity)
+        protected GuidFieldExpression(string identifier, string name, Table entity) : base(identifier, name, typeof(Guid), entity)
         {
 
         }
         #endregion
 
         #region equals
-        public bool Equals(GuidFieldExpression obj)
-            => obj is GuidFieldExpression && base.Equals(obj);
+        public bool Equals(GuidFieldExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is GuidFieldExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is GuidFieldExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

@@ -74,7 +74,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             exp.Execute();
 
             //then
-            var person = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.Id == id).Execute();
+            var person = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.Id == id).Execute()!;
             person.FirstName.Should().Be(expectedFirstName);
             person.LastName.Should().Be(expectedLastName);
         }
@@ -151,7 +151,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             AppendImagesToProductsInDatabase();
             ConfigureForMsSqlVersion(version);
-            var product1 = db.SelectOne<Product>().From(dbo.Product).Where(dbo.Product.Id == 1).Execute();
+            Product product1 = db.SelectOne<Product>().From(dbo.Product).Where(dbo.Product.Id == 1).Execute()!;
 
             //when
             db.Update(dbo.Product.Image.Set(product1.Image))
@@ -160,7 +160,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                .Execute();
 
             //then
-            var product2Image = db.SelectOne(dbo.Product.Image).From(dbo.Product).Where(dbo.Product.Id == 2).Execute();
+            byte[] product2Image = db.SelectOne(dbo.Product.Image).From(dbo.Product).Where(dbo.Product.Id == 2).Execute()!;
             product2Image.Should().BeEquivalentTo(product1.Image);
         }
 
@@ -171,7 +171,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             ConfigureForMsSqlVersion(version);
-            var address = db.SelectOne<Address>().From(dbo.Address).Where(dbo.Address.Line2 != DBNull.Value).Execute();
+            var address = db.SelectOne<Address>().From(dbo.Address).Where(dbo.Address.Line2 != DBNull.Value).Execute()!;
 
             //when
             db.Update(dbo.Address.Line2.Set(DBNull.Value))
@@ -180,7 +180,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                .Execute();
 
             //then
-            var updatedAddress = db.SelectOne<Address>().From(dbo.Address).Where(dbo.Address.Id == address.Id).Execute();
+            var updatedAddress = db.SelectOne<Address>().From(dbo.Address).Where(dbo.Address.Id == address.Id).Execute()!;
             updatedAddress.Line2.Should().BeNull();
         }
 
@@ -200,7 +200,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                .Execute();
 
             //then
-            var updatedProduct = db.SelectOne<Product>().From(dbo.Product).Where(dbo.Product.Id == 1).Execute();
+            var updatedProduct = db.SelectOne<Product>().From(dbo.Product).Where(dbo.Product.Id == 1).Execute()!;
             updatedProduct.Image.Should().BeNull();
         }
 
@@ -212,8 +212,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var unchanged = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == lastName).Execute();
-            var updated = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == lastName).Execute();
+            var unchanged = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == lastName).Execute()!;
+            var updated = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == lastName).Execute()!;
 
             updated.LastName = "x";
             updated.FirstName = "x";
@@ -225,7 +225,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //when               
             var recordsAffected = exp.Execute();
-            var verification = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == "x").Execute();
+            var verification = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == "x").Execute()!;
 
             //then
             recordsAffected.Should().Be(expectedRecordsAffected);
@@ -241,8 +241,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var source = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == lastName).Execute();
-            var target = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == lastName).Execute();
+            var source = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == lastName).Execute()!;
+            var target = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == lastName).Execute()!;
 
             var comparison = dbex.BuildAssignmentsFor(dbo.Person).From(source).To(target);
             Func<Task> execute = async () => await db.Update(comparison)
@@ -383,17 +383,36 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             var anticipatedCount = await db.SelectOne(db.fx.Count())
                 .From(dbo.Person)
-                .InnerJoin(subquery).As("newCreditLimit").On(dbo.Person.Id == dbex.Alias("newCreditLimit", nameof(dbo.Purchase.PersonId)))
+                .InnerJoin(subquery).As("newCreditLimit").On(dbo.Person.Id == ("newCreditLimit", nameof(dbo.Purchase.PersonId)))
                 .ExecuteAsync();
 
             //when
             var affectedCount = await db.Update(dbo.Person.CreditLimit.Set(1000))
                 .From(dbo.Person)
-                .InnerJoin(subquery).As("newCreditLimit").On(dbo.Person.Id == dbex.Alias("newCreditLimit", nameof(dbo.Purchase.PersonId)))
+                .InnerJoin(subquery).As("newCreditLimit").On(dbo.Person.Id == ("newCreditLimit", nameof(dbo.Purchase.PersonId)))
                 .ExecuteAsync();
 
             //then
             affectedCount.Should().Be(anticipatedCount);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_update_records_using_arithmetic(int version, int anticipatedCount = 9)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //when
+            int affectedCount = await db.Update(
+                        dbo.Product.Quantity.Set(dbo.Product.Quantity - 1)
+                    )
+                .From(dbo.Product)
+                .ExecuteAsync();
+
+            //then
+            affectedCount.Should().Be(anticipatedCount);
+
         }
     }
 }

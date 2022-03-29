@@ -38,11 +38,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(FilterExpression<T> obj)
-            => obj is FilterExpression<T> && base.Equals(obj);
+        public bool Equals(FilterExpression<T>? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is FilterExpression<T> exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is FilterExpression<T> exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();
@@ -50,13 +50,13 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region implicit operators
         public static implicit operator FilterExpressionSet(FilterExpression<T> a)
-            => a is null ? null : new FilterExpressionSet(a);
+            => new(a);
 
         public static implicit operator HavingExpression(FilterExpression<T> a)
-            => new HavingExpression(a);
+            => new(a);
 
         public static implicit operator JoinOnExpressionSet(FilterExpression<T> a)
-            => a?.ConvertToJoinOnExpressionSet();
+            => a.ConvertToJoinOnExpressionSet();
         #endregion
     }
 }

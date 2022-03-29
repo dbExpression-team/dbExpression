@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.Sql.Mapper
     public class MapperFactory : IMapperFactory
     {
         #region internals
-        private readonly ConcurrentDictionary<Type, Func<IMapper>> entityMappers = new ConcurrentDictionary<Type, Func<IMapper>>();
+        private readonly ConcurrentDictionary<Type, Func<IMapper>> entityMappers = new();
         #endregion
 
         #region methods
@@ -39,11 +39,15 @@ namespace HatTrick.DbEx.Sql.Mapper
             entityMappers.AddOrUpdate(typeof(TEntity), () => new EntityMapper<TEntity>(converter), (t, f) => () => new EntityMapper<TEntity>(converter));
         }
 
-        public IEntityMapper<TEntity> CreateEntityMapper<TEntity>(IEntityExpression<TEntity> entity)
+        public IEntityMapper<TEntity> CreateEntityMapper<TEntity>(Table<TEntity> entity)
             where TEntity : class, IDbEntity
         {
-            if (entityMappers.TryGetValue(typeof(TEntity), out Func<IMapper> map))
-                return map() as IEntityMapper<TEntity>;
+            if (entityMappers.TryGetValue(typeof(TEntity), out Func<IMapper>? provider))
+            {
+                var map = provider();
+                if (map is null) throw new DbExpressionException($"Mapper for entity type {typeof(TEntity)} is not registered.");
+                return map as IEntityMapper<TEntity> ?? throw new DbExpressionException($"A mapper of type {map.GetType()} was registered for entity type {typeof(TEntity)}.  The mapper does not provide mapping for {typeof(TEntity)}.");
+            }
 
             var entityMap = new EntityMapper<TEntity>(entity.HydrateEntity);
             entityMappers.TryAdd(typeof(TEntity), () => entityMap);

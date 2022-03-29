@@ -4,6 +4,7 @@ using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
+using HatTrick.DbEx.Sql.Builder.Alias;
 using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
@@ -138,7 +139,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.Sum(dbex.Alias<decimal>("lines", "PurchasePrice")).As("alias")
+                    db.fx.Sum(("lines", "PurchasePrice")).As("alias")
                 ).From(dbo.Purchase)
                 .InnerJoin(
                     db.SelectMany<PurchaseLine>()
@@ -146,7 +147,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ).As("lines").On(dbo.Purchase.Id == ("lines", "PurchaseId"));
 
             //when               
-            object result = exp.Execute();
+            object? result = exp.Execute();
 
             //then
             result.Should().BeOfType<decimal>().Which.Should().BeApproximately(expected, 0.01m, "Rounding errors in summation");

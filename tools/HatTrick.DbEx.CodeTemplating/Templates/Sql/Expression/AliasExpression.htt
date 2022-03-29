@@ -19,19 +19,16 @@
 using System;
 using System.Collections.Generic;
 
+#nullable enable
+
 namespace {Namespace}
 {{
-    public partial class AliasExpression
+    public partial class AliasExpression<T>
     {{
-        #region order
-        public OrderByExpression Asc => new OrderByExpression(this, OrderExpressionDirection.ASC);
-        public OrderByExpression Desc => new OrderByExpression(this, OrderExpressionDirection.DESC);
-        #endregion
-
         #region implicit operators
-        public static implicit operator OrderByExpression(AliasExpression a) => new OrderByExpression(a, OrderExpressionDirection.ASC);
-        public static implicit operator GroupByExpression(AliasExpression a) => new GroupByExpression(a);
-        public static implicit operator ObjectExpressionMediator(AliasExpression a) => new ObjectExpressionMediator(a);
+        public static implicit operator OrderByExpression(AliasExpression<T> a) => new(a, OrderExpressionDirection.ASC);
+        public static implicit operator GroupByExpression(AliasExpression<T> a) => new(a);
+        public static implicit operator ObjectExpressionMediator(AliasExpression<T> a) => new(a);
         #endregion
 
         #region arithmetic operators
@@ -41,20 +38,20 @@ namespace {Namespace}
         {-?var:operationType = $.OperationType-}
         #region {:operationType.Alias}
         {-#each Operations-}
-        public static ObjectExpressionMediator operator {ArithmeticOperatorSymbol}(AliasExpression a, {:operationType.Alias} b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<{:operationType.Alias}>(b), ArithmeticExpressionOperator.{ArithmeticOperatorName}));
+        public static ObjectExpressionMediator operator {ArithmeticOperatorSymbol}(AliasExpression<T> a, {:operationType.Alias} b) => new(new ArithmeticExpression(a, new LiteralExpression<{:operationType.Alias}>(b), ArithmeticExpressionOperator.{ArithmeticOperatorName}));
         {-/each-}
 
         {-#each Operations-}
-        public static ObjectExpressionMediator operator {ArithmeticOperatorSymbol}({:operationType.Alias} a, AliasExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<{:operationType.Alias}>(a), b, ArithmeticExpressionOperator.{$.ArithmeticOperatorName}));
+        public static ObjectExpressionMediator operator {ArithmeticOperatorSymbol}({:operationType.Alias} a, AliasExpression<T> b) => new(new ArithmeticExpression(new LiteralExpression<{:operationType.Alias}>(a), b, ArithmeticExpressionOperator.{$.ArithmeticOperatorName}));
         {-/each-}
 
         {-#if :operationType.IsNullable-}
         {-#each Operations-}
-        public static ObjectExpressionMediator operator {ArithmeticOperatorSymbol}(AliasExpression a, {:operationType.NullableAlias} b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<{:operationType.NullableAlias}>(b), ArithmeticExpressionOperator.{ArithmeticOperatorName}));
+        public static ObjectExpressionMediator operator {ArithmeticOperatorSymbol}(AliasExpression<T> a, {:operationType.NullableAlias} b) => new(new ArithmeticExpression(a, new LiteralExpression<{:operationType.NullableAlias}>(b), ArithmeticExpressionOperator.{ArithmeticOperatorName}));
         {-/each-}
 
         {-#each Operations-}
-        public static ObjectExpressionMediator operator {ArithmeticOperatorSymbol}({:operationType.NullableAlias} a, AliasExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new LiteralExpression<{:operationType.NullableAlias}>(a), b, ArithmeticExpressionOperator.{ArithmeticOperatorName}));
+        public static ObjectExpressionMediator operator {ArithmeticOperatorSymbol}({:operationType.NullableAlias} a, AliasExpression<T> b) => new(new ArithmeticExpression(new LiteralExpression<{:operationType.NullableAlias}>(a), b, ArithmeticExpressionOperator.{ArithmeticOperatorName}));
         {-/each-}
         {-/if-}
         #endregion
@@ -68,13 +65,13 @@ namespace {Namespace}
         {-?var:operationType = $.OperationType-}
         #region {:operationType.Alias}
         {-#each Operations-}
-        public static ObjectExpressionMediator operator {ArithmeticOperatorSymbol}(AliasExpression a, {:operationType.Name}FieldExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.{ArithmeticOperatorName}));
+        public static ObjectExpressionMediator operator {ArithmeticOperatorSymbol}(AliasExpression<T> a, {:operationType.Name}FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.{ArithmeticOperatorName}));
         {-/each-}
 
         {-#if :mediatorType.IsNullable-}
         {-#each Operations-}
         {-#if :operationType.IsNullable-}
-        public static ObjectExpressionMediator operator {ArithmeticOperatorSymbol}(AliasExpression a, Nullable{:operationType.Name}FieldExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.{ArithmeticOperatorName}));
+        public static ObjectExpressionMediator operator {ArithmeticOperatorSymbol}(AliasExpression<T> a, Nullable{:operationType.Name}FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.{ArithmeticOperatorName}));
         {-/if-}
         {-/each-}
         {-/if-}
@@ -89,13 +86,13 @@ namespace {Namespace}
         {-?var:operationType = $.OperationType-}
         #region {:operationType.Alias}
         {-#each Operations-}
-        public static ObjectExpressionMediator operator {ArithmeticOperatorSymbol}(AliasExpression a, {:operationType.Name}ExpressionMediator b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.{ArithmeticOperatorName}));
+        public static ObjectExpressionMediator operator {ArithmeticOperatorSymbol}(AliasExpression<T> a, {:operationType.Name}ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.{ArithmeticOperatorName}));
         {-/each-}
 
         {-#if :mediatorType.IsNullable-}
         {-#each Operations-}
         {-#if :operationType.IsNullable-}
-        public static ObjectExpressionMediator operator {ArithmeticOperatorSymbol}(AliasExpression a, Nullable{:operationType.Name}ExpressionMediator b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.{ArithmeticOperatorName}));
+        public static ObjectExpressionMediator operator {ArithmeticOperatorSymbol}(AliasExpression<T> a, Nullable{:operationType.Name}ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.{ArithmeticOperatorName}));
         {-/if-}
         {-/each-}
         {-/if-}
@@ -105,32 +102,38 @@ namespace {Namespace}
         #endregion
 
         #region alias
-        public static ObjectExpressionMediator operator +(AliasExpression a, AliasExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(AliasExpression a, AliasExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(AliasExpression a, AliasExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(AliasExpression a, AliasExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(AliasExpression a, AliasExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static ObjectExpressionMediator operator +(AliasExpression<T> a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(AliasExpression<T> a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *(AliasExpression<T> a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /(AliasExpression<T> a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %(AliasExpression<T> a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
 
-        public static ObjectExpressionMediator operator +(AliasExpression a, (string TableName, string FieldName) b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new AliasExpression(b.TableName, b.FieldName), ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(AliasExpression a, (string TableName, string FieldName) b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new AliasExpression(b.TableName, b.FieldName), ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(AliasExpression a, (string TableName, string FieldName) b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new AliasExpression(b.TableName, b.FieldName), ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(AliasExpression a, (string TableName, string FieldName) b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new AliasExpression(b.TableName, b.FieldName), ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(AliasExpression a, (string TableName, string FieldName) b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new AliasExpression(b.TableName, b.FieldName), ArithmeticExpressionOperator.Modulo));
+        public static ObjectExpressionMediator operator +(AliasExpression<T> a, AliasExpression<T> b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(AliasExpression<T> a, AliasExpression<T> b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *(AliasExpression<T> a, AliasExpression<T> b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /(AliasExpression<T> a, AliasExpression<T> b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %(AliasExpression<T> a, AliasExpression<T> b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
 
-        public static ObjectExpressionMediator operator +((string TableName, string FieldName) a, AliasExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new AliasExpression(a.TableName, a.FieldName), b, ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -((string TableName, string FieldName) a, AliasExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new AliasExpression(a.TableName, a.FieldName), b, ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *((string TableName, string FieldName) a, AliasExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new AliasExpression(a.TableName, a.FieldName), b, ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /((string TableName, string FieldName) a, AliasExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new AliasExpression(a.TableName, a.FieldName), b, ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %((string TableName, string FieldName) a, AliasExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new AliasExpression(a.TableName, a.FieldName), b, ArithmeticExpressionOperator.Modulo));
+        public static ObjectExpressionMediator operator +(AliasExpression<T> a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression<T>(b), ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(AliasExpression<T> a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression<T>(b), ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *(AliasExpression<T> a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression<T>(b), ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /(AliasExpression<T> a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression<T>(b), ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %(AliasExpression<T> a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression<T>(b), ArithmeticExpressionOperator.Modulo));
+
+        public static ObjectExpressionMediator operator +((string TableName, string FieldName) a, AliasExpression<T> b) => new(new ArithmeticExpression(new AliasExpression<T>(a), b, ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -((string TableName, string FieldName) a, AliasExpression<T> b) => new(new ArithmeticExpression(new AliasExpression<T>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *((string TableName, string FieldName) a, AliasExpression<T> b) => new(new ArithmeticExpression(new AliasExpression<T>(a), b, ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /((string TableName, string FieldName) a, AliasExpression<T> b) => new(new ArithmeticExpression(new AliasExpression<T>(a), b, ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %((string TableName, string FieldName) a, AliasExpression<T> b) => new(new ArithmeticExpression(new AliasExpression<T>(a), b, ArithmeticExpressionOperator.Modulo));
         #endregion
         #endregion
 
         #region filter operators
         #region DBNull
-        public static FilterExpressionSet operator ==(AliasExpression a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<object>(DBNull.Value), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(AliasExpression a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<object>(DBNull.Value), FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator ==(DBNull a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<object>(DBNull.Value), b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(DBNull a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<object>(DBNull.Value), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(AliasExpression<T> a, DBNull b) => new(new FilterExpression<bool?>(a, new LiteralExpression<object>(DBNull.Value), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(AliasExpression<T> a, DBNull b) => new(new FilterExpression<bool?>(a, new LiteralExpression<object>(DBNull.Value), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(DBNull a, AliasExpression<T> b) => new(new FilterExpression<bool?>(new LiteralExpression<object>(DBNull.Value), b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(DBNull a, AliasExpression<T> b) => new(new FilterExpression<bool?>(new LiteralExpression<object>(DBNull.Value), b, FilterExpressionOperator.NotEqual));
         #endregion
 
         #region data types
@@ -139,20 +142,20 @@ namespace {Namespace}
         #region {:dataType.Alias}
         {-#if !:dataType.Type => IsTypeOfObject-}
         {-#each Operations-}
-        public static FilterExpressionSet operator {FilterOperatorSymbol}(AliasExpression a, {:dataType.Alias} b) => new FilterExpressionSet(new FilterExpression<bool>(a, new LiteralExpression<{:dataType.Alias}>(b), FilterExpressionOperator.{FilterOperatorName}));
+        public static FilterExpressionSet operator {FilterOperatorSymbol}(AliasExpression<T> a, {:dataType.Alias} b) => new(new FilterExpression<bool>(a, new LiteralExpression<{:dataType.Alias}>(b), FilterExpressionOperator.{FilterOperatorName}));
         {-/each-}
 
         {-#each Operations-}
-        public static FilterExpressionSet operator {FilterOperatorSymbol}({:dataType.Alias} a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new LiteralExpression<{:dataType.Alias}>(a), b, FilterExpressionOperator.{FilterOperatorName}));
+        public static FilterExpressionSet operator {FilterOperatorSymbol}({:dataType.Alias} a, AliasExpression<T> b) => new(new FilterExpression<bool>(new LiteralExpression<{:dataType.Alias}>(a), b, FilterExpressionOperator.{FilterOperatorName}));
         {-/each-}
 
         {-#if :dataType.IsNullable-}
         {-#each Operations-}
-        public static FilterExpressionSet operator {FilterOperatorSymbol}(AliasExpression a, {:dataType.NullableAlias} b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<{:dataType.NullableAlias}>(b), FilterExpressionOperator.{FilterOperatorName}));
+        public static FilterExpressionSet operator {FilterOperatorSymbol}(AliasExpression<T> a, {:dataType.NullableAlias} b) => new(new FilterExpression<bool?>(a, new LiteralExpression<{:dataType.NullableAlias}>(b), FilterExpressionOperator.{FilterOperatorName}));
         {-/each-}
 
         {-#each Operations-}
-        public static FilterExpressionSet operator {FilterOperatorSymbol}({:dataType.NullableAlias} a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<{:dataType.NullableAlias}>(a), b, FilterExpressionOperator.{FilterOperatorName}));
+        public static FilterExpressionSet operator {FilterOperatorSymbol}({:dataType.NullableAlias} a, AliasExpression<T> b) => new(new FilterExpression<bool?>(new LiteralExpression<{:dataType.NullableAlias}>(a), b, FilterExpressionOperator.{FilterOperatorName}));
         {-/each-}
         {-/if-}
         {-/if-}
@@ -168,12 +171,12 @@ namespace {Namespace}
         #region {:dataType.Alias}
         {-#if !:dataType.Type => IsTypeOfObject-}
         {-#each Operations-}
-        public static FilterExpressionSet operator {FilterOperatorSymbol}(AliasExpression a, {:dataType.Name}FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.{FilterOperatorName}));
+        public static FilterExpressionSet operator {FilterOperatorSymbol}(AliasExpression<T> a, {:dataType.Name}FieldExpression b) => new(new FilterExpression<bool>(a, b, FilterExpressionOperator.{FilterOperatorName}));
         {-/each-}
 
         {-#if :dataType.IsNullable-}
         {-#each Operations-}
-        public static FilterExpressionSet operator {FilterOperatorSymbol}(AliasExpression a, Nullable{:dataType.Name}FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.{FilterOperatorName}));
+        public static FilterExpressionSet operator {FilterOperatorSymbol}(AliasExpression<T> a, Nullable{:dataType.Name}FieldExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.{FilterOperatorName}));
         {-/each-}
         {-/if-}
         {-/if-}
@@ -188,12 +191,12 @@ namespace {Namespace}
         #region {:dataType.Alias}
         {-#if !:dataType.Type => IsTypeOfObject-}
         {-#each Operations-}
-        public static FilterExpressionSet operator {FilterOperatorSymbol}(AliasExpression a, {:dataType.Name}ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.{FilterOperatorName}));
+        public static FilterExpressionSet operator {FilterOperatorSymbol}(AliasExpression<T> a, {:dataType.Name}ExpressionMediator b) => new(new FilterExpression<bool>(a, b, FilterExpressionOperator.{FilterOperatorName}));
         {-/each-}
 
         {-#if :dataType.IsNullable-}
         {-#each Operations-}
-        public static FilterExpressionSet operator {FilterOperatorSymbol}(AliasExpression a, Nullable{:dataType.Name}ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.{FilterOperatorName}));
+        public static FilterExpressionSet operator {FilterOperatorSymbol}(AliasExpression<T> a, Nullable{:dataType.Name}ExpressionMediator b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.{FilterOperatorName}));
         {-/each-}
         {-/if-}
         {-/if-}
@@ -203,31 +206,20 @@ namespace {Namespace}
         #endregion
 
         #region alias
-        public static FilterExpressionSet operator ==(AliasExpression a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(AliasExpression a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator <(AliasExpression a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator >(AliasExpression a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan));
-        public static FilterExpressionSet operator <=(AliasExpression a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual));
-        public static FilterExpressionSet operator >=(AliasExpression a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual));
+        public static FilterExpressionSet operator ==(AliasExpression<T> a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(AliasExpression<T> a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(AliasExpression<T> a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator >(AliasExpression<T> a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator <=(AliasExpression<T> a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >=(AliasExpression<T> a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual));
 
-        public static FilterExpressionSet operator ==((string TableName, string FieldName) a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new AliasExpression(a.TableName, a.FieldName), b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=((string TableName, string FieldName) a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new AliasExpression(a.TableName, a.FieldName), b, FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator <((string TableName, string FieldName) a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new AliasExpression(a.TableName, a.FieldName), b, FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator >((string TableName, string FieldName) a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new AliasExpression(a.TableName, a.FieldName), b, FilterExpressionOperator.GreaterThan));
-        public static FilterExpressionSet operator <=((string TableName, string FieldName) a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new AliasExpression(a.TableName, a.FieldName), b, FilterExpressionOperator.LessThanOrEqual));
-        public static FilterExpressionSet operator >=((string TableName, string FieldName) a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new AliasExpression(a.TableName, a.FieldName), b, FilterExpressionOperator.GreaterThanOrEqual));
+        public static FilterExpressionSet operator ==((string TableName, string FieldName) a, AliasExpression<T> b) => new(new FilterExpression<bool?>(new AliasExpression<T>(a), b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=((string TableName, string FieldName) a, AliasExpression<T> b) => new(new FilterExpression<bool?>(new AliasExpression<T>(a), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <((string TableName, string FieldName) a, AliasExpression<T> b) => new(new FilterExpression<bool?>(new AliasExpression<T>(a), b, FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator >((string TableName, string FieldName) a, AliasExpression<T> b) => new(new FilterExpression<bool?>(new AliasExpression<T>(a), b, FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator <=((string TableName, string FieldName) a, AliasExpression<T> b) => new(new FilterExpression<bool?>(new AliasExpression<T>(a), b, FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >=((string TableName, string FieldName) a, AliasExpression<T> b) => new(new FilterExpression<bool?>(new AliasExpression<T>(a), b, FilterExpressionOperator.GreaterThanOrEqual));
         #endregion
-        #endregion
-    }}
-
-    public partial class AliasExpression<T>
-    {{
-        #region alias
-        public static ObjectExpressionMediator operator +(AliasExpression<T> a, AliasExpression<T> b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static ObjectExpressionMediator operator -(AliasExpression<T> a, AliasExpression<T> b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static ObjectExpressionMediator operator *(AliasExpression<T> a, AliasExpression<T> b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static ObjectExpressionMediator operator /(AliasExpression<T> a, AliasExpression<T> b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static ObjectExpressionMediator operator %(AliasExpression<T> a, AliasExpression<T> b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
         #endregion
     }}
 }}

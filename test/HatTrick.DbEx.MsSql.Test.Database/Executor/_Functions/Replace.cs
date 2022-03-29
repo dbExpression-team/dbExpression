@@ -3,7 +3,7 @@ using DbEx.dboDataService;
 using DbEx.dboData;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
-using HatTrick.DbEx.Sql;
+using HatTrick.DbEx.Sql.Builder.Alias;
 using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Where(dbo.Person.FirstName == firstName);
 
             //when               
-            string result = exp.Execute();
+            string? result = exp.Execute();
 
             //then
             result.Should().Be(expected);
@@ -44,7 +44,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Where(dbo.Person.FirstName == firstName);
 
             //when               
-            string result = exp.Execute();
+            string? result = exp.Execute();
 
             //then
             result.Should().Be(expected);
@@ -63,7 +63,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Where(dbo.Person.FirstName == firstName);
 
             //when               
-            string result = exp.Execute();
+            string? result = exp.Execute();
 
             //then
             result.Should().Be(expected);
@@ -82,7 +82,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Where(dbo.Person.FirstName == firstName);
 
             //when               
-            string result = exp.Execute();
+            string? result = exp.Execute();
 
             //then
             result.Should().Be(expected);
@@ -97,7 +97,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.Replace(dbex.Alias<string>("_address", "Line1"), pattern, replacement).As("address_line1")  //100 1st St
+                    db.fx.Replace(("_address", "Line1"), pattern, replacement).As("address_line1")  //100 1st St
                 ).From(dbo.Address)
                 .InnerJoin(
                     db.SelectOne<Address>()
@@ -106,7 +106,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ).As("_address").On(dbo.Address.Id == ("_address", "Id"));
 
             //when               
-            object result = exp.Execute();
+            object? result = exp.Execute();
 
             //then
             result.Should().BeOfType<string>().Which.Should().Be(expected);

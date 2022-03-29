@@ -81,23 +81,26 @@ namespace HatTrick.DbEx.MsSql.Assembler
                 builder.Appender.Write(", ");
             builder.Appender.Indentation++.Indent().Write("ROW_NUMBER() OVER (");
 
-            var orderBys = expression.OrderBy.Expressions.ToList();
-            for (var i = 0; i < orderBys.Count; i++)
+            var orderBys = expression.OrderBy?.Expressions?.ToList();
+            if (orderBys is not null)
             {
-                builder.Appender.Indent();
-
-                context.PushEntityAppendStyle(EntityExpressionAppendStyle.None);
-                try
+                for (var i = 0; i < orderBys.Count; i++)
                 {
-                    builder.AppendElement(orderBys[i], context);
-                }
-                finally
-                {
-                    context.PopEntityAppendStyle();
-                }
+                    builder.Appender.Indent();
 
-                if (i < orderBys.Count - 1)
-                    builder.Appender.Write(", ");
+                    context.PushEntityAppendStyle(EntityExpressionAppendStyle.None);
+                    try
+                    {
+                        builder.AppendElement(orderBys[i], context);
+                    }
+                    finally
+                    {
+                        context.PopEntityAppendStyle();
+                    }
+
+                    if (i < orderBys.Count - 1)
+                        builder.Appender.Write(", ");
+                }
             }
             builder.Appender.Write(") AS [__index]").LineBreak();
 
@@ -115,7 +118,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
 
             builder.Appender.Indent().Write("AS ")
                     .Write(context.Configuration.IdentifierDelimiter.Begin)
-                    .Write((expression.BaseEntity as ISqlMetadataIdentifierProvider).Identifier)
+                    .Write(expression.BaseEntity!.Identifier)
                     .Write(context.Configuration.IdentifierDelimiter.End)
                     .LineBreak()
                 .Indentation--.Indent().Write("WHERE").LineBreak()
@@ -190,25 +193,28 @@ namespace HatTrick.DbEx.MsSql.Assembler
                 .Indentation++;
 
             //append the order by list, which is the "final" select from the CTE
-            var order_by_list = expression.OrderBy.Expressions.ToList();
-            for (var i = 0; i < order_by_list.Count; i++)
+            var order_by_list = expression.OrderBy?.Expressions?.ToList();
+            if (order_by_list is not null)
             {
-                var order_by = order_by_list[i];
-                context.PushEntityAppendStyle(EntityExpressionAppendStyle.None);
-                try
+                for (var i = 0; i < order_by_list.Count; i++)
                 {
-                    builder.Appender.Indent();
-                    if (context.Configuration.PrependCommaOnSelectClause && i > 0)
-                        builder.Appender.Write(",");
-                    builder.Appender.Write(context.Configuration.IdentifierDelimiter.Begin).Write(innerTableAlias).Write(context.Configuration.IdentifierDelimiter.End).Write(".");
-                    builder.AppendElement(order_by, context);
-                    if (!context.Configuration.PrependCommaOnSelectClause && i < order_by_list.Count - 1)
-                        builder.Appender.Write(",");
-                    builder.Appender.LineBreak();
-                }
-                finally
-                {
-                    context.PopEntityAppendStyle();
+                    var order_by = order_by_list[i];
+                    context.PushEntityAppendStyle(EntityExpressionAppendStyle.None);
+                    try
+                    {
+                        builder.Appender.Indent();
+                        if (context.Configuration.PrependCommaOnSelectClause && i > 0)
+                            builder.Appender.Write(",");
+                        builder.Appender.Write(context.Configuration.IdentifierDelimiter.Begin).Write(innerTableAlias).Write(context.Configuration.IdentifierDelimiter.End).Write(".");
+                        builder.AppendElement(order_by, context);
+                        if (!context.Configuration.PrependCommaOnSelectClause && i < order_by_list.Count - 1)
+                            builder.Appender.Write(",");
+                        builder.Appender.LineBreak();
+                    }
+                    finally
+                    {
+                        context.PopEntityAppendStyle();
+                    }
                 }
             }
 
@@ -269,7 +275,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
 
             if (top.HasValue)
             {
-                builder.Appender.Write(" TOP(").Write(expression.Top.ToString()).Write(")");
+                builder.Appender.Write(" TOP(").Write(top.Value.ToString()).Write(")");
             }
 
             builder.Appender.LineBreak()

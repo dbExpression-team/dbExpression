@@ -23,6 +23,7 @@ using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
 using System;
+using System.Reflection;
 
 namespace HatTrick.DbEx.MsSql.Configuration
 {
@@ -34,32 +35,21 @@ namespace HatTrick.DbEx.MsSql.Configuration
         /// </summary>
         /// <typeparam name="T">The (code-generated) database you want to configure for use with dbExpression.</typeparam>
         /// <param name="builder">The <see cref="IDbExpressionConfigurationBuilder" />, the fluent entry point for configuring the runtime environment for <typeparam name="T">. </param>
-        /// <param name="configureRuntime">
-        ///     <para>A delegate to configure the <see cref="RuntimeSqlDatabaseConfiguration" /> using a <see cref="IRuntimeSqlDatabaseConfigurationBuilder"/>.</para>
-        /// </param>        
-        public static void AddMsSql2005Database<T>(this IDbExpressionConfigurationBuilder builder, Action<IRuntimeSqlDatabaseConfigurationBuilder> configureRuntime)
-            where T : class, IRuntimeEnvironmentSqlDatabase, new()
+        /// <param name="configureRuntime">A delegate to configure the <see cref="MsSqlSqlDatabaseRuntimeConfiguration" /> using a <see cref="ISqlDatabaseRuntimeConfigurationBuilder"/>.</param>        
+        public static void AddMsSql2005Database<TDatabase>(this IDbExpressionConfigurationBuilder builder, Action<ISqlDatabaseRuntimeConfigurationBuilder> configureRuntime)
+            where TDatabase : class, ISqlDatabaseRuntime
         {
             if (configureRuntime is null)
                 throw new ArgumentNullException(nameof(configureRuntime));
 
-            var runtime = new T();
-            var config = new RuntimeSqlDatabaseConfiguration();
-
-            var configBuilder = new RuntimeSqlDatabaseConfigurationBuilder(config);
-            configBuilder.ConfigureMsSqlCommon(
-                config, 
-                b => 
-                { 
+            builder.ConfigureMsSqlCommon<TDatabase, MsSqlSqlDatabaseRuntimeConfiguration>(
+                b =>
+                {
                     b.SqlStatements.Assembly.StatementAssembler.Use<Assembler.v2005.MsSqlStatementAssemblerFactory>();
                     b.SqlStatements.Assembly.ElementAppender.Use<MsSqlExpressionElementAppenderFactory>(f => f.RegisterElementAppender<TrimFunctionExpression, Assembler.v2005.TrimFunctionExpressionAppender>());
-                    configureRuntime.Invoke(b); 
-                }, 
-                runtime.Metadata
+                    configureRuntime.Invoke(b);
+                }
             );
-            config.Validate();
-
-            runtime.Database.UseConfigurationFactory(new DelegateRuntimeSqlDatabaseConfigurationFactory(() => config));
         }
         #endregion
 
@@ -69,32 +59,21 @@ namespace HatTrick.DbEx.MsSql.Configuration
         /// </summary>
         /// <typeparam name="T">The (code-generated) database you want to configure for use with dbExpression.</typeparam>
         /// <param name="builder">The <see cref="IDbExpressionConfigurationBuilder" />, the fluent entry point for configuring the runtime environment for <typeparam name="T">. </param>
-        /// <param name="configureRuntime">
-        ///     <para>A delegate to configure the <see cref="RuntimeSqlDatabaseConfiguration" /> using a <see cref="IRuntimeSqlDatabaseConfigurationBuilder"/>.</para>
-        /// </param>        
-        public static void AddMsSql2008Database<T>(this IDbExpressionConfigurationBuilder builder, Action<IRuntimeSqlDatabaseConfigurationBuilder> configureRuntime)
-            where T : class, IRuntimeEnvironmentSqlDatabase, new()
+        /// <param name="configureRuntime">A delegate to configure the <see cref="MsSqlSqlDatabaseRuntimeConfiguration" /> using a <see cref="ISqlDatabaseRuntimeConfigurationBuilder"/>.</param>        
+        public static void AddMsSql2008Database<TDatabase>(this IDbExpressionConfigurationBuilder builder, Action<ISqlDatabaseRuntimeConfigurationBuilder> configureRuntime)
+            where TDatabase : class, ISqlDatabaseRuntime
         {
             if (configureRuntime is null)
                 throw new ArgumentNullException(nameof(configureRuntime));
 
-            var runtime = new T();
-            var config = new RuntimeSqlDatabaseConfiguration();
-
-            var configBuilder = new RuntimeSqlDatabaseConfigurationBuilder(config);
-            configBuilder.ConfigureMsSqlCommon(
-                config, 
+            builder.ConfigureMsSqlCommon<TDatabase, MsSqlSqlDatabaseRuntimeConfiguration>(
                 b =>
                 {
                     b.SqlStatements.Assembly.StatementAssembler.Use<Assembler.v2008.MsSqlStatementAssemblerFactory>();
                     b.SqlStatements.Assembly.ElementAppender.Use<MsSqlExpressionElementAppenderFactory>(f => f.RegisterElementAppender<TrimFunctionExpression, Assembler.v2008.TrimFunctionExpressionAppender>());
                     configureRuntime.Invoke(b);
-                },
-                runtime.Metadata
+                }
             );
-            config.Validate();
-
-            runtime.Database.UseConfigurationFactory(new DelegateRuntimeSqlDatabaseConfigurationFactory(() => config));
         }
         #endregion
 
@@ -104,31 +83,20 @@ namespace HatTrick.DbEx.MsSql.Configuration
         /// </summary>
         /// <typeparam name="T">The (code-generated) database you want to configure for use with dbExpression.</typeparam>
         /// <param name="builder">The <see cref="IDbExpressionConfigurationBuilder" />, the fluent entry point for configuring the runtime environment for <typeparam name="T">. </param>
-        /// <param name="configureRuntime">
-        ///     <para>A delegate to configure the <see cref="RuntimeSqlDatabaseConfiguration" /> using a <see cref="IRuntimeSqlDatabaseConfigurationBuilder"/>.</para>
-        /// </param>        
-        public static void AddMsSql2012Database<T>(this IDbExpressionConfigurationBuilder builder, Action<IRuntimeSqlDatabaseConfigurationBuilder> configureRuntime)
-            where T : class, IRuntimeEnvironmentSqlDatabase, new()
+        /// <param name="configureRuntime">A delegate to configure the <see cref="MsSqlSqlDatabaseRuntimeConfiguration" /> using a <see cref="ISqlDatabaseRuntimeConfigurationBuilder"/>.</param>        
+        public static void AddMsSql2012Database<TDatabase>(this IDbExpressionConfigurationBuilder builder, Action<ISqlDatabaseRuntimeConfigurationBuilder> configureRuntime)
+            where TDatabase : class, ISqlDatabaseRuntime
         {
             if (configureRuntime is null)
                 throw new ArgumentNullException(nameof(configureRuntime));
 
-            var runtime = new T();
-            var config = new RuntimeSqlDatabaseConfiguration();
-
-            var configBuilder = new RuntimeSqlDatabaseConfigurationBuilder(config);
-            configBuilder.ConfigureMsSqlCommon(
-                config, 
+            builder.ConfigureMsSqlCommon<TDatabase, MsSqlSqlDatabaseRuntimeConfiguration>(
                 b =>
                 {
                     b.SqlStatements.Assembly.ElementAppender.Use<MsSqlExpressionElementAppenderFactory>(f => f.RegisterElementAppender<TrimFunctionExpression, Assembler.v2012.TrimFunctionExpressionAppender>());
                     configureRuntime.Invoke(b);
-                },
-                runtime.Metadata
-            ); 
-            config.Validate();
-
-            runtime.Database.UseConfigurationFactory(new DelegateRuntimeSqlDatabaseConfigurationFactory(() => config));
+                }
+            );
         }
         #endregion
 
@@ -138,31 +106,20 @@ namespace HatTrick.DbEx.MsSql.Configuration
         /// </summary>
         /// <typeparam name="T">The (code-generated) database you want to configure for use with dbExpression.</typeparam>
         /// <param name="builder">The <see cref="IDbExpressionConfigurationBuilder" />, the fluent entry point for configuring the runtime environment for <typeparam name="T">. </param>
-        /// <param name="configureRuntime">
-        ///     <para>A delegate to configure the <see cref="RuntimeSqlDatabaseConfiguration" /> using a <see cref="IRuntimeSqlDatabaseConfigurationBuilder"/>.</para>
-        /// </param>        
-        public static void AddMsSql2014Database<T>(this IDbExpressionConfigurationBuilder builder, Action<IRuntimeSqlDatabaseConfigurationBuilder> configureRuntime)
-            where T : class, IRuntimeEnvironmentSqlDatabase, new()
+        /// <param name="configureRuntime">A delegate to configure the <see cref="MsSqlSqlDatabaseRuntimeConfiguration" /> using a <see cref="ISqlDatabaseRuntimeConfigurationBuilder"/>.</param>        
+        public static void AddMsSql2014Database<TDatabase>(this IDbExpressionConfigurationBuilder builder, Action<ISqlDatabaseRuntimeConfigurationBuilder> configureRuntime)
+            where TDatabase : class, ISqlDatabaseRuntime
         {
             if (configureRuntime is null)
                 throw new ArgumentNullException(nameof(configureRuntime));
 
-            var runtime = new T();
-            var config = new RuntimeSqlDatabaseConfiguration();
-
-            var configBuilder = new RuntimeSqlDatabaseConfigurationBuilder(config);
-            configBuilder.ConfigureMsSqlCommon(
-                config, 
+            builder.ConfigureMsSqlCommon<TDatabase, MsSqlSqlDatabaseRuntimeConfiguration>(
                 b =>
                 {
                     b.SqlStatements.Assembly.ElementAppender.Use<MsSqlExpressionElementAppenderFactory>(f => f.RegisterElementAppender<TrimFunctionExpression, Assembler.v2014.TrimFunctionExpressionAppender>());
                     configureRuntime.Invoke(b);
-                },
-                runtime.Metadata
-            ); 
-            config.Validate();
-
-            runtime.Database.UseConfigurationFactory(new DelegateRuntimeSqlDatabaseConfigurationFactory(() => config));
+                }
+            );
         }
         #endregion
 
@@ -172,31 +129,20 @@ namespace HatTrick.DbEx.MsSql.Configuration
         /// </summary>
         /// <typeparam name="T">The (code-generated) database you want to configure for use with dbExpression.</typeparam>
         /// <param name="builder">The <see cref="IDbExpressionConfigurationBuilder" />, the fluent entry point for configuring the runtime environment for <typeparam name="T">. </param>
-        /// <param name="configureRuntime">
-        ///     <para>A delegate to configure the <see cref="RuntimeSqlDatabaseConfiguration" /> using a <see cref="IRuntimeSqlDatabaseConfigurationBuilder"/>.</para>
-        /// </param>        
-        public static void AddMsSql2016Database<T>(this IDbExpressionConfigurationBuilder builder, Action<IRuntimeSqlDatabaseConfigurationBuilder> configureRuntime)
-            where T : class, IRuntimeEnvironmentSqlDatabase, new()
+        /// <param name="configureRuntime">A delegate to configure the <see cref="MsSqlSqlDatabaseRuntimeConfiguration" /> using a <see cref="ISqlDatabaseRuntimeConfigurationBuilder"/>.</param>        
+        public static void AddMsSql2016Database<TDatabase>(this IDbExpressionConfigurationBuilder builder, Action<ISqlDatabaseRuntimeConfigurationBuilder> configureRuntime)
+            where TDatabase : class, ISqlDatabaseRuntime
         {
             if (configureRuntime is null)
                 throw new ArgumentNullException(nameof(configureRuntime));
 
-            var runtime = new T();
-            var config = new RuntimeSqlDatabaseConfiguration();
-
-            var configBuilder = new RuntimeSqlDatabaseConfigurationBuilder(config);
-            configBuilder.ConfigureMsSqlCommon(
-                config, 
+            builder.ConfigureMsSqlCommon<TDatabase, MsSqlSqlDatabaseRuntimeConfiguration>(
                 b =>
                 {
                     b.SqlStatements.Assembly.ElementAppender.Use<MsSqlExpressionElementAppenderFactory>(f => f.RegisterElementAppender<TrimFunctionExpression, Assembler.v2016.TrimFunctionExpressionAppender>());
                     configureRuntime.Invoke(b);
-                },
-                runtime.Metadata
+                }
             ); 
-            config.Validate();
-
-            runtime.Database.UseConfigurationFactory(new DelegateRuntimeSqlDatabaseConfigurationFactory(() => config));
         }
         #endregion
 
@@ -206,23 +152,14 @@ namespace HatTrick.DbEx.MsSql.Configuration
         /// </summary>
         /// <typeparam name="T">The (code-generated) database you want to configure for use with dbExpression.</typeparam>
         /// <param name="builder">The <see cref="IDbExpressionConfigurationBuilder" />, the fluent entry point for configuring the runtime environment for <typeparam name="T">. </param>
-        /// <param name="configureRuntime">
-        ///     <para>A delegate to configure the <see cref="RuntimeSqlDatabaseConfiguration" /> using a <see cref="IRuntimeSqlDatabaseConfigurationBuilder"/>.</para>
-        /// </param>        
-        public static void AddMsSql2017Database<T>(this IDbExpressionConfigurationBuilder builder, Action<IRuntimeSqlDatabaseConfigurationBuilder> configureRuntime)
-            where T : class, IRuntimeEnvironmentSqlDatabase, new()
+        /// <param name="configureRuntime">A delegate to configure the <see cref="MsSqlSqlDatabaseRuntimeConfiguration" /> using a <see cref="ISqlDatabaseRuntimeConfigurationBuilder"/>.</param>        
+        public static void AddMsSql2017Database<TDatabase>(this IDbExpressionConfigurationBuilder builder, Action<ISqlDatabaseRuntimeConfigurationBuilder> configureRuntime)
+            where TDatabase : class, ISqlDatabaseRuntime
         {
             if (configureRuntime is null)
                 throw new ArgumentNullException(nameof(configureRuntime));
 
-            var runtime = new T();
-            var config = new RuntimeSqlDatabaseConfiguration();
-
-            var configBuilder = new RuntimeSqlDatabaseConfigurationBuilder(config);
-            configBuilder.ConfigureMsSqlCommon(config, configureRuntime, runtime.Metadata);
-            config.Validate();
-
-            runtime.Database.UseConfigurationFactory(new DelegateRuntimeSqlDatabaseConfigurationFactory(() => config));
+            builder.ConfigureMsSqlCommon<TDatabase, MsSqlSqlDatabaseRuntimeConfiguration>(configureRuntime);
         }
         #endregion
 
@@ -232,29 +169,24 @@ namespace HatTrick.DbEx.MsSql.Configuration
         /// </summary>
         /// <typeparam name="T">The (code-generated) database you want to configure for use with dbExpression.</typeparam>
         /// <param name="builder">The <see cref="IDbExpressionConfigurationBuilder" />, the fluent entry point for configuring the runtime environment for <typeparam name="T">. </param>
-        /// <param name="configureRuntime">
-        ///     <para>A delegate to configure the <see cref="RuntimeSqlDatabaseConfiguration" /> using a <see cref="IRuntimeSqlDatabaseConfigurationBuilder"/>.</para>
-        /// </param>        
-        public static void AddMsSql2019Database<T>(this IDbExpressionConfigurationBuilder builder, Action<IRuntimeSqlDatabaseConfigurationBuilder> configureRuntime)
-            where T : class, IRuntimeEnvironmentSqlDatabase, new()
+        /// <param name="configureRuntime">A delegate to configure the <see cref="MsSqlSqlDatabaseRuntimeConfiguration" /> using a <see cref="ISqlDatabaseRuntimeConfigurationBuilder"/>.</param>        
+        public static void AddMsSql2019Database<TDatabase>(this IDbExpressionConfigurationBuilder builder, Action<ISqlDatabaseRuntimeConfigurationBuilder> configureRuntime)
+            where TDatabase : class, ISqlDatabaseRuntime
         {
             if (configureRuntime is null)
                 throw new ArgumentNullException(nameof(configureRuntime));
 
-            var runtime = new T();
-            var config = new RuntimeSqlDatabaseConfiguration();
-
-            var configBuilder = new RuntimeSqlDatabaseConfigurationBuilder(config);
-            configBuilder.ConfigureMsSqlCommon(config, configureRuntime, runtime.Metadata);
-            config.Validate();
-
-            runtime.Database.UseConfigurationFactory(new DelegateRuntimeSqlDatabaseConfigurationFactory(() => config));
+            builder.ConfigureMsSqlCommon<TDatabase, MsSqlSqlDatabaseRuntimeConfiguration>(configureRuntime);
         }
         #endregion
 
-        private static void ConfigureMsSqlCommon(this IRuntimeSqlDatabaseConfigurationBuilder builder, RuntimeSqlDatabaseConfiguration configuration, Action<IRuntimeSqlDatabaseConfigurationBuilder> configure, ISqlDatabaseMetadataProvider metadata)
+        private static void ConfigureMsSqlCommon<TDatabase, TConfig>(this IDbExpressionConfigurationBuilder _, Action<ISqlDatabaseRuntimeConfigurationBuilder> configureRuntime)
+            where TDatabase : class, ISqlDatabaseRuntime
+            where TConfig : MsSqlSqlDatabaseRuntimeConfiguration, new()
         {
-            builder.SchemaMetadata.Use(metadata);
+            var config = new TConfig();
+
+            var builder = new MsSqlSqlDatabaseRuntimeConfigurationBuilder<TConfig>(config);
 
             builder.QueryExpressions.UseDefaultFactory();
 
@@ -270,16 +202,27 @@ namespace HatTrick.DbEx.MsSql.Configuration
                     .StatementBuilder.UseDefaultFactory()
                     .StatementAppender.UseDefaultFactory()
                     .ElementAppender.Use<MsSqlExpressionElementAppenderFactory>()
-                    .ParameterBuilder.Use(new MsSqlParameterBuilderFactory(new MsSqlTypeMapFactory(), configuration.ValueConverterFactory))
-                    .ConfigureOutputSettings(
-                        a => a.PrependCommaOnSelectClause = false
-                    )
-                .Execution
+                    .ParameterBuilder.Use(new MsSqlParameterBuilderFactory(new MsSqlTypeMapFactory(), config.ValueConverterFactory))
+                .QueryExecution
                     .Executor.UseDefaultFactory()
                     .Pipeline.UseDefaultFactory()
                     .Connection.Use<MsSqlConnectionFactory>();
 
-            configure?.Invoke(builder);
+            configureRuntime?.Invoke(builder);
+
+            TDatabase db;
+            var ctor = typeof(TDatabase).GetConstructor(new Type[1] { typeof(TConfig) })!;
+            try
+            {
+                db = (ctor.Invoke(new object[1] { config }) as TDatabase)!;
+            }
+            catch (TargetInvocationException ex)
+            { 
+                if (ex.InnerException is DbExpressionException dbex)
+                    throw dbex;
+                throw new DbExpressionException($"Configuration of runtime databse type '{typeof(TDatabase)}' failed.", ex);
+            }
+            db.InitializeStaticRuntime();
         }
     }
 }

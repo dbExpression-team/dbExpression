@@ -21,7 +21,7 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableByteArrayExpressionMediator :
-        ExpressionMediator<byte[]>,
+        NullableExpressionMediator<byte[],byte[]?>,
         NullableByteArrayElement,
         IEquatable<NullableByteArrayExpressionMediator>
     {
@@ -33,23 +33,19 @@ namespace HatTrick.DbEx.Sql.Expression
         public NullableByteArrayExpressionMediator(IExpressionElement expression) : base(expression)
         {
         }
-
-        protected NullableByteArrayExpressionMediator(IExpressionElement expression, string alias) : base(expression, alias)
-        {
-        }
         #endregion
 
         #region as
-        public AnyElement<byte[]> As(string alias)
-            => new SelectExpression<byte[]>(this).As(alias);
+        public AnyElement<byte[]?> As(string alias)
+            => new SelectExpression<byte[]?>(this).As(alias);
         #endregion
 
         #region equals
-        public bool Equals(NullableByteArrayExpressionMediator obj)
-            => obj is NullableByteArrayExpressionMediator && base.Equals(obj);
+        public bool Equals(NullableByteArrayExpressionMediator? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableByteArrayExpressionMediator exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableByteArrayExpressionMediator exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

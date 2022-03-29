@@ -12,9 +12,11 @@ namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
 
         protected override FunctionTemplateModel CreateModel(string @namespace, TypeModel @type)
         {
-            var model = new FunctionTemplateModel();
-            model.Type = TypeBuilder.Get<DateTime>();
-            model.FunctionName = functionName;
+            FunctionTemplateModel model = new()
+            {
+                Type = TypeBuilder.Get<DateTime>(),
+                FunctionName = functionName
+            };
 
             model.Namespace = @namespace;
             model.Usings.Add("HatTrick.DbEx.Sql.Expression");

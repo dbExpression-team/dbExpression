@@ -2,6 +2,7 @@
 using DbEx.dboData;
 using DbEx.dboDataService;
 using FluentAssertions;
+using HatTrick.DbEx.MsSql.Expression.Alias;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
 using System;
@@ -118,7 +119,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.Round(dbex.Alias<decimal>("_product", "ShippingWeight"), 1).As("shipping_weight")
+                    db.fx.Round(("_product", "ShippingWeight"), 1).As("shipping_weight")
                 ).From(dbo.Product)
                 .InnerJoin(
                     db.SelectOne<Product>()
@@ -127,7 +128,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ).As("_product").On(dbo.Product.Id == ("_product", "Id"));
 
             //when               
-            object result = exp.Execute();
+            object? result = exp.Execute();
 
             //then
             result.Should().BeOfType<decimal>().Which.Should().Be(expected);

@@ -101,9 +101,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Where(dbo.UnitTest.Id == 1);
 
             //when               
-            byte[] value = exp.Execute();
+            byte[]? value = exp.Execute();
 
             //then
+            value.Should().NotBeNull();
             value.Should().Equal(new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 });
         }
 
@@ -120,7 +121,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Where(dbo.UnitTest.Id == 2);
 
             //when               
-            byte[] value = exp.Execute();
+            byte[]? value = exp.Execute();
 
             //then
             value.Should().BeNull();
@@ -443,7 +444,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Where(dbo.UnitTest.Id == 1);
 
             //when               
-            string value = exp.Execute();
+            string? value = exp.Execute();
 
             //then
             value.Should().Be(expected);
@@ -452,7 +453,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Statement", "SELECT")]
-        public void Can_select_nullable_string_field_expression(int version, string expected = null)
+        public void Can_select_nullable_string_field_expression(int version, string? expected = null)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -462,7 +463,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Where(dbo.UnitTest.Id == 2);
 
             //when               
-            string value = exp.Execute();
+            string? value = exp.Execute();
 
             //then
             value.Should().Be(expected);

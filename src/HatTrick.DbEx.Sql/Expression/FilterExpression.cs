@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.Sql.Expression
     {
         #region interface
         public IExpressionElement LeftArg { get; private set; }
-        public IExpressionElement RightArg { get; private set; }
+        public IExpressionElement? RightArg { get; private set; }
         public FilterExpressionOperator ExpressionOperator { get; private set; }
         public bool Negate { get; set; }
         #endregion
@@ -53,7 +53,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region to string
-        public override string ToString()
+        public override string? ToString()
         {
             string expression = $"{LeftArg} {ExpressionOperator} {RightArg}";
             return (Negate) ? $" NOT ({expression})" : expression;
@@ -61,27 +61,25 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(FilterExpression obj)
+        public bool Equals(FilterExpression? obj)
         {
             if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
+
+            if (!LeftArg.Equals(obj.LeftArg)) return false;
+
+            if (RightArg is null && obj.RightArg is not null) return false;
+            if (RightArg is not null && obj.RightArg is null) return false;
+            if (RightArg is not null && !RightArg.Equals(obj.RightArg)) return false;
 
             if (ExpressionOperator != obj.ExpressionOperator) return false;
 
             if (Negate != obj.Negate) return false;
 
-            if (LeftArg is null && obj.LeftArg is object) return false;
-            if (LeftArg is object && obj.LeftArg is null) return false;
-            if (!LeftArg.Equals(obj.LeftArg)) return false;
-
-            if (RightArg is null && obj.RightArg is object) return false;
-            if (RightArg is object && obj.RightArg is null) return false;
-            if (!RightArg.Equals(obj.RightArg)) return false;
-
             return true;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
             => obj is FilterExpression exp && base.Equals(exp);
 
         public override int GetHashCode()
@@ -92,8 +90,8 @@ namespace HatTrick.DbEx.Sql.Expression
                 const int multiplier = 16777619;
 
                 int hash = @base;
-                hash = (hash * multiplier) ^ (LeftArg is object ? LeftArg.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ (RightArg is object ? RightArg.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (LeftArg is not null ? LeftArg.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (RightArg is not null ? RightArg.GetHashCode() : 0);
                 hash = (hash * multiplier) ^ ExpressionOperator.GetHashCode();
                 hash = (hash * multiplier) ^ Negate.GetHashCode();
                 return hash;
@@ -102,40 +100,34 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region conditional &, | operators
-        public static FilterExpressionSet operator &(FilterExpression a, FilterExpression b)
+        public static FilterExpressionSet operator &(FilterExpression? a, FilterExpression? b)
         {
-            if (a is null && b is object) { return new FilterExpressionSet(b); }
-            if (a is object && b is null) { return new FilterExpressionSet(a); }
-            if (a is null && b is null) { return null; }
-
-            return new FilterExpressionSet(a, b, ConditionalExpressionOperator.And);
+            if (a is null && b is null) throw new ArgumentNullException(nameof(a));
+            return b is null ? a! : new FilterExpressionSet(a!, b!, ConditionalExpressionOperator.And);
         }
 
-        public static FilterExpressionSet operator |(FilterExpression a, FilterExpression b)
+        public static FilterExpressionSet operator |(FilterExpression? a, FilterExpression? b)
         {
-            if (a is null && b is object) { return new FilterExpressionSet(b); }
-            if (a is object && b is null) { return new FilterExpressionSet(a); }
-            if (a is null && b is null) { return null; }
-
-            return new FilterExpressionSet(a, b, ConditionalExpressionOperator.Or);
+            if (a is null && b is null) throw new ArgumentNullException(nameof(a));
+            return b is null ? a! : new FilterExpressionSet(a!, b!, ConditionalExpressionOperator.Or);
         }
         #endregion
 
         #region implicit operators
         public static implicit operator FilterExpressionSet(FilterExpression a) 
-            => a is null ? null : new FilterExpressionSet(a);
+            => new(a);
 
         public static implicit operator HavingExpression(FilterExpression a) 
-            => new HavingExpression(a);
+            => new(a);
 
         public static implicit operator JoinOnExpressionSet(FilterExpression a)
-            => a?.ConvertToJoinOnExpressionSet();
+            => a.ConvertToJoinOnExpressionSet();
         #endregion
 
         #region negation operator
-        public static FilterExpression operator !(FilterExpression filter)
+        public static FilterExpression? operator !(FilterExpression? filter)
         {
-            if (filter is object) filter.Negate = !filter.Negate;
+            if (filter is not null) filter.Negate = !filter.Negate;
             return filter;
         }
         #endregion

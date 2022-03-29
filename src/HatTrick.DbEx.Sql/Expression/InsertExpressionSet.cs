@@ -35,7 +35,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        protected InsertExpressionSet() { }
+        protected InsertExpressionSet() { throw new InvalidOperationException("Private constructor does not correctly initialize internal members."); }
 
         public InsertExpressionSet(IDbEntity entity, IEnumerable<InsertExpression> fields)
         {
@@ -45,7 +45,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region to string
-        public override string ToString() => string.Join(", ", expressions.Select(g => g.ToString()));
+        public override string? ToString() => string.Join(", ", expressions.Select(g => g.ToString()));
         #endregion
     }
 }

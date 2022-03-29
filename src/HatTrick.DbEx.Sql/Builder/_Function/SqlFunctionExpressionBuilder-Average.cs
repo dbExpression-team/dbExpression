@@ -31,8 +31,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}"/>, the value to use for calculating the average function result.</param>
         /// <returns><see cref="Int32AverageFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>.</returns>
-        public static Int32AverageFunctionExpression Avg(AnyElement<byte> element)
-            => new Int32AverageFunctionExpression(element);
+        public Int32AverageFunctionExpression Avg(AnyElement<byte> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the AVG transact sql function.
@@ -40,8 +40,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}"/>?, the value to use for calculating the average function result.</param>
         /// <returns><see cref="NullableInt32AverageFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}?/>.</returns>
-        public static NullableInt32AverageFunctionExpression Avg(AnyElement<byte?> element)
-            => new NullableInt32AverageFunctionExpression(element);
+        public NullableInt32AverageFunctionExpression Avg(AnyElement<byte?> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the AVG transact sql function.
@@ -49,8 +49,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}"/>, the value to use for calculating the average function result.</param>
         /// <returns><see cref="Int32AverageFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>.</returns>
-        public static Int32AverageFunctionExpression Avg(AnyElement<short> element)
-            => new Int32AverageFunctionExpression(element);
+        public Int32AverageFunctionExpression Avg(AnyElement<short> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the AVG transact sql function.
@@ -58,8 +58,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}"/>?, the value to use for calculating the average function result.</param>
         /// <returns><see cref="NullableInt32AverageFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}?/>.</returns>
-        public static NullableInt32AverageFunctionExpression Avg(AnyElement<short?> element)
-            => new NullableInt32AverageFunctionExpression(element);
+        public NullableInt32AverageFunctionExpression Avg(AnyElement<short?> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the AVG transact sql function.
@@ -67,8 +67,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}"/>, the value to use for calculating the average function result.</param>
         /// <returns><see cref="Int32AverageFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>.</returns>
-        public static Int32AverageFunctionExpression Avg(AnyElement<int> element)
-            => new Int32AverageFunctionExpression(element);
+        public Int32AverageFunctionExpression Avg(AnyElement<int> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the AVG transact sql function.
@@ -76,8 +76,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}"/>?, the value to use for calculating the average function result.</param>
         /// <returns><see cref="NullableInt32AverageFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}?/>.</returns>
-        public static NullableInt32AverageFunctionExpression Avg(AnyElement<int?> element)
-            => new NullableInt32AverageFunctionExpression(element);
+        public NullableInt32AverageFunctionExpression Avg(AnyElement<int?> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the AVG transact sql function.
@@ -85,8 +85,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}"/>, the value to use for calculating the average function result.</param>
         /// <returns><see cref="Int64AverageFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>.</returns>
-        public static Int64AverageFunctionExpression Avg(AnyElement<long> element)
-            => new Int64AverageFunctionExpression(element);
+        public Int64AverageFunctionExpression Avg(AnyElement<long> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the AVG transact sql function.
@@ -94,8 +94,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}"/>?, the value to use for calculating the average function result.</param>
         /// <returns><see cref="NullableInt64AverageFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}?/>.</returns>
-        public static NullableInt64AverageFunctionExpression Avg(AnyElement<long?> element)
-            => new NullableInt64AverageFunctionExpression(element);
+        public NullableInt64AverageFunctionExpression Avg(AnyElement<long?> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the AVG transact sql function.
@@ -103,8 +103,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}"/>, the value to use for calculating the average function result.</param>
         /// <returns><see cref="SingleAverageFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
-        public static SingleAverageFunctionExpression Avg(AnyElement<float> element)
-            => new SingleAverageFunctionExpression(element);
+        public SingleAverageFunctionExpression Avg(AnyElement<float> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the AVG transact sql function.
@@ -112,8 +112,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}"/>?, the value to use for calculating the average function result.</param>
         /// <returns><see cref="NullableSingleAverageFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}?/>.</returns>
-        public static NullableSingleAverageFunctionExpression Avg(AnyElement<float?> element)
-            => new NullableSingleAverageFunctionExpression(element);
+        public NullableSingleAverageFunctionExpression Avg(AnyElement<float?> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the AVG transact sql function.
@@ -121,8 +121,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Double}"/>, the value to use for calculating the average function result.</param>
         /// <returns><see cref="DoubleAverageFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Double}"/>.</returns>
-        public static DoubleAverageFunctionExpression Avg(AnyElement<double> element)
-            => new DoubleAverageFunctionExpression(element);
+        public DoubleAverageFunctionExpression Avg(AnyElement<double> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the AVG transact sql function.
@@ -130,8 +130,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Double}"/>?, the value to use for calculating the average function result.</param>
         /// <returns><see cref="NullableDoubleAverageFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Double}?/>.</returns>
-        public static NullableDoubleAverageFunctionExpression Avg(AnyElement<double?> element)
-            => new NullableDoubleAverageFunctionExpression(element);
+        public NullableDoubleAverageFunctionExpression Avg(AnyElement<double?> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the AVG transact sql function.
@@ -139,8 +139,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}"/>, the value to use for calculating the average function result.</param>
         /// <returns><see cref="DecimalAverageFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Decimal}"/>.</returns>
-        public static DecimalAverageFunctionExpression Avg(AnyElement<decimal> element)
-            => new DecimalAverageFunctionExpression(element);
+        public DecimalAverageFunctionExpression Avg(AnyElement<decimal> element)
+            => new(element);
 
         /// <summary>
         /// Construct an expression for the AVG transact sql function.
@@ -148,7 +148,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}"/>?, the value to use for calculating the average function result.</param>
         /// <returns><see cref="NullableDecimalAverageFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Decimal}?/>.</returns>
-        public static NullableDecimalAverageFunctionExpression Avg(AnyElement<decimal?> element)
-            => new NullableDecimalAverageFunctionExpression(element);
+        public NullableDecimalAverageFunctionExpression Avg(AnyElement<decimal?> element)
+            => new(element);
     }
 }
