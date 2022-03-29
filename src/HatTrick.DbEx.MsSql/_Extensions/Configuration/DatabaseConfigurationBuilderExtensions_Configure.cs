@@ -219,7 +219,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             catch (TargetInvocationException ex)
             { 
                 if (ex.InnerException is DbExpressionException dbex)
-                    throw dbex.InnerException;
+                    throw dbex;
                 throw new DbExpressionException($"Configuration of runtime databse type '{typeof(TDatabase)}' failed.", ex);
             }
             db.InitializeStaticRuntime();
