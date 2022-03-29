@@ -15,7 +15,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark
     public class SqlStatementAssemblyBenchmarks
     {
         private const string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=MsSqlDbExTest;Integrated Security=true;";
-        private RuntimeSqlDatabaseConfiguration config = default;
+        private SqlDatabaseRuntimeConfiguration config = default;
 
         private static readonly QueryExpression selectQueryExpression = (db.SelectMany<Person>().From(dbo.Person) as IQueryExpressionProvider).Expression;
 
@@ -55,7 +55,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark
 
         [GlobalSetup]
         public void ConfigureDbExpression()
-            => Sql.Configuration.dbExpression.Configure(dbex => dbex.AddMsSql2019Database<MsSqlDb>(database => { database.ConnectionString.Use(connectionString); config = database.Configuration; }));
+            => Sql.Configuration.dbExpression.Configure(dbex => dbex.AddMsSql2019Database<MsSqlDb>(database => { database.ConnectionString.Use(connectionString); config = (database as ISqlDatabaseRuntimeConfigurationProvider<MsSqlSqlDatabaseRuntimeConfiguration>).Configuration; }));
 
         [Benchmark]
         public void CreateSelectSqlStatement()
