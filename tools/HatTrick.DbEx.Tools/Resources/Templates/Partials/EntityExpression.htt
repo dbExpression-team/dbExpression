@@ -1,5 +1,11 @@
-﻿    {?var:nullableAnnotation = $.EntityExpression.LanguageFeatures.Nullable.Annotation}
-    {?var:nullableForgivingOperator = $.EntityExpression.LanguageFeatures.Nullable.ForgivingOperator}
+﻿{?var:nullableAnnotation = $.EntityExpression.LanguageFeatures.Nullable.Annotation}
+{?var:nullableForgivingOperator = $.EntityExpression.LanguageFeatures.Nullable.ForgivingOperator}
+{?var:identifierArgName = ("identifier", $.EntityExpression) => GetEntityArgName}
+{?var:nameArgName = ("name", $.EntityExpression) => GetEntityArgName}
+{?var:schemaArgName = ("schema", $.EntityExpression) => GetEntityArgName}
+{?var:aliasArgName = ("alias", $.EntityExpression) => GetEntityArgName}
+{?var:entityArgName = ("entity", $.EntityExpression) => GetEntityArgName}
+{?var:identifierInterpolationArgName = ("{{x}}", "x", :identifierArgName) => Replace}
     #region {($.EntityExpression.Name) => InsertSpaceOnCapitalizationAndToLower} entity expression
     public partial class {$.EntityExpression.Name}Entity : EntityExpression<{$.EntityExpression.Name}>
     {{
@@ -16,21 +22,21 @@
         #endregion
 
         #region constructors
-        public {$.EntityExpression.Name}Entity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
+        public {$.EntityExpression.Name}Entity(string {:identifierArgName}, string {:nameArgName}, Schema {:schemaArgName}) : this({:identifierArgName}, {:nameArgName}, {:schemaArgName}, null)
         {{
         }}
 
-        private {$.EntityExpression.Name}Entity(string identifier, string name, SchemaExpression schema, string{:nullableAnnotation} alias) : base(identifier, name, schema, alias)
+        private {$.EntityExpression.Name}Entity(string {:identifierArgName}, string {:nameArgName}, Schema {:schemaArgName}, string{:nullableAnnotation} {:aliasArgName}) : base({:identifierArgName}, {:nameArgName}, {:schemaArgName}, {:aliasArgName})
         {{
             {#each $.Columns}
-            Fields.Add($"{{identifier}}.{$.Column.Name}", {$.FieldExpression.Name} = new {$.FieldExpression.Name}Field($"{{identifier}}.{$.Column.Name}", "{$.FieldExpression.Name}", this));
+            Attributes.Fields.Add($"{{identifier}}.{$.Column.Name}", {$.FieldExpression.Name} = new {$.FieldExpression.Name}Field($"{:identifierInterpolationArgName}.{$.Column.Name}", "{$.FieldExpression.Name}", this));
             {/each}
         }}
         #endregion
 
         #region methods
-        public {$.EntityExpression.Name}Entity As(string name)
-            => new {$.EntityExpression.Name}Entity(this.identifier, this.name, this.schema, name);
+        public {$.EntityExpression.Name}Entity As(string alias)
+            => new {$.EntityExpression.Name}Entity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {{
@@ -43,7 +49,7 @@
             ));
         }}
 
-        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
+        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> {:aliasArgName})
         {{
             if (alias is null)
                 throw new ArgumentNullException(nameof(alias));
@@ -52,21 +58,21 @@
             string{:nullableAnnotation} aliased = null;
 
             {#each $.Columns}
-            aliased = alias(nameof({$.FieldExpression.Name}));
+            aliased = {:aliasArgName}(nameof({$.FieldExpression.Name}));
             set &= aliased != nameof({$.FieldExpression.Name}) ? new {$.FieldExpression.SelectExpressionTypeName}({$.FieldExpression.Name}).As(aliased) as {$.FieldExpression.SelectExpressionTypeName} : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider){:nullableAnnotation}.Name == nameof({$.FieldExpression.Name}));
 
             {/each}
             return set;
         }}
 		
-        protected override InsertExpressionSet<{$.EntityExpression.Name}> GetInclusiveInsertExpression({$.EntityExpression.Name} {($.EntityExpression.Name) => ToCamelCase})
+        protected override InsertExpressionSet<{$.EntityExpression.Name}> GetInclusiveInsertExpression({$.EntityExpression.Name} {:entityArgName})
         {{
-            return new InsertExpressionSet<{$.EntityExpression.Name}>({($.EntityExpression.Name) => ToCamelCase} 
+            return new InsertExpressionSet<{$.EntityExpression.Name}>({:entityArgName} 
                 {#each $.Columns}
                 {#if !$.Column.IsIdentity}
                 {#if !$.Column.IsComputed}
                 {#if $.FieldExpression.AllowInsert}
-                ,new InsertExpression<{$.FieldExpression.Type.NullableAlias}>({($.FieldExpression.EntityExpression.Name) => ToCamelCase}.{$.FieldExpression.Name}, {$.FieldExpression.Name})
+                ,new InsertExpression<{$.FieldExpression.Type.NullableAlias}>({:entityArgName}.{$.FieldExpression.Name}, {$.FieldExpression.Name})
                 {/if}
                 {/if}
                 {/if}
@@ -90,10 +96,10 @@
             return expr;
         }}
 
-        protected override void HydrateEntity(ISqlFieldReader reader, {$.EntityExpression.Name} {($.EntityExpression.Name) => ToCamelCase})
+        protected override void HydrateEntity(ISqlFieldReader reader, {$.EntityExpression.Name} {:entityArgName})
         {{
             {#each $.Columns}
-            {($.FieldExpression.EntityExpression.Name) => ToCamelCase}.{$.FieldExpression.Name} = reader.ReadField(){:nullableForgivingOperator}.GetValue<{$.FieldExpression.Type.NullableAlias}>();
+            {:entityArgName}.{$.FieldExpression.Name} = reader.ReadField(){:nullableForgivingOperator}.GetValue<{$.FieldExpression.Type.NullableAlias}>();
             {/each}
         }}
 		#endregion

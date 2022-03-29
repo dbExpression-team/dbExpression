@@ -27,19 +27,18 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<SchemaExpression>
     {
         #region internals
-        protected readonly string identifier;
-        protected Dictionary<string, EntityExpression> Entities { get; } = new();
+        protected readonly SchemaExpressionAttributes Attributes;
         #endregion
 
         #region interface
-        public string Identifier => identifier;
-        IEnumerable<Table> Schema.Entities => Entities.Values;
+        public string Identifier => Attributes.Identifier;
+        IEnumerable<Table> Schema.Entities => Attributes.Entities.Values;
         #endregion
 
         #region constructors
         protected SchemaExpression(string identifier)
         {
-            this.identifier = identifier ?? throw new ArgumentNullException(nameof(identifier));
+            this.Attributes = new(identifier);
         }
         #endregion
 
@@ -50,7 +49,13 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region operators
         public static bool operator ==(SchemaExpression? obj1, SchemaExpression? obj2)
-            => obj1?.Equals(obj2) ?? false;
+        {
+            if (obj1 is not null && obj2 is null) return false;
+            if (obj1 is null && obj2 is not null) return false;
+            if (obj1 is null && obj2 is null) return true;
+
+            return obj1!.Equals(obj2);
+        }
 
         public static bool operator !=(SchemaExpression? obj1, SchemaExpression? obj2)
             => !(obj1 == obj2);
@@ -62,7 +67,7 @@ namespace HatTrick.DbEx.Sql.Expression
             if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
 
-            if (!Identifier.Equals(obj.Identifier)) return false;
+            if (!Attributes.Equals(obj.Attributes)) return false;
 
             if (GetType() != obj.GetType()) return false;
 
@@ -80,10 +85,55 @@ namespace HatTrick.DbEx.Sql.Expression
                 const int multiplier = 16777619;
 
                 int hash = @base;
-                hash = (hash * multiplier) ^ (Identifier is not null ? Identifier.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (Attributes is not null ? Attributes.GetHashCode() : 0);
                 hash = (hash * multiplier) ^ GetType().GetHashCode();
                 return hash;
             }
+        }
+        #endregion
+
+        #region classes
+        public class SchemaExpressionAttributes : IEquatable<SchemaExpressionAttributes>
+        {
+            #region interface
+            public string Identifier { get; }
+            public Dictionary<string, EntityExpression> Entities { get; } = new();
+            #endregion
+
+            #region constructors
+            public SchemaExpressionAttributes(string identifier)
+            {
+                this.Identifier = identifier ?? throw new ArgumentNullException(nameof(identifier));
+            }
+            #endregion
+
+            #region equals
+            public bool Equals(SchemaExpressionAttributes? obj)
+            {
+                if (obj is null) return false;
+                if (ReferenceEquals(obj, this)) return true;
+
+                if (!StringComparer.Ordinal.Equals(Identifier, obj.Identifier)) return false;
+
+                return true;
+            }
+
+            public override bool Equals(object? obj)
+                => obj is SchemaExpressionAttributes exp && Equals(exp);
+
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    const int @base = (int)2166136261;
+                    const int multiplier = 16777619;
+
+                    int hash = @base;
+                    hash = (hash * multiplier) ^ (Identifier is not null ? Identifier.GetHashCode() : 0);
+                    return hash;
+                }
+            }
+            #endregion
         }
         #endregion
     }

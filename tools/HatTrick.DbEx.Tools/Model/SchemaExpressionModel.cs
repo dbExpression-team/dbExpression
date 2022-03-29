@@ -18,6 +18,7 @@
 
 ﻿using HatTrick.Model.MsSql;
 using System;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Tools.Model
 {
@@ -27,6 +28,14 @@ namespace HatTrick.DbEx.Tools.Model
         public DatabaseExpressionModel DatabaseExpression { get; }
         public string NamespaceRoot { get; }
         public string Name { get; }
+
+        public Dictionary<string, string> ArgNamePsuedonyms = new()
+        {
+            { "identifier", "identifier" },
+            { "name", "name" },
+            { "alias", "alias" },
+            { "schema", "schema" }
+        };
 
         public SchemaExpressionModel(LanguageFeatures features, DatabaseExpressionModel database, MsSqlSchema schema, string namespaceRoot, string name)
         {

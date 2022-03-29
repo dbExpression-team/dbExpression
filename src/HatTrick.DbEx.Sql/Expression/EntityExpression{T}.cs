@@ -31,7 +31,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
 
-        protected EntityExpression(string identifier, string name, SchemaExpression schema, string? alias)
+        protected EntityExpression(string identifier, string name, Schema schema, string? alias)
             : base(identifier, name, typeof(T), schema, alias)
         {
 

@@ -1,10 +1,14 @@
 ﻿{?var:isNullableEnabled = $.FieldExpression.LanguageFeatures.Nullable.IsFeatureEnabled}
-{?var:commentBlock = true}
+{?var:identifierArgName = ("identifier", $.FieldExpression) => GetFieldArgName}
+{?var:nameArgName = ("name", $.FieldExpression) => GetFieldArgName}
+{?var:entityArgName = ("entity", $.FieldExpression) => GetFieldArgName}
+{?var:aliasArgName = ("alias", $.FieldExpression) => GetFieldArgName}
+{?var:identifierInterpolationArgName = ("{{x}}", "x", :identifierArgName) => Replace}
         #region {($.FieldExpression.Name) => InsertSpaceOnCapitalizationAndToLower} field expression
         public partial class {$.FieldExpression.Name}Field : {$.FieldExpression.FieldExpressionTypeName}
         {{
             #region constructors
-            public {$.FieldExpression.Name}Field(string identifier, string name, {$.FieldExpression.EntityExpression.Name}Entity entity) : base(identifier, name, entity)
+            public {$.FieldExpression.Name}Field(string {:identifierArgName}, string {:nameArgName}, Table {:entityArgName}) : base({:identifierArgName}, {:nameArgName}, {:entityArgName})
             {{
 
             }}
