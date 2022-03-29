@@ -12,6 +12,7 @@ IF OBJECT_ID('tempdb..#Schemas') IS NOT NULL DROP TABLE #Schemas
 CREATE TABLE #Schemas([Id] INT, [Name] VARCHAR(20));
 INSERT INTO #Schemas([Id], [Name]) values (1, 'dbo');
 INSERT INTO #Schemas([Id], [Name]) values (2, 'sec');
+INSERT INTO #Schemas([Id], [Name]) values (3, 'code');
 
 IF OBJECT_ID('tempdb..#DropObjects') IS NOT NULL DROP TABLE #DropObjects
 CREATE TABLE #DropObjects
@@ -52,12 +53,12 @@ CREATE TABLE #DropObjects
 	 -- drop all other objects in order  
 	 SELECT @SQL = 
 	 'SELECT
-		 CASE WHEN SO.type=''PK'' THEN '' ALTER TABLE ''+SCHEMA_NAME(SO.schema_id)+''.''+OBJECT_NAME(SO.parent_object_id)+'' DROP CONSTRAINT ''+ SO.name
-			  WHEN SO.type=''U'' THEN '' DROP TABLE ''+SCHEMA_NAME(SO.schema_id)+''.''+ SO.[Name]
-			  WHEN SO.type=''V'' THEN '' DROP VIEW ''+SCHEMA_NAME(SO.schema_id)+''.''+ SO.[Name]
-			  WHEN SO.type=''P'' THEN '' DROP PROCEDURE ''+SCHEMA_NAME(SO.schema_id)+''.''+ SO.[Name]     
-			  WHEN SO.type=''TR'' THEN '' DROP TRIGGER ''+SCHEMA_NAME(SO.schema_id)+''.''+ SO.[Name]
-			  WHEN SO.type IN (''FN'', ''TF'',''IF'',''FS'',''FT'') THEN '' DROP FUNCTION ''+SCHEMA_NAME(SO.schema_id)+''.''+ SO.[Name]
+		 CASE WHEN SO.type=''PK'' THEN '' ALTER TABLE [''+SCHEMA_NAME(SO.schema_id)+''].[''+OBJECT_NAME(SO.parent_object_id)+''] DROP CONSTRAINT ''+ SO.name
+			  WHEN SO.type=''U'' THEN '' DROP TABLE [''+SCHEMA_NAME(SO.schema_id)+''].[''+ SO.[Name] + '']''
+			  WHEN SO.type=''V'' THEN '' DROP VIEW [''+SCHEMA_NAME(SO.schema_id)+''].[''+ SO.[Name] + '']''
+			  WHEN SO.type=''P'' THEN '' DROP PROCEDURE [''+SCHEMA_NAME(SO.schema_id)+''].[''+ SO.[Name] + '']''     
+			  WHEN SO.type=''TR'' THEN '' DROP TRIGGER [''+SCHEMA_NAME(SO.schema_id)+''].[''+ SO.[Name] + '']''
+			  WHEN SO.type IN (''FN'', ''TF'',''IF'',''FS'',''FT'') THEN '' DROP FUNCTION [''+SCHEMA_NAME(SO.schema_id)+''].[''+ SO.[Name] + '']''
 		  END
 	FROM SYS.OBJECTS SO
 	WHERE SO.schema_id = schema_id('''+ @SchemaName +''')
@@ -295,7 +296,100 @@ CREATE TABLE [dbo].[UnitTest](
 	[String] VARCHAR(20) NOT NULL,
 	[NullableString] VARCHAR(20) NULL,	
 	[TimeSpan] TIME NOT NULL,
-	[NullableTimeSpan] TIME NULL	
+	[NullableTimeSpan] TIME NULL
+)
+GO
+
+CREATE SCHEMA [code]
+GO
+
+CREATE TABLE [code].[identifier] (
+	[_identifier] VARCHAR(20) NULL,
+	[__identifier] VARCHAR(20) NULL,
+	[name] VARCHAR(20) NULL,
+	[_name] VARCHAR(20) NULL,
+	[__name] VARCHAR(20) NULL,
+	[schema] VARCHAR(20) NULL,
+	[_schema] VARCHAR(20) NULL,
+	[__schema] VARCHAR(20) NULL,
+	[alias] VARCHAR(20) NULL,
+	[_alias] VARCHAR(20) NULL,
+	[__alias] VARCHAR(20) NULL,
+	[entity] VARCHAR(20) NULL,
+	[_entity] VARCHAR(20) NULL,
+	[__entity] VARCHAR(20) NULL
+)
+GO
+
+CREATE TABLE [code].[entity] (
+	[identifier] VARCHAR(20) NULL,
+	[_identifier] VARCHAR(20) NULL,
+	[__identifier] VARCHAR(20) NULL,
+	[name] VARCHAR(20) NULL,
+	[_name] VARCHAR(20) NULL,
+	[__name] VARCHAR(20) NULL,
+	[schema] VARCHAR(20) NULL,
+	[_schema] VARCHAR(20) NULL,
+	[__schema] VARCHAR(20) NULL,
+	[alias] VARCHAR(20) NULL,
+	[_alias] VARCHAR(20) NULL,
+	[__alias] VARCHAR(20) NULL,
+	[_entity] VARCHAR(20) NULL,
+	[__entity] VARCHAR(20) NULL
+)
+GO
+
+CREATE TABLE [code].[name] (
+	[identifier] VARCHAR(20) NULL,
+	[_identifier] VARCHAR(20) NULL,
+	[__identifier] VARCHAR(20) NULL,
+	[_name] VARCHAR(20) NULL,
+	[__name] VARCHAR(20) NULL,
+	[schema] VARCHAR(20) NULL,
+	[_schema] VARCHAR(20) NULL,
+	[__schema] VARCHAR(20) NULL,
+	[alias] VARCHAR(20) NULL,
+	[_alias] VARCHAR(20) NULL,
+	[__alias] VARCHAR(20) NULL,
+	[entity] VARCHAR(20) NULL,
+	[_entity] VARCHAR(20) NULL,
+	[__entity] VARCHAR(20) NULL
+)
+GO
+
+CREATE TABLE [code].[schema] (
+	[identifier] VARCHAR(20) NULL,
+	[_identifier] VARCHAR(20) NULL,
+	[__identifier] VARCHAR(20) NULL,
+	[name] VARCHAR(20) NULL,
+	[_name] VARCHAR(20) NULL,
+	[__name] VARCHAR(20) NULL,
+	[_schema] VARCHAR(20) NULL,
+	[__schema] VARCHAR(20) NULL,
+	[alias] VARCHAR(20) NULL,
+	[_alias] VARCHAR(20) NULL,
+	[__alias] VARCHAR(20) NULL,
+	[entity] VARCHAR(20) NULL,
+	[_entity] VARCHAR(20) NULL,
+	[__entity] VARCHAR(20) NULL
+)
+GO
+
+CREATE TABLE [code].[alias] (
+	[identifier] VARCHAR(20) NULL,
+	[_identifier] VARCHAR(20) NULL,
+	[__identifier] VARCHAR(20) NULL,
+	[name] VARCHAR(20) NULL,
+	[_name] VARCHAR(20) NULL,
+	[__name] VARCHAR(20) NULL,
+	[schema] VARCHAR(20) NULL,
+	[_schema] VARCHAR(20) NULL,
+	[__schema] VARCHAR(20) NULL,
+	[_alias] VARCHAR(20) NULL,
+	[__alias] VARCHAR(20) NULL,
+	[entity] VARCHAR(20) NULL,
+	[_entity] VARCHAR(20) NULL,
+	[__entity] VARCHAR(20) NULL
 )
 GO
 

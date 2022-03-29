@@ -95,6 +95,13 @@ namespace HatTrick.DbEx.Tools.Service
             return item1 + item2;
         }
 
+        public string Join(string? separator, params object[] items)
+        {
+            if (separator is null)
+                separator = "";
+            return string.Join(separator, items) ?? string.Empty;
+        }
+
         public string? Replace(string? item1, string? item2, string? replace)
         {
             if (item1 is null && item2 is null && replace is null)
@@ -128,6 +135,16 @@ namespace HatTrick.DbEx.Tools.Service
             var resource = ResourceAccessor.GetTemplatePartial(shortName);
             return resource.Value;
         }
+
+        public string GetSchemaArgName(string name, SchemaExpressionModel schema)
+            => schema.ArgNamePsuedonyms.ContainsKey(name) ? schema.ArgNamePsuedonyms[name] : name;
+
+        public string GetEntityArgName(string name, EntityExpressionModel entity)
+            => entity.ArgNamePsuedonyms.ContainsKey(name) ? entity.ArgNamePsuedonyms[name] : name;
+
+        public string GetFieldArgName(string name, FieldExpressionModel field)
+            => field.ArgNamePsuedonyms.ContainsKey(name) ? field.ArgNamePsuedonyms[name] : name;
+
         #endregion
     }
 }

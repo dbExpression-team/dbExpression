@@ -16,24 +16,13 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Tools.Builder;
+using HatTrick.DbEx.Tools.Builder;
 using HatTrick.Model.MsSql;
 using System;
 using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Tools.Model
 {
-    public class FieldExpressionAssignmentMethodParameters
-    { 
-        public string Left { get; }
-        public string Right { get; }
-
-        public FieldExpressionAssignmentMethodParameters(string left, string right)
-        {
-            Left = left;
-            Right = right;
-        }
-    }
     public class FieldExpressionModel
     {
         private string? _typeName;
@@ -65,6 +54,13 @@ namespace HatTrick.DbEx.Tools.Model
         }        
 
         public string ValueInitializer => Type.Initializer is not null ? $" = {Type.Initializer};" : string.Empty;
+
+        public Dictionary<string, string> ArgNamePsuedonyms = new()
+        {
+            { "identifier", "identifier" },
+            { "name", "name" },
+            { "entity", "entity" }
+        };
 
         public FieldExpressionModel(LanguageFeatures features, EntityExpressionModel entity, MsSqlColumn column, string name, string? clrTypeOverride, bool isEnum, bool allowInsert, bool allowUpdate)
         {

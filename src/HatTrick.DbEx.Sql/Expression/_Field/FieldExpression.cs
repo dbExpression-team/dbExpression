@@ -108,5 +108,62 @@ namespace HatTrick.DbEx.Sql.Expression
         public static bool operator !=(FieldExpression obj1, FieldExpression obj2)
             => !(obj1 == obj2);
         #endregion
+
+        #region classes
+        public class FieldExpressionAttributes : IEquatable<FieldExpressionAttributes>
+        {
+            #region interface
+            public string Identifier { get; }
+            public string Name { get; }
+            public Table Table { get; }
+            public Type DeclaredType { get; }
+            public string? Alias { get; }
+            #endregion
+
+            #region constructors
+            public FieldExpressionAttributes(string identifier, string name, Type declaredType, Table table, string? alias)
+            {
+                this.Identifier = identifier ?? throw new ArgumentNullException(nameof(identifier));
+                this.Name = name ?? throw new ArgumentNullException(nameof(name));
+                this.DeclaredType = declaredType ?? throw new ArgumentNullException(nameof(declaredType));
+                this.Table = table ?? throw new ArgumentNullException(nameof(table));
+                this.Alias = alias;
+            }
+            #endregion
+
+            #region equals
+            public bool Equals(FieldExpressionAttributes? obj)
+            {
+                if (obj is null) return false;
+                if (ReferenceEquals(obj, this)) return true;
+
+                if (!Table.Equals(obj.Table)) return false;
+                if (!StringComparer.Ordinal.Equals(Alias, obj.Alias)) return false;
+                if (!StringComparer.Ordinal.Equals(Identifier, obj.Identifier)) return false;
+
+                return true;
+            }
+
+            public override bool Equals(object? obj)
+                => obj is FieldExpressionAttributes exp && Equals(exp);
+
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    const int @base = (int)2166136261;
+                    const int multiplier = 16777619;
+
+                    int hash = @base;
+                    hash = (hash * multiplier) ^ (Identifier is not null ? Identifier.GetHashCode() : 0);
+                    hash = (hash * multiplier) ^ (DeclaredType is not null ? DeclaredType.GetHashCode() : 0);
+                    hash = (hash * multiplier) ^ (Table is not null ? Table.GetHashCode() : 0);
+                    hash = (hash * multiplier) ^ (Alias is not null ? Alias.GetHashCode() : 0);
+                    return hash;
+                }
+            }
+            #endregion
+        }
+        #endregion
     }
 }

@@ -29,6 +29,17 @@ namespace HatTrick.DbEx.Tools.Model
         public string Name { get; }
         public IEnumerable<string> AppliedInterfaces { get; }
         public string EntityInitializer => !string.IsNullOrWhiteSpace(LanguageFeatures.Nullable.ForgivingOperator) ? " = null!;" : string.Empty;
+        
+        public Dictionary<string, string> ArgNamePsuedonyms = new()
+        {
+            { "identifier", "identifier" },
+            { "name", "name" },
+            { "schema", "schema" },
+            { "alias", "alias" },
+            { "source", "source" },
+            { "target", "target" },
+            { "entity", "entity" }
+        };
 
         public EntityExpressionModel(LanguageFeatures features, SchemaExpressionModel schema, string name, IList<string> interfaces)
         {

@@ -27,21 +27,16 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<EntityExpression>
    {
         #region internals
-        protected readonly string identifier;
-        protected readonly string name;
-        protected readonly Type dbEntityType;
-        protected readonly SchemaExpression schema;
-        protected Dictionary<string, Field> Fields { get; } = new();
-        protected readonly string? alias;
+        protected readonly EntityExpressionAttributes Attributes;
         #endregion
 
         #region interface
-        Schema Table.Schema => schema;
-        IEnumerable<Field> Table.Fields => Fields.Values;
-        string ISqlMetadataIdentifierProvider.Identifier => identifier;
-        Type IDatabaseEntityTypeProvider.EntityType => dbEntityType;
-        string? IExpressionAliasProvider.Alias => alias;
-        string IExpressionNameProvider.Name => name;
+        Schema Table.Schema => Attributes.Schema;
+        IEnumerable<Field> Table.Fields => Attributes.Fields.Values;
+        string ISqlMetadataIdentifierProvider.Identifier => Attributes.Identifier;
+        Type IDatabaseEntityTypeProvider.EntityType => Attributes.Type;
+        string? IExpressionAliasProvider.Alias => Attributes.Alias;
+        string IExpressionNameProvider.Name => Attributes.Name;
         #endregion
 
         #region constructors
@@ -50,13 +45,9 @@ namespace HatTrick.DbEx.Sql.Expression
             throw new InvalidOperationException("Constructor does not initialize properties.");
         }
 
-        protected EntityExpression(string identifier, string name, Type dbEntityType, SchemaExpression schema, string? alias)
+        protected EntityExpression(string identifier, string name, Type dbEntityType, Schema schema, string? alias)
         {
-            this.identifier = identifier ?? throw new ArgumentNullException(nameof(identifier));
-            this.name = name ?? throw new ArgumentNullException(nameof(name));
-            this.dbEntityType = dbEntityType ?? throw new ArgumentNullException(nameof(dbEntityType));
-            this.schema = schema ?? throw new ArgumentNullException(nameof(schema));
-            this.alias = alias;
+            this.Attributes = new(identifier, name, dbEntityType, schema, alias);
         }
         #endregion
 
@@ -74,10 +65,10 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public string ToString(bool ignoreAlias = false)
         {
-            if (ignoreAlias || string.IsNullOrWhiteSpace(alias))
-                return identifier;
+            if (ignoreAlias || string.IsNullOrWhiteSpace(Attributes.Alias))
+                return Attributes.Identifier;
 
-            return $"{identifier} AS {alias}";
+            return $"{Attributes.Identifier} AS {Attributes.Alias}";
         }
         #endregion
 
@@ -101,9 +92,7 @@ namespace HatTrick.DbEx.Sql.Expression
             if (obj is null) return false;
             if (ReferenceEquals(obj, this)) return true;
 
-            if (!schema.Equals(obj.schema)) return false;
-            if (!StringComparer.Ordinal.Equals(alias, obj.alias)) return false;
-            if (!StringComparer.Ordinal.Equals(identifier, obj.identifier)) return false;
+            if (!Attributes.Equals(obj.Attributes)) return false;
 
             return true;
         }
@@ -119,10 +108,68 @@ namespace HatTrick.DbEx.Sql.Expression
                 const int multiplier = 16777619;
 
                 int hash = @base;
-                hash = (hash * multiplier) ^ (identifier is not null ? identifier.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ (alias is not null ? alias.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (Attributes is not null ? Attributes.GetHashCode() : 0);
                 return hash;
             }
+        }
+        #endregion
+
+        #region classes
+        public class EntityExpressionAttributes : IEquatable<EntityExpressionAttributes>
+        {
+            #region interface
+            public string Identifier { get; }
+            public string Name { get; }
+            public Schema Schema { get; }
+            public Type Type { get; }
+            public string? Alias { get; }
+            public Dictionary<string, Field> Fields { get; } = new();
+            #endregion
+
+            #region constructors
+            public EntityExpressionAttributes(string identifier, string name, Type type, Schema schema, string? alias)
+            {
+                this.Identifier = identifier ?? throw new ArgumentNullException(nameof(identifier));
+                this.Name = name ?? throw new ArgumentNullException(nameof(name));
+                this.Type = type ?? throw new ArgumentNullException(nameof(type));
+                this.Schema = schema ?? throw new ArgumentNullException(nameof(schema));
+                this.Alias = alias;
+            }
+            #endregion
+
+            #region equals
+            public bool Equals(EntityExpressionAttributes? obj)
+            {
+                if (obj is null) return false;
+                if (ReferenceEquals(obj, this)) return true;
+
+                if (!Schema.Equals(obj.Schema)) return false;
+                if (!Type.Equals(obj.Type)) return false;
+                if (!StringComparer.Ordinal.Equals(Alias, obj.Alias)) return false;
+                if (!StringComparer.Ordinal.Equals(Identifier, obj.Identifier)) return false;
+
+                return true;
+            }
+
+            public override bool Equals(object? obj)
+                => obj is EntityExpressionAttributes exp && Equals(exp);
+
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    const int @base = (int)2166136261;
+                    const int multiplier = 16777619;
+
+                    int hash = @base;
+                    hash = (hash * multiplier) ^ (Identifier is not null ? Identifier.GetHashCode() : 0);
+                    hash = (hash * multiplier) ^ (Type is not null ? Type.GetHashCode() : 0);
+                    hash = (hash * multiplier) ^ (Schema is not null ? Schema.GetHashCode() : 0);
+                    hash = (hash * multiplier) ^ (Alias is not null ? Alias.GetHashCode() : 0);
+                    return hash;
+                }
+            }
+            #endregion
         }
         #endregion
     }

@@ -314,6 +314,99 @@ CREATE TABLE [dbo].[UnitTest](
 )
 GO
 
+CREATE SCHEMA [code]
+GO
+
+CREATE TABLE [code].[identifier] (
+	[_identifier] VARCHAR(20) NULL,
+	[__identifier] VARCHAR(20) NULL,
+	[name] VARCHAR(20) NULL,
+	[_name] VARCHAR(20) NULL,
+	[__name] VARCHAR(20) NULL,
+	[schema] VARCHAR(20) NULL,
+	[_schema] VARCHAR(20) NULL,
+	[__schema] VARCHAR(20) NULL,
+	[alias] VARCHAR(20) NULL,
+	[_alias] VARCHAR(20) NULL,
+	[__alias] VARCHAR(20) NULL,
+	[entity] VARCHAR(20) NULL,
+	[_entity] VARCHAR(20) NULL,
+	[__entity] VARCHAR(20) NULL
+)
+GO
+
+CREATE TABLE [code].[entity] (
+	[identifier] VARCHAR(20) NULL,
+	[_identifier] VARCHAR(20) NULL,
+	[__identifier] VARCHAR(20) NULL,
+	[name] VARCHAR(20) NULL,
+	[_name] VARCHAR(20) NULL,
+	[__name] VARCHAR(20) NULL,
+	[schema] VARCHAR(20) NULL,
+	[_schema] VARCHAR(20) NULL,
+	[__schema] VARCHAR(20) NULL,
+	[alias] VARCHAR(20) NULL,
+	[_alias] VARCHAR(20) NULL,
+	[__alias] VARCHAR(20) NULL,
+	[_entity] VARCHAR(20) NULL,
+	[__entity] VARCHAR(20) NULL
+)
+GO
+
+CREATE TABLE [code].[name] (
+	[identifier] VARCHAR(20) NULL,
+	[_identifier] VARCHAR(20) NULL,
+	[__identifier] VARCHAR(20) NULL,
+	[_name] VARCHAR(20) NULL,
+	[__name] VARCHAR(20) NULL,
+	[schema] VARCHAR(20) NULL,
+	[_schema] VARCHAR(20) NULL,
+	[__schema] VARCHAR(20) NULL,
+	[alias] VARCHAR(20) NULL,
+	[_alias] VARCHAR(20) NULL,
+	[__alias] VARCHAR(20) NULL,
+	[entity] VARCHAR(20) NULL,
+	[_entity] VARCHAR(20) NULL,
+	[__entity] VARCHAR(20) NULL
+)
+GO
+
+CREATE TABLE [code].[schema] (
+	[identifier] VARCHAR(20) NULL,
+	[_identifier] VARCHAR(20) NULL,
+	[__identifier] VARCHAR(20) NULL,
+	[name] VARCHAR(20) NULL,
+	[_name] VARCHAR(20) NULL,
+	[__name] VARCHAR(20) NULL,
+	[_schema] VARCHAR(20) NULL,
+	[__schema] VARCHAR(20) NULL,
+	[alias] VARCHAR(20) NULL,
+	[_alias] VARCHAR(20) NULL,
+	[__alias] VARCHAR(20) NULL,
+	[entity] VARCHAR(20) NULL,
+	[_entity] VARCHAR(20) NULL,
+	[__entity] VARCHAR(20) NULL
+)
+GO
+
+CREATE TABLE [code].[alias] (
+	[identifier] VARCHAR(20) NULL,
+	[_identifier] VARCHAR(20) NULL,
+	[__identifier] VARCHAR(20) NULL,
+	[name] VARCHAR(20) NULL,
+	[_name] VARCHAR(20) NULL,
+	[__name] VARCHAR(20) NULL,
+	[schema] VARCHAR(20) NULL,
+	[_schema] VARCHAR(20) NULL,
+	[__schema] VARCHAR(20) NULL,
+	[_alias] VARCHAR(20) NULL,
+	[__alias] VARCHAR(20) NULL,
+	[entity] VARCHAR(20) NULL,
+	[_entity] VARCHAR(20) NULL,
+	[__entity] VARCHAR(20) NULL
+)
+GO
+
 CREATE SCHEMA [sec]
 GO
 

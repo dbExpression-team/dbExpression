@@ -70,12 +70,11 @@ namespace HatTrick.DbEx.Tools.Service
                         )
                     );
 
-                databasePair.Schemas.Add(schemaPair);
-
                 foreach (var entity in schema.Tables.Values.Cast<INamedMeta>().Concat(schema.Views.Values.Cast<INamedMeta>()))
                 {
                     if (helpers.IsIgnored(entity))
                         continue;
+
 
                     EntityPairModel? entityPair = null;
                     if (entity is MsSqlTable table)
@@ -137,12 +136,16 @@ namespace HatTrick.DbEx.Tools.Service
                                 )
                             );
 
+                            AlterArgPsuedonym(columnPair);
                             entityPair.Columns.Add(columnPair);
                         }
                     }
 
                     if (entityPair is not null)
+                    {
+                        AlterArgPsuedonym(entityPair);
                         schemaPair.Entities.Add(entityPair);
+                    }
                 }
 
                 foreach (var procedure in schema.Procedures.Values.Where(p => !helpers.IsIgnored(p)))
@@ -168,12 +171,17 @@ namespace HatTrick.DbEx.Tools.Service
                     }
                     schemaPair.StoredProcedures.Add(procedurePair);
                 }
+
+                AlterArgPsuedonym(schemaPair);
+                databasePair.Schemas.Add(schemaPair);
             }
+
 
             databasePair.Documentation = new DocumentationItemsModel(databasePair);
 
             return databasePair;
         }
+
         public string ResolveRootNamespace()
         {
             return _config.RootNamespace?.TrimEnd('.') + '.';
@@ -278,5 +286,39 @@ namespace HatTrick.DbEx.Tools.Service
 
         public bool NullableEnabled
             => _config.Nullable == NullableFeature.Enable;
+
+        private void AlterArgPsuedonym(SchemaPairModel schema)
+            => AlterArgPsuedonym(schema.Entities.Select(x => x.EntityExpression.Name).ToList(), schema.SchemaExpression.ArgNamePsuedonyms);
+
+        private void AlterArgPsuedonym(EntityPairModel entity)
+            => AlterArgPsuedonym(entity.Columns.Select(x => x.FieldExpression.Name).ToList(), entity.EntityExpression.ArgNamePsuedonyms);            
+
+        private void AlterArgPsuedonym(ColumnPairModel column)
+            => AlterArgPsuedonym(new() { column.FieldExpression.Name }, column.FieldExpression.ArgNamePsuedonyms);
+
+        private void AlterArgPsuedonym(List<string> names, Dictionary<string,string> psuedonyms)
+        {
+            var candidates = names.Intersect(psuedonyms.Keys).ToList();
+            if (candidates.Any())
+            {
+                foreach (var conflict in candidates)
+                    AlterArgPsuedonym(
+                        conflict,
+                        names.Where(x => x.EndsWith(conflict)).OrderByDescending(x => x).ToList(),
+                        psuedonyms
+                    );
+            }
+        }
+
+        private void AlterArgPsuedonym(string conflict, List<string> suspects, Dictionary<string,string> currentPseudonyms)
+        {
+            var suspect = currentPseudonyms.FirstOrDefault(x => suspects.Contains(x.Value));
+            if (suspect.Equals(default(KeyValuePair<string, string>)))
+                return;
+
+            var @new = $"_{suspect.Value}";
+            currentPseudonyms[conflict] = @new;
+            AlterArgPsuedonym(conflict, suspects.Where(x => x.EndsWith(@new)).ToList(), currentPseudonyms);
+        }
     }
 }

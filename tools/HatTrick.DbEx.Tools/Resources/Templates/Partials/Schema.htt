@@ -1,11 +1,12 @@
-﻿    #region {$.SchemaExpression.Name}
+﻿{?var:schemaArgName = ("schema", $.SchemaExpression) => GetSchemaArgName}
+    #region {$.SchemaExpression.Name}
 #pragma warning disable CA1052 // Static holder types should be Static or NotInheritable
 #pragma warning disable IDE1006 // Naming Styles
     public partial class {$.SchemaExpression.Name}
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
     {{
-        private static {$.SchemaExpression.Name}SchemaExpression{$.SchemaExpression.LanguageFeatures.Nullable.Annotation} schema;
+        private static {$.SchemaExpression.Name}SchemaExpression{$.SchemaExpression.LanguageFeatures.Nullable.Annotation} {:schemaArgName};
 
         #region interface
         {#each $.Entities}
@@ -16,15 +17,15 @@
         #endregion
 
         #region use schema
-        public static void UseSchema({$.SchemaExpression.Name}SchemaExpression schema)
+        public static void UseSchema({$.SchemaExpression.Name}SchemaExpression {:schemaArgName})
         {{ 
-            if (schema == null)
-                 throw new ArgumentNullException(nameof(schema));
+            if ({:schemaArgName} == null)
+                 throw new ArgumentNullException(nameof({:schemaArgName}));
 
-            {$.SchemaExpression.Name}.schema = schema;
+            {$.SchemaExpression.Name}.{:schemaArgName} = {:schemaArgName};
 
             {#each $.Entities}
-            {$.EntityExpression.Name} = schema.{$.EntityExpression.Name};
+            {$.EntityExpression.Name} = {:schemaArgName}.{$.EntityExpression.Name};
             {/each}
         }}
         #endregion

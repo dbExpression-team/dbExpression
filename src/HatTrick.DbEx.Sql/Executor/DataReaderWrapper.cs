@@ -89,7 +89,7 @@ namespace HatTrick.DbEx.Sql.Executor
 
             var converter = Converters.FindConverter(field.Index, requestedType, field.RawValue);
 
-            if (converter is null)
+            if (converter is not null)
                 fieldConverters.Add(field.Index, converter);
 
             return converter;

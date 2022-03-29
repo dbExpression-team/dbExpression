@@ -167,6 +167,149 @@ namespace ServerSideBlazorApp.dboData
     #endregion
 
 }
+namespace ServerSideBlazorApp.codeData
+{
+    #region alias
+    public partial class alias : IDbEntity
+    {
+        #region interface
+        public virtual string? identifier { get; set; } = null;
+        public virtual string? _identifier { get; set; } = null;
+        public virtual string? __identifier { get; set; } = null;
+        public virtual string? name { get; set; } = null;
+        public virtual string? _name { get; set; } = null;
+        public virtual string? __name { get; set; } = null;
+        public virtual string? schema { get; set; } = null;
+        public virtual string? _schema { get; set; } = null;
+        public virtual string? __schema { get; set; } = null;
+        public virtual string? _alias { get; set; } = null;
+        public virtual string? __alias { get; set; } = null;
+        public virtual string? entity { get; set; } = null;
+        public virtual string? _entity { get; set; } = null;
+        public virtual string? __entity { get; set; } = null;
+        #endregion
+
+        #region constructor
+        public alias()
+        {
+        }
+        #endregion
+    }
+    #endregion
+
+    #region entity
+    public partial class entity : IDbEntity
+    {
+        #region interface
+        public virtual string? identifier { get; set; } = null;
+        public virtual string? _identifier { get; set; } = null;
+        public virtual string? __identifier { get; set; } = null;
+        public virtual string? name { get; set; } = null;
+        public virtual string? _name { get; set; } = null;
+        public virtual string? __name { get; set; } = null;
+        public virtual string? schema { get; set; } = null;
+        public virtual string? _schema { get; set; } = null;
+        public virtual string? __schema { get; set; } = null;
+        public virtual string? alias { get; set; } = null;
+        public virtual string? _alias { get; set; } = null;
+        public virtual string? __alias { get; set; } = null;
+        public virtual string? _entity { get; set; } = null;
+        public virtual string? __entity { get; set; } = null;
+        #endregion
+
+        #region constructor
+        public entity()
+        {
+        }
+        #endregion
+    }
+    #endregion
+
+    #region identifier
+    public partial class identifier : IDbEntity
+    {
+        #region interface
+        public virtual string? _identifier { get; set; } = null;
+        public virtual string? __identifier { get; set; } = null;
+        public virtual string? name { get; set; } = null;
+        public virtual string? _name { get; set; } = null;
+        public virtual string? __name { get; set; } = null;
+        public virtual string? schema { get; set; } = null;
+        public virtual string? _schema { get; set; } = null;
+        public virtual string? __schema { get; set; } = null;
+        public virtual string? alias { get; set; } = null;
+        public virtual string? _alias { get; set; } = null;
+        public virtual string? __alias { get; set; } = null;
+        public virtual string? entity { get; set; } = null;
+        public virtual string? _entity { get; set; } = null;
+        public virtual string? __entity { get; set; } = null;
+        #endregion
+
+        #region constructor
+        public identifier()
+        {
+        }
+        #endregion
+    }
+    #endregion
+
+    #region name
+    public partial class name : IDbEntity
+    {
+        #region interface
+        public virtual string? identifier { get; set; } = null;
+        public virtual string? _identifier { get; set; } = null;
+        public virtual string? __identifier { get; set; } = null;
+        public virtual string? _name { get; set; } = null;
+        public virtual string? __name { get; set; } = null;
+        public virtual string? schema { get; set; } = null;
+        public virtual string? _schema { get; set; } = null;
+        public virtual string? __schema { get; set; } = null;
+        public virtual string? alias { get; set; } = null;
+        public virtual string? _alias { get; set; } = null;
+        public virtual string? __alias { get; set; } = null;
+        public virtual string? entity { get; set; } = null;
+        public virtual string? _entity { get; set; } = null;
+        public virtual string? __entity { get; set; } = null;
+        #endregion
+
+        #region constructor
+        public name()
+        {
+        }
+        #endregion
+    }
+    #endregion
+
+    #region schema
+    public partial class schema : IDbEntity
+    {
+        #region interface
+        public virtual string? identifier { get; set; } = null;
+        public virtual string? _identifier { get; set; } = null;
+        public virtual string? __identifier { get; set; } = null;
+        public virtual string? name { get; set; } = null;
+        public virtual string? _name { get; set; } = null;
+        public virtual string? __name { get; set; } = null;
+        public virtual string? _schema { get; set; } = null;
+        public virtual string? __schema { get; set; } = null;
+        public virtual string? alias { get; set; } = null;
+        public virtual string? _alias { get; set; } = null;
+        public virtual string? __alias { get; set; } = null;
+        public virtual string? entity { get; set; } = null;
+        public virtual string? _entity { get; set; } = null;
+        public virtual string? __entity { get; set; } = null;
+        #endregion
+
+        #region constructor
+        public schema()
+        {
+        }
+        #endregion
+    }
+    #endregion
+
+}
 namespace ServerSideBlazorApp.secData
 {
     #region person
