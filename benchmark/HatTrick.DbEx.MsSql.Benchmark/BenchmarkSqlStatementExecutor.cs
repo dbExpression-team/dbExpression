@@ -11,14 +11,14 @@ namespace HatTrick.DbEx.MsSql.Benchmark
 {
     public class BenchmarkSqlStatementExecutor : ISqlStatementExecutor
     {
-        private readonly RuntimeSqlDatabaseConfiguration config;
+        private readonly SqlDatabaseRuntimeConfiguration config;
         private static ISqlRowReader _reader;
         private static IAsyncSqlRowReader _asyncReader;
 
         private IAsyncSqlRowReader asyncReader => _asyncReader ?? (_asyncReader = new PersonRowReader(new SqlStatementValueConverterProvider(config.ValueConverterFactory)));
         private ISqlRowReader reader => _reader ?? (_reader = new PersonRowReader(new SqlStatementValueConverterProvider(config.ValueConverterFactory)));
 
-        public BenchmarkSqlStatementExecutor(RuntimeSqlDatabaseConfiguration config)
+        public BenchmarkSqlStatementExecutor(SqlDatabaseRuntimeConfiguration config)
         {
             this.config = config;
         }

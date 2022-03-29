@@ -1,6 +1,7 @@
 {
 	"source": {
-		"type": "MsSqlDb",
+		"type": "MsSql",
+		"nullable": "enable",
 		"connectionString": {
 			"value": "Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=MsSqlDbExTest;Integrated Security=true;Connect Timeout=30"
 		}
