@@ -1,12 +1,39 @@
 # Changelog
 
-## [0.8.6]
+## [0.9.0]
 
 ### Added
+- Support for nullable reference types
 
 ### Changed
 
+- C# 9.0 
+	- set langversion to 9.0
+	- updated code base to account for new language features, for example "is not null" instead of "is object" and new() instead of new XXX() (where identified by IDE - many more left)
+
+- Nullable Reference Types
+	- reworked code base to support nullable types
+	- upgraded implementation for string and object types for api, field expressions, expression mediators, and functions to use nullable reference types
+	- reworked all code generation to support nullable reference types and added option to code generation configuration - same as when opting in to the feature via the csproj file, users will opt in with code generation via a config property)
+	- resolved interface issues/warnings related to nullable reference types (#287) and realigned some interfaces to be in the same hierarchy to avoid blind use of "as" that could cause null reference exceptions
+
+- Aliasing (#289)
+	- better support for aliasing with addition of nullable reference types
+	- added tuple ((string,string)) with various functions to allow for creating an alias from the tuple, without having to use dbex.Alias...
+	- changed various functions that wrapped a literal expression with an expression mediator to work with just the literal expression in order to reduce object allocations
+	- altered functions that don't have any parameters to use a static singleton instance to reduce object allocations
+
+- Cleanup
+	- renamed ExecutionPipeline classes (and related configuration classes) to QueryExecutionPipeline to more accurately reflect the purpose of the pipeline
+	- renamed classes/interfaces for conformity (RuntimeSqlDatabase.. -> SqlDatabaseRuntime...)
+	- added missing implicit operators to strings
+	- removed unnecessary integration tests.
+	- reworked code generation to have more correct implementation between using dbExpression in static vs. instance modes (#288) and (#290)
+	- changed source.type from "MsSqlDb" to "MsSql" in code generation configuration (BREAKING change)
+
 ### Fixed
+- issue #283: Can't use select statement as subquery with update statement
+- issue #284: Can't issue an update on a field using a value from a derived table
 
 ## [0.8.5] - 2022-01-13
 
