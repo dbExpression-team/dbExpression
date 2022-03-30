@@ -96,6 +96,10 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
+        #region implicit operators
+        public static implicit operator (string, string)(AliasExpression a) => new(a.alias.TableAlias, a.alias.FieldAlias);
+        #endregion
+
         #region classes
         public class AliasExpressionElements : IExpression
         {
