@@ -2869,6 +2869,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
@@ -2886,6 +2887,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
@@ -2903,6 +2905,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
@@ -2920,6 +2923,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
             public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
@@ -3256,6 +3260,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
@@ -3273,6 +3278,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<HatTrick.DbEx.MsSql.Benchmark.AddressType?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<HatTrick.DbEx.MsSql.Benchmark.AddressType?>(value, this));
             public AssignmentExpression Set(HatTrick.DbEx.MsSql.Benchmark.AddressType value) => new AssignmentExpression(this, new LiteralExpression<HatTrick.DbEx.MsSql.Benchmark.AddressType>(value, this));
             public AssignmentExpression Set(AnyElement<HatTrick.DbEx.MsSql.Benchmark.AddressType> value) => new AssignmentExpression(this, value);
@@ -3293,6 +3299,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -3310,6 +3317,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -3327,6 +3335,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -3344,6 +3353,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -3361,6 +3371,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -3378,6 +3389,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
             public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
@@ -3395,6 +3407,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
             public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
@@ -3790,6 +3803,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
@@ -3807,6 +3821,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -3824,6 +3839,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -3841,6 +3857,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value, this));
             public AssignmentExpression Set(DateTime? value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value, this));
             public AssignmentExpression Set(AnyElement<DateTime?> value) => new AssignmentExpression(this, value);
@@ -3861,6 +3878,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<HatTrick.DbEx.MsSql.Benchmark.GenderType>(value));
             public AssignmentExpression Set(HatTrick.DbEx.MsSql.Benchmark.GenderType value) => new AssignmentExpression(this, new LiteralExpression<HatTrick.DbEx.MsSql.Benchmark.GenderType>(value, this));
             public AssignmentExpression Set(AnyElement<HatTrick.DbEx.MsSql.Benchmark.GenderType> value) => new AssignmentExpression(this, value);
             #endregion
@@ -3878,6 +3896,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<int?>(value, this));
             public AssignmentExpression Set(int? value) => new AssignmentExpression(this, new LiteralExpression<int?>(value, this));
             public AssignmentExpression Set(AnyElement<int?> value) => new AssignmentExpression(this, value);
@@ -3898,6 +3917,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<int?>(value, this));
             public AssignmentExpression Set(int? value) => new AssignmentExpression(this, new LiteralExpression<int?>(value, this));
             public AssignmentExpression Set(AnyElement<int?> value) => new AssignmentExpression(this, value);
@@ -3918,6 +3938,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTimeOffset>(value));
             public AssignmentExpression Set(DateTimeOffset value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset>(value, this));
             public AssignmentExpression Set(AnyElement<DateTimeOffset> value) => new AssignmentExpression(this, value);
             #endregion
@@ -3935,6 +3956,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTimeOffset?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset?>(value, this));
             public AssignmentExpression Set(DateTimeOffset? value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset?>(value, this));
             public AssignmentExpression Set(AnyElement<DateTimeOffset?> value) => new AssignmentExpression(this, value);
@@ -3955,6 +3977,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
             public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
@@ -3972,6 +3995,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
             public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
@@ -4167,6 +4191,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
@@ -4184,6 +4209,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
@@ -4201,6 +4227,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
@@ -4218,6 +4245,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
             public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
@@ -4778,6 +4806,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
@@ -4795,6 +4824,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<HatTrick.DbEx.MsSql.Benchmark.ProductCategoryType?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<HatTrick.DbEx.MsSql.Benchmark.ProductCategoryType?>(value, this));
             public AssignmentExpression Set(HatTrick.DbEx.MsSql.Benchmark.ProductCategoryType value) => new AssignmentExpression(this, new LiteralExpression<HatTrick.DbEx.MsSql.Benchmark.ProductCategoryType>(value, this));
             public AssignmentExpression Set(AnyElement<HatTrick.DbEx.MsSql.Benchmark.ProductCategoryType> value) => new AssignmentExpression(this, value);
@@ -4815,6 +4845,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -4832,6 +4863,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -4849,6 +4881,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<double>(value));
             public AssignmentExpression Set(double value) => new AssignmentExpression(this, new LiteralExpression<double>(value, this));
             public AssignmentExpression Set(AnyElement<double> value) => new AssignmentExpression(this, value);
             #endregion
@@ -4866,6 +4899,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<double>(value));
             public AssignmentExpression Set(double value) => new AssignmentExpression(this, new LiteralExpression<double>(value, this));
             public AssignmentExpression Set(AnyElement<double> value) => new AssignmentExpression(this, value);
             #endregion
@@ -4883,6 +4917,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
@@ -4900,6 +4935,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<byte[]>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<byte[]>(value, this));
             public AssignmentExpression Set(byte[] value) => new AssignmentExpression(this, new LiteralExpression<byte[]>(value, this));
             public AssignmentExpression Set(AnyElement<byte[]> value) => new AssignmentExpression(this, value);
@@ -4918,6 +4954,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<decimal?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
             public AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
             public AssignmentExpression Set(AnyElement<decimal?> value) => new AssignmentExpression(this, value);
@@ -4938,6 +4975,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<decimal?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
             public AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
             public AssignmentExpression Set(AnyElement<decimal?> value) => new AssignmentExpression(this, value);
@@ -4958,6 +4996,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<decimal?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
             public AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
             public AssignmentExpression Set(AnyElement<decimal?> value) => new AssignmentExpression(this, value);
@@ -4978,6 +5017,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<decimal?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
             public AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
             public AssignmentExpression Set(AnyElement<decimal?> value) => new AssignmentExpression(this, value);
@@ -4998,6 +5038,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<decimal>(value));
             public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
             public AssignmentExpression Set(AnyElement<decimal> value) => new AssignmentExpression(this, value);
             #endregion
@@ -5015,6 +5056,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<TimeSpan?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan?>(value, this));
             public AssignmentExpression Set(TimeSpan? value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan?>(value, this));
             public AssignmentExpression Set(AnyElement<TimeSpan?> value) => new AssignmentExpression(this, value);
@@ -5035,6 +5077,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<TimeSpan?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan?>(value, this));
             public AssignmentExpression Set(TimeSpan? value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan?>(value, this));
             public AssignmentExpression Set(AnyElement<TimeSpan?> value) => new AssignmentExpression(this, value);
@@ -5055,6 +5098,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
             public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
@@ -5072,6 +5116,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
             public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
@@ -5520,6 +5565,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
@@ -5537,6 +5583,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
@@ -5554,6 +5601,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -5571,6 +5619,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -5588,6 +5637,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<double>(value));
             public AssignmentExpression Set(double value) => new AssignmentExpression(this, new LiteralExpression<double>(value, this));
             public AssignmentExpression Set(AnyElement<double> value) => new AssignmentExpression(this, value);
             #endregion
@@ -5605,6 +5655,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
             public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
@@ -5622,6 +5673,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value, this));
             public AssignmentExpression Set(DateTime? value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value, this));
             public AssignmentExpression Set(AnyElement<DateTime?> value) => new AssignmentExpression(this, value);
@@ -5642,6 +5694,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value, this));
             public AssignmentExpression Set(DateTime? value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value, this));
             public AssignmentExpression Set(AnyElement<DateTime?> value) => new AssignmentExpression(this, value);
@@ -5662,6 +5715,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<Guid?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<Guid?>(value, this));
             public AssignmentExpression Set(Guid? value) => new AssignmentExpression(this, new LiteralExpression<Guid?>(value, this));
             public AssignmentExpression Set(AnyElement<Guid?> value) => new AssignmentExpression(this, value);
@@ -5682,6 +5736,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<HatTrick.DbEx.MsSql.Benchmark.PaymentMethodType>(value));
             public AssignmentExpression Set(HatTrick.DbEx.MsSql.Benchmark.PaymentMethodType value) => new AssignmentExpression(this, new LiteralExpression<HatTrick.DbEx.MsSql.Benchmark.PaymentMethodType>(value, this));
             public AssignmentExpression Set(AnyElement<HatTrick.DbEx.MsSql.Benchmark.PaymentMethodType> value) => new AssignmentExpression(this, value);
             #endregion
@@ -5699,6 +5754,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<HatTrick.DbEx.MsSql.Benchmark.PaymentSourceType?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<HatTrick.DbEx.MsSql.Benchmark.PaymentSourceType?>(value, this));
             public AssignmentExpression Set(HatTrick.DbEx.MsSql.Benchmark.PaymentSourceType value) => new AssignmentExpression(this, new LiteralExpression<HatTrick.DbEx.MsSql.Benchmark.PaymentSourceType>(value, this));
             public AssignmentExpression Set(AnyElement<HatTrick.DbEx.MsSql.Benchmark.PaymentSourceType> value) => new AssignmentExpression(this, value);
@@ -5719,6 +5775,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
             public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
@@ -5736,6 +5793,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
             public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
@@ -6016,6 +6074,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
@@ -6033,6 +6092,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
@@ -6050,6 +6110,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
@@ -6067,6 +6128,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<decimal>(value));
             public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
             public AssignmentExpression Set(AnyElement<decimal> value) => new AssignmentExpression(this, value);
             #endregion
@@ -6084,6 +6146,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
@@ -6101,6 +6164,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
             public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
@@ -6118,6 +6182,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
             public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
@@ -6277,6 +6342,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
@@ -6294,6 +6360,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<double?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<double?>(value, this));
             public AssignmentExpression Set(double? value) => new AssignmentExpression(this, new LiteralExpression<double?>(value, this));
             public AssignmentExpression Set(AnyElement<double?> value) => new AssignmentExpression(this, value);
@@ -6314,6 +6381,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<int?>(value, this));
             public AssignmentExpression Set(int? value) => new AssignmentExpression(this, new LiteralExpression<int?>(value, this));
             public AssignmentExpression Set(AnyElement<int?> value) => new AssignmentExpression(this, value);
@@ -7248,6 +7316,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -7265,6 +7334,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -7282,6 +7352,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -7299,6 +7370,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -7316,6 +7388,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -7333,6 +7406,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -7350,6 +7424,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -7367,6 +7442,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -7384,6 +7460,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -7401,6 +7478,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -7418,6 +7496,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -7435,6 +7514,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -7452,6 +7532,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -7469,6 +7550,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -7942,6 +8024,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -7959,6 +8042,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -7976,6 +8060,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -7993,6 +8078,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -8010,6 +8096,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -8027,6 +8114,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -8044,6 +8132,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -8061,6 +8150,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -8078,6 +8168,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -8095,6 +8186,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -8112,6 +8204,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -8129,6 +8222,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -8146,6 +8240,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -8163,6 +8258,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -8636,6 +8732,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -8653,6 +8750,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -8670,6 +8768,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -8687,6 +8786,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -8704,6 +8804,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -8721,6 +8822,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -8738,6 +8840,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -8755,6 +8858,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -8772,6 +8876,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -8789,6 +8894,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -8806,6 +8912,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -8823,6 +8930,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -8840,6 +8948,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -8857,6 +8966,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -9330,6 +9440,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -9347,6 +9458,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -9364,6 +9476,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -9381,6 +9494,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -9398,6 +9512,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -9415,6 +9530,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -9432,6 +9548,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -9449,6 +9566,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -9466,6 +9584,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -9483,6 +9602,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -9500,6 +9620,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -9517,6 +9638,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -9534,6 +9656,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -9551,6 +9674,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -10024,6 +10148,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -10041,6 +10166,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -10058,6 +10184,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -10075,6 +10202,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -10092,6 +10220,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -10109,6 +10238,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -10126,6 +10256,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -10143,6 +10274,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -10160,6 +10292,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -10177,6 +10310,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -10194,6 +10328,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -10211,6 +10346,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -10228,6 +10364,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -10245,6 +10382,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -10547,6 +10685,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.secDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
@@ -10564,6 +10703,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.secDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -10581,6 +10721,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.secDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
             public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
@@ -10598,6 +10739,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.secDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
             public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion

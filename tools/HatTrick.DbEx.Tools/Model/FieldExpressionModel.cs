@@ -78,6 +78,7 @@ namespace HatTrick.DbEx.Tools.Model
         {
             List<FieldExpressionAssignmentMethodParameters> parameters = new();
 
+            parameters.Add(new("(string TableName, string FieldName)", $"new AliasExpression<{Type.NullableAlias}>(value)"));
             if (Type.IsNullable)
             {
                 parameters.Add(new("DBNull", $"new LiteralExpression<{Type.NullableAlias}>(value, this)"));

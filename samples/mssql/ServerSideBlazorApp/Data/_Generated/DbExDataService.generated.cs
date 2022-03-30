@@ -3027,6 +3027,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
@@ -3044,6 +3045,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<ServerSideBlazorApp.Data.AddressType?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<ServerSideBlazorApp.Data.AddressType?>(value, this));
             public AssignmentExpression Set(ServerSideBlazorApp.Data.AddressType value) => new AssignmentExpression(this, new LiteralExpression<ServerSideBlazorApp.Data.AddressType>(value, this));
             public AssignmentExpression Set(AnyElement<ServerSideBlazorApp.Data.AddressType> value) => new AssignmentExpression(this, value);
@@ -3064,6 +3066,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -3081,6 +3084,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -3099,6 +3103,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -3116,6 +3121,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -3133,6 +3139,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -3150,6 +3157,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
             public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
@@ -3167,6 +3175,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
             public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
@@ -3562,6 +3571,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
@@ -3579,6 +3589,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -3596,6 +3607,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -3613,6 +3625,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value, this));
             public AssignmentExpression Set(DateTime? value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value, this));
             public AssignmentExpression Set(AnyElement<DateTime?> value) => new AssignmentExpression(this, value);
@@ -3633,6 +3646,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<ServerSideBlazorApp.Data.GenderType>(value));
             public AssignmentExpression Set(ServerSideBlazorApp.Data.GenderType value) => new AssignmentExpression(this, new LiteralExpression<ServerSideBlazorApp.Data.GenderType>(value, this));
             public AssignmentExpression Set(AnyElement<ServerSideBlazorApp.Data.GenderType> value) => new AssignmentExpression(this, value);
             #endregion
@@ -3650,6 +3664,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<int?>(value, this));
             public AssignmentExpression Set(int? value) => new AssignmentExpression(this, new LiteralExpression<int?>(value, this));
             public AssignmentExpression Set(AnyElement<int?> value) => new AssignmentExpression(this, value);
@@ -3670,6 +3685,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<int?>(value, this));
             public AssignmentExpression Set(int? value) => new AssignmentExpression(this, new LiteralExpression<int?>(value, this));
             public AssignmentExpression Set(AnyElement<int?> value) => new AssignmentExpression(this, value);
@@ -3690,6 +3706,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTimeOffset>(value));
             public AssignmentExpression Set(DateTimeOffset value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset>(value, this));
             public AssignmentExpression Set(AnyElement<DateTimeOffset> value) => new AssignmentExpression(this, value);
             #endregion
@@ -3707,6 +3724,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTimeOffset?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset?>(value, this));
             public AssignmentExpression Set(DateTimeOffset? value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset?>(value, this));
             public AssignmentExpression Set(AnyElement<DateTimeOffset?> value) => new AssignmentExpression(this, value);
@@ -3727,6 +3745,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
             public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
@@ -3744,6 +3763,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
             public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
@@ -3939,6 +3959,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
@@ -3956,6 +3977,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
@@ -3973,6 +3995,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
@@ -3990,6 +4013,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
             public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
@@ -4550,6 +4574,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
@@ -4567,6 +4592,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<ServerSideBlazorApp.Data.ProductCategoryType?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<ServerSideBlazorApp.Data.ProductCategoryType?>(value, this));
             public AssignmentExpression Set(ServerSideBlazorApp.Data.ProductCategoryType value) => new AssignmentExpression(this, new LiteralExpression<ServerSideBlazorApp.Data.ProductCategoryType>(value, this));
             public AssignmentExpression Set(AnyElement<ServerSideBlazorApp.Data.ProductCategoryType> value) => new AssignmentExpression(this, value);
@@ -4587,6 +4613,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -4604,6 +4631,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<ServerSideBlazorApp.Data.ProductDescription?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<ServerSideBlazorApp.Data.ProductDescription?>(value, this));
             public AssignmentExpression Set(ServerSideBlazorApp.Data.ProductDescription? value) => new AssignmentExpression(this, new LiteralExpression<ServerSideBlazorApp.Data.ProductDescription?>(value, this));
             public AssignmentExpression Set(AnyElement<ServerSideBlazorApp.Data.ProductDescription?> value) => new AssignmentExpression(this, value);
@@ -4622,6 +4650,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<double>(value));
             public AssignmentExpression Set(double value) => new AssignmentExpression(this, new LiteralExpression<double>(value, this));
             public AssignmentExpression Set(AnyElement<double> value) => new AssignmentExpression(this, value);
             #endregion
@@ -4639,6 +4668,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<double>(value));
             public AssignmentExpression Set(double value) => new AssignmentExpression(this, new LiteralExpression<double>(value, this));
             public AssignmentExpression Set(AnyElement<double> value) => new AssignmentExpression(this, value);
             #endregion
@@ -4656,6 +4686,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
@@ -4673,6 +4704,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<byte[]?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<byte[]?>(value, this));
             public AssignmentExpression Set(byte[]? value) => new AssignmentExpression(this, new LiteralExpression<byte[]?>(value, this));
             public AssignmentExpression Set(AnyElement<byte[]?> value) => new AssignmentExpression(this, value);
@@ -4691,6 +4723,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<decimal?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
             public AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
             public AssignmentExpression Set(AnyElement<decimal?> value) => new AssignmentExpression(this, value);
@@ -4711,6 +4744,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<decimal?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
             public AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
             public AssignmentExpression Set(AnyElement<decimal?> value) => new AssignmentExpression(this, value);
@@ -4731,6 +4765,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<decimal?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
             public AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
             public AssignmentExpression Set(AnyElement<decimal?> value) => new AssignmentExpression(this, value);
@@ -4751,6 +4786,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<decimal?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
             public AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
             public AssignmentExpression Set(AnyElement<decimal?> value) => new AssignmentExpression(this, value);
@@ -4771,6 +4807,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<decimal>(value));
             public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
             public AssignmentExpression Set(AnyElement<decimal> value) => new AssignmentExpression(this, value);
             #endregion
@@ -4788,6 +4825,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<TimeSpan?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan?>(value, this));
             public AssignmentExpression Set(TimeSpan? value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan?>(value, this));
             public AssignmentExpression Set(AnyElement<TimeSpan?> value) => new AssignmentExpression(this, value);
@@ -4808,6 +4846,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<TimeSpan?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan?>(value, this));
             public AssignmentExpression Set(TimeSpan? value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan?>(value, this));
             public AssignmentExpression Set(AnyElement<TimeSpan?> value) => new AssignmentExpression(this, value);
@@ -4828,6 +4867,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
             public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
@@ -4845,6 +4885,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
             public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
@@ -5293,6 +5334,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
@@ -5310,6 +5352,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
@@ -5327,6 +5370,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -5344,6 +5388,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
@@ -5361,6 +5406,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<double>(value));
             public AssignmentExpression Set(double value) => new AssignmentExpression(this, new LiteralExpression<double>(value, this));
             public AssignmentExpression Set(AnyElement<double> value) => new AssignmentExpression(this, value);
             #endregion
@@ -5378,6 +5424,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
             public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
@@ -5395,6 +5442,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value, this));
             public AssignmentExpression Set(DateTime? value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value, this));
             public AssignmentExpression Set(AnyElement<DateTime?> value) => new AssignmentExpression(this, value);
@@ -5415,6 +5463,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value, this));
             public AssignmentExpression Set(DateTime? value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value, this));
             public AssignmentExpression Set(AnyElement<DateTime?> value) => new AssignmentExpression(this, value);
@@ -5435,6 +5484,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<Guid?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<Guid?>(value, this));
             public AssignmentExpression Set(Guid? value) => new AssignmentExpression(this, new LiteralExpression<Guid?>(value, this));
             public AssignmentExpression Set(AnyElement<Guid?> value) => new AssignmentExpression(this, value);
@@ -5455,6 +5505,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<ServerSideBlazorApp.Data.PaymentMethodType>(value));
             public AssignmentExpression Set(ServerSideBlazorApp.Data.PaymentMethodType value) => new AssignmentExpression(this, new LiteralExpression<ServerSideBlazorApp.Data.PaymentMethodType>(value, this));
             public AssignmentExpression Set(AnyElement<ServerSideBlazorApp.Data.PaymentMethodType> value) => new AssignmentExpression(this, value);
             #endregion
@@ -5472,6 +5523,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<ServerSideBlazorApp.Data.PaymentSourceType?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<ServerSideBlazorApp.Data.PaymentSourceType?>(value, this));
             public AssignmentExpression Set(ServerSideBlazorApp.Data.PaymentSourceType value) => new AssignmentExpression(this, new LiteralExpression<ServerSideBlazorApp.Data.PaymentSourceType>(value, this));
             public AssignmentExpression Set(AnyElement<ServerSideBlazorApp.Data.PaymentSourceType> value) => new AssignmentExpression(this, value);
@@ -5492,6 +5544,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
             public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
@@ -5509,6 +5562,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
             public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
@@ -5789,6 +5843,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
@@ -5806,6 +5861,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
@@ -5823,6 +5879,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
@@ -5840,6 +5897,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<decimal>(value));
             public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
             public AssignmentExpression Set(AnyElement<decimal> value) => new AssignmentExpression(this, value);
             #endregion
@@ -5857,6 +5915,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
@@ -5874,6 +5933,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
             public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
@@ -5891,6 +5951,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
             public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
@@ -6050,6 +6111,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
@@ -6067,6 +6129,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<double?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<double?>(value, this));
             public AssignmentExpression Set(double? value) => new AssignmentExpression(this, new LiteralExpression<double?>(value, this));
             public AssignmentExpression Set(AnyElement<double?> value) => new AssignmentExpression(this, value);
@@ -6087,6 +6150,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<int?>(value, this));
             public AssignmentExpression Set(int? value) => new AssignmentExpression(this, new LiteralExpression<int?>(value, this));
             public AssignmentExpression Set(AnyElement<int?> value) => new AssignmentExpression(this, value);
@@ -6994,6 +7058,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -7012,6 +7077,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -7030,6 +7096,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -7048,6 +7115,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -7066,6 +7134,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -7084,6 +7153,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -7102,6 +7172,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -7120,6 +7191,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -7138,6 +7210,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -7156,6 +7229,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -7174,6 +7248,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -7192,6 +7267,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -7210,6 +7286,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -7228,6 +7305,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -7702,6 +7780,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -7720,6 +7799,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -7738,6 +7818,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -7756,6 +7837,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -7774,6 +7856,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -7792,6 +7875,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -7810,6 +7894,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -7828,6 +7913,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -7846,6 +7932,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -7864,6 +7951,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -7882,6 +7970,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -7900,6 +7989,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -7918,6 +8008,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -7936,6 +8027,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -8410,6 +8502,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -8428,6 +8521,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -8446,6 +8540,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -8464,6 +8559,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -8482,6 +8578,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -8500,6 +8597,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -8518,6 +8616,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -8536,6 +8635,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -8554,6 +8654,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -8572,6 +8673,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -8590,6 +8692,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -8608,6 +8711,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -8626,6 +8730,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -8644,6 +8749,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -9118,6 +9224,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -9136,6 +9243,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -9154,6 +9262,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -9172,6 +9281,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -9190,6 +9300,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -9208,6 +9319,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -9226,6 +9338,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -9244,6 +9357,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -9262,6 +9376,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -9280,6 +9395,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -9298,6 +9414,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -9316,6 +9433,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -9334,6 +9452,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -9352,6 +9471,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -9826,6 +9946,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -9844,6 +9965,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -9862,6 +9984,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -9880,6 +10003,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -9898,6 +10022,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -9916,6 +10041,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -9934,6 +10060,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -9952,6 +10079,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -9970,6 +10098,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -9988,6 +10117,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -10006,6 +10136,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -10024,6 +10155,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -10042,6 +10174,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -10060,6 +10193,7 @@ namespace ServerSideBlazorApp.codeDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
@@ -10363,6 +10497,7 @@ namespace ServerSideBlazorApp.secDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
@@ -10380,6 +10515,7 @@ namespace ServerSideBlazorApp.secDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -10397,6 +10533,7 @@ namespace ServerSideBlazorApp.secDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
             public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
@@ -10414,6 +10551,7 @@ namespace ServerSideBlazorApp.secDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
             public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
