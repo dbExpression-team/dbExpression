@@ -414,5 +414,30 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             affectedCount.Should().Be(anticipatedCount);
 
         }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_update_records_using_arithmetic_via_aliased_subquery(int version, int anticipatedCount = 6)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //when
+            int affectedCount = await db.Update(dbo.Person.CreditLimit.Set(("newCreditLimit", "creditLimit")))
+                .From(dbo.Person)
+                .InnerJoin(
+                    db.SelectMany(
+                            dbo.Purchase.PersonId,
+                            db.fx.Max(dbo.Purchase.TotalPurchaseAmount).As("creditLimit")
+                        )
+                        .From(dbo.Purchase)
+                        .GroupBy(dbo.Purchase.PersonId)
+                ).As("newCreditLimit").On(dbo.Person.Id == ("newCreditLimit", "PersonId"))
+                .ExecuteAsync();
+
+            //then
+            affectedCount.Should().Be(anticipatedCount);
+
+        }
     }
 }
