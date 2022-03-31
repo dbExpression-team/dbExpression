@@ -20,7 +20,7 @@ $envFile = (Get-Location).Path + "/" + $MSSQL_VERSION + "/.env"
 
 Write-Host "-------------------------------"
 Write-Host "Destination: " $destination
-Write-Host "Overrides file: " $envFile
+Write-Host ".env file: " $envFile
 
 if (Test-Path $destinationFile) {
 	Clear-Content $destinationFile
