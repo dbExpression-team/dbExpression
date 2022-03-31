@@ -8,4 +8,4 @@ RUN dotnet tool install --global coverlet.console
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.5.0/wait /wait
 RUN chmod +x /wait 
 
-CMD /wait && coverlet /src/HatTrick.DbEx.MsSql.Test.Database.dll --target "dotnet" --targetargs "test /src/HatTrick.DbEx.MsSql.Test.Database.dll --logger \"trx;LogFileName=/results/mssql-${MSSQL_VERSION}.trx\"" --format cobertura --output "/results/mssql-${MSSQL_VERSION}.cobertura.xml" --include "[HatTrick.DbEx.*]*" --exclude "[HatTrick.DbEx.*.Test]*"
+CMD /wait && coverlet /src/HatTrick.DbEx.MsSql.Test.Database.dll --target "dotnet" --targetargs "test /src/HatTrick.DbEx.MsSql.Test.Database.dll --logger \"trx;LogFileName=/results/mssql-${MSSQLVERSION}.trx\"" --format cobertura --output "/results/mssql-${MSSQL_VERSION}.cobertura.xml" --include "[HatTrick.DbEx.*]*" --exclude "[HatTrick.DbEx.*.Test]*"
