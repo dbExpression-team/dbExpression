@@ -291,7 +291,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor.Events
         {
             //given
             bool actionExecuted = false;
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterSqlStatementExecution(_ => Task.Run(() => actionExecuted = true)));
+            ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterSqlStatementExecution(_ => { actionExecuted = true; return Task.CompletedTask; }));
 
             //when
             db.SelectOne<Person>().From(dbo.Person).Execute();
@@ -308,7 +308,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor.Events
         {
             //given
             bool actionExecuted = false;
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterSqlStatementExecution(_ => Task.Run(() => actionExecuted = true), p => true));
+            ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterSqlStatementExecution(_ => { actionExecuted = true; return Task.CompletedTask; }, p => true));
 
             //when
             db.SelectOne<Person>().From(dbo.Person).Execute();
@@ -325,7 +325,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor.Events
         {
             //given
             bool actionExecuted = false;
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterSqlStatementExecution(_ => Task.Run(() => actionExecuted = true), p => false));
+            ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterSqlStatementExecution(_ => { actionExecuted = true; return Task.CompletedTask; }, p => false));
 
             //when
             db.SelectOne<Person>().From(dbo.Person).Execute();
@@ -342,7 +342,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor.Events
         {
             //given
             bool actionExecuted = false;
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterSqlStatementExecution(_ => Task.Run(() => actionExecuted = true)));
+            ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterSqlStatementExecution(_ => { actionExecuted = true; return Task.CompletedTask; }));
 
             //when
             await db.SelectOne<Person>().From(dbo.Person).ExecuteAsync();
@@ -357,7 +357,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor.Events
         {
             //given
             bool actionExecuted = false;
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterSqlStatementExecution(_ => Task.Run(() => actionExecuted = true), p => true));
+            ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterSqlStatementExecution(_ => { actionExecuted = true; return Task.CompletedTask; }, p => true));
 
             //when
             await db.SelectOne<Person>().From(dbo.Person).ExecuteAsync();

@@ -69,7 +69,6 @@ namespace HatTrick.DbEx.Sql.Expression
 
                 int hash = base.GetHashCode();
                 hash = (hash * multiplier) ^ (expression is not null ? expression.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ IsDistinct.GetHashCode();
                 return hash;
             }
         }

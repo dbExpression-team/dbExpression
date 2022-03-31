@@ -22,31 +22,20 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class StandardDeviationFunctionExpression : AggregateFunctionExpression,
         IExpressionProvider<IExpressionElement>,
-        IExpressionIsDistinctProvider,
         IEquatable<StandardDeviationFunctionExpression>
     {
         #region internals
         private readonly IExpressionElement expression;
-        protected bool IsDistinct { get; set; }
         #endregion
 
         #region interface
         IExpressionElement IExpressionProvider<IExpressionElement>.Expression => expression;
-        bool IExpressionIsDistinctProvider.IsDistinct => IsDistinct;
         #endregion
 
         #region constructors
         protected StandardDeviationFunctionExpression(IExpressionElement expression, Type declaredType) : base(declaredType)
         {
             this.expression = expression ?? throw new ArgumentNullException(nameof(expression));
-        }
-        #endregion
-
-        #region distinct
-        public virtual StandardDeviationFunctionExpression Distinct()
-        {
-            IsDistinct = true;
-            return this;
         }
         #endregion
 
@@ -64,7 +53,7 @@ namespace HatTrick.DbEx.Sql.Expression
             if (expression is not null && obj.expression is null) return false;
             if (expression is not null && !expression.Equals(obj.expression)) return false;
 
-            if (IsDistinct != obj.IsDistinct) return false;
+            if (!base.Equals(obj)) return false;
 
             return true;
         }
@@ -80,7 +69,6 @@ namespace HatTrick.DbEx.Sql.Expression
 
                 int hash = base.GetHashCode();
                 hash = (hash * multiplier) ^ (expression is not null ? expression.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ IsDistinct.GetHashCode();
                 return hash;
             }
         }
