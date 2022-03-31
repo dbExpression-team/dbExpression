@@ -34,9 +34,9 @@ $values = @(
 
 if ([System.IO.File]::Exists($envFile) -eq $true)
 {
-	foreach ($override in (Get-Content $envFile)) 
+	foreach ($line in (Get-Content $envFile)) 
 	{
-		$pair = $override.Split("=", [System.StringSplitOptions]::RemoveEmptyEntries)
+		$pair = $line.Split("=", [System.StringSplitOptions]::RemoveEmptyEntries)
 		$index = $values[0].indexOf($pair[0].trim());
 		$values[2][$index] = $pair[1]
 	}

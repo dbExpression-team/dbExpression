@@ -40,6 +40,6 @@ jobs:
         mergeTestResults: true
         failTaskOnFailedTests: true
       
-    - publish: /results/**
+    - publish: /results
       displayName: 'Publish Results to Staging Location'
       artifact: mssql-${{ mssqlVersion }}-results
