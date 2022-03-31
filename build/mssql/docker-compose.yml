@@ -19,8 +19,6 @@ services:
     build:
       context: .
       dockerfile: dockerfile-dotnetcore
-      args:
-        MSSQL_VERSION: ${MSSQL_VERSION}
     environment:
       WAIT_HOSTS: mssql:1433
       WAIT_BEFORE_HOSTS: 20
