@@ -102,7 +102,7 @@ stages:
 #          # To make the task not regenerate the report, a pipeline environment variable was added: "disable.coverage.autogenerate: 'true'"
 #          # see: https://github.com/danielpalme/ReportGenerator/wiki/Integration#attention
 #          reportDirectory: $(Pipeline.Workspace)/$(stageLocationName)/results/coverage
-      - publish: $(Pipeline.Workspace)/$(stageLocationName)/results/mssql-core.trx 
+      - publish: $(Pipeline.Workspace)/$(stageLocationName)/results/**
         displayName: 'Publish Results to Staging Location'
         artifact: mssql-core-results
 
@@ -114,7 +114,7 @@ stages:
     jobs:
     - template: build/mssql/mssql-integration-testing-template.yml
       parameters:
-        srcPath: $(stageLocationName)
+        artifactName: $(stageLocationName)
         rootPath: $(Pipeline.Workspace)/$(stageLocationName)
         buildFilesTemplatePath: $(Pipeline.Workspace)/$(stageLocationName)/build/mssql
         buildConfiguration: $(buildConfiguration)

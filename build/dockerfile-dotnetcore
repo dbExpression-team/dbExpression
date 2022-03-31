@@ -1,6 +1,7 @@
+ARG MSSQL_VERSION
+
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS unit_test_build
 
-ARG MSSQL_VERSION
 ENV PATH="$PATH:/root/.dotnet/tools"
 
 # latest version of coverlet supported for .NET Core 3.1 is 1.7.2 (https://www.nuget.org/packages/coverlet.console)

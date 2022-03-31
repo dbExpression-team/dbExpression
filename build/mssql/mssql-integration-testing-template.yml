@@ -1,5 +1,5 @@
 parameters:
-  srcPath: ''
+  artifactName: ''
   rootPath: ''
   buildFilesTemplatePath: ''
   buildConfiguration: ''
@@ -13,10 +13,10 @@ jobs:
     steps:
     - checkout: none
     - download: current
-      artifact: ${{ parameters.srcPath }}
+      artifact: ${{ parameters.artifactName }}
     
     - task: PowerShell@2
-      displayName: Create Docker Config Files
+      displayName: 'Create Docker Config Files'
       inputs:
         filePath: ${{ parameters.buildFilesTemplatePath }}/create-docker-config.ps1
         arguments: '-MSSQL_VERSION ${{ mssqlVersion }} -BUILD_CONFIGURATION ${{ parameters.buildConfiguration }} -TARGET_FRAMEWORK_MONIKER ${{ parameters.targetFrameworkMoniker }}'
@@ -32,14 +32,14 @@ jobs:
         currentWorkingDirectory: ${{ parameters.rootPath }}                 
       
     - task: PublishTestResults@2
-      displayName: Publish Test Results
+      displayName: 'Publish Test Results'
       inputs:
         testResultsFormat: VSTest
-        testResultsFiles: ${{ parameters.rootPath }}/results/mssql-${{ mssqlVersion }}.trx
+        testResultsFiles: /results/mssql-${{ mssqlVersion }}.trx
         testRunTitle: 'MSSQL ${{ mssqlVersion }}'
         mergeTestResults: true
         failTaskOnFailedTests: true
       
-    - publish: ${{ parameters.rootPath }}/results
+    - publish: /results/**
       displayName: 'Publish Results to Staging Location'
       artifact: mssql-${{ mssqlVersion }}-results

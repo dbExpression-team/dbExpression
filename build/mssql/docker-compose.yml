@@ -15,7 +15,7 @@ services:
     ports:
       - '${PORT}:1433'
   netcore:
-    container_name: unit_test_${TARGET_FRAMEWORK_MONIKER}
+    container_name: integration_test_${TARGET_FRAMEWORK_MONIKER}
     build:
       context: .
       dockerfile: dockerfile-dotnetcore
