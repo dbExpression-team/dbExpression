@@ -39,13 +39,6 @@
 		{
 			"apply": {
 				"ignore": true,
-				"to": { "path": "dbo.UnitTest" }
-
-			}
-		},
-		{
-			"apply": {
-				"ignore": true,
 				"to": { "path": "dbo.AccessAuditLog" }
 
 			}

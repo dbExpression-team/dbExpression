@@ -65,13 +65,6 @@
 		},
 		{
 			"apply": {
-				"ignore": true,
-				"to": { "path": "dbo.UnitTest" }
-
-			}
-		},
-		{
-			"apply": {
 				"name": "PersonAddress",
 				"to": {
 					"path": "dbo.Person_Address"
