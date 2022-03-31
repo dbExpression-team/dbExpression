@@ -2,14 +2,12 @@ version: '3'
 
 services:
   mssql:
-    container_name: mssql
+    container_name: mssql_${MSSQL_VERSION}
     build:
       context: .
       dockerfile: dockerfile-mssql
       args:
-        MsSqlVersion: ${MSSQL_VERSION}
-        CreateDbScriptPath: ${CREATE_DB_SCRIPT_PATH}
-        CreateDbScriptFileName: ${CREATE_DB_SCRIPT_FILENAME}
+        MSSQL_VERSION: ${MSSQL_VERSION}
         SA_PASSWORD: ${MSSQL_PWD}
     environment:
         SA_PASSWORD: ${MSSQL_PWD}
@@ -17,24 +15,19 @@ services:
     ports:
       - '${PORT}:1433'
   netcore:
-    container_name: unit_test
+    container_name: unit_test_${TARGET_FRAMEWORK_MONIKER}
     build:
       context: .
       dockerfile: dockerfile-dotnetcore
+      args:
+        MSSQL_VERSION: ${MSSQL_VERSION}
     environment:
       WAIT_HOSTS: mssql:1433
       WAIT_BEFORE_HOSTS: 20
       CONNECTIONSTRINGS__HATTRICK_DBEX_MSSQL_TEST: server=mssql,1433;database=MsSqlDbExTest;uid=sa;pwd=${MSSQL_PWD};
-      MSSQLVERSION: ${MSSQL_VERSION}
-      TEST_PROJECT_FILENAME: ${TEST_PROJECT_FILENAME}
-      TARGET_FRAMEWORK_MONIKER: ${TARGET_FRAMEWORK_MONIKER}
-      BUILD_CONFIGURATION: ${BUILD_CONFIGURATION}
-      TEST_OUTPUT_FILE_PATH: ${TEST_OUTPUT_FILE_PATH}
-      TEST_OUTPUT_FILE_NAME: ${TEST_OUTPUT_FILE_NAME}
-      CODE_COVERAGE_OUTPUT_FILE_PATH: ${CODE_COVERAGE_OUTPUT_FILE_PATH}
-      CODE_COVERAGE_OUTPUT_FILE_NAME: ${CODE_COVERAGE_OUTPUT_FILE_NAME}      
+      MSSQLVERSION: ${MSSQL_VERSION}     
     volumes:
       - ./results:/results
-      - ./${TEST_PROJECT_PATH}/bin/${BUILD_CONFIGURATION}/${TARGET_FRAMEWORK_MONIKER}:/src
+      - ./test/HatTrick.DbEx.MsSql.Test.Database/bin/${BUILD_CONFIGURATION}/${TARGET_FRAMEWORK_MONIKER}:/src
     depends_on:
       - mssql
