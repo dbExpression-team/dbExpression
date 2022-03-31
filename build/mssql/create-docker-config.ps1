@@ -5,27 +5,7 @@ Param
 		[Parameter(Mandatory,ValueFromPipelineByPropertyName)]
         [string]$BUILD_CONFIGURATION,		
 		[Parameter(Mandatory,ValueFromPipelineByPropertyName)]
-        [string]$TARGET_FRAMEWORK_MONIKER,
-		[Parameter(Mandatory=$false,ValueFromPipelineByPropertyName)]
-        [string]$TEST_PROJECT_PATH,
-		[Parameter(Mandatory=$false,ValueFromPipelineByPropertyName)]
-        [string]$TEST_PROJECT_FILENAME,
-		[Parameter(Mandatory=$false,ValueFromPipelineByPropertyName)]
-        [string]$CREATE_DB_SCRIPT_PATH,
-		[Parameter(Mandatory=$false,ValueFromPipelineByPropertyName)]
-        [string]$CREATE_DB_SCRIPT_FILENAME,
-		[Parameter(Mandatory=$false,ValueFromPipelineByPropertyName)]			
-		[string]$TEST_OUTPUT_FILE_PATH,
-		[Parameter(Mandatory=$false,ValueFromPipelineByPropertyName)]
-		[string]$TEST_OUTPUT_FILE_NAME,		
-		[Parameter(Mandatory=$false,ValueFromPipelineByPropertyName)]
-		[string]$CODE_COVERAGE_OUTPUT_FILE_PATH,			
-        [Parameter(Mandatory=$false,ValueFromPipelineByPropertyName)]
-		[string]$CODE_COVERAGE_OUTPUT_FILE_NAME,			
-        [Parameter(Mandatory=$false,ValueFromPipelineByPropertyName)]
-		[string]$PORT,
-		[Parameter(Mandatory=$false,ValueFromPipelineByPropertyName)]
-        [string]$MSSQL_PWD
+        [string]$TARGET_FRAMEWORK_MONIKER
     )
 
 Write-Host "Command Line Parameters:"
@@ -33,16 +13,6 @@ Write-Host "-------------------------------"
 Write-Host "MSSQL_VERSION: " $MSSQL_VERSION
 Write-Host "BUILD_CONFIGURATION: " $BUILD_CONFIGURATION
 Write-Host "TARGET_FRAMEWORK_MONIKER: " $TARGET_FRAMEWORK_MONIKER
-Write-Host "TEST_PROJECT_PATH: " $TEST_PROJECT_PATH
-Write-Host "TEST_PROJECT_FILENAME: " $TEST_PROJECT_FILENAME
-Write-Host "CREATE_DB_SCRIPT_PATH: " $CREATE_DB_SCRIPT_PATH
-Write-Host "CREATE_DB_SCRIPT_FILENAME: " $CREATE_DB_SCRIPT_FILENAME
-Write-Host "TEST_OUTPUT_FILE_PATH: " $TEST_OUTPUT_FILE_PATH
-Write-Host "TEST_OUTPUT_FILE_NAME: " $TEST_OUTPUT_FILE_NAME
-Write-Host "CODE_COVERAGE_OUTPUT_FILE_PATH: " $CODE_COVERAGE_OUTPUT_FILE_PATH
-Write-Host "CODE_COVERAGE_OUTPUT_FILE_NAME: " $CODE_COVERAGE_OUTPUT_FILE_NAME
-Write-Host "PORT: " $PORT
-Write-Host "MSSQL_PWD: " $MSSQL_PWD
 
 $destination = Split-Path (Split-Path -Path (Get-Location).Path -Parent) -Parent
 $destinationFile = $destination + "/.env"
@@ -60,10 +30,10 @@ if (Test-Path $destinationFile) {
 }
 
 $values = @(
-			("MSSQL_VERSION", "BUILD_CONFIGURATION", "TARGET_FRAMEWORK_MONIKER", "TEST_PROJECT_PATH", "TEST_PROJECT_FILENAME", "CREATE_DB_SCRIPT_PATH", "CREATE_DB_SCRIPT_FILENAME", "TEST_OUTPUT_FILE_PATH", "TEST_OUTPUT_FILE_NAME", "CODE_COVERAGE_OUTPUT_FILE_PATH", "CODE_COVERAGE_OUTPUT_FILE_NAME", "PORT", "MSSQL_PWD"),
-			($MSSQL_VERSION, $BUILD_CONFIGURATION, $TARGET_FRAMEWORK_MONIKER, $TEST_PROJECT_PATH, $TEST_PROJECT_FILENAME, $CREATE_DB_SCRIPT_PATH, $CREATE_DB_SCRIPT_FILENAME, $TEST_OUTPUT_FILE_PATH, $TEST_OUTPUT_FILE_NAME, $CODE_COVERAGE_OUTPUT_FILE_PATH, $CODE_COVERAGE_OUTPUT_FILE_NAME, $PORT, $MSSQL_PWD),
-			($null, $null, $null, $null, $null, $null, $null, $null, $null, $null, $null, $null, $null),
-			($null, $null, $null, $null, $null, $null, $null, $null, $null, $null, $null, $null, $null)
+			("MSSQL_VERSION", "BUILD_CONFIGURATION", "TARGET_FRAMEWORK_MONIKER", "PORT", "MSSQL_PWD"),
+			($MSSQL_VERSION, $BUILD_CONFIGURATION, $TARGET_FRAMEWORK_MONIKER, $PORT, $MSSQL_PWD),
+			($null, $null, $null, $null, $null),
+			($null, $null, $null, $null, $null)
 		)
 
 if ([System.IO.File]::Exists($overridesFile) -eq $true)

@@ -112,76 +112,11 @@ stages:
     dependsOn: Build
     displayName: 'Test MSSQL Platforms'
     jobs:
-      # MSSQL 2017
-    - job: Test_MSSQL_2017
-      displayName: 'Test MSSQL 2017'
-      steps:
-      - checkout: none
-      - download: current
-        artifact: $(stageLocationName)
-        
-      - task: PowerShell@2
-        displayName: Create Docker Config Files
-        inputs:
-          filePath: $(Pipeline.Workspace)/$(stageLocationName)/build/mssql/create-docker-config.ps1
-          arguments: '-MSSQL_VERSION 2017 -BUILD_CONFIGURATION $(buildConfiguration) -TARGET_FRAMEWORK_MONIKER net$(netCoreVersion) -TEST_OUTPUT_FILE_PATH /results -TEST_OUTPUT_FILE_NAME mssql-2017.trx -CODE_COVERAGE_OUTPUT_FILE_PATH /results -CODE_COVERAGE_OUTPUT_FILE_NAME mssql-2017.cobertura.xml'
-          workingDirectory: $(Pipeline.Workspace)/$(stageLocationName)/build/mssql
-
-      - task: DockerCompose@0
-        displayName: 'Execute Tests'
-        inputs:
-          containerregistrytype: 'Container Registry'
-          dockerComposeFile: $(Pipeline.Workspace)/$(stageLocationName)/docker-compose.yml
-          action: 'Run a Docker Compose command'
-          dockerComposeCommand: 'up --abort-on-container-exit'
-          currentWorkingDirectory: $(Pipeline.Workspace)/$(stageLocationName)                  
-          
-      - task: PublishTestResults@2
-        displayName: Publish Test Results
-        inputs:
-          testResultsFormat: VSTest
-          testResultsFiles: $(Pipeline.Workspace)/$(stageLocationName)/results/mssql-2017.trx
-          testRunTitle: 'MSSQL 2017'
-          mergeTestResults: true
-          failTaskOnFailedTests: true
-          
-      - publish: $(Pipeline.Workspace)/$(stageLocationName)/results/mssql-2017.trx 
-        displayName: 'Publish Results to Staging Location'
-        artifact: mssql-2017-results
-        
-      # MSSQL 2017
-    - job: Test_MSSQL_2019
-      displayName: 'Test MSSQL 2019'
-      steps:
-      - checkout: none
-      - download: current
-        artifact: $(stageLocationName)
-        
-      - task: PowerShell@2
-        displayName: Create Docker Config Files
-        inputs:
-          filePath: $(Pipeline.Workspace)/$(stageLocationName)/build/mssql/create-docker-config.ps1
-          arguments: '-MSSQL_VERSION 2019 -BUILD_CONFIGURATION $(buildConfiguration) -TARGET_FRAMEWORK_MONIKER net$(netCoreVersion) -TEST_OUTPUT_FILE_PATH /results -TEST_OUTPUT_FILE_NAME mssql-2019.trx -CODE_COVERAGE_OUTPUT_FILE_PATH /results -CODE_COVERAGE_OUTPUT_FILE_NAME mssql-2019.cobertura.xml'
-          workingDirectory: $(Pipeline.Workspace)/$(stageLocationName)/build/mssql
-
-      - task: DockerCompose@0
-        displayName: 'Execute Tests'
-        inputs:
-          containerregistrytype: 'Container Registry'
-          dockerComposeFile: $(Pipeline.Workspace)/$(stageLocationName)/docker-compose.yml
-          action: 'Run a Docker Compose command'
-          dockerComposeCommand: 'up --abort-on-container-exit'
-          currentWorkingDirectory: $(Pipeline.Workspace)/$(stageLocationName)                  
-          
-      - task: PublishTestResults@2
-        displayName: Publish Test Results
-        inputs:
-          testResultsFormat: VSTest
-          testResultsFiles: $(Pipeline.Workspace)/$(stageLocationName)/results/mssql-2019.trx
-          testRunTitle: 'MSSQL 2019'
-          mergeTestResults: true
-          failTaskOnFailedTests: true
-          
-      - publish: $(Pipeline.Workspace)/$(stageLocationName)/results/mssql-2019.trx 
-        displayName: 'Publish Results to Staging Location'
-        artifact: mssql-2019-results
+    - template: build/mssql/mssql-integration-testing-template.yml
+      parameters:
+        srcPath: $(stageLocationName)
+        rootPath: $(Pipeline.Workspace)/$(stageLocationName)
+        buildFilesTemplatePath: $(Pipeline.Workspace)/$(stageLocationName)/build/mssql
+        buildConfiguration: $(buildConfiguration)
+        targetFrameworkMoniker: net$(netCoreVersion)
+        mssqlVersions: ['2017','2019']
