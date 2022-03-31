@@ -42,6 +42,14 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
+        #region methods
+        public virtual CountFunctionExpression Distinct()
+        {
+            IsDistinct = true;
+            return this;
+        }
+        #endregion
+
         #region to string
         public override string? ToString() => $"COUNT({(IsDistinct ? "DISTINCT " : string.Empty)}{expression})";
         #endregion

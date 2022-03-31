@@ -37,14 +37,6 @@ namespace HatTrick.DbEx.Sql.Expression
             => new SelectExpression<long>(this).As(alias);
         #endregion
 
-        #region distinct
-        public Int64AbsFunctionExpression Distinct()
-        {
-            IsDistinct = true;
-            return this;
-        }
-        #endregion
-
         #region equals
         public bool Equals(Int64AbsFunctionExpression? obj)
             => obj is not null && base.Equals(obj);

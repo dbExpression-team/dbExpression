@@ -20,12 +20,57 @@
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public abstract class AggregateFunctionExpression : FunctionExpression
+    public abstract class AggregateFunctionExpression : FunctionExpression,
+        IExpressionIsDistinctProvider,
+        IEquatable<AggregateFunctionExpression>
     {
+        #region internals
+        protected bool IsDistinct { get; set; }
+        #endregion
+
+        #region interface
+        bool IExpressionIsDistinctProvider.IsDistinct => IsDistinct;
+        #endregion
+
         #region constructors
         protected AggregateFunctionExpression(Type declaredType) : base(declaredType)
         {
 
+        }
+        #endregion
+
+        #region distinct
+        public virtual AggregateFunctionExpression Distinct()
+        {
+            IsDistinct = true;
+            return this;
+        }
+        #endregion
+
+        #region equals
+        public bool Equals(AggregateFunctionExpression? obj)
+        {
+            if (obj is null) return false;
+            if (ReferenceEquals(this, obj)) return true;
+
+            if (IsDistinct != obj.IsDistinct) return false;
+
+            return true;
+        }
+
+        public override bool Equals(object? obj)
+         => obj is AggregateFunctionExpression exp && Equals(exp);
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                const int multiplier = 16777619;
+
+                int hash = base.GetHashCode();
+                hash = (hash * multiplier) ^ IsDistinct.GetHashCode();
+                return hash;
+            }
         }
         #endregion
     }

@@ -39,7 +39,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region distinct
-        public NullableDateTimeOffsetMaximumFunctionExpression Distinct()
+        public new NullableDateTimeOffsetMaximumFunctionExpression Distinct()
         {
             IsDistinct = true;
             return this;

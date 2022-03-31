@@ -38,7 +38,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region distinct
-        public NullableInt64SumFunctionExpression Distinct()
+        public new NullableInt64SumFunctionExpression Distinct()
         {
             IsDistinct = true;
             return this;

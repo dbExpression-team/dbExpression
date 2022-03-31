@@ -22,17 +22,14 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class AbsFunctionExpression : AggregateFunctionExpression,
         IExpressionProvider<IExpressionElement>,
-        IExpressionIsDistinctProvider,
         IEquatable<AbsFunctionExpression>
     {
         #region internals
         private readonly IExpressionElement expression;
-        protected bool IsDistinct { get; set; }
         #endregion
 
         #region interface
         IExpressionElement IExpressionProvider<IExpressionElement>.Expression => expression;
-        bool IExpressionIsDistinctProvider.IsDistinct => IsDistinct;
         #endregion
 
         #region constructors
@@ -43,7 +40,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region to string
-        public override string? ToString() => $"MIN({(IsDistinct ? "DISTINCT " : string.Empty)}{expression})";
+        public override string? ToString() => $"ABS({expression})";
         #endregion
 
         #region equals
@@ -55,8 +52,6 @@ namespace HatTrick.DbEx.Sql.Expression
             if (expression is null && obj.expression is not null) return false;
             if (expression is not null && obj.expression is null) return false;
             if (expression is not null && !expression.Equals(obj.expression)) return false;
-
-            if (IsDistinct != obj.IsDistinct) return false;
 
             return true;
         }
@@ -72,7 +67,6 @@ namespace HatTrick.DbEx.Sql.Expression
 
                 int hash = base.GetHashCode();
                 hash = (hash * multiplier) ^ (expression is not null ? expression.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ IsDistinct.GetHashCode();
                 return hash;
             }
         }

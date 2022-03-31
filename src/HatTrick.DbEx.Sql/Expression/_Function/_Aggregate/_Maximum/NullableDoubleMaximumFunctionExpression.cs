@@ -39,12 +39,13 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region distinct
-        public NullableDoubleMaximumFunctionExpression Distinct()
+        public new NullableDoubleMaximumFunctionExpression Distinct()
         {
             IsDistinct = true;
             return this;
         }
         #endregion
+
         #region equals
         public bool Equals(NullableDoubleMaximumFunctionExpression? obj)
             => obj is not null && base.Equals(obj);

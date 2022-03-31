@@ -38,14 +38,6 @@ namespace HatTrick.DbEx.Sql.Expression
             => new SelectExpression<float?>(this).As(alias);
         #endregion
 
-        #region distinct
-        public NullableSingleAbsFunctionExpression Distinct()
-        {
-            IsDistinct = true;
-            return this;
-        }
-        #endregion
-
         #region equals
         public bool Equals(NullableSingleAbsFunctionExpression? obj)
             => obj is not null && base.Equals(obj);

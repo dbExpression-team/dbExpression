@@ -38,7 +38,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region distinct
-        public DoubleAverageFunctionExpression Distinct()
+        public new DoubleAverageFunctionExpression Distinct()
         {
             IsDistinct = true;
             return this;

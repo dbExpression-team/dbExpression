@@ -39,7 +39,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region distinct
-        public NullableObjectMinimumFunctionExpression Distinct()
+        public new NullableObjectMinimumFunctionExpression Distinct()
         {
             IsDistinct = true;
             return this;
