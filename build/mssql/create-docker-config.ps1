@@ -16,14 +16,11 @@ Write-Host "TARGET_FRAMEWORK_MONIKER: " $TARGET_FRAMEWORK_MONIKER
 
 $destination = Split-Path (Split-Path -Path (Get-Location).Path -Parent) -Parent
 $destinationFile = $destination + "/.env"
-
-$baseFile =(Get-Location).Path + "/.env"
-$overridesFile = (Get-Location).Path + "/" + $MSSQL_VERSION + "/.env"
+$envFile = (Get-Location).Path + "/" + $MSSQL_VERSION + "/.env"
 
 Write-Host "-------------------------------"
 Write-Host "Destination: " $destination
-Write-Host "Base file: " $baseFile
-Write-Host "Overrides file: " $overridesFile
+Write-Host "Overrides file: " $envFile
 
 if (Test-Path $destinationFile) {
 	Clear-Content $destinationFile
@@ -32,25 +29,17 @@ if (Test-Path $destinationFile) {
 $values = @(
 			("MSSQL_VERSION", "BUILD_CONFIGURATION", "TARGET_FRAMEWORK_MONIKER", "PORT", "MSSQL_PWD"),
 			($MSSQL_VERSION, $BUILD_CONFIGURATION, $TARGET_FRAMEWORK_MONIKER, $PORT, $MSSQL_PWD),
-			($null, $null, $null, $null, $null),
 			($null, $null, $null, $null, $null)
 		)
 
-if ([System.IO.File]::Exists($overridesFile) -eq $true)
+if ([System.IO.File]::Exists($envFile) -eq $true)
 {
-	foreach ($override in (Get-Content $overridesFile)) 
+	foreach ($override in (Get-Content $envFile)) 
 	{
 		$pair = $override.Split("=", [System.StringSplitOptions]::RemoveEmptyEntries)
 		$index = $values[0].indexOf($pair[0].trim());
 		$values[2][$index] = $pair[1]
 	}
-}
-
-foreach ($value in (Get-Content $baseFile)) 
-{
-	$pair = $value.Split("=", [System.StringSplitOptions]::RemoveEmptyEntries)
-	$index = $values[0].indexOf($pair[0].trim());
-	$values[3][$index] = $pair[1]
 }
 
 Write-Host "-------------------------------"
@@ -62,10 +51,6 @@ for ($keyIndex=0; $keyIndex -lt $values[0].length; $keyIndex++)
 	if ([System.String]::IsNullOrWhiteSpace($value))
 	{
 		$value = $values[2][$keyIndex]
-	}
-	if ([System.String]::IsNullOrWhiteSpace($value))
-	{
-		$value = $values[3][$keyIndex]
 	}
 	$env = [System.String]::Join("=", $key, $value)
 	Write-Host $env
