@@ -42,6 +42,14 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
+        #region methods
+        public virtual MaximumFunctionExpression Distinct()
+        {
+            IsDistinct = true;
+            return this;
+        }
+        #endregion
+
         #region to string
         public override string? ToString() => $"MAX({(IsDistinct ? "DISTINCT " : string.Empty)}{expression})";
         #endregion

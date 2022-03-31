@@ -33,7 +33,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region distinct
-        public Int16MinimumFunctionExpression Distinct()
+        public new Int16MinimumFunctionExpression Distinct()
         {
             IsDistinct = true;
             return this;

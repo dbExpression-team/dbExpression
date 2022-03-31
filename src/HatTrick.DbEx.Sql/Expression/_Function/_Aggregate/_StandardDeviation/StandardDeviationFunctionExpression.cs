@@ -42,6 +42,14 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
+        #region distinct
+        public virtual StandardDeviationFunctionExpression Distinct()
+        {
+            IsDistinct = true;
+            return this;
+        }
+        #endregion
+
         #region to string
         public override string? ToString() => $"STDEV({(IsDistinct ? "DISTINCT " : string.Empty)}{expression})";
         #endregion

@@ -38,14 +38,6 @@ namespace HatTrick.DbEx.Sql.Expression
             => new SelectExpression<byte?>(this).As(alias);
         #endregion
 
-        #region distinct
-        public NullableByteAbsFunctionExpression Distinct()
-        {
-            IsDistinct = true;
-            return this;
-        }
-        #endregion
-
         #region equals
         public bool Equals(NullableByteAbsFunctionExpression? obj)
             => obj is not null && base.Equals(obj);

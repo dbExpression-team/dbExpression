@@ -33,7 +33,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region distinct
-        public DateTimeOffsetMinimumFunctionExpression Distinct()
+        public new DateTimeOffsetMinimumFunctionExpression Distinct()
         {
             IsDistinct = true;
             return this;

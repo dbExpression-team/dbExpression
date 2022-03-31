@@ -68,7 +68,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region distinct
-        public SinglePopulationVarianceFunctionExpression Distinct()
+        public new SinglePopulationVarianceFunctionExpression Distinct()
         {
             IsDistinct = true;
             return this;

@@ -22,17 +22,14 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class AverageFunctionExpression : AggregateFunctionExpression,
         IExpressionProvider<IExpressionElement>,
-        IExpressionIsDistinctProvider,
         IEquatable<AverageFunctionExpression>
     {
         #region internals
         private readonly IExpressionElement expression;
-        protected bool IsDistinct { get; set; }
         #endregion
 
         #region interface
         IExpressionElement IExpressionProvider<IExpressionElement>.Expression => expression;
-        bool IExpressionIsDistinctProvider.IsDistinct => IsDistinct;
         #endregion
 
         #region constructors
@@ -56,7 +53,7 @@ namespace HatTrick.DbEx.Sql.Expression
             if (expression is not null && obj.expression is null) return false;
             if (expression is not null && !expression.Equals(obj.expression)) return false;
 
-            if (IsDistinct != obj.IsDistinct) return false;
+            if (!base.Equals(obj)) return false;
 
             return true;
         }

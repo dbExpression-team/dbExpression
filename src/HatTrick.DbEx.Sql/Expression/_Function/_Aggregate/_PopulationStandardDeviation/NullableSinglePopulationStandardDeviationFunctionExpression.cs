@@ -66,7 +66,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region distinct
-        public NullableSinglePopulationStandardDeviationFunctionExpression Distinct()
+        public new NullableSinglePopulationStandardDeviationFunctionExpression Distinct()
         {
             IsDistinct = true;
             return this;

@@ -38,14 +38,6 @@ namespace HatTrick.DbEx.Sql.Expression
             => new SelectExpression<decimal?>(this).As(alias);
         #endregion
 
-        #region distinct
-        public NullableDecimalAbsFunctionExpression Distinct()
-        {
-            IsDistinct = true;
-            return this;
-        }
-        #endregion
-
         #region equals
         public bool Equals(NullableDecimalAbsFunctionExpression? obj)
             => obj is not null && base.Equals(obj);
