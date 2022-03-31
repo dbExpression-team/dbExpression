@@ -1,9 +1,7 @@
 ﻿using DbEx.DataService;
-using DbEx.dboDataService;
+using DbEx.unit_testDataService;
 using FluentAssertions;
-using FluentAssertions.Common;
 using HatTrick.DbEx.MsSql.Test.Executor;
-using HatTrick.DbEx.Sql;
 using System;
 using System.Linq;
 using Xunit;
@@ -20,9 +18,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectMany(dbo.UnitTest.Boolean)
-                .From(dbo.UnitTest)
-                .Where(dbo.UnitTest.Id == 1);
+            var exp = db.SelectMany(unit_test.ExpressionElementType.Boolean)
+                .From(unit_test.ExpressionElementType)
+                .Where(unit_test.ExpressionElementType.Id == 1);
 
             //when               
             bool value = exp.Execute().FirstOrDefault();
@@ -39,9 +37,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectMany(dbo.UnitTest.NullableBoolean)
-                .From(dbo.UnitTest)
-                .Where(dbo.UnitTest.Id == 2);
+            var exp = db.SelectMany(unit_test.ExpressionElementType.NullableBoolean)
+                .From(unit_test.ExpressionElementType)
+                .Where(unit_test.ExpressionElementType.Id == 2);
 
             //when               
             bool? value = exp.Execute().FirstOrDefault();
@@ -58,9 +56,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectMany(dbo.UnitTest.Byte)
-                .From(dbo.UnitTest)
-                .Where(dbo.UnitTest.Id == 1);
+            var exp = db.SelectMany(unit_test.ExpressionElementType.Byte)
+                .From(unit_test.ExpressionElementType)
+                .Where(unit_test.ExpressionElementType.Id == 1);
 
             //when               
             byte value = exp.Execute().FirstOrDefault();
@@ -77,9 +75,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectMany(dbo.UnitTest.NullableByte)
-                .From(dbo.UnitTest)
-                .Where(dbo.UnitTest.Id == 2);
+            var exp = db.SelectMany(unit_test.ExpressionElementType.NullableByte)
+                .From(unit_test.ExpressionElementType)
+                .Where(unit_test.ExpressionElementType.Id == 2);
 
             //when               
             byte? value = exp.Execute().FirstOrDefault();
@@ -96,9 +94,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectMany(dbo.UnitTest.ByteArray)
-                .From(dbo.UnitTest)
-                .Where(dbo.UnitTest.Id == 1);
+            var exp = db.SelectMany(unit_test.ExpressionElementType.ByteArray)
+                .From(unit_test.ExpressionElementType)
+                .Where(unit_test.ExpressionElementType.Id == 1);
 
             //when               
             byte[]? value = exp.Execute().FirstOrDefault();
@@ -115,9 +113,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectMany(dbo.UnitTest.NullableByteArray)
-                .From(dbo.UnitTest)
-                .Where(dbo.UnitTest.Id == 2);
+            var exp = db.SelectMany(unit_test.ExpressionElementType.NullableByteArray)
+                .From(unit_test.ExpressionElementType)
+                .Where(unit_test.ExpressionElementType.Id == 2);
 
             //when               
             byte[]? value = exp.Execute().FirstOrDefault();
@@ -134,9 +132,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectMany(dbo.UnitTest.DateTime)
-                .From(dbo.UnitTest)
-                .Where(dbo.UnitTest.Id == 1);
+            var exp = db.SelectMany(unit_test.ExpressionElementType.DateTime)
+                .From(unit_test.ExpressionElementType)
+                .Where(unit_test.ExpressionElementType.Id == 1);
 
             //when               
             DateTime value = exp.Execute().FirstOrDefault();
@@ -153,9 +151,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectMany(dbo.UnitTest.NullableDateTime)
-                .From(dbo.UnitTest)
-                .Where(dbo.UnitTest.Id == 2);
+            var exp = db.SelectMany(unit_test.ExpressionElementType.NullableDateTime)
+                .From(unit_test.ExpressionElementType)
+                .Where(unit_test.ExpressionElementType.Id == 2);
 
             //when               
             DateTime? value = exp.Execute().FirstOrDefault();
@@ -172,9 +170,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectMany(dbo.UnitTest.DateTimeOffset)
-                .From(dbo.UnitTest)
-                .Where(dbo.UnitTest.Id == 1);
+            var exp = db.SelectMany(unit_test.ExpressionElementType.DateTimeOffset)
+                .From(unit_test.ExpressionElementType)
+                .Where(unit_test.ExpressionElementType.Id == 1);
 
             //when               
             DateTimeOffset value = exp.Execute().FirstOrDefault();
@@ -191,9 +189,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectMany(dbo.UnitTest.NullableDateTimeOffset)
-                .From(dbo.UnitTest)
-                .Where(dbo.UnitTest.Id == 2);
+            var exp = db.SelectMany(unit_test.ExpressionElementType.NullableDateTimeOffset)
+                .From(unit_test.ExpressionElementType)
+                .Where(unit_test.ExpressionElementType.Id == 2);
 
             //when               
             DateTimeOffset? value = exp.Execute().FirstOrDefault();
@@ -210,9 +208,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectMany(dbo.UnitTest.Decimal)
-                .From(dbo.UnitTest)
-                .Where(dbo.UnitTest.Id == 1);
+            var exp = db.SelectMany(unit_test.ExpressionElementType.Decimal)
+                .From(unit_test.ExpressionElementType)
+                .Where(unit_test.ExpressionElementType.Id == 1);
 
             //when               
             decimal value = exp.Execute().FirstOrDefault();
@@ -229,9 +227,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectMany(dbo.UnitTest.NullableDecimal)
-                .From(dbo.UnitTest)
-                .Where(dbo.UnitTest.Id == 2);
+            var exp = db.SelectMany(unit_test.ExpressionElementType.NullableDecimal)
+                .From(unit_test.ExpressionElementType)
+                .Where(unit_test.ExpressionElementType.Id == 2);
 
             //when               
             decimal? value = exp.Execute().FirstOrDefault();
@@ -248,9 +246,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectMany(dbo.UnitTest.Double)
-                .From(dbo.UnitTest)
-                .Where(dbo.UnitTest.Id == 1);
+            var exp = db.SelectMany(unit_test.ExpressionElementType.Double)
+                .From(unit_test.ExpressionElementType)
+                .Where(unit_test.ExpressionElementType.Id == 1);
 
             //when               
             double value = exp.Execute().FirstOrDefault();
@@ -267,9 +265,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectMany(dbo.UnitTest.Guid)
-                .From(dbo.UnitTest)
-                .Where(dbo.UnitTest.Id == 1);
+            var exp = db.SelectMany(unit_test.ExpressionElementType.Guid)
+                .From(unit_test.ExpressionElementType)
+                .Where(unit_test.ExpressionElementType.Id == 1);
 
             //when               
             Guid value = exp.Execute().FirstOrDefault();
@@ -286,9 +284,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectMany(dbo.UnitTest.NullableGuid)
-                .From(dbo.UnitTest)
-                .Where(dbo.UnitTest.Id == 2);
+            var exp = db.SelectMany(unit_test.ExpressionElementType.NullableGuid)
+                .From(unit_test.ExpressionElementType)
+                .Where(unit_test.ExpressionElementType.Id == 2);
 
             //when               
             Guid? value = exp.Execute().FirstOrDefault();
@@ -305,9 +303,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectMany(dbo.UnitTest.NullableDouble)
-                .From(dbo.UnitTest)
-                .Where(dbo.UnitTest.Id == 2);
+            var exp = db.SelectMany(unit_test.ExpressionElementType.NullableDouble)
+                .From(unit_test.ExpressionElementType)
+                .Where(unit_test.ExpressionElementType.Id == 2);
 
             //when               
             double? value = exp.Execute().FirstOrDefault();
@@ -324,9 +322,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectMany(dbo.UnitTest.Int16)
-                .From(dbo.UnitTest)
-                .Where(dbo.UnitTest.Id == 1);
+            var exp = db.SelectMany(unit_test.ExpressionElementType.Int16)
+                .From(unit_test.ExpressionElementType)
+                .Where(unit_test.ExpressionElementType.Id == 1);
 
             //when               
             short value = exp.Execute().FirstOrDefault();
@@ -343,9 +341,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectMany(dbo.UnitTest.NullableInt16)
-                .From(dbo.UnitTest)
-                .Where(dbo.UnitTest.Id == 2);
+            var exp = db.SelectMany(unit_test.ExpressionElementType.NullableInt16)
+                .From(unit_test.ExpressionElementType)
+                .Where(unit_test.ExpressionElementType.Id == 2);
 
             //when               
             short? value = exp.Execute().FirstOrDefault();
@@ -362,9 +360,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectMany(dbo.UnitTest.Int32)
-                .From(dbo.UnitTest)
-                .Where(dbo.UnitTest.Id == 1);
+            var exp = db.SelectMany(unit_test.ExpressionElementType.Int32)
+                .From(unit_test.ExpressionElementType)
+                .Where(unit_test.ExpressionElementType.Id == 1);
 
             //when               
             int value = exp.Execute().FirstOrDefault();
@@ -381,9 +379,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectMany(dbo.UnitTest.NullableInt32)
-                .From(dbo.UnitTest)
-                .Where(dbo.UnitTest.Id == 2);
+            var exp = db.SelectMany(unit_test.ExpressionElementType.NullableInt32)
+                .From(unit_test.ExpressionElementType)
+                .Where(unit_test.ExpressionElementType.Id == 2);
 
             //when               
             int? value = exp.Execute().FirstOrDefault();
@@ -400,9 +398,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectMany(dbo.UnitTest.Int64)
-                .From(dbo.UnitTest)
-                .Where(dbo.UnitTest.Id == 1);
+            var exp = db.SelectMany(unit_test.ExpressionElementType.Int64)
+                .From(unit_test.ExpressionElementType)
+                .Where(unit_test.ExpressionElementType.Id == 1);
 
             //when               
             long value = exp.Execute().FirstOrDefault();
@@ -419,9 +417,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectMany(dbo.UnitTest.NullableInt64)
-                .From(dbo.UnitTest)
-                .Where(dbo.UnitTest.Id == 2);
+            var exp = db.SelectMany(unit_test.ExpressionElementType.NullableInt64)
+                .From(unit_test.ExpressionElementType)
+                .Where(unit_test.ExpressionElementType.Id == 2);
 
             //when               
             long? value = exp.Execute().FirstOrDefault();
@@ -438,9 +436,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectMany(dbo.UnitTest.String)
-                .From(dbo.UnitTest)
-                .Where(dbo.UnitTest.Id == 1);
+            var exp = db.SelectMany(unit_test.ExpressionElementType.String)
+                .From(unit_test.ExpressionElementType)
+                .Where(unit_test.ExpressionElementType.Id == 1);
 
             //when               
             string? value = exp.Execute().FirstOrDefault();
@@ -457,9 +455,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectMany(dbo.UnitTest.NullableString)
-                .From(dbo.UnitTest)
-                .Where(dbo.UnitTest.Id == 2);
+            var exp = db.SelectMany(unit_test.ExpressionElementType.NullableString)
+                .From(unit_test.ExpressionElementType)
+                .Where(unit_test.ExpressionElementType.Id == 2);
 
             //when               
             string? value = exp.Execute().FirstOrDefault();
@@ -476,9 +474,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectMany(dbo.UnitTest.TimeSpan)
-                .From(dbo.UnitTest)
-                .Where(dbo.UnitTest.Id == 1);
+            var exp = db.SelectMany(unit_test.ExpressionElementType.TimeSpan)
+                .From(unit_test.ExpressionElementType)
+                .Where(unit_test.ExpressionElementType.Id == 1);
 
             //when               
             TimeSpan value = exp.Execute().FirstOrDefault();
@@ -495,9 +493,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectMany(dbo.UnitTest.NullableTimeSpan)
-                .From(dbo.UnitTest)
-                .Where(dbo.UnitTest.Id == 2);
+            var exp = db.SelectMany(unit_test.ExpressionElementType.NullableTimeSpan)
+                .From(unit_test.ExpressionElementType)
+                .Where(unit_test.ExpressionElementType.Id == 2);
 
             //when               
             TimeSpan? value = exp.Execute().FirstOrDefault();
@@ -514,9 +512,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectMany(dbo.UnitTest.Single)
-                .From(dbo.UnitTest)
-                .Where(dbo.UnitTest.Id == 1);
+            var exp = db.SelectMany(unit_test.ExpressionElementType.Single)
+                .From(unit_test.ExpressionElementType)
+                .Where(unit_test.ExpressionElementType.Id == 1);
 
             //when               
             float value = exp.Execute().FirstOrDefault();
@@ -533,9 +531,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectMany(dbo.UnitTest.NullableSingle)
-                .From(dbo.UnitTest)
-                .Where(dbo.UnitTest.Id == 2);
+            var exp = db.SelectMany(unit_test.ExpressionElementType.NullableSingle)
+                .From(unit_test.ExpressionElementType)
+                .Where(unit_test.ExpressionElementType.Id == 2);
 
             //when               
             float? value = exp.Execute().FirstOrDefault();

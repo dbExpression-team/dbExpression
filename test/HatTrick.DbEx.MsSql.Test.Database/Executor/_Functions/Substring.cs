@@ -8,6 +8,7 @@ using Xunit;
 using System;
 using HatTrick.DbEx.MsSql.Builder;
 using HatTrick.DbEx.MsSql.Builder.Alias;
+using DbEx.unit_testDataService;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 {
@@ -137,9 +138,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.Substring(dbo.UnitTest.String, dbo.UnitTest.NullableInt32, dbo.UnitTest.NullableInt32)
-                ).From(dbo.UnitTest)
-                .Where(dbo.UnitTest.NullableInt32 == DBNull.Value);
+                    db.fx.Substring(unit_test.ExpressionElementType.String, unit_test.ExpressionElementType.NullableInt32, unit_test.ExpressionElementType.NullableInt32)
+                ).From(unit_test.ExpressionElementType)
+                .Where(unit_test.ExpressionElementType.NullableInt32 == DBNull.Value);
 
             //when               
             string? result = exp.Execute();
@@ -156,9 +157,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.Substring(dbo.UnitTest.String, dbo.UnitTest.NullableInt32, dbo.UnitTest.NullableInt64)
-                ).From(dbo.UnitTest)
-                .Where(dbo.UnitTest.NullableInt32 == DBNull.Value);
+                    db.fx.Substring(unit_test.ExpressionElementType.String, unit_test.ExpressionElementType.NullableInt32, unit_test.ExpressionElementType.NullableInt64)
+                ).From(unit_test.ExpressionElementType)
+                .Where(unit_test.ExpressionElementType.NullableInt32 == DBNull.Value);
 
             //when               
             string? result = exp.Execute();
@@ -175,9 +176,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.Substring(dbo.UnitTest.String, dbo.UnitTest.NullableInt64, dbo.UnitTest.NullableInt64)
-                ).From(dbo.UnitTest)
-                .Where(dbo.UnitTest.NullableInt32 == DBNull.Value);
+                    db.fx.Substring(unit_test.ExpressionElementType.String, unit_test.ExpressionElementType.NullableInt64, unit_test.ExpressionElementType.NullableInt64)
+                ).From(unit_test.ExpressionElementType)
+                .Where(unit_test.ExpressionElementType.NullableInt32 == DBNull.Value);
 
             //when               
             string? result = exp.Execute();

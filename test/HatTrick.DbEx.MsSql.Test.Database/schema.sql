@@ -12,7 +12,7 @@ IF OBJECT_ID('tempdb..#Schemas') IS NOT NULL DROP TABLE #Schemas
 CREATE TABLE #Schemas([Id] INT, [Name] VARCHAR(20));
 INSERT INTO #Schemas([Id], [Name]) values (1, 'dbo');
 INSERT INTO #Schemas([Id], [Name]) values (2, 'sec');
-INSERT INTO #Schemas([Id], [Name]) values (3, 'code');
+INSERT INTO #Schemas([Id], [Name]) values (3, 'unit_test');
 
 IF OBJECT_ID('tempdb..#DropObjects') IS NOT NULL DROP TABLE #DropObjects
 CREATE TABLE #DropObjects
@@ -267,7 +267,10 @@ CREATE TABLE [dbo].[AccessAuditLog](
 )
 GO
 
-CREATE TABLE [dbo].[UnitTest](
+CREATE SCHEMA [unit_test]
+GO
+
+CREATE TABLE [unit_test].[ExpressionElementType](
 	[Id] INT NOT NULL,
 	[Boolean] BIT NOT NULL,
 	[NullableBoolean] BIT NULL,
@@ -300,10 +303,7 @@ CREATE TABLE [dbo].[UnitTest](
 )
 GO
 
-CREATE SCHEMA [code]
-GO
-
-CREATE TABLE [code].[identifier] (
+CREATE TABLE [unit_test].[identifier] (
 	[_identifier] VARCHAR(20) NULL,
 	[__identifier] VARCHAR(20) NULL,
 	[name] VARCHAR(20) NULL,
@@ -321,7 +321,7 @@ CREATE TABLE [code].[identifier] (
 )
 GO
 
-CREATE TABLE [code].[entity] (
+CREATE TABLE [unit_test].[entity] (
 	[identifier] VARCHAR(20) NULL,
 	[_identifier] VARCHAR(20) NULL,
 	[__identifier] VARCHAR(20) NULL,
@@ -339,7 +339,7 @@ CREATE TABLE [code].[entity] (
 )
 GO
 
-CREATE TABLE [code].[name] (
+CREATE TABLE [unit_test].[name] (
 	[identifier] VARCHAR(20) NULL,
 	[_identifier] VARCHAR(20) NULL,
 	[__identifier] VARCHAR(20) NULL,
@@ -357,7 +357,7 @@ CREATE TABLE [code].[name] (
 )
 GO
 
-CREATE TABLE [code].[schema] (
+CREATE TABLE [unit_test].[schema] (
 	[identifier] VARCHAR(20) NULL,
 	[_identifier] VARCHAR(20) NULL,
 	[__identifier] VARCHAR(20) NULL,
@@ -375,7 +375,7 @@ CREATE TABLE [code].[schema] (
 )
 GO
 
-CREATE TABLE [code].[alias] (
+CREATE TABLE [unit_test].[alias] (
 	[identifier] VARCHAR(20) NULL,
 	[_identifier] VARCHAR(20) NULL,
 	[__identifier] VARCHAR(20) NULL,

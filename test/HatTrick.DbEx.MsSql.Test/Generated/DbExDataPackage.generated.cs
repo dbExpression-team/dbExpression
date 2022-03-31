@@ -167,49 +167,6 @@ namespace DbEx.dboData
     }
     #endregion
 
-    #region unit test
-    public partial class UnitTest : IDbEntity
-    {
-        #region interface
-        public virtual int Id { get; set; }
-        public virtual bool Boolean { get; set; }
-        public virtual bool? NullableBoolean { get; set; } = null;
-        public virtual byte Byte { get; set; }
-        public virtual byte? NullableByte { get; set; } = null;
-        public virtual byte[] ByteArray { get; set; } = new byte[0];
-        public virtual byte[]? NullableByteArray { get; set; } = null;
-        public virtual DateTime DateTime { get; set; }
-        public virtual DateTime? NullableDateTime { get; set; } = null;
-        public virtual DateTimeOffset DateTimeOffset { get; set; }
-        public virtual DateTimeOffset? NullableDateTimeOffset { get; set; } = null;
-        public virtual decimal Decimal { get; set; }
-        public virtual decimal? NullableDecimal { get; set; } = null;
-        public virtual double Double { get; set; }
-        public virtual double? NullableDouble { get; set; } = null;
-        public virtual Guid Guid { get; set; }
-        public virtual Guid? NullableGuid { get; set; } = null;
-        public virtual short Int16 { get; set; }
-        public virtual short? NullableInt16 { get; set; } = null;
-        public virtual int Int32 { get; set; }
-        public virtual int? NullableInt32 { get; set; } = null;
-        public virtual long Int64 { get; set; }
-        public virtual long? NullableInt64 { get; set; } = null;
-        public virtual float Single { get; set; }
-        public virtual float? NullableSingle { get; set; } = null;
-        public virtual string String { get; set; } = string.Empty;
-        public virtual string? NullableString { get; set; } = null;
-        public virtual TimeSpan TimeSpan { get; set; }
-        public virtual TimeSpan? NullableTimeSpan { get; set; } = null;
-        #endregion
-
-        #region constructor
-        public UnitTest()
-        {
-        }
-        #endregion
-    }
-    #endregion
-
     #region person total purchases view
     public partial class PersonTotalPurchasesView : IDbEntity
     {
@@ -228,7 +185,7 @@ namespace DbEx.dboData
     #endregion
 
 }
-namespace DbEx.codeData
+namespace DbEx.unit_testData
 {
     #region alias
     public partial class alias : IDbEntity
@@ -280,6 +237,49 @@ namespace DbEx.codeData
 
         #region constructor
         public entity()
+        {
+        }
+        #endregion
+    }
+    #endregion
+
+    #region expression element type
+    public partial class ExpressionElementType : IDbEntity
+    {
+        #region interface
+        public virtual int Id { get; set; }
+        public virtual bool Boolean { get; set; }
+        public virtual bool? NullableBoolean { get; set; } = null;
+        public virtual byte Byte { get; set; }
+        public virtual byte? NullableByte { get; set; } = null;
+        public virtual byte[] ByteArray { get; set; } = new byte[0];
+        public virtual byte[]? NullableByteArray { get; set; } = null;
+        public virtual DateTime DateTime { get; set; }
+        public virtual DateTime? NullableDateTime { get; set; } = null;
+        public virtual DateTimeOffset DateTimeOffset { get; set; }
+        public virtual DateTimeOffset? NullableDateTimeOffset { get; set; } = null;
+        public virtual decimal Decimal { get; set; }
+        public virtual decimal? NullableDecimal { get; set; } = null;
+        public virtual double Double { get; set; }
+        public virtual double? NullableDouble { get; set; } = null;
+        public virtual Guid Guid { get; set; }
+        public virtual Guid? NullableGuid { get; set; } = null;
+        public virtual short Int16 { get; set; }
+        public virtual short? NullableInt16 { get; set; } = null;
+        public virtual int Int32 { get; set; }
+        public virtual int? NullableInt32 { get; set; } = null;
+        public virtual long Int64 { get; set; }
+        public virtual long? NullableInt64 { get; set; } = null;
+        public virtual float Single { get; set; }
+        public virtual float? NullableSingle { get; set; } = null;
+        public virtual string String { get; set; } = string.Empty;
+        public virtual string? NullableString { get; set; } = null;
+        public virtual TimeSpan TimeSpan { get; set; }
+        public virtual TimeSpan? NullableTimeSpan { get; set; } = null;
+        #endregion
+
+        #region constructor
+        public ExpressionElementType()
         {
         }
         #endregion

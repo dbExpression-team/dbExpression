@@ -281,7 +281,10 @@ CREATE TABLE [dbo].[AccessAuditLog](
 )
 GO
 
-CREATE TABLE [dbo].[UnitTest](
+CREATE SCHEMA [unit_test]
+GO
+
+CREATE TABLE [unit_test].[ExpressionElementType](
 	[Id] INT NOT NULL,
 	[Boolean] BIT NOT NULL,
 	[NullableBoolean] BIT NULL,
@@ -310,14 +313,11 @@ CREATE TABLE [dbo].[UnitTest](
 	[String] VARCHAR(20) NOT NULL,
 	[NullableString] VARCHAR(20) NULL,	
 	[TimeSpan] TIME NOT NULL,
-	[NullableTimeSpan] TIME NULL	
+	[NullableTimeSpan] TIME NULL
 )
 GO
 
-CREATE SCHEMA [code]
-GO
-
-CREATE TABLE [code].[identifier] (
+CREATE TABLE [unit_test].[identifier] (
 	[_identifier] VARCHAR(20) NULL,
 	[__identifier] VARCHAR(20) NULL,
 	[name] VARCHAR(20) NULL,
@@ -335,7 +335,7 @@ CREATE TABLE [code].[identifier] (
 )
 GO
 
-CREATE TABLE [code].[entity] (
+CREATE TABLE [unit_test].[entity] (
 	[identifier] VARCHAR(20) NULL,
 	[_identifier] VARCHAR(20) NULL,
 	[__identifier] VARCHAR(20) NULL,
@@ -353,7 +353,7 @@ CREATE TABLE [code].[entity] (
 )
 GO
 
-CREATE TABLE [code].[name] (
+CREATE TABLE [unit_test].[name] (
 	[identifier] VARCHAR(20) NULL,
 	[_identifier] VARCHAR(20) NULL,
 	[__identifier] VARCHAR(20) NULL,
@@ -371,7 +371,7 @@ CREATE TABLE [code].[name] (
 )
 GO
 
-CREATE TABLE [code].[schema] (
+CREATE TABLE [unit_test].[schema] (
 	[identifier] VARCHAR(20) NULL,
 	[_identifier] VARCHAR(20) NULL,
 	[__identifier] VARCHAR(20) NULL,
@@ -389,7 +389,7 @@ CREATE TABLE [code].[schema] (
 )
 GO
 
-CREATE TABLE [code].[alias] (
+CREATE TABLE [unit_test].[alias] (
 	[identifier] VARCHAR(20) NULL,
 	[_identifier] VARCHAR(20) NULL,
 	[__identifier] VARCHAR(20) NULL,

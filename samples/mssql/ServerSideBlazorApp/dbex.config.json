@@ -20,6 +20,12 @@
 		{
 			"apply": {
 				"ignore": true,
+				"to": { "path": "unit_test" }
+			}
+		},
+		{
+			"apply": {
+				"ignore": true,
 				"to": { "path": "dbo.sysdiagrams" }
 			}
 		},
