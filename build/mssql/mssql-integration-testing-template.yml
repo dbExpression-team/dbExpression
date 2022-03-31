@@ -35,11 +35,11 @@ jobs:
       displayName: 'Publish Test Results'
       inputs:
         testResultsFormat: VSTest
-        testResultsFiles: /results/mssql-${{ mssqlVersion }}.trx
+        testResultsFiles: ${{ parameters.rootPath }}/results/mssql-${{ mssqlVersion }}.tests.trx
         testRunTitle: 'MSSQL ${{ mssqlVersion }}'
         mergeTestResults: true
         failTaskOnFailedTests: true
       
-    - publish: /results/**
+    - publish: ${{ parameters.rootPath }}/results
       displayName: 'Publish Results to Staging Location'
       artifact: mssql-${{ mssqlVersion }}-results

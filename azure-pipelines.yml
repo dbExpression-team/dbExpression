@@ -102,7 +102,7 @@ stages:
 #          # To make the task not regenerate the report, a pipeline environment variable was added: "disable.coverage.autogenerate: 'true'"
 #          # see: https://github.com/danielpalme/ReportGenerator/wiki/Integration#attention
 #          reportDirectory: $(Pipeline.Workspace)/$(stageLocationName)/results/coverage
-      - publish: $(Pipeline.Workspace)/$(stageLocationName)/results/**
+      - publish: $(Pipeline.Workspace)/$(stageLocationName)/results
         displayName: 'Publish Results to Staging Location'
         artifact: mssql-core-results
 

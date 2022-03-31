@@ -19,13 +19,11 @@ services:
     build:
       context: .
       dockerfile: dockerfile-dotnetcore
-      args:
-        MSSQL_VERSION: ${MSSQL_VERSION}
     environment:
       WAIT_HOSTS: mssql:1433
       WAIT_BEFORE_HOSTS: 20
       CONNECTIONSTRINGS__HATTRICK_DBEX_MSSQL_TEST: server=mssql,1433;database=MsSqlDbExTest;uid=sa;pwd=${MSSQL_PWD};
-      MSSQLVERSION: ${MSSQL_VERSION}     
+      MSSQL_VERSION: ${MSSQL_VERSION}     
     volumes:
       - ./results:/results
       - ./test/HatTrick.DbEx.MsSql.Test.Database/bin/${BUILD_CONFIGURATION}/${TARGET_FRAMEWORK_MONIKER}:/src
