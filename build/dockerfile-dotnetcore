@@ -1,10 +1,5 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS unit_test_build
 
-ENV PATH="$PATH:/root/.dotnet/tools"
-
-# latest version of coverlet supported for .NET Core 3.1 is 1.7.2 (https://www.nuget.org/packages/coverlet.console)
-RUN dotnet tool install --global coverlet.console
-
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.5.0/wait /wait
 RUN chmod +x /wait 
 

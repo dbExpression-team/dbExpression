@@ -30,21 +30,21 @@ variables:
     branchName: $[ replace(variables['System.PullRequest.SourceBranch'], 'refs/heads/', '') ]
 
 stages:
-  - stage: Initialize
-    displayName: 'Initialize Agent'
-    jobs:
-    - job: Install
-      displayName: 'Install Agent Dependencies'
-      steps:
-      - checkout: none
-      - task: NuGetToolInstaller@0
-        displayName: Install NuGet
-        inputs:
-          versionSpec: 5.8.0
-      - task: DockerInstaller@0
-        displayName: Install Docker CLI
-        inputs:
-          dockerVersion: '17.09.0-ce'
+#  - stage: Initialize
+#    displayName: 'Initialize Agent'
+#    jobs:
+#    - job: Install
+#      displayName: 'Install Agent Dependencies'
+#      steps:
+#      - checkout: none
+#      - task: NuGetToolInstaller@0
+#        displayName: Install NuGet
+#        inputs:
+#          versionSpec: 5.8.0
+#      - task: DockerInstaller@0
+#        displayName: Install Docker CLI
+#        inputs:
+#          dockerVersion: '17.09.0-ce'
 
   - stage: Build
     dependsOn: Initialize
@@ -91,26 +91,26 @@ stages:
       - task: CopyFiles@2
         displayName: 'Copy Code Coverage Files to Staging Location'
         inputs:
-          contents: $(Agent.TempDirectory)\**\*.cobertura.xml
+          contents: $(Pipeline.Workspace)\$(stageLocationName)\**\*.cobertura.xml
           targetFolder: $(Pipeline.Workspace)\$(stageLocationName)\results
       - publish: $(Pipeline.Workspace)\$(stageLocationName)\results
         displayName: 'Publish Results to Staging Location'
         artifact: mssql-core-results
  
-  - stage: Test_Execution
-    pool:
-      vmImage: 'ubuntu-latest'
-    dependsOn: Build
-    displayName: 'Test MSSQL Platforms'
-    jobs:
-    - template: build/mssql/mssql-integration-testing-template.yml
-      parameters:
-        artifactName: $(stageLocationName)
-        rootPath: $(Pipeline.Workspace)/$(stageLocationName)
-        buildFilesTemplatePath: $(Pipeline.Workspace)/$(stageLocationName)/build/mssql
-        buildConfiguration: $(buildConfiguration)
-        targetFrameworkMoniker: net$(netCoreVersion)
-        mssqlVersions: ['2017','2019']
+#  - stage: Test_Execution
+#    pool:
+#      vmImage: 'ubuntu-latest'
+#    dependsOn: Build
+#    displayName: 'Test MSSQL Platforms'
+#    jobs:
+#    - template: build/mssql/mssql-integration-testing-template.yml
+#      parameters:
+#        artifactName: $(stageLocationName)
+#        rootPath: $(Pipeline.Workspace)/$(stageLocationName)
+#        buildFilesTemplatePath: $(Pipeline.Workspace)/$(stageLocationName)/build/mssql
+#        buildConfiguration: $(buildConfiguration)
+#        targetFrameworkMoniker: net$(netCoreVersion)
+#        mssqlVersions: ['2017','2019']
     
   - stage: Publish_Reports
     dependsOn:
@@ -121,6 +121,8 @@ stages:
     - job:
       displayName: 'Publish Code Coverage'
       steps:
+      - checkout: none
+      - download: current
       - task: reportgenerator@5
         displayName: 'Merge Code Coverage Reports'
         inputs:
