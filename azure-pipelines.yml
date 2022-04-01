@@ -72,34 +72,34 @@ stages:
           testRunTitle: 'MSSQL (Core)'
           mergeTestResults: true
           failTaskOnFailedTests: true
-      - task: CopyFiles@2
-        displayName: 'Copy Code Coverage Files to Staging Location'
-        inputs:
-          contents: $(Pipeline.Workspace)\**
-          targetFolder: $(Pipeline.Workspace)\$(stageLocationName)\results
-      - publish: $(Pipeline.Workspace)\$(stageLocationName)\results
-        displayName: 'Publish Results to Staging Location'
-        artifact: mssql-core-results
+   #   - task: CopyFiles@2
+   #     displayName: 'Copy Code Coverage Files to Staging Location'
+   #     inputs:
+   #       contents: $(Pipeline.Workspace)\**
+   #       targetFolder: $(Pipeline.Workspace)\$(stageLocationName)\results
+   #   - publish: $(Pipeline.Workspace)\$(stageLocationName)\results
+   #     displayName: 'Publish Results to Staging Location'
+   #     artifact: mssql-core-results
  
-#  - stage: Test_Execution
-#    pool:
-#      vmImage: 'ubuntu-latest'
-#    dependsOn: Build
-#    displayName: 'Test MSSQL Platforms'
-#    jobs:
-#    - template: build/mssql/mssql-integration-testing-template.yml
-#      parameters:
-#        artifactName: $(stageLocationName)
-#        rootPath: $(Pipeline.Workspace)/$(stageLocationName)
-#        buildFilesTemplatePath: $(Pipeline.Workspace)/$(stageLocationName)/build/mssql
-#        buildConfiguration: $(buildConfiguration)
-#        targetFrameworkMoniker: net$(netCoreVersion)
-#        mssqlVersions: ['2017','2019']
+  - stage: Test_Execution
+    pool:
+      vmImage: 'ubuntu-latest'
+    dependsOn: Build
+    displayName: 'Test MSSQL Platforms'
+    jobs:
+    - template: build/mssql/mssql-integration-testing-template.yml
+      parameters:
+        artifactName: $(stageLocationName)
+        rootPath: $(Pipeline.Workspace)/$(stageLocationName)
+        buildFilesTemplatePath: $(Pipeline.Workspace)/$(stageLocationName)/build/mssql
+        buildConfiguration: $(buildConfiguration)
+        targetFrameworkMoniker: net$(netCoreVersion)
+        mssqlVersions: ['2017','2019']
     
   - stage: Publish_Reports
     dependsOn:
       - Test_Code
-#      - Test_Execution
+      - Test_Execution
     displayName: 'Publish Reports'
     jobs:
     - job:
