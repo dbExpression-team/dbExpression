@@ -75,7 +75,7 @@ stages:
       - task: CopyFiles@2
         displayName: 'Copy Code Coverage Files to Staging Location'
         inputs:
-          contents: $(Pipeline.Workspace)\$(stageLocationName)\**
+          contents: $(Pipeline.Workspace)\**
           targetFolder: $(Pipeline.Workspace)\$(stageLocationName)\results
       - publish: $(Pipeline.Workspace)\$(stageLocationName)\results
         displayName: 'Publish Results to Staging Location'
