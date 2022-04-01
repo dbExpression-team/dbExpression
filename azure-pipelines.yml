@@ -115,7 +115,7 @@ stages:
   - stage: Publish_Reports
     dependsOn:
       - Test_Code
-      - Test_Execution
+#      - Test_Execution
     displayName: 'Publish Reports'
     jobs:
     - job:
