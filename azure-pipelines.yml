@@ -47,7 +47,7 @@ stages:
 #          dockerVersion: '17.09.0-ce'
 
   - stage: Build
-    dependsOn: Initialize
+#    dependsOn: Initialize
     displayName: 'Build and Package'
     jobs:
     - job:
