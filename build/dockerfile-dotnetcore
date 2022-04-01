@@ -8,4 +8,5 @@ RUN dotnet tool install --global coverlet.console
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.5.0/wait /wait
 RUN chmod +x /wait 
 
-CMD /wait && coverlet /src/HatTrick.DbEx.MsSql.Test.Database.dll --target "dotnet" --targetargs "test /src/HatTrick.DbEx.MsSql.Test.Database.dll --logger \"trx;LogFileName=/results/mssql-${MSSQL_VERSION}.tests.trx\"" --format cobertura --output "/results/mssql-${MSSQL_VERSION}.coverage.cobertura.xml" --include "[HatTrick.DbEx.*]*" --exclude "[HatTrick.DbEx.*.Test]*"
+# CMD /wait && coverlet /src/HatTrick.DbEx.MsSql.Test.Database.dll --target "dotnet" --targetargs "test /src/HatTrick.DbEx.MsSql.Test.Database.dll --logger \"trx;LogFileName=/results/mssql-${MSSQL_VERSION}.tests.trx\"" --format "cobertura" --output "/results/mssql-${MSSQL_VERSION}.coverage.cobertura.xml" --include "[HatTrick.DbEx.*]*" --exclude "[HatTrick.DbEx.*.Test]*"
+CMD /wait && dotnet test /src/HatTrick.DbEx.MsSql.Test.Database.dll --logger "trx;LogFileName=/results/mssql-${MSSQL_VERSION}.tests.trx" --results-directory "/results" //p:CollectCoverage=true //p:CoverletOutputFormat=cobertura //p:Exclude="[*Test]*"'

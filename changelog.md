@@ -28,7 +28,6 @@
 	- added missing implicit operators to strings
 	- removed unnecessary integration tests.
 	- reworked code generation to have more correct implementation between using dbExpression in static vs. instance modes (#288) and (#290)
-	- changed source.type from "MsSqlDb" to "MsSql" in code generation configuration (BREAKING change)
 
 ### Fixed
 - issue #283: Can't use select statement as subquery with update statement
