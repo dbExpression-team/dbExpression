@@ -30,24 +30,8 @@ variables:
     branchName: $[ replace(variables['System.PullRequest.SourceBranch'], 'refs/heads/', '') ]
 
 stages:
-  - stage: Initialize
-    displayName: 'Initialize Agent'
-    jobs:
-    - job: Install
-      displayName: 'Install Agent Dependencies'
-      steps:
-      - checkout: none
-      - task: NuGetToolInstaller@0
-        displayName: Install NuGet
-        inputs:
-          versionSpec: 5.8.0
-      - task: DockerInstaller@0
-        displayName: Install Docker CLI
-        inputs:
-          dockerVersion: '17.09.0-ce'
 
   - stage: Build
-    dependsOn: Initialize
     displayName: 'Build and Package'
     jobs:
     - job:
@@ -78,34 +62,25 @@ stages:
         displayName: 'Execute Tests'
         inputs:
           command: test
-          projects: $(Pipeline.Workspace)/$(stageLocationName)/test/HatTrick.DbEx.MsSql.Test.Code/*.csproj
-          arguments: '--configuration $(buildConfiguration) --logger "trx;LogFileName=$(Pipeline.Workspace)/$(stageLocationName)/results/mssql-core.tests.trx" --results-directory "$(Pipeline.Workspace)/$(stageLocationName)/results" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Exclude="[*Test]*"'
+          projects: $(Pipeline.Workspace)/$(stageLocationName)\test\HatTrick.DbEx.MsSql.Test.Code\*.csproj
+          arguments: '--configuration $(buildConfiguration) --logger "trx;LogFileName=$(Pipeline.Workspace)/$(stageLocationName)/results/mssql-core.tests.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Include="[HatTrick.DbEx.*Sql]*" /p:Exclude="[*Test]*"'
       - task: PublishTestResults@2
         displayName: 'Publish Test Results'
         inputs:
-          testResultsFormat: VSTest
-          testResultsFiles: $(Pipeline.Workspace)/$(stageLocationName)/results/mssql-core.tests.trx
+          testResultsFormat: xUnit
+          testResultsFiles: $(Pipeline.Workspace)\$(stageLocationName)\mssql-core-results\mssql-core.tests.trx
           testRunTitle: 'MSSQL (Core)'
           mergeTestResults: true
           failTaskOnFailedTests: true
-#      - task: reportgenerator@5
-#        displayName: 'Generate Code Coverage Report'
-#        inputs:
-#          reports: $(Pipeline.Workspace)/$(stageLocationName)/test/HatTrick.DbEx.MsSql.Test.Code/**/coverage*.xml
-#          targetdir: $(Pipeline.Workspace)/$(stageLocationName)/results/coverage
-#          reporttypes: 'HtmlInline_AzurePipelines;Cobertura;Badges'          
-#      - task: PublishCodeCoverageResults@1
-#        displayName: 'Publish Code Coverage Results'
-#        inputs:
-#          codeCoverageTool: cobertura
-#          summaryFileLocation: $(Pipeline.Workspace)/$(stageLocationName)/results/coverage/*obertura.xml #case sensitivity: C|c
-#          # To make the task not regenerate the report, a pipeline environment variable was added: "disable.coverage.autogenerate: 'true'"
-#          # see: https://github.com/danielpalme/ReportGenerator/wiki/Integration#attention
-#          reportDirectory: $(Pipeline.Workspace)/$(stageLocationName)/results/coverage
-      - publish: $(Pipeline.Workspace)/$(stageLocationName)/results
-        displayName: 'Publish Results to Staging Location'
-        artifact: mssql-core-results
-
+   #   - task: CopyFiles@2
+   #     displayName: 'Copy Code Coverage Files to Staging Location'
+   #     inputs:
+   #       contents: $(Pipeline.Workspace)\**
+   #       targetFolder: $(Pipeline.Workspace)\$(stageLocationName)\results
+   #   - publish: $(Pipeline.Workspace)\$(stageLocationName)\results
+   #     displayName: 'Publish Results to Staging Location'
+   #     artifact: mssql-core-results
+ 
   - stage: Test_Execution
     pool:
       vmImage: 'ubuntu-latest'
@@ -120,3 +95,28 @@ stages:
         buildConfiguration: $(buildConfiguration)
         targetFrameworkMoniker: net$(netCoreVersion)
         mssqlVersions: ['2017','2019']
+    
+#  - stage: Publish_Reports
+#    dependsOn:
+#      - Test_Code
+#      - Test_Execution
+#    displayName: 'Publish Reports'
+#    jobs:
+#    - job:
+#      displayName: 'Publish Code Coverage'
+#      steps:
+#      - checkout: none
+#      - download: current
+#      - task: reportgenerator@5
+#        displayName: 'Merge Code Coverage Reports'
+#        inputs:
+#          reports: $(Pipeline.Workspace)\$(stageLocationName)\mssql*\*coverage*.xml
+#          targetdir: $(Pipeline.Workspace)\$(stageLocationName)\reports
+#          reporttypes: 'HtmlInline_AzurePipelines;Cobertura;Badges'
+#      - task: PublishCodeCoverageResults@1
+#        displayName: 'Publish Code Coverage Reports'
+#        inputs:
+#          codeCoverageTool: Cobertura
+#          pathToSources: $(Pipeline.Workspace)\$(stageLocationName)\reports
+#          summaryFileLocation: $(Pipeline.Workspace)\$(stageLocationName)\reports
+#          reportDirectory: $(Pipeline.Workspace)\$(stageLocationName)\reports'

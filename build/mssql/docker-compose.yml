@@ -23,9 +23,10 @@ services:
       WAIT_HOSTS: mssql:1433
       WAIT_BEFORE_HOSTS: 20
       CONNECTIONSTRINGS__HATTRICK_DBEX_MSSQL_TEST: server=mssql,1433;database=MsSqlDbExTest;uid=sa;pwd=${MSSQL_PWD};
-      MSSQL_VERSION: ${MSSQL_VERSION}     
+      MSSQL_VERSION: ${MSSQL_VERSION}
+      BUILD_CONFIGURATION: ${BUILD_CONFIGURATION}
     volumes:
       - ./results:/results
-      - ./test/HatTrick.DbEx.MsSql.Test.Database/bin/${BUILD_CONFIGURATION}/${TARGET_FRAMEWORK_MONIKER}:/src
+      - ./:/db-ex
     depends_on:
       - mssql

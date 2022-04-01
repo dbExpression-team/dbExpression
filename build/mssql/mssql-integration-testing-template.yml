@@ -34,7 +34,7 @@ jobs:
     - task: PublishTestResults@2
       displayName: 'Publish Test Results'
       inputs:
-        testResultsFormat: VSTest
+        testResultsFormat: xUnit
         testResultsFiles: ${{ parameters.rootPath }}/results/mssql-${{ mssqlVersion }}.tests.trx
         testRunTitle: 'MSSQL ${{ mssqlVersion }}'
         mergeTestResults: true
