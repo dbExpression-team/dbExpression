@@ -112,8 +112,8 @@ stages:
         artifact: mssql-core-results
  
   - stage: Test_Execution
-    pool:
-      vmImage: 'ubuntu-latest'
+#    pool:
+#      vmImage: 'ubuntu-latest'
     dependsOn: Build
     displayName: 'Test MSSQL Platforms'
     jobs:
