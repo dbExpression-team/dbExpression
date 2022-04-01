@@ -27,6 +27,6 @@ services:
       BUILD_CONFIGURATION: ${BUILD_CONFIGURATION}
     volumes:
       - ./results:/results
-      - ./test/HatTrick.DbEx.MsSql.Test.Database:/src
+      - ./:/src
     depends_on:
       - mssql

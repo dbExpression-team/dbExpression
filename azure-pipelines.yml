@@ -80,6 +80,11 @@ stages:
           command: test
           projects: $(Pipeline.Workspace)/$(stageLocationName)/test/HatTrick.DbEx.MsSql.Test.Code/*.csproj
           arguments: '--configuration $(buildConfiguration) --logger "trx;LogFileName=$(Pipeline.Workspace)/$(stageLocationName)/results/mssql-core.tests.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Exclude="[*Test]*"'
+      - task: CopyFiles@2
+        displayName: 'Copy Code Coverage Files to Staging Location'
+        inputs:
+          contents: $(Pipeline.Workspace)/$(stageLocationName)/test/HatTrick.DbEx.MsSql.Test.Code/*cobertura.xml
+          targetFolder: $(Pipeline.Workspace)/$(stageLocationName)/results
       - task: PublishTestResults@2
         displayName: 'Publish Test Results'
         inputs:
@@ -102,10 +107,6 @@ stages:
 #          # To make the task not regenerate the report, a pipeline environment variable was added: "disable.coverage.autogenerate: 'true'"
 #          # see: https://github.com/danielpalme/ReportGenerator/wiki/Integration#attention
 #          reportDirectory: $(Pipeline.Workspace)/$(stageLocationName)/results/coverage
-      - task: CopyFiles@2
-        inputs:
-          contents: $(Pipeline.Workspace)/$(stageLocationName)/test/HatTrick.DbEx.MsSql.Test.Code/*cobertura.xml
-          targetFolder: $(Pipeline.Workspace)/$(stageLocationName)/results
       - publish: $(Pipeline.Workspace)/$(stageLocationName)/results
         displayName: 'Publish Results to Staging Location'
         artifact: mssql-core-results
