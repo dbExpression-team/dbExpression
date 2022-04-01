@@ -27,6 +27,6 @@ services:
       BUILD_CONFIGURATION: ${BUILD_CONFIGURATION}
     volumes:
       - ./results:/results
-      - ./:/src
+      - ./:/db-ex
     depends_on:
       - mssql
