@@ -3,6 +3,7 @@ using DbEx.DataService;
 using DbEx.dboData;
 using DbEx.dboDataService;
 using FluentAssertions;
+using HatTrick.DbEx.MsSql.Expression.Alias;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
 using System;
@@ -27,7 +28,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ).From(dbo.Purchase);
 
             //when               
-            IList<string> results = exp.Execute();
+            IList<string?> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);
@@ -66,7 +67,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .OrderBy(db.fx.Cast(dbo.Purchase.PurchaseDate).AsVarChar(50));
 
             //when               
-            string result = exp.Execute();
+            string? result = exp.Execute();
 
             //then
             result.Should().StartWith(expected);
@@ -86,7 +87,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .OrderBy(db.fx.Cast(dbo.Purchase.PurchaseDate).AsVarChar(50).Desc);
 
             //when               
-            string result = exp.Execute();
+            string? result = exp.Execute();
 
             //then
             result.Should().StartWith(expected);
@@ -106,7 +107,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .OrderBy(db.fx.Cast(dbo.Purchase.PurchaseDate).AsVarChar(50));
 
             //when               
-            string result = exp.Execute();
+            string? result = exp.Execute();
 
             //then
             result.Should().StartWith(expected);
@@ -126,7 +127,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .OrderBy(db.fx.Cast(dbo.Purchase.PurchaseDate).AsVarChar(50).Desc);
 
             //when               
-            string result = exp.Execute();
+            string? result = exp.Execute();
 
             //then
             result.Should().StartWith(expected);
@@ -146,7 +147,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .GroupBy(db.fx.Cast(dbo.Purchase.PurchaseDate).AsVarChar(50));
 
             //when               
-            string result = exp.Execute();
+            string? result = exp.Execute();
 
             //then
             result.Should().StartWith(expected);
@@ -166,7 +167,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .GroupBy(db.fx.Cast(dbo.Purchase.PurchaseDate).AsVarChar(50));
 
             //when               
-            string result = exp.Execute();
+            string? result = exp.Execute();
 
             //then
             result.Should().StartWith(expected);
@@ -189,7 +190,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //then
             result.Should().NotBeNull();
-            result.Value.Hour.Should().Be(expected);
+            result!.Value.Hour.Should().Be(expected);
         }
 
         [Theory]
@@ -205,7 +206,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Where(dbo.Product.ProductCategoryType == ProductCategoryType.Books);
 
             //when               
-            string result = exp.Execute();
+            string? result = exp.Execute();
 
             //then
             result.Should().NotBeNull();
@@ -221,16 +222,16 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.Cast(dbex.Alias<decimal>("lines", "PurchasePrice")).AsVarChar(50).As("alias")
+                    db.fx.Cast(("lines", "PurchasePrice")).AsVarChar(50).As("alias")
                 ).From(dbo.Purchase)
                 .InnerJoin(
                     db.SelectMany<PurchaseLine>().Top(100)
                     .From(dbo.PurchaseLine)
                     .OrderBy(dbo.PurchaseLine.PurchasePrice.Desc)
-                ).As("lines").On(dbo.Purchase.Id == dbex.Alias("lines", "PurchaseId"));
+                ).As("lines").On(dbo.Purchase.Id == ("lines", "PurchaseId"));
 
             //when               
-            object result = exp.Execute();
+            object? result = exp.Execute();
 
             //then
             result.Should().BeOfType<string>().Which.Should().StartWith(expected);

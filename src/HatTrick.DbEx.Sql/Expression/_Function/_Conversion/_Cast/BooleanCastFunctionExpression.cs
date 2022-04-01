@@ -23,11 +23,10 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class BooleanCastFunctionExpression :
         CastFunctionExpression<bool>,
         BooleanElement,
-        AnyBooleanElement,
         IEquatable<BooleanCastFunctionExpression>
     {
         #region constructors
-        public BooleanCastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType)
+        public BooleanCastFunctionExpression(AnyElement expression, DbTypeExpression convertToDbType)
             : base(expression, convertToDbType)
         {
 
@@ -35,16 +34,16 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public BooleanElement As(string alias)
-            => new BooleanSelectExpression(this).As(alias);
+        public AnyElement<bool> As(string alias)
+            => new SelectExpression<bool>(this).As(alias);
         #endregion
 
         #region equals
-        public bool Equals(BooleanCastFunctionExpression obj)
-            => obj is BooleanCastFunctionExpression && base.Equals(obj);
+        public bool Equals(BooleanCastFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is BooleanCastFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is BooleanCastFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

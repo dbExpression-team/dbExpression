@@ -3,6 +3,7 @@ using DbEx.dboData;
 using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Expression;
+using HatTrick.DbEx.MsSql.Expression.Alias;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
 using System;
@@ -91,7 +92,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             int? result = exp.Execute();
 
             //then
-            result.Value.Should().Be(expected);
+            result!.Value.Should().Be(expected);
         }
 
         [Theory]
@@ -131,7 +132,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             int? result = exp.Execute();
 
             //then
-            result.Value.Should().Be(expected);
+            result!.Value.Should().Be(expected);
         }
 
         [Theory]
@@ -183,7 +184,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.DatePart(DateParts.Day, dbex.Alias<DateTime>("lines", "DateCreated")).As("alias")
+                    db.fx.DatePart(DateParts.Day, ("lines", "DateCreated")).As("alias")
                 ).From(dbo.Purchase)
                 .InnerJoin(
                     db.SelectMany<PurchaseLine>().Top(100)

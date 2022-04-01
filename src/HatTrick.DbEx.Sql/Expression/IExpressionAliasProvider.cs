@@ -20,6 +20,6 @@
 {
     public interface IExpressionAliasProvider
     {
-        string Alias { get; }
+        string? Alias { get; }
     }
 }

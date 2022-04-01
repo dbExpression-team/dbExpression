@@ -4,6 +4,7 @@ using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
+using HatTrick.DbEx.Sql.Builder.Alias;
 using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
@@ -119,7 +120,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.Floor(dbex.Alias<decimal>("lines", "PurchasePrice")).As("alias")
+                    db.fx.Floor(("lines", "PurchasePrice")).As("alias")
                 ).From(dbo.Purchase)
                 .InnerJoin(
                     db.SelectMany<PurchaseLine>()
@@ -127,7 +128,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ).As("lines").On(dbo.Purchase.Id == ("lines", "PurchaseId"));
 
             //when               
-            object value = exp.Execute();
+            object? value = exp.Execute();
 
             //then
             value.Should().BeOfType<decimal>().Which.Should().BeApproximately(expected, 0.1m, "Rounding errors in ceiling");

@@ -3,8 +3,9 @@ using HatTrick.DbEx.Sql;
 using System.Collections.Generic;
 using System.Data;
 using DbEx.dboDataService;
+using DbEx.unit_testDataService;
 using DbEx.secDataService;
-
+#nullable enable
 namespace DbEx.DataService
 {
     #region db meta
@@ -22,6 +23,7 @@ namespace DbEx.DataService
             Identifier = identifier;
             Name = name;
             Schemas.Add("dbo", new dboSchemaMetadata(this, "dbo", "dbo"));
+            Schemas.Add("unit_test", new unit_testSchemaMetadata(this, "unit_test", "unit_test"));
             Schemas.Add("sec", new secSchemaMetadata(this, "sec", "sec"));
         }
         #endregion
@@ -598,6 +600,262 @@ namespace DbEx.dboDataService
         }
         #endregion
     }
+
+}
+namespace DbEx.unit_testDataService
+{
+    #region unit_test
+	public class unit_testSchemaMetadata : ISqlSchemaMetadata
+    {
+		#region interface
+        public ISqlDatabaseMetadata Database { get; }
+        public string Identifier { get; }
+        public string Name { get; }
+        public IDictionary<string, ISqlEntityMetadata> Entities { get; } = new Dictionary<string, ISqlEntityMetadata>();
+        public IDictionary<string, ISqlStoredProcedureMetadata> StoredProcedures { get; } = new Dictionary<string, ISqlStoredProcedureMetadata>();
+        #endregion
+
+        #region constructors
+        public unit_testSchemaMetadata(ISqlDatabaseMetadata database, string identifier, string name)
+        {
+            Database = database;
+            Identifier = identifier;
+            Name = name;
+            Entities.Add($"{identifier}.alias", new aliasEntityMetadata(this, $"{identifier}.alias", "alias"));
+            Entities.Add($"{identifier}.entity", new entityEntityMetadata(this, $"{identifier}.entity", "entity"));
+            Entities.Add($"{identifier}.ExpressionElementType", new ExpressionElementTypeEntityMetadata(this, $"{identifier}.ExpressionElementType", "ExpressionElementType"));
+            Entities.Add($"{identifier}.identifier", new identifierEntityMetadata(this, $"{identifier}.identifier", "identifier"));
+            Entities.Add($"{identifier}.name", new nameEntityMetadata(this, $"{identifier}.name", "name"));
+            Entities.Add($"{identifier}.schema", new schemaEntityMetadata(this, $"{identifier}.schema", "schema"));
+        }
+        #endregion
+    }
+    #endregion
+
+    #region alias
+	public class aliasEntityMetadata : ISqlEntityMetadata
+	{
+        #region interface
+        public ISqlSchemaMetadata Schema { get; }
+        public string Identifier { get; }
+        public string Name { get; }
+        public IDictionary<string, ISqlFieldMetadata> Fields { get; } = new Dictionary<string, ISqlFieldMetadata>();
+        #endregion
+		
+        #region constructors
+        public aliasEntityMetadata(ISqlSchemaMetadata schema, string identifier, string name)
+        {
+            Schema = schema;
+            Identifier = identifier;
+            Name = name;
+            Fields.Add($"{identifier}.identifier", new MsSqlFieldMetadata(this, $"{identifier}.identifier", "identifier", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}._identifier", new MsSqlFieldMetadata(this, $"{identifier}._identifier", "_identifier", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.__identifier", new MsSqlFieldMetadata(this, $"{identifier}.__identifier", "__identifier", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.name", new MsSqlFieldMetadata(this, $"{identifier}.name", "name", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}._name", new MsSqlFieldMetadata(this, $"{identifier}._name", "_name", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.__name", new MsSqlFieldMetadata(this, $"{identifier}.__name", "__name", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.schema", new MsSqlFieldMetadata(this, $"{identifier}.schema", "schema", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}._schema", new MsSqlFieldMetadata(this, $"{identifier}._schema", "_schema", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.__schema", new MsSqlFieldMetadata(this, $"{identifier}.__schema", "__schema", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}._alias", new MsSqlFieldMetadata(this, $"{identifier}._alias", "_alias", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.__alias", new MsSqlFieldMetadata(this, $"{identifier}.__alias", "__alias", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.entity", new MsSqlFieldMetadata(this, $"{identifier}.entity", "entity", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}._entity", new MsSqlFieldMetadata(this, $"{identifier}._entity", "_entity", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.__entity", new MsSqlFieldMetadata(this, $"{identifier}.__entity", "__entity", SqlDbType.VarChar, 20));
+        }
+        #endregion
+    }
+    #endregion
+
+    #region entity
+	public class entityEntityMetadata : ISqlEntityMetadata
+	{
+        #region interface
+        public ISqlSchemaMetadata Schema { get; }
+        public string Identifier { get; }
+        public string Name { get; }
+        public IDictionary<string, ISqlFieldMetadata> Fields { get; } = new Dictionary<string, ISqlFieldMetadata>();
+        #endregion
+		
+        #region constructors
+        public entityEntityMetadata(ISqlSchemaMetadata schema, string identifier, string name)
+        {
+            Schema = schema;
+            Identifier = identifier;
+            Name = name;
+            Fields.Add($"{identifier}.identifier", new MsSqlFieldMetadata(this, $"{identifier}.identifier", "identifier", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}._identifier", new MsSqlFieldMetadata(this, $"{identifier}._identifier", "_identifier", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.__identifier", new MsSqlFieldMetadata(this, $"{identifier}.__identifier", "__identifier", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.name", new MsSqlFieldMetadata(this, $"{identifier}.name", "name", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}._name", new MsSqlFieldMetadata(this, $"{identifier}._name", "_name", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.__name", new MsSqlFieldMetadata(this, $"{identifier}.__name", "__name", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.schema", new MsSqlFieldMetadata(this, $"{identifier}.schema", "schema", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}._schema", new MsSqlFieldMetadata(this, $"{identifier}._schema", "_schema", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.__schema", new MsSqlFieldMetadata(this, $"{identifier}.__schema", "__schema", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.alias", new MsSqlFieldMetadata(this, $"{identifier}.alias", "alias", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}._alias", new MsSqlFieldMetadata(this, $"{identifier}._alias", "_alias", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.__alias", new MsSqlFieldMetadata(this, $"{identifier}.__alias", "__alias", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}._entity", new MsSqlFieldMetadata(this, $"{identifier}._entity", "_entity", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.__entity", new MsSqlFieldMetadata(this, $"{identifier}.__entity", "__entity", SqlDbType.VarChar, 20));
+        }
+        #endregion
+    }
+    #endregion
+
+    #region expression element type
+	public class ExpressionElementTypeEntityMetadata : ISqlEntityMetadata
+	{
+        #region interface
+        public ISqlSchemaMetadata Schema { get; }
+        public string Identifier { get; }
+        public string Name { get; }
+        public IDictionary<string, ISqlFieldMetadata> Fields { get; } = new Dictionary<string, ISqlFieldMetadata>();
+        #endregion
+		
+        #region constructors
+        public ExpressionElementTypeEntityMetadata(ISqlSchemaMetadata schema, string identifier, string name)
+        {
+            Schema = schema;
+            Identifier = identifier;
+            Name = name;
+            Fields.Add($"{identifier}.Id", new MsSqlFieldMetadata(this, $"{identifier}.Id", "Id", SqlDbType.Int));
+            Fields.Add($"{identifier}.Boolean", new MsSqlFieldMetadata(this, $"{identifier}.Boolean", "Boolean", SqlDbType.Bit));
+            Fields.Add($"{identifier}.NullableBoolean", new MsSqlFieldMetadata(this, $"{identifier}.NullableBoolean", "NullableBoolean", SqlDbType.Bit));
+            Fields.Add($"{identifier}.Byte", new MsSqlFieldMetadata(this, $"{identifier}.Byte", "Byte", SqlDbType.TinyInt));
+            Fields.Add($"{identifier}.NullableByte", new MsSqlFieldMetadata(this, $"{identifier}.NullableByte", "NullableByte", SqlDbType.TinyInt));
+            Fields.Add($"{identifier}.ByteArray", new MsSqlFieldMetadata(this, $"{identifier}.ByteArray", "ByteArray", SqlDbType.VarBinary, -1));
+            Fields.Add($"{identifier}.NullableByteArray", new MsSqlFieldMetadata(this, $"{identifier}.NullableByteArray", "NullableByteArray", SqlDbType.VarBinary, -1));
+            Fields.Add($"{identifier}.DateTime", new MsSqlFieldMetadata(this, $"{identifier}.DateTime", "DateTime", SqlDbType.DateTime2, 8));
+            Fields.Add($"{identifier}.NullableDateTime", new MsSqlFieldMetadata(this, $"{identifier}.NullableDateTime", "NullableDateTime", SqlDbType.DateTime2, 8));
+            Fields.Add($"{identifier}.DateTimeOffset", new MsSqlFieldMetadata(this, $"{identifier}.DateTimeOffset", "DateTimeOffset", SqlDbType.DateTimeOffset, 10));
+            Fields.Add($"{identifier}.NullableDateTimeOffset", new MsSqlFieldMetadata(this, $"{identifier}.NullableDateTimeOffset", "NullableDateTimeOffset", SqlDbType.DateTimeOffset, 10));
+            Fields.Add($"{identifier}.Decimal", new MsSqlFieldMetadata(this, $"{identifier}.Decimal", "Decimal", SqlDbType.Decimal, 5, 4));
+            Fields.Add($"{identifier}.NullableDecimal", new MsSqlFieldMetadata(this, $"{identifier}.NullableDecimal", "NullableDecimal", SqlDbType.Decimal, 5, 4));
+            Fields.Add($"{identifier}.Double", new MsSqlFieldMetadata(this, $"{identifier}.Double", "Double", SqlDbType.Money));
+            Fields.Add($"{identifier}.NullableDouble", new MsSqlFieldMetadata(this, $"{identifier}.NullableDouble", "NullableDouble", SqlDbType.Money));
+            Fields.Add($"{identifier}.Guid", new MsSqlFieldMetadata(this, $"{identifier}.Guid", "Guid", SqlDbType.UniqueIdentifier));
+            Fields.Add($"{identifier}.NullableGuid", new MsSqlFieldMetadata(this, $"{identifier}.NullableGuid", "NullableGuid", SqlDbType.UniqueIdentifier));
+            Fields.Add($"{identifier}.Int16", new MsSqlFieldMetadata(this, $"{identifier}.Int16", "Int16", SqlDbType.SmallInt));
+            Fields.Add($"{identifier}.NullableInt16", new MsSqlFieldMetadata(this, $"{identifier}.NullableInt16", "NullableInt16", SqlDbType.SmallInt));
+            Fields.Add($"{identifier}.Int32", new MsSqlFieldMetadata(this, $"{identifier}.Int32", "Int32", SqlDbType.Int));
+            Fields.Add($"{identifier}.NullableInt32", new MsSqlFieldMetadata(this, $"{identifier}.NullableInt32", "NullableInt32", SqlDbType.Int));
+            Fields.Add($"{identifier}.Int64", new MsSqlFieldMetadata(this, $"{identifier}.Int64", "Int64", SqlDbType.BigInt));
+            Fields.Add($"{identifier}.NullableInt64", new MsSqlFieldMetadata(this, $"{identifier}.NullableInt64", "NullableInt64", SqlDbType.BigInt));
+            Fields.Add($"{identifier}.Single", new MsSqlFieldMetadata(this, $"{identifier}.Single", "Single", SqlDbType.Real));
+            Fields.Add($"{identifier}.NullableSingle", new MsSqlFieldMetadata(this, $"{identifier}.NullableSingle", "NullableSingle", SqlDbType.Real));
+            Fields.Add($"{identifier}.String", new MsSqlFieldMetadata(this, $"{identifier}.String", "String", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.NullableString", new MsSqlFieldMetadata(this, $"{identifier}.NullableString", "NullableString", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.TimeSpan", new MsSqlFieldMetadata(this, $"{identifier}.TimeSpan", "TimeSpan", SqlDbType.Time, 5));
+            Fields.Add($"{identifier}.NullableTimeSpan", new MsSqlFieldMetadata(this, $"{identifier}.NullableTimeSpan", "NullableTimeSpan", SqlDbType.Time, 5));
+        }
+        #endregion
+    }
+    #endregion
+
+    #region identifier
+	public class identifierEntityMetadata : ISqlEntityMetadata
+	{
+        #region interface
+        public ISqlSchemaMetadata Schema { get; }
+        public string Identifier { get; }
+        public string Name { get; }
+        public IDictionary<string, ISqlFieldMetadata> Fields { get; } = new Dictionary<string, ISqlFieldMetadata>();
+        #endregion
+		
+        #region constructors
+        public identifierEntityMetadata(ISqlSchemaMetadata schema, string identifier, string name)
+        {
+            Schema = schema;
+            Identifier = identifier;
+            Name = name;
+            Fields.Add($"{identifier}._identifier", new MsSqlFieldMetadata(this, $"{identifier}._identifier", "_identifier", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.__identifier", new MsSqlFieldMetadata(this, $"{identifier}.__identifier", "__identifier", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.name", new MsSqlFieldMetadata(this, $"{identifier}.name", "name", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}._name", new MsSqlFieldMetadata(this, $"{identifier}._name", "_name", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.__name", new MsSqlFieldMetadata(this, $"{identifier}.__name", "__name", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.schema", new MsSqlFieldMetadata(this, $"{identifier}.schema", "schema", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}._schema", new MsSqlFieldMetadata(this, $"{identifier}._schema", "_schema", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.__schema", new MsSqlFieldMetadata(this, $"{identifier}.__schema", "__schema", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.alias", new MsSqlFieldMetadata(this, $"{identifier}.alias", "alias", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}._alias", new MsSqlFieldMetadata(this, $"{identifier}._alias", "_alias", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.__alias", new MsSqlFieldMetadata(this, $"{identifier}.__alias", "__alias", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.entity", new MsSqlFieldMetadata(this, $"{identifier}.entity", "entity", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}._entity", new MsSqlFieldMetadata(this, $"{identifier}._entity", "_entity", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.__entity", new MsSqlFieldMetadata(this, $"{identifier}.__entity", "__entity", SqlDbType.VarChar, 20));
+        }
+        #endregion
+    }
+    #endregion
+
+    #region name
+	public class nameEntityMetadata : ISqlEntityMetadata
+	{
+        #region interface
+        public ISqlSchemaMetadata Schema { get; }
+        public string Identifier { get; }
+        public string Name { get; }
+        public IDictionary<string, ISqlFieldMetadata> Fields { get; } = new Dictionary<string, ISqlFieldMetadata>();
+        #endregion
+		
+        #region constructors
+        public nameEntityMetadata(ISqlSchemaMetadata schema, string identifier, string name)
+        {
+            Schema = schema;
+            Identifier = identifier;
+            Name = name;
+            Fields.Add($"{identifier}.identifier", new MsSqlFieldMetadata(this, $"{identifier}.identifier", "identifier", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}._identifier", new MsSqlFieldMetadata(this, $"{identifier}._identifier", "_identifier", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.__identifier", new MsSqlFieldMetadata(this, $"{identifier}.__identifier", "__identifier", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}._name", new MsSqlFieldMetadata(this, $"{identifier}._name", "_name", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.__name", new MsSqlFieldMetadata(this, $"{identifier}.__name", "__name", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.schema", new MsSqlFieldMetadata(this, $"{identifier}.schema", "schema", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}._schema", new MsSqlFieldMetadata(this, $"{identifier}._schema", "_schema", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.__schema", new MsSqlFieldMetadata(this, $"{identifier}.__schema", "__schema", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.alias", new MsSqlFieldMetadata(this, $"{identifier}.alias", "alias", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}._alias", new MsSqlFieldMetadata(this, $"{identifier}._alias", "_alias", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.__alias", new MsSqlFieldMetadata(this, $"{identifier}.__alias", "__alias", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.entity", new MsSqlFieldMetadata(this, $"{identifier}.entity", "entity", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}._entity", new MsSqlFieldMetadata(this, $"{identifier}._entity", "_entity", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.__entity", new MsSqlFieldMetadata(this, $"{identifier}.__entity", "__entity", SqlDbType.VarChar, 20));
+        }
+        #endregion
+    }
+    #endregion
+
+    #region schema
+	public class schemaEntityMetadata : ISqlEntityMetadata
+	{
+        #region interface
+        public ISqlSchemaMetadata Schema { get; }
+        public string Identifier { get; }
+        public string Name { get; }
+        public IDictionary<string, ISqlFieldMetadata> Fields { get; } = new Dictionary<string, ISqlFieldMetadata>();
+        #endregion
+		
+        #region constructors
+        public schemaEntityMetadata(ISqlSchemaMetadata schema, string identifier, string name)
+        {
+            Schema = schema;
+            Identifier = identifier;
+            Name = name;
+            Fields.Add($"{identifier}.identifier", new MsSqlFieldMetadata(this, $"{identifier}.identifier", "identifier", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}._identifier", new MsSqlFieldMetadata(this, $"{identifier}._identifier", "_identifier", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.__identifier", new MsSqlFieldMetadata(this, $"{identifier}.__identifier", "__identifier", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.name", new MsSqlFieldMetadata(this, $"{identifier}.name", "name", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}._name", new MsSqlFieldMetadata(this, $"{identifier}._name", "_name", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.__name", new MsSqlFieldMetadata(this, $"{identifier}.__name", "__name", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}._schema", new MsSqlFieldMetadata(this, $"{identifier}._schema", "_schema", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.__schema", new MsSqlFieldMetadata(this, $"{identifier}.__schema", "__schema", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.alias", new MsSqlFieldMetadata(this, $"{identifier}.alias", "alias", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}._alias", new MsSqlFieldMetadata(this, $"{identifier}._alias", "_alias", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.__alias", new MsSqlFieldMetadata(this, $"{identifier}.__alias", "__alias", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.entity", new MsSqlFieldMetadata(this, $"{identifier}.entity", "entity", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}._entity", new MsSqlFieldMetadata(this, $"{identifier}._entity", "_entity", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.__entity", new MsSqlFieldMetadata(this, $"{identifier}.__entity", "__entity", SqlDbType.VarChar, 20));
+        }
+        #endregion
+    }
+    #endregion
 
 }
 namespace DbEx.secDataService

@@ -23,35 +23,26 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class DecimalAbsFunctionExpression :
         AbsFunctionExpression<decimal>,
         DecimalElement,
-        AnyDecimalElement,
         IEquatable<DecimalAbsFunctionExpression>
     {
         #region constructors
-        public DecimalAbsFunctionExpression(DecimalElement expression) : base(expression)
+        public DecimalAbsFunctionExpression(AnyElement<decimal> expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public DecimalElement As(string alias)
-            => new DecimalSelectExpression(this).As(alias);
-        #endregion
-
-        #region distinct
-        public DecimalAbsFunctionExpression Distinct()
-        {
-            IsDistinct = true;
-            return this;
-        }
+        public AnyElement<decimal> As(string alias)
+            => new SelectExpression<decimal>(this).As(alias);
         #endregion
 
         #region equals
-        public bool Equals(DecimalAbsFunctionExpression obj)
-            => obj is DecimalAbsFunctionExpression && base.Equals(obj);
+        public bool Equals(DecimalAbsFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is DecimalAbsFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is DecimalAbsFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

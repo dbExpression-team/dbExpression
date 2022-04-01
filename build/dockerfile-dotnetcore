@@ -1,10 +1,6 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS unit_test_build
 
-# latest version of coverlet supported for .NET Core 3.1 is 1.7.2 (https://www.nuget.org/packages/coverlet.console)
-RUN dotnet tool install --global coverlet.console --version 1.7.2
-ENV PATH="${PATH}:/root/.dotnet/tools"
-
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.5.0/wait /wait
 RUN chmod +x /wait 
 
-CMD /wait && coverlet /src/${TEST_PROJECT_FILENAME} --target "dotnet" --targetargs "test /src/${TEST_PROJECT_FILENAME} --logger \"trx;LogFileName=${TEST_OUTPUT_FILE_PATH}/${TEST_OUTPUT_FILE_NAME}\"" --format cobertura --output "${CODE_COVERAGE_OUTPUT_FILE_PATH}/${CODE_COVERAGE_OUTPUT_FILE_NAME}" --include "[HatTrick.DbEx.*]*" --exclude "[HatTrick.DbEx.*.Test]*"
+CMD /wait && dotnet test /db-ex/test/HatTrick.DbEx.MsSql.Test.Database/HatTrick.DbEx.MsSql.Test.Database.csproj --configuration ${BUILD_CONFIGURATION} --logger "trx;LogFileName=/results/mssql-${MSSQL_VERSION}.tests.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Include="[HatTrick.DbEx.*Sql]*" /p:Exclude="[*Test]*" && cp /db-ex/test/HatTrick.DbEx.MsSql.Test.Database/*.cobertura.xml /results

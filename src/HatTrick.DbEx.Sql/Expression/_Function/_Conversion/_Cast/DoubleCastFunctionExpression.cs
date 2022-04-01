@@ -23,11 +23,10 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class DoubleCastFunctionExpression :
         CastFunctionExpression<double>,
         DoubleElement,
-        AnyDoubleElement,
         IEquatable<DoubleCastFunctionExpression>
     {
         #region constructors
-        public  DoubleCastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType)
+        public DoubleCastFunctionExpression(AnyElement expression, DbTypeExpression convertToDbType)
             : base(expression, convertToDbType)
         {
 
@@ -41,16 +40,16 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public DoubleElement As(string alias)
-            => new DoubleSelectExpression(this).As(alias);
+        public AnyElement<double> As(string alias)
+            => new SelectExpression<double>(this).As(alias);
         #endregion
 
         #region equals
-        public bool Equals(DoubleCastFunctionExpression obj)
-            => obj is DoubleCastFunctionExpression && base.Equals(obj);
+        public bool Equals(DoubleCastFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is DoubleCastFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is DoubleCastFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

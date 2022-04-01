@@ -25,52 +25,51 @@ namespace HatTrick.DbEx.MsSql.Expression
     public partial class NullableInt32RoundFunctionExpression :
         NullableRoundFunctionExpression<int,int?>,
         NullableInt32Element,
-        AnyInt32Element,
         IEquatable<NullableInt32RoundFunctionExpression>
     {
         #region constructors
-        public NullableInt32RoundFunctionExpression(NullableInt32Element expression, IntegralNumericElement length) : base(expression, length)
+        public NullableInt32RoundFunctionExpression(AnyElement<byte?> expression, AnyElement length) : base(expression, length)
         {
 
         }
 
-        public NullableInt32RoundFunctionExpression(NullableInt32Element expression, IntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
+        public NullableInt32RoundFunctionExpression(AnyElement<byte?> expression, AnyElement length, AnyElement function) : base(expression, length, function)
         {
 
         }
 
-        public NullableInt32RoundFunctionExpression(NullableInt32Element expression, NullableIntegralNumericElement length) : base(expression, length)
+        public NullableInt32RoundFunctionExpression(AnyElement<short?> expression, AnyElement length) : base(expression, length)
         {
 
         }
 
-        public NullableInt32RoundFunctionExpression(NullableInt32Element expression, NullableIntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
+        public NullableInt32RoundFunctionExpression(AnyElement<short?> expression, AnyElement length, AnyElement function) : base(expression, length, function)
         {
 
         }
 
-        public NullableInt32RoundFunctionExpression(NullableInt32Element expression, IntegralNumericElement length, NullableIntegralNumericElement function) : base(expression, length, function)
+        public NullableInt32RoundFunctionExpression(AnyElement<int?> expression, AnyElement length) : base(expression, length)
         {
 
         }
 
-        public NullableInt32RoundFunctionExpression(NullableInt32Element expression, NullableIntegralNumericElement length, NullableIntegralNumericElement function) : base(expression, length, function)
+        public NullableInt32RoundFunctionExpression(AnyElement<int?> expression, AnyElement length, AnyElement function) : base(expression, length, function)
         {
 
         }
         #endregion
 
         #region as
-        public NullableInt32Element As(string alias)
-            => new NullableInt32SelectExpression(this).As(alias);
+        public AnyElement<int?> As(string alias)
+            => new SelectExpression<int?>(this).As(alias);
         #endregion
 
         #region equals
-        public bool Equals(NullableInt32RoundFunctionExpression obj)
-            => obj is NullableInt32RoundFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableInt32RoundFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableInt32RoundFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableInt32RoundFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

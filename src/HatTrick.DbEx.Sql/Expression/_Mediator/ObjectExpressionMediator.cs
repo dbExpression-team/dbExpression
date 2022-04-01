@@ -22,8 +22,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class ObjectExpressionMediator :
         ExpressionMediator<object>,
-        AnyElement,
-        ObjectElement,
+        ObjectElement<object>,
         IEquatable<ObjectExpressionMediator>
     {
         #region constructors
@@ -34,23 +33,19 @@ namespace HatTrick.DbEx.Sql.Expression
         public ObjectExpressionMediator(IExpressionElement expression) : base(expression)
         {
         }
-
-        protected ObjectExpressionMediator(IExpressionElement expression, string alias) : base(expression, alias)
-        {
-        }
         #endregion
 
         #region as
-        public ObjectElement As(string alias)
-            => new ObjectSelectExpression(this).As(alias);
+        public ObjectElement<object> As(string alias)
+            => new ObjectSelectExpression<object>(this).As(alias);
         #endregion
 
         #region equals
-        public bool Equals(ObjectExpressionMediator obj)
-            => obj is ObjectExpressionMediator && base.Equals(obj);
+        public bool Equals(ObjectExpressionMediator? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is ObjectExpressionMediator exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is ObjectExpressionMediator exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

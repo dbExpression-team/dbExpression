@@ -23,13 +23,13 @@ using System.Text;
 using System.IO;
 using System.Reflection;
 
-namespace HatTrick.DbEx.Tools
+namespace HatTrick.DbEx.Tools.Resources
 {
     #region resource accessor
     public class ResourceAccessor
     {
         #region get template short names
-        public string[] GetTemplateShortNames()
+        public static string[] GetTemplateShortNames()
         {
             Assembly assem = Assembly.GetExecutingAssembly();
             string[] names = assem.GetManifestResourceNames().ToList()
@@ -38,7 +38,7 @@ namespace HatTrick.DbEx.Tools
 
             for (int i = 0; i < names.Length; i++)
             {
-                var (shortName, extension) = this.ParseShortName(names[i]);
+                var (shortName, extension) = ParseShortName(names[i]);
                 names[i] = $"{shortName}.{extension}";
             }
             return names;
@@ -46,56 +46,53 @@ namespace HatTrick.DbEx.Tools
         #endregion
 
         #region parse short name
-        private (string,string) ParseShortName(string fullName)
+        private static (string,string) ParseShortName(string fullName)
         {
             var lastSegment = fullName.EndsWith(".htt") ? 2 : 1;
 
             var segments = fullName.Split('.');
             var shortName = string.Join(".", segments.Skip(5).Take(segments.Length - (5 + lastSegment)));
 
-            var extension = segments[segments.Length - lastSegment];
+            var extension = segments[^lastSegment];
 
             return (shortName, extension);
         }
         #endregion
 
         #region get template
-        public Resource GetTemplate(string shortName)
+        public static Resource GetTemplate(string shortName)
         {
             string fullName = $"HatTrick.DbEx.Tools.Resources.Templates.{shortName}.htt";
-            return this.Get(fullName);
+            return GetResource(fullName);
         }
         #endregion
 
         #region get template partial
-        public Resource GetTemplatePartial(string shortName)
+        public static Resource GetTemplatePartial(string shortName)
         {
-            string fullName = $"HatTrick.DbEx.Tools.Resources.Templates.Partials.{shortName}.htt";
-            return this.Get(fullName);
+            string fullName = $"{typeof(ResourceAccessor).Namespace}.Templates.Partials.{shortName}.htt";
+            return GetResource(fullName);
         }
         #endregion
 
         #region get
-        public Resource Get(string fullName)
+        public static Resource GetResource(string fullName)
         {
             Assembly assem = Assembly.GetExecutingAssembly();
 
-            var (shortName, extension) = this.ParseShortName(fullName);
+            var (shortName, extension) = ParseShortName(fullName);
 
-            string output = null;
-            using (Stream stream = assem.GetManifestResourceStream(fullName))
-            {
-                using (StreamReader reader = new StreamReader(stream))
-                {
-                    output = reader.ReadToEnd();
-                }
-            }
+            string? output = null;
+            using (Stream stream = assem.GetManifestResourceStream(fullName)!)
+            using (StreamReader reader = new(stream))
+            output = reader.ReadToEnd();
+
             var resource = new Resource()
             {
                 Name = shortName,
                 FullName = fullName,
                 Value = output,
-                Extension = extension.StartsWith("_") ? extension.Substring(1) : extension
+                Extension = extension.StartsWith("_") ? extension[1..] : extension
             };
             return resource;
         }
@@ -107,13 +104,13 @@ namespace HatTrick.DbEx.Tools
     public class Resource
     {
         #region interface
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
-        public string FullName { get; set; }
+        public string? FullName { get; set; }
 
-        public string Value { get; set; }
+        public string? Value { get; set; }
 
-        public string Extension { get; set; }
+        public string? Extension { get; set; }
         #endregion
     }
     #endregion

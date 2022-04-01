@@ -9,7 +9,7 @@
 <Card>
     <CardBody>
         <Fields>
-            <Field ColumnSize="ColumnSize.Is4" Horizontal="true" Padding="Padding.Is5.FromLeft">
+            <Field ColumnSize="ColumnSize.Is4" Horizontal="true" Padding="Padding.Is5.FromStart">
                 <FieldBody>
                     <Addons>
                         <Addon>
@@ -29,7 +29,7 @@
             <NextPageButtonTemplate><PagingButton Type="PagingButton.PagingButtonType.NextPage" /></NextPageButtonTemplate>
             <LastPageButtonTemplate><PagingButton Type="PagingButton.PagingButtonType.LastPage" /></LastPageButtonTemplate>
             <DataGridColumns>
-                <DataGridColumn TItem="CustomerSummaryModel" Field="@nameof(CustomerSummaryModel.Name)" Caption="Name" Sortable="true" Direction="SortDirection.Ascending" Width="70%">
+                <DataGridColumn TItem="CustomerSummaryModel" Field="@nameof(CustomerSummaryModel.Name)" Caption="Name" Sortable="true" SortDirection="SortDirection.Ascending" Width="70%">
                     <DisplayTemplate>
                         @if ((context as CustomerSummaryModel).IsVIP)
                         {

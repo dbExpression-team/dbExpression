@@ -21,6 +21,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Text;
 using svc = HatTrick.DbEx.Tools.Service.ServiceDispatch;
+using HatTrick.DbEx.Tools.Resources;
 
 namespace HatTrick.DbEx.Tools.Service
 {
@@ -45,7 +46,7 @@ namespace HatTrick.DbEx.Tools.Service
         {
         }
 
-        public MakeConfigExecutionContext(string command, string options) : base(command, options)
+        public MakeConfigExecutionContext(string command, string? options) : base(command, options)
         {
             base.EnsureOptions(OPTION_KEYS);
         }
@@ -69,7 +70,7 @@ namespace HatTrick.DbEx.Tools.Service
 
                 string path = this.ResolveOutputDirectory();
 
-                this.WriteOutput(path);
+                WriteOutput(path);
             }
 
             base.Complete();
@@ -79,15 +80,13 @@ namespace HatTrick.DbEx.Tools.Service
         #region resolve output path
         private string ResolveOutputDirectory()
         {
-            string path = null;
-            string keyUsed = null;
-            if (base.TryGetOption(out path, out keyUsed, "--directory", "--dir", "-d"))
+            if (base.TryGetOption(out string? path, out string? keyUsed, "--directory", "--dir", "-d"))
             {
-                if (!svc.IO.DirectoryExists(path))
+                if (!svc.IO.DirectoryExists(path!))
                 {
                     throw new CommandException($"Command option '{keyUsed}' does not point to an existing directory: {path}");
                 }
-                path = Path.Combine(path, SAMPLE_CONFIG_NAME);
+                path = Path.Combine(path!, SAMPLE_CONFIG_NAME);
             }
             else
             {
@@ -104,20 +103,19 @@ namespace HatTrick.DbEx.Tools.Service
         #endregion
 
         #region write output
-        private void WriteOutput(string path)
+        private static void WriteOutput(string path)
         {
-            string resourcePath = "HatTrick.DbEx.Tools.Resources.DbExConfig.DbEx.Config.Example.json";
-            var resources = new ResourceAccessor();
-            Resource config = resources.Get(resourcePath);
+            string resourcePath = $"{typeof(ResourceAccessor).Namespace}.DbExConfig.DbEx.Config.Example.json";
+            Resource config = ResourceAccessor.GetResource(resourcePath);
 
-            svc.Feedback.Push(To.Info, $"Writing dbex.config.json file to:  {path}");
+            svc.Feedback.Push(To.Info, $"Writing dbex.config.json file to: {path}");
             if (!Path.IsPathFullyQualified(path))
             {
                 svc.Feedback.Push(To.ConsoleOnly, $"«Absolute path:  »Green");
                 svc.Feedback.Push(To.ConsoleOnly,Path.GetFullPath(path));
             }
 
-            svc.IO.WriteFile(path, config.Value, Encoding.UTF8);
+            svc.IO.WriteFile(path, config.Value!, Encoding.UTF8);
         }
         #endregion
 

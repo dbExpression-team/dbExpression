@@ -16,12 +16,14 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
+using System;
+
 ﻿namespace HatTrick.DbEx.Sql
 {
 #pragma warning disable IDE1006 // Naming Styles
-    public interface DateTimeOffsetElement : AnyElement
+    public interface DateTimeOffsetElement : AnyElement<DateTimeOffset>
 #pragma warning restore IDE1006 // Naming Styles
     {
-        DateTimeOffsetElement As(string alias);
+
     }
 }

@@ -49,7 +49,7 @@ namespace ServerSideBlazorApp.Models
         public static Sort CreateDefaultSort(string defaultSortField, SortDirection defaultSortDirection)
             => new Sort(defaultSortField, defaultSortDirection == SortDirection.Ascending ? OrderExpressionDirection.ASC : OrderExpressionDirection.DESC);
 
-        public bool Equals(PagingParameters other)
+        public bool Equals(PagingParameters? other)
         {
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
@@ -57,22 +57,22 @@ namespace ServerSideBlazorApp.Models
             if (Offset != other.Offset) return false;
             if (Limit != other.Limit) return false;
             if (Sorting is null && other.Sorting is object) return false;
-            if (Sorting is object && other.Sorting is null) return false;
-            if (!Sorting.SequenceEqual(other.Sorting)) return false;
+            if (Sorting is not null && other.Sorting is null) return false;
+            if (Sorting is not null && !Sorting.SequenceEqual(other.Sorting!)) return false;
 
             return true;
         }
 
-        public override bool Equals(object other)
+        public override bool Equals(object? other)
             => other is PagingParameters paging && Equals(paging);
 
-        public static bool operator ==(PagingParameters obj1, PagingParameters obj2)
+        public static bool operator ==(PagingParameters? obj1, PagingParameters? obj2)
         {
-            if (obj1 is null && obj2 is object) return false;
-            if (obj1 is object && obj2 is null) return false;
+            if (obj1 is null && obj2 is not null) return false;
+            if (obj1 is not null && obj2 is null) return false;
             if (obj1 is null && obj2 is null) return true;
 
-            return obj1.Equals(obj2);
+            return obj1!.Equals(obj2!);
         }
 
         public static bool operator !=(PagingParameters obj1, PagingParameters obj2)

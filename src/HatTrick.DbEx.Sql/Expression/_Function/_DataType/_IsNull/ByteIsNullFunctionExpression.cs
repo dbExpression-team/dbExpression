@@ -23,27 +23,21 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class ByteIsNullFunctionExpression :
         IsNullFunctionExpression<byte>,
         ByteElement,
-        AnyByteElement,
         IEquatable<ByteIsNullFunctionExpression>
     {
         #region constructors
-        public ByteIsNullFunctionExpression(AnyByteElement expression, ByteElement value) : base(expression, value)
+        public ByteIsNullFunctionExpression(AnyElement<byte?> expression, AnyElement<byte> value) : base(expression, value)
         {
 
         }
         #endregion
 
-        #region as
-        public ByteElement As(string alias)
-            => new ByteSelectExpression(this).As(alias);
-        #endregion
-
         #region equals
-        public bool Equals(ByteIsNullFunctionExpression obj)
-            => obj is ByteIsNullFunctionExpression && base.Equals(obj);
+        public bool Equals(ByteIsNullFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is ByteIsNullFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is ByteIsNullFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

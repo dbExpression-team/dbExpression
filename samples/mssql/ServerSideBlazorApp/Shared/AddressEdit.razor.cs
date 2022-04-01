@@ -8,14 +8,15 @@ namespace ServerSideBlazorApp.Shared
 {
     public partial class AddressEdit : ComponentBase
     {
-        private AddressModel originalAddress;
-        private Validations validations;
+        private AddressModel? originalAddress;
+        private Validations validations = new();
 
         private bool IsValid { get; set; } = true;
 
-        [Parameter] public AddressModel Address { get; set; }
+        [Parameter] public AddressModel Address { get; set; } = new();
         [Parameter] public UIControlMode Mode { get; set; } = UIControlMode.View;
-        [Parameter] public Func<AddressModel, Task<AddressModel>> OnSave { get; set; }
+        [Parameter] public Func<AddressModel, Task<AddressModel>> OnSave { get; set; } = new Func<AddressModel, Task<AddressModel>>(a => Task.FromResult(a));
+        [Parameter] public IFluentColumnWithSize ColumnSize { get; set; } = Blazorise.ColumnSize.Is12;
 
         public void SetMode(UIControlMode mode)
         {

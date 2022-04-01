@@ -16,9 +16,10 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿namespace HatTrick.DbEx.Sql
+namespace HatTrick.DbEx.Sql
 {
     public interface IDbEntity
     {
     }
 }
+ 

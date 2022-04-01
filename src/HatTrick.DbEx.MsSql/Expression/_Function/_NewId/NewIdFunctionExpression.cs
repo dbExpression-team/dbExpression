@@ -35,8 +35,8 @@ namespace HatTrick.DbEx.MsSql.Expression
         #endregion
 
         #region as
-        public GuidElement As(string alias)
-            => new GuidSelectExpression(this).As(alias);
+        public AnyElement<Guid> As(string alias)
+            => new SelectExpression<Guid>(this).As(alias);
         #endregion
 
         #region to string
@@ -44,11 +44,11 @@ namespace HatTrick.DbEx.MsSql.Expression
         #endregion
 
         #region equals
-        public bool Equals(NewIdFunctionExpression obj)
-            => base.Equals(obj);
+        public bool Equals(NewIdFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NewIdFunctionExpression exp ? Equals(exp) : false;
+        public override bool Equals(object? obj)
+            => obj is NewIdFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

@@ -16,7 +16,8 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Assembler;
+using HatTrick.DbEx.Sql;
+using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Expression;
 using System.Linq;
 
@@ -30,9 +31,13 @@ namespace HatTrick.DbEx.MsSql.Assembler
             var datePart = (expression as IExpressionProvider<DatePartsExpression>).Expression;
             var parts = (expression as IExpressionListProvider<IExpressionElement>).Expressions;
 
+            var value = datePart.Expression.ToString()?.ToLower();
+            if (value is null)
+                throw new DbExpressionException($"Expression is a null value, can't proceed with appending type {typeof(DatePartsExpression)} value to the appender.");
+
             builder.Appender
                 .Write("DATEADD(")
-                .Write(datePart.Expression.ToString().ToLower())
+                .Write(value)
                 .Write(", ");
 
             builder.AppendElement(parts.First(), context);

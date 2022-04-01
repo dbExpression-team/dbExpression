@@ -24,7 +24,8 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public class JoinExpressionSet : 
         IExpressionElement,
-        IExpressionListProvider<JoinExpression>
+        IExpressionListProvider<JoinExpression>,
+        IEquatable<JoinExpressionSet>
     {
         #region interface
         public IEnumerable<JoinExpression> Expressions { get; private set; }  = new List<JoinExpression>();
@@ -57,30 +58,69 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region to string
-        public override string ToString() => string.Join(Environment.NewLine, Expressions.Select(j => j.ToString()));
+        public override string? ToString() => string.Join(Environment.NewLine, Expressions.Select(j => j.ToString()));
+        #endregion
+
+        #region equals
+        public bool Equals(JoinExpressionSet? obj)
+        {
+            if (obj is null) return false;
+            if (ReferenceEquals(this, obj)) return true;
+
+            if (!Expressions.SequenceEqual(obj.Expressions)) return false;
+
+            return true;
+        }
+
+        public override bool Equals(object? obj)
+            => obj is JoinExpressionSet exp && Equals(exp);
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                const int @base = (int)2166136261;
+                const int multiplier = 16777619;
+
+                int hash = @base;
+                foreach (var join in Expressions)
+                    hash = (hash * multiplier) ^ (join is not null ? join.GetHashCode() : 0);
+
+                return hash;
+            }
+        }
         #endregion
 
         #region logical & operator
-        public static JoinExpressionSet operator &(JoinExpressionSet aSet, JoinExpression b)
+        public static JoinExpressionSet operator &(JoinExpressionSet? a, JoinExpression? b)
         {
-            if (aSet is null)
+            if (a is null && b is null)
+                return new();
+
+            if (a is null)
             {
-                aSet = new JoinExpressionSet(b);
+                a = new(b!);
             }
-            else
+            else if (b is not null)
             {
-                aSet.Expressions = aSet.Expressions.Concat(new JoinExpression[1] { b });
+                a.Expressions = a.Expressions.Concat(new JoinExpression[1] { b });
             }
-            return aSet;
+            return a;
         }
 
-        public static JoinExpressionSet operator &(JoinExpressionSet aSet, JoinExpressionSet bSet)
+        public static JoinExpressionSet operator &(JoinExpressionSet? a, JoinExpressionSet? b)
         {
-            if (aSet is null)
-                return bSet;
+            if (a is null && b is null)
+                return new();
 
-            aSet.Expressions = aSet.Expressions.Concat(bSet?.Expressions);
-            return aSet;
+            if (a is null)
+                return b!;
+
+            if (b?.Expressions is null)
+                return a;
+
+            a.Expressions = a.Expressions.Concat(b.Expressions);
+            return a;
         }
         #endregion
     }

@@ -21,10 +21,10 @@ using System;
 
 namespace HatTrick.DbEx.Sql.Executor
 {
-    public class Field : ISqlField
+    public class Field : ISqlField    
     {
         #region internals
-        protected Func<ISqlField, Type, IValueConverter> FindValueConverter { get; private set; }
+        protected Func<ISqlField, Type, IValueConverter?> FindValueConverter { get; private set; }
         #endregion
 
         #region interface
@@ -35,7 +35,7 @@ namespace HatTrick.DbEx.Sql.Executor
         #endregion
 
         #region constructors
-        public Field(int index, string name, Type dataType, object value, Func<ISqlField, Type, IValueConverter> findValueConverter)
+        public Field(int index, string name, Type dataType, object value, Func<ISqlField, Type, IValueConverter?> findValueConverter)
         {
             Index = index;
             Name = name;
@@ -47,10 +47,18 @@ namespace HatTrick.DbEx.Sql.Executor
 
         #region methods
         public T GetValue<T>()
-            => FindValueConverter(this, typeof(T)).ConvertFromDatabase<T>(RawValue is DBNull ? null : RawValue);
+        {
+            var converter = FindValueConverter(this, typeof(T)) ?? throw new DbExpressionException($"Expected to find a value converter for type {typeof(T)}, but none was found.");
 
-        public object GetValue()
-            => FindValueConverter(this, typeof(object)).ConvertFromDatabase(RawValue is DBNull ? null : RawValue);
+            return converter.ConvertFromDatabase<T>(RawValue is DBNull ? null : RawValue)!;
+        }
+
+        public object? GetValue()
+        {
+            var converter = FindValueConverter(this, typeof(object)) ?? throw new DbExpressionException($"Expected to find a value converter for type {typeof(object)}, but none was found.");
+
+            return converter.ConvertFromDatabase(RawValue is DBNull ? null : RawValue)!;
+        }
         #endregion
     }
 }

@@ -1,4 +1,6 @@
-﻿    #region {$.SchemaExpression.Name} schema expression
+﻿{?var:identifierArgName = ("identifier", $.SchemaExpression) => GetSchemaArgName}
+{?var:identifierInterpolationArgName = ("{{x}}", "x", :identifierArgName) => Replace}
+    #region {$.SchemaExpression.Name} schema expression
     public class {$.SchemaExpression.Name}SchemaExpression : SchemaExpression
     {{
         #region interface
@@ -8,10 +10,10 @@
         #endregion
 
         #region constructors
-        public {$.SchemaExpression.Name}SchemaExpression(string identifier) : base(identifier, null)
+        public {$.SchemaExpression.Name}SchemaExpression(string {:identifierArgName}) : base({:identifierArgName})
         {{
             {#each $.Entities}
-            Entities.Add($"{{identifier}}.{$.Entity.Name}", {$.EntityExpression.Name} = new {$.EntityExpression.Name}Entity($"{{identifier}}.{$.Entity.Name}", "{$.Entity.Name}", this));
+            Attributes.Entities.Add($"{{identifier}}.{$.Entity.Name}", {$.EntityExpression.Name} = new {$.EntityExpression.Name}Entity($"{:identifierInterpolationArgName}.{$.Entity.Name}", "{$.Entity.Name}", this));
             {/each}
         }}
         #endregion

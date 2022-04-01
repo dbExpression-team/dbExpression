@@ -23,7 +23,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableSingleExpressionMediator :
         NullableExpressionMediator<float,float?>,
         NullableSingleElement,
-        AnySingleElement,
         IEquatable<NullableSingleExpressionMediator>
     {
         #region constructors
@@ -31,26 +30,22 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public NullableSingleExpressionMediator(IExpressionElement expression) : base(expression, typeof(float?))
-        {
-        }
-
-        protected NullableSingleExpressionMediator(IExpressionElement expression, string alias) : base(expression, typeof(float?), alias)
+        public NullableSingleExpressionMediator(IExpressionElement expression) : base(expression)
         {
         }
         #endregion
 
         #region as
-        public NullableSingleElement As(string alias)
-            => new NullableSingleSelectExpression(this).As(alias);
+        public AnyElement<float?> As(string alias)
+            => new SelectExpression<float?>(this).As(alias);
         #endregion
 
         #region equals
-        public bool Equals(NullableSingleExpressionMediator obj)
-            => obj is NullableSingleExpressionMediator && base.Equals(obj);
+        public bool Equals(NullableSingleExpressionMediator? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableSingleExpressionMediator exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableSingleExpressionMediator exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

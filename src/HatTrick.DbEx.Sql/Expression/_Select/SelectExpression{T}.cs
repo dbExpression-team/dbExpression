@@ -22,29 +22,43 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public class SelectExpression<TValue> : 
         SelectExpression,
+        AnyElement<TValue>,
         IEquatable<SelectExpression<TValue>>
     {
         #region constructors
-        public SelectExpression(IExpressionElement expression) : base(expression)
+        public SelectExpression(AnyElement expression) : base(expression)
+        {
+
+        }
+
+        public SelectExpression(AnyElement expression, string alias) : base(expression, alias)
         {
 
         }
         #endregion
 
+        #region as
+        public AnyElement<TValue> As(string alias)
+        {
+            Alias = alias;
+            return this;
+        }
+        #endregion
+
         #region logical & operator
-        public static SelectExpressionSet operator &(SelectExpression<TValue> a, SelectExpression<TValue> b) => new SelectExpressionSet(a, b);
+        public static SelectExpressionSet operator &(SelectExpression<TValue> a, SelectExpression<TValue> b) => new(a, b);
         #endregion
 
         #region implicit select expression set operator
-        public static implicit operator SelectExpressionSet(SelectExpression<TValue> a) => new SelectExpressionSet(a);
+        public static implicit operator SelectExpressionSet(SelectExpression<TValue> a) => new(a);
         #endregion
 
         #region equals
-        public bool Equals(SelectExpression<TValue> obj)
-            => obj is SelectExpression<TValue> && base.Equals(obj);
+        public bool Equals(SelectExpression<TValue>? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is SelectExpression<TValue> exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is SelectExpression<TValue> exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

@@ -23,35 +23,26 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class Int32AbsFunctionExpression :
         AbsFunctionExpression<int>,
         Int32Element,
-        AnyInt32Element,
         IEquatable<Int32AbsFunctionExpression>
     {
         #region constructors
-        public Int32AbsFunctionExpression(Int32Element expression) : base(expression)
+        public Int32AbsFunctionExpression(AnyElement<int> expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public Int32Element As(string alias)
-            => new Int32SelectExpression(this).As(alias);
-        #endregion
-
-        #region distinct
-        public Int32AbsFunctionExpression Distinct()
-        {
-            IsDistinct = true;
-            return this;
-        }
+        public AnyElement<int> As(string alias)
+            => new SelectExpression<int>(this).As(alias);
         #endregion
 
         #region equals
-        public bool Equals(Int32AbsFunctionExpression obj)
-            => obj is Int32AbsFunctionExpression && base.Equals(obj);
+        public bool Equals(Int32AbsFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is Int32AbsFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is Int32AbsFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

@@ -9,13 +9,13 @@ namespace HatTrick.DbEx.MsSql.Test.Executor
             ResetDatabase();
         }
 
-        public void ResetDatabase()
+        public static void ResetDatabase()
         {
             var seeder = new Seeder(ConfigurationProvider.ConnectionString);
             seeder.RunScript("data.sql");
         }
 
-        public void AppendImagesToProductsInDatabase()
+        public static void AppendImagesToProductsInDatabase()
         {
             var seeder = new Seeder(ConfigurationProvider.ConnectionString);
             seeder.RunScript("images.sql");

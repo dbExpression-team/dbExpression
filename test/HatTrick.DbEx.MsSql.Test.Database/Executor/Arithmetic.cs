@@ -81,7 +81,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Where(dbo.Person.Id == 1);
 
             //when               
-            string result = exp.Execute();
+            string result = exp.Execute()!;
 
             //then
             result.Should().Be(expected);

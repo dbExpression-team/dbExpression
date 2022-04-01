@@ -30,9 +30,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                         },
                         from => {
                             fromFired = true;
-                            if (from is null)
+                            if (from is not string value)
                                 return null;
-                            var value = from as string;
                             if (value == "FOO")
                                 return expected;
                             return (PaymentSourceType?)Enum.Parse(typeof(PaymentSourceType), value, true);
@@ -117,7 +116,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                         from =>
                         {
                             fromFired = true;
-                            var value = from as string;
+                            if (from is not string value)
+                                return null;
                             if (value == "FOO")
                                 return expected;
                             return (PaymentMethodType)Enum.Parse(typeof(PaymentMethodType), value, true);
@@ -192,7 +192,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             bool fromFired = false;
 
             ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForType<DateTime>().Use(
+                    x.OverrideForValueType<DateTime>().Use(
                         to =>
                         {
                             toFired = true;
@@ -240,7 +240,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             bool fromFired = false;
 
             ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForType<DateTimeOffset>().Use(
+                    x.OverrideForValueType<DateTimeOffset>().Use(
                         to =>
                         {
                             toFired = true;
@@ -286,7 +286,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             bool toFired = false;
 
             ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForType<DateTimeOffset>().Use(
+                    x.OverrideForValueType<DateTimeOffset>().Use(
                         to =>
                         {
                             toFired = true;
@@ -320,7 +320,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                         from =>
                         {
                             fromFired = true;
-                            var value = from as string;
+                            if (from is not string value)
+                                return null;
                             if (value == "FOO")
                                 return expected;
                             return (PaymentMethodType)Enum.Parse(typeof(PaymentMethodType), value, true);
@@ -359,7 +360,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                         from =>
                         {
                             fromFired = true;
-                            var value = from as string;
+                            if (from is not string value)
+                                return null;
                             if (value == "FOO")
                                 return expected;
                             return (PaymentMethodType)Enum.Parse(typeof(PaymentMethodType), value, true);
@@ -397,7 +399,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                         from =>
                         {
                             fromFired = true;
-                            var value = from as string;
+                            if (from is not string value)
+                                return null;
                             if (value == "FOO")
                                 return expected;
                             return (PaymentSourceType)Enum.Parse(typeof(PaymentSourceType), value, true);
@@ -436,7 +439,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                         from =>
                         {
                             fromFired = true;
-                            var value = from as string;
+                            if (from is not string value)
+                                return null;
                             if (value == "FOO")
                                 return expected;
                             return (PaymentSourceType)Enum.Parse(typeof(PaymentSourceType), value, true);
@@ -471,7 +475,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             bool fromFired = false;
 
             ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForType<DateTime>().Use(
+                    x.OverrideForValueType<DateTime>().Use(
                         to =>
                         {
                             toFired = true;
@@ -495,7 +499,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Execute();
 
             //then
-            birthDate.Value.Year.Should().Be(expected.Value.AddYears(5).Year);
+            birthDate!.Value.Year.Should().Be(expected.Value.AddYears(5).Year);
             toFired.Should().BeTrue();
             fromFired.Should().BeTrue();
         }
@@ -511,7 +515,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             bool fromFired = false;
 
             ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForType<DateTime>().Use(
+                    x.OverrideForValueType<DateTime>().Use(
                         to =>
                         {
                             toFired = true;
@@ -535,7 +539,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Execute();
 
             //then
-            birthDate.Value.Year.Should().Be(expected.AddYears(5).Year);
+            birthDate!.Value.Year.Should().Be(expected.AddYears(5).Year);
             toFired.Should().BeTrue();
             fromFired.Should().BeTrue();
         }
@@ -550,7 +554,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             bool fromFired = false;
 
             ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForType<DateTimeOffset>().Use(
+                    x.OverrideForValueType<DateTimeOffset>().Use(
                         to => throw new NotImplementedException(),
                         from =>
                         {
@@ -585,7 +589,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             bool fromFired = false;
 
             ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForType<DateTime>().Use(
+                    x.OverrideForValueType<DateTime>().Use(
                         to =>
                         {
                             toFired = true;
@@ -609,7 +613,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Execute();
 
             //then
-            birthDate.Value.Year.Should().Be(expected.Value.AddYears(5).Year);
+            birthDate!.Value.Year.Should().Be(expected.Value.AddYears(5).Year);
             toFired.Should().BeTrue();
             fromFired.Should().BeTrue();
         }
@@ -625,7 +629,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             bool fromFired = false;
 
             ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForType<DateTimeOffset>().Use(
+                    x.OverrideForValueType<DateTimeOffset>().Use(
                         to =>
                         {
                             toFired = true;
@@ -665,7 +669,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             bool fromFired = false;
 
             ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForType<DateTime>().Use(
+                    x.OverrideForValueType<DateTime>().Use(
                         to =>
                         {
                             toFired = true;
@@ -692,7 +696,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Execute();
 
             //then
-            ((DateTime?)person.BirthDate).Value.Year.Should().Be(expected.Value.AddYears(5).Year);
+            ((DateTime?)person!.BirthDate).Value.Year.Should().Be(expected.Value.AddYears(5).Year);
             toFired.Should().BeTrue();
             fromFired.Should().BeTrue();
         }
@@ -707,7 +711,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             bool fromFired = false;
 
             ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForType<DateTimeOffset>().Use(
+                    x.OverrideForValueType<DateTimeOffset>().Use(
                         to => throw new NotImplementedException(),
                         from =>
                         {
@@ -730,7 +734,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Execute();
 
             //then
-            ((DateTimeOffset)person.RegistrationDate).Year.Should().Be(expected.AddYears(-10).Year);
+            ((DateTimeOffset)person!.RegistrationDate).Year.Should().Be(expected.AddYears(-10).Year);
             fromFired.Should().BeTrue();
         }
 
@@ -745,7 +749,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             bool fromFired = false;
 
             ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForType<DateTime>().Use(
+                    x.OverrideForValueType<DateTime>().Use(
                         to =>
                         {
                             toFired = true;
@@ -772,7 +776,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Execute();
 
             //then
-            ((DateTime?)person.BirthDate).Value.Year.Should().Be(expected.Value.AddYears(5).Year);
+            ((DateTime?)person!.BirthDate).Value.Year.Should().Be(expected.Value.AddYears(5).Year);
             toFired.Should().BeTrue();
             fromFired.Should().BeTrue();
         }
@@ -788,7 +792,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             bool fromFired = false;
 
             ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForType<DateTimeOffset>().Use(
+                    x.OverrideForValueType<DateTimeOffset>().Use(
                         to =>
                         {
                             toFired = true;
@@ -815,7 +819,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Execute();
 
             //then
-            ((DateTimeOffset)person.RegistrationDate).Year.Should().Be(expected.AddYears(5).Year);
+            ((DateTimeOffset)person!.RegistrationDate).Year.Should().Be(expected.AddYears(5).Year);
             toFired.Should().BeTrue();
             fromFired.Should().BeTrue();
         }
@@ -831,7 +835,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             bool fromFired = false;
 
             ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForType<DateTime>().Use(
+                    x.OverrideForValueType<DateTime>().Use(
                         to =>
                         {
                             toFired = true;
@@ -858,7 +862,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Execute();
 
             //then
-            ((DateTime?)person.BirthDate).Value.Year.Should().Be(expected.AddYears(5).Year);
+            ((DateTime?)person!.BirthDate).Value.Year.Should().Be(expected.AddYears(5).Year);
             toFired.Should().BeTrue();
             fromFired.Should().BeTrue();
         }
@@ -874,7 +878,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             bool fromFired = false;
 
             ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForType<DateTime>().Use(
+                    x.OverrideForValueType<DateTime>().Use(
                         to =>
                         {
                             toFired = true;
@@ -898,7 +902,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Execute();
 
             //then
-            ((DateTime?)person.BirthDate).Value.Year.Should().Be(expected.Value.AddYears(5).Year);
+            person!.BirthDate!.Value.Year.Should().Be(expected.Value.AddYears(5).Year);
             toFired.Should().BeTrue();
             fromFired.Should().BeTrue();
         }
@@ -913,7 +917,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             bool fromFired = false;
 
             ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForType<DateTimeOffset>().Use(
+                    x.OverrideForValueType<DateTimeOffset>().Use(
                         to => throw new NotImplementedException(),
                         from =>
                         {
@@ -933,7 +937,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Execute();
 
             //then
-            ((DateTimeOffset)person.RegistrationDate).Year.Should().Be(expected.AddYears(-10).Year);
+            person!.RegistrationDate!.Year.Should().Be(expected.AddYears(-10).Year);
             fromFired.Should().BeTrue();
         }
 
@@ -948,7 +952,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             bool fromFired = false;
 
             ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForType<DateTime>().Use(
+                    x.OverrideForValueType<DateTime>().Use(
                         to =>
                         {
                             toFired = true;
@@ -972,7 +976,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Execute();
 
             //then
-            ((DateTime?)person.BirthDate).Value.Year.Should().Be(expected.Value.AddYears(5).Year);
+            person!.BirthDate!.Value.Year.Should().Be(expected.Value.AddYears(5).Year);
             toFired.Should().BeTrue();
             fromFired.Should().BeTrue();
         }
@@ -988,7 +992,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             bool fromFired = false;
 
             ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForType<DateTimeOffset>().Use(
+                    x.OverrideForValueType<DateTimeOffset>().Use(
                         to =>
                         {
                             toFired = true;
@@ -1012,13 +1016,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Execute();
 
             //then
-            ((DateTimeOffset)person.RegistrationDate).Year.Should().Be(expected.AddYears(5).Year);
+            person!.RegistrationDate.Year.Should().Be(expected.AddYears(5).Year);
             toFired.Should().BeTrue();
             fromFired.Should().BeTrue();
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
+        [Trait("Statement", "SELECT")]
         public void Can_select_purchases_using_in_clause_of_list_of_enums_mapped_to_strings_result_in_correct_output(int version, int expectedCount = 9)
         {
             //given
@@ -1040,6 +1045,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
+        [Trait("Statement", "INSERT")]
         public void Can_insert_and_select_purchase_with_alteration_of_payment_method_type_enum_result_in_correct_output(int version)
         {
             //given
@@ -1075,9 +1081,98 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Where(dbo.Purchase.Id == purchase.Id).Execute();
 
             //then
-            persisted.PaymentMethodType.Should().Be(PaymentMethodType.PayPal);
+            persisted!.PaymentMethodType.Should().Be(PaymentMethodType.PayPal);
             toFired.Should().BeTrue();
             fromFired.Should().BeTrue();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Statement", "SELECT")]
+        public void Can_select_product_and_deserialize_description_result_in_correct_output(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //when
+            var persisted = db.SelectOne<Product>()
+                .From(dbo.Product)
+                .Execute();
+
+            //then
+            persisted!.Description.Should().NotBeNull();
+            persisted.Description?.Long.Should().NotBeNullOrWhiteSpace();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Statement", "INSERT")]
+        public void Can_insert_a_product_and_serialize_description_successfully(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var product = new Product
+            {
+                Description = new ProductDescription { Long = "Long", Short = "Short" },
+                Name = "Test",
+                ListPrice = 1,
+                Price = 1,
+                Quantity = 1,
+                ShippingWeight = 1
+            };
+
+            //when
+            db.Insert(product).Into(dbo.Product).Execute();
+
+            var persisted = db.SelectOne<Product>()
+                .From(dbo.Product)
+                .Where(dbo.Product.Id == product.Id)
+                .Execute();
+
+            //then
+            persisted!.Description.Should().NotBeNull();
+            persisted.Description?.Long.Should().NotBeNullOrWhiteSpace();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Statement", "UPDATE")]
+        public void Can_update_a_product_and_json_serialize_description_successfully(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //when
+            db.Update(
+                    dbo.Product.Description.Set(
+                        new ProductDescription 
+                        { 
+                            Long = "This is a really long description", 
+                            Short = "Description" 
+                        }
+                    )
+                )
+                .From(dbo.Product)
+                .InnerJoin(
+                    db.SelectOne(dbo.Product.Id)
+                        .From(dbo.Product)
+                        .OrderBy(dbo.Product.Id)
+                ).As("top1").On(dbo.Product.Id == ("top1", nameof(dbo.Product.Id)))
+                .Execute();
+
+            var updated = db.SelectOne<Product>()
+                .From(dbo.Product)
+                .InnerJoin(
+                    db.SelectOne(dbo.Product.Id)
+                    .From(dbo.Product)
+                    .OrderBy(dbo.Product.Id)
+                ).As("top1").On(dbo.Product.Id == ("top1", nameof(dbo.Product.Id)))
+                .Execute();
+
+            //then
+            updated!.Description.Should().NotBeNull();
+            updated.Description?.Long.Should().Be("This is a really long description");
         }
     }
 }

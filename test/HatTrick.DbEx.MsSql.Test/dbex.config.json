@@ -1,6 +1,7 @@
 {
+	"nullable": "enable",
 	"source": {
-		"type": "MsSqlDb",
+		"type": "MsSql",
 		"connectionString": {
 			"value": "Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=MsSqlDbExTest;Integrated Security=true;Connect Timeout=30"
 		}
@@ -67,6 +68,14 @@
 				"clrType": "DbEx.Data.ProductCategoryType?",
 				"to": {
 					"path": "dbo.Product.ProductCategoryType"
+				}
+			}
+		},
+		{
+			"apply": {
+				"clrType": "HatTrick.DbEx.MsSql.Test.ProductDescription",
+				"to": {
+					"path": "dbo.Product.Description"
 				}
 			}
 		},

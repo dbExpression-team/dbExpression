@@ -78,7 +78,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 {
                     var person = new Person();
                     map(row, person);
-                    var addressId = row.ReadField().GetValue<int>();
+                    var addressId = row.ReadField()!.GetValue<int>();
                     persons.Add((person, addressId));
                 }
             );

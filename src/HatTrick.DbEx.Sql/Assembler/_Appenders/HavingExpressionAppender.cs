@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         public override void AppendElement(HavingExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             builder.Appender.Indent();
-            builder.AppendElement(expression.Expression, context);
+            builder.AppendElement((expression as IExpressionProvider<FilterExpressionSet>).Expression!, context);
         }
     }
 }

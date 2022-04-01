@@ -23,11 +23,10 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableDateTimeOffsetMinimumFunctionExpression :
         NullableMinimumFunctionExpression<DateTimeOffset,DateTimeOffset?>,
         NullableDateTimeOffsetElement,
-        AnyDateTimeOffsetElement,
         IEquatable<NullableDateTimeOffsetMinimumFunctionExpression>
     {
         #region constructors
-        public NullableDateTimeOffsetMinimumFunctionExpression(NullableDateTimeOffsetElement expression) 
+        public NullableDateTimeOffsetMinimumFunctionExpression(AnyElement<DateTimeOffset?> expression) 
             : base(expression)
         {
 
@@ -35,12 +34,12 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public NullableDateTimeOffsetElement As(string alias)
-            => new NullableDateTimeOffsetSelectExpression(this).As(alias);
+        public AnyElement<DateTimeOffset?> As(string alias)
+            => new SelectExpression<DateTimeOffset?>(this).As(alias);
         #endregion
 
         #region distinct
-        public NullableDateTimeOffsetMinimumFunctionExpression Distinct()
+        public new NullableDateTimeOffsetMinimumFunctionExpression Distinct()
         {
             IsDistinct = true;
             return this;
@@ -48,11 +47,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(NullableDateTimeOffsetMinimumFunctionExpression obj)
-            => obj is NullableDateTimeOffsetMinimumFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableDateTimeOffsetMinimumFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableDateTimeOffsetMinimumFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableDateTimeOffsetMinimumFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

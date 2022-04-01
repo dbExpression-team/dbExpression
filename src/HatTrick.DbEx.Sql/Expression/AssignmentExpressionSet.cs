@@ -27,13 +27,13 @@ namespace HatTrick.DbEx.Sql.Expression
         IExpressionListProvider<AssignmentExpression>
     {
         #region interface
-        public IEnumerable<AssignmentExpression> Expressions { get; private set; }
+        public IEnumerable<AssignmentExpression> Expressions { get; private set; } = new List<AssignmentExpression>();
         #endregion
 
         #region constructors
         public AssignmentExpressionSet()
         {
-            Expressions = new List<AssignmentExpression>();
+
         }
 
         public AssignmentExpressionSet(IEnumerable<AssignmentExpression> assignments)
@@ -48,30 +48,39 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region to string
-        public override string ToString() => string.Join(", ", Expressions.Select(g => g.ToString()));
+        public override string? ToString() => string.Join(", ", Expressions.Select(g => g.ToString()));
         #endregion
 
         #region logical & operator
-        public static AssignmentExpressionSet operator &(AssignmentExpressionSet aSet, AssignmentExpression b)
+        public static AssignmentExpressionSet operator &(AssignmentExpressionSet? a, AssignmentExpression? b)
         {
-            if (aSet is null)
+            if (a is null && b is null)
+                return new();
+
+            if (a is null)
             {
-                aSet = b;
+                a = b!;
             }
-            else
+            else if (b is not null)
             {
-                aSet.Expressions = aSet.Expressions.Concat(new AssignmentExpression[1] { b });
+                a.Expressions = a.Expressions.Concat(new AssignmentExpression[1] { b });
             }
-            return aSet;
+            return a;
         }
 
-        public static AssignmentExpressionSet operator &(AssignmentExpressionSet aSet, AssignmentExpressionSet bSet)
+        public static AssignmentExpressionSet operator &(AssignmentExpressionSet? a, AssignmentExpressionSet? b)
         {
-            if (aSet is null)
-                return bSet;
+            if (a is null && b is null)
+                return new();
 
-            aSet.Expressions = aSet.Expressions.Concat(bSet?.Expressions);
-            return aSet;
+            if (a is null)
+                return b!;
+
+            if (b?.Expressions is null)
+                return a;
+
+            a.Expressions = a.Expressions.Concat(b.Expressions);
+            return a;
         }
         #endregion
     }

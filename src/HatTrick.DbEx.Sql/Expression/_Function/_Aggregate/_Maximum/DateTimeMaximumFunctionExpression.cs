@@ -23,23 +23,17 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class DateTimeMaximumFunctionExpression :
         MaximumFunctionExpression<DateTime>,
         DateTimeElement,
-        AnyDateTimeElement,
         IEquatable<DateTimeMaximumFunctionExpression>
     {
         #region constructors
-        public DateTimeMaximumFunctionExpression(DateTimeElement expression) : base(expression)
+        public DateTimeMaximumFunctionExpression(AnyElement<DateTime> expression) : base(expression)
         {
 
         }
         #endregion
 
-        #region as
-        public DateTimeElement As(string alias)
-            => new DateTimeSelectExpression(this).As(alias);
-        #endregion
-
         #region distinct
-        public DateTimeMaximumFunctionExpression Distinct()
+        public new DateTimeMaximumFunctionExpression Distinct()
         {
             IsDistinct = true;
             return this;
@@ -47,11 +41,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(DateTimeMaximumFunctionExpression obj)
-            => obj is DateTimeMaximumFunctionExpression && base.Equals(obj);
+        public bool Equals(DateTimeMaximumFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is DateTimeMaximumFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is DateTimeMaximumFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

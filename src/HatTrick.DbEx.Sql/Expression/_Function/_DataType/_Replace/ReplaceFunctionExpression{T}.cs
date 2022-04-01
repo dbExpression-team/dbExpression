@@ -22,27 +22,12 @@ namespace HatTrick.DbEx.Sql.Expression
         IExpressionElement<TValue>
     {
         #region constructors
-        protected ReplaceFunctionExpression(StringElement expression, StringElement pattern, StringElement replacement) : base(expression, pattern, replacement, typeof(TValue))
-        {
-
-        }
-        
-        protected ReplaceFunctionExpression(AnyObjectElement expression, StringElement pattern, StringElement replacement) : base(expression, pattern, replacement, typeof(TValue))
+        protected ReplaceFunctionExpression(AnyStringElement expression, AnyElement pattern, AnyElement replacement) : base(expression, pattern, replacement, typeof(TValue))
         {
 
         }
 
-        protected ReplaceFunctionExpression(AnyObjectElement expression, NullableStringElement pattern, StringElement replacement) : base(expression, pattern, replacement, typeof(TValue))
-        {
-
-        }
-
-        protected ReplaceFunctionExpression(AnyObjectElement expression, StringElement pattern, NullableStringElement replacement) : base(expression, pattern, replacement, typeof(TValue))
-        {
-
-        }
-
-        protected ReplaceFunctionExpression(AnyObjectElement expression, NullableStringElement pattern, NullableStringElement replacement) : base(expression, pattern, replacement, typeof(TValue))
+        protected ReplaceFunctionExpression(AnyElement<string?> expression, AnyElement pattern, AnyElement replacement) : base(expression, pattern, replacement, typeof(TValue))
         {
 
         }

@@ -23,27 +23,26 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableSingleFloorFunctionExpression :
         NullableFloorFunctionExpression<float,float?>,
         NullableSingleElement,
-        AnySingleElement,
         IEquatable<NullableSingleFloorFunctionExpression>
     {
         #region constructors
-        public NullableSingleFloorFunctionExpression(NullableSingleElement expression) : base(expression)
+        public NullableSingleFloorFunctionExpression(AnyElement<float?> expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public NullableSingleElement As(string alias)
-            => new NullableSingleSelectExpression(this).As(alias);
+        public AnyElement<float?> As(string alias)
+            => new SelectExpression<float?>(this).As(alias);
         #endregion
 
         #region equals
-        public bool Equals(NullableSingleFloorFunctionExpression obj)
-            => obj is NullableSingleFloorFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableSingleFloorFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableSingleFloorFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableSingleFloorFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

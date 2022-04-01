@@ -20,48 +20,64 @@
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public partial class AliasExpression :
-        IExpressionElement,
-        AnyOrderByClause,
-        AnyGroupByClause,
+    public abstract partial class AliasExpression :
+        AnyElement,
+        IExpressionProvider<AliasExpression.AliasExpressionElements>,
+        IExpressionTypeProvider,
         IEquatable<AliasExpression>
     {
+        #region internals
+        private readonly AliasExpressionElements alias;
+        private readonly Type declaredType;
+        #endregion
+
         #region interface
-        public string TableAlias { get; private set; }
-        public string FieldAlias { get; private set; }
+        AliasExpressionElements IExpressionProvider<AliasExpressionElements>.Expression => alias;
+        Type IExpressionTypeProvider.DeclaredType => declaredType;
         #endregion
 
         #region constructors
-        public AliasExpression(string tableAlias, string fieldAlias)
+        protected AliasExpression((string TableName, string FieldName) aliased, Type declaredType)
         {
-            if (string.IsNullOrWhiteSpace(tableAlias))
-                throw new ArgumentException($"{nameof(tableAlias)} is required.");
-            if (string.IsNullOrWhiteSpace(fieldAlias))
-                throw new ArgumentException($"{nameof(tableAlias)} is required.");
-
-            TableAlias = tableAlias;
-            FieldAlias = fieldAlias;
+            if (aliased == default((string,string)))
+                throw new ArgumentException($"{nameof(aliased)} is required.");
+            if (string.IsNullOrWhiteSpace(aliased.TableName))
+                throw new ArgumentException($"{nameof(aliased.TableName)} is required.");
+            if (string.IsNullOrWhiteSpace(aliased.FieldName))
+                throw new ArgumentException($"{nameof(aliased.FieldName)} is required.");
+            alias = new AliasExpressionElements()
+            {
+                TableAlias = aliased.TableName,
+                FieldAlias = aliased.FieldName
+            };
+            this.declaredType = declaredType ?? throw new ArgumentNullException(nameof(declaredType));
         }
         #endregion
 
+        #region order
+        public virtual OrderByExpression Asc => new(this, OrderExpressionDirection.ASC);
+        public virtual OrderByExpression Desc => new(this, OrderExpressionDirection.DESC);
+        #endregion
+
         #region to string
-        public override string ToString()
-            => $"{TableAlias}.{FieldAlias}";
+        public override string? ToString()
+            => $"{alias.TableAlias}.{alias.FieldAlias}";
         #endregion
 
         #region equals
-        public bool Equals(AliasExpression obj)
+        public bool Equals(AliasExpression? obj)
         {
             if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
 
-            if (!StringComparer.Ordinal.Equals(TableAlias, obj.TableAlias)) return false;
-            if (!StringComparer.Ordinal.Equals(FieldAlias, obj.FieldAlias)) return false;
+            if (!StringComparer.Ordinal.Equals(alias.TableAlias, obj.alias?.TableAlias)) return false;
+            if (!StringComparer.Ordinal.Equals(alias.FieldAlias, obj.alias?.FieldAlias)) return false;
+            if (declaredType != obj.declaredType) return false;
 
             return true;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
             => obj is AliasExpression exp && Equals(exp);
 
         public override int GetHashCode()
@@ -72,10 +88,23 @@ namespace HatTrick.DbEx.Sql.Expression
                 const int multiplier = 16777619;
 
                 int hash = @base;
-                hash = (hash * multiplier) ^ (TableAlias is object ? TableAlias.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ (FieldAlias is object ? FieldAlias.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (alias.TableAlias is not null ? alias.TableAlias.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (alias.FieldAlias is not null ? alias.FieldAlias.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (declaredType is not null ? declaredType.GetHashCode() : 0);
                 return hash;
             }
+        }
+        #endregion
+
+        #region implicit operators
+        public static implicit operator (string, string)(AliasExpression a) => new(a.alias.TableAlias, a.alias.FieldAlias);
+        #endregion
+
+        #region classes
+        public class AliasExpressionElements : IExpression
+        {
+            public string TableAlias { get; set; } = string.Empty;
+            public string FieldAlias { get; set; } = string.Empty;
         }
         #endregion
     }

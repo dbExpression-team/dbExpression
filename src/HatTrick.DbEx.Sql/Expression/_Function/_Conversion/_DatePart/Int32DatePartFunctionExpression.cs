@@ -23,32 +23,31 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class Int32DatePartFunctionExpression :
         DatePartFunctionExpression<int>,
         Int32Element,
-        AnyInt32Element,
         IEquatable<Int32DatePartFunctionExpression>
     {
         #region constructors
-        public Int32DatePartFunctionExpression(DatePartsExpression datePart, DateTimeElement expression) : base(datePart, expression)
+        public Int32DatePartFunctionExpression(DatePartsExpression datePart, AnyElement<DateTime> expression) : base(datePart, expression)
         {
 
         }
 
-        public Int32DatePartFunctionExpression(DatePartsExpression datePart, DateTimeOffsetElement expression) : base(datePart, expression)
+        public Int32DatePartFunctionExpression(DatePartsExpression datePart, AnyElement<DateTimeOffset> expression) : base(datePart, expression)
         {
 
         }
         #endregion
 
         #region as
-        public Int32Element As(string alias)
-            => new Int32SelectExpression(this).As(alias);
+        public AnyElement<int> As(string alias)
+            => new SelectExpression<int>(this).As(alias);
         #endregion
 
         #region equals
-        public bool Equals(Int32DatePartFunctionExpression obj)
-            => obj is Int32DatePartFunctionExpression && base.Equals(obj);
+        public bool Equals(Int32DatePartFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is Int32DatePartFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is Int32DatePartFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

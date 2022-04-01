@@ -23,11 +23,10 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableInt64MaximumFunctionExpression :
         NullableMaximumFunctionExpression<long,long?>,
         NullableInt64Element,
-        AnyInt64Element,
         IEquatable<NullableInt64MaximumFunctionExpression>
     {
         #region constructors
-        public NullableInt64MaximumFunctionExpression(NullableInt64Element expression) 
+        public NullableInt64MaximumFunctionExpression(AnyElement<long?> expression) 
             : base(expression)
         {
 
@@ -35,12 +34,12 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public NullableInt64Element As(string alias)
-            => new NullableInt64SelectExpression(this).As(alias);
+        public AnyElement<long?> As(string alias)
+            => new SelectExpression<long?>(this).As(alias);
         #endregion
 
         #region distinct
-        public NullableInt64MaximumFunctionExpression Distinct()
+        public new NullableInt64MaximumFunctionExpression Distinct()
         {
             IsDistinct = true;
             return this;
@@ -48,11 +47,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(NullableInt64MaximumFunctionExpression obj)
-            => obj is NullableInt64MaximumFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableInt64MaximumFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableInt64MaximumFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableInt64MaximumFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

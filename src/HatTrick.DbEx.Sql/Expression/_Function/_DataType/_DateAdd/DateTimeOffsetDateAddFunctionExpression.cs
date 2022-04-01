@@ -23,11 +23,10 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class DateTimeOffsetDateAddFunctionExpression :
         DateAddFunctionExpression<DateTimeOffset>,
         DateTimeOffsetElement,
-        AnyDateTimeOffsetElement,
         IEquatable<DateTimeOffsetDateAddFunctionExpression>
     {
         #region constructors
-        public DateTimeOffsetDateAddFunctionExpression(DatePartsExpression datePart, Int32Element value, DateTimeOffsetElement expression)
+        public DateTimeOffsetDateAddFunctionExpression(DatePartsExpression datePart, AnyElement<int> value, AnyElement<DateTimeOffset> expression)
             : base(datePart, value, expression)
         {
 
@@ -35,16 +34,16 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public DateTimeOffsetElement As(string alias)
-            => new DateTimeOffsetSelectExpression(this).As(alias);
+        public AnyElement<DateTimeOffset> As(string alias)
+            => new SelectExpression<DateTimeOffset>(this).As(alias);
         #endregion
 
         #region equals
-        public bool Equals(DateTimeOffsetDateAddFunctionExpression obj)
-            => obj is DateTimeOffsetDateAddFunctionExpression && base.Equals(obj);
+        public bool Equals(DateTimeOffsetDateAddFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is DateTimeOffsetDateAddFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is DateTimeOffsetDateAddFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

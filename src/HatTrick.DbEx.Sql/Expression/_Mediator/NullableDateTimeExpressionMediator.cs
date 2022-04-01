@@ -23,7 +23,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableDateTimeExpressionMediator :
         NullableExpressionMediator<DateTime,DateTime?>,
         NullableDateTimeElement,
-        AnyDateTimeElement,
         IEquatable<NullableDateTimeExpressionMediator>
     {
         #region constructors
@@ -31,26 +30,22 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public NullableDateTimeExpressionMediator(IExpressionElement expression) : base(expression, typeof(DateTime?))
-        {
-        }
-
-        protected NullableDateTimeExpressionMediator(IExpressionElement expression, string alias) : base(expression, typeof(DateTime?), alias)
+        public NullableDateTimeExpressionMediator(IExpressionElement expression) : base(expression)
         {
         }
         #endregion
 
         #region as
-        public NullableDateTimeElement As(string alias)
-            => new NullableDateTimeSelectExpression(this).As(alias);
+        public AnyElement<DateTime?> As(string alias)
+            => new SelectExpression<DateTime?>(this).As(alias);
         #endregion
 
         #region equals
-        public bool Equals(NullableDateTimeExpressionMediator obj)
-            => obj is NullableDateTimeExpressionMediator && base.Equals(obj);
+        public bool Equals(NullableDateTimeExpressionMediator? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableDateTimeExpressionMediator exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableDateTimeExpressionMediator exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

@@ -16,12 +16,14 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
+using System;
+
 ﻿namespace HatTrick.DbEx.Sql
 {
 #pragma warning disable IDE1006 // Naming Styles
-    public interface NullableDateTimeElement : AnyElement
+    public interface NullableDateTimeElement : AnyElement<DateTime?>
 #pragma warning restore IDE1006 // Naming Styles
     {
-        NullableDateTimeElement As(string alias);
+
     }
 }

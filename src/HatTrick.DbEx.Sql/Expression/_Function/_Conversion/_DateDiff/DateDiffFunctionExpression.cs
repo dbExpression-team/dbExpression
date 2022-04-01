@@ -48,30 +48,31 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region to string
-        public override string ToString() => $"DATEDIFF({datePart.ToString().ToLower()}, {startDate}, {endDate})";
+        public override string? ToString() => $"DATEDIFF({datePart.ToString()?.ToLower()}, {startDate}, {endDate})";
         #endregion
 
         #region equals
-        public bool Equals(DateDiffFunctionExpression obj)
+        public bool Equals(DateDiffFunctionExpression? obj)
         {
-            if (!base.Equals(obj)) return false;
+            if (obj is null) return false;
+            if (ReferenceEquals(this, obj)) return true;
 
-            if (startDate is null && obj.startDate is object) return false;
-            if (startDate is object && obj.startDate is null) return false;
-            if (!startDate.Equals(obj.startDate)) return false;
+            if (startDate is null && obj.startDate is not null) return false;
+            if (startDate is not null && obj.startDate is null) return false;
+            if (startDate is not null && !startDate.Equals(obj.startDate)) return false;
 
-            if (endDate is null && obj.endDate is object) return false;
-            if (endDate is object && obj.endDate is null) return false;
-            if (!endDate.Equals(obj.endDate)) return false;
+            if (endDate is null && obj.endDate is not null) return false;
+            if (endDate is not null && obj.endDate is null) return false;
+            if (endDate is not null && !endDate.Equals(obj.endDate)) return false;
 
-            if (datePart is null && obj.datePart is object) return false;
-            if (datePart is object && obj.datePart is null) return false;
-            if (!datePart.Equals(obj.datePart)) return false;
+            if (datePart is null && obj.datePart is not null) return false;
+            if (datePart is not null && obj.datePart is null) return false;
+            if (datePart is not null && !datePart.Equals(obj.datePart)) return false;
 
             return true;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
          => obj is DateDiffFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
@@ -81,9 +82,9 @@ namespace HatTrick.DbEx.Sql.Expression
                 const int multiplier = 16777619;
 
                 int hash = base.GetHashCode();
-                hash = (hash * multiplier) ^ (startDate is object ? startDate.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ (endDate is object ? endDate.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ (datePart is object ? datePart.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (startDate is not null ? startDate.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (endDate is not null ? endDate.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (datePart is not null ? datePart.GetHashCode() : 0);
                 return hash;
             }
         }

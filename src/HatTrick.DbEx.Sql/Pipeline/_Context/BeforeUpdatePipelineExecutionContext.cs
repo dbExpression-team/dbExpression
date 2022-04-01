@@ -28,15 +28,15 @@ namespace HatTrick.DbEx.Sql.Pipeline
     public class BeforeUpdatePipelineExecutionContext : PipelineExecutionContext, IPipelineExecutionContext
     {
         public ISqlParameterBuilder ParameterBuilder { get; private set; }
-        public IEnumerable<UpdateFieldDescriptor> Fields { get; private set; }
+        public IEnumerable<AssignmentExpression> Fields { get; private set; }
         public SqlStatement SqlStatement { get; private set; }
 
-        public BeforeUpdatePipelineExecutionContext(RuntimeSqlDatabaseConfiguration database, UpdateQueryExpression expression, SqlStatement statement, ISqlParameterBuilder parameterBuilder)
+        public BeforeUpdatePipelineExecutionContext(SqlDatabaseRuntimeConfiguration database, UpdateQueryExpression expression, SqlStatement statement, ISqlParameterBuilder parameterBuilder)
             : base(database, expression)
         {
             SqlStatement = statement ?? throw new ArgumentNullException(nameof(statement));
             ParameterBuilder = parameterBuilder ?? throw new ArgumentNullException(nameof(parameterBuilder));
-            Fields = expression.Assign.Expressions.Select(x => new UpdateFieldDescriptor((x as IAssignmentExpressionProvider).Assignee, (x as IAssignmentExpressionProvider).Assignment)).ToList().AsReadOnly();
+            Fields = expression.Assign.Expressions.ToList().AsReadOnly();
         }
     }
 }

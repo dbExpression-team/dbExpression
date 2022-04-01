@@ -23,35 +23,26 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class ByteAbsFunctionExpression :
         AbsFunctionExpression<byte>,
         ByteElement,
-        AnyByteElement,
         IEquatable<ByteAbsFunctionExpression>
     {
         #region constructors
-        public ByteAbsFunctionExpression(ByteElement expression) : base(expression)
+        public ByteAbsFunctionExpression(AnyElement<byte> expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public ByteElement As(string alias)
-            => new ByteSelectExpression(this).As(alias);
-        #endregion
-
-        #region distinct
-        public ByteAbsFunctionExpression Distinct()
-        {
-            IsDistinct = true;
-            return this;
-        }
+        public AnyElement<byte> As(string alias)
+            => new SelectExpression<byte>(this).As(alias);
         #endregion
 
         #region equals
-        public bool Equals(ByteAbsFunctionExpression obj)
-            => obj is ByteAbsFunctionExpression && base.Equals(obj);
+        public bool Equals(ByteAbsFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is ByteAbsFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is ByteAbsFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

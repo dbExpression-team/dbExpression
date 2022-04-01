@@ -1,4 +1,5 @@
 ﻿using HatTrick.DbEx.Sql.Assembler;
+using HatTrick.DbEx.Sql.Expression;
 using System;
 using Xunit;
 
@@ -106,7 +107,7 @@ namespace HatTrick.DbEx.Sql.Test.Assembler
             var appender = new Appender();
 
             //when
-            appender.IfNotEmpty(null, a => a.Write("hello"));
+            appender.IfNotEmpty(null!, a => a.Write("hello"));
 
             //then
             Assert.Empty(appender.ToString());

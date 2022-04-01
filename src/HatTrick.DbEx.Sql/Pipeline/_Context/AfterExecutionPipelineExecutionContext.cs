@@ -28,7 +28,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
     {
         public IDbCommand DbCommand { get; private set; }
 
-        public AfterExecutionPipelineExecutionContext(RuntimeSqlDatabaseConfiguration database, QueryExpression expression, IDbCommand command)
+        public AfterExecutionPipelineExecutionContext(SqlDatabaseRuntimeConfiguration database, QueryExpression expression, IDbCommand command)
             : base(database, expression)
         {
             DbCommand = command ?? throw new ArgumentNullException(nameof(command));

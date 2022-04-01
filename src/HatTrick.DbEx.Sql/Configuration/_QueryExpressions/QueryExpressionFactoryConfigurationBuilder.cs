@@ -24,11 +24,11 @@ namespace HatTrick.DbEx.Sql.Configuration
     public class QueryExpressionFactoryConfigurationBuilder : IQueryExpressionFactoryConfigurationBuilder
     {
         #region internals
-        private readonly RuntimeSqlDatabaseConfiguration configuration;
+        private readonly SqlDatabaseRuntimeConfiguration configuration;
         #endregion
 
         #region constructors
-        public QueryExpressionFactoryConfigurationBuilder(RuntimeSqlDatabaseConfiguration configuration)
+        public QueryExpressionFactoryConfigurationBuilder(SqlDatabaseRuntimeConfiguration configuration)
         {
             this.configuration = configuration;
         }
@@ -40,19 +40,19 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         public void Use<TQueryExpressionFactory>()
             where TQueryExpressionFactory : class, IQueryExpressionFactory, new()
-            => Use<TQueryExpressionFactory>(null);
+            => Use<TQueryExpressionFactory>(_ => { });
 
         public void Use<TQueryExpressionFactory>(Action<TQueryExpressionFactory> configureFactory)
             where TQueryExpressionFactory : class, IQueryExpressionFactory, new()
         {
-            if (!(configuration.QueryExpressionFactory is TQueryExpressionFactory))
+            if (configuration.QueryExpressionFactory is not TQueryExpressionFactory)
                 configuration.QueryExpressionFactory = new TQueryExpressionFactory();
-            configureFactory?.Invoke(configuration.QueryExpressionFactory as TQueryExpressionFactory);
+            configureFactory?.Invoke((configuration.QueryExpressionFactory as TQueryExpressionFactory)!);
         }
 
         public void UseDefaultFactory()
         {
-            if (!(configuration.QueryExpressionFactory is QueryExpressionFactory))
+            if (configuration.QueryExpressionFactory is not QueryExpressionFactory)
                 configuration.QueryExpressionFactory = new QueryExpressionFactory();
         }
         #endregion

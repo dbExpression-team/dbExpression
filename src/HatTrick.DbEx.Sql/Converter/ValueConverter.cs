@@ -23,22 +23,25 @@ namespace HatTrick.DbEx.Sql.Converter
 {
     public class ValueConverter : IValueConverter
     {
-        private Type type;
+        private readonly Type type;
 
         public ValueConverter(Type type)
         {
             this.type = type;
         }
 
-        public virtual (Type Type, object ConvertedValue) ConvertToDatabase(object value)
+        public virtual (Type Type, object? ConvertedValue) ConvertToDatabase(object? value)
         {
+            if (value is null)
+                throw new DbExpressionException("Expected a non-null value from the database, but received a null value.");
+
             if (type == value.GetType())
                 return (type, value);
 
             return (type, Convert.ChangeType(value, type));
         }
 
-        public virtual object ConvertFromDatabase(object value)
+        public virtual object? ConvertFromDatabase(object? value)
         {
             if (value is null)
                 throw new DbExpressionException("Expected a non-null value from the database, but received a null value.");
@@ -49,7 +52,7 @@ namespace HatTrick.DbEx.Sql.Converter
             return Convert.ChangeType(value, type);
         }
 
-        public virtual T ConvertFromDatabase<T>(object value)
+        public virtual T ConvertFromDatabase<T>(object? value)
         {
             if (value is null)
                 throw new DbExpressionException("Expected a non-null value from the database, but received a null value.");

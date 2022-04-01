@@ -23,7 +23,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class Int32CountFunctionExpression :
         CountFunctionExpression<int>,
         Int32Element,
-        AnyInt32Element,
         IEquatable<Int32CountFunctionExpression>
     {
         #region constructors
@@ -39,12 +38,12 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public Int32Element As(string alias)
-            => new Int32SelectExpression(this).As(alias);
+        public AnyElement<int> As(string alias)
+            => new SelectExpression<int>(this).As(alias);
         #endregion
 
         #region distinct
-        public Int32CountFunctionExpression Distinct()
+        public new Int32CountFunctionExpression Distinct()
         {
             IsDistinct = true;
             return this;
@@ -52,11 +51,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(Int32CountFunctionExpression obj)
-            => obj is Int32CountFunctionExpression && base.Equals(obj);
+        public bool Equals(Int32CountFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is Int32CountFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is Int32CountFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

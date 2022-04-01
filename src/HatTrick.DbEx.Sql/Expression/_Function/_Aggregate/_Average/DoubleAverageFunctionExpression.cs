@@ -23,23 +23,22 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class DoubleAverageFunctionExpression :
         AverageFunctionExpression<double>,
         DoubleElement,
-        AnyDoubleElement,
         IEquatable<DoubleAverageFunctionExpression>
     {
         #region constructors
-        public DoubleAverageFunctionExpression(DoubleElement expression) : base(expression)
+        public DoubleAverageFunctionExpression(AnyElement<double> expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public DoubleElement As(string alias)
-            => new DoubleSelectExpression(this).As(alias);
+        public AnyElement<double> As(string alias)
+            => new SelectExpression<double>(this).As(alias);
         #endregion
 
         #region distinct
-        public DoubleAverageFunctionExpression Distinct()
+        public new DoubleAverageFunctionExpression Distinct()
         {
             IsDistinct = true;
             return this;
@@ -47,11 +46,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(DoubleAverageFunctionExpression obj)
-            => obj is DoubleAverageFunctionExpression && base.Equals(obj);
+        public bool Equals(DoubleAverageFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is DoubleAverageFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is DoubleAverageFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

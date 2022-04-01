@@ -24,12 +24,12 @@ namespace HatTrick.DbEx.Sql.Pipeline
 {
     public abstract class PipelineEventActions<TAsyncDelegate, TSyncDelegate, TPredicate>
     {
-        protected readonly List<PipelineEventAction<TAsyncDelegate, TSyncDelegate, TPredicate>> PipelineItems = new List<PipelineEventAction<TAsyncDelegate, TSyncDelegate, TPredicate>>();
+        protected readonly List<PipelineEventAction<TAsyncDelegate, TSyncDelegate, TPredicate>> PipelineItems = new();
 
-        public IEnumerable<(TAsyncDelegate, Predicate<TPredicate>)> AsyncActions
+        public IEnumerable<(TAsyncDelegate, Predicate<TPredicate>?)> AsyncActions
             => PipelineItems.Select(pipelineItem => (pipelineItem.AsyncDelegate, pipelineItem.Predicate));
 
-        public IEnumerable<(TSyncDelegate, Predicate<TPredicate>)> SyncActions
+        public IEnumerable<(TSyncDelegate, Predicate<TPredicate>?)> SyncActions
             => PipelineItems.Select(pipelineItem => (pipelineItem.SyncDelegate, pipelineItem.Predicate));
 
         public virtual PipelineEventAction<TAsyncDelegate, TSyncDelegate, TPredicate> AddToStart(TAsyncDelegate asyncAction)
@@ -64,14 +64,14 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
         public virtual PipelineEventAction<TAsyncDelegate, TSyncDelegate, TPredicate> AddToEnd(TAsyncDelegate asyncAction, TSyncDelegate syncAction)
         {
-            var pipelineEventAction = new PipelineEventAction<TAsyncDelegate, TSyncDelegate, TPredicate> { AsyncDelegate = asyncAction, SyncDelegate = syncAction };
+            var pipelineEventAction = new PipelineEventAction<TAsyncDelegate, TSyncDelegate, TPredicate>(asyncAction, syncAction);
             PipelineItems.Add(pipelineEventAction);
             return pipelineEventAction;
         }
 
         public virtual PipelineEventAction<TAsyncDelegate, TSyncDelegate, TPredicate> AddToEnd(TAsyncDelegate asyncAction, TSyncDelegate syncAction, Predicate<TPredicate> predicate)
         {
-            var pipelineEventAction = new PipelineEventAction<TAsyncDelegate, TSyncDelegate, TPredicate> { AsyncDelegate = asyncAction, SyncDelegate = syncAction, Predicate = predicate };
+            var pipelineEventAction = new PipelineEventAction<TAsyncDelegate, TSyncDelegate, TPredicate>(asyncAction, syncAction, predicate);
             PipelineItems.Add(pipelineEventAction);
             return pipelineEventAction;
         }
@@ -90,14 +90,14 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
         public virtual PipelineEventAction<TAsyncDelegate, TSyncDelegate, TPredicate> InsertItem(int index, TAsyncDelegate asyncAction, TSyncDelegate syncAction)
         {
-            var pipelineEventAction = new PipelineEventAction<TAsyncDelegate, TSyncDelegate, TPredicate> { AsyncDelegate = asyncAction, SyncDelegate = syncAction };
+            var pipelineEventAction = new PipelineEventAction<TAsyncDelegate, TSyncDelegate, TPredicate>(asyncAction, syncAction);
             PipelineItems.Insert(index, pipelineEventAction);
             return pipelineEventAction;
         }
 
         public virtual PipelineEventAction<TAsyncDelegate, TSyncDelegate, TPredicate> InsertItem(int index, TAsyncDelegate asyncAction, TSyncDelegate syncAction, Predicate<TPredicate> predicate)
         {
-            var pipelineEventAction = new PipelineEventAction<TAsyncDelegate, TSyncDelegate, TPredicate> { AsyncDelegate = asyncAction, SyncDelegate = syncAction, Predicate = predicate };
+            var pipelineEventAction = new PipelineEventAction<TAsyncDelegate, TSyncDelegate, TPredicate>(asyncAction, syncAction, predicate);
             PipelineItems.Insert(index, pipelineEventAction);
             return pipelineEventAction;
         }

@@ -23,11 +23,10 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableDecimalMaximumFunctionExpression :
         NullableMaximumFunctionExpression<decimal,decimal?>,
         NullableDecimalElement,
-        AnyDecimalElement,
         IEquatable<NullableDecimalMaximumFunctionExpression>
     {
         #region constructors
-        public NullableDecimalMaximumFunctionExpression(NullableDecimalElement expression) 
+        public NullableDecimalMaximumFunctionExpression(AnyElement<decimal?> expression) 
             : base(expression)
         {
 
@@ -35,12 +34,12 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public NullableDecimalElement As(string alias)
-            => new NullableDecimalSelectExpression(this).As(alias);
+        public AnyElement<decimal?> As(string alias)
+            => new SelectExpression<decimal?>(this).As(alias);
         #endregion
 
         #region distinct
-        public NullableDecimalMaximumFunctionExpression Distinct()
+        public new NullableDecimalMaximumFunctionExpression Distinct()
         {
             IsDistinct = true;
             return this;
@@ -48,11 +47,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(NullableDecimalMaximumFunctionExpression obj)
-            => obj is NullableDecimalMaximumFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableDecimalMaximumFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableDecimalMaximumFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableDecimalMaximumFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

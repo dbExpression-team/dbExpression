@@ -17,6 +17,7 @@
 #endregion
 
 ﻿using System;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -26,23 +27,23 @@ namespace HatTrick.DbEx.Sql.Expression
         where TEntity : class, IDbEntity
     {
         #region constructors
-        public NullableByteArrayFieldExpression(string identifier, string name, EntityExpression entity) : base(identifier, name, entity)
+        public NullableByteArrayFieldExpression(string identifier, string name, Table entity) : base(identifier, name, entity)
         {
 
         }
         #endregion
 
-        #region as
-        public override NullableByteArrayElement As(string alias)
-            => new NullableByteArraySelectExpression(this).As(alias);
+        #region in value set
+        public override FilterExpressionSet In(params byte[][] value) => new(new FilterExpression<bool>(this, new LiteralExpression<byte[][]>(value, this), FilterExpressionOperator.None));
+        public override FilterExpressionSet In(IEnumerable<byte[]> value) => new(new FilterExpression<bool>(this, new LiteralExpression<IEnumerable<byte[]>>(value, this), FilterExpressionOperator.None));
         #endregion
 
         #region equals
-        public bool Equals(NullableByteArrayFieldExpression<TEntity> obj)
-            => obj is NullableByteArrayFieldExpression<TEntity> && base.Equals(obj);
+        public bool Equals(NullableByteArrayFieldExpression<TEntity>? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableByteArrayFieldExpression<TEntity> exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableByteArrayFieldExpression<TEntity> exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

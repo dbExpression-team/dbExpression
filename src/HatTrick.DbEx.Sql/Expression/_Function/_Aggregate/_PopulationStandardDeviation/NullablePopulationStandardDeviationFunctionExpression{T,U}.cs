@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.Sql.Expression
         where TValue : IComparable
     {
         #region constructors
-        protected NullablePopulationStandardDeviationFunctionExpression(IExpressionElement expression) 
+        protected NullablePopulationStandardDeviationFunctionExpression(AnyElement expression) 
             : base(expression, typeof(TNullableValue))
         {
 

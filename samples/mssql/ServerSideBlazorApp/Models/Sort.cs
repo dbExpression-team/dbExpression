@@ -8,17 +8,13 @@ namespace ServerSideBlazorApp.Models
         public string Field { get; set; }
         public OrderExpressionDirection Direction { get; set; }
 
-        public Sort()
-        {
-        }
-
         public Sort(string field, OrderExpressionDirection direction)
         {
             Field = field;
             Direction = direction;
         }
 
-        public bool Equals(Sort other)
+        public bool Equals(Sort? other)
         {
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
@@ -29,21 +25,21 @@ namespace ServerSideBlazorApp.Models
             return true;
         }
 
-        public override bool Equals(object other)
+        public override bool Equals(object? other)
         {
             return other is Sort paging && Equals(paging);
         }
 
-        public static bool operator ==(Sort obj1, Sort obj2)
+        public static bool operator ==(Sort? obj1, Sort? obj2)
         {
-            if (obj1 is null && obj2 is object) return false;
-            if (obj1 is object && obj2 is null) return false;
+            if (obj1 is null && obj2 is not null) return false;
+            if (obj1 is not null && obj2 is null) return false;
             if (obj1 is null && obj2 is null) return true;
 
-            return obj1.Equals(obj2);
+            return obj1!.Equals(obj2!);
         }
 
-        public static bool operator !=(Sort obj1, Sort obj2)
+        public static bool operator !=(Sort? obj1, Sort? obj2)
             => !(obj1 == obj2);
 
         public override int GetHashCode()

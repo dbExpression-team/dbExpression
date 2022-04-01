@@ -23,11 +23,10 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableDoubleAbsFunctionExpression :
         NullableAbsFunctionExpression<double,double?>,
         NullableDoubleElement,
-        AnyDoubleElement,
         IEquatable<NullableDoubleAbsFunctionExpression>
     {
         #region constructors
-        public NullableDoubleAbsFunctionExpression(NullableDoubleElement expression) 
+        public NullableDoubleAbsFunctionExpression(AnyElement<double?> expression) 
             : base(expression)
         {
 
@@ -35,24 +34,16 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public NullableDoubleElement As(string alias)
-            => new NullableDoubleSelectExpression(this).As(alias);
-        #endregion
-
-        #region distinct
-        public NullableDoubleAbsFunctionExpression Distinct()
-        {
-            IsDistinct = true;
-            return this;
-        }
+        public AnyElement<double?> As(string alias)
+            => new SelectExpression<double?>(this).As(alias);
         #endregion
 
         #region equals
-        public bool Equals(NullableDoubleAbsFunctionExpression obj)
-            => obj is NullableDoubleAbsFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableDoubleAbsFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableDoubleAbsFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableDoubleAbsFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

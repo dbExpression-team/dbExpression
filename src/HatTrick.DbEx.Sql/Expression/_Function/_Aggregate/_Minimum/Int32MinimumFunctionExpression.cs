@@ -23,23 +23,17 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class Int32MinimumFunctionExpression :
         MinimumFunctionExpression<int>,
         Int32Element,
-        AnyInt32Element,
         IEquatable<Int32MinimumFunctionExpression>
     {
         #region constructors
-        public Int32MinimumFunctionExpression(Int32Element expression) : base(expression)
+        public Int32MinimumFunctionExpression(AnyElement<int> expression) : base(expression)
         {
 
         }
         #endregion
 
-        #region as
-        public Int32Element As(string alias)
-            => new Int32SelectExpression(this).As(alias);
-        #endregion
-
         #region distinct
-        public Int32MinimumFunctionExpression Distinct()
+        public new Int32MinimumFunctionExpression Distinct()
         {
             IsDistinct = true;
             return this;
@@ -47,11 +41,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(Int32MinimumFunctionExpression obj)
-            => obj is Int32MinimumFunctionExpression && base.Equals(obj);
+        public bool Equals(Int32MinimumFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is Int32MinimumFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is Int32MinimumFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

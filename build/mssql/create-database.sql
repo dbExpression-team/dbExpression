@@ -129,8 +129,8 @@ CREATE TABLE [dbo].[Address](
 	[City] VARCHAR(60) NOT NULL,
 	[State] CHAR(2) NOT NULL,
 	[Zip] VARCHAR(10) NOT NULL,
-	[DateCreated] DATETIME NOT NULL CONSTRAINT [DF_Address_DateCreated]  DEFAULT (getdate()),
-	[DateUpdated] DATETIME NOT NULL CONSTRAINT [DF_Address_DateUpdated]  DEFAULT (getdate()),
+	[DateCreated] DATETIME NOT NULL CONSTRAINT [DF_Address_DateCreated] DEFAULT (getdate()),
+	[DateUpdated] DATETIME NOT NULL CONSTRAINT [DF_Address_DateUpdated] DEFAULT (getdate()),
 	CONSTRAINT [PK_Address] PRIMARY KEY CLUSTERED ([Id])
 )
 GO
@@ -154,10 +154,10 @@ CREATE TABLE [dbo].[Person](
 	[GenderType] INT NOT NULL,
 	[CreditLimit] INT NULL,
 	[YearOfLastCreditLimitReview] INT NULL,
-	[RegistrationDate] DATETIMEOFFSET NOT NULL CONSTRAINT [DF_Person_RegistrationDate]  DEFAULT (sysdatetimeoffset()),
+	[RegistrationDate] DATETIMEOFFSET NOT NULL CONSTRAINT [DF_Person_RegistrationDate] DEFAULT (sysdatetimeoffset()),
 	[LastLoginDate] DATETIMEOFFSET NULL,
-	[DateCreated] DATETIME NOT NULL CONSTRAINT [DF_Person_DateCreated]  DEFAULT (getdate()),
-	[DateUpdated] DATETIME NOT NULL CONSTRAINT [DF_Person_DateUpdated]  DEFAULT (getdate()),
+	[DateCreated] DATETIME NOT NULL CONSTRAINT [DF_Person_DateCreated] DEFAULT (getdate()),
+	[DateUpdated] DATETIME NOT NULL CONSTRAINT [DF_Person_DateUpdated] DEFAULT (getdate()),
 	CONSTRAINT [PK_Person] PRIMARY KEY CLUSTERED ([Id]) 
 )
 GO
@@ -177,7 +177,7 @@ CREATE TABLE [dbo].[Person_Address](
 	[Id] INT IDENTITY(1,1) NOT NULL,
 	[PersonId] INT NOT NULL,
 	[AddressId] INT NOT NULL,
-	[DateCreated] DATETIME NOT NULL CONSTRAINT [DF_Person_Address_DateCreated]  DEFAULT (getdate()),
+	[DateCreated] DATETIME NOT NULL CONSTRAINT [DF_Person_Address_DateCreated] DEFAULT (getdate()),
 	CONSTRAINT [PK_Person_Address] PRIMARY KEY CLUSTERED ([Id]),
 	CONSTRAINT [FK_Person_Address_Address] FOREIGN KEY([AddressId]) REFERENCES [dbo].[Address] ([Id]),
 	CONSTRAINT [FK_Person_Address_Person] FOREIGN KEY([PersonId]) REFERENCES [dbo].[Person] ([Id])
@@ -200,8 +200,8 @@ CREATE TABLE [dbo].[Product](
 	[ShippingWeight] DECIMAL(4, 1) NOT NULL,
 	[ValidStartTimeOfDayForPurchase] TIME NULL,
 	[ValidEndTimeOfDayForPurchase] TIME NULL,
-	[DateCreated] DATETIME NOT NULL CONSTRAINT [DF_Product_DateCreated]  DEFAULT (getdate()),
-	[DateUpdated] DATETIME NOT NULL CONSTRAINT [DF_Product_DateUpdated]  DEFAULT (getdate()),
+	[DateCreated] DATETIME NOT NULL CONSTRAINT [DF_Product_DateCreated] DEFAULT (getdate()),
+	[DateUpdated] DATETIME NOT NULL CONSTRAINT [DF_Product_DateUpdated] DEFAULT (getdate()),
 	CONSTRAINT [PK_Product] PRIMARY KEY CLUSTERED ([Id]) 
 )
 GO
@@ -229,8 +229,8 @@ CREATE TABLE [dbo].[Purchase](
 	[TrackingIdentifier] UNIQUEIDENTIFIER NULL,
 	[PaymentMethodType] VARCHAR(20) NOT NULL,
 	[PaymentSourceType] VARCHAR(20) NULL,
-	[DateCreated] DATETIME NOT NULL CONSTRAINT [DF_Purchase_DateCreated]  DEFAULT (getdate()),
-	[DateUpdated] DATETIME NOT NULL CONSTRAINT [DF_Purchase_DateUpdated]  DEFAULT (getdate()),
+	[DateCreated] DATETIME NOT NULL CONSTRAINT [DF_Purchase_DateCreated] DEFAULT (getdate()),
+	[DateUpdated] DATETIME NOT NULL CONSTRAINT [DF_Purchase_DateUpdated] DEFAULT (getdate()),
 	CONSTRAINT [PK_Purchase] PRIMARY KEY CLUSTERED ([Id]),
 	CONSTRAINT [FK_Purchase_Person] FOREIGN KEY([PersonId]) REFERENCES [dbo].[Person] ([Id])
 )
@@ -253,8 +253,8 @@ CREATE TABLE [dbo].[PurchaseLine](
 	[ProductId] INT NOT NULL,
 	[PurchasePrice] DECIMAL(12, 2) NOT NULL,
 	[Quantity] INT NOT NULL,
-	[DateCreated] DATETIME NOT NULL CONSTRAINT [DF_PurchaseLine_DateCreated]  DEFAULT (getdate()),
-	[DateUpdated] DATETIME NOT NULL CONSTRAINT [DF_PurchaseLine_DateUpdated]  DEFAULT (getdate()),
+	[DateCreated] DATETIME NOT NULL CONSTRAINT [DF_PurchaseLine_DateCreated] DEFAULT (getdate()),
+	[DateUpdated] DATETIME NOT NULL CONSTRAINT [DF_PurchaseLine_DateUpdated] DEFAULT (getdate()),
 	CONSTRAINT [PK_PurchaseLine] PRIMARY KEY CLUSTERED ([Id]),
 	CONSTRAINT [FK_PurchaseLine_Purchase] FOREIGN KEY([PurchaseId]) REFERENCES [dbo].[Purchase] ([Id]),
 	CONSTRAINT [FK_PurchaseLine_Product] FOREIGN KEY([ProductId]) REFERENCES [dbo].[Product] ([Id])
@@ -274,10 +274,136 @@ GO
 
 CREATE TABLE [dbo].[AccessAuditLog](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[PersonId] [int] NOT NULL,
-	[AccessResult] [int] NOT NULL,
-	[DateCreated] [datetime] NOT NULL CONSTRAINT [DF_AccessAuditLog_DateCreated]  DEFAULT (getdate()),
+	[PersonId] INT NOT NULL,
+	[AccessResult] INT NOT NULL,
+	[DateCreated] DATETIME NOT NULL CONSTRAINT [DF_AccessAuditLog_DateCreated] DEFAULT (getdate()),
 	CONSTRAINT [PK_AccessAuditLog] PRIMARY KEY CLUSTERED ([Id])
+)
+GO
+
+CREATE SCHEMA [unit_test]
+GO
+
+CREATE TABLE [unit_test].[ExpressionElementType](
+	[Id] INT NOT NULL,
+	[Boolean] BIT NOT NULL,
+	[NullableBoolean] BIT NULL,
+	[Byte] TINYINT NOT NULL,
+	[NullableByte] TINYINT NULL,
+	[ByteArray] VARBINARY(MAX) NOT NULL,
+	[NullableByteArray] VARBINARY(MAX) NULL,
+	[DateTime] DATETIME2 NOT NULL,
+	[NullableDateTime] DATETIME2 NULL,
+	[DateTimeOffset] DATETIMEOFFSET NOT NULL,
+	[NullableDateTimeOffset] DATETIMEOFFSET NULL,
+	[Decimal] DECIMAL(5, 4) NOT NULL,
+	[NullableDecimal] DECIMAL(5, 4) NULL,
+	[Double] MONEY NOT NULL,
+	[NullableDouble] MONEY NULL,
+	[Guid] UNIQUEIDENTIFIER NOT NULL,
+	[NullableGuid] UNIQUEIDENTIFIER NULL,
+	[Int16] SMALLINT NOT NULL,
+	[NullableInt16] SMALLINT NULL,
+	[Int32] INT NOT NULL,
+	[NullableInt32] INT NULL,
+	[Int64] BIGINT NOT NULL,
+	[NullableInt64] BIGINT NULL,
+	[Single] REAL NOT NULL,
+	[NullableSingle] REAL NULL,	
+	[String] VARCHAR(20) NOT NULL,
+	[NullableString] VARCHAR(20) NULL,	
+	[TimeSpan] TIME NOT NULL,
+	[NullableTimeSpan] TIME NULL
+)
+GO
+
+CREATE TABLE [unit_test].[identifier] (
+	[_identifier] VARCHAR(20) NULL,
+	[__identifier] VARCHAR(20) NULL,
+	[name] VARCHAR(20) NULL,
+	[_name] VARCHAR(20) NULL,
+	[__name] VARCHAR(20) NULL,
+	[schema] VARCHAR(20) NULL,
+	[_schema] VARCHAR(20) NULL,
+	[__schema] VARCHAR(20) NULL,
+	[alias] VARCHAR(20) NULL,
+	[_alias] VARCHAR(20) NULL,
+	[__alias] VARCHAR(20) NULL,
+	[entity] VARCHAR(20) NULL,
+	[_entity] VARCHAR(20) NULL,
+	[__entity] VARCHAR(20) NULL
+)
+GO
+
+CREATE TABLE [unit_test].[entity] (
+	[identifier] VARCHAR(20) NULL,
+	[_identifier] VARCHAR(20) NULL,
+	[__identifier] VARCHAR(20) NULL,
+	[name] VARCHAR(20) NULL,
+	[_name] VARCHAR(20) NULL,
+	[__name] VARCHAR(20) NULL,
+	[schema] VARCHAR(20) NULL,
+	[_schema] VARCHAR(20) NULL,
+	[__schema] VARCHAR(20) NULL,
+	[alias] VARCHAR(20) NULL,
+	[_alias] VARCHAR(20) NULL,
+	[__alias] VARCHAR(20) NULL,
+	[_entity] VARCHAR(20) NULL,
+	[__entity] VARCHAR(20) NULL
+)
+GO
+
+CREATE TABLE [unit_test].[name] (
+	[identifier] VARCHAR(20) NULL,
+	[_identifier] VARCHAR(20) NULL,
+	[__identifier] VARCHAR(20) NULL,
+	[_name] VARCHAR(20) NULL,
+	[__name] VARCHAR(20) NULL,
+	[schema] VARCHAR(20) NULL,
+	[_schema] VARCHAR(20) NULL,
+	[__schema] VARCHAR(20) NULL,
+	[alias] VARCHAR(20) NULL,
+	[_alias] VARCHAR(20) NULL,
+	[__alias] VARCHAR(20) NULL,
+	[entity] VARCHAR(20) NULL,
+	[_entity] VARCHAR(20) NULL,
+	[__entity] VARCHAR(20) NULL
+)
+GO
+
+CREATE TABLE [unit_test].[schema] (
+	[identifier] VARCHAR(20) NULL,
+	[_identifier] VARCHAR(20) NULL,
+	[__identifier] VARCHAR(20) NULL,
+	[name] VARCHAR(20) NULL,
+	[_name] VARCHAR(20) NULL,
+	[__name] VARCHAR(20) NULL,
+	[_schema] VARCHAR(20) NULL,
+	[__schema] VARCHAR(20) NULL,
+	[alias] VARCHAR(20) NULL,
+	[_alias] VARCHAR(20) NULL,
+	[__alias] VARCHAR(20) NULL,
+	[entity] VARCHAR(20) NULL,
+	[_entity] VARCHAR(20) NULL,
+	[__entity] VARCHAR(20) NULL
+)
+GO
+
+CREATE TABLE [unit_test].[alias] (
+	[identifier] VARCHAR(20) NULL,
+	[_identifier] VARCHAR(20) NULL,
+	[__identifier] VARCHAR(20) NULL,
+	[name] VARCHAR(20) NULL,
+	[_name] VARCHAR(20) NULL,
+	[__name] VARCHAR(20) NULL,
+	[schema] VARCHAR(20) NULL,
+	[_schema] VARCHAR(20) NULL,
+	[__schema] VARCHAR(20) NULL,
+	[_alias] VARCHAR(20) NULL,
+	[__alias] VARCHAR(20) NULL,
+	[entity] VARCHAR(20) NULL,
+	[_entity] VARCHAR(20) NULL,
+	[__entity] VARCHAR(20) NULL
 )
 GO
 
@@ -287,8 +413,8 @@ GO
 CREATE TABLE [sec].[Person](
 	[Id] INT NOT NULL,
 	[SSN] CHAR(11) NOT NULL,
-	[DateCreated] DATETIME NOT NULL CONSTRAINT [DF_Person_DateCreated]  DEFAULT (getdate()),
-	[DateUpdated] DATETIME NOT NULL CONSTRAINT [DF_Person_DateUpdated]  DEFAULT (getdate()),
+	[DateCreated] DATETIME NOT NULL CONSTRAINT [DF_Person_DateCreated] DEFAULT (getdate()),
+	[DateUpdated] DATETIME NOT NULL CONSTRAINT [DF_Person_DateUpdated] DEFAULT (getdate()),
 	CONSTRAINT [PK_secPerson] PRIMARY KEY CLUSTERED ([Id])
 )
 GO
@@ -306,11 +432,11 @@ GO
 
 CREATE VIEW [dbo].[PersonTotalPurchasesView]
 AS
-SELECT        
+SELECT    
 	[dbo].[Person].[Id], 
 	SUM([dbo].[Purchase].[TotalPurchaseAmount]) AS [TotalAmount],
 	COUNT([dbo].[Purchase].[Id]) AS [TotalCount]
-FROM            
+FROM      
 	[dbo].[Person] 
 	INNER JOIN [dbo].[Purchase] ON [dbo].[Purchase].[PersonId] = [dbo].[Person].[Id]
 GROUP BY 
@@ -332,7 +458,7 @@ GO
 CREATE PROCEDURE [dbo].[SelectPerson_As_Dynamic_With_Input]
 	@P1 INT NULL
 AS
-	SELECT  
+	SELECT 
 		[dbo].[Person].[Id]
 		,[dbo].[Person].[FirstName]
 		,[dbo].[Person].[LastName]
@@ -353,7 +479,7 @@ GO
 CREATE PROCEDURE [dbo].[SelectPerson_As_DynamicList_With_Input]
 	@P1 INT NULL 
 AS
-	SELECT  
+	SELECT 
 		[dbo].[Person].[Id]
 		,[dbo].[Person].[FirstName]
 		,[dbo].[Person].[LastName]
@@ -397,7 +523,7 @@ CREATE PROCEDURE [dbo].[SelectPerson_As_Dynamic_With_Input_And_Output]
 	@P1 INT,
 	@Count INT OUTPUT
 AS
-	SELECT  
+	SELECT 
 		[dbo].[Person].[Id]
 		,[dbo].[Person].[FirstName]
 		,[dbo].[Person].[LastName]
@@ -421,7 +547,7 @@ CREATE PROCEDURE [dbo].[SelectPerson_As_DynamicList_With_Input_And_Output]
 	@P1 INT,
 	@Count INT OUTPUT
 AS
-	SELECT  
+	SELECT 
 		[dbo].[Person].[Id]
 		,[dbo].[Person].[FirstName]
 		,[dbo].[Person].[LastName]
@@ -450,7 +576,7 @@ CREATE PROCEDURE [dbo].[SelectPersonId_As_ScalarValue_With_Input_And_Output]
 	@P1 INT NULL,
 	@Count INT OUTPUT
 AS
-	SELECT  
+	SELECT 
 		[Id]
 	FROM 
 		[dbo].[Person]
@@ -469,7 +595,7 @@ CREATE PROCEDURE [dbo].[SelectPersonId_As_ScalarValueList_With_Input_And_Output]
 	@P1 INT NULL,
 	@Count INT OUTPUT
 AS
-	SELECT  
+	SELECT 
 		[Id]
 	FROM 
 		[dbo].[Person]
@@ -488,7 +614,7 @@ CREATE PROCEDURE [dbo].[SelectPerson_As_Dynamic_With_Input_And_InputOutput]
 	@P1 INT,
 	@CreditLimit INT OUTPUT
 AS
-	SELECT  
+	SELECT 
 		[dbo].[Person].[Id]
 		,[dbo].[Person].[FirstName]
 		,[dbo].[Person].[LastName]
@@ -521,7 +647,7 @@ CREATE PROCEDURE [dbo].[SelectPerson_As_DynamicList_With_Input_And_InputOutput]
 	@P1 INT,
 	@CreditLimit INT OUTPUT
 AS
-	SELECT  
+	SELECT 
 		[dbo].[Person].[Id]
 		,[dbo].[Person].[FirstName]
 		,[dbo].[Person].[LastName]
@@ -554,7 +680,7 @@ CREATE PROCEDURE [dbo].[SelectPersonId_As_ScalarValue_With_Input_And_InputOutput
 	@P1 INT,
 	@CreditLimit INT OUTPUT
 AS
-	SELECT  
+	SELECT 
 		[Id]
 	FROM 
 		[dbo].[Person]
@@ -578,7 +704,7 @@ CREATE PROCEDURE [dbo].[SelectPersonId_As_ScalarValueList_With_Input_And_InputOu
 	@P1 INT,
 	@CreditLimit INT OUTPUT
 AS
-	SELECT  
+	SELECT 
 		[Id]
 	FROM 
 		[dbo].[Person]
@@ -606,3 +732,4 @@ AS
 	WHERE 
 		[dbo].[Person].[Id] = @P1;
 GO
+

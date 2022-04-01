@@ -23,10 +23,14 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class StringMinimumFunctionExpression :
         MinimumFunctionExpression<string>,
         StringElement,
-        AnyStringElement,
         IEquatable<StringMinimumFunctionExpression>
     {
         #region constructors
+        public StringMinimumFunctionExpression(AnyElement<string> expression) : base(expression)
+        {
+
+        }
+
         public StringMinimumFunctionExpression(StringElement expression) : base(expression)
         {
 
@@ -34,12 +38,12 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public StringElement As(string alias)
+        public new StringElement As(string alias)
             => new StringSelectExpression(this).As(alias);
         #endregion
 
         #region distinct
-        public StringMinimumFunctionExpression Distinct()
+        public new StringMinimumFunctionExpression Distinct()
         {
             IsDistinct = true;
             return this;
@@ -47,11 +51,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(StringMinimumFunctionExpression obj)
-            => obj is StringMinimumFunctionExpression && base.Equals(obj);
+        public bool Equals(StringMinimumFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is StringMinimumFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is StringMinimumFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

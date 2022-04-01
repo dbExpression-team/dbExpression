@@ -26,23 +26,18 @@ namespace HatTrick.DbEx.Sql.Expression
         where TEntity : class, IDbEntity
     {
         #region constructors
-        public ByteFieldExpression(string identifier, string name, EntityExpression entity) : base(identifier, name, entity)
+        public ByteFieldExpression(string identifier, string name, Table entity) : base(identifier, name, entity)
         {
 
         }
         #endregion
 
-        #region as
-        public override ByteElement As(string alias)
-            => new ByteSelectExpression(this).As(alias);
-        #endregion
-
         #region equals
-        public bool Equals(ByteFieldExpression<TEntity> obj)
-            => obj is ByteFieldExpression<TEntity> && base.Equals(obj);
+        public bool Equals(ByteFieldExpression<TEntity>? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is ByteFieldExpression<TEntity> exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is ByteFieldExpression<TEntity> exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

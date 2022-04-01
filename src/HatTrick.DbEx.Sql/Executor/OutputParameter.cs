@@ -31,11 +31,11 @@ namespace HatTrick.DbEx.Sql.Executor
         public int Index { get; private set; }
         public string Name { get; private set; }
         public Type DataType { get; private set; }
-        public object RawValue { get; private set; }
+        public object? RawValue { get; private set; }
         #endregion
 
         #region constructors
-        public OutputParameter(int index, string name, Type dataType, object value, Func<ISqlOutputParameter, Type, IValueConverter> findValueConverter)
+        public OutputParameter(int index, string name, Type dataType, object? value, Func<ISqlOutputParameter, Type, IValueConverter> findValueConverter)
         {
             Index = index;
             Name = name;
@@ -46,11 +46,11 @@ namespace HatTrick.DbEx.Sql.Executor
         #endregion
 
         #region methods
-        public T GetValue<T>()
-            => FindValueConverter(this, typeof(T)).ConvertFromDatabase<T>(RawValue is DBNull ? null : RawValue);
+        public T? GetValue<T>()
+            => FindValueConverter(this, typeof(T)).ConvertFromDatabase<T>(RawValue is DBNull ? default : RawValue);
 
-        public object GetValue()
-            => FindValueConverter(this, typeof(object)).ConvertFromDatabase(RawValue is DBNull ? null : RawValue);
+        public object? GetValue()
+            => FindValueConverter(this, typeof(object)).ConvertFromDatabase(RawValue is DBNull ? default : RawValue);
         #endregion
     }
 }

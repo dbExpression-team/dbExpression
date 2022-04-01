@@ -33,7 +33,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
 
         #region constructors
-        public AfterInsertPipelineExecutionContext(RuntimeSqlDatabaseConfiguration database, InsertQueryExpression expression, IDbEntity entity)
+        public AfterInsertPipelineExecutionContext(SqlDatabaseRuntimeConfiguration database, InsertQueryExpression expression, IDbEntity entity)
             : base(database, expression)
         {
             this.entity = entity ?? throw new ArgumentNullException(nameof(entity));
@@ -41,7 +41,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
 
         #region methods
-        public TEntity GetEntity<TEntity>()
+        public TEntity? GetEntity<TEntity>()
             where TEntity : class, IDbEntity
             => entity as TEntity;
         #endregion

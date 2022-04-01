@@ -4,6 +4,7 @@ using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
+using HatTrick.DbEx.Sql.Builder.Alias;
 using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
@@ -131,13 +132,13 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Operation", "SUBQUERY")]
-        public void Can_populationvariance_of_aliased_field_succeed(int version, double expected = 18.6667)
+        public void Can_populationvariance_of_aliased_field_succeed(int version, float expected = 18.6667f)
         {
             //given
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.VarP(dbex.Alias<int>("lines", "PurchaseId")).Distinct().As("alias")
+                    db.fx.VarP(("lines", "PurchaseId")).Distinct().As("alias")
                 ).From(dbo.Purchase)
                 .InnerJoin(
                     db.SelectMany<PurchaseLine>()
@@ -145,10 +146,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ).As("lines").On(dbo.Purchase.Id == ("lines", "PurchaseId"));
 
             //when               
-            object result = exp.Execute();
+            float? result = exp.Execute();
 
             //then
-            result.Should().BeOfType<double>().Which.Should().BeApproximately(expected, 0.0001, "Rounding errors in population standard deviation");
+            result.Should().BeApproximately(expected, 0.0001f, "Rounding errors in population standard deviation");
         }
     }
 }

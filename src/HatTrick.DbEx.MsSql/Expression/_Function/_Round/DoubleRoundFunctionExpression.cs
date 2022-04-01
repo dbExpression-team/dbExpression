@@ -25,32 +25,31 @@ namespace HatTrick.DbEx.MsSql.Expression
     public partial class DoubleRoundFunctionExpression :
         RoundFunctionExpression<double>,
         DoubleElement,
-        AnyDoubleElement,
         IEquatable<DoubleRoundFunctionExpression>
     {
         #region constructors
-        public DoubleRoundFunctionExpression(DoubleElement expression, IntegralNumericElement length) : base(expression, length)
+        public DoubleRoundFunctionExpression(AnyElement<double> expression, AnyElement length) : base(expression, length)
         {
 
         }
 
-        public DoubleRoundFunctionExpression(DoubleElement expression, IntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
+        public DoubleRoundFunctionExpression(AnyElement<double> expression, AnyElement length, AnyElement function) : base(expression, length, function)
         {
 
         }
         #endregion
 
         #region as
-        public DoubleElement As(string alias)
-            => new DoubleSelectExpression(this).As(alias);
+        public AnyElement<double> As(string alias)
+            => new SelectExpression<double>(this).As(alias);
         #endregion
 
         #region equals
-        public bool Equals(DoubleRoundFunctionExpression obj)
-            => obj is DoubleRoundFunctionExpression && base.Equals(obj);
+        public bool Equals(DoubleRoundFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is DoubleRoundFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is DoubleRoundFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

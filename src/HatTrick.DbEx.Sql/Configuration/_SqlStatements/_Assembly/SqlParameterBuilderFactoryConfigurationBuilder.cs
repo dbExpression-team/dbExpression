@@ -24,9 +24,9 @@ namespace HatTrick.DbEx.Sql.Configuration
     public class SqlParameterBuilderFactoryConfigurationBuilder : ISqlParameterBuilderFactoryConfigurationBuilder
     {
         private readonly ISqlStatementAssemblyGroupingConfigurationBuilders caller;
-        private readonly RuntimeSqlDatabaseConfiguration configuration;
+        private readonly SqlDatabaseRuntimeConfiguration configuration;
 
-        public SqlParameterBuilderFactoryConfigurationBuilder(ISqlStatementAssemblyGroupingConfigurationBuilders caller, RuntimeSqlDatabaseConfiguration configuration)
+        public SqlParameterBuilderFactoryConfigurationBuilder(ISqlStatementAssemblyGroupingConfigurationBuilders caller, SqlDatabaseRuntimeConfiguration configuration)
         {
             this.caller = caller ?? throw new ArgumentNullException(nameof(caller));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
@@ -40,14 +40,14 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         public ISqlStatementAssemblyGroupingConfigurationBuilders Use<TSqlParameterBuilderFactory>()
             where TSqlParameterBuilderFactory : class, ISqlParameterBuilderFactory, new()
-            => Use<TSqlParameterBuilderFactory>(null);
+            => Use<TSqlParameterBuilderFactory>(_ => { });
 
         public ISqlStatementAssemblyGroupingConfigurationBuilders Use<TSqlParameterBuilderFactory>(Action<TSqlParameterBuilderFactory> configureFactory)
             where TSqlParameterBuilderFactory : class, ISqlParameterBuilderFactory, new()
         {
-            if (!(configuration.ParameterBuilderFactory is TSqlParameterBuilderFactory))
+            if (configuration.ParameterBuilderFactory is not TSqlParameterBuilderFactory)
                 configuration.ParameterBuilderFactory = new TSqlParameterBuilderFactory();
-            configureFactory?.Invoke(configuration.ParameterBuilderFactory as TSqlParameterBuilderFactory);
+            configureFactory?.Invoke((configuration.ParameterBuilderFactory as TSqlParameterBuilderFactory)!);
             return caller;
         }
 

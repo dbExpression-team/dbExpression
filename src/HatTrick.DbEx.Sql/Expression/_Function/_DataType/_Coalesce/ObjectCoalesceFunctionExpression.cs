@@ -16,15 +16,14 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class ObjectCoalesceFunctionExpression :
         CoalesceFunctionExpression<object>,
-        ObjectElement,
-        AnyObjectElement,
+        ObjectElement<object>,
         IEquatable<ObjectCoalesceFunctionExpression>
     {
         #region constructors
@@ -35,16 +34,16 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public ObjectElement As(string alias)
-            => new ObjectSelectExpression(this).As(alias);
+        public new ObjectElement<object> As(string alias)
+            => new ObjectSelectExpression<object>(this).As(alias);
         #endregion
 
         #region equals
-        public bool Equals(ObjectCoalesceFunctionExpression obj)
-            => obj is ObjectCoalesceFunctionExpression && base.Equals(obj);
+        public bool Equals(ObjectCoalesceFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is ObjectCoalesceFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is ObjectCoalesceFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

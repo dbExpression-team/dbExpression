@@ -23,11 +23,10 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class SingleCastFunctionExpression :
         CastFunctionExpression<float>,
         SingleElement,
-        AnySingleElement,
         IEquatable<SingleCastFunctionExpression>
     {
         #region constructors
-        public SingleCastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType)
+        public SingleCastFunctionExpression(AnyElement expression, DbTypeExpression convertToDbType)
             : base(expression, convertToDbType)
         {
 
@@ -35,16 +34,16 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public SingleElement As(string alias)
-            => new SingleSelectExpression(this).As(alias);
+        public AnyElement<float> As(string alias)
+            => new SelectExpression<float>(this).As(alias);
         #endregion
 
         #region equals
-        public bool Equals(SingleCastFunctionExpression obj)
-            => obj is SingleCastFunctionExpression && base.Equals(obj);
+        public bool Equals(SingleCastFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is SingleCastFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is SingleCastFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

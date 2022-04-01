@@ -24,21 +24,21 @@ namespace HatTrick.DbEx.MsSql
 {
     internal static class ExpressionElementExtensions
     {
-        internal static FieldExpression AsFieldExpression(this IExpressionElement expression)
+        internal static FieldExpression? ToFieldExpression(this IExpressionElement expression)
         {
             if (expression is FieldExpression field)
                 return field;
 
             if (expression is SelectExpression select)
-                return AsFieldExpression(select.Expression);
+                return ToFieldExpression(select.Expression);
 
             if (expression is ExpressionMediator mediator)
-                return AsFieldExpression(mediator.Expression);
+                return ToFieldExpression(mediator.Expression);
 
             return null;
         }
 
-        internal static SelectExpression ToSelectExpression(this IExpressionElement expression, ISqlDatabaseMetadataProvider metadata)
+        internal static SelectExpression ToSelectExpression(this AnyElement expression, ISqlDatabaseMetadataProvider metadata)
         {
             if (expression is null)
                 throw new ArgumentNullException(nameof(expression));
@@ -46,7 +46,7 @@ namespace HatTrick.DbEx.MsSql
             if (expression is SelectExpression select)
                 return select;
 
-            var field = expression.AsFieldExpression();
+            var field = expression.ToFieldExpression();
 
             if (field is null)
                 return new SelectExpression(expression);
@@ -54,10 +54,11 @@ namespace HatTrick.DbEx.MsSql
             if (metadata is null)
                 throw new ArgumentNullException(nameof(metadata));
 
+            //ensure the actual column name in the database is used in the sql statement.  if the column name was "overriden" in configuration, supply that name as an alias
             var dbName = metadata.FindFieldMetadata((field as ISqlMetadataIdentifierProvider).Identifier)?.Name ?? throw new DbExpressionException($"Cannot resolve metadata for {expression}.");
-            var codeName = (field as IExpressionNameProvider).Name;
+            var sourceName = (field as IExpressionNameProvider).Name;
 
-            return dbName == codeName ? new SelectExpression(expression) : new SelectExpression(expression, codeName);
+            return dbName == sourceName ? new SelectExpression(expression) : new SelectExpression(expression, sourceName);
         }
     }
 }

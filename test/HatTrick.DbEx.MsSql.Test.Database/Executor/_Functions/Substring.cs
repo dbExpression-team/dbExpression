@@ -5,6 +5,10 @@ using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
 using Xunit;
+using System;
+using HatTrick.DbEx.MsSql.Builder;
+using HatTrick.DbEx.MsSql.Builder.Alias;
+using DbEx.unit_testDataService;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 {
@@ -25,7 +29,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Where(dbo.Person.FirstName == firstName);
 
             //when               
-            string result = exp.Execute();
+            string? result = exp.Execute();
 
             //then
             result.Should().Be(expected);
@@ -44,7 +48,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Where(dbo.Person.FirstName == firstName);
 
             //when               
-            string result = exp.Execute();
+            string? result = exp.Execute();
 
             //then
             result.Should().Be(expected);
@@ -63,7 +67,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Where(dbo.Person.FirstName == firstName);
 
             //when               
-            string result = exp.Execute();
+            string? result = exp.Execute();
 
             //then
             result.Should().Be(expected);
@@ -82,7 +86,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Where(dbo.Person.FirstName == firstName);
 
             //when               
-            string result = exp.Execute();
+            string? result = exp.Execute();
 
             //then
             result.Should().Be(expected);
@@ -101,7 +105,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Where(dbo.Person.FirstName == firstName);
 
             //when               
-            string result = exp.Execute();
+            string? result = exp.Execute();
 
             //then
             result.Should().Be(expected);
@@ -120,10 +124,67 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Where(dbo.Person.FirstName == firstName);
 
             //when               
-            string result = exp.Execute();
+            string? result = exp.Execute();
 
             //then
             result.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_substring_of_unit_test_string_with_nullable_int_for_start_and_nullable_int_for_length_succeed(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectOne(
+                    db.fx.Substring(unit_test.ExpressionElementType.String, unit_test.ExpressionElementType.NullableInt32, unit_test.ExpressionElementType.NullableInt32)
+                ).From(unit_test.ExpressionElementType)
+                .Where(unit_test.ExpressionElementType.NullableInt32 == DBNull.Value);
+
+            //when               
+            string? result = exp.Execute();
+
+            //then
+            result.Should().BeNull();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_substring_of_unit_test_string_with_nullable_int_for_start_and_nullable_long_for_length_succeed(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectOne(
+                    db.fx.Substring(unit_test.ExpressionElementType.String, unit_test.ExpressionElementType.NullableInt32, unit_test.ExpressionElementType.NullableInt64)
+                ).From(unit_test.ExpressionElementType)
+                .Where(unit_test.ExpressionElementType.NullableInt32 == DBNull.Value);
+
+            //when               
+            string? result = exp.Execute();
+
+            //then
+            result.Should().BeNull();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_substring_of_unit_test_string_with_nullable_long_for_start_and_nullable_long_for_length_succeed(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectOne(
+                    db.fx.Substring(unit_test.ExpressionElementType.String, unit_test.ExpressionElementType.NullableInt64, unit_test.ExpressionElementType.NullableInt64)
+                ).From(unit_test.ExpressionElementType)
+                .Where(unit_test.ExpressionElementType.NullableInt32 == DBNull.Value);
+
+            //when               
+            string? result = exp.Execute();
+
+            //then
+            result.Should().BeNull();
         }
 
         [Theory]
@@ -135,7 +196,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.Substring(dbex.Alias<string>("_address", "Line1"), start, length).As("address_line1")  //100 1st St
+                    db.fx.Substring(("_address", "Line1"), start, length).As("address_line1")  //100 1st St
                 ).From(dbo.Address)
                 .InnerJoin(
                     db.SelectOne<Address>()
@@ -144,10 +205,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ).As("_address").On(dbo.Address.Id == ("_address", "Id"));
 
             //when               
-            object result = exp.Execute();
+            string? result = exp.Execute();
 
             //then
-            result.Should().BeOfType<string>().Which.Should().Be(expected);
+            result.Should().Be(expected);
         }
     }
 }

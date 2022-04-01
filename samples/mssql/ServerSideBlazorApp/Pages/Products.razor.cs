@@ -17,7 +17,7 @@ namespace ServerSideBlazorApp.Pages
         private bool ShowProgressBar { get; set; } = false;
         private PagingParameters PagingParameters { get; set; } = PagingParameters.CreateDefault(DefaultSort);
         private Page<ProductSummaryModel> CurrentPage { get; set; } = Page<ProductSummaryModel>.CreateDefault();
-        private PagingParameters PreviousPagingParameters { get; set; }
+        private PagingParameters? PreviousPagingParameters { get; set; }
         #endregion
 
         #region methods
@@ -53,8 +53,8 @@ namespace ServerSideBlazorApp.Pages
 
         public async override Task SetParametersAsync(ParameterView parameters)
         {
-            if (NavigationManager.TryGetPagingParametersFromReturnUrl(out PagingParameters page))
-                PagingParameters = page;
+            if (NavigationManager.TryGetPagingParametersFromReturnUrl(out PagingParameters? page))
+                PagingParameters = page!;
             await base.SetParametersAsync(parameters);
         }
         #endregion

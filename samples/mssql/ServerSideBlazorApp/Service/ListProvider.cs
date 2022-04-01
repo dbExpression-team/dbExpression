@@ -4,7 +4,7 @@ namespace ServerSideBlazorApp.Service
 {
     public static class ListProvider
 	{
-		public static SortedDictionary<string, string> States = new SortedDictionary<string, string>
+		public static readonly SortedDictionary<string, string> States = new()
 		{
 			{ "AL", "Alabama" },
 			{ "AK", "Alaska" },

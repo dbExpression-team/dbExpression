@@ -25,11 +25,10 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class StringConcatFunctionExpression :
         ConcatFunctionExpression<string>,
         StringElement,
-        AnyStringElement,
         IEquatable<StringConcatFunctionExpression>
     {
         #region constructors
-        public StringConcatFunctionExpression(IList<AnyElement> expressions) : base(expressions?.Cast<IExpressionElement>()?.ToList())
+        public StringConcatFunctionExpression(IList<AnyStringElement> expressions) : base(expressions)
         {
 
         }
@@ -42,15 +41,15 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region like
         public FilterExpressionSet Like(string phrase)
-            => new FilterExpressionSet(new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
+            => new(new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
         #endregion
 
         #region equals
-        public bool Equals(StringConcatFunctionExpression obj)
-            => obj is StringConcatFunctionExpression && base.Equals(obj);
+        public bool Equals(StringConcatFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is StringConcatFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is StringConcatFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

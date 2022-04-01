@@ -23,11 +23,10 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableDoubleMinimumFunctionExpression :
         NullableMinimumFunctionExpression<double,double?>,
         NullableDoubleElement,
-        AnyDoubleElement,
         IEquatable<NullableDoubleMinimumFunctionExpression>
     {
         #region constructors
-        public NullableDoubleMinimumFunctionExpression(NullableDoubleElement expression) 
+        public NullableDoubleMinimumFunctionExpression(AnyElement<double?> expression) 
             : base(expression)
         {
 
@@ -35,12 +34,12 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public NullableDoubleElement As(string alias)
-            => new NullableDoubleSelectExpression(this).As(alias);
+        public AnyElement<double?> As(string alias)
+            => new SelectExpression<double?>(this).As(alias);
         #endregion
 
         #region distinct
-        public NullableDoubleMinimumFunctionExpression Distinct()
+        public new NullableDoubleMinimumFunctionExpression Distinct()
         {
             IsDistinct = true;
             return this;
@@ -48,11 +47,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(NullableDoubleMinimumFunctionExpression obj)
-            => obj is NullableDoubleMinimumFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableDoubleMinimumFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableDoubleMinimumFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableDoubleMinimumFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

@@ -23,11 +23,10 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableGuidCastFunctionExpression :
         NullableCastFunctionExpression<Guid,Guid?>,
         NullableGuidElement,
-        AnyGuidElement,
         IEquatable<NullableGuidCastFunctionExpression>
     {
         #region constructors
-        public NullableGuidCastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType)
+        public NullableGuidCastFunctionExpression(AnyElement expression, DbTypeExpression convertToDbType)
             : base(expression, convertToDbType)
         {
 
@@ -35,16 +34,16 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public NullableGuidElement As(string alias)
-            => new NullableGuidSelectExpression(this).As(alias);
+        public AnyElement<Guid?> As(string alias)
+            => new SelectExpression<Guid?>(this).As(alias);
         #endregion
 
         #region equals
-        public bool Equals(NullableGuidCastFunctionExpression obj)
-            => obj is NullableGuidCastFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableGuidCastFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableGuidCastFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableGuidCastFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

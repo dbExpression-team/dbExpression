@@ -78,22 +78,22 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Convert the sql type to a <see cref="SqlDbType.VarChar"/>
         /// </summary>
-        StringCastFunctionExpression AsVarChar(int size);
+        NullableStringCastFunctionExpression AsVarChar(int size);
 
         /// <summary>
         /// Convert the sql type to a <see cref="SqlDbType.Char"/>
         /// </summary>
-        StringCastFunctionExpression AsChar(int size);
+        NullableStringCastFunctionExpression AsChar(int size);
 
         /// <summary>
         /// Convert the sql type to a <see cref="SqlDbType.NVarChar"/>
         /// </summary>
-        StringCastFunctionExpression AsNVarChar(int size);
+        NullableStringCastFunctionExpression AsNVarChar(int size);
 
         /// <summary>
         /// Convert the sql type to a <see cref="SqlDbType.NChar"/>
         /// </summary>
-        StringCastFunctionExpression AsNChar(int size);
+        NullableStringCastFunctionExpression AsNChar(int size);
 
         /// <summary>
         /// Convert the sql type to a <see cref="SqlDbType.Time"/>

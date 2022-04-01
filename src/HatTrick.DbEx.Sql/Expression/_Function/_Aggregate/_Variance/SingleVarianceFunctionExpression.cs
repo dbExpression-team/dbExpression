@@ -23,53 +23,52 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class SingleVarianceFunctionExpression :
         VarianceFunctionExpression<float>,
         SingleElement,
-        AnySingleElement,
         IEquatable<SingleVarianceFunctionExpression>
     {
         #region constructors
-        public SingleVarianceFunctionExpression(ByteElement expression) : base(expression)
+        public SingleVarianceFunctionExpression(AnyElement<byte> expression) : base(expression)
         {
 
         }
 
-        public SingleVarianceFunctionExpression(Int16Element expression) : base(expression)
+        public SingleVarianceFunctionExpression(AnyElement<short> expression) : base(expression)
         {
 
         }
 
-        public SingleVarianceFunctionExpression(Int32Element expression) : base(expression)
+        public SingleVarianceFunctionExpression(AnyElement<int> expression) : base(expression)
         {
 
         }
 
-        public SingleVarianceFunctionExpression(Int64Element expression) : base(expression)
+        public SingleVarianceFunctionExpression(AnyElement<long> expression) : base(expression)
         {
 
         }
 
-        public SingleVarianceFunctionExpression(DoubleElement expression) : base(expression)
+        public SingleVarianceFunctionExpression(AnyElement<double> expression) : base(expression)
         {
 
         }
 
-        public SingleVarianceFunctionExpression(DecimalElement expression) : base(expression)
+        public SingleVarianceFunctionExpression(AnyElement<decimal> expression) : base(expression)
         {
 
         }
 
-        public SingleVarianceFunctionExpression(SingleElement expression) : base(expression)
+        public SingleVarianceFunctionExpression(AnyElement<float> expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public SingleElement As(string alias)
-            => new SingleSelectExpression(this).As(alias);
+        public AnyElement<float> As(string alias)
+            => new SelectExpression<float>(this).As(alias);
         #endregion
 
         #region distinct
-        public SingleVarianceFunctionExpression Distinct()
+        public new SingleVarianceFunctionExpression Distinct()
         {
             IsDistinct = true;
             return this;
@@ -77,11 +76,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(SingleVarianceFunctionExpression obj)
-            => obj is SingleVarianceFunctionExpression && base.Equals(obj);
+        public bool Equals(SingleVarianceFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is SingleVarianceFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is SingleVarianceFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

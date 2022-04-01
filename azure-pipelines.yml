@@ -30,24 +30,8 @@ variables:
     branchName: $[ replace(variables['System.PullRequest.SourceBranch'], 'refs/heads/', '') ]
 
 stages:
-  - stage: Initialize
-    displayName: 'Initialize Agent'
-    jobs:
-    - job: Install
-      displayName: 'Install Agent Dependencies'
-      steps:
-      - checkout: none
-      - task: NuGetToolInstaller@0
-        displayName: Install NuGet
-        inputs:
-          versionSpec: 5.8.0
-      - task: DockerInstaller@0
-        displayName: Install Docker CLI
-        inputs:
-          dockerVersion: '17.09.0-ce'
 
   - stage: Build
-    dependsOn: Initialize
     displayName: 'Build and Package'
     jobs:
     - job:
@@ -78,110 +62,61 @@ stages:
         displayName: 'Execute Tests'
         inputs:
           command: test
-          projects: $(Pipeline.Workspace)/$(stageLocationName)/test/HatTrick.DbEx.MsSql.Test.Code/*.csproj
-          arguments: '--configuration $(buildConfiguration) --logger "trx;LogFileName=$(Pipeline.Workspace)/$(stageLocationName)/results/mssql-core.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Exclude="[*Test]*"'
+          projects: $(Pipeline.Workspace)/$(stageLocationName)\test\HatTrick.DbEx.MsSql.Test.Code\*.csproj
+          arguments: '--configuration $(buildConfiguration) --logger "trx;LogFileName=$(Pipeline.Workspace)/$(stageLocationName)/results/mssql-core.tests.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Include="[HatTrick.DbEx.*Sql]*" /p:Exclude="[*Test]*"'
       - task: PublishTestResults@2
         displayName: 'Publish Test Results'
         inputs:
-          testResultsFormat: VSTest
-          testResultsFiles: $(Pipeline.Workspace)/$(stageLocationName)/results/mssql-core.trx
+          testResultsFormat: xUnit
+          testResultsFiles: $(Pipeline.Workspace)\$(stageLocationName)\mssql-core-results\mssql-core.tests.trx
           testRunTitle: 'MSSQL (Core)'
           mergeTestResults: true
           failTaskOnFailedTests: true
-      - task: Palmmedia.reportgenerator.reportgenerator-build-release-task.reportgenerator@4
-        displayName: 'Generate Code Coverage Report'
-        inputs:
-          reports: $(Pipeline.Workspace)/$(stageLocationName)/test/HatTrick.DbEx.MsSql.Test.Code/**/coverage.cobertura.xml
-          targetdir: $(Pipeline.Workspace)/$(stageLocationName)/results/coverage
-          reporttypes: 'HtmlInline_AzurePipelines;Cobertura;Badges'          
-#      - task: PublishCodeCoverageResults@1
-#        displayName: 'Publish Code Coverage Results'
-#        inputs:
-#          codeCoverageTool: cobertura
-#          summaryFileLocation: $(Pipeline.Workspace)/$(stageLocationName)/results/coverage/*obertura.xml #case sensitivity: C|c
-#          # To make the task not regenerate the report, a pipeline environment variable was added: "disable.coverage.autogenerate: 'true'"
-#          # see: https://github.com/danielpalme/ReportGenerator/wiki/Integration#attention
-#          reportDirectory: $(Pipeline.Workspace)/$(stageLocationName)/results/coverage
-      - publish: $(Pipeline.Workspace)/$(stageLocationName)/results/mssql-core.trx 
-        displayName: 'Publish Results to Staging Location'
-        artifact: mssql-core-results
-
+   #   - task: CopyFiles@2
+   #     displayName: 'Copy Code Coverage Files to Staging Location'
+   #     inputs:
+   #       contents: $(Pipeline.Workspace)\**
+   #       targetFolder: $(Pipeline.Workspace)\$(stageLocationName)\results
+   #   - publish: $(Pipeline.Workspace)\$(stageLocationName)\results
+   #     displayName: 'Publish Results to Staging Location'
+   #     artifact: mssql-core-results
+ 
   - stage: Test_Execution
     pool:
       vmImage: 'ubuntu-latest'
     dependsOn: Build
     displayName: 'Test MSSQL Platforms'
     jobs:
-      # MSSQL 2017
-    - job: Test_MSSQL_2017
-      displayName: 'Test MSSQL 2017'
-      steps:
-      - checkout: none
-      - download: current
-        artifact: $(stageLocationName)
-        
-      - task: PowerShell@2
-        displayName: Create Docker Config Files
-        inputs:
-          filePath: $(Pipeline.Workspace)/$(stageLocationName)/build/mssql/create-docker-config.ps1
-          arguments: '-MSSQL_VERSION 2017 -BUILD_CONFIGURATION $(buildConfiguration) -TARGET_FRAMEWORK_MONIKER net$(netCoreVersion) -TEST_OUTPUT_FILE_PATH /results -TEST_OUTPUT_FILE_NAME mssql-2017.trx -CODE_COVERAGE_OUTPUT_FILE_PATH /results -CODE_COVERAGE_OUTPUT_FILE_NAME mssql-2017.cobertura.xml'
-          workingDirectory: $(Pipeline.Workspace)/$(stageLocationName)/build/mssql
-
-      - task: DockerCompose@0
-        displayName: 'Execute Tests'
-        inputs:
-          containerregistrytype: 'Container Registry'
-          dockerComposeFile: $(Pipeline.Workspace)/$(stageLocationName)/docker-compose.yml
-          action: 'Run a Docker Compose command'
-          dockerComposeCommand: 'up --abort-on-container-exit'
-          currentWorkingDirectory: $(Pipeline.Workspace)/$(stageLocationName)                  
-          
-      - task: PublishTestResults@2
-        displayName: Publish Test Results
-        inputs:
-          testResultsFormat: VSTest
-          testResultsFiles: $(Pipeline.Workspace)/$(stageLocationName)/results/mssql-2017.trx
-          testRunTitle: 'MSSQL 2017'
-          mergeTestResults: true
-          failTaskOnFailedTests: true
-          
-      - publish: $(Pipeline.Workspace)/$(stageLocationName)/results/mssql-2017.trx 
-        displayName: 'Publish Results to Staging Location'
-        artifact: mssql-2017-results
-        
-      # MSSQL 2017
-    - job: Test_MSSQL_2019
-      displayName: 'Test MSSQL 2019'
-      steps:
-      - checkout: none
-      - download: current
-        artifact: $(stageLocationName)
-        
-      - task: PowerShell@2
-        displayName: Create Docker Config Files
-        inputs:
-          filePath: $(Pipeline.Workspace)/$(stageLocationName)/build/mssql/create-docker-config.ps1
-          arguments: '-MSSQL_VERSION 2019 -BUILD_CONFIGURATION $(buildConfiguration) -TARGET_FRAMEWORK_MONIKER net$(netCoreVersion) -TEST_OUTPUT_FILE_PATH /results -TEST_OUTPUT_FILE_NAME mssql-2019.trx -CODE_COVERAGE_OUTPUT_FILE_PATH /results -CODE_COVERAGE_OUTPUT_FILE_NAME mssql-2019.cobertura.xml'
-          workingDirectory: $(Pipeline.Workspace)/$(stageLocationName)/build/mssql
-
-      - task: DockerCompose@0
-        displayName: 'Execute Tests'
-        inputs:
-          containerregistrytype: 'Container Registry'
-          dockerComposeFile: $(Pipeline.Workspace)/$(stageLocationName)/docker-compose.yml
-          action: 'Run a Docker Compose command'
-          dockerComposeCommand: 'up --abort-on-container-exit'
-          currentWorkingDirectory: $(Pipeline.Workspace)/$(stageLocationName)                  
-          
-      - task: PublishTestResults@2
-        displayName: Publish Test Results
-        inputs:
-          testResultsFormat: VSTest
-          testResultsFiles: $(Pipeline.Workspace)/$(stageLocationName)/results/mssql-2019.trx
-          testRunTitle: 'MSSQL 2019'
-          mergeTestResults: true
-          failTaskOnFailedTests: true
-          
-      - publish: $(Pipeline.Workspace)/$(stageLocationName)/results/mssql-2019.trx 
-        displayName: 'Publish Results to Staging Location'
-        artifact: mssql-2019-results
+    - template: build/mssql/mssql-integration-testing-template.yml
+      parameters:
+        artifactName: $(stageLocationName)
+        rootPath: $(Pipeline.Workspace)/$(stageLocationName)
+        buildFilesTemplatePath: $(Pipeline.Workspace)/$(stageLocationName)/build/mssql
+        buildConfiguration: $(buildConfiguration)
+        targetFrameworkMoniker: net$(netCoreVersion)
+        mssqlVersions: ['2017','2019']
+    
+#  - stage: Publish_Reports
+#    dependsOn:
+#      - Test_Code
+#      - Test_Execution
+#    displayName: 'Publish Reports'
+#    jobs:
+#    - job:
+#      displayName: 'Publish Code Coverage'
+#      steps:
+#      - checkout: none
+#      - download: current
+#      - task: reportgenerator@5
+#        displayName: 'Merge Code Coverage Reports'
+#        inputs:
+#          reports: $(Pipeline.Workspace)\$(stageLocationName)\mssql*\*coverage*.xml
+#          targetdir: $(Pipeline.Workspace)\$(stageLocationName)\reports
+#          reporttypes: 'HtmlInline_AzurePipelines;Cobertura;Badges'
+#      - task: PublishCodeCoverageResults@1
+#        displayName: 'Publish Code Coverage Reports'
+#        inputs:
+#          codeCoverageTool: Cobertura
+#          pathToSources: $(Pipeline.Workspace)\$(stageLocationName)\reports
+#          summaryFileLocation: $(Pipeline.Workspace)\$(stageLocationName)\reports
+#          reportDirectory: $(Pipeline.Workspace)\$(stageLocationName)\reports'

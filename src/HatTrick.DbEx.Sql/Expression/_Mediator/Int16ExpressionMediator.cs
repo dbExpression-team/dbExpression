@@ -23,7 +23,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class Int16ExpressionMediator :
         ExpressionMediator<short>,
         Int16Element,
-        AnyInt16Element,
         IEquatable<Int16ExpressionMediator>
     {
         #region constructors
@@ -34,23 +33,19 @@ namespace HatTrick.DbEx.Sql.Expression
         public Int16ExpressionMediator(IExpressionElement expression) : base(expression)
         {
         }
-
-        protected Int16ExpressionMediator(IExpressionElement expression, string alias) : base(expression, alias)
-        {
-        }
         #endregion
 
         #region as
-        public Int16Element As(string alias)
-            => new Int16SelectExpression(this).As(alias);
+        public AnyElement<short> As(string alias)
+            => new SelectExpression<short>(this).As(alias);
         #endregion
 
         #region equals
-        public bool Equals(Int16ExpressionMediator obj)
-            => obj is Int16ExpressionMediator && base.Equals(obj);
+        public bool Equals(Int16ExpressionMediator? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is Int16ExpressionMediator exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is Int16ExpressionMediator exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

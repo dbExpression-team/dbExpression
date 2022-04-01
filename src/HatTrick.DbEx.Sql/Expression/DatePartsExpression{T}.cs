@@ -27,6 +27,9 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public DatePartsExpression(TEnum value) : base(value)
         {
+            Expression = value;
         }
+
+        public override string? ToString() => Expression.ToString();
     }
 }

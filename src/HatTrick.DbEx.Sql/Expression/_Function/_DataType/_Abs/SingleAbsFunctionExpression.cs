@@ -23,35 +23,26 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class SingleAbsFunctionExpression :
         AbsFunctionExpression<float>,
         SingleElement,
-        AnySingleElement,
         IEquatable<SingleAbsFunctionExpression>
     {
         #region constructors
-        public SingleAbsFunctionExpression(SingleElement expression) : base(expression)
+        public SingleAbsFunctionExpression(AnyElement<float> expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public SingleElement As(string alias)
-            => new SingleSelectExpression(this).As(alias);
-        #endregion
-
-        #region distinct
-        public SingleAbsFunctionExpression Distinct()
-        {
-            IsDistinct = true;
-            return this;
-        }
+        public AnyElement<float> As(string alias)
+            => new SelectExpression<float>(this).As(alias);
         #endregion
 
         #region equals
-        public bool Equals(SingleAbsFunctionExpression obj)
-            => obj is SingleAbsFunctionExpression && base.Equals(obj);
+        public bool Equals(SingleAbsFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is SingleAbsFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is SingleAbsFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

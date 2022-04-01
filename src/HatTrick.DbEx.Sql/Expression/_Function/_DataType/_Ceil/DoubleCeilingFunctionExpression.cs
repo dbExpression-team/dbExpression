@@ -23,27 +23,26 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class DoubleCeilingFunctionExpression :
         CeilingFunctionExpression<double>,
         DoubleElement,
-        AnyDoubleElement,
         IEquatable<DoubleCeilingFunctionExpression>
     {
         #region constructors
-        public DoubleCeilingFunctionExpression(DoubleElement expression) : base(expression)
+        public DoubleCeilingFunctionExpression(AnyElement<double> expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public DoubleElement As(string alias)
-            => new DoubleSelectExpression(this).As(alias);
+        public AnyElement<double> As(string alias)
+            => new SelectExpression<double>(this).As(alias);
         #endregion
 
         #region equals
-        public bool Equals(DoubleCeilingFunctionExpression obj)
-            => obj is DoubleCeilingFunctionExpression && base.Equals(obj);
+        public bool Equals(DoubleCeilingFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is DoubleCeilingFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is DoubleCeilingFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

@@ -4,6 +4,7 @@ using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
+using HatTrick.DbEx.Sql.Builder.Alias;
 using System;
 using Xunit;
 
@@ -26,11 +27,15 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Where(dbo.Person.FirstName == firstName);
 
             //when               
-            string right = exp.Execute();
+            string? right = exp.Execute();
 
             //then
             right.Should().HaveLength(rightLength);
+#pragma warning disable IDE0079
+#pragma warning disable IDE0057 // Use range operator
             right.Should().Be(firstName.Substring(rightLength - 1));
+#pragma warning restore IDE0057 // Use range operator
+#pragma warning restore IDE0079
         }
 
         [Theory]
@@ -46,7 +51,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Where(dbo.Address.Line2 != DBNull.Value);
 
             //when               
-            string right = exp.Execute();
+            string? right = exp.Execute();
 
             //then
             right.Should().HaveLength(rightLength);
@@ -61,7 +66,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.Right(dbex.Alias<string>("_address", "Line1"), rightLength).As("address_line1")
+                    db.fx.Right(("_address", "Line1"), rightLength).As("address_line1")
                 ).From(dbo.Address)
                 .InnerJoin(
                     db.SelectOne<Address>()
@@ -70,7 +75,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ).As("_address").On(dbo.Address.Id == ("_address", "Id"));
 
             //when               
-            object result = exp.Execute();
+            object? result = exp.Execute();
 
             //then
             result.Should().BeOfType<string>().Which.Should().Be(expected);

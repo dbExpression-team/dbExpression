@@ -22,17 +22,14 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class AbsFunctionExpression : AggregateFunctionExpression,
         IExpressionProvider<IExpressionElement>,
-        IExpressionIsDistinctProvider,
         IEquatable<AbsFunctionExpression>
     {
         #region internals
         private readonly IExpressionElement expression;
-        protected bool IsDistinct { get; set; }
         #endregion
 
         #region interface
         IExpressionElement IExpressionProvider<IExpressionElement>.Expression => expression;
-        bool IExpressionIsDistinctProvider.IsDistinct => IsDistinct;
         #endregion
 
         #region constructors
@@ -43,25 +40,24 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region to string
-        public override string ToString() => $"MIN({(IsDistinct ? "DISTINCT " : string.Empty)}{expression})";
+        public override string? ToString() => $"ABS({expression})";
         #endregion
 
         #region equals
-        public bool Equals(AbsFunctionExpression obj)
+        public bool Equals(AbsFunctionExpression? obj)
         {
-            if (!base.Equals(obj)) return false;
+            if (obj is null) return false;
+            if (ReferenceEquals(this, obj)) return true;
 
-            if (expression is null && obj.expression is object) return false;
-            if (expression is object && obj.expression is null) return false;
-            if (!expression.Equals(obj.expression)) return false;
-
-            if (this.IsDistinct != obj.IsDistinct) return false;
+            if (expression is null && obj.expression is not null) return false;
+            if (expression is not null && obj.expression is null) return false;
+            if (expression is not null && !expression.Equals(obj.expression)) return false;
 
             return true;
         }
 
-        public override bool Equals(object obj)
-            => obj is AbsFunctionExpression exp ? Equals(exp) : false;
+        public override bool Equals(object? obj)
+            => obj is AbsFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
         {
@@ -70,8 +66,7 @@ namespace HatTrick.DbEx.Sql.Expression
                 const int multiplier = 16777619;
 
                 int hash = base.GetHashCode();
-                hash = (hash * multiplier) ^ (expression is object ? expression.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ IsDistinct.GetHashCode();
+                hash = (hash * multiplier) ^ (expression is not null ? expression.GetHashCode() : 0);
                 return hash;
             }
         }

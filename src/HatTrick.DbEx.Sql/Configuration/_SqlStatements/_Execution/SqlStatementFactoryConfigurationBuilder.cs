@@ -26,11 +26,11 @@ namespace HatTrick.DbEx.Sql.Configuration
     {
         #region internals
         private readonly ISqlStatementExecutionGroupingConfigurationBuilders caller;
-        private readonly RuntimeSqlDatabaseConfiguration configuration;
+        private readonly SqlDatabaseRuntimeConfiguration configuration;
         #endregion
 
         #region constructors
-        public SqlStatementFactoryConfigurationBuilder(ISqlStatementExecutionGroupingConfigurationBuilders caller, RuntimeSqlDatabaseConfiguration configuration)
+        public SqlStatementFactoryConfigurationBuilder(ISqlStatementExecutionGroupingConfigurationBuilders caller, SqlDatabaseRuntimeConfiguration configuration)
         {
             this.caller = caller ?? throw new ArgumentNullException(nameof(caller));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
@@ -46,14 +46,14 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         public ISqlStatementExecutionGroupingConfigurationBuilders Use<TSqlStatementExecutorFactory>()
             where TSqlStatementExecutorFactory : class, ISqlStatementExecutorFactory, new()
-            => Use<TSqlStatementExecutorFactory>(null);
+            => Use<TSqlStatementExecutorFactory>(_ => { });
 
         public ISqlStatementExecutionGroupingConfigurationBuilders Use<TSqlStatementExecutorFactory>(Action<TSqlStatementExecutorFactory> configureFactory)
             where TSqlStatementExecutorFactory : class, ISqlStatementExecutorFactory, new()
         {
-            if (!(configuration.StatementExecutorFactory is TSqlStatementExecutorFactory))
+            if (configuration.StatementExecutorFactory is not TSqlStatementExecutorFactory)
                 configuration.StatementExecutorFactory = new TSqlStatementExecutorFactory();
-            configureFactory?.Invoke(configuration.StatementExecutorFactory as TSqlStatementExecutorFactory);
+            configureFactory?.Invoke((configuration.StatementExecutorFactory as TSqlStatementExecutorFactory)!);
             return caller;
         }
 

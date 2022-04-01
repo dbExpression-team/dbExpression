@@ -4,6 +4,7 @@ using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
+using HatTrick.DbEx.Sql.Builder.Alias;
 using System;
 using Xunit;
 
@@ -342,15 +343,15 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.Avg(dbex.Alias<decimal>("lines", "PurchasePrice")).Distinct().As("alias")
+                    db.fx.Avg(("lines", "PurchasePrice")).Distinct().As("alias")
                 ).From(dbo.Purchase)
                 .InnerJoin(
                     db.SelectMany<PurchaseLine>()
                     .From(dbo.PurchaseLine)
-                ).As("lines").On(dbo.Purchase.Id == dbex.Alias("lines", "PurchaseId"));
+                ).As("lines").On(dbo.Purchase.Id == ("lines", "PurchaseId"));
 
             //when               
-            object avg = exp.Execute();
+            object? avg = exp.Execute();
 
             //then
             avg.Should().BeOfType<decimal>().Which.Should().BeApproximately(expected, 0.001m, "Rounding errors in averaging");

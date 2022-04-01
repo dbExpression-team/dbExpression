@@ -23,23 +23,17 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class ByteMaximumFunctionExpression :
         MaximumFunctionExpression<byte>,
         ByteElement,
-        AnyByteElement,
         IEquatable<ByteMaximumFunctionExpression>
     {
         #region constructors
-        public ByteMaximumFunctionExpression(ByteElement expression) : base(expression)
+        public ByteMaximumFunctionExpression(AnyElement<byte> expression) : base(expression)
         {
 
         }
         #endregion
 
-        #region as
-        public ByteElement As(string alias)
-            => new ByteSelectExpression(this).As(alias);
-        #endregion
-
         #region distinct
-        public ByteMaximumFunctionExpression Distinct()
+        public new ByteMaximumFunctionExpression Distinct()
         {
             IsDistinct = true;
             return this;
@@ -47,11 +41,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(ByteMaximumFunctionExpression obj)
-            => obj is ByteMaximumFunctionExpression && base.Equals(obj);
+        public bool Equals(ByteMaximumFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is ByteMaximumFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is ByteMaximumFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

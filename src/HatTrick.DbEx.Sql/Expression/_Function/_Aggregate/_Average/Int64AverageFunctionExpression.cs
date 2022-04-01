@@ -23,23 +23,22 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class Int64AverageFunctionExpression :
         AverageFunctionExpression<long>,
         Int64Element,
-        AnyInt64Element,
         IEquatable<Int64AverageFunctionExpression>
     {
         #region constructors
-        public Int64AverageFunctionExpression(Int64Element expression) : base(expression)
+        public Int64AverageFunctionExpression(AnyElement<long> expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public Int64Element As(string alias)
-            => new Int64SelectExpression(this).As(alias);
+        public AnyElement<long> As(string alias)
+            => new SelectExpression<long>(this).As(alias);
         #endregion
 
         #region distinct
-        public Int64AverageFunctionExpression Distinct()
+        public new Int64AverageFunctionExpression Distinct()
         {
             IsDistinct = true;
             return this;
@@ -47,11 +46,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(Int64AverageFunctionExpression obj)
-            => obj is Int64AverageFunctionExpression && base.Equals(obj);
+        public bool Equals(Int64AverageFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is Int64AverageFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is Int64AverageFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

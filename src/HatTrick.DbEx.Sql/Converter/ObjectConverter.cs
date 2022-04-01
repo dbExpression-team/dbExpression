@@ -27,18 +27,18 @@ namespace HatTrick.DbEx.Sql.Converter
 
         }
 
-        public virtual (Type Type, object ConvertedValue) ConvertToDatabase(object value)
+        public virtual (Type Type, object? ConvertedValue) ConvertToDatabase(object? value)
             => (typeof(object), value);
 
-        public virtual object ConvertFromDatabase(object value)
+        public virtual object? ConvertFromDatabase(object? value)
             => value;
 
-        public virtual T ConvertFromDatabase<T>(object value)
+        public virtual T? ConvertFromDatabase<T>(object? value)
         {
             if (value is null)
                 return default;
 
-            return (T)Convert.ChangeType(value, typeof(object));
+            return (T)value;
         }
     }
 }

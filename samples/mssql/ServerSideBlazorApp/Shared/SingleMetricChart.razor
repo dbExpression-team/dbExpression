@@ -1,4 +1,20 @@
-﻿<LineChart Class="@(Type != ChartType.Line ? "d-none" : string.Empty)" @ref="lineChart" TItem="object" OptionsObject="@ChartOptions" />
-<PieChart Class="@(Type != ChartType.Pie ? "d-none" : string.Empty)" @ref="pieChart" TItem="object" OptionsObject="@ChartOptions" />
-<BarChart Class="@(Type != ChartType.Bar ? "d-none" : string.Empty)" @ref="barChart" TItem="object" OptionsObject="@ChartOptions" />
-<DoughnutChart Class="@(Type != ChartType.Doughnut ? "d-none" : string.Empty)" @ref="doughnutChart" TItem="object" OptionsObject="@ChartOptions" />
+﻿@if (Type == ChartType.Line)
+{
+    <LineChart @ref="lineChart" TItem="object" Options="@LineChartOptions" />
+}
+@if (Type == ChartType.Pie)
+{
+    <PieChart @ref="pieChart" TItem="object" Options="@PieChartOptions" />
+}
+@if (Type == ChartType.Bar)
+{
+    <BarChart @ref="barChart" TItem="object" Options="@BarChartOptions" />
+}
+@if (Type == ChartType.Doughnut)
+{
+    <DoughnutChart @ref="doughnutChart" TItem="object" />
+}
+@if (Type == ChartType.PolarArea)
+{
+    <PolarAreaChart @ref="polarAreaChart" TItem="object" />
+}

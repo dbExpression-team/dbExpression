@@ -23,7 +23,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableGuidExpressionMediator :
         NullableExpressionMediator<Guid,Guid?>,
         NullableGuidElement,
-        AnyGuidElement,
         IEquatable<NullableGuidExpressionMediator>
     {
         #region constructors
@@ -31,26 +30,22 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public NullableGuidExpressionMediator(IExpressionElement expression) : base(expression, typeof(Guid?))
-        {
-        }
-
-        protected NullableGuidExpressionMediator(IExpressionElement expression, string alias) : base(expression, typeof(Guid?), alias)
+        public NullableGuidExpressionMediator(IExpressionElement expression) : base(expression)
         {
         }
         #endregion
 
         #region as
-        public NullableGuidElement As(string alias)
-            => new NullableGuidSelectExpression(this).As(alias);
+        public AnyElement<Guid?> As(string alias)
+            => new SelectExpression<Guid?>(this).As(alias);
         #endregion
 
         #region equals
-        public bool Equals(NullableGuidExpressionMediator obj)
-            => obj is NullableGuidExpressionMediator && base.Equals(obj);
+        public bool Equals(NullableGuidExpressionMediator? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableGuidExpressionMediator exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableGuidExpressionMediator exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

@@ -1,7 +1,23 @@
-﻿using HatTrick.DbEx.Sql.Assembler;
+﻿#region license
+// Copyright (c) HatTrick Labs, LLC.  All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+// The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
+#endregion
+
 using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Connection;
-using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -10,10 +26,10 @@ namespace HatTrick.DbEx.Sql.Builder
 {
     public class BatchBuilder : IBatchContinuationBuilder
     {
-        private readonly RuntimeSqlDatabaseConfiguration configuration;
-        private readonly List<INonQueryTerminationExpressionBuilder> batch = new List<INonQueryTerminationExpressionBuilder>();
+        private readonly SqlDatabaseRuntimeConfiguration configuration;
+        private readonly List<INonQueryTerminationExpressionBuilder> batch = new();
 
-        public BatchBuilder(RuntimeSqlDatabaseConfiguration configuration)
+        public BatchBuilder(SqlDatabaseRuntimeConfiguration configuration)
         {
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
@@ -34,50 +50,49 @@ namespace HatTrick.DbEx.Sql.Builder
             return this;
         }
 
-        IDictionary<int, object> IBatchTerminationBuilder.Execute()
+        IDictionary<int, object?> IBatchTerminationBuilder.Execute()
         {
-            var results = new Dictionary<int, object>();
+            var results = new Dictionary<int, object?>();
 
             if (batch.Count == 0)
                 return results;
 
-            using (var connection = new SqlConnector(configuration.ConnectionStringFactory, configuration.ConnectionFactory))
+            using var connection = new SqlConnector(configuration.ConnectionStringFactory, configuration.ConnectionFactory);
+            try
             {
-                try
+                connection.EnsureOpen();
+                connection.BeginTransaction();
+                for (var i = 0; i < batch.Count; i++)
                 {
-                    connection.EnsureOpen();
-                    connection.BeginTransaction();
-                    for (var i = 0; i < batch.Count; i++)
+                    var exp = batch[i];
+                    if (exp is DeleteEntitiesTermination delete)
                     {
-                        var exp = batch[i];
-                        if (exp is DeleteEntitiesTermination delete)
-                        {
-                            results.Add(i, delete.Execute(connection));
-                        }
-                        else if (exp is UpdateEntitiesTermination update)
-                        {
-                            results.Add(i, update.Execute(connection));
-                        }
-                        else if (exp is InsertEntitiesTermination insert)
-                        {
-                            insert.Execute(connection);
-                            results.Add(i, default);
-                        }
+                        results.Add(i, delete.Execute(connection));
                     }
-                    connection.CommitTransaction();
+                    else if (exp is UpdateEntitiesTermination update)
+                    {
+                        results.Add(i, update.Execute(connection));
+                    }
+                    else if (exp is InsertEntitiesTermination insert)
+                    {
+                        insert.Execute(connection);
+                        results.Add(i, default);
+                    }
                 }
-                catch (Exception)
-                {
-                    connection.RollbackTransaction();
-                    throw;
-                }
+                connection.CommitTransaction();
             }
+            catch (Exception)
+            {
+                connection.RollbackTransaction();
+                throw;
+            }
+
             return results;
         }
 
-        async Task<IDictionary<int, object>> IBatchTerminationBuilder.ExecuteAsync()
+        async Task<IDictionary<int, object?>> IBatchTerminationBuilder.ExecuteAsync()
         {
-            var results = new Dictionary<int, object>();
+            var results = new Dictionary<int, object?>();
 
             if (batch.Count == 0)
                 return results;

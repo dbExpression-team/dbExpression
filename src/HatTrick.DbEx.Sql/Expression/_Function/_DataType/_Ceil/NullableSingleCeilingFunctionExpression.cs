@@ -23,11 +23,10 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableSingleCeilingFunctionExpression :
         NullableCeilFunctionExpression<float,float?>,
         NullableSingleElement,
-        AnySingleElement,
         IEquatable<NullableSingleCeilingFunctionExpression>
     {
         #region constructors
-        public NullableSingleCeilingFunctionExpression(NullableSingleElement expression) 
+        public NullableSingleCeilingFunctionExpression(AnyElement<float?> expression) 
             : base(expression)
         {
 
@@ -35,16 +34,16 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public NullableSingleElement As(string alias)
-            => new NullableSingleSelectExpression(this).As(alias);
+        public AnyElement<float?> As(string alias)
+            => new SelectExpression<float?>(this).As(alias);
         #endregion
 
         #region equals
-        public bool Equals(NullableSingleCeilingFunctionExpression obj)
-            => obj is NullableSingleCeilingFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableSingleCeilingFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableSingleCeilingFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableSingleCeilingFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

@@ -41,22 +41,24 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region to string
-        public override string ToString() => $"SUBSTRING({elements.Expression}, {elements.Start}, {elements.Length})";
+        public override string? ToString() => $"SUBSTRING({elements.Expression}, {elements.Start}, {elements.Length})";
         #endregion
 
         #region equals
-        public bool Equals(SubstringFunctionExpression obj)
+        public bool Equals(SubstringFunctionExpression? obj)
         {
-            if (!base.Equals(obj)) return false;
+            if (obj is null) return false;
+            if (ReferenceEquals(this, obj)) return true;
 
-            if (elements is null && obj.elements is object) return false;
-            if (elements is object && obj.elements is null) return false;
-            if (!elements.Equals(obj.elements)) return false;
+            if (elements is null && obj.elements is not null) return false;
+            if (elements is not null && obj.elements is null) return false;
+            if (obj.elements is null) return false;
+            if (elements is not null && !elements.Equals(obj.elements)) return false;
 
             return true;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
          => obj is SubstringFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
@@ -66,7 +68,7 @@ namespace HatTrick.DbEx.Sql.Expression
                 const int multiplier = 16777619;
 
                 int hash = base.GetHashCode();
-                hash = (hash * multiplier) ^ (elements is object ? elements.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (elements is not null ? elements.GetHashCode() : 0);
                 return hash;
             }
         }
@@ -92,25 +94,28 @@ namespace HatTrick.DbEx.Sql.Expression
             #endregion
 
             #region equals
-            public bool Equals(SubstringFunctionExpressionElements obj)
+            public bool Equals(SubstringFunctionExpressionElements? obj)
             {
-                if (Expression is null && obj.Expression is object) return false;
-                if (Expression is object && obj.Expression is null) return false;
-                if (!Expression.Equals(obj.Expression)) return false;
+                if (obj is null) return false;
+                if (ReferenceEquals(this, obj)) return true;
 
-                if (Start is null && obj.Start is object) return false;
-                if (Start is object && obj.Start is null) return false;
-                if (!Start.Equals(obj.Start)) return false;
+                if (Expression is null && obj.Expression is not null) return false;
+                if (Expression is not null && obj.Expression is null) return false;
+                if (Expression is not null && !Expression.Equals(obj.Expression)) return false;
 
-                if (Length is null && obj.Length is object) return false;
-                if (Length is object && obj.Length is null) return false;
-                if (!Length.Equals(obj.Length)) return false;
+                if (Start is null && obj.Start is not null) return false;
+                if (Start is not null && obj.Start is null) return false;
+                if (Start is not null && !Start.Equals(obj.Start)) return false;
+
+                if (Length is null && obj.Length is not null) return false;
+                if (Length is not null && obj.Length is null) return false;
+                if (Length is not null && !Length.Equals(obj.Length)) return false;
 
                 return true;
             }
 
-            public override bool Equals(object obj)
-                => Equals(obj as SubstringFunctionExpressionElements);
+            public override bool Equals(object? obj)
+                => obj is SubstringFunctionExpressionElements && Equals(obj);
 
             public override int GetHashCode()
             {
@@ -119,9 +124,9 @@ namespace HatTrick.DbEx.Sql.Expression
                     const int multiplier = 16777619;
 
                     int hash = base.GetHashCode();
-                    hash = (hash * multiplier) ^ (Expression is object ? Expression.GetHashCode() : 0);
-                    hash = (hash * multiplier) ^ (Start is object ? Start.GetHashCode() : 0);
-                    hash = (hash * multiplier) ^ (Length is object ? Length.GetHashCode() : 0);
+                    hash = (hash * multiplier) ^ (Expression is not null ? Expression.GetHashCode() : 0);
+                    hash = (hash * multiplier) ^ (Start is not null ? Start.GetHashCode() : 0);
+                    hash = (hash * multiplier) ^ (Length is not null ? Length.GetHashCode() : 0);
                     return hash;
                 }
             }

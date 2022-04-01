@@ -16,20 +16,37 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Tools.Model
 {
     public class EntityExpressionModel
     {
+        public LanguageFeatures LanguageFeatures { get; }
         public SchemaExpressionModel SchemaExpression { get; }
         public string NamespaceRoot => SchemaExpression.NamespaceRoot;
         public string Name { get; }
         public IEnumerable<string> AppliedInterfaces { get; }
-
-        public EntityExpressionModel(SchemaExpressionModel schemaExpression, string name, IList<string> interfaces)
+        public string EntityInitializer => !string.IsNullOrWhiteSpace(LanguageFeatures.Nullable.ForgivingOperator) ? " = null!;" : string.Empty;
+        
+        public Dictionary<string, string> ArgNamePsuedonyms = new()
         {
-            SchemaExpression = schemaExpression;
+            { "identifier", "identifier" },
+            { "name", "name" },
+            { "schema", "schema" },
+            { "alias", "alias" },
+            { "source", "source" },
+            { "target", "target" },
+            { "entity", "entity" }
+        };
+
+        public EntityExpressionModel(LanguageFeatures features, SchemaExpressionModel schema, string name, IList<string> interfaces)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException($"{nameof(name)} is required.");
+            LanguageFeatures = features ?? throw new ArgumentNullException(nameof(features));
+            SchemaExpression = schema ?? throw new ArgumentNullException(nameof(schema));
             Name = name;
             AppliedInterfaces = interfaces;
         }

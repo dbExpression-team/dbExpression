@@ -20,22 +20,28 @@
 
 namespace HatTrick.DbEx.Sql.Converter
 {
-    public class NullableEnumValueConverter : EnumValueConverter
+    public class NullableEnumValueConverter : IValueConverter
     {
+        private readonly Type type;
         private readonly Type underlyingType;
+        private readonly StringEnumValueConverter stringConverter;
 
-        public NullableEnumValueConverter(Type type) : base(Nullable.GetUnderlyingType(type))
+        public NullableEnumValueConverter(Type type)
         {
-            this.underlyingType = Nullable.GetUnderlyingType(type).GetFields()[0].FieldType;
+            this.type = type ?? throw new ArgumentNullException(nameof(type));
+            if (!type.IsEnum)
+                throw new ArgumentException($"Expected an enum type, but was provided the type '{type}'");
+            this.underlyingType = type.GetFields()[0].FieldType;
+            this.stringConverter = new StringEnumValueConverter(type);
         }
 
-        public override object ConvertFromDatabase(object value)
-            => value is null ? default : base.ConvertFromDatabase(value);
+        public virtual object? ConvertFromDatabase(object? value)
+            => value is string ? stringConverter.ConvertFromDatabase(value) : value is null ? null : Enum.ToObject(type, value);
 
-        public override T ConvertFromDatabase<T>(object value)
-            => value is null ? default : (T)base.ConvertFromDatabase(value);
+        public virtual T? ConvertFromDatabase<T>(object? value)
+            => value is string ? (T?)stringConverter.ConvertFromDatabase(value) : value is null ? default : (T)Enum.ToObject(type, value);
 
-        public override (Type Type, object ConvertedValue) ConvertToDatabase(object value)
-            => value is null ? (underlyingType, default) : base.ConvertToDatabase(value);
+        public virtual (Type Type, object? ConvertedValue) ConvertToDatabase(object? value)
+            => (underlyingType, value is null ? null : Convert.ChangeType(value, underlyingType));
     }
 }

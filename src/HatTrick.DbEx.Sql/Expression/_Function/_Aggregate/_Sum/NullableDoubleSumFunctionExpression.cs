@@ -23,23 +23,22 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableDoubleSumFunctionExpression :
         NullableSumFunctionExpression<double,double?>,
         NullableDoubleElement,
-        AnyDoubleElement,
         IEquatable<NullableDoubleSumFunctionExpression>
     {
         #region constructors
-        public NullableDoubleSumFunctionExpression(NullableDoubleElement expression) : base(expression)
+        public NullableDoubleSumFunctionExpression(AnyElement<double?> expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public NullableDoubleElement As(string alias)
-            => new NullableDoubleSelectExpression(this).As(alias);
+        public AnyElement<double?> As(string alias)
+            => new SelectExpression<double?>(this).As(alias);
         #endregion
 
         #region distinct
-        public NullableDoubleSumFunctionExpression Distinct()
+        public new NullableDoubleSumFunctionExpression Distinct()
         {
             IsDistinct = true;
             return this;
@@ -47,11 +46,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(NullableDoubleSumFunctionExpression obj)
-            => obj is NullableDoubleSumFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableDoubleSumFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableDoubleSumFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableDoubleSumFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

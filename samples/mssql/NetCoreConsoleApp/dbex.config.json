@@ -1,6 +1,6 @@
 {
 	"source": {
-		"type": "MsSqlDb",
+		"type": "MsSql",
 		"connectionString": {
 			"value": "Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=MsSqlDbExTest;Integrated Security=true;Connect Timeout=30"
 		}
@@ -18,6 +18,12 @@
 		"SimpleConsole.Data.AccessAuditResult"
 	],
 	"overrides": [
+		{
+			"apply": {
+				"ignore": true,
+				"to": { "path": "unit_test" }
+			}
+		},
 		{
 			"apply": {
 				"ignore": true,

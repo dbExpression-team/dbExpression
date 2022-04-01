@@ -23,27 +23,36 @@ namespace ServerSideBlazorApp.Service
     /// </remarks>
     public class CustomerService
     {
+        private readonly CRMDatabase db;
+
         //dbExpression element to approximate a person's current age.  Stored as a variable as it's used more than once.
-        private static readonly NullableInt16Element currentAgeApproximation = db.fx.Cast(db.fx.Floor(db.fx.DateDiff(DateParts.Day, dbo.Customer.BirthDate, db.fx.GetUtcDate()) / 365.25)).AsSmallInt();
+        private AnyElement<short?>? _currentAgeApproximation;
+        private AnyElement<short?> CurrentAgeApproximation => _currentAgeApproximation ??= db.fx.Cast(db.fx.Floor(db.fx.DateDiff(DateParts.Day, dbo.Customer.BirthDate, db.fx.GetUtcDate()) / 365.25)).AsSmallInt();
 
         #region customer summary
         //variable to hold dbExpression select elements.  Stored as a variable as it's used more than once and to demonstrate that select elements can be treated like most any other .NET object
-        private static readonly IList<AnyElement> CustomerSummarySelectClauseElements = new List<AnyElement>
+        private List<AnyElement>? _customerSummarySelectClauseElements;
+        private List<AnyElement> CustomerSummarySelectClauseElements => _customerSummarySelectClauseElements ??= new()
         {
             dbo.Customer.Id,
             (dbo.Customer.FirstName + " " + dbo.Customer.LastName).As(nameof(CustomerSummaryModel.Name)),
             db.fx.IsNull(dbo.PersonTotalPurchasesView.TotalAmount, 0).As(nameof(CustomerSummaryModel.LifetimeValue)),
-            currentAgeApproximation.As(nameof(CustomerSummaryModel.CurrentAge))
+            CurrentAgeApproximation.As(nameof(CustomerSummaryModel.CurrentAge))
         };
 
         //variable to hold dbExpression order by elements.  Stored as a variable as it's used more than once and to demonstrate that order by elements can be treated like most any other .NET object
-        private static readonly IDictionary<string, AnyElement> CustomerSummaryOrderByClauseElements = new Dictionary<string, AnyElement>
+        private Dictionary<string, AnyElement>? _customerSummaryOrderByClauseElements;
+        private Dictionary<string, AnyElement> CustomerSummaryOrderByClauseElements => _customerSummaryOrderByClauseElements ??= new()
         {
             { nameof(CustomerSummaryModel.Name), dbo.Customer.FirstName + " " + dbo.Customer.LastName },
             { nameof(CustomerSummaryModel.LifetimeValue), dbo.PersonTotalPurchasesView.TotalAmount },
-            { nameof(CustomerSummaryModel.CurrentAge), currentAgeApproximation }
+            { nameof(CustomerSummaryModel.CurrentAge), CurrentAgeApproximation }
         };
 
+        public CustomerService(CRMDatabase db)
+        {
+            this.db = db ?? throw new ArgumentNullException(nameof(db));
+        }
 
         /// <summary>
         /// Fetch a list of VIP customers, ordered by total amount spent.
@@ -83,7 +92,10 @@ namespace ServerSideBlazorApp.Service
                 .Where(whereClause)
                 .LeftJoin(dbo.PersonTotalPurchasesView).On(dbo.Customer.Id == dbo.PersonTotalPurchasesView.Id)
                 .OrderBy(
-                    pagingParameters.Sorting?.Select(s => s.Direction == OrderExpressionDirection.ASC ? CustomerSummaryOrderByClauseElements[s.Field].Asc : CustomerSummaryOrderByClauseElements[s.Field].Desc)
+                    pagingParameters.Sorting?.Select(
+                        s => s.Direction == OrderExpressionDirection.ASC 
+                        ? CustomerSummaryOrderByClauseElements[s.Field].Asc : CustomerSummaryOrderByClauseElements[s.Field].Desc
+                    )
                 )
                 .Offset(pagingParameters.Offset).Limit(pagingParameters.Limit)
                 .ExecuteAsync(MapToCustomerSummary);
@@ -104,12 +116,12 @@ namespace ServerSideBlazorApp.Service
         }
 
         private static CustomerSummaryModel MapToCustomerSummary(ISqlFieldReader row)
-            => new CustomerSummaryModel
+            => new ()
             {
-                Id = row.ReadField().GetValue<int>(),
-                Name = row.ReadField().GetValue<string>(),
-                LifetimeValue = row.ReadField().GetValue<double>(),
-                CurrentAge = row.ReadField().GetValue<short?>(),
+                Id = row.ReadField()!.GetValue<int>(),
+                Name = row.ReadField()!.GetValue<string>(),
+                LifetimeValue = row.ReadField()!.GetValue<double>(),
+                CurrentAge = row.ReadField()!.GetValue<short?>(),
                 IsVIP = row.GetValue<double>(2) >= Rules.LifetimeValueAmountToBeAVIPCustomer
             };
         #endregion
@@ -121,14 +133,14 @@ namespace ServerSideBlazorApp.Service
         public async Task<CustomerDetailModel> GetCustomerDetailAsync(int customerId)
         {
             static AddressModel mapAddress(AddressType addressType, ISqlFieldReader sqlRow)
-                =>  new AddressModel
+                =>  new()
                 {
                     Type = addressType,
-                    Line1 = sqlRow.ReadField().GetValue<string>(),
-                    Line2 = sqlRow.ReadField().GetValue<string>(),
-                    City = sqlRow.ReadField().GetValue<string>(),
-                    State = sqlRow.ReadField().GetValue<string>(),
-                    ZIP = sqlRow.ReadField().GetValue<string>()
+                    Line1 = sqlRow.ReadField()!.GetValue<string>(),
+                    Line2 = sqlRow.ReadField()!.GetValue<string>(),
+                    City = sqlRow.ReadField()!.GetValue<string>(),
+                    State = sqlRow.ReadField()!.GetValue<string>(),
+                    ZIP = sqlRow.ReadField()!.GetValue<string>()
                 };
 
             var mailingAddress = nameof(CustomerDetailModel.MailingAddress);
@@ -147,7 +159,7 @@ namespace ServerSideBlazorApp.Service
                     dbo.Customer.CreditLimit,
                     dbo.Customer.YearOfLastCreditLimitReview,
                     dbo.Customer.BirthDate,
-                    currentAgeApproximation.As(nameof(CustomerSummaryModel.CurrentAge)),
+                    CurrentAgeApproximation.As(nameof(CustomerSummaryModel.CurrentAge)),
                     dbex.Alias<string>(mailingAddress, nameof(AddressModel.Line1)),
                     dbex.Alias<string>(mailingAddress, nameof(AddressModel.Line2)),
                     dbex.Alias<string>(mailingAddress, nameof(AddressModel.City)),
@@ -178,7 +190,7 @@ namespace ServerSideBlazorApp.Service
                     .From(dbo.Address)
                     .InnerJoin(dbo.CustomerAddress).On(dbo.CustomerAddress.AddressId == dbo.Address.Id)
                     .Where(dbo.CustomerAddress.CustomerId == customerId & dbo.Address.AddressType == AddressType.Mailing)
-                ).As(mailingAddress).On(dbo.Customer.Id == dbex.Alias(nameof(CustomerDetailModel.MailingAddress), nameof(CustomerSummaryModel.Id)))
+                ).As(mailingAddress).On(dbo.Customer.Id == (nameof(CustomerDetailModel.MailingAddress), nameof(CustomerSummaryModel.Id)))
                 .LeftJoin(
                     db.SelectOne(
                         dbo.CustomerAddress.CustomerId.As(nameof(CustomerSummaryModel.Id)),
@@ -191,7 +203,7 @@ namespace ServerSideBlazorApp.Service
                     .From(dbo.Address)
                     .InnerJoin(dbo.CustomerAddress).On(dbo.CustomerAddress.AddressId == dbo.Address.Id)
                     .Where(dbo.CustomerAddress.CustomerId == customerId & dbo.Address.AddressType == AddressType.Billing)
-                ).As(billingAddress).On(dbo.Customer.Id == dbex.Alias(nameof(CustomerDetailModel.BillingAddress), nameof(CustomerSummaryModel.Id)))
+                ).As(billingAddress).On(dbo.Customer.Id == (nameof(CustomerDetailModel.BillingAddress), nameof(CustomerSummaryModel.Id)))
                 .LeftJoin(
                     db.SelectOne(
                         dbo.CustomerAddress.CustomerId.As(nameof(CustomerSummaryModel.Id)),
@@ -204,20 +216,20 @@ namespace ServerSideBlazorApp.Service
                     .From(dbo.Address)
                     .InnerJoin(dbo.CustomerAddress).On(dbo.CustomerAddress.AddressId == dbo.Address.Id)
                     .Where(dbo.CustomerAddress.CustomerId == customerId & dbo.Address.AddressType == AddressType.Shipping)
-                ).As(shippingAddress).On(dbo.Customer.Id == dbex.Alias(nameof(CustomerDetailModel.ShippingAddress), nameof(CustomerSummaryModel.Id)))
+                ).As(shippingAddress).On(dbo.Customer.Id == (nameof(CustomerDetailModel.ShippingAddress), nameof(CustomerSummaryModel.Id)))
                 .Where(dbo.Customer.Id == customerId)
                 .ExecuteAsync(
                     reader => 
                     {
-                        customer.Id = reader.ReadField().GetValue<int>();
-                        customer.FirstName = reader.ReadField().GetValue<string>();
-                        customer.LastName = reader.ReadField().GetValue<string>();
-                        customer.LifetimeValue = reader.ReadField().GetValue<double>();
-                        customer.Gender = reader.ReadField().GetValue<GenderType>();
-                        customer.CreditLimit = reader.ReadField().GetValue<int?>();
-                        customer.YearOfLastCreditLimitReview = reader.ReadField().GetValue<int?>();
-                        customer.BirthDate = reader.ReadField().GetValue<DateTime?>();
-                        customer.CurrentAge = reader.ReadField().GetValue<short?>();
+                        customer.Id = reader.ReadField()!.GetValue<int>();
+                        customer.FirstName = reader.ReadField()!.GetValue<string>();
+                        customer.LastName = reader.ReadField()!.GetValue<string>();
+                        customer.LifetimeValue = reader.ReadField()!.GetValue<double>();
+                        customer.Gender = reader.ReadField()!.GetValue<GenderType>();
+                        customer.CreditLimit = reader.ReadField()!.GetValue<int?>();
+                        customer.YearOfLastCreditLimitReview = reader.ReadField()!.GetValue<int?>();
+                        customer.BirthDate = reader.ReadField()!.GetValue<DateTime?>();
+                        customer.CurrentAge = reader.ReadField()!.GetValue<short?>();
                         customer.MailingAddress = mapAddress(AddressType.Mailing, reader);
                         customer.BillingAddress = mapAddress(AddressType.Billing, reader);
                         customer.ShippingAddress = mapAddress(AddressType.Shipping, reader);
@@ -256,15 +268,15 @@ namespace ServerSideBlazorApp.Service
                 @new.DateUpdated = DateTime.UtcNow;
 
                 await UpdateAddressAsync(persisted, @new);
-                var updated = await GetAddressAsync(customerId, address.Type);
+                persisted = (await GetAddressAsync(customerId, address.Type))!;
                 return new AddressModel
                 {
-                    Line1 = updated.Line1,
-                    Line2 = updated.Line2,
-                    City = updated.City,
-                    State = updated.State,
-                    ZIP = updated.Zip,
-                    Type = address.Type
+                    Line1 = persisted.Line1,
+                    Line2 = persisted.Line2,
+                    City = persisted.City,
+                    State = persisted.State,
+                    ZIP = persisted.Zip,
+                    Type = persisted.AddressType!.Value
                 };
             }
             else
@@ -282,7 +294,7 @@ namespace ServerSideBlazorApp.Service
             }
         }
 
-        private async Task<Address> GetAddressAsync(int customerId, AddressType addressType)
+        private async Task<Address?> GetAddressAsync(int customerId, AddressType addressType)
             => await db.SelectOne<Address>()
                 .From(dbo.Address)
                 .InnerJoin(dbo.CustomerAddress).On(dbo.Address.Id == dbo.CustomerAddress.AddressId)
@@ -308,39 +320,37 @@ namespace ServerSideBlazorApp.Service
 
         private async Task InsertAddressAsync(int customerId, Address address)
         {
-            using (var conn = db.GetConnection())
+            using var conn = db.GetConnection();
+            conn.Open();
+            try
             {
-                conn.Open();
-                try
-                {
-                    //begin a transaction as data needs to be inserted in the address table and the mapping table between a customer and address
-                    conn.BeginTransaction();
+                //begin a transaction as data needs to be inserted in the address table and the mapping table between a customer and address
+                conn.BeginTransaction();
 
-                    //insert into Address table
-                    await db.Insert(address)
-                        .Into(dbo.Address)
-                        .ExecuteAsync(conn);
+                //insert into Address table
+                await db.Insert(address)
+                    .Into(dbo.Address)
+                    .ExecuteAsync(conn);
 
-                    //insert into mapping table
-                    await db.Insert(
-                            new CustomerAddress
-                            {
-                                CustomerId = customerId,
-                                AddressId = address.Id,
-                                DateCreated = DateTime.UtcNow
-                            }
-                        )
-                        .Into(dbo.CustomerAddress)
-                        .ExecuteAsync(conn);
+                //insert into mapping table
+                await db.Insert(
+                        new CustomerAddress
+                        {
+                            CustomerId = customerId,
+                            AddressId = address.Id,
+                            DateCreated = DateTime.UtcNow
+                        }
+                    )
+                    .Into(dbo.CustomerAddress)
+                    .ExecuteAsync(conn);
 
-                    //commit the transaction
-                    conn.CommitTransaction();
-                }
-                catch (Exception)
-                {
-                    conn.RollbackTransaction();
-                    throw;
-                }
+                //commit the transaction
+                conn.CommitTransaction();
+            }
+            catch (Exception)
+            {
+                conn.RollbackTransaction();
+                throw;
             }
         }
         #endregion

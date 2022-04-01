@@ -23,11 +23,10 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableGuidMinimumFunctionExpression :
         NullableMinimumFunctionExpression<Guid,Guid?>,
         NullableGuidElement,
-        AnyGuidElement,
         IEquatable<NullableGuidMinimumFunctionExpression>
     {
         #region constructors
-        public NullableGuidMinimumFunctionExpression(NullableGuidElement expression) 
+        public NullableGuidMinimumFunctionExpression(AnyElement<Guid?> expression) 
             : base(expression)
         {
 
@@ -35,12 +34,12 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public NullableGuidElement As(string alias)
-            => new NullableGuidSelectExpression(this).As(alias);
+        public AnyElement<Guid?> As(string alias)
+            => new SelectExpression<Guid?>(this).As(alias);
         #endregion
 
         #region distinct
-        public NullableGuidMinimumFunctionExpression Distinct()
+        public new NullableGuidMinimumFunctionExpression Distinct()
         {
             IsDistinct = true;
             return this;
@@ -48,11 +47,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(NullableGuidMinimumFunctionExpression obj)
-            => obj is NullableGuidMinimumFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableGuidMinimumFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableGuidMinimumFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableGuidMinimumFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

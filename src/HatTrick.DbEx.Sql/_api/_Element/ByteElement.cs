@@ -19,9 +19,9 @@
 ﻿namespace HatTrick.DbEx.Sql
 {
 #pragma warning disable IDE1006 // Naming Styles
-    public interface ByteElement : IntegralNumericElement
+    public interface ByteElement : AnyElement<byte>, IntegralNumericElement
 #pragma warning restore IDE1006 // Naming Styles
     {
-        ByteElement As(string alias);
+
     }
 }

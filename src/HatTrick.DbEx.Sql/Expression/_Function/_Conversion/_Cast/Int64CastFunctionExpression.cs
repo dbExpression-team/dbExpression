@@ -23,11 +23,10 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class Int64CastFunctionExpression :
         CastFunctionExpression<long>,
         Int64Element,
-        AnyInt64Element,
         IEquatable<Int64CastFunctionExpression>
     {
         #region constructors
-        public Int64CastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType)
+        public Int64CastFunctionExpression(AnyElement expression, DbTypeExpression convertToDbType)
             : base(expression, convertToDbType)
         {
 
@@ -35,16 +34,16 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public Int64Element As(string alias)
-            => new Int64SelectExpression(this).As(alias);
+        public AnyElement<long> As(string alias)
+            => new SelectExpression<long>(this).As(alias);
         #endregion
 
         #region equals
-        public bool Equals(Int64CastFunctionExpression obj)
-            => obj is Int64CastFunctionExpression && base.Equals(obj);
+        public bool Equals(Int64CastFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is Int64CastFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is Int64CastFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

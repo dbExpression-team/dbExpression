@@ -21,7 +21,8 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class JoinOnExpression :
-        IExpressionElement
+        IExpressionElement,
+        IEquatable<JoinOnExpression>
     {
         #region interface
         public IExpressionElement LeftArg { get; private set; }
@@ -47,22 +48,61 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region to string
-        public override string ToString()
+        public override string? ToString()
         {
             string expression = $"{LeftArg} {ExpressionOperator} {RightArg}";
             return (Negate) ? $" NOT ({expression})" : expression;
         }
         #endregion
 
+        #region equals
+        public bool Equals(JoinOnExpression? obj)
+        {
+            if (obj is null) return false;
+            if (ReferenceEquals(this, obj)) return true;
+
+            if (!LeftArg.Equals(obj.LeftArg)) return false;
+
+            if (RightArg is null && obj.RightArg is not null) return false;
+            if (RightArg is not null && obj.RightArg is null) return false;
+            if (RightArg is not null && !RightArg.Equals(obj.RightArg)) return false;
+
+            if (ExpressionOperator != obj.ExpressionOperator) return false;
+
+            if (Negate != obj.Negate) return false;
+
+            return true;
+        }
+
+        public override bool Equals(object? obj)
+            => obj is JoinOnExpression exp && base.Equals(exp);
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                const int @base = (int)2166136261;
+                const int multiplier = 16777619;
+
+                int hash = @base;
+                hash = (hash * multiplier) ^ (LeftArg is not null ? LeftArg.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (RightArg is not null ? RightArg.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ ExpressionOperator.GetHashCode();
+                hash = (hash * multiplier) ^ Negate.GetHashCode();
+                return hash;
+            }
+        }
+        #endregion
+
         #region implicit filter expression set operator
         public static implicit operator JoinOnExpressionSet(JoinOnExpression a)
-            => a is null ? null : new JoinOnExpressionSet(a);
+            => new(a);
         #endregion
 
         #region negation operator
         public static JoinOnExpression operator !(JoinOnExpression joinOn)
         {
-            if (joinOn is object) joinOn.Negate = !joinOn.Negate;
+            joinOn.Negate = !joinOn.Negate;
             return joinOn;
         }
         #endregion

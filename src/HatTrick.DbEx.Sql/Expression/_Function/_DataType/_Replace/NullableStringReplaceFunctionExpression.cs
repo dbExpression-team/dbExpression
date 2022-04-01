@@ -23,26 +23,15 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableStringReplaceFunctionExpression :
         NullableReplaceFunctionExpression<string,string>,
         NullableStringElement,
-        AnyStringElement,
         IEquatable<NullableStringReplaceFunctionExpression>
     {
         #region constructors
-        public NullableStringReplaceFunctionExpression(NullableStringElement expression, StringElement pattern, StringElement replacement) : base(expression, pattern, replacement)
+        public NullableStringReplaceFunctionExpression(AnyStringElement expression, AnyElement pattern, AnyElement replacement) : base(expression, pattern, replacement)
         {
 
         }
 
-        public NullableStringReplaceFunctionExpression(NullableStringElement expression, NullableStringElement pattern, StringElement replacement) : base(expression, pattern, replacement)
-        {
-
-        }
-
-        public NullableStringReplaceFunctionExpression(NullableStringElement expression, NullableStringElement pattern, NullableStringElement replacement) : base(expression, pattern, replacement)
-        {
-
-        }
-
-        public NullableStringReplaceFunctionExpression(NullableStringElement expression, StringElement pattern, NullableStringElement replacement) : base(expression, pattern, replacement)
+        public NullableStringReplaceFunctionExpression(AnyElement<string?> expression, AnyElement pattern, AnyElement replacement) : base(expression, pattern, replacement)
         {
 
         }
@@ -55,15 +44,15 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region like
         public FilterExpressionSet Like(string phrase)
-            => new FilterExpressionSet(new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
+            => new(new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
         #endregion
 
         #region equals
-        public bool Equals(NullableStringReplaceFunctionExpression obj)
-            => obj is NullableStringReplaceFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableStringReplaceFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableStringReplaceFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableStringReplaceFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

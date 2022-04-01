@@ -23,23 +23,17 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class Int64MaximumFunctionExpression :
         MaximumFunctionExpression<long>,
         Int64Element,
-        AnyInt64Element,
         IEquatable<Int64MaximumFunctionExpression>
     {
         #region constructors
-        public Int64MaximumFunctionExpression(Int64Element expression) : base(expression)
+        public Int64MaximumFunctionExpression(AnyElement<long> expression) : base(expression)
         {
 
         }
         #endregion
 
-        #region as
-        public Int64Element As(string alias)
-            => new Int64SelectExpression(this).As(alias);
-        #endregion
-
         #region distinct
-        public Int64MaximumFunctionExpression Distinct()
+        public new Int64MaximumFunctionExpression Distinct()
         {
             IsDistinct = true;
             return this;
@@ -47,11 +41,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(Int64MaximumFunctionExpression obj)
-            => obj is Int64MaximumFunctionExpression && base.Equals(obj);
+        public bool Equals(Int64MaximumFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is Int64MaximumFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is Int64MaximumFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

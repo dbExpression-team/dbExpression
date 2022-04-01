@@ -18,7 +18,7 @@ namespace ServerSideBlazorApp
             {
                 OrderExpressionDirection.ASC => SortDirection.Ascending,
                 OrderExpressionDirection.DESC => SortDirection.Descending,
-                _ => SortDirection.None
+                _ => SortDirection.Default
             };
     }
 }

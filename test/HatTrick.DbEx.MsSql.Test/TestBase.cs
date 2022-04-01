@@ -11,18 +11,18 @@ namespace HatTrick.DbEx.MsSql.Test
 {
     public abstract class TestBase
     {
-        public virtual RuntimeSqlDatabaseConfiguration ConfigureForMsSqlVersion(int version, Action<IRuntimeSqlDatabaseConfigurationBuilder> postConfigure = null)
+        public virtual SqlDatabaseRuntimeConfiguration ConfigureForMsSqlVersion(int version, Action<ISqlDatabaseRuntimeConfigurationBuilder>? postConfigure = null)
             => ConfigureForMsSqlVersion(version, ConfigurationProvider.ConnectionString, postConfigure);
 
-        public virtual RuntimeSqlDatabaseConfiguration ConfigureForMsSqlVersion(int version, string connectionString)
+        public virtual SqlDatabaseRuntimeConfiguration ConfigureForMsSqlVersion(int version, string connectionString)
             => ConfigureForMsSqlVersion(version, connectionString, null);
 
-        public virtual RuntimeSqlDatabaseConfiguration ConfigureForMsSqlVersion(int version, string connectionString, Action<IRuntimeSqlDatabaseConfigurationBuilder> postConfigure = null)
+        public virtual SqlDatabaseRuntimeConfiguration ConfigureForMsSqlVersion(int version, string connectionString, Action<ISqlDatabaseRuntimeConfigurationBuilder>? postConfigure = null)
         {
-            RuntimeSqlDatabaseConfiguration config = default;
-            Action<IRuntimeSqlDatabaseConfigurationBuilder> configureRuntime = database =>
+            SqlDatabaseRuntimeConfiguration? config = default;
+            void configureRuntime(ISqlDatabaseRuntimeConfigurationBuilder database)
             {
-                config = database.Configuration;
+                config = (database as ISqlDatabaseRuntimeConfigurationProvider<MsSqlSqlDatabaseRuntimeConfiguration>)!.Configuration;
                 database.ConnectionString.Use(connectionString);
 
                 database.SqlStatements.Assembly.ConfigureOutputSettings(
@@ -34,8 +34,14 @@ namespace HatTrick.DbEx.MsSql.Test
                         .OverrideForEnumType<PaymentSourceType>().PersistAsString()
                 );
 
+                database.Conversions.UseDefaultFactory(x =>
+                    x.OverrideForReferenceType<ProductDescription>().Use(
+                        pd => pd is null ? null : System.Text.Json.JsonSerializer.Serialize(pd),
+                        o => string.IsNullOrWhiteSpace(o as string) ? default : System.Text.Json.JsonSerializer.Deserialize<ProductDescription>((o as string)!))
+                    );
+
                 postConfigure?.Invoke(database);
-            };
+            }
 
             switch (version)
             {
@@ -76,7 +82,7 @@ namespace HatTrick.DbEx.MsSql.Test
                     }
                 default: throw new NotImplementedException($"MsSql version {version} has not been implemented");
             }
-            return config;
+            return config!;
         }
     }
 }

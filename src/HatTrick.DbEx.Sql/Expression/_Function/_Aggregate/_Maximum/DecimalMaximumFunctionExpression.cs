@@ -23,23 +23,17 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class DecimalMaximumFunctionExpression :
         MaximumFunctionExpression<decimal>,
         DecimalElement,
-        AnyDecimalElement,
         IEquatable<DecimalMaximumFunctionExpression>
     {
         #region constructors
-        public DecimalMaximumFunctionExpression(DecimalElement expression) : base(expression)
+        public DecimalMaximumFunctionExpression(AnyElement<decimal> expression) : base(expression)
         {
 
         }
         #endregion
 
-        #region as
-        public DecimalElement As(string alias)
-            => new DecimalSelectExpression(this).As(alias);
-        #endregion
-
         #region distinct
-        public DecimalMaximumFunctionExpression Distinct()
+        public new DecimalMaximumFunctionExpression Distinct()
         {
             IsDistinct = true;
             return this;
@@ -47,11 +41,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(DecimalMaximumFunctionExpression obj)
-            => obj is DecimalMaximumFunctionExpression && base.Equals(obj);
+        public bool Equals(DecimalMaximumFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is DecimalMaximumFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is DecimalMaximumFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

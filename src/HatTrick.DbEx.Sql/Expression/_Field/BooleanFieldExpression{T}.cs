@@ -26,23 +26,18 @@ namespace HatTrick.DbEx.Sql.Expression
         where TEntity : class, IDbEntity
     {
         #region constructors
-        public BooleanFieldExpression(string identifier, string name, EntityExpression entity) : base(identifier, name, entity)
+        public BooleanFieldExpression(string identifier, string name, Table entity) : base(identifier, name, entity)
         {
 
         }
         #endregion
 
-        #region as
-        public override BooleanElement As(string alias)
-            => new BooleanSelectExpression(this).As(alias);
-        #endregion
-
         #region equals
-        public bool Equals(BooleanFieldExpression<TEntity> obj)
-            => obj is BooleanFieldExpression<TEntity> && base.Equals(obj);
+        public bool Equals(BooleanFieldExpression<TEntity>? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is BooleanFieldExpression<TEntity> exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is BooleanFieldExpression<TEntity> exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

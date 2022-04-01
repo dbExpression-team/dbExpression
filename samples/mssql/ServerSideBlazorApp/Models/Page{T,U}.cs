@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using System;
 
 namespace ServerSideBlazorApp.Models
 {
@@ -10,10 +10,6 @@ namespace ServerSideBlazorApp.Models
         public IList<T> Data { get; set; } = new List<T>();
         public int? TotalCount { get; set; }
 
-        public Page()
-        { 
-        }
-
         public Page(U parameters, IList<T> page, int totalCount)
         {
             PagingParameters = parameters;
@@ -23,22 +19,5 @@ namespace ServerSideBlazorApp.Models
 
         public static Page<T,U> CreateDefault()
             => new(new U { Offset = 0, Limit = 10 }, new List<T>(), 0);
-    }
-
-    public class Page<T> : Page<T, PagingParameters>
-    {
-        public Page() { }
-
-        public Page(PagingParameters parameters, IList<T> page, int totalCount) : base(parameters, page, totalCount)
-        {
-        }
-
-        public new static Page<T> CreateDefault()
-            => new Page<T> 
-            { 
-                PagingParameters = new PagingParameters { Offset = 0, Limit = 10 }, 
-                Data = new List<T>(), 
-                TotalCount = 0 
-            };
     }
 }

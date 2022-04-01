@@ -5,6 +5,6 @@ namespace ServerSideBlazorApp.Shared
 {
     public partial class OrderView : ComponentBase
     {
-        [Parameter] public OrderDetailModel Order { get; set; }
+        [Parameter] public OrderDetailModel Order { get; set; } = new();
     }
 }

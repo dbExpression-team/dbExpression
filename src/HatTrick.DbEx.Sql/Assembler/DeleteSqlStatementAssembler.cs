@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         #region methods
         public override void AssembleStatement(QueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            if (!(expression is DeleteQueryExpression delete))
+            if (expression is not DeleteQueryExpression delete)
                 throw new DbExpressionException($"Expected {nameof(expression)} to be of type {nameof(DeleteQueryExpression)}, but is actually type {expression.GetType()}");
 
             AssembleStatement(delete, builder, context);
@@ -38,12 +38,12 @@ namespace HatTrick.DbEx.Sql.Assembler
 
             if (expression.Top.HasValue)
             {
-                builder.Appender.Write(" TOP(").Write(expression.Top.ToString()).Write(")");
+                builder.Appender.Write(" TOP(").Write(expression.Top.Value.ToString()).Write(")");
             }
             builder.Appender.LineBreak()
                 .Indentation++.Indent();
 
-            builder.AppendElement(expression.BaseEntity, context);
+            builder.AppendElement(expression.BaseEntity ?? throw new DbExpressionException("Expected base entity to not be null"), context);
 
             builder.Appender.LineBreak()
                 .Indentation--.Indent().Write("FROM").LineBreak()
@@ -74,7 +74,11 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         protected virtual void AppendWhereClause(DeleteQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            if (expression.Where?.LeftArg is null && expression.Where?.RightArg is null)
+            if (expression.Where is null)
+                return;
+
+            var elements = (expression.Where as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>)?.Expression;
+            if (elements?.LeftArg is null && elements?.RightArg is null)
                 return;
 
             builder.Appender.Indent().Write("WHERE")

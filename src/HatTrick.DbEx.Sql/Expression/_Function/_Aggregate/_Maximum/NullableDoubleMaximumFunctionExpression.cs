@@ -23,11 +23,10 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableDoubleMaximumFunctionExpression :
         NullableMaximumFunctionExpression<double,double?>,
         NullableDoubleElement,
-        AnyDoubleElement,
         IEquatable<NullableDoubleMaximumFunctionExpression>
     {
         #region constructors
-        public NullableDoubleMaximumFunctionExpression(NullableDoubleElement expression) 
+        public NullableDoubleMaximumFunctionExpression(AnyElement<double?> expression) 
             : base(expression)
         {
 
@@ -35,23 +34,24 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public NullableDoubleElement As(string alias)
-            => new NullableDoubleSelectExpression(this).As(alias);
+        public AnyElement<double?> As(string alias)
+            => new SelectExpression<double?>(this).As(alias);
         #endregion
 
         #region distinct
-        public NullableDoubleMaximumFunctionExpression Distinct()
+        public new NullableDoubleMaximumFunctionExpression Distinct()
         {
             IsDistinct = true;
             return this;
         }
         #endregion
-        #region equals
-        public bool Equals(NullableDoubleMaximumFunctionExpression obj)
-            => obj is NullableDoubleMaximumFunctionExpression && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableDoubleMaximumFunctionExpression exp && base.Equals(exp);
+        #region equals
+        public bool Equals(NullableDoubleMaximumFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
+
+        public override bool Equals(object? obj)
+            => obj is NullableDoubleMaximumFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

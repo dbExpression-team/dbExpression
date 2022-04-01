@@ -21,9 +21,8 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableStringExpressionMediator :
-        ExpressionMediator<string>,
+        NullableExpressionMediator<string,string?>,
         NullableStringElement,
-        AnyStringElement,
         IEquatable<NullableStringExpressionMediator>
     {
         #region constructors
@@ -32,10 +31,6 @@ namespace HatTrick.DbEx.Sql.Expression
         }
 
         public NullableStringExpressionMediator(IExpressionElement expression) : base(expression)
-        {
-        }
-
-        protected NullableStringExpressionMediator(IExpressionElement expression, string alias) : base(expression, alias)
         {
         }
         #endregion
@@ -47,24 +42,24 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region like
         public FilterExpressionSet Like(string phrase)
-            => new FilterExpressionSet(new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
+            => new(new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
         #endregion
 
         #region equals
-        public bool Equals(NullableStringExpressionMediator obj)
-            => obj is NullableStringExpressionMediator && base.Equals(obj);
+        public bool Equals(NullableStringExpressionMediator? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableStringExpressionMediator exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableStringExpressionMediator exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();
         #endregion
 
         #region arithmetic operators
-        public static NullableStringExpressionMediator operator +(NullableStringExpressionMediator a, string b) => new NullableStringExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<string>(b), ArithmeticExpressionOperator.Add));
+        public static NullableStringExpressionMediator operator +(NullableStringExpressionMediator a, string b) => new(new ArithmeticExpression(a, new LiteralExpression<string>(b), ArithmeticExpressionOperator.Add));
 
-        public static NullableStringExpressionMediator operator +(string a, NullableStringExpressionMediator b) => new NullableStringExpressionMediator(new ArithmeticExpression(new LiteralExpression<string>(a), b, ArithmeticExpressionOperator.Add));
+        public static NullableStringExpressionMediator operator +(string a, NullableStringExpressionMediator b) => new(new ArithmeticExpression(new LiteralExpression<string>(a), b, ArithmeticExpressionOperator.Add));
         #endregion
     }
 }

@@ -23,7 +23,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class DateTimeExpressionMediator :
         ExpressionMediator<DateTime>,
         DateTimeElement,
-        AnyDateTimeElement,
         IEquatable<DateTimeExpressionMediator>
     {
         #region constructors
@@ -34,23 +33,19 @@ namespace HatTrick.DbEx.Sql.Expression
         public DateTimeExpressionMediator(IExpressionElement expression) : base(expression)
         {
         }
-
-        protected DateTimeExpressionMediator(IExpressionElement expression, string alias) : base(expression, alias)
-        {
-        }
         #endregion
 
         #region as
-        public DateTimeElement As(string alias)
-            => new DateTimeSelectExpression(this).As(alias);
+        public AnyElement<DateTime> As(string alias)
+            => new SelectExpression<DateTime>(this).As(alias);
         #endregion
 
         #region equals
-        public bool Equals(DateTimeExpressionMediator obj)
-            => obj is DateTimeExpressionMediator && base.Equals(obj);
+        public bool Equals(DateTimeExpressionMediator? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is DateTimeExpressionMediator exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is DateTimeExpressionMediator exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

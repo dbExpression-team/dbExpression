@@ -23,27 +23,21 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class ByteFloorFunctionExpression : 
         FloorFunctionExpression<byte>,
         ByteElement,
-        AnyByteElement,
         IEquatable<ByteFloorFunctionExpression>
     {
         #region constructors
-        public ByteFloorFunctionExpression(ByteElement expression) : base(expression)
+        public ByteFloorFunctionExpression(AnyElement<byte> expression) : base(expression)
         { 
         
         }
         #endregion
 
-        #region as
-        public ByteElement As(string alias)
-            => new ByteSelectExpression(this).As(alias);
-        #endregion
-
         #region equals
-        public bool Equals(ByteFloorFunctionExpression obj)
-            => obj is ByteFloorFunctionExpression && base.Equals(obj);
+        public bool Equals(ByteFloorFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is ByteFloorFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is ByteFloorFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

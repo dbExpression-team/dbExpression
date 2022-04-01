@@ -23,11 +23,10 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableDateTimeOffsetIsNullFunctionExpression :
         NullableIsNullFunctionExpression<DateTimeOffset,DateTimeOffset?>,
         NullableDateTimeOffsetElement,
-        AnyDateTimeOffsetElement,
         IEquatable<NullableDateTimeOffsetIsNullFunctionExpression>
     {
         #region constructors
-        public NullableDateTimeOffsetIsNullFunctionExpression(AnyDateTimeOffsetElement expression, NullableDateTimeOffsetElement value)
+        public NullableDateTimeOffsetIsNullFunctionExpression(AnyElement<DateTimeOffset?> expression, AnyElement<DateTimeOffset?> value)
             : base(expression, value)
         {
 
@@ -35,16 +34,16 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public NullableDateTimeOffsetElement As(string alias)
-            => new NullableDateTimeOffsetSelectExpression(this).As(alias);
+        public AnyElement<DateTimeOffset?> As(string alias)
+            => new SelectExpression<DateTimeOffset?>(this).As(alias);
         #endregion
 
         #region equals
-        public bool Equals(NullableDateTimeOffsetIsNullFunctionExpression obj)
-            => obj is NullableDateTimeOffsetIsNullFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableDateTimeOffsetIsNullFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableDateTimeOffsetIsNullFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableDateTimeOffsetIsNullFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

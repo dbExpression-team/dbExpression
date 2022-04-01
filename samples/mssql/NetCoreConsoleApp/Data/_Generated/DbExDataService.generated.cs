@@ -1,4 +1,5 @@
 using HatTrick.DbEx.MsSql.Builder;
+using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Connection;
@@ -19,45 +20,23 @@ namespace SimpleConsole.DataService
 	using _dboDataService = SimpleConsole.dboDataService;
 	using _secDataService = SimpleConsole.secDataService;
 
-    #region runtime db
-    public abstract partial class SimpleConsoleDbRuntimeSqlDatabase : IRuntimeSqlDatabase, IExpressionListProvider<SchemaExpression>
+    #region db
+    public static class db
     {
         #region internals
-        protected static readonly MsSqlQueryExpressionBuilderFactory expressionBuilderFactory = new MsSqlQueryExpressionBuilderFactory();
-        protected static readonly IList<SchemaExpression> schemas = new List<SchemaExpression>();
-        protected static RuntimeSqlDatabaseConfiguration configuration => configurationFactory.CreateConfiguration() ?? throw new DbExpressionConfigurationException($"Configuration factory returned a null value for configuration ({nameof(RuntimeSqlDatabaseConfiguration)}).  Cannot build and execute queries without valid configuration.");
-        private static IRuntimeSqlDatabaseConfigurationFactory configurationFactory;
+        private static SimpleConsoleDb _simpleconsoledb;
+        private static SimpleConsoleDb SimpleConsoleDb => _simpleconsoledb ?? throw new DbExpressionConfigurationException("the database 'SimpleConsoleDb' has not been properly configured for runtime use with dbExpression.");
         #endregion
 
         #region interface
-        IEnumerable<SchemaExpression> IExpressionListProvider<SchemaExpression>.Expressions => schemas;
+        public static MsSqlFunctionExpressionBuilder fx => SimpleConsoleDb.fx;
+        public static SimpleConsoleDb.SimpleConsoleDbStoredProcedures sp => SimpleConsoleDb.sp;
         #endregion
 
         #region methods
-        void IRuntimeSqlDatabase.UseConfigurationFactory(IRuntimeSqlDatabaseConfigurationFactory configurationFactory)
-            => SimpleConsoleDbRuntimeSqlDatabase.configurationFactory = configurationFactory ?? throw new ArgumentNullException(nameof(configurationFactory));
-        #endregion
-    }
-    #endregion
-
-    #region db
-    public partial class db : SimpleConsoleDbRuntimeSqlDatabase
-    {
-        #region constructors
-        static db()
-        {
-            var dboSchema = new _dboDataService.dboSchemaExpression("dbo");
-            schemas.Add(dboSchema);
-            _dboDataService.dbo.UseSchema(dboSchema);
-
-            var secSchema = new _secDataService.secSchemaExpression("sec");
-            schemas.Add(secSchema);
-            _secDataService.sec.UseSchema(secSchema);
-
-        }
-        #endregion
-
-        #region methods
+        internal static void UseDatabase(SimpleConsoleDb simpleconsoledb)
+            => _simpleconsoledb = simpleconsoledb ?? throw new ArgumentNullException(nameof(simpleconsoledb));
+        
         #region select one
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single entity.
@@ -72,7 +51,7 @@ namespace SimpleConsole.DataService
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
         public static SelectEntity<TEntity> SelectOne<TEntity>()
             where TEntity : class, IDbEntity, new()
-            => expressionBuilderFactory.CreateSelectEntityBuilder<TEntity>(configuration);
+            => SimpleConsoleDb.SelectOne<TEntity>();
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="TEnum"/> value.
@@ -80,14 +59,14 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="EnumElement{TEnum}" />
+        /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />
         ///, for example "dbo.AccessAuditLog.AccessResult"
         /// </param>
         /// <returns><see cref="Sql.SelectValue{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
-        public static SelectValue<TEnum> SelectOne<TEnum>(EnumElement<TEnum> element)
+        public static SelectValue<TEnum> SelectOne<TEnum>(AnyElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
-            => expressionBuilderFactory.CreateSelectValueBuilder<TEnum>(configuration, element);
+            => SimpleConsoleDb.SelectOne<TEnum>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="TEnum"/>? value.  
@@ -95,27 +74,64 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableEnumElement{TEnum}" />
+        /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />?
         ///, for example "dbo.Address.AddressType"
         /// </param>
         /// <returns><see cref="SelectValue{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
-        public static SelectValue<TEnum?> SelectOne<TEnum>(NullableEnumElement<TEnum> element)
+        public static SelectValue<TEnum?> SelectOne<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable
-            => expressionBuilderFactory.CreateSelectValueBuilder<TEnum>(configuration, element);
+            => SimpleConsoleDb.SelectOne<TEnum>(element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <see cref="object" /> value.
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/> value.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyObjectElement" />
-        ///, for example "dbo.AccessAuditLog.AccessResult"
+        /// <param name="element">An expression of type <see cref="ObjectElement" />
         /// </param>
-        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<object> SelectOne(AnyObjectElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
+        /// <returns><see cref="SelectValue{object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<object> SelectOne(ObjectElement element)
+            => SimpleConsoleDb.SelectOne(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableObjectElement" />
+        /// </param>
+        /// <returns><see cref="SelectValue{object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<object> SelectOne(NullableObjectElement element)
+            => SimpleConsoleDb.SelectOne(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="ObjectElement{T}" />
+        /// </param>
+        /// <returns><see cref="SelectValues{T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <typeparam name="T">The type of the object to select.</typeparam>
+        public static SelectValue<T> SelectOne<T>(ObjectElement<T> element)
+            => SimpleConsoleDb.SelectOne<T>(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableObjectElement{T}" />
+        /// </param>
+        /// <returns><see cref="SelectValue{T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <typeparam name="T">The type of the object to select.</typeparam>
+        public static SelectValue<T> SelectOne<T>(NullableObjectElement<T> element)
+            => SimpleConsoleDb.SelectOne<T>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="bool" /> value.
@@ -123,11 +139,11 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="BooleanElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<bool> SelectOne(BooleanElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
+        public static SelectValue<bool> SelectOne(AnyElement<bool> element)
+            => SimpleConsoleDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="bool" />? value.
@@ -135,11 +151,11 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableBooleanElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />?
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<bool?> SelectOne(NullableBooleanElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
+        public static SelectValue<bool?> SelectOne(AnyElement<bool?> element)
+            => SimpleConsoleDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" /> value.
@@ -147,11 +163,11 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="ByteElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<byte> SelectOne(ByteElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
+        public static SelectValue<byte> SelectOne(AnyElement<byte> element)
+            => SimpleConsoleDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" />? value.
@@ -159,11 +175,11 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableByteElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />?
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<byte?> SelectOne(NullableByteElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
+        public static SelectValue<byte?> SelectOne(AnyElement<byte?> element)
+            => SimpleConsoleDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[] value.
@@ -171,24 +187,11 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="ByteArrayElement" />
-        ///, for example "dbo.Product.Image" or "db.fx.IsNull(dbo.Product.Image, new byte[0])"
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<byte[]> SelectOne(ByteArrayElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
-
-        /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[]? value.
-        /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
-        /// </para>
-        /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableByteArrayElement" />
-        ///</param>
-        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<byte[]> SelectOne(NullableByteArrayElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
+        public static SelectValue<byte[]> SelectOne(AnyElement<byte[]> element)
+            => SimpleConsoleDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTime" /> value.
@@ -196,12 +199,12 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="DateTimeElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />
         ///, for example "dbo.AccessAuditLog.DateCreated", "db.fx.DateAdd(DateParts.Year, 1, dbo.AccessAuditLog.DateCreated) or "db.fx.IsNull(dbo.AccessAuditLog.DateCreated, DateTime.Now)"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<DateTime> SelectOne(DateTimeElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
+        public static SelectValue<DateTime> SelectOne(AnyElement<DateTime> element)
+            => SimpleConsoleDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTime" />? value.
@@ -209,12 +212,12 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableDateTimeElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />?
         ///, for example "dbo.Person.BirthDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.BirthDate)
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<DateTime?> SelectOne(NullableDateTimeElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, field);
+        public static SelectValue<DateTime?> SelectOne(AnyElement<DateTime?> field)
+            => SimpleConsoleDb.SelectOne(field);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTimeOffset" /> value.
@@ -222,12 +225,12 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="DateTimeOffsetElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />
         ///, for example "dbo.Person.RegistrationDate", "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.RegistrationDate)" or "db.fx.IsNull(dbo.Person.RegistrationDate, DateTimeOffset.Now)"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<DateTimeOffset> SelectOne(DateTimeOffsetElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
+        public static SelectValue<DateTimeOffset> SelectOne(AnyElement<DateTimeOffset> element)
+            => SimpleConsoleDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTimeOffset" />? value.
@@ -235,12 +238,12 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableDateTimeOffsetElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />?
         ///, for example "dbo.Person.LastLoginDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.LastLoginDate)" 
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<DateTimeOffset?> SelectOne(NullableDateTimeOffsetElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
+        public static SelectValue<DateTimeOffset?> SelectOne(AnyElement<DateTimeOffset?> element)
+            => SimpleConsoleDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="decimal" /> value.
@@ -248,12 +251,12 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="DecimalElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />
         ///, for example "dbo.Product.ShippingWeight" or "db.fx.IsNull(dbo.Product.ShippingWeight, decimal.MinValue)"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<decimal> SelectOne(DecimalElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
+        public static SelectValue<decimal> SelectOne(AnyElement<decimal> element)
+            => SimpleConsoleDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="decimal" />? value.
@@ -261,12 +264,12 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableDecimalElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />?
         ///, for example "dbo.Product.Height" or "db.fx.Min(dbo.Product.Height)"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<decimal?> SelectOne(NullableDecimalElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
+        public static SelectValue<decimal?> SelectOne(AnyElement<decimal?> element)
+            => SimpleConsoleDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="double" /> value.
@@ -274,12 +277,12 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="DoubleElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Double}" />
         ///, for example "dbo.Product.ListPrice" or "db.fx.IsNull(dbo.Product.ListPrice, double.MinValue)"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<double> SelectOne(DoubleElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
+        public static SelectValue<double> SelectOne(AnyElement<double> element)
+            => SimpleConsoleDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="double" />? value.
@@ -287,12 +290,12 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableDoubleElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Double}" />?
         ///, for example "dbo.PersonTotalPurchasesView.TotalAmount" or "db.fx.Min(dbo.PersonTotalPurchasesView.TotalAmount)"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<double?> SelectOne(NullableDoubleElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
+        public static SelectValue<double?> SelectOne(AnyElement<double?> element)
+            => SimpleConsoleDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="Guid" /> value.
@@ -300,11 +303,11 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="GuidElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<Guid> SelectOne(GuidElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
+        public static SelectValue<Guid> SelectOne(AnyElement<Guid> element)
+            => SimpleConsoleDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="Guid" />? value.
@@ -312,12 +315,12 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableGuidElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />?
         ///, for example "dbo.Purchase.TrackingIdentifier"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<Guid?> SelectOne(NullableGuidElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
+        public static SelectValue<Guid?> SelectOne(AnyElement<Guid?> element)
+            => SimpleConsoleDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="short" /> value.
@@ -325,11 +328,11 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="Int16Element" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<short> SelectOne(Int16Element element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
+        public static SelectValue<short> SelectOne(AnyElement<short> element)
+            => SimpleConsoleDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="short" />? value.
@@ -337,11 +340,11 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableInt16Element" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />?
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<short?> SelectOne(NullableInt16Element element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
+        public static SelectValue<short?> SelectOne(AnyElement<short?> element)
+            => SimpleConsoleDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="int" /> value.
@@ -349,12 +352,12 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="Int32Element" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />?
         ///, for example "dbo.AccessAuditLog.Id" or "db.fx.Avg(dbo.AccessAuditLog.Id)"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<int> SelectOne(Int32Element element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
+        public static SelectValue<int> SelectOne(AnyElement<int> element)
+            => SimpleConsoleDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="int" />? value.
@@ -362,12 +365,12 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableInt32Element" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />?
         ///, for example "dbo.Person.CreditLimit" or "db.fx.Avg(dbo.Person.CreditLimit)"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<int?> SelectOne(NullableInt32Element element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
+        public static SelectValue<int?> SelectOne(AnyElement<int?> element)
+            => SimpleConsoleDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="long" /> value.
@@ -375,11 +378,11 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="Int64Element" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<long> SelectOne(Int64Element element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
+        public static SelectValue<long> SelectOne(AnyElement<long> element)
+            => SimpleConsoleDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="long" />? value.
@@ -387,11 +390,11 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableInt64Element" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />?
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<long?> SelectOne(NullableInt64Element element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
+        public static SelectValue<long?> SelectOne(AnyElement<long?> element)
+            => SimpleConsoleDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="float" /> value.
@@ -399,11 +402,11 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="SingleElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Single}" />
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<float> SelectOne(SingleElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
+        public static SelectValue<float> SelectOne(AnyElement<float> element)
+            => SimpleConsoleDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="float" />? value.
@@ -411,11 +414,11 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableSingleElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Single}" />?
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<float?> SelectOne(NullableSingleElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
+        public static SelectValue<float?> SelectOne(AnyElement<float?> element)
+            => SimpleConsoleDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="string" /> value.
@@ -423,12 +426,12 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="StringElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{String}" />
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         ///</param>
-        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<string> SelectOne(StringElement element) 
-            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
+            => SimpleConsoleDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="string" /> value.
@@ -436,11 +439,25 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableStringElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{String}" />
+        ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         ///</param>
-        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<string> SelectOne(NullableStringElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
+        /// <returns><see cref="SelectValue{String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<string> SelectOne(NullableStringElement element) 
+            => SimpleConsoleDb.SelectOne(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="string" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{String}" />
+        ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
+        ///</param>
+        /// <returns><see cref="SelectValue{String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<string> SelectOne(SelectExpression<string> element) 
+            => SimpleConsoleDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" /> value.
@@ -448,11 +465,11 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="TimeSpanElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<TimeSpan> SelectOne(TimeSpanElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
+        public static SelectValue<TimeSpan> SelectOne(AnyElement<TimeSpan> element)
+            => SimpleConsoleDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" />? value.
@@ -460,12 +477,12 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableTimeSpanElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />?
         ///, for example "dbo.Product.ValidStartTimeOfDayForPurchase"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<TimeSpan?> SelectOne(NullableTimeSpanElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
+        public static SelectValue<TimeSpan?> SelectOne(AnyElement<TimeSpan?> element)
+            => SimpleConsoleDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
@@ -478,7 +495,7 @@ namespace SimpleConsole.DataService
         /// <param name="elements">Any expression</param>
         /// <returns><see cref="SelectDynamic"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectDynamic SelectOne(AnyElement element1, AnyElement element2, params AnyElement[] elements)
-            => expressionBuilderFactory.CreateSelectDynamicBuilder(configuration, element1, element2, elements);
+            => SimpleConsoleDb.SelectOne(element1, element2, elements);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
@@ -490,7 +507,7 @@ namespace SimpleConsole.DataService
         /// <param name="elements">A list of any expression</param>
         /// <returns><see cref="SelectDynamic"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectDynamic SelectOne(IEnumerable<AnyElement> elements)
-            => expressionBuilderFactory.CreateSelectDynamicBuilder(configuration, elements);
+            => SimpleConsoleDb.SelectOne(elements);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
@@ -502,7 +519,7 @@ namespace SimpleConsole.DataService
         /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
         /// <returns><see cref="SelectDynamics"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectDynamic SelectOne(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
-            => expressionBuilderFactory.CreateSelectDynamicBuilder(configuration, (elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
+            => SimpleConsoleDb.SelectOne((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
         #endregion
 
         #region select many
@@ -519,7 +536,7 @@ namespace SimpleConsole.DataService
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
         public static SelectEntities<TEntity> SelectMany<TEntity>()
            where TEntity : class, IDbEntity, new()
-           => expressionBuilderFactory.CreateSelectEntitiesBuilder<TEntity>(configuration);
+           => SimpleConsoleDb.SelectMany<TEntity>();
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="TEnum"/> values.
@@ -527,13 +544,13 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="EnumElement{TEnum}" />
+        /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />
         ///, for example "dbo.AccessAuditLog.AccessResult"
         /// </param>
         /// <returns><see cref="SelectValues{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
-        public static SelectValues<TEnum> SelectMany<TEnum>(EnumElement<TEnum> element)
+        public static SelectValues<TEnum> SelectMany<TEnum>(AnyElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
-            => expressionBuilderFactory.CreateSelectValuesBuilder<TEnum>(configuration, element);
+            => SimpleConsoleDb.SelectMany<TEnum>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="TEnum"/>? values.
@@ -541,26 +558,63 @@ namespace SimpleConsole.DataService
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
-        /// <param name="element">An expression of type <see cref="NullableEnumElement{TEnum}" />
+        /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />?
         ///, for example "dbo.Address.AddressType"
         /// </param>
         /// <returns><see cref="SelectValues{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<TEnum?> SelectMany<TEnum>(NullableEnumElement<TEnum> element)
+        public static SelectValues<TEnum?> SelectMany<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable
-            => expressionBuilderFactory.CreateSelectValuesBuilder<TEnum>(configuration, element);
+            => SimpleConsoleDb.SelectMany<TEnum>(element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a list of <see cref="object" /> values.
-        /// </summary>
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/> values.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
-        /// <param name="element">An expression of type <see cref="AnyObjectElement" />
-        ///, for example "db.fx.Coalesce(dbo.Person.CreditLimit, dbo.Address.Line1)"
-        ///</param>
-        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<object> SelectMany(AnyObjectElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="ObjectElement" />
+        /// </param>
+        /// <returns><see cref="SelectValues{object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<object> SelectMany(ObjectElement element)
+            => SimpleConsoleDb.SelectMany(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableObjectElement" />
+        /// </param>
+        /// <returns><see cref="SelectValues{object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<object> SelectMany(NullableObjectElement element)
+            => SimpleConsoleDb.SelectMany(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="ObjectElement{T}" />
+        /// </param>
+        /// <returns><see cref="SelectValues{T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <typeparam name="T">The type of the object to select.</typeparam>
+        public static SelectValues<T> SelectMany<T>(ObjectElement<T> element)
+            => SimpleConsoleDb.SelectMany<T>(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableObjectElement{T}" />
+        /// </param>
+        /// <returns><see cref="SelectValues{T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <typeparam name="T">The type of the object to select.</typeparam>
+        public static SelectValues<T> SelectMany<T>(NullableObjectElement<T> element)
+            => SimpleConsoleDb.SelectMany<T>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="bool" /> values.
@@ -568,11 +622,11 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="BooleanElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<bool> SelectMany(BooleanElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
+        public static SelectValues<bool> SelectMany(AnyElement<bool> element)
+            => SimpleConsoleDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="bool" />? values.
@@ -580,11 +634,11 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableBooleanElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />?
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<bool?> SelectMany(NullableBooleanElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
+        public static SelectValues<bool?> SelectMany(AnyElement<bool?> element)
+            => SimpleConsoleDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" /> values.
@@ -592,11 +646,11 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="ByteElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<byte> SelectMany(ByteElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
+        public static SelectValues<byte> SelectMany(AnyElement<byte> element)
+            => SimpleConsoleDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />? values.
@@ -604,11 +658,11 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableByteElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />?
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<byte?> SelectMany(NullableByteElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
+        public static SelectValues<byte?> SelectMany(AnyElement<byte?> element)
+            => SimpleConsoleDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[] values.
@@ -616,24 +670,11 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="ByteArrayElement" />
-        ///, for example "dbo.Product.Image" or "db.fx.IsNull(dbo.Product.Image, new byte[0])"
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<byte[]> SelectMany(ByteArrayElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
-
-        /// <summary>
-        /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[]? values.
-        /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
-        /// </para>
-        /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableByteArrayElement" />
-        ///</param>
-        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<byte[]> SelectMany(NullableByteArrayElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
+        public static SelectValues<byte[]> SelectMany(AnyElement<byte[]> element)
+            => SimpleConsoleDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTime" /> values.
@@ -641,12 +682,12 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="DateTimeElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />
         ///, for example "dbo.AccessAuditLog.DateCreated", "db.fx.DateAdd(DateParts.Year, 1, dbo.AccessAuditLog.DateCreated) or "db.fx.IsNull(dbo.AccessAuditLog.DateCreated, DateTime.Now)"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<DateTime> SelectMany(DateTimeElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
+        public static SelectValues<DateTime> SelectMany(AnyElement<DateTime> element)
+            => SimpleConsoleDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTime" />? values.
@@ -654,12 +695,12 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableDateTimeElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />?
         ///, for example "dbo.Person.BirthDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.BirthDate)
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<DateTime?> SelectMany(NullableDateTimeElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
+        public static SelectValues<DateTime?> SelectMany(AnyElement<DateTime?> element)
+            => SimpleConsoleDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTimeOffset" /> values.
@@ -667,12 +708,12 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="DateTimeOffsetElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />
         ///, for example "dbo.Person.RegistrationDate", "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.RegistrationDate)" or "db.fx.IsNull(dbo.Person.RegistrationDate, DateTimeOffset.Now)"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<DateTimeOffset> SelectMany(DateTimeOffsetElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
+        public static SelectValues<DateTimeOffset> SelectMany(AnyElement<DateTimeOffset> element)
+            => SimpleConsoleDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTimeOffset" />? values.
@@ -680,12 +721,12 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableDateTimeOffsetElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />?
         ///, for example "dbo.Person.LastLoginDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.LastLoginDate)" 
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<DateTimeOffset?> SelectMany(NullableDateTimeOffsetElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
+        public static SelectValues<DateTimeOffset?> SelectMany(AnyElement<DateTimeOffset?> element)
+            => SimpleConsoleDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="decimal" /> values.
@@ -693,12 +734,12 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="DecimalElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />
         ///, for example "dbo.Product.ShippingWeight" or "db.fx.IsNull(dbo.Product.ShippingWeight, decimal.MinValue)"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<decimal> SelectMany(DecimalElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
+        public static SelectValues<decimal> SelectMany(AnyElement<decimal> element)
+            => SimpleConsoleDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="decimal" />? values.
@@ -706,12 +747,12 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableDecimalElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />?
         ///, for example "dbo.Product.Height"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<decimal?> SelectMany(NullableDecimalElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
+        public static SelectValues<decimal?> SelectMany(AnyElement<decimal?> element)
+            => SimpleConsoleDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="double" /> values.
@@ -719,12 +760,12 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="DoubleElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Double}" />
         ///, for example "dbo.Product.ListPrice" or "db.fx.IsNull(dbo.Product.ListPrice, double.MinValue)"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<double> SelectMany(DoubleElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
+        public static SelectValues<double> SelectMany(AnyElement<double> element)
+            => SimpleConsoleDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="double" />? values.
@@ -732,12 +773,12 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableDoubleElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Double}" />?
         ///, for example "dbo.PersonTotalPurchasesView.TotalAmount"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<double?> SelectMany(NullableDoubleElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
+        public static SelectValues<double?> SelectMany(AnyElement<double?> element)
+            => SimpleConsoleDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="Guid" /> values.
@@ -745,11 +786,11 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="GuidElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<Guid> SelectMany(GuidElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
+        public static SelectValues<Guid> SelectMany(AnyElement<Guid> element)
+            => SimpleConsoleDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="Guid" />? values.
@@ -757,12 +798,12 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableGuidElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />?
         ///, for example "dbo.Purchase.TrackingIdentifier"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<Guid?> SelectMany(NullableGuidElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
+        public static SelectValues<Guid?> SelectMany(AnyElement<Guid?> element)
+            => SimpleConsoleDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="short" /> values.
@@ -770,11 +811,11 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="Int16Element" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<short> SelectMany(Int16Element element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
+        public static SelectValues<short> SelectMany(AnyElement<short> element)
+            => SimpleConsoleDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="short" />? values.
@@ -782,11 +823,11 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableInt16Element" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />?
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<short?> SelectMany(NullableInt16Element element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
+        public static SelectValues<short?> SelectMany(AnyElement<short?> element)
+            => SimpleConsoleDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="int" /> values.
@@ -794,12 +835,12 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="Int32Element" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />
         ///, for example "dbo.AccessAuditLog.Id"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<int> SelectMany(Int32Element element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
+        public static SelectValues<int> SelectMany(AnyElement<int> element)
+            => SimpleConsoleDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="int" />? values.
@@ -807,12 +848,12 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableInt32Element" />
-        ///, for example "dbo.:column.Entity.Name}.Id"
+        /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />?
+        ///, for example "dbo.:column.Entity.Name}.CreditLimit"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<int?> SelectMany(NullableInt32Element element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
+        public static SelectValues<int?> SelectMany(AnyElement<int?> element)
+            => SimpleConsoleDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="long" /> values.
@@ -820,11 +861,11 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="Int64Element" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<long> SelectMany(Int64Element element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
+        public static SelectValues<long> SelectMany(AnyElement<long> element)
+            => SimpleConsoleDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="long" />? values.
@@ -832,11 +873,11 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableInt64Element" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />?
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<long?> SelectMany(NullableInt64Element element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
+        public static SelectValues<long?> SelectMany(AnyElement<long?> element)
+            => SimpleConsoleDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="float" /> values.
@@ -844,11 +885,11 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="SingleElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Single}" />
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<float> SelectMany(SingleElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
+        public static SelectValues<float> SelectMany(AnyElement<float> element)
+            => SimpleConsoleDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="float" />? values.
@@ -856,11 +897,11 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableSingleElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{Single}" />?
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<float?> SelectMany(NullableSingleElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
+        public static SelectValues<float?> SelectMany(AnyElement<float?> element)
+            => SimpleConsoleDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="string" /> values.
@@ -868,12 +909,12 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="StringElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{String}" />
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         ///</param>
-        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<string> SelectMany(StringElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
+            => SimpleConsoleDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="string" /> values.
@@ -881,11 +922,25 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableStringElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{String}" />
+        ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         ///</param>
-        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<string> SelectMany(NullableStringElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
+            => SimpleConsoleDb.SelectMany(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="string" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{String}" />
+        ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
+        ///</param>
+        /// <returns><see cref="SelectValues{String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<string> SelectMany(SelectExpression<string> element)
+            => SimpleConsoleDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" /> values.
@@ -893,11 +948,11 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="TimeSpanElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<TimeSpan> SelectMany(TimeSpanElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
+        public static SelectValues<TimeSpan> SelectMany(AnyElement<TimeSpan> element)
+            => SimpleConsoleDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" />? values.
@@ -905,12 +960,12 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableTimeSpanElement" />
+        /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />?
         ///, for example "dbo.Product.ValidStartTimeOfDayForPurchase"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<TimeSpan?> SelectMany(NullableTimeSpanElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element);
+        public static SelectValues<TimeSpan?> SelectMany(AnyElement<TimeSpan?> element)
+            => SimpleConsoleDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
@@ -923,7 +978,7 @@ namespace SimpleConsole.DataService
         /// <param name="elements">Any expression</param>
         /// <returns><see cref="SelectDynamics"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectDynamics SelectMany(AnyElement element1, AnyElement element2, params AnyElement[] elements)
-            => expressionBuilderFactory.CreateSelectDynamicsBuilder(configuration, element1, element2, elements);
+            => SimpleConsoleDb.SelectMany(element1, element2, elements);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
@@ -934,7 +989,7 @@ namespace SimpleConsole.DataService
         /// <param name="elements">A list of any expression</param>
         /// <returns><see cref="SelectDynamics"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectDynamics SelectMany(IEnumerable<AnyElement> elements)
-            => expressionBuilderFactory.CreateSelectDynamicsBuilder(configuration, elements);
+            => SimpleConsoleDb.SelectMany(elements);
 
             /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
@@ -946,7 +1001,7 @@ namespace SimpleConsole.DataService
         /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
         /// <returns><see cref="SelectDynamics"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectDynamics SelectMany(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
-            => expressionBuilderFactory.CreateSelectDynamicsBuilder(configuration, (elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
+            => SimpleConsoleDb.SelectMany((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
         #endregion
 
         #region update
@@ -963,7 +1018,7 @@ namespace SimpleConsole.DataService
         /// <param name="assignments">An additional list of <see cref="EntityFieldAssignment" />(s) assigning database fields/columns new values.  </param>
         /// <returns><see cref="UpdateEntities"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
         public static UpdateEntities Update(EntityFieldAssignment assignment, params EntityFieldAssignment[] assignments)
-            => expressionBuilderFactory.CreateUpdateExpressionBuilder(configuration, assignment, assignments);
+            => SimpleConsoleDb.Update(assignment, assignments);
 
         /// <summary>
         /// Start constructing a sql UPDATE query expression to update records.
@@ -977,7 +1032,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="UpdateEntities"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
         public static UpdateEntities Update(IEnumerable<EntityFieldAssignment> assignments)
-            => expressionBuilderFactory.CreateUpdateExpressionBuilder(configuration, assignments);   
+            => SimpleConsoleDb.Update(assignments);   
         #endregion
 
         #region delete
@@ -989,7 +1044,7 @@ namespace SimpleConsole.DataService
         /// </summary>
         /// <returns><see cref="DeleteEntities"/>, a fluent builder for constructing a sql DELETE statement.</returns>
         public static DeleteEntities Delete()
-            => expressionBuilderFactory.CreateDeleteExpressionBulder(configuration);
+            => SimpleConsoleDb.Delete();
         #endregion
 
         #region insert
@@ -1005,7 +1060,7 @@ namespace SimpleConsole.DataService
         /// <typeparam name="TEntity">The entity type of the entity to insert.</typeparam>
         public static InsertEntity<TEntity> Insert<TEntity>(TEntity entity)
             where TEntity : class, IDbEntity
-            => expressionBuilderFactory.CreateInsertExpressionBuilder(configuration, entity);
+            => SimpleConsoleDb.Insert(entity);
 
         /// <summary>
         /// Start constructing a sql INSERT query expression to insert one or more record.  The property values from each <paramref name="entities"/> entity instance are used to create the new record values for the INSERT statement.
@@ -1019,7 +1074,7 @@ namespace SimpleConsole.DataService
         /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
         public static InsertEntities<TEntity> InsertMany<TEntity>(TEntity entity, params TEntity[] entities)
             where TEntity : class, IDbEntity
-            => expressionBuilderFactory.CreateInsertExpressionBuilder(configuration, entity, entities);
+            => SimpleConsoleDb.InsertMany(entity, entities);
 
         /// <summary>
         /// Start constructing a sql INSERT query expression to insert one or more record.  The property values from each <paramref name="entities"/> entity instance are used to create the new record values for the INSERT statement.
@@ -1033,7 +1088,7 @@ namespace SimpleConsole.DataService
         /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
         public static InsertEntities<TEntity> InsertMany<TEntity>(IEnumerable<TEntity> entities)
             where TEntity : class, IDbEntity
-            => expressionBuilderFactory.CreateInsertExpressionBuilder(configuration, entities);
+            => SimpleConsoleDb.InsertMany(entities);
         #endregion
 
         #region get connection
@@ -1045,30 +1100,1180 @@ namespace SimpleConsole.DataService
         /// </summary>
         /// <returns><see cref="ISqlConnection"/>, a connection to the database.</returns>
         public static ISqlConnection GetConnection()
-            => new SqlConnector(configuration.ConnectionStringFactory, configuration.ConnectionFactory);
-        #endregion
+            => SimpleConsoleDb.GetConnection();
         #endregion
 
-        #region fx
-        /// <inheritdoc />
-        public partial class fx : MsSqlFunctionExpressionBuilder
+        #endregion
+    }
+    #endregion
+
+    #region SimpleConsoleDb
+    public class SimpleConsoleDb : ISqlDatabaseRuntime
+    {
+        #region internals
+        private static List<SchemaExpression> _schemas = new List<SchemaExpression>();
+        private static SqlDatabaseMetadataProvider _metadata = new SqlDatabaseMetadataProvider(new SimpleConsoleDbSqlDatabaseMetadata("SimpleConsoleDb", "MsSqlDbExTest"));
+       
+        private SimpleConsoleDbStoredProcedures _sp;
+
+        private MsSqlSqlDatabaseRuntimeConfiguration Configuration { get; }
+        #endregion
+
+        #region interface
+        public MsSqlFunctionExpressionBuilder fx => Configuration.FunctionExpressionBuilder;
+        public SimpleConsoleDbStoredProcedures sp => _sp ?? (_sp = new SimpleConsoleDbStoredProcedures(this, _schemas));
+        #endregion
+
+        #region constructors
+        static SimpleConsoleDb()
         {
+            var dboSchema = new _dboDataService.dboSchemaExpression("dbo");
+            _schemas.Add(dboSchema);
+            _dboDataService.dbo.UseSchema(dboSchema);
+
+            var secSchema = new _secDataService.secSchemaExpression("sec");
+            _schemas.Add(secSchema);
+            _secDataService.sec.UseSchema(secSchema);
+
+        }
+
+        public SimpleConsoleDb(MsSqlSqlDatabaseRuntimeConfiguration configuration)
+        {
+            Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            if (Configuration.MetadataProvider is null)
+                Configuration.MetadataProvider = _metadata;
+
+            Configuration.Validate();
         }
         #endregion
 
+        #region methods
+        void ISqlDatabaseRuntime.InitializeStaticRuntime()
+            => db.UseDatabase(this);
+
+        #region select one
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single entity.
+        /// <para>
+        /// To retrieve a <see cref="SimpleConsole.dboData.AccessAuditLog" />, use a type param of <see cref="SimpleConsole.dboData.AccessAuditLog" />
+        /// </para>
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <returns><see cref="SelectEntity{TEntity}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
+        /// <typeparam name="TEntity">The entity type to select.</typeparam>
+        public SelectEntity<TEntity> SelectOne<TEntity>()
+            where TEntity : class, IDbEntity, new()
+            => Configuration.QueryExpressionBuilder.CreateSelectEntityBuilder<TEntity>(Configuration);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="TEnum"/> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />
+        ///, for example "dbo.AccessAuditLog.AccessResult"
+        /// </param>
+        /// <returns><see cref="Sql.SelectValue{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
+        /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
+        public SelectValue<TEnum> SelectOne<TEnum>(AnyElement<TEnum> element)
+            where TEnum : struct, Enum, IComparable
+            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<TEnum>(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="TEnum"/>? value.  
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />?
+        ///, for example "dbo.Address.AddressType"
+        /// </param>
+        /// <returns><see cref="SelectValue{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
+        public SelectValue<TEnum?> SelectOne<TEnum>(AnyElement<TEnum?> element)
+            where TEnum : struct, Enum, IComparable
+            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<TEnum>(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="ObjectElement" />
+        /// </param>
+        /// <returns><see cref="SelectValue{object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<object> SelectOne(ObjectElement element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableObjectElement" />
+        /// </param>
+        /// <returns><see cref="SelectValue{object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<object> SelectOne(NullableObjectElement element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="ObjectElement{T}" />
+        /// </param>
+        /// <returns><see cref="SelectValues{T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <typeparam name="T">The type of the object to select.</typeparam>
+        public SelectValue<T> SelectOne<T>(ObjectElement<T> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<T>(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableObjectElement{T}" />
+        /// </param>
+        /// <returns><see cref="SelectValue{T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <typeparam name="T">The type of the object to select.</typeparam>
+        public SelectValue<T> SelectOne<T>(NullableObjectElement<T> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<T>(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="bool" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />
+        ///</param>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<bool> SelectOne(AnyElement<bool> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="bool" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />?
+        ///</param>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<bool?> SelectOne(AnyElement<bool?> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="byte" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />
+        ///</param>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<byte> SelectOne(AnyElement<byte> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="byte" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />?
+        ///</param>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<byte?> SelectOne(AnyElement<byte?> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[] value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
+        ///</param>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<byte[]> SelectOne(AnyElement<byte[]> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="DateTime" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />
+        ///, for example "dbo.AccessAuditLog.DateCreated", "db.fx.DateAdd(DateParts.Year, 1, dbo.AccessAuditLog.DateCreated) or "db.fx.IsNull(dbo.AccessAuditLog.DateCreated, DateTime.Now)"
+        ///</param>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<DateTime> SelectOne(AnyElement<DateTime> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="DateTime" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />?
+        ///, for example "dbo.Person.BirthDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.BirthDate)
+        ///</param>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<DateTime?> SelectOne(AnyElement<DateTime?> field)
+            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, field);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="DateTimeOffset" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />
+        ///, for example "dbo.Person.RegistrationDate", "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.RegistrationDate)" or "db.fx.IsNull(dbo.Person.RegistrationDate, DateTimeOffset.Now)"
+        ///</param>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<DateTimeOffset> SelectOne(AnyElement<DateTimeOffset> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="DateTimeOffset" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />?
+        ///, for example "dbo.Person.LastLoginDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.LastLoginDate)" 
+        ///</param>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<DateTimeOffset?> SelectOne(AnyElement<DateTimeOffset?> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="decimal" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />
+        ///, for example "dbo.Product.ShippingWeight" or "db.fx.IsNull(dbo.Product.ShippingWeight, decimal.MinValue)"
+        ///</param>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<decimal> SelectOne(AnyElement<decimal> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="decimal" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />?
+        ///, for example "dbo.Product.Height" or "db.fx.Min(dbo.Product.Height)"
+        ///</param>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<decimal?> SelectOne(AnyElement<decimal?> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="double" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Double}" />
+        ///, for example "dbo.Product.ListPrice" or "db.fx.IsNull(dbo.Product.ListPrice, double.MinValue)"
+        ///</param>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<double> SelectOne(AnyElement<double> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="double" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Double}" />?
+        ///, for example "dbo.PersonTotalPurchasesView.TotalAmount" or "db.fx.Min(dbo.PersonTotalPurchasesView.TotalAmount)"
+        ///</param>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<double?> SelectOne(AnyElement<double?> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="Guid" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />
+        ///</param>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<Guid> SelectOne(AnyElement<Guid> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="Guid" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />?
+        ///, for example "dbo.Purchase.TrackingIdentifier"
+        ///</param>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<Guid?> SelectOne(AnyElement<Guid?> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="short" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />
+        ///</param>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<short> SelectOne(AnyElement<short> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="short" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />?
+        ///</param>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<short?> SelectOne(AnyElement<short?> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="int" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />?
+        ///, for example "dbo.AccessAuditLog.Id" or "db.fx.Avg(dbo.AccessAuditLog.Id)"
+        ///</param>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<int> SelectOne(AnyElement<int> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="int" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />?
+        ///, for example "dbo.Person.CreditLimit" or "db.fx.Avg(dbo.Person.CreditLimit)"
+        ///</param>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<int?> SelectOne(AnyElement<int?> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="long" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />
+        ///</param>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<long> SelectOne(AnyElement<long> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="long" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />?
+        ///</param>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<long?> SelectOne(AnyElement<long?> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="float" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Single}" />
+        ///</param>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<float> SelectOne(AnyElement<float> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="float" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Single}" />?
+        ///</param>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<float?> SelectOne(AnyElement<float?> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="string" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{String}" />
+        ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
+        ///</param>
+        /// <returns><see cref="SelectValue{String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<string> SelectOne(StringElement element) 
+            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="string" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{String}" />
+        ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
+        ///</param>
+        /// <returns><see cref="SelectValue{String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<string> SelectOne(NullableStringElement element) 
+            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="string" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{String}" />
+        ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
+        ///</param>
+        /// <returns><see cref="SelectValue{String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<string> SelectOne(SelectExpression<string> element) 
+            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />
+        ///</param>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<TimeSpan> SelectOne(AnyElement<TimeSpan> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />?
+        ///, for example "dbo.Product.ValidStartTimeOfDayForPurchase"
+        ///</param>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<TimeSpan?> SelectOne(AnyElement<TimeSpan?> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element1">Any expression</param>
+        /// <param name="element2">Any expression</param>
+        /// <param name="elements">Any expression</param>
+        /// <returns><see cref="SelectDynamic"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectDynamic SelectOne(AnyElement element1, AnyElement element2, params AnyElement[] elements)
+            => Configuration.QueryExpressionBuilder.CreateSelectDynamicBuilder(Configuration, element1, element2, elements);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element1">Any expression</param>
+        /// <param name="elements">A list of any expression</param>
+        /// <returns><see cref="SelectDynamic"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectDynamic SelectOne(IEnumerable<AnyElement> elements)
+            => Configuration.QueryExpressionBuilder.CreateSelectDynamicBuilder(Configuration, elements);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="elements">A list of any expression that is valid for a SELECT query expression.</param>
+        /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
+        /// <returns><see cref="SelectDynamics"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectDynamic SelectOne(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
+            => Configuration.QueryExpressionBuilder.CreateSelectDynamicBuilder(Configuration, (elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
+        #endregion
+
+        #region select many
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of entities.
+        /// <para>
+        /// To retrieve a list of <see cref="SimpleConsole.dboData.AccessAuditLog" />(s), use a type param of <see cref="SimpleConsole.dboData.AccessAuditLog" />
+        /// </para>
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <returns><see cref="SelectEntities{TEntity}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
+        /// <typeparam name="TEntity">The entity type to select.</typeparam>
+        public SelectEntities<TEntity> SelectMany<TEntity>()
+           where TEntity : class, IDbEntity, new()
+           => Configuration.QueryExpressionBuilder.CreateSelectEntitiesBuilder<TEntity>(Configuration);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="TEnum"/> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />
+        ///, for example "dbo.AccessAuditLog.AccessResult"
+        /// </param>
+        /// <returns><see cref="SelectValues{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
+        public SelectValues<TEnum> SelectMany<TEnum>(AnyElement<TEnum> element)
+            where TEnum : struct, Enum, IComparable
+            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<TEnum>(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="TEnum"/>? values.
+        /// </summary>
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />?
+        ///, for example "dbo.Address.AddressType"
+        /// </param>
+        /// <returns><see cref="SelectValues{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<TEnum?> SelectMany<TEnum>(AnyElement<TEnum?> element)
+            where TEnum : struct, Enum, IComparable
+            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<TEnum>(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="ObjectElement" />
+        /// </param>
+        /// <returns><see cref="SelectValues{object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<object> SelectMany(ObjectElement element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableObjectElement" />
+        /// </param>
+        /// <returns><see cref="SelectValues{object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<object> SelectMany(NullableObjectElement element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="ObjectElement{T}" />
+        /// </param>
+        /// <returns><see cref="SelectValues{T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <typeparam name="T">The type of the object to select.</typeparam>
+        public SelectValues<T> SelectMany<T>(ObjectElement<T> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<T>(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableObjectElement{T}" />
+        /// </param>
+        /// <returns><see cref="SelectValues{T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <typeparam name="T">The type of the object to select.</typeparam>
+        public SelectValues<T> SelectMany<T>(NullableObjectElement<T> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<T>(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="bool" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />
+        ///</param>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<bool> SelectMany(AnyElement<bool> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="bool" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />?
+        ///</param>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<bool?> SelectMany(AnyElement<bool?> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="byte" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />
+        ///</param>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<byte> SelectMany(AnyElement<byte> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />?
+        ///</param>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<byte?> SelectMany(AnyElement<byte?> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[] values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
+        ///</param>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<byte[]> SelectMany(AnyElement<byte[]> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="DateTime" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />
+        ///, for example "dbo.AccessAuditLog.DateCreated", "db.fx.DateAdd(DateParts.Year, 1, dbo.AccessAuditLog.DateCreated) or "db.fx.IsNull(dbo.AccessAuditLog.DateCreated, DateTime.Now)"
+        ///</param>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<DateTime> SelectMany(AnyElement<DateTime> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="DateTime" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />?
+        ///, for example "dbo.Person.BirthDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.BirthDate)
+        ///</param>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<DateTime?> SelectMany(AnyElement<DateTime?> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="DateTimeOffset" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />
+        ///, for example "dbo.Person.RegistrationDate", "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.RegistrationDate)" or "db.fx.IsNull(dbo.Person.RegistrationDate, DateTimeOffset.Now)"
+        ///</param>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<DateTimeOffset> SelectMany(AnyElement<DateTimeOffset> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="DateTimeOffset" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />?
+        ///, for example "dbo.Person.LastLoginDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.LastLoginDate)" 
+        ///</param>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<DateTimeOffset?> SelectMany(AnyElement<DateTimeOffset?> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="decimal" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />
+        ///, for example "dbo.Product.ShippingWeight" or "db.fx.IsNull(dbo.Product.ShippingWeight, decimal.MinValue)"
+        ///</param>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<decimal> SelectMany(AnyElement<decimal> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="decimal" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />?
+        ///, for example "dbo.Product.Height"
+        ///</param>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<decimal?> SelectMany(AnyElement<decimal?> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="double" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Double}" />
+        ///, for example "dbo.Product.ListPrice" or "db.fx.IsNull(dbo.Product.ListPrice, double.MinValue)"
+        ///</param>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<double> SelectMany(AnyElement<double> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="double" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Double}" />?
+        ///, for example "dbo.PersonTotalPurchasesView.TotalAmount"
+        ///</param>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<double?> SelectMany(AnyElement<double?> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="Guid" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />
+        ///</param>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<Guid> SelectMany(AnyElement<Guid> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="Guid" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />?
+        ///, for example "dbo.Purchase.TrackingIdentifier"
+        ///</param>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<Guid?> SelectMany(AnyElement<Guid?> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="short" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />
+        ///</param>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<short> SelectMany(AnyElement<short> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="short" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />?
+        ///</param>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<short?> SelectMany(AnyElement<short?> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="int" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />
+        ///, for example "dbo.AccessAuditLog.Id"
+        ///</param>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<int> SelectMany(AnyElement<int> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="int" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />?
+        ///, for example "dbo.:column.Entity.Name}.CreditLimit"
+        ///</param>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<int?> SelectMany(AnyElement<int?> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="long" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />
+        ///</param>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<long> SelectMany(AnyElement<long> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="long" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />?
+        ///</param>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<long?> SelectMany(AnyElement<long?> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="float" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Single}" />
+        ///</param>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<float> SelectMany(AnyElement<float> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="float" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Single}" />?
+        ///</param>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<float?> SelectMany(AnyElement<float?> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="string" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{String}" />
+        ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
+        ///</param>
+        /// <returns><see cref="SelectValues{String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<string> SelectMany(StringElement element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="string" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{String}" />
+        ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
+        ///</param>
+        /// <returns><see cref="SelectValues{String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<string> SelectMany(NullableStringElement element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="string" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{String}" />
+        ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
+        ///</param>
+        /// <returns><see cref="SelectValues{String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<string> SelectMany(SelectExpression<string> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />
+        ///</param>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<TimeSpan> SelectMany(AnyElement<TimeSpan> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />?
+        ///, for example "dbo.Product.ValidStartTimeOfDayForPurchase"
+        ///</param>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<TimeSpan?> SelectMany(AnyElement<TimeSpan?> element)
+            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder(Configuration, element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element1">Any expression</param>
+        /// <param name="element2">Any expression</param>
+        /// <param name="elements">Any expression</param>
+        /// <returns><see cref="SelectDynamics"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectDynamics SelectMany(AnyElement element1, AnyElement element2, params AnyElement[] elements)
+            => Configuration.QueryExpressionBuilder.CreateSelectDynamicsBuilder(Configuration, element1, element2, elements);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="elements">A list of any expression</param>
+        /// <returns><see cref="SelectDynamics"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectDynamics SelectMany(IEnumerable<AnyElement> elements)
+            => Configuration.QueryExpressionBuilder.CreateSelectDynamicsBuilder(Configuration, elements);
+
+            /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="elements">A list of any expression that is valid for a SELECT query expression.</param>
+        /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
+        /// <returns><see cref="SelectDynamics"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectDynamics SelectMany(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
+            => Configuration.QueryExpressionBuilder.CreateSelectDynamicsBuilder(Configuration, (elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
+        #endregion
+
+        #region update
+        /// <summary>
+        /// Start constructing a sql UPDATE query expression to update record(s).
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/update-transact-sql">Microsoft docs on UPDATE</see>
+        /// </para>
+        /// </summary>
+        /// <param name="assignment">A <see cref="EntityFieldAssignment" /> assigning a database field/column a new value.  
+        /// For example "dbo.Address.Line1.Set("new value")"
+        /// or "dbo.Person.CreditLimit.Set(dbo.Person.CreditLimit + 10)"
+        ///</param>
+        /// <param name="assignments">An additional list of <see cref="EntityFieldAssignment" />(s) assigning database fields/columns new values.  </param>
+        /// <returns><see cref="UpdateEntities"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
+        public UpdateEntities Update(EntityFieldAssignment assignment, params EntityFieldAssignment[] assignments)
+            => Configuration.QueryExpressionBuilder.CreateUpdateExpressionBuilder(Configuration, assignment, assignments);
+
+        /// <summary>
+        /// Start constructing a sql UPDATE query expression to update records.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/update-transact-sql">Microsoft docs on UPDATE</see>
+        /// </para>
+        /// </summary>
+        /// <param name="assignments">A list of <see cref="EntityFieldAssignment" />(s) that assign a database field/column a new value.  
+        /// For example "dbo.Address.Line1.Set("new value")"
+        /// or "dbo.Person.CreditLimit.Set(dbo.Person.CreditLimit + 10)"
+        ///</param>
+        /// <returns><see cref="UpdateEntities"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
+        public UpdateEntities Update(IEnumerable<EntityFieldAssignment> assignments)
+            => Configuration.QueryExpressionBuilder.CreateUpdateExpressionBuilder(Configuration, assignments);   
+        #endregion
+
+        #region delete
+        /// <summary>
+        /// Start constructing a sql DELETE query expression to remove records.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/statements/delete-transact-sql">Microsoft docs on DELETE</see>
+        /// </para>
+        /// </summary>
+        /// <returns><see cref="DeleteEntities"/>, a fluent builder for constructing a sql DELETE statement.</returns>
+        public DeleteEntities Delete()
+            => Configuration.QueryExpressionBuilder.CreateDeleteExpressionBulder(Configuration);
+        #endregion
+
+        #region insert
+        /// <summary>
+        /// Start constructing a sql INSERT query expression to insert a record.  Property values from the <paramref name="entity"/> instance are used to create the record values for the INSERT statement. 
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/statements/insert-transact-sql">Microsoft docs on INSERT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="entity">The entity supplying the property values.
+        /// </param>
+        /// <returns><see cref="InsertEntity{TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
+        /// <typeparam name="TEntity">The entity type of the entity to insert.</typeparam>
+        public InsertEntity<TEntity> Insert<TEntity>(TEntity entity)
+            where TEntity : class, IDbEntity
+            => Configuration.QueryExpressionBuilder.CreateInsertExpressionBuilder(Configuration, entity);
+
+        /// <summary>
+        /// Start constructing a sql INSERT query expression to insert one or more record.  The property values from each <paramref name="entities"/> entity instance are used to create the new record values for the INSERT statement.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/statements/insert-transact-sql">Microsoft docs on INSERT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="entities">A list of entities.
+        /// </param>
+        /// <returns><see cref="InsertEntities{TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
+        /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
+        public InsertEntities<TEntity> InsertMany<TEntity>(TEntity entity, params TEntity[] entities)
+            where TEntity : class, IDbEntity
+            => Configuration.QueryExpressionBuilder.CreateInsertExpressionBuilder(Configuration, entity, entities);
+
+        /// <summary>
+        /// Start constructing a sql INSERT query expression to insert one or more record.  The property values from each <paramref name="entities"/> entity instance are used to create the new record values for the INSERT statement.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/statements/insert-transact-sql">Microsoft docs on INSERT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="entities">A list of entities.
+        /// </param>
+        /// <returns><see cref="InsertEntities{TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
+        /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
+        public InsertEntities<TEntity> InsertMany<TEntity>(IEnumerable<TEntity> entities)
+            where TEntity : class, IDbEntity
+            => Configuration.QueryExpressionBuilder.CreateInsertExpressionBuilder(Configuration, entities);
+        #endregion
+
+        #region get connection
+        /// <summary>
+        /// Creates a connection to the database.
+        /// <para>
+        /// The connection has not been opened, use <see cref="System.Data.IDbConnection.Open"/> or <see cref="Connection.ISqlConnection.EnsureOpen"/> to ensure an open connection to the database prior to operations like <see cref="System.Data.IDbConnection.BeginTransaction"/>.
+        /// </para>
+        /// </summary>
+        /// <returns><see cref="ISqlConnection"/>, a connection to the database.</returns>
+        public ISqlConnection GetConnection()
+            => new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+        #endregion
+        #endregion
+
         #region sp
-        /// <inheritdoc />
-        public partial class sp : MsSqlStoredProcedureExpressionBuilder
+        public class SimpleConsoleDbStoredProcedures
         {
+            #region internals
+            private readonly dboStoredProcedures _dboStoredProcedures;
+            private readonly secStoredProcedures _secStoredProcedures;
+            #endregion
+
+            #region interface
             /// <summary>
             /// Accessors to construct and execute stored procedure query expressions in the dbo schema.
             /// </summary>
-            public partial class dbo
+            public dboStoredProcedures dbo => _dboStoredProcedures;
+
+            /// <summary>
+            /// Accessors to construct and execute stored procedure query expressions in the sec schema.
+            /// </summary>
+            public secStoredProcedures sec => _secStoredProcedures;
+
+            #endregion
+
+            #region constructors
+            public SimpleConsoleDbStoredProcedures(SimpleConsoleDb database, IEnumerable<SchemaExpression> schemas)
             {
+                if (database is null)
+                    throw new ArgumentNullException(nameof(database));
+                _dboStoredProcedures = new dboStoredProcedures(database, schemas.Single(s => s.Identifier == "dbo"));
+                _secStoredProcedures = new secStoredProcedures(database, schemas.Single(s => s.Identifier == "sec"));
+            }
+            #endregion
+        }
+
+        #region classes
+        /// <summary>
+        /// Accessors to construct and execute stored procedure query expressions in the dbo schema.
+        /// </summary>
+        public class dboStoredProcedures
+        {
+            #region internals
+            private readonly SimpleConsoleDb _database;
+            private readonly SchemaExpression _dbo;
+            #endregion
+
+            #region constructors
+            public dboStoredProcedures(SimpleConsoleDb database, SchemaExpression schema)
+            {
+                _database = database ?? throw new ArgumentNullException(nameof(database));
+                _dbo = schema ?? throw new ArgumentNullException(nameof(schema));
+            }
+            #endregion
+
+            #region methods
                 /// <summary>
                 /// Method to start constructing a stored procedure query expression for the SelectPerson_As_Dynamic_With_Input stored procedure.
                 /// </summary>
-                /// <param name="P1">The value to use for creating the database parameter @P1.
+                /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
                 /// <para>Database Properties:
                 /// <list type="table">
                 /// <item>
@@ -1084,13 +2289,13 @@ namespace SimpleConsole.DataService
                 /// </para>
                 /// </param>
                 /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-                public static StoredProcedureContinuation SelectPerson_As_Dynamic_With_Input(int? P1)
-                    => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, new SelectPerson_As_Dynamic_With_InputStoredProcedure("dbo", schemas.Single(s => s.Identifier == "dbo"), P1));
+            public StoredProcedureContinuation SelectPerson_As_Dynamic_With_Input(int? P1)
+                => _database.Configuration.QueryExpressionBuilder.CreateStoredProcedureBuilder(_database.Configuration, new SelectPerson_As_Dynamic_With_InputStoredProcedure("dbo", _dbo, P1));
 
                 /// <summary>
                 /// Method to start constructing a stored procedure query expression for the SelectPerson_As_Dynamic_With_Input_And_InputOutput stored procedure.
                 /// </summary>
-                /// <param name="P1">The value to use for creating the database parameter @P1.
+                /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
                 /// <para>Database Properties:
                 /// <list type="table">
                 /// <item>
@@ -1107,13 +2312,13 @@ namespace SimpleConsole.DataService
                 /// </param>
                 /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
                 /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-                public static StoredProcedureContinuation SelectPerson_As_Dynamic_With_Input_And_InputOutput(int? P1, Action<ISqlOutputParameterList> outputParameters)
-                    => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, new SelectPerson_As_Dynamic_With_Input_And_InputOutputStoredProcedure("dbo", schemas.Single(s => s.Identifier == "dbo"), P1, outputParameters));
+            public StoredProcedureContinuation SelectPerson_As_Dynamic_With_Input_And_InputOutput(int? P1, Action<ISqlOutputParameterList> outputParameters)
+                => _database.Configuration.QueryExpressionBuilder.CreateStoredProcedureBuilder(_database.Configuration, new SelectPerson_As_Dynamic_With_Input_And_InputOutputStoredProcedure("dbo", _dbo, P1, outputParameters));
 
                 /// <summary>
                 /// Method to start constructing a stored procedure query expression for the SelectPerson_As_Dynamic_With_Input_And_Output stored procedure.
                 /// </summary>
-                /// <param name="P1">The value to use for creating the database parameter @P1.
+                /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
                 /// <para>Database Properties:
                 /// <list type="table">
                 /// <item>
@@ -1130,13 +2335,13 @@ namespace SimpleConsole.DataService
                 /// </param>
                 /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
                 /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-                public static StoredProcedureContinuation SelectPerson_As_Dynamic_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
-                    => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, new SelectPerson_As_Dynamic_With_Input_And_OutputStoredProcedure("dbo", schemas.Single(s => s.Identifier == "dbo"), P1, outputParameters));
+            public StoredProcedureContinuation SelectPerson_As_Dynamic_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
+                => _database.Configuration.QueryExpressionBuilder.CreateStoredProcedureBuilder(_database.Configuration, new SelectPerson_As_Dynamic_With_Input_And_OutputStoredProcedure("dbo", _dbo, P1, outputParameters));
 
                 /// <summary>
                 /// Method to start constructing a stored procedure query expression for the SelectPerson_As_DynamicList_With_Input stored procedure.
                 /// </summary>
-                /// <param name="P1">The value to use for creating the database parameter @P1.
+                /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
                 /// <para>Database Properties:
                 /// <list type="table">
                 /// <item>
@@ -1152,13 +2357,13 @@ namespace SimpleConsole.DataService
                 /// </para>
                 /// </param>
                 /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-                public static StoredProcedureContinuation SelectPerson_As_DynamicList_With_Input(int? P1)
-                    => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, new SelectPerson_As_DynamicList_With_InputStoredProcedure("dbo", schemas.Single(s => s.Identifier == "dbo"), P1));
+            public StoredProcedureContinuation SelectPerson_As_DynamicList_With_Input(int? P1)
+                => _database.Configuration.QueryExpressionBuilder.CreateStoredProcedureBuilder(_database.Configuration, new SelectPerson_As_DynamicList_With_InputStoredProcedure("dbo", _dbo, P1));
 
                 /// <summary>
                 /// Method to start constructing a stored procedure query expression for the SelectPerson_As_DynamicList_With_Input_And_InputOutput stored procedure.
                 /// </summary>
-                /// <param name="P1">The value to use for creating the database parameter @P1.
+                /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
                 /// <para>Database Properties:
                 /// <list type="table">
                 /// <item>
@@ -1175,13 +2380,13 @@ namespace SimpleConsole.DataService
                 /// </param>
                 /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
                 /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-                public static StoredProcedureContinuation SelectPerson_As_DynamicList_With_Input_And_InputOutput(int? P1, Action<ISqlOutputParameterList> outputParameters)
-                    => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, new SelectPerson_As_DynamicList_With_Input_And_InputOutputStoredProcedure("dbo", schemas.Single(s => s.Identifier == "dbo"), P1, outputParameters));
+            public StoredProcedureContinuation SelectPerson_As_DynamicList_With_Input_And_InputOutput(int? P1, Action<ISqlOutputParameterList> outputParameters)
+                => _database.Configuration.QueryExpressionBuilder.CreateStoredProcedureBuilder(_database.Configuration, new SelectPerson_As_DynamicList_With_Input_And_InputOutputStoredProcedure("dbo", _dbo, P1, outputParameters));
 
                 /// <summary>
                 /// Method to start constructing a stored procedure query expression for the SelectPerson_As_DynamicList_With_Input_And_Output stored procedure.
                 /// </summary>
-                /// <param name="P1">The value to use for creating the database parameter @P1.
+                /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
                 /// <para>Database Properties:
                 /// <list type="table">
                 /// <item>
@@ -1198,13 +2403,13 @@ namespace SimpleConsole.DataService
                 /// </param>
                 /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
                 /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-                public static StoredProcedureContinuation SelectPerson_As_DynamicList_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
-                    => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, new SelectPerson_As_DynamicList_With_Input_And_OutputStoredProcedure("dbo", schemas.Single(s => s.Identifier == "dbo"), P1, outputParameters));
+            public StoredProcedureContinuation SelectPerson_As_DynamicList_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
+                => _database.Configuration.QueryExpressionBuilder.CreateStoredProcedureBuilder(_database.Configuration, new SelectPerson_As_DynamicList_With_Input_And_OutputStoredProcedure("dbo", _dbo, P1, outputParameters));
 
                 /// <summary>
                 /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValue_With_Input stored procedure.
                 /// </summary>
-                /// <param name="P1">The value to use for creating the database parameter @P1.
+                /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
                 /// <para>Database Properties:
                 /// <list type="table">
                 /// <item>
@@ -1220,13 +2425,13 @@ namespace SimpleConsole.DataService
                 /// </para>
                 /// </param>
                 /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-                public static StoredProcedureContinuation SelectPersonId_As_ScalarValue_With_Input(int? P1)
-                    => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, new SelectPersonId_As_ScalarValue_With_InputStoredProcedure("dbo", schemas.Single(s => s.Identifier == "dbo"), P1));
+            public StoredProcedureContinuation SelectPersonId_As_ScalarValue_With_Input(int? P1)
+                => _database.Configuration.QueryExpressionBuilder.CreateStoredProcedureBuilder(_database.Configuration, new SelectPersonId_As_ScalarValue_With_InputStoredProcedure("dbo", _dbo, P1));
 
                 /// <summary>
                 /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValue_With_Input_And_Default_Value stored procedure.
                 /// </summary>
-                /// <param name="P1">The value to use for creating the database parameter @P1.
+                /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
                 /// <para>Database Properties:
                 /// <list type="table">
                 /// <item>
@@ -1242,13 +2447,13 @@ namespace SimpleConsole.DataService
                 /// </para>
                 /// </param>
                 /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-                public static StoredProcedureContinuation SelectPersonId_As_ScalarValue_With_Input_And_Default_Value(int? P1)
-                    => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, new SelectPersonId_As_ScalarValue_With_Input_And_Default_ValueStoredProcedure("dbo", schemas.Single(s => s.Identifier == "dbo"), P1));
+            public StoredProcedureContinuation SelectPersonId_As_ScalarValue_With_Input_And_Default_Value(int? P1)
+                => _database.Configuration.QueryExpressionBuilder.CreateStoredProcedureBuilder(_database.Configuration, new SelectPersonId_As_ScalarValue_With_Input_And_Default_ValueStoredProcedure("dbo", _dbo, P1));
 
                 /// <summary>
                 /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValue_With_Input_And_InputOutput stored procedure.
                 /// </summary>
-                /// <param name="P1">The value to use for creating the database parameter @P1.
+                /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
                 /// <para>Database Properties:
                 /// <list type="table">
                 /// <item>
@@ -1265,13 +2470,13 @@ namespace SimpleConsole.DataService
                 /// </param>
                 /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
                 /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-                public static StoredProcedureContinuation SelectPersonId_As_ScalarValue_With_Input_And_InputOutput(int? P1, Action<ISqlOutputParameterList> outputParameters)
-                    => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, new SelectPersonId_As_ScalarValue_With_Input_And_InputOutputStoredProcedure("dbo", schemas.Single(s => s.Identifier == "dbo"), P1, outputParameters));
+            public StoredProcedureContinuation SelectPersonId_As_ScalarValue_With_Input_And_InputOutput(int? P1, Action<ISqlOutputParameterList> outputParameters)
+                => _database.Configuration.QueryExpressionBuilder.CreateStoredProcedureBuilder(_database.Configuration, new SelectPersonId_As_ScalarValue_With_Input_And_InputOutputStoredProcedure("dbo", _dbo, P1, outputParameters));
 
                 /// <summary>
                 /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValue_With_Input_And_Output stored procedure.
                 /// </summary>
-                /// <param name="P1">The value to use for creating the database parameter @P1.
+                /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
                 /// <para>Database Properties:
                 /// <list type="table">
                 /// <item>
@@ -1288,13 +2493,13 @@ namespace SimpleConsole.DataService
                 /// </param>
                 /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
                 /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-                public static StoredProcedureContinuation SelectPersonId_As_ScalarValue_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
-                    => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, new SelectPersonId_As_ScalarValue_With_Input_And_OutputStoredProcedure("dbo", schemas.Single(s => s.Identifier == "dbo"), P1, outputParameters));
+            public StoredProcedureContinuation SelectPersonId_As_ScalarValue_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
+                => _database.Configuration.QueryExpressionBuilder.CreateStoredProcedureBuilder(_database.Configuration, new SelectPersonId_As_ScalarValue_With_Input_And_OutputStoredProcedure("dbo", _dbo, P1, outputParameters));
 
                 /// <summary>
                 /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValueList_With_Input stored procedure.
                 /// </summary>
-                /// <param name="P1">The value to use for creating the database parameter @P1.
+                /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
                 /// <para>Database Properties:
                 /// <list type="table">
                 /// <item>
@@ -1310,13 +2515,13 @@ namespace SimpleConsole.DataService
                 /// </para>
                 /// </param>
                 /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-                public static StoredProcedureContinuation SelectPersonId_As_ScalarValueList_With_Input(int? P1)
-                    => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, new SelectPersonId_As_ScalarValueList_With_InputStoredProcedure("dbo", schemas.Single(s => s.Identifier == "dbo"), P1));
+            public StoredProcedureContinuation SelectPersonId_As_ScalarValueList_With_Input(int? P1)
+                => _database.Configuration.QueryExpressionBuilder.CreateStoredProcedureBuilder(_database.Configuration, new SelectPersonId_As_ScalarValueList_With_InputStoredProcedure("dbo", _dbo, P1));
 
                 /// <summary>
                 /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput stored procedure.
                 /// </summary>
-                /// <param name="P1">The value to use for creating the database parameter @P1.
+                /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
                 /// <para>Database Properties:
                 /// <list type="table">
                 /// <item>
@@ -1333,13 +2538,13 @@ namespace SimpleConsole.DataService
                 /// </param>
                 /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
                 /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-                public static StoredProcedureContinuation SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput(int? P1, Action<ISqlOutputParameterList> outputParameters)
-                    => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, new SelectPersonId_As_ScalarValueList_With_Input_And_InputOutputStoredProcedure("dbo", schemas.Single(s => s.Identifier == "dbo"), P1, outputParameters));
+            public StoredProcedureContinuation SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput(int? P1, Action<ISqlOutputParameterList> outputParameters)
+                => _database.Configuration.QueryExpressionBuilder.CreateStoredProcedureBuilder(_database.Configuration, new SelectPersonId_As_ScalarValueList_With_Input_And_InputOutputStoredProcedure("dbo", _dbo, P1, outputParameters));
 
                 /// <summary>
                 /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValueList_With_Input_And_Output stored procedure.
                 /// </summary>
-                /// <param name="P1">The value to use for creating the database parameter @P1.
+                /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
                 /// <para>Database Properties:
                 /// <list type="table">
                 /// <item>
@@ -1356,13 +2561,13 @@ namespace SimpleConsole.DataService
                 /// </param>
                 /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
                 /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-                public static StoredProcedureContinuation SelectPersonId_As_ScalarValueList_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
-                    => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, new SelectPersonId_As_ScalarValueList_With_Input_And_OutputStoredProcedure("dbo", schemas.Single(s => s.Identifier == "dbo"), P1, outputParameters));
+            public StoredProcedureContinuation SelectPersonId_As_ScalarValueList_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
+                => _database.Configuration.QueryExpressionBuilder.CreateStoredProcedureBuilder(_database.Configuration, new SelectPersonId_As_ScalarValueList_With_Input_And_OutputStoredProcedure("dbo", _dbo, P1, outputParameters));
 
                 /// <summary>
                 /// Method to start constructing a stored procedure query expression for the UpdatePersonCreditLimit_With_Inputs stored procedure.
                 /// </summary>
-                /// <param name="P1">The value to use for creating the database parameter @P1.
+                /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
                 /// <para>Database Properties:
                 /// <list type="table">
                 /// <item>
@@ -1377,7 +2582,7 @@ namespace SimpleConsole.DataService
                 /// </list>
                 /// </para>
                 /// </param>
-                /// <param name="CreditLimit">The value to use for creating the database parameter @CreditLimit.
+                /// <param name="CreditLimit">The value to use for creating the stored procedure parameter @CreditLimit.
                 /// <para>Database Properties:
                 /// <list type="table">
                 /// <item>
@@ -1393,28 +2598,36 @@ namespace SimpleConsole.DataService
                 /// </para>
                 /// </param>
                 /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-                public static StoredProcedureContinuation UpdatePersonCreditLimit_With_Inputs(int? P1,int? CreditLimit)
-                    => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, new UpdatePersonCreditLimit_With_InputsStoredProcedure("dbo", schemas.Single(s => s.Identifier == "dbo"), P1, CreditLimit));
+            public StoredProcedureContinuation UpdatePersonCreditLimit_With_Inputs(int? P1,int? CreditLimit)
+                => _database.Configuration.QueryExpressionBuilder.CreateStoredProcedureBuilder(_database.Configuration, new UpdatePersonCreditLimit_With_InputsStoredProcedure("dbo", _dbo, P1, CreditLimit));
 
-            }
-
-            /// <summary>
-            /// Accessors to construct and execute stored procedure query expressions in the sec schema.
-            /// </summary>
-            public partial class sec
-            {
-            }
-
+            #endregion
         }
-        #endregion
-    }
-    #endregion
 
-    #region runtime environment db
-    public class SimpleConsoleDb : RuntimeEnvironmentSqlDatabase
-    {
-        public SimpleConsoleDb() : base(new db(), new SqlDatabaseMetadataProvider(new SimpleConsoleDbSqlDatabaseMetadata("SimpleConsoleDb", "MsSqlDbExTest")))
-        { }
+        /// <summary>
+        /// Accessors to construct and execute stored procedure query expressions in the sec schema.
+        /// </summary>
+        public class secStoredProcedures
+        {
+            #region internals
+            private readonly SimpleConsoleDb _database;
+            private readonly SchemaExpression _sec;
+            #endregion
+
+            #region constructors
+            public secStoredProcedures(SimpleConsoleDb database, SchemaExpression schema)
+            {
+                _database = database ?? throw new ArgumentNullException(nameof(database));
+                _sec = schema ?? throw new ArgumentNullException(nameof(schema));
+            }
+            #endregion
+
+            #region methods
+            #endregion
+        }
+
+        #endregion
+        #endregion
     }
     #endregion
 
@@ -1440,16 +2653,16 @@ namespace SimpleConsole.dboDataService
         #endregion
 
         #region constructors
-        public dboSchemaExpression(string identifier) : base(identifier, null)
+        public dboSchemaExpression(string identifier) : base(identifier)
         {
-            Entities.Add($"{identifier}.AccessAuditLog", AccessAuditLog = new AccessAuditLogEntity($"{identifier}.AccessAuditLog", "AccessAuditLog", this));
-            Entities.Add($"{identifier}.Address", Address = new AddressEntity($"{identifier}.Address", "Address", this));
-            Entities.Add($"{identifier}.Person", Person = new PersonEntity($"{identifier}.Person", "Person", this));
-            Entities.Add($"{identifier}.Person_Address", PersonAddress = new PersonAddressEntity($"{identifier}.Person_Address", "Person_Address", this));
-            Entities.Add($"{identifier}.Product", Product = new ProductEntity($"{identifier}.Product", "Product", this));
-            Entities.Add($"{identifier}.Purchase", Purchase = new PurchaseEntity($"{identifier}.Purchase", "Purchase", this));
-            Entities.Add($"{identifier}.PurchaseLine", PurchaseLine = new PurchaseLineEntity($"{identifier}.PurchaseLine", "PurchaseLine", this));
-            Entities.Add($"{identifier}.PersonTotalPurchasesView", PersonTotalPurchasesView = new PersonTotalPurchasesViewEntity($"{identifier}.PersonTotalPurchasesView", "PersonTotalPurchasesView", this));
+            Attributes.Entities.Add($"{identifier}.AccessAuditLog", AccessAuditLog = new AccessAuditLogEntity($"{identifier}.AccessAuditLog", "AccessAuditLog", this));
+            Attributes.Entities.Add($"{identifier}.Address", Address = new AddressEntity($"{identifier}.Address", "Address", this));
+            Attributes.Entities.Add($"{identifier}.Person", Person = new PersonEntity($"{identifier}.Person", "Person", this));
+            Attributes.Entities.Add($"{identifier}.Person_Address", PersonAddress = new PersonAddressEntity($"{identifier}.Person_Address", "Person_Address", this));
+            Attributes.Entities.Add($"{identifier}.Product", Product = new ProductEntity($"{identifier}.Product", "Product", this));
+            Attributes.Entities.Add($"{identifier}.Purchase", Purchase = new PurchaseEntity($"{identifier}.Purchase", "Purchase", this));
+            Attributes.Entities.Add($"{identifier}.PurchaseLine", PurchaseLine = new PurchaseLineEntity($"{identifier}.PurchaseLine", "PurchaseLine", this));
+            Attributes.Entities.Add($"{identifier}.PersonTotalPurchasesView", PersonTotalPurchasesView = new PersonTotalPurchasesViewEntity($"{identifier}.PersonTotalPurchasesView", "PersonTotalPurchasesView", this));
         }
         #endregion
     }
@@ -1463,9 +2676,10 @@ namespace SimpleConsole.dboDataService
         #endregion
 
         #region interface
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.AccessAuditLogEntity.IdField"/> representing the "dbo.AccessAuditLog.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="SimpleConsole.dboDataService.AccessAuditLogEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -1485,9 +2699,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly IdField Id;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.AccessAuditLogEntity.PersonIdField"/> representing the "dbo.AccessAuditLog.PersonId" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="SimpleConsole.dboDataService.AccessAuditLogEntity.PersonIdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -1504,9 +2719,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly PersonIdField PersonId;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.AccessAuditLogEntity.AccessResultField"/> representing the "dbo.AccessAuditLog.AccessResult" column in the database, 
         /// with a .NET type of <see cref="SimpleConsole.Data.AccessAuditResult"/>.  The <see cref="SimpleConsole.dboDataService.AccessAuditLogEntity.AccessResultField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyEnumElement{SimpleConsole.Data.AccessAuditResult}Element"/> or <see cref="HatTrick.DbEx.Sql.EnumElement{SimpleConsole.Data.AccessAuditResult}Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{SimpleConsole.Data.AccessAuditResult}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -1523,9 +2739,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly AccessResultField AccessResult;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.AccessAuditLogEntity.DateCreatedField"/> representing the "dbo.AccessAuditLog.DateCreated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="SimpleConsole.dboDataService.AccessAuditLogEntity.DateCreatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -1548,34 +2765,30 @@ namespace SimpleConsole.dboDataService
         #endregion
 
         #region constructors
-        private AccessAuditLogEntity() : base(null, null, null, null)
+        public AccessAuditLogEntity(string identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
 
-        public AccessAuditLogEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
+        private AccessAuditLogEntity(string identifier, string name, Schema schema, string alias) : base(identifier, name, schema, alias)
         {
-        }
-
-        private AccessAuditLogEntity(string identifier, string name, SchemaExpression schema, string alias) : base(identifier, name, schema, alias)
-        {
-            Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", "Id", this));
-            Fields.Add($"{identifier}.PersonId", PersonId = new PersonIdField($"{identifier}.PersonId", "PersonId", this));
-            Fields.Add($"{identifier}.AccessResult", AccessResult = new AccessResultField($"{identifier}.AccessResult", "AccessResult", this));
-            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", "DateCreated", this));
+            Attributes.Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", "Id", this));
+            Attributes.Fields.Add($"{identifier}.PersonId", PersonId = new PersonIdField($"{identifier}.PersonId", "PersonId", this));
+            Attributes.Fields.Add($"{identifier}.AccessResult", AccessResult = new AccessResultField($"{identifier}.AccessResult", "AccessResult", this));
+            Attributes.Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", "DateCreated", this));
         }
         #endregion
 
         #region methods
-        public AccessAuditLogEntity As(string name)
-            => new AccessAuditLogEntity(this.identifier, this.name, this.schema, name);
+        public AccessAuditLogEntity As(string alias)
+            => new AccessAuditLogEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new Int32SelectExpression(Id)
-                ,new Int32SelectExpression(PersonId)
-                ,new EnumSelectExpression<SimpleConsole.Data.AccessAuditResult>(AccessResult)
-                ,new DateTimeSelectExpression(DateCreated)
+                new SelectExpression<int>(Id)
+                ,new SelectExpression<int>(PersonId)
+                ,new SelectExpression<SimpleConsole.Data.AccessAuditResult>(AccessResult)
+                ,new SelectExpression<DateTime>(DateCreated)
             ));
         }
 
@@ -1588,25 +2801,25 @@ namespace SimpleConsole.dboDataService
             string aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new Int32SelectExpression(Id).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
 
             aliased = alias(nameof(PersonId));
-            set &= aliased != nameof(PersonId) ? new Int32SelectExpression(PersonId).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PersonId));
+            set &= aliased != nameof(PersonId) ? new SelectExpression<int>(PersonId).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PersonId));
 
             aliased = alias(nameof(AccessResult));
-            set &= aliased != nameof(AccessResult) ? new EnumSelectExpression<SimpleConsole.Data.AccessAuditResult>(AccessResult).As(aliased) as EnumSelectExpression<SimpleConsole.Data.AccessAuditResult> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(AccessResult));
+            set &= aliased != nameof(AccessResult) ? new SelectExpression<SimpleConsole.Data.AccessAuditResult>(AccessResult).As(aliased) as SelectExpression<SimpleConsole.Data.AccessAuditResult> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(AccessResult));
 
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new DateTimeSelectExpression(DateCreated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
 
             return set;
         }
 		
-        protected override InsertExpressionSet<AccessAuditLog> GetInclusiveInsertExpression(AccessAuditLog accessAuditLog)
+        protected override InsertExpressionSet<AccessAuditLog> GetInclusiveInsertExpression(AccessAuditLog entity)
         {
-            return new InsertExpressionSet<AccessAuditLog>(accessAuditLog 
-                ,new InsertExpression<int>(accessAuditLog.PersonId, PersonId)
-                ,new InsertExpression<SimpleConsole.Data.AccessAuditResult>(accessAuditLog.AccessResult, AccessResult)
+            return new InsertExpressionSet<AccessAuditLog>(entity 
+                ,new InsertExpression<int>(entity.PersonId, PersonId)
+                ,new InsertExpression<SimpleConsole.Data.AccessAuditResult>(entity.AccessResult, AccessResult)
             );
         }
 
@@ -1619,12 +2832,12 @@ namespace SimpleConsole.dboDataService
             return expr;
         }
 
-        protected override void HydrateEntity(ISqlFieldReader reader, AccessAuditLog accessAuditLog)
+        protected override void HydrateEntity(ISqlFieldReader reader, AccessAuditLog entity)
         {
-            accessAuditLog.Id = reader.ReadField().GetValue<int>();
-            accessAuditLog.PersonId = reader.ReadField().GetValue<int>();
-            accessAuditLog.AccessResult = reader.ReadField().GetValue<SimpleConsole.Data.AccessAuditResult>();
-            accessAuditLog.DateCreated = reader.ReadField().GetValue<DateTime>();
+            entity.Id = reader.ReadField().GetValue<int>();
+            entity.PersonId = reader.ReadField().GetValue<int>();
+            entity.AccessResult = reader.ReadField().GetValue<SimpleConsole.Data.AccessAuditResult>();
+            entity.DateCreated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
 
@@ -1633,20 +2846,16 @@ namespace SimpleConsole.dboDataService
         public partial class IdField : Int32FieldExpression<AccessAuditLog>
         {
             #region constructors
-            public IdField(string identifier, string name, AccessAuditLogEntity entity) : base(identifier, name, entity)
+            public IdField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -1655,46 +2864,34 @@ namespace SimpleConsole.dboDataService
         public partial class PersonIdField : Int32FieldExpression<AccessAuditLog>
         {
             #region constructors
-            public PersonIdField(string identifier, string name, AccessAuditLogEntity entity) : base(identifier, name, entity)
+            public PersonIdField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
-            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
 
         #region access result field expression
-        public partial class AccessResultField : EnumFieldExpression<AccessAuditLog, SimpleConsole.Data.AccessAuditResult>
+        public partial class AccessResultField : EnumFieldExpression<AccessAuditLog,SimpleConsole.Data.AccessAuditResult>
         {
             #region constructors
-            public AccessResultField(string identifier, string name, AccessAuditLogEntity entity) : base(identifier, name, entity)
+            public AccessResultField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override EnumElement<SimpleConsole.Data.AccessAuditResult> As(string alias)
-            {
-                return new EnumSelectExpression<SimpleConsole.Data.AccessAuditResult>(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<SimpleConsole.Data.AccessAuditResult>(value));
             public AssignmentExpression Set(SimpleConsole.Data.AccessAuditResult value) => new AssignmentExpression(this, new LiteralExpression<SimpleConsole.Data.AccessAuditResult>(value, this));
-            public AssignmentExpression Set(EnumElement<SimpleConsole.Data.AccessAuditResult> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<SimpleConsole.Data.AccessAuditResult> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -1703,20 +2900,16 @@ namespace SimpleConsole.dboDataService
         public partial class DateCreatedField : DateTimeFieldExpression<AccessAuditLog>
         {
             #region constructors
-            public DateCreatedField(string identifier, string name, AccessAuditLogEntity entity) : base(identifier, name, entity)
+            public DateCreatedField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -1733,9 +2926,10 @@ namespace SimpleConsole.dboDataService
         #endregion
 
         #region interface
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.AddressEntity.IdField"/> representing the "dbo.Address.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="SimpleConsole.dboDataService.AddressEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -1755,9 +2949,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly IdField Id;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.AddressEntity.AddressTypeField"/> representing the "dbo.Address.AddressType" column in the database, 
         /// with a .NET type of <see cref="SimpleConsole.Data.AddressType"/>?.  The <see cref="SimpleConsole.dboDataService.AddressEntity.AddressTypeField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyEnumElement{SimpleConsole.Data.AddressType}Element"/> or <see cref="HatTrick.DbEx.Sql.NullableEnumElement{SimpleConsole.Data.AddressType}Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{SimpleConsole.Data.AddressType}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -1774,9 +2969,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly AddressTypeField AddressType;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.AddressEntity.Line1Field"/> representing the "dbo.Address.Line1" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="SimpleConsole.dboDataService.AddressEntity.Line1Field"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -1793,9 +2989,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly Line1Field Line1;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.AddressEntity.Line2Field"/> representing the "dbo.Address.Line2" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="SimpleConsole.dboDataService.AddressEntity.Line2Field"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -1812,9 +3009,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly Line2Field Line2;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.AddressEntity.CityField"/> representing the "dbo.Address.City" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="SimpleConsole.dboDataService.AddressEntity.CityField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -1831,9 +3029,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly CityField City;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.AddressEntity.StateField"/> representing the "dbo.Address.State" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="SimpleConsole.dboDataService.AddressEntity.StateField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -1850,9 +3049,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly StateField State;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.AddressEntity.ZipField"/> representing the "dbo.Address.Zip" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="SimpleConsole.dboDataService.AddressEntity.ZipField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -1869,9 +3069,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly ZipField Zip;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.AddressEntity.DateCreatedField"/> representing the "dbo.Address.DateCreated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="SimpleConsole.dboDataService.AddressEntity.DateCreatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -1891,9 +3092,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly DateCreatedField DateCreated;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.AddressEntity.DateUpdatedField"/> representing the "dbo.Address.DateUpdated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="SimpleConsole.dboDataService.AddressEntity.DateUpdatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -1916,44 +3118,40 @@ namespace SimpleConsole.dboDataService
         #endregion
 
         #region constructors
-        private AddressEntity() : base(null, null, null, null)
+        public AddressEntity(string identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
 
-        public AddressEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
+        private AddressEntity(string identifier, string name, Schema schema, string alias) : base(identifier, name, schema, alias)
         {
-        }
-
-        private AddressEntity(string identifier, string name, SchemaExpression schema, string alias) : base(identifier, name, schema, alias)
-        {
-            Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", "Id", this));
-            Fields.Add($"{identifier}.AddressType", AddressType = new AddressTypeField($"{identifier}.AddressType", "AddressType", this));
-            Fields.Add($"{identifier}.Line1", Line1 = new Line1Field($"{identifier}.Line1", "Line1", this));
-            Fields.Add($"{identifier}.Line2", Line2 = new Line2Field($"{identifier}.Line2", "Line2", this));
-            Fields.Add($"{identifier}.City", City = new CityField($"{identifier}.City", "City", this));
-            Fields.Add($"{identifier}.State", State = new StateField($"{identifier}.State", "State", this));
-            Fields.Add($"{identifier}.Zip", Zip = new ZipField($"{identifier}.Zip", "Zip", this));
-            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", "DateCreated", this));
-            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateUpdatedField($"{identifier}.DateUpdated", "DateUpdated", this));
+            Attributes.Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", "Id", this));
+            Attributes.Fields.Add($"{identifier}.AddressType", AddressType = new AddressTypeField($"{identifier}.AddressType", "AddressType", this));
+            Attributes.Fields.Add($"{identifier}.Line1", Line1 = new Line1Field($"{identifier}.Line1", "Line1", this));
+            Attributes.Fields.Add($"{identifier}.Line2", Line2 = new Line2Field($"{identifier}.Line2", "Line2", this));
+            Attributes.Fields.Add($"{identifier}.City", City = new CityField($"{identifier}.City", "City", this));
+            Attributes.Fields.Add($"{identifier}.State", State = new StateField($"{identifier}.State", "State", this));
+            Attributes.Fields.Add($"{identifier}.Zip", Zip = new ZipField($"{identifier}.Zip", "Zip", this));
+            Attributes.Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", "DateCreated", this));
+            Attributes.Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateUpdatedField($"{identifier}.DateUpdated", "DateUpdated", this));
         }
         #endregion
 
         #region methods
-        public AddressEntity As(string name)
-            => new AddressEntity(this.identifier, this.name, this.schema, name);
+        public AddressEntity As(string alias)
+            => new AddressEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new Int32SelectExpression(Id)
-                ,new NullableEnumSelectExpression<SimpleConsole.Data.AddressType>(AddressType)
-                ,new StringSelectExpression(Line1)
-                ,new NullableStringSelectExpression(Line2)
-                ,new StringSelectExpression(City)
-                ,new StringSelectExpression(State)
-                ,new StringSelectExpression(Zip)
-                ,new DateTimeSelectExpression(DateCreated)
-                ,new DateTimeSelectExpression(DateUpdated)
+                new SelectExpression<int>(Id)
+                ,new SelectExpression<SimpleConsole.Data.AddressType?>(AddressType)
+                ,new SelectExpression<string>(Line1)
+                ,new SelectExpression<string>(Line2)
+                ,new SelectExpression<string>(City)
+                ,new SelectExpression<string>(State)
+                ,new SelectExpression<string>(Zip)
+                ,new SelectExpression<DateTime>(DateCreated)
+                ,new SelectExpression<DateTime>(DateUpdated)
             ));
         }
 
@@ -1966,44 +3164,44 @@ namespace SimpleConsole.dboDataService
             string aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new Int32SelectExpression(Id).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
 
             aliased = alias(nameof(AddressType));
-            set &= aliased != nameof(AddressType) ? new NullableEnumSelectExpression<SimpleConsole.Data.AddressType>(AddressType).As(aliased) as NullableEnumSelectExpression<SimpleConsole.Data.AddressType> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(AddressType));
+            set &= aliased != nameof(AddressType) ? new SelectExpression<SimpleConsole.Data.AddressType?>(AddressType).As(aliased) as SelectExpression<SimpleConsole.Data.AddressType?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(AddressType));
 
             aliased = alias(nameof(Line1));
-            set &= aliased != nameof(Line1) ? new StringSelectExpression(Line1).As(aliased) as StringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Line1));
+            set &= aliased != nameof(Line1) ? new SelectExpression<string>(Line1).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Line1));
 
             aliased = alias(nameof(Line2));
-            set &= aliased != nameof(Line2) ? new NullableStringSelectExpression(Line2).As(aliased) as NullableStringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Line2));
+            set &= aliased != nameof(Line2) ? new SelectExpression<string>(Line2).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Line2));
 
             aliased = alias(nameof(City));
-            set &= aliased != nameof(City) ? new StringSelectExpression(City).As(aliased) as StringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(City));
+            set &= aliased != nameof(City) ? new SelectExpression<string>(City).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(City));
 
             aliased = alias(nameof(State));
-            set &= aliased != nameof(State) ? new StringSelectExpression(State).As(aliased) as StringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(State));
+            set &= aliased != nameof(State) ? new SelectExpression<string>(State).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(State));
 
             aliased = alias(nameof(Zip));
-            set &= aliased != nameof(Zip) ? new StringSelectExpression(Zip).As(aliased) as StringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Zip));
+            set &= aliased != nameof(Zip) ? new SelectExpression<string>(Zip).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Zip));
 
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new DateTimeSelectExpression(DateCreated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
 
             aliased = alias(nameof(DateUpdated));
-            set &= aliased != nameof(DateUpdated) ? new DateTimeSelectExpression(DateUpdated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
+            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
 
             return set;
         }
 		
-        protected override InsertExpressionSet<Address> GetInclusiveInsertExpression(Address address)
+        protected override InsertExpressionSet<Address> GetInclusiveInsertExpression(Address entity)
         {
-            return new InsertExpressionSet<Address>(address 
-                ,new InsertExpression<SimpleConsole.Data.AddressType?>(address.AddressType, AddressType)
-                ,new InsertExpression<string>(address.Line1, Line1)
-                ,new InsertExpression<string>(address.Line2, Line2)
-                ,new InsertExpression<string>(address.City, City)
-                ,new InsertExpression<string>(address.State, State)
-                ,new InsertExpression<string>(address.Zip, Zip)
+            return new InsertExpressionSet<Address>(entity 
+                ,new InsertExpression<SimpleConsole.Data.AddressType?>(entity.AddressType, AddressType)
+                ,new InsertExpression<string>(entity.Line1, Line1)
+                ,new InsertExpression<string>(entity.Line2, Line2)
+                ,new InsertExpression<string>(entity.City, City)
+                ,new InsertExpression<string>(entity.State, State)
+                ,new InsertExpression<string>(entity.Zip, Zip)
             );
         }
 
@@ -2020,17 +3218,17 @@ namespace SimpleConsole.dboDataService
             return expr;
         }
 
-        protected override void HydrateEntity(ISqlFieldReader reader, Address address)
+        protected override void HydrateEntity(ISqlFieldReader reader, Address entity)
         {
-            address.Id = reader.ReadField().GetValue<int>();
-            address.AddressType = reader.ReadField().GetValue<SimpleConsole.Data.AddressType?>();
-            address.Line1 = reader.ReadField().GetValue<string>();
-            address.Line2 = reader.ReadField().GetValue<string>();
-            address.City = reader.ReadField().GetValue<string>();
-            address.State = reader.ReadField().GetValue<string>();
-            address.Zip = reader.ReadField().GetValue<string>();
-            address.DateCreated = reader.ReadField().GetValue<DateTime>();
-            address.DateUpdated = reader.ReadField().GetValue<DateTime>();
+            entity.Id = reader.ReadField().GetValue<int>();
+            entity.AddressType = reader.ReadField().GetValue<SimpleConsole.Data.AddressType?>();
+            entity.Line1 = reader.ReadField().GetValue<string>();
+            entity.Line2 = reader.ReadField().GetValue<string>();
+            entity.City = reader.ReadField().GetValue<string>();
+            entity.State = reader.ReadField().GetValue<string>();
+            entity.Zip = reader.ReadField().GetValue<string>();
+            entity.DateCreated = reader.ReadField().GetValue<DateTime>();
+            entity.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
 
@@ -2039,47 +3237,37 @@ namespace SimpleConsole.dboDataService
         public partial class IdField : Int32FieldExpression<Address>
         {
             #region constructors
-            public IdField(string identifier, string name, AddressEntity entity) : base(identifier, name, entity)
+            public IdField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
 
         #region address type field expression
-        public partial class AddressTypeField : NullableEnumFieldExpression<Address, SimpleConsole.Data.AddressType>
+        public partial class AddressTypeField : NullableEnumFieldExpression<Address,SimpleConsole.Data.AddressType>
         {
             #region constructors
-            public AddressTypeField(string identifier, string name, AddressEntity entity) : base(identifier, name, entity)
+            public AddressTypeField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override NullableEnumElement<SimpleConsole.Data.AddressType> As(string alias)
-            {
-                return new NullableEnumSelectExpression<SimpleConsole.Data.AddressType>(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<SimpleConsole.Data.AddressType?>(value));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<SimpleConsole.Data.AddressType?>(value, this));
             public AssignmentExpression Set(SimpleConsole.Data.AddressType value) => new AssignmentExpression(this, new LiteralExpression<SimpleConsole.Data.AddressType>(value, this));
-            public AssignmentExpression Set(EnumElement<SimpleConsole.Data.AddressType> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<SimpleConsole.Data.AddressType> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(SimpleConsole.Data.AddressType? value) => new AssignmentExpression(this, new LiteralExpression<SimpleConsole.Data.AddressType?>(value, this));
-            public AssignmentExpression Set(NullableEnumElement<SimpleConsole.Data.AddressType> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<SimpleConsole.Data.AddressType>(value, this));
+            public AssignmentExpression Set(AnyElement<SimpleConsole.Data.AddressType?> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2088,20 +3276,14 @@ namespace SimpleConsole.dboDataService
         public partial class Line1Field : StringFieldExpression<Address>
         {
             #region constructors
-            public Line1Field(string identifier, string name, AddressEntity entity) : base(identifier, name, entity)
+            public Line1Field(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override StringElement As(string alias)
-            {
-                return new StringSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -2109,27 +3291,19 @@ namespace SimpleConsole.dboDataService
         #endregion
 
         #region line2 field expression
-        public partial class Line2Field : NullableStringFieldExpression<Address>
+        public partial class Line2Field : StringFieldExpression<Address>
         {
             #region constructors
-            public Line2Field(string identifier, string name, AddressEntity entity) : base(identifier, name, entity)
+            public Line2Field(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override NullableStringElement As(string alias)
-            {
-                return new NullableStringSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(NullableStringElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             #endregion
         }
         #endregion
@@ -2138,20 +3312,14 @@ namespace SimpleConsole.dboDataService
         public partial class CityField : StringFieldExpression<Address>
         {
             #region constructors
-            public CityField(string identifier, string name, AddressEntity entity) : base(identifier, name, entity)
+            public CityField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override StringElement As(string alias)
-            {
-                return new StringSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -2162,20 +3330,14 @@ namespace SimpleConsole.dboDataService
         public partial class StateField : StringFieldExpression<Address>
         {
             #region constructors
-            public StateField(string identifier, string name, AddressEntity entity) : base(identifier, name, entity)
+            public StateField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override StringElement As(string alias)
-            {
-                return new StringSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -2186,20 +3348,14 @@ namespace SimpleConsole.dboDataService
         public partial class ZipField : StringFieldExpression<Address>
         {
             #region constructors
-            public ZipField(string identifier, string name, AddressEntity entity) : base(identifier, name, entity)
+            public ZipField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override StringElement As(string alias)
-            {
-                return new StringSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -2210,20 +3366,16 @@ namespace SimpleConsole.dboDataService
         public partial class DateCreatedField : DateTimeFieldExpression<Address>
         {
             #region constructors
-            public DateCreatedField(string identifier, string name, AddressEntity entity) : base(identifier, name, entity)
+            public DateCreatedField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2232,20 +3384,16 @@ namespace SimpleConsole.dboDataService
         public partial class DateUpdatedField : DateTimeFieldExpression<Address>
         {
             #region constructors
-            public DateUpdatedField(string identifier, string name, AddressEntity entity) : base(identifier, name, entity)
+            public DateUpdatedField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2262,9 +3410,10 @@ namespace SimpleConsole.dboDataService
         #endregion
 
         #region interface
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.PersonEntity.IdField"/> representing the "dbo.Person.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="SimpleConsole.dboDataService.PersonEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2284,9 +3433,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly IdField Id;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.PersonEntity.FirstNameField"/> representing the "dbo.Person.FirstName" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="SimpleConsole.dboDataService.PersonEntity.FirstNameField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2303,9 +3453,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly FirstNameField FirstName;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.PersonEntity.LastNameField"/> representing the "dbo.Person.LastName" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="SimpleConsole.dboDataService.PersonEntity.LastNameField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2322,9 +3473,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly LastNameField LastName;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.PersonEntity.BirthDateField"/> representing the "dbo.Person.BirthDate" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>?.  The <see cref="SimpleConsole.dboDataService.PersonEntity.BirthDateField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.NullableDateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2341,9 +3493,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly BirthDateField BirthDate;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.PersonEntity.GenderTypeField"/> representing the "dbo.Person.GenderType" column in the database, 
         /// with a .NET type of <see cref="SimpleConsole.Data.GenderType"/>.  The <see cref="SimpleConsole.dboDataService.PersonEntity.GenderTypeField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyEnumElement{SimpleConsole.Data.GenderType}Element"/> or <see cref="HatTrick.DbEx.Sql.EnumElement{SimpleConsole.Data.GenderType}Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{SimpleConsole.Data.GenderType}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2360,9 +3513,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly GenderTypeField GenderType;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.PersonEntity.CreditLimitField"/> representing the "dbo.Person.CreditLimit" column in the database, 
         /// with a .NET type of <see cref="int"/>?.  The <see cref="SimpleConsole.dboDataService.PersonEntity.CreditLimitField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.NullableInt32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2379,9 +3533,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly CreditLimitField CreditLimit;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.PersonEntity.YearOfLastCreditLimitReviewField"/> representing the "dbo.Person.YearOfLastCreditLimitReview" column in the database, 
         /// with a .NET type of <see cref="int"/>?.  The <see cref="SimpleConsole.dboDataService.PersonEntity.YearOfLastCreditLimitReviewField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.NullableInt32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2398,9 +3553,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly YearOfLastCreditLimitReviewField YearOfLastCreditLimitReview;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.PersonEntity.RegistrationDateField"/> representing the "dbo.Person.RegistrationDate" column in the database, 
         /// with a .NET type of <see cref="DateTimeOffset"/>.  The <see cref="SimpleConsole.dboDataService.PersonEntity.RegistrationDateField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeOffsetElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeOffsetElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTimeOffset}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2420,9 +3576,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly RegistrationDateField RegistrationDate;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.PersonEntity.LastLoginDateField"/> representing the "dbo.Person.LastLoginDate" column in the database, 
         /// with a .NET type of <see cref="DateTimeOffset"/>?.  The <see cref="SimpleConsole.dboDataService.PersonEntity.LastLoginDateField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeOffsetElement"/> or <see cref="HatTrick.DbEx.Sql.NullableDateTimeOffsetElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTimeOffset}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2439,9 +3596,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly LastLoginDateField LastLoginDate;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.PersonEntity.DateCreatedField"/> representing the "dbo.Person.DateCreated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="SimpleConsole.dboDataService.PersonEntity.DateCreatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2461,9 +3619,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly DateCreatedField DateCreated;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.PersonEntity.DateUpdatedField"/> representing the "dbo.Person.DateUpdated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="SimpleConsole.dboDataService.PersonEntity.DateUpdatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2486,48 +3645,44 @@ namespace SimpleConsole.dboDataService
         #endregion
 
         #region constructors
-        private PersonEntity() : base(null, null, null, null)
+        public PersonEntity(string identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
 
-        public PersonEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
+        private PersonEntity(string identifier, string name, Schema schema, string alias) : base(identifier, name, schema, alias)
         {
-        }
-
-        private PersonEntity(string identifier, string name, SchemaExpression schema, string alias) : base(identifier, name, schema, alias)
-        {
-            Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", "Id", this));
-            Fields.Add($"{identifier}.FirstName", FirstName = new FirstNameField($"{identifier}.FirstName", "FirstName", this));
-            Fields.Add($"{identifier}.LastName", LastName = new LastNameField($"{identifier}.LastName", "LastName", this));
-            Fields.Add($"{identifier}.BirthDate", BirthDate = new BirthDateField($"{identifier}.BirthDate", "BirthDate", this));
-            Fields.Add($"{identifier}.GenderType", GenderType = new GenderTypeField($"{identifier}.GenderType", "GenderType", this));
-            Fields.Add($"{identifier}.CreditLimit", CreditLimit = new CreditLimitField($"{identifier}.CreditLimit", "CreditLimit", this));
-            Fields.Add($"{identifier}.YearOfLastCreditLimitReview", YearOfLastCreditLimitReview = new YearOfLastCreditLimitReviewField($"{identifier}.YearOfLastCreditLimitReview", "YearOfLastCreditLimitReview", this));
-            Fields.Add($"{identifier}.RegistrationDate", RegistrationDate = new RegistrationDateField($"{identifier}.RegistrationDate", "RegistrationDate", this));
-            Fields.Add($"{identifier}.LastLoginDate", LastLoginDate = new LastLoginDateField($"{identifier}.LastLoginDate", "LastLoginDate", this));
-            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", "DateCreated", this));
-            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateUpdatedField($"{identifier}.DateUpdated", "DateUpdated", this));
+            Attributes.Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", "Id", this));
+            Attributes.Fields.Add($"{identifier}.FirstName", FirstName = new FirstNameField($"{identifier}.FirstName", "FirstName", this));
+            Attributes.Fields.Add($"{identifier}.LastName", LastName = new LastNameField($"{identifier}.LastName", "LastName", this));
+            Attributes.Fields.Add($"{identifier}.BirthDate", BirthDate = new BirthDateField($"{identifier}.BirthDate", "BirthDate", this));
+            Attributes.Fields.Add($"{identifier}.GenderType", GenderType = new GenderTypeField($"{identifier}.GenderType", "GenderType", this));
+            Attributes.Fields.Add($"{identifier}.CreditLimit", CreditLimit = new CreditLimitField($"{identifier}.CreditLimit", "CreditLimit", this));
+            Attributes.Fields.Add($"{identifier}.YearOfLastCreditLimitReview", YearOfLastCreditLimitReview = new YearOfLastCreditLimitReviewField($"{identifier}.YearOfLastCreditLimitReview", "YearOfLastCreditLimitReview", this));
+            Attributes.Fields.Add($"{identifier}.RegistrationDate", RegistrationDate = new RegistrationDateField($"{identifier}.RegistrationDate", "RegistrationDate", this));
+            Attributes.Fields.Add($"{identifier}.LastLoginDate", LastLoginDate = new LastLoginDateField($"{identifier}.LastLoginDate", "LastLoginDate", this));
+            Attributes.Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", "DateCreated", this));
+            Attributes.Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateUpdatedField($"{identifier}.DateUpdated", "DateUpdated", this));
         }
         #endregion
 
         #region methods
-        public PersonEntity As(string name)
-            => new PersonEntity(this.identifier, this.name, this.schema, name);
+        public PersonEntity As(string alias)
+            => new PersonEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new Int32SelectExpression(Id)
-                ,new StringSelectExpression(FirstName)
-                ,new StringSelectExpression(LastName)
-                ,new NullableDateTimeSelectExpression(BirthDate)
-                ,new EnumSelectExpression<SimpleConsole.Data.GenderType>(GenderType)
-                ,new NullableInt32SelectExpression(CreditLimit)
-                ,new NullableInt32SelectExpression(YearOfLastCreditLimitReview)
-                ,new DateTimeOffsetSelectExpression(RegistrationDate)
-                ,new NullableDateTimeOffsetSelectExpression(LastLoginDate)
-                ,new DateTimeSelectExpression(DateCreated)
-                ,new DateTimeSelectExpression(DateUpdated)
+                new SelectExpression<int>(Id)
+                ,new SelectExpression<string>(FirstName)
+                ,new SelectExpression<string>(LastName)
+                ,new SelectExpression<DateTime?>(BirthDate)
+                ,new SelectExpression<SimpleConsole.Data.GenderType>(GenderType)
+                ,new SelectExpression<int?>(CreditLimit)
+                ,new SelectExpression<int?>(YearOfLastCreditLimitReview)
+                ,new SelectExpression<DateTimeOffset>(RegistrationDate)
+                ,new SelectExpression<DateTimeOffset?>(LastLoginDate)
+                ,new SelectExpression<DateTime>(DateCreated)
+                ,new SelectExpression<DateTime>(DateUpdated)
             ));
         }
 
@@ -2540,52 +3695,52 @@ namespace SimpleConsole.dboDataService
             string aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new Int32SelectExpression(Id).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
 
             aliased = alias(nameof(FirstName));
-            set &= aliased != nameof(FirstName) ? new StringSelectExpression(FirstName).As(aliased) as StringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(FirstName));
+            set &= aliased != nameof(FirstName) ? new SelectExpression<string>(FirstName).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(FirstName));
 
             aliased = alias(nameof(LastName));
-            set &= aliased != nameof(LastName) ? new StringSelectExpression(LastName).As(aliased) as StringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(LastName));
+            set &= aliased != nameof(LastName) ? new SelectExpression<string>(LastName).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(LastName));
 
             aliased = alias(nameof(BirthDate));
-            set &= aliased != nameof(BirthDate) ? new NullableDateTimeSelectExpression(BirthDate).As(aliased) as NullableDateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(BirthDate));
+            set &= aliased != nameof(BirthDate) ? new SelectExpression<DateTime?>(BirthDate).As(aliased) as SelectExpression<DateTime?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(BirthDate));
 
             aliased = alias(nameof(GenderType));
-            set &= aliased != nameof(GenderType) ? new EnumSelectExpression<SimpleConsole.Data.GenderType>(GenderType).As(aliased) as EnumSelectExpression<SimpleConsole.Data.GenderType> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(GenderType));
+            set &= aliased != nameof(GenderType) ? new SelectExpression<SimpleConsole.Data.GenderType>(GenderType).As(aliased) as SelectExpression<SimpleConsole.Data.GenderType> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(GenderType));
 
             aliased = alias(nameof(CreditLimit));
-            set &= aliased != nameof(CreditLimit) ? new NullableInt32SelectExpression(CreditLimit).As(aliased) as NullableInt32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(CreditLimit));
+            set &= aliased != nameof(CreditLimit) ? new SelectExpression<int?>(CreditLimit).As(aliased) as SelectExpression<int?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(CreditLimit));
 
             aliased = alias(nameof(YearOfLastCreditLimitReview));
-            set &= aliased != nameof(YearOfLastCreditLimitReview) ? new NullableInt32SelectExpression(YearOfLastCreditLimitReview).As(aliased) as NullableInt32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(YearOfLastCreditLimitReview));
+            set &= aliased != nameof(YearOfLastCreditLimitReview) ? new SelectExpression<int?>(YearOfLastCreditLimitReview).As(aliased) as SelectExpression<int?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(YearOfLastCreditLimitReview));
 
             aliased = alias(nameof(RegistrationDate));
-            set &= aliased != nameof(RegistrationDate) ? new DateTimeOffsetSelectExpression(RegistrationDate).As(aliased) as DateTimeOffsetSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(RegistrationDate));
+            set &= aliased != nameof(RegistrationDate) ? new SelectExpression<DateTimeOffset>(RegistrationDate).As(aliased) as SelectExpression<DateTimeOffset> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(RegistrationDate));
 
             aliased = alias(nameof(LastLoginDate));
-            set &= aliased != nameof(LastLoginDate) ? new NullableDateTimeOffsetSelectExpression(LastLoginDate).As(aliased) as NullableDateTimeOffsetSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(LastLoginDate));
+            set &= aliased != nameof(LastLoginDate) ? new SelectExpression<DateTimeOffset?>(LastLoginDate).As(aliased) as SelectExpression<DateTimeOffset?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(LastLoginDate));
 
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new DateTimeSelectExpression(DateCreated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
 
             aliased = alias(nameof(DateUpdated));
-            set &= aliased != nameof(DateUpdated) ? new DateTimeSelectExpression(DateUpdated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
+            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
 
             return set;
         }
 		
-        protected override InsertExpressionSet<Person> GetInclusiveInsertExpression(Person person)
+        protected override InsertExpressionSet<Person> GetInclusiveInsertExpression(Person entity)
         {
-            return new InsertExpressionSet<Person>(person 
-                ,new InsertExpression<string>(person.FirstName, FirstName)
-                ,new InsertExpression<string>(person.LastName, LastName)
-                ,new InsertExpression<DateTime?>(person.BirthDate, BirthDate)
-                ,new InsertExpression<SimpleConsole.Data.GenderType>(person.GenderType, GenderType)
-                ,new InsertExpression<int?>(person.CreditLimit, CreditLimit)
-                ,new InsertExpression<int?>(person.YearOfLastCreditLimitReview, YearOfLastCreditLimitReview)
-                ,new InsertExpression<DateTimeOffset>(person.RegistrationDate, RegistrationDate)
-                ,new InsertExpression<DateTimeOffset?>(person.LastLoginDate, LastLoginDate)
+            return new InsertExpressionSet<Person>(entity 
+                ,new InsertExpression<string>(entity.FirstName, FirstName)
+                ,new InsertExpression<string>(entity.LastName, LastName)
+                ,new InsertExpression<DateTime?>(entity.BirthDate, BirthDate)
+                ,new InsertExpression<SimpleConsole.Data.GenderType>(entity.GenderType, GenderType)
+                ,new InsertExpression<int?>(entity.CreditLimit, CreditLimit)
+                ,new InsertExpression<int?>(entity.YearOfLastCreditLimitReview, YearOfLastCreditLimitReview)
+                ,new InsertExpression<DateTimeOffset>(entity.RegistrationDate, RegistrationDate)
+                ,new InsertExpression<DateTimeOffset?>(entity.LastLoginDate, LastLoginDate)
             );
         }
 
@@ -2604,19 +3759,19 @@ namespace SimpleConsole.dboDataService
             return expr;
         }
 
-        protected override void HydrateEntity(ISqlFieldReader reader, Person person)
+        protected override void HydrateEntity(ISqlFieldReader reader, Person entity)
         {
-            person.Id = reader.ReadField().GetValue<int>();
-            person.FirstName = reader.ReadField().GetValue<string>();
-            person.LastName = reader.ReadField().GetValue<string>();
-            person.BirthDate = reader.ReadField().GetValue<DateTime?>();
-            person.GenderType = reader.ReadField().GetValue<SimpleConsole.Data.GenderType>();
-            person.CreditLimit = reader.ReadField().GetValue<int?>();
-            person.YearOfLastCreditLimitReview = reader.ReadField().GetValue<int?>();
-            person.RegistrationDate = reader.ReadField().GetValue<DateTimeOffset>();
-            person.LastLoginDate = reader.ReadField().GetValue<DateTimeOffset?>();
-            person.DateCreated = reader.ReadField().GetValue<DateTime>();
-            person.DateUpdated = reader.ReadField().GetValue<DateTime>();
+            entity.Id = reader.ReadField().GetValue<int>();
+            entity.FirstName = reader.ReadField().GetValue<string>();
+            entity.LastName = reader.ReadField().GetValue<string>();
+            entity.BirthDate = reader.ReadField().GetValue<DateTime?>();
+            entity.GenderType = reader.ReadField().GetValue<SimpleConsole.Data.GenderType>();
+            entity.CreditLimit = reader.ReadField().GetValue<int?>();
+            entity.YearOfLastCreditLimitReview = reader.ReadField().GetValue<int?>();
+            entity.RegistrationDate = reader.ReadField().GetValue<DateTimeOffset>();
+            entity.LastLoginDate = reader.ReadField().GetValue<DateTimeOffset?>();
+            entity.DateCreated = reader.ReadField().GetValue<DateTime>();
+            entity.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
 
@@ -2625,20 +3780,16 @@ namespace SimpleConsole.dboDataService
         public partial class IdField : Int32FieldExpression<Person>
         {
             #region constructors
-            public IdField(string identifier, string name, PersonEntity entity) : base(identifier, name, entity)
+            public IdField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2647,20 +3798,14 @@ namespace SimpleConsole.dboDataService
         public partial class FirstNameField : StringFieldExpression<Person>
         {
             #region constructors
-            public FirstNameField(string identifier, string name, PersonEntity entity) : base(identifier, name, entity)
+            public FirstNameField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override StringElement As(string alias)
-            {
-                return new StringSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -2671,20 +3816,14 @@ namespace SimpleConsole.dboDataService
         public partial class LastNameField : StringFieldExpression<Person>
         {
             #region constructors
-            public LastNameField(string identifier, string name, PersonEntity entity) : base(identifier, name, entity)
+            public LastNameField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override StringElement As(string alias)
-            {
-                return new StringSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -2695,49 +3834,37 @@ namespace SimpleConsole.dboDataService
         public partial class BirthDateField : NullableDateTimeFieldExpression<Person>
         {
             #region constructors
-            public BirthDateField(string identifier, string name, PersonEntity entity) : base(identifier, name, entity)
+            public BirthDateField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override NullableDateTimeElement As(string alias)
-            {
-                return new NullableDateTimeSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
-            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
-            public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime?>(value));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value, this));
             public AssignmentExpression Set(DateTime? value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value, this));
-            public AssignmentExpression Set(NullableDateTimeElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime?> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
 
         #region gender type field expression
-        public partial class GenderTypeField : EnumFieldExpression<Person, SimpleConsole.Data.GenderType>
+        public partial class GenderTypeField : EnumFieldExpression<Person,SimpleConsole.Data.GenderType>
         {
             #region constructors
-            public GenderTypeField(string identifier, string name, PersonEntity entity) : base(identifier, name, entity)
+            public GenderTypeField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override EnumElement<SimpleConsole.Data.GenderType> As(string alias)
-            {
-                return new EnumSelectExpression<SimpleConsole.Data.GenderType>(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<SimpleConsole.Data.GenderType>(value));
             public AssignmentExpression Set(SimpleConsole.Data.GenderType value) => new AssignmentExpression(this, new LiteralExpression<SimpleConsole.Data.GenderType>(value, this));
-            public AssignmentExpression Set(EnumElement<SimpleConsole.Data.GenderType> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<SimpleConsole.Data.GenderType> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2746,25 +3873,19 @@ namespace SimpleConsole.dboDataService
         public partial class CreditLimitField : NullableInt32FieldExpression<Person>
         {
             #region constructors
-            public CreditLimitField(string identifier, string name, PersonEntity entity) : base(identifier, name, entity)
+            public CreditLimitField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override NullableInt32Element As(string alias)
-            {
-                return new NullableInt32SelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
-            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
-            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int?>(value));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<int?>(value, this));
             public AssignmentExpression Set(int? value) => new AssignmentExpression(this, new LiteralExpression<int?>(value, this));
-            public AssignmentExpression Set(NullableInt32Element value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(AnyElement<int?> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2773,25 +3894,19 @@ namespace SimpleConsole.dboDataService
         public partial class YearOfLastCreditLimitReviewField : NullableInt32FieldExpression<Person>
         {
             #region constructors
-            public YearOfLastCreditLimitReviewField(string identifier, string name, PersonEntity entity) : base(identifier, name, entity)
+            public YearOfLastCreditLimitReviewField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override NullableInt32Element As(string alias)
-            {
-                return new NullableInt32SelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
-            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
-            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int?>(value));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<int?>(value, this));
             public AssignmentExpression Set(int? value) => new AssignmentExpression(this, new LiteralExpression<int?>(value, this));
-            public AssignmentExpression Set(NullableInt32Element value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(AnyElement<int?> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2800,22 +3915,16 @@ namespace SimpleConsole.dboDataService
         public partial class RegistrationDateField : DateTimeOffsetFieldExpression<Person>
         {
             #region constructors
-            public RegistrationDateField(string identifier, string name, PersonEntity entity) : base(identifier, name, entity)
+            public RegistrationDateField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override DateTimeOffsetElement As(string alias)
-            {
-                return new DateTimeOffsetSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTimeOffset>(value));
             public AssignmentExpression Set(DateTimeOffset value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset>(value, this));
-            public AssignmentExpression Set(DateTimeOffsetElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<DateTimeOffset> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2824,25 +3933,19 @@ namespace SimpleConsole.dboDataService
         public partial class LastLoginDateField : NullableDateTimeOffsetFieldExpression<Person>
         {
             #region constructors
-            public LastLoginDateField(string identifier, string name, PersonEntity entity) : base(identifier, name, entity)
+            public LastLoginDateField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override NullableDateTimeOffsetElement As(string alias)
-            {
-                return new NullableDateTimeOffsetSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
-            public AssignmentExpression Set(DateTimeOffset value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset>(value, this));
-            public AssignmentExpression Set(DateTimeOffsetElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTimeOffset?>(value));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset?>(value, this));
             public AssignmentExpression Set(DateTimeOffset? value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset?>(value, this));
-            public AssignmentExpression Set(NullableDateTimeOffsetElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTimeOffset?> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DateTimeOffset value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTimeOffset> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2851,20 +3954,16 @@ namespace SimpleConsole.dboDataService
         public partial class DateCreatedField : DateTimeFieldExpression<Person>
         {
             #region constructors
-            public DateCreatedField(string identifier, string name, PersonEntity entity) : base(identifier, name, entity)
+            public DateCreatedField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2873,20 +3972,16 @@ namespace SimpleConsole.dboDataService
         public partial class DateUpdatedField : DateTimeFieldExpression<Person>
         {
             #region constructors
-            public DateUpdatedField(string identifier, string name, PersonEntity entity) : base(identifier, name, entity)
+            public DateUpdatedField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -2903,9 +3998,10 @@ namespace SimpleConsole.dboDataService
         #endregion
 
         #region interface
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.PersonAddressEntity.IdField"/> representing the "dbo.Person_Address.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="SimpleConsole.dboDataService.PersonAddressEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2925,9 +4021,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly IdField Id;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.PersonAddressEntity.PersonIdField"/> representing the "dbo.Person_Address.PersonId" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="SimpleConsole.dboDataService.PersonAddressEntity.PersonIdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2944,9 +4041,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly PersonIdField PersonId;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.PersonAddressEntity.AddressIdField"/> representing the "dbo.Person_Address.AddressId" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="SimpleConsole.dboDataService.PersonAddressEntity.AddressIdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2963,9 +4061,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly AddressIdField AddressId;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.PersonAddressEntity.DateCreatedField"/> representing the "dbo.Person_Address.DateCreated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="SimpleConsole.dboDataService.PersonAddressEntity.DateCreatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2988,34 +4087,30 @@ namespace SimpleConsole.dboDataService
         #endregion
 
         #region constructors
-        private PersonAddressEntity() : base(null, null, null, null)
+        public PersonAddressEntity(string identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
 
-        public PersonAddressEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
+        private PersonAddressEntity(string identifier, string name, Schema schema, string alias) : base(identifier, name, schema, alias)
         {
-        }
-
-        private PersonAddressEntity(string identifier, string name, SchemaExpression schema, string alias) : base(identifier, name, schema, alias)
-        {
-            Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", "Id", this));
-            Fields.Add($"{identifier}.PersonId", PersonId = new PersonIdField($"{identifier}.PersonId", "PersonId", this));
-            Fields.Add($"{identifier}.AddressId", AddressId = new AddressIdField($"{identifier}.AddressId", "AddressId", this));
-            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", "DateCreated", this));
+            Attributes.Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", "Id", this));
+            Attributes.Fields.Add($"{identifier}.PersonId", PersonId = new PersonIdField($"{identifier}.PersonId", "PersonId", this));
+            Attributes.Fields.Add($"{identifier}.AddressId", AddressId = new AddressIdField($"{identifier}.AddressId", "AddressId", this));
+            Attributes.Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", "DateCreated", this));
         }
         #endregion
 
         #region methods
-        public PersonAddressEntity As(string name)
-            => new PersonAddressEntity(this.identifier, this.name, this.schema, name);
+        public PersonAddressEntity As(string alias)
+            => new PersonAddressEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new Int32SelectExpression(Id)
-                ,new Int32SelectExpression(PersonId)
-                ,new Int32SelectExpression(AddressId)
-                ,new DateTimeSelectExpression(DateCreated)
+                new SelectExpression<int>(Id)
+                ,new SelectExpression<int>(PersonId)
+                ,new SelectExpression<int>(AddressId)
+                ,new SelectExpression<DateTime>(DateCreated)
             ));
         }
 
@@ -3028,25 +4123,25 @@ namespace SimpleConsole.dboDataService
             string aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new Int32SelectExpression(Id).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
 
             aliased = alias(nameof(PersonId));
-            set &= aliased != nameof(PersonId) ? new Int32SelectExpression(PersonId).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PersonId));
+            set &= aliased != nameof(PersonId) ? new SelectExpression<int>(PersonId).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PersonId));
 
             aliased = alias(nameof(AddressId));
-            set &= aliased != nameof(AddressId) ? new Int32SelectExpression(AddressId).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(AddressId));
+            set &= aliased != nameof(AddressId) ? new SelectExpression<int>(AddressId).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(AddressId));
 
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new DateTimeSelectExpression(DateCreated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
 
             return set;
         }
 		
-        protected override InsertExpressionSet<PersonAddress> GetInclusiveInsertExpression(PersonAddress personAddress)
+        protected override InsertExpressionSet<PersonAddress> GetInclusiveInsertExpression(PersonAddress entity)
         {
-            return new InsertExpressionSet<PersonAddress>(personAddress 
-                ,new InsertExpression<int>(personAddress.PersonId, PersonId)
-                ,new InsertExpression<int>(personAddress.AddressId, AddressId)
+            return new InsertExpressionSet<PersonAddress>(entity 
+                ,new InsertExpression<int>(entity.PersonId, PersonId)
+                ,new InsertExpression<int>(entity.AddressId, AddressId)
             );
         }
 
@@ -3059,12 +4154,12 @@ namespace SimpleConsole.dboDataService
             return expr;
         }
 
-        protected override void HydrateEntity(ISqlFieldReader reader, PersonAddress personAddress)
+        protected override void HydrateEntity(ISqlFieldReader reader, PersonAddress entity)
         {
-            personAddress.Id = reader.ReadField().GetValue<int>();
-            personAddress.PersonId = reader.ReadField().GetValue<int>();
-            personAddress.AddressId = reader.ReadField().GetValue<int>();
-            personAddress.DateCreated = reader.ReadField().GetValue<DateTime>();
+            entity.Id = reader.ReadField().GetValue<int>();
+            entity.PersonId = reader.ReadField().GetValue<int>();
+            entity.AddressId = reader.ReadField().GetValue<int>();
+            entity.DateCreated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
 
@@ -3073,20 +4168,16 @@ namespace SimpleConsole.dboDataService
         public partial class IdField : Int32FieldExpression<PersonAddress>
         {
             #region constructors
-            public IdField(string identifier, string name, PersonAddressEntity entity) : base(identifier, name, entity)
+            public IdField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3095,22 +4186,16 @@ namespace SimpleConsole.dboDataService
         public partial class PersonIdField : Int32FieldExpression<PersonAddress>
         {
             #region constructors
-            public PersonIdField(string identifier, string name, PersonAddressEntity entity) : base(identifier, name, entity)
+            public PersonIdField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
-            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3119,22 +4204,16 @@ namespace SimpleConsole.dboDataService
         public partial class AddressIdField : Int32FieldExpression<PersonAddress>
         {
             #region constructors
-            public AddressIdField(string identifier, string name, PersonAddressEntity entity) : base(identifier, name, entity)
+            public AddressIdField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
-            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3143,20 +4222,16 @@ namespace SimpleConsole.dboDataService
         public partial class DateCreatedField : DateTimeFieldExpression<PersonAddress>
         {
             #region constructors
-            public DateCreatedField(string identifier, string name, PersonAddressEntity entity) : base(identifier, name, entity)
+            public DateCreatedField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3173,9 +4248,10 @@ namespace SimpleConsole.dboDataService
         #endregion
 
         #region interface
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.ProductEntity.IdField"/> representing the "dbo.Product.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="SimpleConsole.dboDataService.ProductEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3195,9 +4271,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly IdField Id;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.ProductEntity.ProductCategoryTypeField"/> representing the "dbo.Product.ProductCategoryType" column in the database, 
         /// with a .NET type of <see cref="SimpleConsole.Data.ProductCategoryType"/>?.  The <see cref="SimpleConsole.dboDataService.ProductEntity.ProductCategoryTypeField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyEnumElement{SimpleConsole.Data.ProductCategoryType}Element"/> or <see cref="HatTrick.DbEx.Sql.NullableEnumElement{SimpleConsole.Data.ProductCategoryType}Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{SimpleConsole.Data.ProductCategoryType}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3214,9 +4291,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly ProductCategoryTypeField ProductCategoryType;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.ProductEntity.NameField"/> representing the "dbo.Product.Name" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="SimpleConsole.dboDataService.ProductEntity.NameField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3233,9 +4311,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly NameField Name;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.ProductEntity.DescriptionField"/> representing the "dbo.Product.Description" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="SimpleConsole.dboDataService.ProductEntity.DescriptionField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3252,9 +4331,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly DescriptionField Description;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.ProductEntity.ListPriceField"/> representing the "dbo.Product.ListPrice" column in the database, 
         /// with a .NET type of <see cref="double"/>.  The <see cref="SimpleConsole.dboDataService.ProductEntity.ListPriceField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDoubleElement"/> or <see cref="HatTrick.DbEx.Sql.DoubleElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Double}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3271,9 +4351,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly ListPriceField ListPrice;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.ProductEntity.PriceField"/> representing the "dbo.Product.Price" column in the database, 
         /// with a .NET type of <see cref="double"/>.  The <see cref="SimpleConsole.dboDataService.ProductEntity.PriceField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDoubleElement"/> or <see cref="HatTrick.DbEx.Sql.DoubleElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Double}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3290,9 +4371,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly PriceField Price;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.ProductEntity.QuantityField"/> representing the "dbo.Product.Quantity" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="SimpleConsole.dboDataService.ProductEntity.QuantityField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3309,9 +4391,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly QuantityField Quantity;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.ProductEntity.ImageField"/> representing the "dbo.Product.Image" column in the database, 
         /// with a .NET type of <see cref="byte"/>[].  The <see cref="SimpleConsole.dboDataService.ProductEntity.ImageField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyByteArrayElement"/> or <see cref="HatTrick.DbEx.Sql.ByteArrayElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{ByteArray}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3328,9 +4411,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly ImageField Image;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.ProductEntity.HeightField"/> representing the "dbo.Product.Height" column in the database, 
         /// with a .NET type of <see cref="decimal"/>?.  The <see cref="SimpleConsole.dboDataService.ProductEntity.HeightField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDecimalElement"/> or <see cref="HatTrick.DbEx.Sql.NullableDecimalElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Decimal}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3347,9 +4431,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly HeightField Height;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.ProductEntity.WidthField"/> representing the "dbo.Product.Width" column in the database, 
         /// with a .NET type of <see cref="decimal"/>?.  The <see cref="SimpleConsole.dboDataService.ProductEntity.WidthField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDecimalElement"/> or <see cref="HatTrick.DbEx.Sql.NullableDecimalElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Decimal}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3366,9 +4451,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly WidthField Width;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.ProductEntity.DepthField"/> representing the "dbo.Product.Depth" column in the database, 
         /// with a .NET type of <see cref="decimal"/>?.  The <see cref="SimpleConsole.dboDataService.ProductEntity.DepthField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDecimalElement"/> or <see cref="HatTrick.DbEx.Sql.NullableDecimalElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Decimal}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3385,9 +4471,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly DepthField Depth;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.ProductEntity.WeightField"/> representing the "dbo.Product.Weight" column in the database, 
         /// with a .NET type of <see cref="decimal"/>?.  The <see cref="SimpleConsole.dboDataService.ProductEntity.WeightField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDecimalElement"/> or <see cref="HatTrick.DbEx.Sql.NullableDecimalElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Decimal}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3404,9 +4491,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly WeightField Weight;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.ProductEntity.ShippingWeightField"/> representing the "dbo.Product.ShippingWeight" column in the database, 
         /// with a .NET type of <see cref="decimal"/>.  The <see cref="SimpleConsole.dboDataService.ProductEntity.ShippingWeightField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDecimalElement"/> or <see cref="HatTrick.DbEx.Sql.DecimalElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Decimal}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3423,9 +4511,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly ShippingWeightField ShippingWeight;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.ProductEntity.ValidStartTimeOfDayForPurchaseField"/> representing the "dbo.Product.ValidStartTimeOfDayForPurchase" column in the database, 
         /// with a .NET type of <see cref="TimeSpan"/>?.  The <see cref="SimpleConsole.dboDataService.ProductEntity.ValidStartTimeOfDayForPurchaseField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyTimeSpanElement"/> or <see cref="HatTrick.DbEx.Sql.NullableTimeSpanElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{TimeSpan}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3442,9 +4531,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly ValidStartTimeOfDayForPurchaseField ValidStartTimeOfDayForPurchase;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.ProductEntity.ValidEndTimeOfDayForPurchaseField"/> representing the "dbo.Product.ValidEndTimeOfDayForPurchase" column in the database, 
         /// with a .NET type of <see cref="TimeSpan"/>?.  The <see cref="SimpleConsole.dboDataService.ProductEntity.ValidEndTimeOfDayForPurchaseField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyTimeSpanElement"/> or <see cref="HatTrick.DbEx.Sql.NullableTimeSpanElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{TimeSpan}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3461,9 +4551,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly ValidEndTimeOfDayForPurchaseField ValidEndTimeOfDayForPurchase;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.ProductEntity.DateCreatedField"/> representing the "dbo.Product.DateCreated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="SimpleConsole.dboDataService.ProductEntity.DateCreatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3483,9 +4574,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly DateCreatedField DateCreated;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.ProductEntity.DateUpdatedField"/> representing the "dbo.Product.DateUpdated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="SimpleConsole.dboDataService.ProductEntity.DateUpdatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3508,60 +4600,56 @@ namespace SimpleConsole.dboDataService
         #endregion
 
         #region constructors
-        private ProductEntity() : base(null, null, null, null)
+        public ProductEntity(string identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
 
-        public ProductEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
+        private ProductEntity(string identifier, string name, Schema schema, string alias) : base(identifier, name, schema, alias)
         {
-        }
-
-        private ProductEntity(string identifier, string name, SchemaExpression schema, string alias) : base(identifier, name, schema, alias)
-        {
-            Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", "Id", this));
-            Fields.Add($"{identifier}.ProductCategoryType", ProductCategoryType = new ProductCategoryTypeField($"{identifier}.ProductCategoryType", "ProductCategoryType", this));
-            Fields.Add($"{identifier}.Name", Name = new NameField($"{identifier}.Name", "Name", this));
-            Fields.Add($"{identifier}.Description", Description = new DescriptionField($"{identifier}.Description", "Description", this));
-            Fields.Add($"{identifier}.ListPrice", ListPrice = new ListPriceField($"{identifier}.ListPrice", "ListPrice", this));
-            Fields.Add($"{identifier}.Price", Price = new PriceField($"{identifier}.Price", "Price", this));
-            Fields.Add($"{identifier}.Quantity", Quantity = new QuantityField($"{identifier}.Quantity", "Quantity", this));
-            Fields.Add($"{identifier}.Image", Image = new ImageField($"{identifier}.Image", "Image", this));
-            Fields.Add($"{identifier}.Height", Height = new HeightField($"{identifier}.Height", "Height", this));
-            Fields.Add($"{identifier}.Width", Width = new WidthField($"{identifier}.Width", "Width", this));
-            Fields.Add($"{identifier}.Depth", Depth = new DepthField($"{identifier}.Depth", "Depth", this));
-            Fields.Add($"{identifier}.Weight", Weight = new WeightField($"{identifier}.Weight", "Weight", this));
-            Fields.Add($"{identifier}.ShippingWeight", ShippingWeight = new ShippingWeightField($"{identifier}.ShippingWeight", "ShippingWeight", this));
-            Fields.Add($"{identifier}.ValidStartTimeOfDayForPurchase", ValidStartTimeOfDayForPurchase = new ValidStartTimeOfDayForPurchaseField($"{identifier}.ValidStartTimeOfDayForPurchase", "ValidStartTimeOfDayForPurchase", this));
-            Fields.Add($"{identifier}.ValidEndTimeOfDayForPurchase", ValidEndTimeOfDayForPurchase = new ValidEndTimeOfDayForPurchaseField($"{identifier}.ValidEndTimeOfDayForPurchase", "ValidEndTimeOfDayForPurchase", this));
-            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", "DateCreated", this));
-            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateUpdatedField($"{identifier}.DateUpdated", "DateUpdated", this));
+            Attributes.Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", "Id", this));
+            Attributes.Fields.Add($"{identifier}.ProductCategoryType", ProductCategoryType = new ProductCategoryTypeField($"{identifier}.ProductCategoryType", "ProductCategoryType", this));
+            Attributes.Fields.Add($"{identifier}.Name", Name = new NameField($"{identifier}.Name", "Name", this));
+            Attributes.Fields.Add($"{identifier}.Description", Description = new DescriptionField($"{identifier}.Description", "Description", this));
+            Attributes.Fields.Add($"{identifier}.ListPrice", ListPrice = new ListPriceField($"{identifier}.ListPrice", "ListPrice", this));
+            Attributes.Fields.Add($"{identifier}.Price", Price = new PriceField($"{identifier}.Price", "Price", this));
+            Attributes.Fields.Add($"{identifier}.Quantity", Quantity = new QuantityField($"{identifier}.Quantity", "Quantity", this));
+            Attributes.Fields.Add($"{identifier}.Image", Image = new ImageField($"{identifier}.Image", "Image", this));
+            Attributes.Fields.Add($"{identifier}.Height", Height = new HeightField($"{identifier}.Height", "Height", this));
+            Attributes.Fields.Add($"{identifier}.Width", Width = new WidthField($"{identifier}.Width", "Width", this));
+            Attributes.Fields.Add($"{identifier}.Depth", Depth = new DepthField($"{identifier}.Depth", "Depth", this));
+            Attributes.Fields.Add($"{identifier}.Weight", Weight = new WeightField($"{identifier}.Weight", "Weight", this));
+            Attributes.Fields.Add($"{identifier}.ShippingWeight", ShippingWeight = new ShippingWeightField($"{identifier}.ShippingWeight", "ShippingWeight", this));
+            Attributes.Fields.Add($"{identifier}.ValidStartTimeOfDayForPurchase", ValidStartTimeOfDayForPurchase = new ValidStartTimeOfDayForPurchaseField($"{identifier}.ValidStartTimeOfDayForPurchase", "ValidStartTimeOfDayForPurchase", this));
+            Attributes.Fields.Add($"{identifier}.ValidEndTimeOfDayForPurchase", ValidEndTimeOfDayForPurchase = new ValidEndTimeOfDayForPurchaseField($"{identifier}.ValidEndTimeOfDayForPurchase", "ValidEndTimeOfDayForPurchase", this));
+            Attributes.Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", "DateCreated", this));
+            Attributes.Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateUpdatedField($"{identifier}.DateUpdated", "DateUpdated", this));
         }
         #endregion
 
         #region methods
-        public ProductEntity As(string name)
-            => new ProductEntity(this.identifier, this.name, this.schema, name);
+        public ProductEntity As(string alias)
+            => new ProductEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new Int32SelectExpression(Id)
-                ,new NullableEnumSelectExpression<SimpleConsole.Data.ProductCategoryType>(ProductCategoryType)
-                ,new StringSelectExpression(Name)
-                ,new NullableStringSelectExpression(Description)
-                ,new DoubleSelectExpression(ListPrice)
-                ,new DoubleSelectExpression(Price)
-                ,new Int32SelectExpression(Quantity)
-                ,new NullableByteArraySelectExpression(Image)
-                ,new NullableDecimalSelectExpression(Height)
-                ,new NullableDecimalSelectExpression(Width)
-                ,new NullableDecimalSelectExpression(Depth)
-                ,new NullableDecimalSelectExpression(Weight)
-                ,new DecimalSelectExpression(ShippingWeight)
-                ,new NullableTimeSpanSelectExpression(ValidStartTimeOfDayForPurchase)
-                ,new NullableTimeSpanSelectExpression(ValidEndTimeOfDayForPurchase)
-                ,new DateTimeSelectExpression(DateCreated)
-                ,new DateTimeSelectExpression(DateUpdated)
+                new SelectExpression<int>(Id)
+                ,new SelectExpression<SimpleConsole.Data.ProductCategoryType?>(ProductCategoryType)
+                ,new SelectExpression<string>(Name)
+                ,new SelectExpression<string>(Description)
+                ,new SelectExpression<double>(ListPrice)
+                ,new SelectExpression<double>(Price)
+                ,new SelectExpression<int>(Quantity)
+                ,new SelectExpression<byte[]>(Image)
+                ,new SelectExpression<decimal?>(Height)
+                ,new SelectExpression<decimal?>(Width)
+                ,new SelectExpression<decimal?>(Depth)
+                ,new SelectExpression<decimal?>(Weight)
+                ,new SelectExpression<decimal>(ShippingWeight)
+                ,new SelectExpression<TimeSpan?>(ValidStartTimeOfDayForPurchase)
+                ,new SelectExpression<TimeSpan?>(ValidEndTimeOfDayForPurchase)
+                ,new SelectExpression<DateTime>(DateCreated)
+                ,new SelectExpression<DateTime>(DateUpdated)
             ));
         }
 
@@ -3574,76 +4662,76 @@ namespace SimpleConsole.dboDataService
             string aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new Int32SelectExpression(Id).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
 
             aliased = alias(nameof(ProductCategoryType));
-            set &= aliased != nameof(ProductCategoryType) ? new NullableEnumSelectExpression<SimpleConsole.Data.ProductCategoryType>(ProductCategoryType).As(aliased) as NullableEnumSelectExpression<SimpleConsole.Data.ProductCategoryType> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ProductCategoryType));
+            set &= aliased != nameof(ProductCategoryType) ? new SelectExpression<SimpleConsole.Data.ProductCategoryType?>(ProductCategoryType).As(aliased) as SelectExpression<SimpleConsole.Data.ProductCategoryType?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ProductCategoryType));
 
             aliased = alias(nameof(Name));
-            set &= aliased != nameof(Name) ? new StringSelectExpression(Name).As(aliased) as StringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Name));
+            set &= aliased != nameof(Name) ? new SelectExpression<string>(Name).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Name));
 
             aliased = alias(nameof(Description));
-            set &= aliased != nameof(Description) ? new NullableStringSelectExpression(Description).As(aliased) as NullableStringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Description));
+            set &= aliased != nameof(Description) ? new SelectExpression<string>(Description).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Description));
 
             aliased = alias(nameof(ListPrice));
-            set &= aliased != nameof(ListPrice) ? new DoubleSelectExpression(ListPrice).As(aliased) as DoubleSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ListPrice));
+            set &= aliased != nameof(ListPrice) ? new SelectExpression<double>(ListPrice).As(aliased) as SelectExpression<double> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ListPrice));
 
             aliased = alias(nameof(Price));
-            set &= aliased != nameof(Price) ? new DoubleSelectExpression(Price).As(aliased) as DoubleSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Price));
+            set &= aliased != nameof(Price) ? new SelectExpression<double>(Price).As(aliased) as SelectExpression<double> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Price));
 
             aliased = alias(nameof(Quantity));
-            set &= aliased != nameof(Quantity) ? new Int32SelectExpression(Quantity).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Quantity));
+            set &= aliased != nameof(Quantity) ? new SelectExpression<int>(Quantity).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Quantity));
 
             aliased = alias(nameof(Image));
-            set &= aliased != nameof(Image) ? new NullableByteArraySelectExpression(Image).As(aliased) as NullableByteArraySelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Image));
+            set &= aliased != nameof(Image) ? new SelectExpression<byte[]>(Image).As(aliased) as SelectExpression<byte[]> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Image));
 
             aliased = alias(nameof(Height));
-            set &= aliased != nameof(Height) ? new NullableDecimalSelectExpression(Height).As(aliased) as NullableDecimalSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Height));
+            set &= aliased != nameof(Height) ? new SelectExpression<decimal?>(Height).As(aliased) as SelectExpression<decimal?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Height));
 
             aliased = alias(nameof(Width));
-            set &= aliased != nameof(Width) ? new NullableDecimalSelectExpression(Width).As(aliased) as NullableDecimalSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Width));
+            set &= aliased != nameof(Width) ? new SelectExpression<decimal?>(Width).As(aliased) as SelectExpression<decimal?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Width));
 
             aliased = alias(nameof(Depth));
-            set &= aliased != nameof(Depth) ? new NullableDecimalSelectExpression(Depth).As(aliased) as NullableDecimalSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Depth));
+            set &= aliased != nameof(Depth) ? new SelectExpression<decimal?>(Depth).As(aliased) as SelectExpression<decimal?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Depth));
 
             aliased = alias(nameof(Weight));
-            set &= aliased != nameof(Weight) ? new NullableDecimalSelectExpression(Weight).As(aliased) as NullableDecimalSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Weight));
+            set &= aliased != nameof(Weight) ? new SelectExpression<decimal?>(Weight).As(aliased) as SelectExpression<decimal?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Weight));
 
             aliased = alias(nameof(ShippingWeight));
-            set &= aliased != nameof(ShippingWeight) ? new DecimalSelectExpression(ShippingWeight).As(aliased) as DecimalSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ShippingWeight));
+            set &= aliased != nameof(ShippingWeight) ? new SelectExpression<decimal>(ShippingWeight).As(aliased) as SelectExpression<decimal> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ShippingWeight));
 
             aliased = alias(nameof(ValidStartTimeOfDayForPurchase));
-            set &= aliased != nameof(ValidStartTimeOfDayForPurchase) ? new NullableTimeSpanSelectExpression(ValidStartTimeOfDayForPurchase).As(aliased) as NullableTimeSpanSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ValidStartTimeOfDayForPurchase));
+            set &= aliased != nameof(ValidStartTimeOfDayForPurchase) ? new SelectExpression<TimeSpan?>(ValidStartTimeOfDayForPurchase).As(aliased) as SelectExpression<TimeSpan?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ValidStartTimeOfDayForPurchase));
 
             aliased = alias(nameof(ValidEndTimeOfDayForPurchase));
-            set &= aliased != nameof(ValidEndTimeOfDayForPurchase) ? new NullableTimeSpanSelectExpression(ValidEndTimeOfDayForPurchase).As(aliased) as NullableTimeSpanSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ValidEndTimeOfDayForPurchase));
+            set &= aliased != nameof(ValidEndTimeOfDayForPurchase) ? new SelectExpression<TimeSpan?>(ValidEndTimeOfDayForPurchase).As(aliased) as SelectExpression<TimeSpan?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ValidEndTimeOfDayForPurchase));
 
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new DateTimeSelectExpression(DateCreated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
 
             aliased = alias(nameof(DateUpdated));
-            set &= aliased != nameof(DateUpdated) ? new DateTimeSelectExpression(DateUpdated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
+            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
 
             return set;
         }
 		
-        protected override InsertExpressionSet<Product> GetInclusiveInsertExpression(Product product)
+        protected override InsertExpressionSet<Product> GetInclusiveInsertExpression(Product entity)
         {
-            return new InsertExpressionSet<Product>(product 
-                ,new InsertExpression<SimpleConsole.Data.ProductCategoryType?>(product.ProductCategoryType, ProductCategoryType)
-                ,new InsertExpression<string>(product.Name, Name)
-                ,new InsertExpression<string>(product.Description, Description)
-                ,new InsertExpression<double>(product.ListPrice, ListPrice)
-                ,new InsertExpression<double>(product.Price, Price)
-                ,new InsertExpression<int>(product.Quantity, Quantity)
-                ,new InsertExpression<byte[]>(product.Image, Image)
-                ,new InsertExpression<decimal?>(product.Height, Height)
-                ,new InsertExpression<decimal?>(product.Width, Width)
-                ,new InsertExpression<decimal?>(product.Depth, Depth)
-                ,new InsertExpression<decimal?>(product.Weight, Weight)
-                ,new InsertExpression<decimal>(product.ShippingWeight, ShippingWeight)
-                ,new InsertExpression<TimeSpan?>(product.ValidStartTimeOfDayForPurchase, ValidStartTimeOfDayForPurchase)
-                ,new InsertExpression<TimeSpan?>(product.ValidEndTimeOfDayForPurchase, ValidEndTimeOfDayForPurchase)
+            return new InsertExpressionSet<Product>(entity 
+                ,new InsertExpression<SimpleConsole.Data.ProductCategoryType?>(entity.ProductCategoryType, ProductCategoryType)
+                ,new InsertExpression<string>(entity.Name, Name)
+                ,new InsertExpression<string>(entity.Description, Description)
+                ,new InsertExpression<double>(entity.ListPrice, ListPrice)
+                ,new InsertExpression<double>(entity.Price, Price)
+                ,new InsertExpression<int>(entity.Quantity, Quantity)
+                ,new InsertExpression<byte[]>(entity.Image, Image)
+                ,new InsertExpression<decimal?>(entity.Height, Height)
+                ,new InsertExpression<decimal?>(entity.Width, Width)
+                ,new InsertExpression<decimal?>(entity.Depth, Depth)
+                ,new InsertExpression<decimal?>(entity.Weight, Weight)
+                ,new InsertExpression<decimal>(entity.ShippingWeight, ShippingWeight)
+                ,new InsertExpression<TimeSpan?>(entity.ValidStartTimeOfDayForPurchase, ValidStartTimeOfDayForPurchase)
+                ,new InsertExpression<TimeSpan?>(entity.ValidEndTimeOfDayForPurchase, ValidEndTimeOfDayForPurchase)
             );
         }
 
@@ -3668,25 +4756,25 @@ namespace SimpleConsole.dboDataService
             return expr;
         }
 
-        protected override void HydrateEntity(ISqlFieldReader reader, Product product)
+        protected override void HydrateEntity(ISqlFieldReader reader, Product entity)
         {
-            product.Id = reader.ReadField().GetValue<int>();
-            product.ProductCategoryType = reader.ReadField().GetValue<SimpleConsole.Data.ProductCategoryType?>();
-            product.Name = reader.ReadField().GetValue<string>();
-            product.Description = reader.ReadField().GetValue<string>();
-            product.ListPrice = reader.ReadField().GetValue<double>();
-            product.Price = reader.ReadField().GetValue<double>();
-            product.Quantity = reader.ReadField().GetValue<int>();
-            product.Image = reader.ReadField().GetValue<byte[]>();
-            product.Height = reader.ReadField().GetValue<decimal?>();
-            product.Width = reader.ReadField().GetValue<decimal?>();
-            product.Depth = reader.ReadField().GetValue<decimal?>();
-            product.Weight = reader.ReadField().GetValue<decimal?>();
-            product.ShippingWeight = reader.ReadField().GetValue<decimal>();
-            product.ValidStartTimeOfDayForPurchase = reader.ReadField().GetValue<TimeSpan?>();
-            product.ValidEndTimeOfDayForPurchase = reader.ReadField().GetValue<TimeSpan?>();
-            product.DateCreated = reader.ReadField().GetValue<DateTime>();
-            product.DateUpdated = reader.ReadField().GetValue<DateTime>();
+            entity.Id = reader.ReadField().GetValue<int>();
+            entity.ProductCategoryType = reader.ReadField().GetValue<SimpleConsole.Data.ProductCategoryType?>();
+            entity.Name = reader.ReadField().GetValue<string>();
+            entity.Description = reader.ReadField().GetValue<string>();
+            entity.ListPrice = reader.ReadField().GetValue<double>();
+            entity.Price = reader.ReadField().GetValue<double>();
+            entity.Quantity = reader.ReadField().GetValue<int>();
+            entity.Image = reader.ReadField().GetValue<byte[]>();
+            entity.Height = reader.ReadField().GetValue<decimal?>();
+            entity.Width = reader.ReadField().GetValue<decimal?>();
+            entity.Depth = reader.ReadField().GetValue<decimal?>();
+            entity.Weight = reader.ReadField().GetValue<decimal?>();
+            entity.ShippingWeight = reader.ReadField().GetValue<decimal>();
+            entity.ValidStartTimeOfDayForPurchase = reader.ReadField().GetValue<TimeSpan?>();
+            entity.ValidEndTimeOfDayForPurchase = reader.ReadField().GetValue<TimeSpan?>();
+            entity.DateCreated = reader.ReadField().GetValue<DateTime>();
+            entity.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
 
@@ -3695,47 +4783,37 @@ namespace SimpleConsole.dboDataService
         public partial class IdField : Int32FieldExpression<Product>
         {
             #region constructors
-            public IdField(string identifier, string name, ProductEntity entity) : base(identifier, name, entity)
+            public IdField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
 
         #region product category type field expression
-        public partial class ProductCategoryTypeField : NullableEnumFieldExpression<Product, SimpleConsole.Data.ProductCategoryType>
+        public partial class ProductCategoryTypeField : NullableEnumFieldExpression<Product,SimpleConsole.Data.ProductCategoryType>
         {
             #region constructors
-            public ProductCategoryTypeField(string identifier, string name, ProductEntity entity) : base(identifier, name, entity)
+            public ProductCategoryTypeField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override NullableEnumElement<SimpleConsole.Data.ProductCategoryType> As(string alias)
-            {
-                return new NullableEnumSelectExpression<SimpleConsole.Data.ProductCategoryType>(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<SimpleConsole.Data.ProductCategoryType?>(value));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<SimpleConsole.Data.ProductCategoryType?>(value, this));
             public AssignmentExpression Set(SimpleConsole.Data.ProductCategoryType value) => new AssignmentExpression(this, new LiteralExpression<SimpleConsole.Data.ProductCategoryType>(value, this));
-            public AssignmentExpression Set(EnumElement<SimpleConsole.Data.ProductCategoryType> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<SimpleConsole.Data.ProductCategoryType> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(SimpleConsole.Data.ProductCategoryType? value) => new AssignmentExpression(this, new LiteralExpression<SimpleConsole.Data.ProductCategoryType?>(value, this));
-            public AssignmentExpression Set(NullableEnumElement<SimpleConsole.Data.ProductCategoryType> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<SimpleConsole.Data.ProductCategoryType>(value, this));
+            public AssignmentExpression Set(AnyElement<SimpleConsole.Data.ProductCategoryType?> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3744,20 +4822,14 @@ namespace SimpleConsole.dboDataService
         public partial class NameField : StringFieldExpression<Product>
         {
             #region constructors
-            public NameField(string identifier, string name, ProductEntity entity) : base(identifier, name, entity)
+            public NameField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override StringElement As(string alias)
-            {
-                return new StringSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -3765,27 +4837,19 @@ namespace SimpleConsole.dboDataService
         #endregion
 
         #region description field expression
-        public partial class DescriptionField : NullableStringFieldExpression<Product>
+        public partial class DescriptionField : StringFieldExpression<Product>
         {
             #region constructors
-            public DescriptionField(string identifier, string name, ProductEntity entity) : base(identifier, name, entity)
+            public DescriptionField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override NullableStringElement As(string alias)
-            {
-                return new NullableStringSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(NullableStringElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             #endregion
         }
         #endregion
@@ -3794,22 +4858,16 @@ namespace SimpleConsole.dboDataService
         public partial class ListPriceField : DoubleFieldExpression<Product>
         {
             #region constructors
-            public ListPriceField(string identifier, string name, ProductEntity entity) : base(identifier, name, entity)
+            public ListPriceField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override DoubleElement As(string alias)
-            {
-                return new DoubleSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<double>(value));
             public AssignmentExpression Set(double value) => new AssignmentExpression(this, new LiteralExpression<double>(value, this));
-            public AssignmentExpression Set(DoubleElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<double> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3818,22 +4876,16 @@ namespace SimpleConsole.dboDataService
         public partial class PriceField : DoubleFieldExpression<Product>
         {
             #region constructors
-            public PriceField(string identifier, string name, ProductEntity entity) : base(identifier, name, entity)
+            public PriceField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override DoubleElement As(string alias)
-            {
-                return new DoubleSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<double>(value));
             public AssignmentExpression Set(double value) => new AssignmentExpression(this, new LiteralExpression<double>(value, this));
-            public AssignmentExpression Set(DoubleElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<double> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3842,22 +4894,16 @@ namespace SimpleConsole.dboDataService
         public partial class QuantityField : Int32FieldExpression<Product>
         {
             #region constructors
-            public QuantityField(string identifier, string name, ProductEntity entity) : base(identifier, name, entity)
+            public QuantityField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
-            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3866,24 +4912,17 @@ namespace SimpleConsole.dboDataService
         public partial class ImageField : NullableByteArrayFieldExpression<Product>
         {
             #region constructors
-            public ImageField(string identifier, string name, ProductEntity entity) : base(identifier, name, entity)
+            public ImageField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override NullableByteArrayElement As(string alias)
-            {
-                return new NullableByteArraySelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
-            public AssignmentExpression Set(byte[] value) => new AssignmentExpression(this, new LiteralExpression<byte[]>(value, this));
-            public AssignmentExpression Set(ByteArrayElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(NullableByteArrayElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<byte[]>(value));
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<byte[]>(value, this));
+            public AssignmentExpression Set(byte[] value) => new AssignmentExpression(this, new LiteralExpression<byte[]>(value, this));
+            public AssignmentExpression Set(AnyElement<byte[]> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3892,25 +4931,19 @@ namespace SimpleConsole.dboDataService
         public partial class HeightField : NullableDecimalFieldExpression<Product>
         {
             #region constructors
-            public HeightField(string identifier, string name, ProductEntity entity) : base(identifier, name, entity)
+            public HeightField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override NullableDecimalElement As(string alias)
-            {
-                return new NullableDecimalSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
-            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
-            public AssignmentExpression Set(DecimalElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<decimal?>(value));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
             public AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
-            public AssignmentExpression Set(NullableDecimalElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
+            public AssignmentExpression Set(AnyElement<decimal?> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
+            public AssignmentExpression Set(AnyElement<decimal> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3919,25 +4952,19 @@ namespace SimpleConsole.dboDataService
         public partial class WidthField : NullableDecimalFieldExpression<Product>
         {
             #region constructors
-            public WidthField(string identifier, string name, ProductEntity entity) : base(identifier, name, entity)
+            public WidthField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override NullableDecimalElement As(string alias)
-            {
-                return new NullableDecimalSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
-            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
-            public AssignmentExpression Set(DecimalElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<decimal?>(value));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
             public AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
-            public AssignmentExpression Set(NullableDecimalElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
+            public AssignmentExpression Set(AnyElement<decimal?> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
+            public AssignmentExpression Set(AnyElement<decimal> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3946,25 +4973,19 @@ namespace SimpleConsole.dboDataService
         public partial class DepthField : NullableDecimalFieldExpression<Product>
         {
             #region constructors
-            public DepthField(string identifier, string name, ProductEntity entity) : base(identifier, name, entity)
+            public DepthField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override NullableDecimalElement As(string alias)
-            {
-                return new NullableDecimalSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
-            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
-            public AssignmentExpression Set(DecimalElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<decimal?>(value));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
             public AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
-            public AssignmentExpression Set(NullableDecimalElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
+            public AssignmentExpression Set(AnyElement<decimal?> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
+            public AssignmentExpression Set(AnyElement<decimal> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3973,25 +4994,19 @@ namespace SimpleConsole.dboDataService
         public partial class WeightField : NullableDecimalFieldExpression<Product>
         {
             #region constructors
-            public WeightField(string identifier, string name, ProductEntity entity) : base(identifier, name, entity)
+            public WeightField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override NullableDecimalElement As(string alias)
-            {
-                return new NullableDecimalSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
-            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
-            public AssignmentExpression Set(DecimalElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<decimal?>(value));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
             public AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
-            public AssignmentExpression Set(NullableDecimalElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
+            public AssignmentExpression Set(AnyElement<decimal?> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
+            public AssignmentExpression Set(AnyElement<decimal> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4000,22 +5015,16 @@ namespace SimpleConsole.dboDataService
         public partial class ShippingWeightField : DecimalFieldExpression<Product>
         {
             #region constructors
-            public ShippingWeightField(string identifier, string name, ProductEntity entity) : base(identifier, name, entity)
+            public ShippingWeightField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override DecimalElement As(string alias)
-            {
-                return new DecimalSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<decimal>(value));
             public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
-            public AssignmentExpression Set(DecimalElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<decimal> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4024,25 +5033,19 @@ namespace SimpleConsole.dboDataService
         public partial class ValidStartTimeOfDayForPurchaseField : NullableTimeSpanFieldExpression<Product>
         {
             #region constructors
-            public ValidStartTimeOfDayForPurchaseField(string identifier, string name, ProductEntity entity) : base(identifier, name, entity)
+            public ValidStartTimeOfDayForPurchaseField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override NullableTimeSpanElement As(string alias)
-            {
-                return new NullableTimeSpanSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
-            public AssignmentExpression Set(TimeSpan value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan>(value, this));
-            public AssignmentExpression Set(TimeSpanElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<TimeSpan?>(value));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan?>(value, this));
             public AssignmentExpression Set(TimeSpan? value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan?>(value, this));
-            public AssignmentExpression Set(NullableTimeSpanElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan>(value, this));
+            public AssignmentExpression Set(AnyElement<TimeSpan?> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(TimeSpan value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan>(value, this));
+            public AssignmentExpression Set(AnyElement<TimeSpan> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4051,25 +5054,19 @@ namespace SimpleConsole.dboDataService
         public partial class ValidEndTimeOfDayForPurchaseField : NullableTimeSpanFieldExpression<Product>
         {
             #region constructors
-            public ValidEndTimeOfDayForPurchaseField(string identifier, string name, ProductEntity entity) : base(identifier, name, entity)
+            public ValidEndTimeOfDayForPurchaseField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override NullableTimeSpanElement As(string alias)
-            {
-                return new NullableTimeSpanSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
-            public AssignmentExpression Set(TimeSpan value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan>(value, this));
-            public AssignmentExpression Set(TimeSpanElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<TimeSpan?>(value));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan?>(value, this));
             public AssignmentExpression Set(TimeSpan? value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan?>(value, this));
-            public AssignmentExpression Set(NullableTimeSpanElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan>(value, this));
+            public AssignmentExpression Set(AnyElement<TimeSpan?> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(TimeSpan value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan>(value, this));
+            public AssignmentExpression Set(AnyElement<TimeSpan> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4078,20 +5075,16 @@ namespace SimpleConsole.dboDataService
         public partial class DateCreatedField : DateTimeFieldExpression<Product>
         {
             #region constructors
-            public DateCreatedField(string identifier, string name, ProductEntity entity) : base(identifier, name, entity)
+            public DateCreatedField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4100,20 +5093,16 @@ namespace SimpleConsole.dboDataService
         public partial class DateUpdatedField : DateTimeFieldExpression<Product>
         {
             #region constructors
-            public DateUpdatedField(string identifier, string name, ProductEntity entity) : base(identifier, name, entity)
+            public DateUpdatedField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4130,9 +5119,10 @@ namespace SimpleConsole.dboDataService
         #endregion
 
         #region interface
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.PurchaseEntity.IdField"/> representing the "dbo.Purchase.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="SimpleConsole.dboDataService.PurchaseEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4152,9 +5142,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly IdField Id;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.PurchaseEntity.PersonIdField"/> representing the "dbo.Purchase.PersonId" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="SimpleConsole.dboDataService.PurchaseEntity.PersonIdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4171,9 +5162,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly PersonIdField PersonId;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.PurchaseEntity.OrderNumberField"/> representing the "dbo.Purchase.OrderNumber" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="SimpleConsole.dboDataService.PurchaseEntity.OrderNumberField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4190,9 +5182,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly OrderNumberField OrderNumber;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.PurchaseEntity.TotalPurchaseQuantityField"/> representing the "dbo.Purchase.TotalPurchaseQuantity" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="SimpleConsole.dboDataService.PurchaseEntity.TotalPurchaseQuantityField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4209,9 +5202,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly TotalPurchaseQuantityField TotalPurchaseQuantity;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.PurchaseEntity.TotalPurchaseAmountField"/> representing the "dbo.Purchase.TotalPurchaseAmount" column in the database, 
         /// with a .NET type of <see cref="double"/>.  The <see cref="SimpleConsole.dboDataService.PurchaseEntity.TotalPurchaseAmountField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDoubleElement"/> or <see cref="HatTrick.DbEx.Sql.DoubleElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Double}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4228,9 +5222,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly TotalPurchaseAmountField TotalPurchaseAmount;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.PurchaseEntity.PurchaseDateField"/> representing the "dbo.Purchase.PurchaseDate" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="SimpleConsole.dboDataService.PurchaseEntity.PurchaseDateField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4247,9 +5242,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly PurchaseDateField PurchaseDate;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.PurchaseEntity.ShipDateField"/> representing the "dbo.Purchase.ShipDate" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>?.  The <see cref="SimpleConsole.dboDataService.PurchaseEntity.ShipDateField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.NullableDateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4266,9 +5262,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly ShipDateField ShipDate;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.PurchaseEntity.ExpectedDeliveryDateField"/> representing the "dbo.Purchase.ExpectedDeliveryDate" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>?.  The <see cref="SimpleConsole.dboDataService.PurchaseEntity.ExpectedDeliveryDateField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.NullableDateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4285,9 +5282,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly ExpectedDeliveryDateField ExpectedDeliveryDate;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.PurchaseEntity.TrackingIdentifierField"/> representing the "dbo.Purchase.TrackingIdentifier" column in the database, 
         /// with a .NET type of <see cref="Guid"/>?.  The <see cref="SimpleConsole.dboDataService.PurchaseEntity.TrackingIdentifierField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyGuidElement"/> or <see cref="HatTrick.DbEx.Sql.NullableGuidElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Guid}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4304,9 +5302,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly TrackingIdentifierField TrackingIdentifier;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.PurchaseEntity.PaymentMethodTypeField"/> representing the "dbo.Purchase.PaymentMethodType" column in the database, 
         /// with a .NET type of <see cref="SimpleConsole.Data.PaymentMethodType"/>.  The <see cref="SimpleConsole.dboDataService.PurchaseEntity.PaymentMethodTypeField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyEnumElement{SimpleConsole.Data.PaymentMethodType}Element"/> or <see cref="HatTrick.DbEx.Sql.EnumElement{SimpleConsole.Data.PaymentMethodType}Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{SimpleConsole.Data.PaymentMethodType}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4323,9 +5322,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly PaymentMethodTypeField PaymentMethodType;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.PurchaseEntity.PaymentSourceTypeField"/> representing the "dbo.Purchase.PaymentSourceType" column in the database, 
         /// with a .NET type of <see cref="SimpleConsole.Data.PaymentSourceType"/>?.  The <see cref="SimpleConsole.dboDataService.PurchaseEntity.PaymentSourceTypeField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyEnumElement{SimpleConsole.Data.PaymentSourceType}Element"/> or <see cref="HatTrick.DbEx.Sql.NullableEnumElement{SimpleConsole.Data.PaymentSourceType}Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{SimpleConsole.Data.PaymentSourceType}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4342,9 +5342,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly PaymentSourceTypeField PaymentSourceType;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.PurchaseEntity.DateCreatedField"/> representing the "dbo.Purchase.DateCreated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="SimpleConsole.dboDataService.PurchaseEntity.DateCreatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4364,9 +5365,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly DateCreatedField DateCreated;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.PurchaseEntity.DateUpdatedField"/> representing the "dbo.Purchase.DateUpdated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="SimpleConsole.dboDataService.PurchaseEntity.DateUpdatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4389,52 +5391,48 @@ namespace SimpleConsole.dboDataService
         #endregion
 
         #region constructors
-        private PurchaseEntity() : base(null, null, null, null)
+        public PurchaseEntity(string identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
 
-        public PurchaseEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
+        private PurchaseEntity(string identifier, string name, Schema schema, string alias) : base(identifier, name, schema, alias)
         {
-        }
-
-        private PurchaseEntity(string identifier, string name, SchemaExpression schema, string alias) : base(identifier, name, schema, alias)
-        {
-            Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", "Id", this));
-            Fields.Add($"{identifier}.PersonId", PersonId = new PersonIdField($"{identifier}.PersonId", "PersonId", this));
-            Fields.Add($"{identifier}.OrderNumber", OrderNumber = new OrderNumberField($"{identifier}.OrderNumber", "OrderNumber", this));
-            Fields.Add($"{identifier}.TotalPurchaseQuantity", TotalPurchaseQuantity = new TotalPurchaseQuantityField($"{identifier}.TotalPurchaseQuantity", "TotalPurchaseQuantity", this));
-            Fields.Add($"{identifier}.TotalPurchaseAmount", TotalPurchaseAmount = new TotalPurchaseAmountField($"{identifier}.TotalPurchaseAmount", "TotalPurchaseAmount", this));
-            Fields.Add($"{identifier}.PurchaseDate", PurchaseDate = new PurchaseDateField($"{identifier}.PurchaseDate", "PurchaseDate", this));
-            Fields.Add($"{identifier}.ShipDate", ShipDate = new ShipDateField($"{identifier}.ShipDate", "ShipDate", this));
-            Fields.Add($"{identifier}.ExpectedDeliveryDate", ExpectedDeliveryDate = new ExpectedDeliveryDateField($"{identifier}.ExpectedDeliveryDate", "ExpectedDeliveryDate", this));
-            Fields.Add($"{identifier}.TrackingIdentifier", TrackingIdentifier = new TrackingIdentifierField($"{identifier}.TrackingIdentifier", "TrackingIdentifier", this));
-            Fields.Add($"{identifier}.PaymentMethodType", PaymentMethodType = new PaymentMethodTypeField($"{identifier}.PaymentMethodType", "PaymentMethodType", this));
-            Fields.Add($"{identifier}.PaymentSourceType", PaymentSourceType = new PaymentSourceTypeField($"{identifier}.PaymentSourceType", "PaymentSourceType", this));
-            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", "DateCreated", this));
-            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateUpdatedField($"{identifier}.DateUpdated", "DateUpdated", this));
+            Attributes.Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", "Id", this));
+            Attributes.Fields.Add($"{identifier}.PersonId", PersonId = new PersonIdField($"{identifier}.PersonId", "PersonId", this));
+            Attributes.Fields.Add($"{identifier}.OrderNumber", OrderNumber = new OrderNumberField($"{identifier}.OrderNumber", "OrderNumber", this));
+            Attributes.Fields.Add($"{identifier}.TotalPurchaseQuantity", TotalPurchaseQuantity = new TotalPurchaseQuantityField($"{identifier}.TotalPurchaseQuantity", "TotalPurchaseQuantity", this));
+            Attributes.Fields.Add($"{identifier}.TotalPurchaseAmount", TotalPurchaseAmount = new TotalPurchaseAmountField($"{identifier}.TotalPurchaseAmount", "TotalPurchaseAmount", this));
+            Attributes.Fields.Add($"{identifier}.PurchaseDate", PurchaseDate = new PurchaseDateField($"{identifier}.PurchaseDate", "PurchaseDate", this));
+            Attributes.Fields.Add($"{identifier}.ShipDate", ShipDate = new ShipDateField($"{identifier}.ShipDate", "ShipDate", this));
+            Attributes.Fields.Add($"{identifier}.ExpectedDeliveryDate", ExpectedDeliveryDate = new ExpectedDeliveryDateField($"{identifier}.ExpectedDeliveryDate", "ExpectedDeliveryDate", this));
+            Attributes.Fields.Add($"{identifier}.TrackingIdentifier", TrackingIdentifier = new TrackingIdentifierField($"{identifier}.TrackingIdentifier", "TrackingIdentifier", this));
+            Attributes.Fields.Add($"{identifier}.PaymentMethodType", PaymentMethodType = new PaymentMethodTypeField($"{identifier}.PaymentMethodType", "PaymentMethodType", this));
+            Attributes.Fields.Add($"{identifier}.PaymentSourceType", PaymentSourceType = new PaymentSourceTypeField($"{identifier}.PaymentSourceType", "PaymentSourceType", this));
+            Attributes.Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", "DateCreated", this));
+            Attributes.Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateUpdatedField($"{identifier}.DateUpdated", "DateUpdated", this));
         }
         #endregion
 
         #region methods
-        public PurchaseEntity As(string name)
-            => new PurchaseEntity(this.identifier, this.name, this.schema, name);
+        public PurchaseEntity As(string alias)
+            => new PurchaseEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new Int32SelectExpression(Id)
-                ,new Int32SelectExpression(PersonId)
-                ,new StringSelectExpression(OrderNumber)
-                ,new Int32SelectExpression(TotalPurchaseQuantity)
-                ,new DoubleSelectExpression(TotalPurchaseAmount)
-                ,new DateTimeSelectExpression(PurchaseDate)
-                ,new NullableDateTimeSelectExpression(ShipDate)
-                ,new NullableDateTimeSelectExpression(ExpectedDeliveryDate)
-                ,new NullableGuidSelectExpression(TrackingIdentifier)
-                ,new EnumSelectExpression<SimpleConsole.Data.PaymentMethodType>(PaymentMethodType)
-                ,new NullableEnumSelectExpression<SimpleConsole.Data.PaymentSourceType>(PaymentSourceType)
-                ,new DateTimeSelectExpression(DateCreated)
-                ,new DateTimeSelectExpression(DateUpdated)
+                new SelectExpression<int>(Id)
+                ,new SelectExpression<int>(PersonId)
+                ,new SelectExpression<string>(OrderNumber)
+                ,new SelectExpression<int>(TotalPurchaseQuantity)
+                ,new SelectExpression<double>(TotalPurchaseAmount)
+                ,new SelectExpression<DateTime>(PurchaseDate)
+                ,new SelectExpression<DateTime?>(ShipDate)
+                ,new SelectExpression<DateTime?>(ExpectedDeliveryDate)
+                ,new SelectExpression<Guid?>(TrackingIdentifier)
+                ,new SelectExpression<SimpleConsole.Data.PaymentMethodType>(PaymentMethodType)
+                ,new SelectExpression<SimpleConsole.Data.PaymentSourceType?>(PaymentSourceType)
+                ,new SelectExpression<DateTime>(DateCreated)
+                ,new SelectExpression<DateTime>(DateUpdated)
             ));
         }
 
@@ -4447,60 +5445,60 @@ namespace SimpleConsole.dboDataService
             string aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new Int32SelectExpression(Id).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
 
             aliased = alias(nameof(PersonId));
-            set &= aliased != nameof(PersonId) ? new Int32SelectExpression(PersonId).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PersonId));
+            set &= aliased != nameof(PersonId) ? new SelectExpression<int>(PersonId).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PersonId));
 
             aliased = alias(nameof(OrderNumber));
-            set &= aliased != nameof(OrderNumber) ? new StringSelectExpression(OrderNumber).As(aliased) as StringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(OrderNumber));
+            set &= aliased != nameof(OrderNumber) ? new SelectExpression<string>(OrderNumber).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(OrderNumber));
 
             aliased = alias(nameof(TotalPurchaseQuantity));
-            set &= aliased != nameof(TotalPurchaseQuantity) ? new Int32SelectExpression(TotalPurchaseQuantity).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TotalPurchaseQuantity));
+            set &= aliased != nameof(TotalPurchaseQuantity) ? new SelectExpression<int>(TotalPurchaseQuantity).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TotalPurchaseQuantity));
 
             aliased = alias(nameof(TotalPurchaseAmount));
-            set &= aliased != nameof(TotalPurchaseAmount) ? new DoubleSelectExpression(TotalPurchaseAmount).As(aliased) as DoubleSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TotalPurchaseAmount));
+            set &= aliased != nameof(TotalPurchaseAmount) ? new SelectExpression<double>(TotalPurchaseAmount).As(aliased) as SelectExpression<double> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TotalPurchaseAmount));
 
             aliased = alias(nameof(PurchaseDate));
-            set &= aliased != nameof(PurchaseDate) ? new DateTimeSelectExpression(PurchaseDate).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PurchaseDate));
+            set &= aliased != nameof(PurchaseDate) ? new SelectExpression<DateTime>(PurchaseDate).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PurchaseDate));
 
             aliased = alias(nameof(ShipDate));
-            set &= aliased != nameof(ShipDate) ? new NullableDateTimeSelectExpression(ShipDate).As(aliased) as NullableDateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ShipDate));
+            set &= aliased != nameof(ShipDate) ? new SelectExpression<DateTime?>(ShipDate).As(aliased) as SelectExpression<DateTime?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ShipDate));
 
             aliased = alias(nameof(ExpectedDeliveryDate));
-            set &= aliased != nameof(ExpectedDeliveryDate) ? new NullableDateTimeSelectExpression(ExpectedDeliveryDate).As(aliased) as NullableDateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ExpectedDeliveryDate));
+            set &= aliased != nameof(ExpectedDeliveryDate) ? new SelectExpression<DateTime?>(ExpectedDeliveryDate).As(aliased) as SelectExpression<DateTime?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ExpectedDeliveryDate));
 
             aliased = alias(nameof(TrackingIdentifier));
-            set &= aliased != nameof(TrackingIdentifier) ? new NullableGuidSelectExpression(TrackingIdentifier).As(aliased) as NullableGuidSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TrackingIdentifier));
+            set &= aliased != nameof(TrackingIdentifier) ? new SelectExpression<Guid?>(TrackingIdentifier).As(aliased) as SelectExpression<Guid?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TrackingIdentifier));
 
             aliased = alias(nameof(PaymentMethodType));
-            set &= aliased != nameof(PaymentMethodType) ? new EnumSelectExpression<SimpleConsole.Data.PaymentMethodType>(PaymentMethodType).As(aliased) as EnumSelectExpression<SimpleConsole.Data.PaymentMethodType> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PaymentMethodType));
+            set &= aliased != nameof(PaymentMethodType) ? new SelectExpression<SimpleConsole.Data.PaymentMethodType>(PaymentMethodType).As(aliased) as SelectExpression<SimpleConsole.Data.PaymentMethodType> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PaymentMethodType));
 
             aliased = alias(nameof(PaymentSourceType));
-            set &= aliased != nameof(PaymentSourceType) ? new NullableEnumSelectExpression<SimpleConsole.Data.PaymentSourceType>(PaymentSourceType).As(aliased) as NullableEnumSelectExpression<SimpleConsole.Data.PaymentSourceType> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PaymentSourceType));
+            set &= aliased != nameof(PaymentSourceType) ? new SelectExpression<SimpleConsole.Data.PaymentSourceType?>(PaymentSourceType).As(aliased) as SelectExpression<SimpleConsole.Data.PaymentSourceType?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PaymentSourceType));
 
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new DateTimeSelectExpression(DateCreated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
 
             aliased = alias(nameof(DateUpdated));
-            set &= aliased != nameof(DateUpdated) ? new DateTimeSelectExpression(DateUpdated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
+            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
 
             return set;
         }
 		
-        protected override InsertExpressionSet<Purchase> GetInclusiveInsertExpression(Purchase purchase)
+        protected override InsertExpressionSet<Purchase> GetInclusiveInsertExpression(Purchase entity)
         {
-            return new InsertExpressionSet<Purchase>(purchase 
-                ,new InsertExpression<int>(purchase.PersonId, PersonId)
-                ,new InsertExpression<string>(purchase.OrderNumber, OrderNumber)
-                ,new InsertExpression<int>(purchase.TotalPurchaseQuantity, TotalPurchaseQuantity)
-                ,new InsertExpression<double>(purchase.TotalPurchaseAmount, TotalPurchaseAmount)
-                ,new InsertExpression<DateTime>(purchase.PurchaseDate, PurchaseDate)
-                ,new InsertExpression<DateTime?>(purchase.ShipDate, ShipDate)
-                ,new InsertExpression<DateTime?>(purchase.ExpectedDeliveryDate, ExpectedDeliveryDate)
-                ,new InsertExpression<Guid?>(purchase.TrackingIdentifier, TrackingIdentifier)
-                ,new InsertExpression<SimpleConsole.Data.PaymentMethodType>(purchase.PaymentMethodType, PaymentMethodType)
-                ,new InsertExpression<SimpleConsole.Data.PaymentSourceType?>(purchase.PaymentSourceType, PaymentSourceType)
+            return new InsertExpressionSet<Purchase>(entity 
+                ,new InsertExpression<int>(entity.PersonId, PersonId)
+                ,new InsertExpression<string>(entity.OrderNumber, OrderNumber)
+                ,new InsertExpression<int>(entity.TotalPurchaseQuantity, TotalPurchaseQuantity)
+                ,new InsertExpression<double>(entity.TotalPurchaseAmount, TotalPurchaseAmount)
+                ,new InsertExpression<DateTime>(entity.PurchaseDate, PurchaseDate)
+                ,new InsertExpression<DateTime?>(entity.ShipDate, ShipDate)
+                ,new InsertExpression<DateTime?>(entity.ExpectedDeliveryDate, ExpectedDeliveryDate)
+                ,new InsertExpression<Guid?>(entity.TrackingIdentifier, TrackingIdentifier)
+                ,new InsertExpression<SimpleConsole.Data.PaymentMethodType>(entity.PaymentMethodType, PaymentMethodType)
+                ,new InsertExpression<SimpleConsole.Data.PaymentSourceType?>(entity.PaymentSourceType, PaymentSourceType)
             );
         }
 
@@ -4521,21 +5519,21 @@ namespace SimpleConsole.dboDataService
             return expr;
         }
 
-        protected override void HydrateEntity(ISqlFieldReader reader, Purchase purchase)
+        protected override void HydrateEntity(ISqlFieldReader reader, Purchase entity)
         {
-            purchase.Id = reader.ReadField().GetValue<int>();
-            purchase.PersonId = reader.ReadField().GetValue<int>();
-            purchase.OrderNumber = reader.ReadField().GetValue<string>();
-            purchase.TotalPurchaseQuantity = reader.ReadField().GetValue<int>();
-            purchase.TotalPurchaseAmount = reader.ReadField().GetValue<double>();
-            purchase.PurchaseDate = reader.ReadField().GetValue<DateTime>();
-            purchase.ShipDate = reader.ReadField().GetValue<DateTime?>();
-            purchase.ExpectedDeliveryDate = reader.ReadField().GetValue<DateTime?>();
-            purchase.TrackingIdentifier = reader.ReadField().GetValue<Guid?>();
-            purchase.PaymentMethodType = reader.ReadField().GetValue<SimpleConsole.Data.PaymentMethodType>();
-            purchase.PaymentSourceType = reader.ReadField().GetValue<SimpleConsole.Data.PaymentSourceType?>();
-            purchase.DateCreated = reader.ReadField().GetValue<DateTime>();
-            purchase.DateUpdated = reader.ReadField().GetValue<DateTime>();
+            entity.Id = reader.ReadField().GetValue<int>();
+            entity.PersonId = reader.ReadField().GetValue<int>();
+            entity.OrderNumber = reader.ReadField().GetValue<string>();
+            entity.TotalPurchaseQuantity = reader.ReadField().GetValue<int>();
+            entity.TotalPurchaseAmount = reader.ReadField().GetValue<double>();
+            entity.PurchaseDate = reader.ReadField().GetValue<DateTime>();
+            entity.ShipDate = reader.ReadField().GetValue<DateTime?>();
+            entity.ExpectedDeliveryDate = reader.ReadField().GetValue<DateTime?>();
+            entity.TrackingIdentifier = reader.ReadField().GetValue<Guid?>();
+            entity.PaymentMethodType = reader.ReadField().GetValue<SimpleConsole.Data.PaymentMethodType>();
+            entity.PaymentSourceType = reader.ReadField().GetValue<SimpleConsole.Data.PaymentSourceType?>();
+            entity.DateCreated = reader.ReadField().GetValue<DateTime>();
+            entity.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
 
@@ -4544,20 +5542,16 @@ namespace SimpleConsole.dboDataService
         public partial class IdField : Int32FieldExpression<Purchase>
         {
             #region constructors
-            public IdField(string identifier, string name, PurchaseEntity entity) : base(identifier, name, entity)
+            public IdField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4566,22 +5560,16 @@ namespace SimpleConsole.dboDataService
         public partial class PersonIdField : Int32FieldExpression<Purchase>
         {
             #region constructors
-            public PersonIdField(string identifier, string name, PurchaseEntity entity) : base(identifier, name, entity)
+            public PersonIdField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
-            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4590,20 +5578,14 @@ namespace SimpleConsole.dboDataService
         public partial class OrderNumberField : StringFieldExpression<Purchase>
         {
             #region constructors
-            public OrderNumberField(string identifier, string name, PurchaseEntity entity) : base(identifier, name, entity)
+            public OrderNumberField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override StringElement As(string alias)
-            {
-                return new StringSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -4614,22 +5596,16 @@ namespace SimpleConsole.dboDataService
         public partial class TotalPurchaseQuantityField : Int32FieldExpression<Purchase>
         {
             #region constructors
-            public TotalPurchaseQuantityField(string identifier, string name, PurchaseEntity entity) : base(identifier, name, entity)
+            public TotalPurchaseQuantityField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
-            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4638,22 +5614,16 @@ namespace SimpleConsole.dboDataService
         public partial class TotalPurchaseAmountField : DoubleFieldExpression<Purchase>
         {
             #region constructors
-            public TotalPurchaseAmountField(string identifier, string name, PurchaseEntity entity) : base(identifier, name, entity)
+            public TotalPurchaseAmountField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override DoubleElement As(string alias)
-            {
-                return new DoubleSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<double>(value));
             public AssignmentExpression Set(double value) => new AssignmentExpression(this, new LiteralExpression<double>(value, this));
-            public AssignmentExpression Set(DoubleElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<double> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4662,22 +5632,16 @@ namespace SimpleConsole.dboDataService
         public partial class PurchaseDateField : DateTimeFieldExpression<Purchase>
         {
             #region constructors
-            public PurchaseDateField(string identifier, string name, PurchaseEntity entity) : base(identifier, name, entity)
+            public PurchaseDateField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
-            public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4686,25 +5650,19 @@ namespace SimpleConsole.dboDataService
         public partial class ShipDateField : NullableDateTimeFieldExpression<Purchase>
         {
             #region constructors
-            public ShipDateField(string identifier, string name, PurchaseEntity entity) : base(identifier, name, entity)
+            public ShipDateField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override NullableDateTimeElement As(string alias)
-            {
-                return new NullableDateTimeSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
-            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
-            public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime?>(value));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value, this));
             public AssignmentExpression Set(DateTime? value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value, this));
-            public AssignmentExpression Set(NullableDateTimeElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime?> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4713,25 +5671,19 @@ namespace SimpleConsole.dboDataService
         public partial class ExpectedDeliveryDateField : NullableDateTimeFieldExpression<Purchase>
         {
             #region constructors
-            public ExpectedDeliveryDateField(string identifier, string name, PurchaseEntity entity) : base(identifier, name, entity)
+            public ExpectedDeliveryDateField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override NullableDateTimeElement As(string alias)
-            {
-                return new NullableDateTimeSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
-            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
-            public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime?>(value));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value, this));
             public AssignmentExpression Set(DateTime? value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value, this));
-            public AssignmentExpression Set(NullableDateTimeElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime?> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4740,76 +5692,58 @@ namespace SimpleConsole.dboDataService
         public partial class TrackingIdentifierField : NullableGuidFieldExpression<Purchase>
         {
             #region constructors
-            public TrackingIdentifierField(string identifier, string name, PurchaseEntity entity) : base(identifier, name, entity)
+            public TrackingIdentifierField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override NullableGuidElement As(string alias)
-            {
-                return new NullableGuidSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
-            public AssignmentExpression Set(Guid value) => new AssignmentExpression(this, new LiteralExpression<Guid>(value, this));
-            public AssignmentExpression Set(GuidElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<Guid?>(value));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<Guid?>(value, this));
             public AssignmentExpression Set(Guid? value) => new AssignmentExpression(this, new LiteralExpression<Guid?>(value, this));
-            public AssignmentExpression Set(NullableGuidElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<Guid>(value, this));
+            public AssignmentExpression Set(AnyElement<Guid?> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(Guid value) => new AssignmentExpression(this, new LiteralExpression<Guid>(value, this));
+            public AssignmentExpression Set(AnyElement<Guid> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
 
         #region payment method type field expression
-        public partial class PaymentMethodTypeField : EnumFieldExpression<Purchase, SimpleConsole.Data.PaymentMethodType>
+        public partial class PaymentMethodTypeField : EnumFieldExpression<Purchase,SimpleConsole.Data.PaymentMethodType>
         {
             #region constructors
-            public PaymentMethodTypeField(string identifier, string name, PurchaseEntity entity) : base(identifier, name, entity)
+            public PaymentMethodTypeField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override EnumElement<SimpleConsole.Data.PaymentMethodType> As(string alias)
-            {
-                return new EnumSelectExpression<SimpleConsole.Data.PaymentMethodType>(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<SimpleConsole.Data.PaymentMethodType>(value));
             public AssignmentExpression Set(SimpleConsole.Data.PaymentMethodType value) => new AssignmentExpression(this, new LiteralExpression<SimpleConsole.Data.PaymentMethodType>(value, this));
-            public AssignmentExpression Set(EnumElement<SimpleConsole.Data.PaymentMethodType> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<SimpleConsole.Data.PaymentMethodType> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
 
         #region payment source type field expression
-        public partial class PaymentSourceTypeField : NullableEnumFieldExpression<Purchase, SimpleConsole.Data.PaymentSourceType>
+        public partial class PaymentSourceTypeField : NullableEnumFieldExpression<Purchase,SimpleConsole.Data.PaymentSourceType>
         {
             #region constructors
-            public PaymentSourceTypeField(string identifier, string name, PurchaseEntity entity) : base(identifier, name, entity)
+            public PaymentSourceTypeField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override NullableEnumElement<SimpleConsole.Data.PaymentSourceType> As(string alias)
-            {
-                return new NullableEnumSelectExpression<SimpleConsole.Data.PaymentSourceType>(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<SimpleConsole.Data.PaymentSourceType?>(value));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<SimpleConsole.Data.PaymentSourceType?>(value, this));
             public AssignmentExpression Set(SimpleConsole.Data.PaymentSourceType value) => new AssignmentExpression(this, new LiteralExpression<SimpleConsole.Data.PaymentSourceType>(value, this));
-            public AssignmentExpression Set(EnumElement<SimpleConsole.Data.PaymentSourceType> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<SimpleConsole.Data.PaymentSourceType> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(SimpleConsole.Data.PaymentSourceType? value) => new AssignmentExpression(this, new LiteralExpression<SimpleConsole.Data.PaymentSourceType?>(value, this));
-            public AssignmentExpression Set(NullableEnumElement<SimpleConsole.Data.PaymentSourceType> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<SimpleConsole.Data.PaymentSourceType>(value, this));
+            public AssignmentExpression Set(AnyElement<SimpleConsole.Data.PaymentSourceType?> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4818,20 +5752,16 @@ namespace SimpleConsole.dboDataService
         public partial class DateCreatedField : DateTimeFieldExpression<Purchase>
         {
             #region constructors
-            public DateCreatedField(string identifier, string name, PurchaseEntity entity) : base(identifier, name, entity)
+            public DateCreatedField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4840,20 +5770,16 @@ namespace SimpleConsole.dboDataService
         public partial class DateUpdatedField : DateTimeFieldExpression<Purchase>
         {
             #region constructors
-            public DateUpdatedField(string identifier, string name, PurchaseEntity entity) : base(identifier, name, entity)
+            public DateUpdatedField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4870,9 +5796,10 @@ namespace SimpleConsole.dboDataService
         #endregion
 
         #region interface
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.PurchaseLineEntity.IdField"/> representing the "dbo.PurchaseLine.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="SimpleConsole.dboDataService.PurchaseLineEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4892,9 +5819,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly IdField Id;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.PurchaseLineEntity.PurchaseIdField"/> representing the "dbo.PurchaseLine.PurchaseId" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="SimpleConsole.dboDataService.PurchaseLineEntity.PurchaseIdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4911,9 +5839,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly PurchaseIdField PurchaseId;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.PurchaseLineEntity.ProductIdField"/> representing the "dbo.PurchaseLine.ProductId" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="SimpleConsole.dboDataService.PurchaseLineEntity.ProductIdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4930,9 +5859,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly ProductIdField ProductId;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.PurchaseLineEntity.PurchasePriceField"/> representing the "dbo.PurchaseLine.PurchasePrice" column in the database, 
         /// with a .NET type of <see cref="decimal"/>.  The <see cref="SimpleConsole.dboDataService.PurchaseLineEntity.PurchasePriceField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDecimalElement"/> or <see cref="HatTrick.DbEx.Sql.DecimalElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Decimal}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4949,9 +5879,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly PurchasePriceField PurchasePrice;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.PurchaseLineEntity.QuantityField"/> representing the "dbo.PurchaseLine.Quantity" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="SimpleConsole.dboDataService.PurchaseLineEntity.QuantityField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4968,9 +5899,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly QuantityField Quantity;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.PurchaseLineEntity.DateCreatedField"/> representing the "dbo.PurchaseLine.DateCreated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="SimpleConsole.dboDataService.PurchaseLineEntity.DateCreatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4990,9 +5922,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly DateCreatedField DateCreated;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.PurchaseLineEntity.DateUpdatedField"/> representing the "dbo.PurchaseLine.DateUpdated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="SimpleConsole.dboDataService.PurchaseLineEntity.DateUpdatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5015,40 +5948,36 @@ namespace SimpleConsole.dboDataService
         #endregion
 
         #region constructors
-        private PurchaseLineEntity() : base(null, null, null, null)
+        public PurchaseLineEntity(string identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
 
-        public PurchaseLineEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
+        private PurchaseLineEntity(string identifier, string name, Schema schema, string alias) : base(identifier, name, schema, alias)
         {
-        }
-
-        private PurchaseLineEntity(string identifier, string name, SchemaExpression schema, string alias) : base(identifier, name, schema, alias)
-        {
-            Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", "Id", this));
-            Fields.Add($"{identifier}.PurchaseId", PurchaseId = new PurchaseIdField($"{identifier}.PurchaseId", "PurchaseId", this));
-            Fields.Add($"{identifier}.ProductId", ProductId = new ProductIdField($"{identifier}.ProductId", "ProductId", this));
-            Fields.Add($"{identifier}.PurchasePrice", PurchasePrice = new PurchasePriceField($"{identifier}.PurchasePrice", "PurchasePrice", this));
-            Fields.Add($"{identifier}.Quantity", Quantity = new QuantityField($"{identifier}.Quantity", "Quantity", this));
-            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", "DateCreated", this));
-            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateUpdatedField($"{identifier}.DateUpdated", "DateUpdated", this));
+            Attributes.Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", "Id", this));
+            Attributes.Fields.Add($"{identifier}.PurchaseId", PurchaseId = new PurchaseIdField($"{identifier}.PurchaseId", "PurchaseId", this));
+            Attributes.Fields.Add($"{identifier}.ProductId", ProductId = new ProductIdField($"{identifier}.ProductId", "ProductId", this));
+            Attributes.Fields.Add($"{identifier}.PurchasePrice", PurchasePrice = new PurchasePriceField($"{identifier}.PurchasePrice", "PurchasePrice", this));
+            Attributes.Fields.Add($"{identifier}.Quantity", Quantity = new QuantityField($"{identifier}.Quantity", "Quantity", this));
+            Attributes.Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", "DateCreated", this));
+            Attributes.Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateUpdatedField($"{identifier}.DateUpdated", "DateUpdated", this));
         }
         #endregion
 
         #region methods
-        public PurchaseLineEntity As(string name)
-            => new PurchaseLineEntity(this.identifier, this.name, this.schema, name);
+        public PurchaseLineEntity As(string alias)
+            => new PurchaseLineEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new Int32SelectExpression(Id)
-                ,new Int32SelectExpression(PurchaseId)
-                ,new Int32SelectExpression(ProductId)
-                ,new DecimalSelectExpression(PurchasePrice)
-                ,new Int32SelectExpression(Quantity)
-                ,new DateTimeSelectExpression(DateCreated)
-                ,new DateTimeSelectExpression(DateUpdated)
+                new SelectExpression<int>(Id)
+                ,new SelectExpression<int>(PurchaseId)
+                ,new SelectExpression<int>(ProductId)
+                ,new SelectExpression<decimal>(PurchasePrice)
+                ,new SelectExpression<int>(Quantity)
+                ,new SelectExpression<DateTime>(DateCreated)
+                ,new SelectExpression<DateTime>(DateUpdated)
             ));
         }
 
@@ -5061,36 +5990,36 @@ namespace SimpleConsole.dboDataService
             string aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new Int32SelectExpression(Id).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
 
             aliased = alias(nameof(PurchaseId));
-            set &= aliased != nameof(PurchaseId) ? new Int32SelectExpression(PurchaseId).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PurchaseId));
+            set &= aliased != nameof(PurchaseId) ? new SelectExpression<int>(PurchaseId).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PurchaseId));
 
             aliased = alias(nameof(ProductId));
-            set &= aliased != nameof(ProductId) ? new Int32SelectExpression(ProductId).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ProductId));
+            set &= aliased != nameof(ProductId) ? new SelectExpression<int>(ProductId).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ProductId));
 
             aliased = alias(nameof(PurchasePrice));
-            set &= aliased != nameof(PurchasePrice) ? new DecimalSelectExpression(PurchasePrice).As(aliased) as DecimalSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PurchasePrice));
+            set &= aliased != nameof(PurchasePrice) ? new SelectExpression<decimal>(PurchasePrice).As(aliased) as SelectExpression<decimal> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PurchasePrice));
 
             aliased = alias(nameof(Quantity));
-            set &= aliased != nameof(Quantity) ? new Int32SelectExpression(Quantity).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Quantity));
+            set &= aliased != nameof(Quantity) ? new SelectExpression<int>(Quantity).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Quantity));
 
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new DateTimeSelectExpression(DateCreated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
 
             aliased = alias(nameof(DateUpdated));
-            set &= aliased != nameof(DateUpdated) ? new DateTimeSelectExpression(DateUpdated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
+            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
 
             return set;
         }
 		
-        protected override InsertExpressionSet<PurchaseLine> GetInclusiveInsertExpression(PurchaseLine purchaseLine)
+        protected override InsertExpressionSet<PurchaseLine> GetInclusiveInsertExpression(PurchaseLine entity)
         {
-            return new InsertExpressionSet<PurchaseLine>(purchaseLine 
-                ,new InsertExpression<int>(purchaseLine.PurchaseId, PurchaseId)
-                ,new InsertExpression<int>(purchaseLine.ProductId, ProductId)
-                ,new InsertExpression<decimal>(purchaseLine.PurchasePrice, PurchasePrice)
-                ,new InsertExpression<int>(purchaseLine.Quantity, Quantity)
+            return new InsertExpressionSet<PurchaseLine>(entity 
+                ,new InsertExpression<int>(entity.PurchaseId, PurchaseId)
+                ,new InsertExpression<int>(entity.ProductId, ProductId)
+                ,new InsertExpression<decimal>(entity.PurchasePrice, PurchasePrice)
+                ,new InsertExpression<int>(entity.Quantity, Quantity)
             );
         }
 
@@ -5105,15 +6034,15 @@ namespace SimpleConsole.dboDataService
             return expr;
         }
 
-        protected override void HydrateEntity(ISqlFieldReader reader, PurchaseLine purchaseLine)
+        protected override void HydrateEntity(ISqlFieldReader reader, PurchaseLine entity)
         {
-            purchaseLine.Id = reader.ReadField().GetValue<int>();
-            purchaseLine.PurchaseId = reader.ReadField().GetValue<int>();
-            purchaseLine.ProductId = reader.ReadField().GetValue<int>();
-            purchaseLine.PurchasePrice = reader.ReadField().GetValue<decimal>();
-            purchaseLine.Quantity = reader.ReadField().GetValue<int>();
-            purchaseLine.DateCreated = reader.ReadField().GetValue<DateTime>();
-            purchaseLine.DateUpdated = reader.ReadField().GetValue<DateTime>();
+            entity.Id = reader.ReadField().GetValue<int>();
+            entity.PurchaseId = reader.ReadField().GetValue<int>();
+            entity.ProductId = reader.ReadField().GetValue<int>();
+            entity.PurchasePrice = reader.ReadField().GetValue<decimal>();
+            entity.Quantity = reader.ReadField().GetValue<int>();
+            entity.DateCreated = reader.ReadField().GetValue<DateTime>();
+            entity.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
 
@@ -5122,20 +6051,16 @@ namespace SimpleConsole.dboDataService
         public partial class IdField : Int32FieldExpression<PurchaseLine>
         {
             #region constructors
-            public IdField(string identifier, string name, PurchaseLineEntity entity) : base(identifier, name, entity)
+            public IdField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -5144,22 +6069,16 @@ namespace SimpleConsole.dboDataService
         public partial class PurchaseIdField : Int32FieldExpression<PurchaseLine>
         {
             #region constructors
-            public PurchaseIdField(string identifier, string name, PurchaseLineEntity entity) : base(identifier, name, entity)
+            public PurchaseIdField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
-            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -5168,22 +6087,16 @@ namespace SimpleConsole.dboDataService
         public partial class ProductIdField : Int32FieldExpression<PurchaseLine>
         {
             #region constructors
-            public ProductIdField(string identifier, string name, PurchaseLineEntity entity) : base(identifier, name, entity)
+            public ProductIdField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
-            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -5192,22 +6105,16 @@ namespace SimpleConsole.dboDataService
         public partial class PurchasePriceField : DecimalFieldExpression<PurchaseLine>
         {
             #region constructors
-            public PurchasePriceField(string identifier, string name, PurchaseLineEntity entity) : base(identifier, name, entity)
+            public PurchasePriceField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override DecimalElement As(string alias)
-            {
-                return new DecimalSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<decimal>(value));
             public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
-            public AssignmentExpression Set(DecimalElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<decimal> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -5216,22 +6123,16 @@ namespace SimpleConsole.dboDataService
         public partial class QuantityField : Int32FieldExpression<PurchaseLine>
         {
             #region constructors
-            public QuantityField(string identifier, string name, PurchaseLineEntity entity) : base(identifier, name, entity)
+            public QuantityField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
-            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -5240,20 +6141,16 @@ namespace SimpleConsole.dboDataService
         public partial class DateCreatedField : DateTimeFieldExpression<PurchaseLine>
         {
             #region constructors
-            public DateCreatedField(string identifier, string name, PurchaseLineEntity entity) : base(identifier, name, entity)
+            public DateCreatedField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -5262,20 +6159,16 @@ namespace SimpleConsole.dboDataService
         public partial class DateUpdatedField : DateTimeFieldExpression<PurchaseLine>
         {
             #region constructors
-            public DateUpdatedField(string identifier, string name, PurchaseLineEntity entity) : base(identifier, name, entity)
+            public DateUpdatedField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -5292,9 +6185,10 @@ namespace SimpleConsole.dboDataService
         #endregion
 
         #region interface
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.PersonTotalPurchasesViewEntity.IdField"/> representing the "dbo.PersonTotalPurchasesView.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="SimpleConsole.dboDataService.PersonTotalPurchasesViewEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5311,9 +6205,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly IdField Id;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.PersonTotalPurchasesViewEntity.TotalAmountField"/> representing the "dbo.PersonTotalPurchasesView.TotalAmount" column in the database, 
         /// with a .NET type of <see cref="double"/>?.  The <see cref="SimpleConsole.dboDataService.PersonTotalPurchasesViewEntity.TotalAmountField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDoubleElement"/> or <see cref="HatTrick.DbEx.Sql.NullableDoubleElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Double}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5330,9 +6225,10 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly TotalAmountField TotalAmount;
 
+
         /// <summary>A <see cref="SimpleConsole.dboDataService.PersonTotalPurchasesViewEntity.TotalCountField"/> representing the "dbo.PersonTotalPurchasesView.TotalCount" column in the database, 
         /// with a .NET type of <see cref="int"/>?.  The <see cref="SimpleConsole.dboDataService.PersonTotalPurchasesViewEntity.TotalCountField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.NullableInt32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5352,32 +6248,28 @@ namespace SimpleConsole.dboDataService
         #endregion
 
         #region constructors
-        private PersonTotalPurchasesViewEntity() : base(null, null, null, null)
+        public PersonTotalPurchasesViewEntity(string identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
 
-        public PersonTotalPurchasesViewEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
+        private PersonTotalPurchasesViewEntity(string identifier, string name, Schema schema, string alias) : base(identifier, name, schema, alias)
         {
-        }
-
-        private PersonTotalPurchasesViewEntity(string identifier, string name, SchemaExpression schema, string alias) : base(identifier, name, schema, alias)
-        {
-            Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", "Id", this));
-            Fields.Add($"{identifier}.TotalAmount", TotalAmount = new TotalAmountField($"{identifier}.TotalAmount", "TotalAmount", this));
-            Fields.Add($"{identifier}.TotalCount", TotalCount = new TotalCountField($"{identifier}.TotalCount", "TotalCount", this));
+            Attributes.Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", "Id", this));
+            Attributes.Fields.Add($"{identifier}.TotalAmount", TotalAmount = new TotalAmountField($"{identifier}.TotalAmount", "TotalAmount", this));
+            Attributes.Fields.Add($"{identifier}.TotalCount", TotalCount = new TotalCountField($"{identifier}.TotalCount", "TotalCount", this));
         }
         #endregion
 
         #region methods
-        public PersonTotalPurchasesViewEntity As(string name)
-            => new PersonTotalPurchasesViewEntity(this.identifier, this.name, this.schema, name);
+        public PersonTotalPurchasesViewEntity As(string alias)
+            => new PersonTotalPurchasesViewEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new Int32SelectExpression(Id)
-                ,new NullableDoubleSelectExpression(TotalAmount)
-                ,new NullableInt32SelectExpression(TotalCount)
+                new SelectExpression<int>(Id)
+                ,new SelectExpression<double?>(TotalAmount)
+                ,new SelectExpression<int?>(TotalCount)
             ));
         }
 
@@ -5390,20 +6282,20 @@ namespace SimpleConsole.dboDataService
             string aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new Int32SelectExpression(Id).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
 
             aliased = alias(nameof(TotalAmount));
-            set &= aliased != nameof(TotalAmount) ? new NullableDoubleSelectExpression(TotalAmount).As(aliased) as NullableDoubleSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TotalAmount));
+            set &= aliased != nameof(TotalAmount) ? new SelectExpression<double?>(TotalAmount).As(aliased) as SelectExpression<double?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TotalAmount));
 
             aliased = alias(nameof(TotalCount));
-            set &= aliased != nameof(TotalCount) ? new NullableInt32SelectExpression(TotalCount).As(aliased) as NullableInt32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TotalCount));
+            set &= aliased != nameof(TotalCount) ? new SelectExpression<int?>(TotalCount).As(aliased) as SelectExpression<int?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TotalCount));
 
             return set;
         }
 		
-        protected override InsertExpressionSet<PersonTotalPurchasesView> GetInclusiveInsertExpression(PersonTotalPurchasesView personTotalPurchasesView)
+        protected override InsertExpressionSet<PersonTotalPurchasesView> GetInclusiveInsertExpression(PersonTotalPurchasesView entity)
         {
-            return new InsertExpressionSet<PersonTotalPurchasesView>(personTotalPurchasesView 
+            return new InsertExpressionSet<PersonTotalPurchasesView>(entity 
             );
         }
 
@@ -5414,11 +6306,11 @@ namespace SimpleConsole.dboDataService
             return expr;
         }
 
-        protected override void HydrateEntity(ISqlFieldReader reader, PersonTotalPurchasesView personTotalPurchasesView)
+        protected override void HydrateEntity(ISqlFieldReader reader, PersonTotalPurchasesView entity)
         {
-            personTotalPurchasesView.Id = reader.ReadField().GetValue<int>();
-            personTotalPurchasesView.TotalAmount = reader.ReadField().GetValue<double?>();
-            personTotalPurchasesView.TotalCount = reader.ReadField().GetValue<int?>();
+            entity.Id = reader.ReadField().GetValue<int>();
+            entity.TotalAmount = reader.ReadField().GetValue<double?>();
+            entity.TotalCount = reader.ReadField().GetValue<int?>();
         }
 		#endregion
 
@@ -5427,20 +6319,16 @@ namespace SimpleConsole.dboDataService
         public partial class IdField : Int32FieldExpression<PersonTotalPurchasesView>
         {
             #region constructors
-            public IdField(string identifier, string name, PersonTotalPurchasesViewEntity entity) : base(identifier, name, entity)
+            public IdField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -5449,20 +6337,19 @@ namespace SimpleConsole.dboDataService
         public partial class TotalAmountField : NullableDoubleFieldExpression<PersonTotalPurchasesView>
         {
             #region constructors
-            public TotalAmountField(string identifier, string name, PersonTotalPurchasesViewEntity entity) : base(identifier, name, entity)
+            public TotalAmountField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override NullableDoubleElement As(string alias)
-            {
-                return new NullableDoubleSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<double?>(value));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<double?>(value, this));
+            public AssignmentExpression Set(double? value) => new AssignmentExpression(this, new LiteralExpression<double?>(value, this));
+            public AssignmentExpression Set(AnyElement<double?> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(double value) => new AssignmentExpression(this, new LiteralExpression<double>(value, this));
+            public AssignmentExpression Set(AnyElement<double> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -5471,20 +6358,19 @@ namespace SimpleConsole.dboDataService
         public partial class TotalCountField : NullableInt32FieldExpression<PersonTotalPurchasesView>
         {
             #region constructors
-            public TotalCountField(string identifier, string name, PersonTotalPurchasesViewEntity entity) : base(identifier, name, entity)
+            public TotalCountField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override NullableInt32Element As(string alias)
-            {
-                return new NullableInt32SelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int?>(value));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<int?>(value, this));
+            public AssignmentExpression Set(int? value) => new AssignmentExpression(this, new LiteralExpression<int?>(value, this));
+            public AssignmentExpression Set(AnyElement<int?> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -5498,18 +6384,12 @@ namespace SimpleConsole.dboDataService
     {
         public SelectPerson_As_Dynamic_With_InputStoredProcedure(
             string identifier
-            ,SchemaExpression schema
+            ,Schema schema
             ,int? P1
-        ) : base(
-                $"{identifier}.SelectPerson_As_Dynamic_With_Input"
-                ,"SelectPerson_As_Dynamic_With_Input"
-                ,schema
-                ,new List<ParameterExpression> 
-                { 
-                    new ParameterExpression<int?>($"{identifier}.SelectPerson_As_Dynamic_With_Input.@P1", "P1", P1, ParameterDirection.Input)
-                }
-            )
-        { }
+        ) : base($"{identifier}.SelectPerson_As_Dynamic_With_Input", "SelectPerson_As_Dynamic_With_Input", schema)
+        { 
+            Attributes.Parameters.Add("P1", new ParameterExpression<int?>($"{identifier}.SelectPerson_As_Dynamic_With_Input.@P1", "P1", P1, ParameterDirection.Input));
+        }
     }
     #endregion
 
@@ -5518,21 +6398,14 @@ namespace SimpleConsole.dboDataService
     {
         public SelectPerson_As_Dynamic_With_Input_And_InputOutputStoredProcedure(
             string identifier
-            ,SchemaExpression schema
+            ,Schema schema
             ,int? P1
             ,Action<ISqlOutputParameterList> outputParameters
-        ) : base(
-                $"{identifier}.SelectPerson_As_Dynamic_With_Input_And_InputOutput"
-                ,"SelectPerson_As_Dynamic_With_Input_And_InputOutput"
-                ,schema
-                ,new List<ParameterExpression> 
-                { 
-                    new ParameterExpression<int?>($"{identifier}.SelectPerson_As_Dynamic_With_Input_And_InputOutput.@P1", "P1", P1, ParameterDirection.Input)
-                    ,new ParameterExpression<int?>($"{identifier}.SelectPerson_As_Dynamic_With_Input_And_InputOutput.@CreditLimit", "CreditLimit", ParameterDirection.Output)
-                }
-                ,outputParameters
-            )
-        { }
+        ) : base($"{identifier}.SelectPerson_As_Dynamic_With_Input_And_InputOutput", "SelectPerson_As_Dynamic_With_Input_And_InputOutput", schema, outputParameters)
+        { 
+            Attributes.Parameters.Add("P1", new ParameterExpression<int?>($"{identifier}.SelectPerson_As_Dynamic_With_Input_And_InputOutput.@P1", "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add("CreditLimit", new ParameterExpression<int?>($"{identifier}.SelectPerson_As_Dynamic_With_Input_And_InputOutput.@CreditLimit", "CreditLimit", ParameterDirection.Output));
+        }
     }
     #endregion
 
@@ -5541,21 +6414,14 @@ namespace SimpleConsole.dboDataService
     {
         public SelectPerson_As_Dynamic_With_Input_And_OutputStoredProcedure(
             string identifier
-            ,SchemaExpression schema
+            ,Schema schema
             ,int? P1
             ,Action<ISqlOutputParameterList> outputParameters
-        ) : base(
-                $"{identifier}.SelectPerson_As_Dynamic_With_Input_And_Output"
-                ,"SelectPerson_As_Dynamic_With_Input_And_Output"
-                ,schema
-                ,new List<ParameterExpression> 
-                { 
-                    new ParameterExpression<int?>($"{identifier}.SelectPerson_As_Dynamic_With_Input_And_Output.@P1", "P1", P1, ParameterDirection.Input)
-                    ,new ParameterExpression<int?>($"{identifier}.SelectPerson_As_Dynamic_With_Input_And_Output.@Count", "Count", ParameterDirection.Output)
-                }
-                ,outputParameters
-            )
-        { }
+        ) : base($"{identifier}.SelectPerson_As_Dynamic_With_Input_And_Output", "SelectPerson_As_Dynamic_With_Input_And_Output", schema, outputParameters)
+        { 
+            Attributes.Parameters.Add("P1", new ParameterExpression<int?>($"{identifier}.SelectPerson_As_Dynamic_With_Input_And_Output.@P1", "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add("Count", new ParameterExpression<int?>($"{identifier}.SelectPerson_As_Dynamic_With_Input_And_Output.@Count", "Count", ParameterDirection.Output));
+        }
     }
     #endregion
 
@@ -5564,18 +6430,12 @@ namespace SimpleConsole.dboDataService
     {
         public SelectPerson_As_DynamicList_With_InputStoredProcedure(
             string identifier
-            ,SchemaExpression schema
+            ,Schema schema
             ,int? P1
-        ) : base(
-                $"{identifier}.SelectPerson_As_DynamicList_With_Input"
-                ,"SelectPerson_As_DynamicList_With_Input"
-                ,schema
-                ,new List<ParameterExpression> 
-                { 
-                    new ParameterExpression<int?>($"{identifier}.SelectPerson_As_DynamicList_With_Input.@P1", "P1", P1, ParameterDirection.Input)
-                }
-            )
-        { }
+        ) : base($"{identifier}.SelectPerson_As_DynamicList_With_Input", "SelectPerson_As_DynamicList_With_Input", schema)
+        { 
+            Attributes.Parameters.Add("P1", new ParameterExpression<int?>($"{identifier}.SelectPerson_As_DynamicList_With_Input.@P1", "P1", P1, ParameterDirection.Input));
+        }
     }
     #endregion
 
@@ -5584,21 +6444,14 @@ namespace SimpleConsole.dboDataService
     {
         public SelectPerson_As_DynamicList_With_Input_And_InputOutputStoredProcedure(
             string identifier
-            ,SchemaExpression schema
+            ,Schema schema
             ,int? P1
             ,Action<ISqlOutputParameterList> outputParameters
-        ) : base(
-                $"{identifier}.SelectPerson_As_DynamicList_With_Input_And_InputOutput"
-                ,"SelectPerson_As_DynamicList_With_Input_And_InputOutput"
-                ,schema
-                ,new List<ParameterExpression> 
-                { 
-                    new ParameterExpression<int?>($"{identifier}.SelectPerson_As_DynamicList_With_Input_And_InputOutput.@P1", "P1", P1, ParameterDirection.Input)
-                    ,new ParameterExpression<int?>($"{identifier}.SelectPerson_As_DynamicList_With_Input_And_InputOutput.@CreditLimit", "CreditLimit", ParameterDirection.Output)
-                }
-                ,outputParameters
-            )
-        { }
+        ) : base($"{identifier}.SelectPerson_As_DynamicList_With_Input_And_InputOutput", "SelectPerson_As_DynamicList_With_Input_And_InputOutput", schema, outputParameters)
+        { 
+            Attributes.Parameters.Add("P1", new ParameterExpression<int?>($"{identifier}.SelectPerson_As_DynamicList_With_Input_And_InputOutput.@P1", "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add("CreditLimit", new ParameterExpression<int?>($"{identifier}.SelectPerson_As_DynamicList_With_Input_And_InputOutput.@CreditLimit", "CreditLimit", ParameterDirection.Output));
+        }
     }
     #endregion
 
@@ -5607,21 +6460,14 @@ namespace SimpleConsole.dboDataService
     {
         public SelectPerson_As_DynamicList_With_Input_And_OutputStoredProcedure(
             string identifier
-            ,SchemaExpression schema
+            ,Schema schema
             ,int? P1
             ,Action<ISqlOutputParameterList> outputParameters
-        ) : base(
-                $"{identifier}.SelectPerson_As_DynamicList_With_Input_And_Output"
-                ,"SelectPerson_As_DynamicList_With_Input_And_Output"
-                ,schema
-                ,new List<ParameterExpression> 
-                { 
-                    new ParameterExpression<int?>($"{identifier}.SelectPerson_As_DynamicList_With_Input_And_Output.@P1", "P1", P1, ParameterDirection.Input)
-                    ,new ParameterExpression<int?>($"{identifier}.SelectPerson_As_DynamicList_With_Input_And_Output.@Count", "Count", ParameterDirection.Output)
-                }
-                ,outputParameters
-            )
-        { }
+        ) : base($"{identifier}.SelectPerson_As_DynamicList_With_Input_And_Output", "SelectPerson_As_DynamicList_With_Input_And_Output", schema, outputParameters)
+        { 
+            Attributes.Parameters.Add("P1", new ParameterExpression<int?>($"{identifier}.SelectPerson_As_DynamicList_With_Input_And_Output.@P1", "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add("Count", new ParameterExpression<int?>($"{identifier}.SelectPerson_As_DynamicList_With_Input_And_Output.@Count", "Count", ParameterDirection.Output));
+        }
     }
     #endregion
 
@@ -5630,18 +6476,12 @@ namespace SimpleConsole.dboDataService
     {
         public SelectPersonId_As_ScalarValue_With_InputStoredProcedure(
             string identifier
-            ,SchemaExpression schema
+            ,Schema schema
             ,int? P1
-        ) : base(
-                $"{identifier}.SelectPersonId_As_ScalarValue_With_Input"
-                ,"SelectPersonId_As_ScalarValue_With_Input"
-                ,schema
-                ,new List<ParameterExpression> 
-                { 
-                    new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValue_With_Input.@P1", "P1", P1, ParameterDirection.Input)
-                }
-            )
-        { }
+        ) : base($"{identifier}.SelectPersonId_As_ScalarValue_With_Input", "SelectPersonId_As_ScalarValue_With_Input", schema)
+        { 
+            Attributes.Parameters.Add("P1", new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValue_With_Input.@P1", "P1", P1, ParameterDirection.Input));
+        }
     }
     #endregion
 
@@ -5650,18 +6490,12 @@ namespace SimpleConsole.dboDataService
     {
         public SelectPersonId_As_ScalarValue_With_Input_And_Default_ValueStoredProcedure(
             string identifier
-            ,SchemaExpression schema
+            ,Schema schema
             ,int? P1
-        ) : base(
-                $"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_Default_Value"
-                ,"SelectPersonId_As_ScalarValue_With_Input_And_Default_Value"
-                ,schema
-                ,new List<ParameterExpression> 
-                { 
-                    new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_Default_Value.@P1", "P1", P1, ParameterDirection.Input)
-                }
-            )
-        { }
+        ) : base($"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_Default_Value", "SelectPersonId_As_ScalarValue_With_Input_And_Default_Value", schema)
+        { 
+            Attributes.Parameters.Add("P1", new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_Default_Value.@P1", "P1", P1, ParameterDirection.Input));
+        }
     }
     #endregion
 
@@ -5670,21 +6504,14 @@ namespace SimpleConsole.dboDataService
     {
         public SelectPersonId_As_ScalarValue_With_Input_And_InputOutputStoredProcedure(
             string identifier
-            ,SchemaExpression schema
+            ,Schema schema
             ,int? P1
             ,Action<ISqlOutputParameterList> outputParameters
-        ) : base(
-                $"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput"
-                ,"SelectPersonId_As_ScalarValue_With_Input_And_InputOutput"
-                ,schema
-                ,new List<ParameterExpression> 
-                { 
-                    new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput.@P1", "P1", P1, ParameterDirection.Input)
-                    ,new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput.@CreditLimit", "CreditLimit", ParameterDirection.Output)
-                }
-                ,outputParameters
-            )
-        { }
+        ) : base($"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput", "SelectPersonId_As_ScalarValue_With_Input_And_InputOutput", schema, outputParameters)
+        { 
+            Attributes.Parameters.Add("P1", new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput.@P1", "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add("CreditLimit", new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput.@CreditLimit", "CreditLimit", ParameterDirection.Output));
+        }
     }
     #endregion
 
@@ -5693,21 +6520,14 @@ namespace SimpleConsole.dboDataService
     {
         public SelectPersonId_As_ScalarValue_With_Input_And_OutputStoredProcedure(
             string identifier
-            ,SchemaExpression schema
+            ,Schema schema
             ,int? P1
             ,Action<ISqlOutputParameterList> outputParameters
-        ) : base(
-                $"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_Output"
-                ,"SelectPersonId_As_ScalarValue_With_Input_And_Output"
-                ,schema
-                ,new List<ParameterExpression> 
-                { 
-                    new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_Output.@P1", "P1", P1, ParameterDirection.Input)
-                    ,new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_Output.@Count", "Count", ParameterDirection.Output)
-                }
-                ,outputParameters
-            )
-        { }
+        ) : base($"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_Output", "SelectPersonId_As_ScalarValue_With_Input_And_Output", schema, outputParameters)
+        { 
+            Attributes.Parameters.Add("P1", new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_Output.@P1", "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add("Count", new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_Output.@Count", "Count", ParameterDirection.Output));
+        }
     }
     #endregion
 
@@ -5716,18 +6536,12 @@ namespace SimpleConsole.dboDataService
     {
         public SelectPersonId_As_ScalarValueList_With_InputStoredProcedure(
             string identifier
-            ,SchemaExpression schema
+            ,Schema schema
             ,int? P1
-        ) : base(
-                $"{identifier}.SelectPersonId_As_ScalarValueList_With_Input"
-                ,"SelectPersonId_As_ScalarValueList_With_Input"
-                ,schema
-                ,new List<ParameterExpression> 
-                { 
-                    new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValueList_With_Input.@P1", "P1", P1, ParameterDirection.Input)
-                }
-            )
-        { }
+        ) : base($"{identifier}.SelectPersonId_As_ScalarValueList_With_Input", "SelectPersonId_As_ScalarValueList_With_Input", schema)
+        { 
+            Attributes.Parameters.Add("P1", new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValueList_With_Input.@P1", "P1", P1, ParameterDirection.Input));
+        }
     }
     #endregion
 
@@ -5736,21 +6550,14 @@ namespace SimpleConsole.dboDataService
     {
         public SelectPersonId_As_ScalarValueList_With_Input_And_InputOutputStoredProcedure(
             string identifier
-            ,SchemaExpression schema
+            ,Schema schema
             ,int? P1
             ,Action<ISqlOutputParameterList> outputParameters
-        ) : base(
-                $"{identifier}.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput"
-                ,"SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput"
-                ,schema
-                ,new List<ParameterExpression> 
-                { 
-                    new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput.@P1", "P1", P1, ParameterDirection.Input)
-                    ,new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput.@CreditLimit", "CreditLimit", ParameterDirection.Output)
-                }
-                ,outputParameters
-            )
-        { }
+        ) : base($"{identifier}.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput", "SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput", schema, outputParameters)
+        { 
+            Attributes.Parameters.Add("P1", new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput.@P1", "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add("CreditLimit", new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput.@CreditLimit", "CreditLimit", ParameterDirection.Output));
+        }
     }
     #endregion
 
@@ -5759,21 +6566,14 @@ namespace SimpleConsole.dboDataService
     {
         public SelectPersonId_As_ScalarValueList_With_Input_And_OutputStoredProcedure(
             string identifier
-            ,SchemaExpression schema
+            ,Schema schema
             ,int? P1
             ,Action<ISqlOutputParameterList> outputParameters
-        ) : base(
-                $"{identifier}.SelectPersonId_As_ScalarValueList_With_Input_And_Output"
-                ,"SelectPersonId_As_ScalarValueList_With_Input_And_Output"
-                ,schema
-                ,new List<ParameterExpression> 
-                { 
-                    new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValueList_With_Input_And_Output.@P1", "P1", P1, ParameterDirection.Input)
-                    ,new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValueList_With_Input_And_Output.@Count", "Count", ParameterDirection.Output)
-                }
-                ,outputParameters
-            )
-        { }
+        ) : base($"{identifier}.SelectPersonId_As_ScalarValueList_With_Input_And_Output", "SelectPersonId_As_ScalarValueList_With_Input_And_Output", schema, outputParameters)
+        { 
+            Attributes.Parameters.Add("P1", new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValueList_With_Input_And_Output.@P1", "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add("Count", new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValueList_With_Input_And_Output.@Count", "Count", ParameterDirection.Output));
+        }
     }
     #endregion
 
@@ -5782,20 +6582,14 @@ namespace SimpleConsole.dboDataService
     {
         public UpdatePersonCreditLimit_With_InputsStoredProcedure(
             string identifier
-            ,SchemaExpression schema
+            ,Schema schema
             ,int? P1
             ,int? CreditLimit
-        ) : base(
-                $"{identifier}.UpdatePersonCreditLimit_With_Inputs"
-                ,"UpdatePersonCreditLimit_With_Inputs"
-                ,schema
-                ,new List<ParameterExpression> 
-                { 
-                    new ParameterExpression<int?>($"{identifier}.UpdatePersonCreditLimit_With_Inputs.@P1", "P1", P1, ParameterDirection.Input)
-                    ,new ParameterExpression<int?>($"{identifier}.UpdatePersonCreditLimit_With_Inputs.@CreditLimit", "CreditLimit", CreditLimit, ParameterDirection.Input)
-                }
-            )
-        { }
+        ) : base($"{identifier}.UpdatePersonCreditLimit_With_Inputs", "UpdatePersonCreditLimit_With_Inputs", schema)
+        { 
+            Attributes.Parameters.Add("P1", new ParameterExpression<int?>($"{identifier}.UpdatePersonCreditLimit_With_Inputs.@P1", "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add("CreditLimit", new ParameterExpression<int?>($"{identifier}.UpdatePersonCreditLimit_With_Inputs.@CreditLimit", "CreditLimit", CreditLimit, ParameterDirection.Input));
+        }
     }
     #endregion
 
@@ -6025,9 +6819,9 @@ namespace SimpleConsole.secDataService
         #endregion
 
         #region constructors
-        public secSchemaExpression(string identifier) : base(identifier, null)
+        public secSchemaExpression(string identifier) : base(identifier)
         {
-            Entities.Add($"{identifier}.Person", Person = new PersonEntity($"{identifier}.Person", "Person", this));
+            Attributes.Entities.Add($"{identifier}.Person", Person = new PersonEntity($"{identifier}.Person", "Person", this));
         }
         #endregion
     }
@@ -6041,9 +6835,10 @@ namespace SimpleConsole.secDataService
         #endregion
 
         #region interface
+
         /// <summary>A <see cref="SimpleConsole.secDataService.PersonEntity.IdField"/> representing the "sec.Person.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="SimpleConsole.secDataService.PersonEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -6060,9 +6855,10 @@ namespace SimpleConsole.secDataService
         /// </summary>
         public readonly IdField Id;
 
+
         /// <summary>A <see cref="SimpleConsole.secDataService.PersonEntity.SSNField"/> representing the "sec.Person.SSN" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="SimpleConsole.secDataService.PersonEntity.SSNField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -6079,9 +6875,10 @@ namespace SimpleConsole.secDataService
         /// </summary>
         public readonly SSNField SSN;
 
+
         /// <summary>A <see cref="SimpleConsole.secDataService.PersonEntity.DateCreatedField"/> representing the "sec.Person.DateCreated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="SimpleConsole.secDataService.PersonEntity.DateCreatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -6101,9 +6898,10 @@ namespace SimpleConsole.secDataService
         /// </summary>
         public readonly DateCreatedField DateCreated;
 
+
         /// <summary>A <see cref="SimpleConsole.secDataService.PersonEntity.DateUpdatedField"/> representing the "sec.Person.DateUpdated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="SimpleConsole.secDataService.PersonEntity.DateUpdatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -6126,34 +6924,30 @@ namespace SimpleConsole.secDataService
         #endregion
 
         #region constructors
-        private PersonEntity() : base(null, null, null, null)
+        public PersonEntity(string identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
 
-        public PersonEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
+        private PersonEntity(string identifier, string name, Schema schema, string alias) : base(identifier, name, schema, alias)
         {
-        }
-
-        private PersonEntity(string identifier, string name, SchemaExpression schema, string alias) : base(identifier, name, schema, alias)
-        {
-            Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", "Id", this));
-            Fields.Add($"{identifier}.SSN", SSN = new SSNField($"{identifier}.SSN", "SSN", this));
-            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", "DateCreated", this));
-            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateUpdatedField($"{identifier}.DateUpdated", "DateUpdated", this));
+            Attributes.Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", "Id", this));
+            Attributes.Fields.Add($"{identifier}.SSN", SSN = new SSNField($"{identifier}.SSN", "SSN", this));
+            Attributes.Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", "DateCreated", this));
+            Attributes.Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateUpdatedField($"{identifier}.DateUpdated", "DateUpdated", this));
         }
         #endregion
 
         #region methods
-        public PersonEntity As(string name)
-            => new PersonEntity(this.identifier, this.name, this.schema, name);
+        public PersonEntity As(string alias)
+            => new PersonEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new Int32SelectExpression(Id)
-                ,new StringSelectExpression(SSN)
-                ,new DateTimeSelectExpression(DateCreated)
-                ,new DateTimeSelectExpression(DateUpdated)
+                new SelectExpression<int>(Id)
+                ,new SelectExpression<string>(SSN)
+                ,new SelectExpression<DateTime>(DateCreated)
+                ,new SelectExpression<DateTime>(DateUpdated)
             ));
         }
 
@@ -6166,25 +6960,25 @@ namespace SimpleConsole.secDataService
             string aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new Int32SelectExpression(Id).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id).As(aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
 
             aliased = alias(nameof(SSN));
-            set &= aliased != nameof(SSN) ? new StringSelectExpression(SSN).As(aliased) as StringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(SSN));
+            set &= aliased != nameof(SSN) ? new SelectExpression<string>(SSN).As(aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(SSN));
 
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new DateTimeSelectExpression(DateCreated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
 
             aliased = alias(nameof(DateUpdated));
-            set &= aliased != nameof(DateUpdated) ? new DateTimeSelectExpression(DateUpdated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
+            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated).As(aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
 
             return set;
         }
 		
-        protected override InsertExpressionSet<Person> GetInclusiveInsertExpression(Person person)
+        protected override InsertExpressionSet<Person> GetInclusiveInsertExpression(Person entity)
         {
-            return new InsertExpressionSet<Person>(person 
-                ,new InsertExpression<int>(person.Id, Id)
-                ,new InsertExpression<string>(person.SSN, SSN)
+            return new InsertExpressionSet<Person>(entity 
+                ,new InsertExpression<int>(entity.Id, Id)
+                ,new InsertExpression<string>(entity.SSN, SSN)
             );
         }
 
@@ -6197,12 +6991,12 @@ namespace SimpleConsole.secDataService
             return expr;
         }
 
-        protected override void HydrateEntity(ISqlFieldReader reader, Person person)
+        protected override void HydrateEntity(ISqlFieldReader reader, Person entity)
         {
-            person.Id = reader.ReadField().GetValue<int>();
-            person.SSN = reader.ReadField().GetValue<string>();
-            person.DateCreated = reader.ReadField().GetValue<DateTime>();
-            person.DateUpdated = reader.ReadField().GetValue<DateTime>();
+            entity.Id = reader.ReadField().GetValue<int>();
+            entity.SSN = reader.ReadField().GetValue<string>();
+            entity.DateCreated = reader.ReadField().GetValue<DateTime>();
+            entity.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
 
@@ -6211,22 +7005,16 @@ namespace SimpleConsole.secDataService
         public partial class IdField : Int32FieldExpression<Person>
         {
             #region constructors
-            public IdField(string identifier, string name, PersonEntity entity) : base(identifier, name, entity)
+            public IdField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override Int32Element As(string alias)
-            {
-                return new Int32SelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<int>(value));
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
-            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyElement<int> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -6235,20 +7023,14 @@ namespace SimpleConsole.secDataService
         public partial class SSNField : StringFieldExpression<Person>
         {
             #region constructors
-            public SSNField(string identifier, string name, PersonEntity entity) : base(identifier, name, entity)
+            public SSNField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override StringElement As(string alias)
-            {
-                return new StringSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
@@ -6259,20 +7041,16 @@ namespace SimpleConsole.secDataService
         public partial class DateCreatedField : DateTimeFieldExpression<Person>
         {
             #region constructors
-            public DateCreatedField(string identifier, string name, PersonEntity entity) : base(identifier, name, entity)
+            public DateCreatedField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -6281,20 +7059,16 @@ namespace SimpleConsole.secDataService
         public partial class DateUpdatedField : DateTimeFieldExpression<Person>
         {
             #region constructors
-            public DateUpdatedField(string identifier, string name, PersonEntity entity) : base(identifier, name, entity)
+            public DateUpdatedField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
-            }
-            #endregion
-
-            #region as
-            public override DateTimeElement As(string alias)
-            {
-                return new DateTimeSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DateTime>(value));
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
+            public AssignmentExpression Set(AnyElement<DateTime> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion

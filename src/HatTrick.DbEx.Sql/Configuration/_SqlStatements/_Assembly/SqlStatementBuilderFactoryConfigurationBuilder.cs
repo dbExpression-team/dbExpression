@@ -25,9 +25,9 @@ namespace HatTrick.DbEx.Sql.Configuration
     public class SqlStatementBuilderFactoryConfigurationBuilder : ISqlStatementBuilderFactoryConfigurationBuilder
     {
         private readonly ISqlStatementAssemblyGroupingConfigurationBuilders caller;
-        private readonly RuntimeSqlDatabaseConfiguration configuration;
+        private readonly SqlDatabaseRuntimeConfiguration configuration;
 
-        public SqlStatementBuilderFactoryConfigurationBuilder(ISqlStatementAssemblyGroupingConfigurationBuilders caller, RuntimeSqlDatabaseConfiguration configuration)
+        public SqlStatementBuilderFactoryConfigurationBuilder(ISqlStatementAssemblyGroupingConfigurationBuilders caller, SqlDatabaseRuntimeConfiguration configuration)
         {
             this.caller = caller ?? throw new ArgumentNullException(nameof(caller));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
@@ -46,7 +46,7 @@ namespace HatTrick.DbEx.Sql.Configuration
             return caller;
         }
 
-        public ISqlStatementAssemblyGroupingConfigurationBuilders Use(Func<RuntimeSqlDatabaseConfiguration, QueryExpression, ISqlStatementBuilder> factory)
+        public ISqlStatementAssemblyGroupingConfigurationBuilders Use(Func<SqlDatabaseRuntimeConfiguration, QueryExpression, ISqlStatementBuilder> factory)
         {
             configuration.StatementBuilderFactory = new DelegateSqlStatementBuilderFactory(factory);
             return caller;

@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,29 +16,35 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿namespace HatTrick.DbEx.Sql.Expression
+namespace HatTrick.DbEx.Sql.Expression
 {
     public class ObjectSelectExpression : SelectExpression<object>,
         ObjectElement
     {
-        public ObjectSelectExpression(IExpressionElement<object> expression)
+        public ObjectSelectExpression(StringElement expression)
+            : base(expression)
+        {
+
+        }
+
+        public ObjectSelectExpression(ObjectElement expression)
+            : base(expression)
+        {
+
+        }
+
+        public ObjectSelectExpression(ExpressionMediator<object> expression)
             : base(expression)
         {
 
         }
 
         #region as
-        public ObjectElement As(string alias)
+        public new ObjectElement As(string alias)
         {
             Alias = alias;
             return this;
         }
-        #endregion
-
-        #region order by
-        OrderByExpression AnyElement.Asc => throw new DbExpressionException("Select expressions cannot be used in Order By clauses.");
-
-        OrderByExpression AnyElement.Desc => throw new DbExpressionException("Select expressions cannot be used in Order By clauses.");
         #endregion
     }
 }

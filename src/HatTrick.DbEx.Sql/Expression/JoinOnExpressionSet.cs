@@ -27,17 +27,12 @@ namespace HatTrick.DbEx.Sql.Expression
         public readonly ConditionalExpressionOperator ConditionalOperator;
         public bool Negate { get; set; }
         public IExpressionElement LeftArg { get; set; }
-        public IExpressionElement RightArg { get; set; }
+        public IExpressionElement? RightArg { get; set; }
         public bool IsSingleFilter => RightArg is null;
-        public object SingleFilter => RightArg is null ? LeftArg : null;
+        public object? SingleFilter => RightArg is null ? LeftArg : null;
         #endregion
 
         #region constructors
-        protected JoinOnExpressionSet()
-        {
-
-        }
-
         public JoinOnExpressionSet(JoinOnExpression singleJoin)
         {
             LeftArg = singleJoin ?? throw new ArgumentNullException(nameof(singleJoin));
@@ -59,66 +54,48 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public JoinOnExpressionSet(IExpressionElement leftArg, IExpressionElement rightArg, ConditionalExpressionOperator conditionalOperator, bool negate)
         {
-            if (leftArg is null)
-                throw new ArgumentNullException(nameof(leftArg));
-
-            if (rightArg is null)
-                throw new ArgumentNullException(nameof(rightArg));
-
-            LeftArg = leftArg;
-            RightArg = rightArg;
+            LeftArg = leftArg ?? throw new ArgumentNullException(nameof(leftArg)); ;
+            RightArg = rightArg ?? throw new ArgumentNullException(nameof(rightArg)); ;
             ConditionalOperator = conditionalOperator;
             Negate = negate;
         }
         #endregion
 
         #region to string
-        public override string ToString() => (Negate) ? $"NOT ({LeftArg} {ConditionalOperator} {RightArg})" : $"{LeftArg} {ConditionalOperator} {RightArg}";
+        public override string? ToString() => (Negate) ? $"NOT ({LeftArg} {ConditionalOperator} {RightArg})" : $"{LeftArg} {ConditionalOperator} {RightArg}";
 
         #endregion
 
         #region conditional &, | operators
-        public static JoinOnExpressionSet operator &(JoinOnExpressionSet a, JoinOnExpression b)
-        {
-            if (a is null && b is object) { return new JoinOnExpressionSet(b); }
-            if (a is object && b is null) { return a; }
-            if (a is null && b is null) { return null; }
+        public static JoinOnExpressionSet operator &(JoinOnExpressionSet? a, JoinOnExpression? b)
+            => Operator(a, b, ConditionalExpressionOperator.And);
 
-            return new JoinOnExpressionSet(a, b, ConditionalExpressionOperator.And);
+        public static JoinOnExpressionSet operator &(JoinOnExpressionSet? a, JoinOnExpressionSet? b)
+            => Operator(a, b, ConditionalExpressionOperator.And);
+
+        public static JoinOnExpressionSet operator |(JoinOnExpressionSet? a, JoinOnExpression? b)
+            => Operator(a, b, ConditionalExpressionOperator.Or);
+
+        public static JoinOnExpressionSet operator |(JoinOnExpressionSet? a, JoinOnExpressionSet? b)
+            => Operator(a, b, ConditionalExpressionOperator.Or);
+
+        private static JoinOnExpressionSet Operator(JoinOnExpressionSet? a, JoinOnExpression? b, ConditionalExpressionOperator expressionOperator)
+        {
+            if (a is null && b is null) throw new ArgumentNullException(nameof(a));
+            return b is null ? a! : new(a!, b!, expressionOperator);
         }
 
-        public static JoinOnExpressionSet operator &(JoinOnExpressionSet a, JoinOnExpressionSet b)
+        private static JoinOnExpressionSet Operator(JoinOnExpressionSet? a, JoinOnExpressionSet? b, ConditionalExpressionOperator expressionOperator)
         {
-            if (a is null && b is object) { return b; }
-            if (a is object && b is null) { return a; }
-            if (a is null && b is null) { return null; }
-
-            return new JoinOnExpressionSet(a, b, ConditionalExpressionOperator.And);
-        }
-
-        public static JoinOnExpressionSet operator |(JoinOnExpressionSet a, JoinOnExpression b)
-        {
-            if (a is null && b is object) { return new JoinOnExpressionSet(b); }
-            if (a is object && b is null) { return a; }
-            if (a is null && b is null) { return null; }
-
-            return new JoinOnExpressionSet(a, b, ConditionalExpressionOperator.Or);
-        }
-
-        public static JoinOnExpressionSet operator |(JoinOnExpressionSet a, JoinOnExpressionSet b)
-        {
-            if (a is null && b is object) { return b; }
-            if (a is object && b is null) { return a; }
-            if (a is null && b is null) { return null; }
-
-            return new JoinOnExpressionSet(a, b, ConditionalExpressionOperator.Or);
+            if (a is null && b is null) throw new ArgumentNullException(nameof(a));
+            return a is not null &&  b is not null ? new JoinOnExpressionSet(a, b, expressionOperator) : (a ?? b)!;
         }
         #endregion
 
         #region negation operator
         public static JoinOnExpressionSet operator !(JoinOnExpressionSet a)
         {
-            if (a is object) a.Negate = !a.Negate;
+            a.Negate = !a.Negate;
             return a;
         }
         #endregion

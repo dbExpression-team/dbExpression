@@ -21,15 +21,13 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class RawExpression :
+        IExpressionElement,
         ObjectElement,
         IEquatable<RawExpression>
     {
         #region interface
         public string Expression { get; private set; }
-
-        public OrderByExpression Asc => new OrderByExpression(this, OrderExpressionDirection.ASC);
-
-        public OrderByExpression Desc => new OrderByExpression(this, OrderExpressionDirection.DESC);
+        Type IExpressionTypeProvider.DeclaredType => typeof(object);
         #endregion
 
         #region constructors
@@ -45,22 +43,30 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region tostring
-        public override string ToString() => Expression ?? "null";
+        public override string? ToString() => Expression ?? "null";
+        #endregion
+
+        #region order by
+        public OrderByExpression Asc => new(this, OrderExpressionDirection.ASC);
+        public OrderByExpression Desc => new(this, OrderExpressionDirection.DESC);
         #endregion
 
         #region equals
-        public bool Equals(RawExpression obj)
+        public bool Equals(RawExpression? obj)
         {
             if (obj is null) return false;
+            if (ReferenceEquals(this, obj)) return true;
 
-            if (Expression is null && obj.Expression is object) return false;
-            if (Expression is object && obj.Expression is null) return false;
+            if (Expression is null && obj.Expression is not null) return false;
+            if (Expression is not null && obj.Expression is null) return false;
+            if (Expression is not null && !Expression.Equals(obj.Expression)) return false;
+
             if (!StringComparer.OrdinalIgnoreCase.Equals(Expression, obj.Expression)) return false;
 
             return true;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
             => obj is RawExpression exp && Equals(exp);
 
         public override int GetHashCode()
@@ -71,7 +77,7 @@ namespace HatTrick.DbEx.Sql.Expression
                 const int multiplier = 16777619;
 
                 int hash = @base;
-                hash = (hash * multiplier) ^ (Expression is object ? Expression.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (Expression is not null ? Expression.GetHashCode() : 0);
                 return hash;
             }
         }

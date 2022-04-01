@@ -22,13 +22,13 @@ namespace ServerSideBlazorApp
         public static T GetQueryStringParameter<T>(this NavigationManager manager, string parameterName, T defaultValue)
             where T : IComparable
         {
-            if (manager.TryGetQueryStringParameter<T>(parameterName, out T value))
-                return value;
+            if (manager.TryGetQueryStringParameter<T>(parameterName, out T? value))
+                return value!;
 
             return defaultValue;
         }
 
-        public static bool TryGetQueryStringParameter<T>(this NavigationManager manager, string parameterName, out T value)
+        public static bool TryGetQueryStringParameter<T>(this NavigationManager manager, string parameterName, out T? value)
             where T : IComparable
         {
             value = default;
@@ -40,7 +40,7 @@ namespace ServerSideBlazorApp
                 var converter = TypeDescriptor.GetConverter(typeof(T));
                 try
                 {
-                    value = (T)converter.ConvertFrom(Convert.ToString(parameterValue));
+                    value = (T?)converter.ConvertFrom(Convert.ToString(parameterValue));
                     return true;
                 }
                 catch (NotSupportedException)
@@ -53,20 +53,20 @@ namespace ServerSideBlazorApp
 
         public static string GetReturnUrl(this NavigationManager manager)
         {
-            if (manager.TryGetQueryStringParameter(RETURN_URL_PARAM_NAME, out string url))
+            if (manager.TryGetQueryStringParameter(RETURN_URL_PARAM_NAME, out string? url))
             {
-                return new UriBuilder(manager.ToAbsoluteUri(url)).ToString();
+                return new UriBuilder(manager.ToAbsoluteUri(url!)).ToString();
             }
             return manager.BaseUri;
         }
 
-        public static bool TryGetPagingParametersFromReturnUrl<T>(this NavigationManager manager, out T model)
+        public static bool TryGetPagingParametersFromReturnUrl<T>(this NavigationManager manager, out T? model)
             where T : PagingParameters, new()
         {
-            model = null;
-            if (manager.TryGetQueryStringParameter(PAGING_PARAM_NAME, out string paging))
+            model = default;
+            if (manager.TryGetQueryStringParameter(PAGING_PARAM_NAME, out string? paging))
             {
-                model = JsonSerializer.Deserialize<T>(paging);
+                model = JsonSerializer.Deserialize<T>(paging!);
                 return true;
             }
             return false;

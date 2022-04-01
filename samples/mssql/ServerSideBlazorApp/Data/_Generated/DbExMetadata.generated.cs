@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using ServerSideBlazorApp.dboDataService;
 using ServerSideBlazorApp.secDataService;
-
+#nullable enable
 namespace ServerSideBlazorApp.DataService
 {
     #region db meta

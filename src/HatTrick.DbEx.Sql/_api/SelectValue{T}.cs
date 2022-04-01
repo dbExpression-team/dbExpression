@@ -31,7 +31,7 @@ namespace HatTrick.DbEx.Sql
         /// </para>
         /// </summary>
         /// <returns><see cref="SelectValueContinuation{TValue}"/>, a fluent continuation for the construction of a sql SELECT query expression for a single <typeparamref name="TValue"/> value.</returns>
-        SelectValueContinuation<TValue> From<TEntity>(Entity<TEntity> entity)
+        SelectValueContinuation<TValue> From<TEntity>(Table<TEntity> entity)
             where TEntity : class, IDbEntity;
     }
 }

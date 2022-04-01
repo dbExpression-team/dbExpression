@@ -21,68 +21,87 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class SelectExpression : 
-        IExpressionElement,
+        AnyElement,
         IExpressionTypeProvider,
         IExpressionAliasProvider
     {
         #region internals
-        protected string Alias { get; set; }
+        protected string? Alias { get; set; }
         protected bool IsDistinct { get; private set; }
         #endregion
 
         #region interface
-        public IExpressionElement Expression { get; }
-        Type IExpressionTypeProvider.DeclaredType => (Expression as IExpressionTypeProvider).DeclaredType;
-        string IExpressionAliasProvider.Alias => Alias;
+        public AnyElement Expression { get; }
+        Type IExpressionTypeProvider.DeclaredType => Expression.DeclaredType;
+        string? IExpressionAliasProvider.Alias => Alias;
         #endregion
 
         #region constructors
-        public SelectExpression(IExpressionElement expression) : this(expression, null)
+        public SelectExpression(AnyElement expression) : this(expression, null)
         {
 
         }
 
-        public SelectExpression(IExpressionElement expression, string alias)
+        public SelectExpression(AnyElement expression, string? alias)
         {
             Expression = expression ?? throw new ArgumentNullException(nameof(expression));
             this.Alias = alias;
         }
         #endregion
 
+        #region order by
+        OrderByExpression AnyElement.Asc => throw new DbExpressionException("Select expressions cannot be used in Order By clauses.");
+
+        OrderByExpression AnyElement.Desc => throw new DbExpressionException("Select expressions cannot be used in Order By clauses.");
+        #endregion
+
         #region to string
-        public override string ToString() => Expression.ToString();
+        public override string? ToString() => Expression.ToString();
         #endregion
 
         #region logical & operator
-        public static SelectExpressionSet operator &(SelectExpression a, SelectExpression b) => new SelectExpressionSet(a, b);
+        public static SelectExpressionSet operator &(SelectExpression a, SelectExpression b) => new(a, b);
         #endregion
 
         #region implicit select expression set operator
-        public static implicit operator SelectExpressionSet(SelectExpression a) => new SelectExpressionSet(a);
+        public static implicit operator SelectExpressionSet(SelectExpression a) => new(a);
         #endregion
 
         #region equals
-        public bool Equals(SelectExpression obj)
+        public bool Equals(SelectExpression? obj)
         {
             if (obj is null) return false;
+            if (ReferenceEquals(this, obj)) return true;
 
-            if (Expression is null && obj.Expression is object) return false;
-            if (Expression is object && obj.Expression is null) return false;
-            if (!Expression.Equals(obj.Expression)) return false;
+            if (Expression is null && obj.Expression is not null) return false;
+            if (Expression is not null && obj.Expression is null) return false;
+            if (Expression is not null && !Expression.Equals(obj.Expression)) return false;
 
             if (IsDistinct != obj.IsDistinct) return false;
+
+            if (Alias is not null && !Alias.Equals(obj.Alias)) return false;
 
             return true;
         }
 
-        public override bool Equals(object obj)
-        {
-            if (!(obj is SelectExpression other)) return false;
-            return Equals(other);
-        }
+        public override bool Equals(object? obj)
+            => obj is SelectExpression exp && Equals(exp);
+
 
         public override int GetHashCode()
-            => base.GetHashCode();
+        {
+            unchecked
+            {
+                const int @base = (int)2166136261;
+                const int multiplier = 16777619;
+
+                int hash = @base;
+                hash = (hash * multiplier) ^ (Expression is not null ? Expression.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ IsDistinct.GetHashCode();
+                hash = (hash * multiplier) ^ (Alias is not null ? Alias.GetHashCode() : 0);
+                return hash;
+            }
+        }
         #endregion
     }
 }

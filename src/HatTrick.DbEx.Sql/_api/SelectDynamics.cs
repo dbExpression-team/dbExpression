@@ -49,7 +49,7 @@ namespace HatTrick.DbEx.Sql
         /// </para>
         /// </summary>
         /// <returns><see cref="SelectDynamicsContinuation"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="System.Dynamic.ExpandoObject"/> values.</returns>
-        SelectDynamicsContinuation From<TEntity>(Entity<TEntity> entity)
+        SelectDynamicsContinuation From<TEntity>(Table<TEntity> entity)
             where TEntity : class, IDbEntity;
     }
 }

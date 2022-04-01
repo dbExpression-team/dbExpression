@@ -1,4 +1,5 @@
-﻿using DbEx.dboDataService;
+﻿using DbEx.DataService;
+using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Assembler;
@@ -532,7 +533,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
         {
             //given
             var value = new byte[] { 1, 2, 3 };
-            var database = ConfigureForMsSqlVersion(version);
+            var database = ConfigureForMsSqlVersion(version, builder => builder.SchemaMetadata.Use(new SqlDatabaseMetadataProvider(new MsSqlDbSqlDatabaseMetadata("MsSqlDb", "MsSqlDbExTest"))));
             var context = new AssemblyContext(database.AssemblerConfiguration);
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var parameter = parameterBuilder.CreateInputParameter(value, typeof(byte[]), context);
@@ -548,28 +549,28 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_a_parameter_for_product_description_create_correct_dbtype_and_size_for_filter_expression(int version)
+        public void Does_a_parameter_for_product_name_create_correct_dbtype_and_size_for_filter_expression(int version)
         {
             //given
-            var database = ConfigureForMsSqlVersion(version);
+            var database = ConfigureForMsSqlVersion(version, builder => builder.SchemaMetadata.Use(new SqlDatabaseMetadataProvider(new MsSqlDbSqlDatabaseMetadata("MsSqlDb", "MsSqlDbExTest"))));
             var builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, database.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>());
             var context = new AssemblyContext(database.AssemblerConfiguration);
-            string productDescription = "1234";
+            string productName = "1234";
 
-            var predicate = dbo.Product.Description == productDescription;
+            var predicate = dbo.Product.Name == productName;
 
-            var appender = database.ExpressionElementAppenderFactory.CreateElementAppender(predicate);
+            var appender = database.ExpressionElementAppenderFactory.CreateElementAppender(predicate)!;
 
             //when
             appender.AppendElement(predicate, builder, context);
-            var parameter = builder.Parameters.Parameters.SingleOrDefault();
-            var meta = parameter.Metadata as ISqlFieldMetadata;
+            var parameter = builder.Parameters.Parameters.Single();
+            var meta = (parameter.Metadata as ISqlFieldMetadata)!;
 
             //then
-            meta.DbType.Should().Be(SqlDbType.NVarChar);
-            parameter.Parameter.DbType.Should().Be(DbType.String);
+            meta.DbType.Should().Be(SqlDbType.VarChar);
+            parameter.Parameter.DbType.Should().Be(DbType.AnsiString);
             parameter.Parameter.Size.Should().Be(meta.Size);
-            parameter.Parameter.Value.Should().Be(productDescription);
+            parameter.Parameter.Value.Should().Be(productName);
         }
 
         [Theory]
@@ -577,19 +578,19 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
         public void Does_a_parameter_for_person_firstname_create_correct_dbtype_and_size_for_filter_expression(int version)
         {
             //given
-            var database = ConfigureForMsSqlVersion(version);
+            var database = ConfigureForMsSqlVersion(version, builder => builder.SchemaMetadata.Use(new SqlDatabaseMetadataProvider(new MsSqlDbSqlDatabaseMetadata("MsSqlDb", "MsSqlDbExTest"))));
             var builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, database.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>());
             var context = new AssemblyContext(database.AssemblerConfiguration);
             string firstName = "xxx";
 
             var predicate = dbo.Person.FirstName == firstName;
 
-            var appender = database.ExpressionElementAppenderFactory.CreateElementAppender(predicate);
+            var appender = database.ExpressionElementAppenderFactory.CreateElementAppender(predicate)!;
 
             //when
             appender.AppendElement(predicate, builder, context);
-            var parameter = builder.Parameters.Parameters.SingleOrDefault();
-            var meta = parameter.Metadata as ISqlFieldMetadata;
+            var parameter = builder.Parameters.Parameters.Single();
+            var meta = (parameter.Metadata as ISqlFieldMetadata)!;
 
             //then
             meta.DbType.Should().Be(SqlDbType.VarChar);
@@ -603,19 +604,19 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
         public void Does_a_parameter_for_product_price_create_correct_dbtype_for_filter_expression(int version)
         {
             //given
-            var database = ConfigureForMsSqlVersion(version);
+            var database = ConfigureForMsSqlVersion(version, builder => builder.SchemaMetadata.Use(new SqlDatabaseMetadataProvider(new MsSqlDbSqlDatabaseMetadata("MsSqlDb", "MsSqlDbExTest"))));
             var builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, database.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>());
             var context = new AssemblyContext(database.AssemblerConfiguration);
             double productPrice = 12.99;
 
             var predicate = dbo.Product.Price == productPrice;
 
-            var appender = database.ExpressionElementAppenderFactory.CreateElementAppender(predicate);
+            var appender = database.ExpressionElementAppenderFactory.CreateElementAppender(predicate)!;
 
             //when
             appender.AppendElement(predicate, builder, context);
-            var parameter = builder.Parameters.Parameters.SingleOrDefault();
-            var meta = parameter.Metadata as ISqlFieldMetadata;
+            var parameter = builder.Parameters.Parameters.Single();
+            var meta = (parameter.Metadata as ISqlFieldMetadata)!;
 
             //then
             meta.DbType.Should().Be(SqlDbType.Money);
@@ -628,19 +629,19 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
         public void Does_a_parameter_for_product_image_create_correct_dbtype_for_filter_expression(int version)
         {
             //given
-            var database = ConfigureForMsSqlVersion(version);
+            var database = ConfigureForMsSqlVersion(version, builder => builder.SchemaMetadata.Use(new SqlDatabaseMetadataProvider(new MsSqlDbSqlDatabaseMetadata("MsSqlDb", "MsSqlDbExTest"))));
             var builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, database.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>());
             var context = new AssemblyContext(database.AssemblerConfiguration);
             byte[] image = new byte[] { 1, 2, 3 };
 
             var predicate = dbo.Product.Image == image;
 
-            var appender = database.ExpressionElementAppenderFactory.CreateElementAppender(predicate);
+            var appender = database.ExpressionElementAppenderFactory.CreateElementAppender(predicate)!;
 
             //when
             appender.AppendElement(predicate, builder, context);
-            var parameter = builder.Parameters.Parameters.SingleOrDefault();
-            var meta = parameter.Metadata as ISqlFieldMetadata;
+            var parameter = builder.Parameters.Parameters.Single();
+            var meta = (parameter.Metadata as ISqlFieldMetadata)!;
 
             //then
             meta.DbType.Should().Be(SqlDbType.VarBinary);

@@ -1,6 +1,7 @@
 {
+	"nullable": "enable",
 	"source": {
-		"type": "MsSqlDb",
+		"type": "MsSql",
 		"connectionString": {
 			"value": "Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=MsSqlDbExTest;Integrated Security=true;Connect Timeout=30"
 		}
@@ -16,6 +17,12 @@
 		"ServerSideBlazorApp.Data.PaymentSourceType"
 	],
 	"overrides": [
+		{
+			"apply": {
+				"ignore": true,
+				"to": { "path": "unit_test" }
+			}
+		},
 		{
 			"apply": {
 				"ignore": true,
@@ -73,6 +80,14 @@
 				"name": "CustomerId",
 				"to": {
 					"path": "dbo.Person_Address.PersonId"
+				}
+			}
+		},
+		{
+			"apply": {
+				"clrType": "ServerSideBlazorApp.Data.ProductDescription",
+				"to": {
+					"path": "dbo.Product.Description"
 				}
 			}
 		},

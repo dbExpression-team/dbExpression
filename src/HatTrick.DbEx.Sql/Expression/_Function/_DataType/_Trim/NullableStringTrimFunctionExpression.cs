@@ -21,13 +21,18 @@ using System;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableStringTrimFunctionExpression :
-        NullableTrimFunctionExpression<string,string>,
+        NullableTrimFunctionExpression<string,string?>,
         NullableStringElement,
-        AnyStringElement,
         IEquatable<NullableStringTrimFunctionExpression>
     {
         #region constructors
-        public NullableStringTrimFunctionExpression(NullableStringElement expression) 
+        public NullableStringTrimFunctionExpression(AnyElement<string?> expression) 
+            : base(expression)
+        {
+
+        }
+
+        public NullableStringTrimFunctionExpression(NullableStringElement expression)
             : base(expression)
         {
 
@@ -40,11 +45,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(NullableStringTrimFunctionExpression obj)
-            => obj is NullableStringTrimFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableStringTrimFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableStringTrimFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableStringTrimFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

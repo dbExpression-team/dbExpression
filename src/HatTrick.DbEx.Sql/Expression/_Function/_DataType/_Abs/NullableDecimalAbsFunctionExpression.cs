@@ -23,11 +23,10 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableDecimalAbsFunctionExpression :
         NullableAbsFunctionExpression<decimal,decimal?>,
         NullableDecimalElement,
-        AnyDecimalElement,
         IEquatable<NullableDecimalAbsFunctionExpression>
     {
         #region constructors
-        public NullableDecimalAbsFunctionExpression(NullableDecimalElement expression) 
+        public NullableDecimalAbsFunctionExpression(AnyElement<decimal?> expression) 
             : base(expression)
         {
 
@@ -35,24 +34,16 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public NullableDecimalElement As(string alias)
-            => new NullableDecimalSelectExpression(this).As(alias);
-        #endregion
-
-        #region distinct
-        public NullableDecimalAbsFunctionExpression Distinct()
-        {
-            IsDistinct = true;
-            return this;
-        }
+        public AnyElement<decimal?> As(string alias)
+            => new SelectExpression<decimal?>(this).As(alias);
         #endregion
 
         #region equals
-        public bool Equals(NullableDecimalAbsFunctionExpression obj)
-            => obj is NullableDecimalAbsFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableDecimalAbsFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableDecimalAbsFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableDecimalAbsFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

@@ -35,20 +35,21 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        protected ConcatFunctionExpression(IList<IExpressionElement> expressions, Type declaredType) : base(declaredType)
+        protected ConcatFunctionExpression(IList<AnyStringElement> expressions, Type declaredType) : base(declaredType)
         {
             this.expressions = expressions ?? throw new ArgumentNullException(nameof(expressions));
         }
         #endregion
 
         #region to string
-        public override string ToString() => $"CONCAT({string.Join(", ", expressions)})";
+        public override string? ToString() => $"CONCAT({string.Join(", ", expressions)})";
         #endregion
 
         #region equals
-        public bool Equals(ConcatFunctionExpression obj)
+        public bool Equals(ConcatFunctionExpression? obj)
         {
-            if (!base.Equals(obj)) return false;
+            if (obj is null) return false;
+            if (ReferenceEquals(this, obj)) return true;
 
             if (expressions.Count() != obj.expressions.Count()) return false;
 
@@ -58,8 +59,8 @@ namespace HatTrick.DbEx.Sql.Expression
             return true;
         }
 
-        public override bool Equals(object obj)
-            => obj is ConcatFunctionExpression exp ? Equals(exp) : false;
+        public override bool Equals(object? obj)
+            => obj is ConcatFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

@@ -23,20 +23,26 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class FieldExpression<TValue> : FieldExpression,
         IExpressionElement<TValue>,
+        AnyElement<TValue>,
         IEquatable<FieldExpression<TValue>>
     {
         #region constructors
-        protected FieldExpression(string identifier, string name, Type declaredType, EntityExpression entity) : base(identifier, name, declaredType, entity)
+        protected FieldExpression(string identifier, string name, Type declaredType, Table entity) : base(identifier, name, declaredType, entity)
         {
 
         }
         #endregion
 
-        #region equals
-        public bool Equals(FieldExpression<TValue> obj)
-            => obj is FieldExpression<TValue> && base.Equals(obj);
+        #region as
+        public AnyElement<TValue> As(string alias)
+            => new SelectExpression<TValue>(this).As(alias);
+        #endregion
 
-        public override bool Equals(object obj)
+        #region equals
+        public bool Equals(FieldExpression<TValue>? obj)
+            => obj is not null && base.Equals(obj);
+
+        public override bool Equals(object? obj)
             => obj is FieldExpression<TValue> exp && base.Equals(exp);
 
         public override int GetHashCode()

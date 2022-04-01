@@ -31,13 +31,13 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
 
         #region constructors
-        public DeleteQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, DeleteQueryExpression expression)
+        public DeleteQueryExpressionBuilder(SqlDatabaseRuntimeConfiguration config, DeleteQueryExpression expression)
             : base(config, expression)
         {
             Expression = expression;
         }
 
-        protected DeleteQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, DeleteQueryExpression expression, EntityExpression entity)
+        protected DeleteQueryExpressionBuilder(SqlDatabaseRuntimeConfiguration config, DeleteQueryExpression expression, Table entity)
             : base(config, expression)
         {
             Expression = expression ?? throw new ArgumentNullException(nameof(expression));
@@ -47,8 +47,8 @@ namespace HatTrick.DbEx.Sql.Builder
 
         #region methods
         /// <inheritdoc />
-        DeleteEntitiesContinuation<TEntity> DeleteEntities.From<TEntity>(Entity<TEntity> entity)
-            => CreateTypedBuilder(Configuration, Expression, entity as EntityExpression<TEntity> ?? throw new DbExpressionException($"Expected {nameof(entity)} to be of type {nameof(EntityExpression)}."));
+        DeleteEntitiesContinuation<TEntity> DeleteEntities.From<TEntity>(Table<TEntity> entity)
+            => CreateTypedBuilder(Configuration, Expression, entity as EntityExpression<TEntity> ?? throw new DbExpressionException($"Expected {nameof(entity)} to be of type {typeof(EntityExpression)}."));
 
         /// <inheritdoc />
         DeleteEntities DeleteEntities.Top(int value)
@@ -57,7 +57,7 @@ namespace HatTrick.DbEx.Sql.Builder
             return this;
         }
 
-        protected virtual DeleteEntitiesContinuation<TEntity> CreateTypedBuilder<TEntity>(RuntimeSqlDatabaseConfiguration configuration, DeleteQueryExpression expression, EntityExpression<TEntity> entity)
+        protected virtual DeleteEntitiesContinuation<TEntity> CreateTypedBuilder<TEntity>(SqlDatabaseRuntimeConfiguration configuration, DeleteQueryExpression expression, Table<TEntity> entity)
             where TEntity : class, IDbEntity
             => new DeleteEntitiesDeleteQueryExpressionBuilder<TEntity>(configuration, expression, entity);
 
@@ -66,10 +66,11 @@ namespace HatTrick.DbEx.Sql.Builder
             if (expression is null)
                 return;
 
-            if (!(expression is FilterExpressionSet set))
-                throw new DbExpressionException($"Expected {nameof(expression)} to be of type {nameof(FilterExpressionSet)}.");
+            if (expression is not FilterExpressionSet set)
+                throw new DbExpressionException($"Expected {nameof(expression)} to be of type {typeof(FilterExpressionSet)}.");
 
-            if (Expression.Where is null || Expression.Where.IsEmpty)
+            var where = (Expression.Where as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>)?.Expression;
+            if (where is null || where.IsEmpty || Expression.Where is null)
                 Expression.Where = set;
             else
                 Expression.Where &= set;

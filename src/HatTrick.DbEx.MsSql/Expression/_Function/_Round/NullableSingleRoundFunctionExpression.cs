@@ -25,52 +25,31 @@ namespace HatTrick.DbEx.MsSql.Expression
     public partial class NullableSingleRoundFunctionExpression :
         NullableRoundFunctionExpression<float,float?>,
         NullableSingleElement,
-        AnySingleElement,
         IEquatable<NullableSingleRoundFunctionExpression>
     {
         #region constructors
-        public NullableSingleRoundFunctionExpression(NullableSingleElement expression, IntegralNumericElement length) : base(expression, length)
+        public NullableSingleRoundFunctionExpression(AnyElement<float?> expression, AnyElement length) : base(expression, length)
         {
 
         }
 
-        public NullableSingleRoundFunctionExpression(NullableSingleElement expression, IntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
-        {
-
-        }
-
-        public NullableSingleRoundFunctionExpression(NullableSingleElement expression, NullableIntegralNumericElement length) : base(expression, length)
-        {
-
-        }
-
-        public NullableSingleRoundFunctionExpression(NullableSingleElement expression, NullableIntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
-        {
-
-        }
-
-        public NullableSingleRoundFunctionExpression(NullableSingleElement expression, IntegralNumericElement length, NullableIntegralNumericElement function) : base(expression, length, function)
-        {
-
-        }
-
-        public NullableSingleRoundFunctionExpression(NullableSingleElement expression, NullableIntegralNumericElement length, NullableIntegralNumericElement function) : base(expression, length, function)
+        public NullableSingleRoundFunctionExpression(AnyElement<float?> expression, AnyElement length, AnyElement function) : base(expression, length, function)
         {
 
         }
         #endregion
 
         #region as
-        public NullableSingleElement As(string alias)
-            => new NullableSingleSelectExpression(this).As(alias);
+        public AnyElement<float?> As(string alias)
+            => new SelectExpression<float?>(this).As(alias);
         #endregion
 
         #region equals
-        public bool Equals(NullableSingleRoundFunctionExpression obj)
-            => obj is NullableSingleRoundFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableSingleRoundFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableSingleRoundFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableSingleRoundFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

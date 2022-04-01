@@ -21,14 +21,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.Coalesce(db.fx.Sum(dbo.Person.CreditLimit), 1)
+                    db.fx.Coalesce<float>(db.fx.Sum(dbo.Person.CreditLimit), 1)
                 ).From(dbo.Person);
 
             //when               
-            int result = exp.Execute();
+            object result = exp.Execute();
 
             //then
-            result.Should().Be(expected);
+            result.Should().BeOfType<float>().Which.Should().Be(expected);
         }
 
         [Theory]
@@ -40,7 +40,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(
-                    db.fx.Coalesce(db.fx.Sum(dbo.Person.CreditLimit), dbo.Person.Id)
+                    db.fx.Coalesce<int?>(db.fx.Sum(dbo.Person.CreditLimit), dbo.Person.Id)
                 ).From(dbo.Person)
                 .GroupBy(dbo.Person.Id);
 
@@ -60,7 +60,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.Sum(db.fx.Coalesce(dbo.Person.CreditLimit, 1))
+                    db.fx.Sum(db.fx.Coalesce<int>(dbo.Person.CreditLimit, 1))
                 ).From(dbo.Person);
 
             //when               
@@ -78,7 +78,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.Sum(db.fx.Coalesce(dbo.Person.CreditLimit, dbo.Person.Id))
+                    db.fx.Sum(db.fx.Coalesce<int>(dbo.Person.CreditLimit, dbo.Person.Id))
                 ).From(dbo.Person);
 
             //when               

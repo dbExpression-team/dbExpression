@@ -23,53 +23,22 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableDateTimeDateAddFunctionExpression :
         NullableDateAddFunctionExpression<DateTime,DateTime?>,
         NullableDateTimeElement,
-        AnyDateTimeElement,
         IEquatable<NullableDateTimeDateAddFunctionExpression>
     {
         #region constructors
-        public NullableDateTimeDateAddFunctionExpression(DatePartsExpression datePart, Int32Element value, NullableDateTimeElement expression)
+        public NullableDateTimeDateAddFunctionExpression(DatePartsExpression datePart, AnyElement<int> value, AnyElement<DateTime?> expression)
             : base(datePart, value, expression)
         {
 
         }
 
-        public NullableDateTimeDateAddFunctionExpression(DatePartsExpression datePart, Int32Element value, DateTimeElement expression) 
+        public NullableDateTimeDateAddFunctionExpression(DatePartsExpression datePart, AnyElement<int?> value, AnyElement<DateTime> expression) 
             : base(datePart, value, expression)
         {
 
         }
 
-        public NullableDateTimeDateAddFunctionExpression(DatePartsExpression datePart, NullableInt32Element value, NullableDateTimeElement expression)
-            : base(datePart, value, expression)
-        {
-
-        }
-
-        public NullableDateTimeDateAddFunctionExpression(DatePartsExpression datePart, NullableInt32Element value, DateTimeElement expression)
-            : base(datePart, value, expression)
-        {
-
-        }
-
-        public NullableDateTimeDateAddFunctionExpression(DatePartsExpression datePart, AnyObjectElement value, NullableDateTimeElement expression) 
-            : base(datePart, value, expression)
-        {
-
-        }
-
-        public NullableDateTimeDateAddFunctionExpression(DatePartsExpression datePart, AnyObjectElement value, DateTimeElement expression)
-            : base(datePart, value, expression)
-        {
-
-        }
-
-        public NullableDateTimeDateAddFunctionExpression(DatePartsExpression datePart, Int32Element value, AnyObjectElement expression) 
-            : base(datePart, value, expression)
-        {
-
-        }
-
-        public NullableDateTimeDateAddFunctionExpression(DatePartsExpression datePart, NullableInt32Element value, AnyObjectElement expression)
+        public NullableDateTimeDateAddFunctionExpression(DatePartsExpression datePart, AnyElement<int?> value, AnyElement<DateTime?> expression)
             : base(datePart, value, expression)
         {
 
@@ -77,16 +46,16 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public NullableDateTimeElement As(string alias)
-            => new NullableDateTimeSelectExpression(this).As(alias);
+        public AnyElement<DateTime?> As(string alias)
+            => new SelectExpression<DateTime?>(this).As(alias);
         #endregion
 
         #region equals
-        public bool Equals(NullableDateTimeDateAddFunctionExpression obj)
-            => obj is NullableDateTimeDateAddFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableDateTimeDateAddFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableDateTimeDateAddFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableDateTimeDateAddFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

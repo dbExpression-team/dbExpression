@@ -23,16 +23,15 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class StringLTrimFunctionExpression :
         LTrimFunctionExpression<string>,
         StringElement,
-        AnyStringElement,
         IEquatable<StringLTrimFunctionExpression>
     {
         #region constructors
-        public StringLTrimFunctionExpression(StringElement expression) : base(expression)
+        public StringLTrimFunctionExpression(AnyElement<string> expression) : base(expression)
         {
 
         }
 
-        public StringLTrimFunctionExpression(AnyObjectElement expression) : base(expression)
+        public StringLTrimFunctionExpression(StringElement expression) : base(expression)
         {
 
         }
@@ -40,20 +39,20 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public StringElement As(string alias)
-            => new StringSelectExpression(this).As(alias);
+            => new StringSelectExpression(this as StringElement).As(alias);
         #endregion
 
         #region like
         public FilterExpressionSet Like(string phrase)
-            => new FilterExpressionSet(new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
+            => new (new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
         #endregion
 
         #region equals
-        public bool Equals(StringLTrimFunctionExpression obj)
-            => obj is StringLTrimFunctionExpression && base.Equals(obj);
+        public bool Equals(StringLTrimFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is StringLTrimFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is StringLTrimFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

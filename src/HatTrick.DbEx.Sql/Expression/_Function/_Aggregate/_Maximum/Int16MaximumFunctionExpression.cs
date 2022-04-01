@@ -23,23 +23,17 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class Int16MaximumFunctionExpression :
         MaximumFunctionExpression<short>,
         Int16Element,
-        AnyInt16Element,
         IEquatable<Int16MaximumFunctionExpression>
     {
         #region constructors
-        public Int16MaximumFunctionExpression(Int16Element expression) : base(expression)
+        public Int16MaximumFunctionExpression(AnyElement<short> expression) : base(expression)
         {
 
         }
         #endregion
 
-        #region as
-        public Int16Element As(string alias)
-            => new Int16SelectExpression(this).As(alias);
-        #endregion
-
         #region distinct
-        public Int16MaximumFunctionExpression Distinct()
+        public new Int16MaximumFunctionExpression Distinct()
         {
             IsDistinct = true;
             return this;
@@ -47,11 +41,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(Int16MaximumFunctionExpression obj)
-            => obj is Int16MaximumFunctionExpression && base.Equals(obj);
+        public bool Equals(Int16MaximumFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is Int16MaximumFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is Int16MaximumFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

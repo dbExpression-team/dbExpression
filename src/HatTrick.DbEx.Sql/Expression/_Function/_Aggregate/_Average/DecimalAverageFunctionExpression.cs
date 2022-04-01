@@ -23,23 +23,22 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class DecimalAverageFunctionExpression :
         AverageFunctionExpression<decimal>,
         DecimalElement,
-        AnyDecimalElement,
         IEquatable<DecimalAverageFunctionExpression>
     {
         #region constructors
-        public DecimalAverageFunctionExpression(DecimalElement expression) : base(expression)
+        public DecimalAverageFunctionExpression(AnyElement<decimal> expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public DecimalElement As(string alias)
-            => new DecimalSelectExpression(this).As(alias);
+        public AnyElement<decimal> As(string alias)
+            => new SelectExpression<decimal>(this).As(alias);
         #endregion
 
         #region distinct
-        public DecimalAverageFunctionExpression Distinct()
+        public new DecimalAverageFunctionExpression Distinct()
         {
             IsDistinct = true;
             return this;
@@ -47,11 +46,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(DecimalAverageFunctionExpression obj)
-            => obj is DecimalAverageFunctionExpression && base.Equals(obj);
+        public bool Equals(DecimalAverageFunctionExpression? obj)
+            => obj is not null && Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is DecimalAverageFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is DecimalAverageFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

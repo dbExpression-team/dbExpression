@@ -1,42 +1,23 @@
-﻿{?var:isEnum = $.FieldExpression.Type.IsEnum}
+﻿{?var:isNullableEnabled = $.FieldExpression.LanguageFeatures.Nullable.IsFeatureEnabled}
+{?var:identifierArgName = ("identifier", $.FieldExpression) => GetFieldArgName}
+{?var:nameArgName = ("name", $.FieldExpression) => GetFieldArgName}
+{?var:entityArgName = ("entity", $.FieldExpression) => GetFieldArgName}
+{?var:aliasArgName = ("alias", $.FieldExpression) => GetFieldArgName}
+{?var:identifierInterpolationArgName = ("{{x}}", "x", :identifierArgName) => Replace}
         #region {($.FieldExpression.Name) => InsertSpaceOnCapitalizationAndToLower} field expression
-        public partial class {$.FieldExpression.Name}Field : {+#if $.Column.IsNullable}Nullable{/if}{+#if :isEnum}Enum{/if}{+#if !:isEnum}{$.FieldExpression.Type.TypeName}{/if}FieldExpression<{$.FieldExpression.EntityExpression.Name}{#if :isEnum}, {$.FieldExpression.Type.TypeName}{/if}>
+        public partial class {$.FieldExpression.Name}Field : {$.FieldExpression.FieldExpressionTypeName}
         {{
             #region constructors
-            public {$.FieldExpression.Name}Field(string identifier, string name, {$.FieldExpression.EntityExpression.Name}Entity entity) : base(identifier, name, entity)
+            public {$.FieldExpression.Name}Field(string {:identifierArgName}, string {:nameArgName}, Table {:entityArgName}) : base({:identifierArgName}, {:nameArgName}, {:entityArgName})
             {{
 
-            }}
-            #endregion
-
-            #region as
-            public override {+#if $.Column.IsNullable}Nullable{/if}{+#if :isEnum}Enum{/if}{+#if !:isEnum}{$.FieldExpression.Type.TypeName}{/if}Element{+#if :isEnum}<{$.FieldExpression.Type.TypeName}>{/if+} As(string alias)
-            {{
-                {#if :isEnum}
-                return new {+#if $.Column.IsNullable}Nullable{/if}EnumSelectExpression<{$.FieldExpression.Type.TypeName}>(this).As(alias);
-                {/if}
-                {#if !:isEnum}
-                return new {+#if $.Column.IsNullable}Nullable{/if}{$.FieldExpression.Type.TypeName}SelectExpression(this).As(alias);
-                {/if}
             }}
             #endregion
 
             #region set
-            {#if !$.Column.IsComputed}
-            {#if !$.Column.IsIdentity}
-            {#if $.FieldExpression.AllowUpdate}
-            public AssignmentExpression Set({$.FieldExpression.Type.Alias} value) => new AssignmentExpression(this, new LiteralExpression<{$.FieldExpression.Type.Alias}>(value, this));
-            public AssignmentExpression Set({+#if :isEnum}Enum{/if}{+#if !:isEnum}{$.FieldExpression.Type.TypeName}{/if}Element{+#if :isEnum}<{$.FieldExpression.Type.TypeName}>{/if+} value) => new AssignmentExpression(this, value);
-            {#if $.Column.IsNullable}
-            {#if $.FieldExpression.Type.IsNullable}
-            public AssignmentExpression Set({$.FieldExpression.Type.NullableAlias} value) => new AssignmentExpression(this, new LiteralExpression<{$.FieldExpression.Type.NullableAlias}>(value, this));
-            {/if}
-            public AssignmentExpression Set(Nullable{+#if :isEnum}Enum{/if}{+#if !:isEnum}{$.FieldExpression.Type.TypeName}{/if}Element{+#if :isEnum}<{$.FieldExpression.Type.TypeName}>{/if+} value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<{$.FieldExpression.Type.Alias}>(value, this));
-            {/if}
-            {/if}
-            {/if}
-            {/if}
+            {#each $.FieldExpression.AssignmentMethodParameters}
+            public AssignmentExpression Set({$.Left} value) => new AssignmentExpression(this, {$.Right});
+            {/each}
             #endregion
         }}
         #endregion

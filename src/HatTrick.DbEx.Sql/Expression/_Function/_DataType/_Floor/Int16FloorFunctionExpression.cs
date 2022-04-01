@@ -23,27 +23,21 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class Int16FloorFunctionExpression :
         FloorFunctionExpression<short>,
         Int16Element,
-        AnyInt16Element,
         IEquatable<Int16FloorFunctionExpression>
     {
         #region constructors
-        public Int16FloorFunctionExpression(Int16Element expression) : base(expression)
+        public Int16FloorFunctionExpression(AnyElement<short> expression) : base(expression)
         {
 
         }
         #endregion
 
-        #region as
-        public Int16Element As(string alias)
-            => new Int16SelectExpression(this).As(alias);
-        #endregion
-
         #region equals
-        public bool Equals(Int16FloorFunctionExpression obj)
-            => obj is Int16FloorFunctionExpression && base.Equals(obj);
+        public bool Equals(Int16FloorFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is Int16FloorFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is Int16FloorFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

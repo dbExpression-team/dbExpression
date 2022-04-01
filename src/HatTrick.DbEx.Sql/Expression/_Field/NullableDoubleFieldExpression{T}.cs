@@ -26,23 +26,18 @@ namespace HatTrick.DbEx.Sql.Expression
         where TEntity : class, IDbEntity
     {
         #region constructors
-        public NullableDoubleFieldExpression(string identifier, string name, EntityExpression entity) : base(identifier, name, entity)
+        public NullableDoubleFieldExpression(string identifier, string name, Table entity) : base(identifier, name, entity)
         {
 
         }
         #endregion
 
-        #region as
-        public override NullableDoubleElement As(string alias)
-            => new NullableDoubleSelectExpression(this).As(alias);
-        #endregion
-
         #region equals
-        public bool Equals(NullableDoubleFieldExpression<TEntity> obj)
-            => obj is NullableDoubleFieldExpression<TEntity> && base.Equals(obj);
+        public bool Equals(NullableDoubleFieldExpression<TEntity>? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableDoubleFieldExpression<TEntity> exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableDoubleFieldExpression<TEntity> exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

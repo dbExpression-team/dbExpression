@@ -25,52 +25,31 @@ namespace HatTrick.DbEx.MsSql.Expression
     public partial class NullableDecimalRoundFunctionExpression :
         NullableRoundFunctionExpression<decimal,decimal?>,
         NullableDecimalElement,
-        AnyDecimalElement,
         IEquatable<NullableDecimalRoundFunctionExpression>
     {
         #region constructors
-        public NullableDecimalRoundFunctionExpression(NullableDecimalElement expression, IntegralNumericElement length) : base(expression, length)
+        public NullableDecimalRoundFunctionExpression(AnyElement<decimal?> expression, AnyElement length) : base(expression, length)
         {
 
         }
 
-        public NullableDecimalRoundFunctionExpression(NullableDecimalElement expression, IntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
-        {
-
-        }
-
-        public NullableDecimalRoundFunctionExpression(NullableDecimalElement expression, NullableIntegralNumericElement length) : base(expression, length)
-        {
-
-        }
-
-        public NullableDecimalRoundFunctionExpression(NullableDecimalElement expression, NullableIntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
-        {
-
-        }
-
-        public NullableDecimalRoundFunctionExpression(NullableDecimalElement expression, IntegralNumericElement length, NullableIntegralNumericElement function) : base(expression, length, function)
-        {
-
-        }
-
-        public NullableDecimalRoundFunctionExpression(NullableDecimalElement expression, NullableIntegralNumericElement length, NullableIntegralNumericElement function) : base(expression, length, function)
+        public NullableDecimalRoundFunctionExpression(AnyElement<decimal?> expression, AnyElement length, AnyElement function) : base(expression, length, function)
         {
 
         }
         #endregion
 
         #region as
-        public NullableDecimalElement As(string alias)
-            => new NullableDecimalSelectExpression(this).As(alias);
+        public AnyElement<decimal?> As(string alias)
+            => new SelectExpression<decimal?>(this).As(alias);
         #endregion
 
         #region equals
-        public bool Equals(NullableDecimalRoundFunctionExpression obj)
-            => obj is NullableDecimalRoundFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableDecimalRoundFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableDecimalRoundFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableDecimalRoundFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

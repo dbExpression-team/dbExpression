@@ -23,23 +23,17 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class DoubleMinimumFunctionExpression :
         MinimumFunctionExpression<double>,
         DoubleElement,
-        AnyDoubleElement, 
         IEquatable<DoubleMinimumFunctionExpression>
     {
         #region constructors
-        public DoubleMinimumFunctionExpression(DoubleElement expression) : base(expression)
+        public DoubleMinimumFunctionExpression(AnyElement<double> expression) : base(expression)
         {
 
         }
         #endregion
 
-        #region as
-        public DoubleElement As(string alias)
-            => new DoubleSelectExpression(this).As(alias);
-        #endregion
-
         #region distinct
-        public DoubleMinimumFunctionExpression Distinct()
+        public new DoubleMinimumFunctionExpression Distinct()
         {
             IsDistinct = true;
             return this;
@@ -47,11 +41,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(DoubleMinimumFunctionExpression obj)
-            => obj is DoubleMinimumFunctionExpression && base.Equals(obj);
+        public bool Equals(DoubleMinimumFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is DoubleMinimumFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is DoubleMinimumFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

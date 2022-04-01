@@ -23,51 +23,50 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableSinglePopulationStandardDeviationFunctionExpression :
         NullablePopulationStandardDeviationFunctionExpression<float,float?>,
         NullableSingleElement,
-        AnySingleElement,
         IEquatable<NullableSinglePopulationStandardDeviationFunctionExpression>
     {
         #region constructors
-        public NullableSinglePopulationStandardDeviationFunctionExpression(NullableByteElement expression) : base(expression)
+        public NullableSinglePopulationStandardDeviationFunctionExpression(AnyElement<byte?> expression) : base(expression)
         {
 
         }
 
-        public NullableSinglePopulationStandardDeviationFunctionExpression(NullableInt16Element expression) : base(expression)
+        public NullableSinglePopulationStandardDeviationFunctionExpression(AnyElement<short?> expression) : base(expression)
         {
 
         }
-        public NullableSinglePopulationStandardDeviationFunctionExpression(NullableInt32Element expression) : base(expression)
+        public NullableSinglePopulationStandardDeviationFunctionExpression(AnyElement<int?> expression) : base(expression)
         {
         }
 
-        public NullableSinglePopulationStandardDeviationFunctionExpression(NullableInt64Element expression) : base(expression)
-        {
-
-        }
-
-        public NullableSinglePopulationStandardDeviationFunctionExpression(NullableDoubleElement expression) : base(expression)
+        public NullableSinglePopulationStandardDeviationFunctionExpression(AnyElement<long?> expression) : base(expression)
         {
 
         }
 
-        public NullableSinglePopulationStandardDeviationFunctionExpression(NullableDecimalElement expression) : base(expression)
+        public NullableSinglePopulationStandardDeviationFunctionExpression(AnyElement<double?> expression) : base(expression)
         {
 
         }
 
-        public NullableSinglePopulationStandardDeviationFunctionExpression(NullableSingleElement expression) : base(expression)
+        public NullableSinglePopulationStandardDeviationFunctionExpression(AnyElement<decimal?> expression) : base(expression)
+        {
+
+        }
+
+        public NullableSinglePopulationStandardDeviationFunctionExpression(AnyElement<float?> expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public NullableSingleElement As(string alias)
-            => new NullableSingleSelectExpression(this).As(alias);
+        public AnyElement<float?> As(string alias)
+            => new SelectExpression<float?>(this).As(alias);
         #endregion
 
         #region distinct
-        public NullableSinglePopulationStandardDeviationFunctionExpression Distinct()
+        public new NullableSinglePopulationStandardDeviationFunctionExpression Distinct()
         {
             IsDistinct = true;
             return this;
@@ -75,11 +74,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(NullableSinglePopulationStandardDeviationFunctionExpression obj)
-            => obj is NullableSinglePopulationStandardDeviationFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableSinglePopulationStandardDeviationFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableSinglePopulationStandardDeviationFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableSinglePopulationStandardDeviationFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

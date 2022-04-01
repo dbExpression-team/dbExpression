@@ -21,13 +21,36 @@ using System;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableStringRightFunctionExpression :
-        NullableRightFunctionExpression<string,string>,
+        NullableRightFunctionExpression<string,string?>,
         NullableStringElement,
-        AnyStringElement,
         IEquatable<NullableStringRightFunctionExpression>
     {
         #region constructors
-        public NullableStringRightFunctionExpression(NullableStringElement expression, Int32Element characterCount) 
+        public NullableStringRightFunctionExpression(NullableStringElement expression, AnyElement<int> characterCount) 
+            : base(expression, characterCount)
+        {
+
+        }
+
+        public NullableStringRightFunctionExpression(NullableStringElement expression, AnyElement<int?> characterCount)
+            : base(expression, characterCount)
+        {
+
+        }
+
+        public NullableStringRightFunctionExpression(StringElement expression, AnyElement<int?> characterCount)
+            : base(expression, characterCount)
+        {
+
+        }
+
+        public NullableStringRightFunctionExpression(AnyElement<string?> expression, AnyElement<int> characterCount)
+            : base(expression, characterCount)
+        {
+
+        }
+
+        public NullableStringRightFunctionExpression(AnyElement<string?> expression, AnyElement<int?> characterCount)
             : base(expression, characterCount)
         {
 
@@ -41,15 +64,15 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region like
         public FilterExpressionSet Like(string phrase)
-            => new FilterExpressionSet(new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
+            => new (new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
         #endregion
 
         #region equals
-        public bool Equals(NullableStringRightFunctionExpression obj)
-            => obj is NullableStringRightFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableStringRightFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableStringRightFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableStringRightFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

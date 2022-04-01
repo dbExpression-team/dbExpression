@@ -139,10 +139,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .OrderBy(dbo.Person.Id.Asc);
 
             //when               
-            var persons = exp.Execute();
+            var person = exp.Execute();
 
             //then
-            ((int)persons.Id).Should().Be(expectedId);
+            ((int)person!.Id).Should().Be(expectedId);
         }
 
         [Theory]
@@ -157,10 +157,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .OrderBy(dbo.Person.Id.Desc);
 
             //when               
-            var persons = exp.Execute();
+            var person = exp.Execute();
 
             //then
-            ((int)persons.Id).Should().NotBe(expectedId);
+            ((int)person!.Id).Should().NotBe(expectedId);
         }
 
         [Theory]
@@ -213,10 +213,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .OrderBy(dbo.Person.Id.Asc);
 
             //when               
-            var persons = exp.Execute();
+            var person = exp.Execute();
 
             //then
-            persons.Id.Should().Be(expected);
+            person!.Id.Should().Be(expected);
         }
 
         [Theory]
@@ -231,10 +231,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .OrderBy(dbo.Person.Id.Desc);
 
             //when               
-            var persons = exp.Execute();
+            var person = exp.Execute();
 
             //then
-            persons.Id.Should().NotBe(expected);
+            person!.Id.Should().NotBe(expected);
         }
     }
 }

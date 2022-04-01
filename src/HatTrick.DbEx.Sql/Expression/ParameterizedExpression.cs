@@ -28,12 +28,14 @@ namespace HatTrick.DbEx.Sql.Expression
         #region interface
         public Type DeclaredType { get; private set; }
         public DbParameter Parameter { get; private set; }
-        public ISqlMetadata Metadata { get; private set; }
+        public ISqlMetadata? Metadata { get; private set; }
         #endregion
 
         #region constructors
-        public ParameterizedExpression(Type declaredType, DbParameter parameter) : this(declaredType, parameter, null)
+        public ParameterizedExpression(Type declaredType, DbParameter parameter)
         {
+            DeclaredType = declaredType ?? throw new ArgumentNullException(nameof(declaredType));
+            Parameter = parameter ?? throw new ArgumentNullException(nameof(parameter));
         }
 
         public ParameterizedExpression(Type declaredType, DbParameter parameter, ISqlMetadata metadata)
@@ -45,30 +47,30 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region methods
-        public override string ToString()
+        public override string? ToString()
             => Parameter.Direction == ParameterDirection.Output ? $"{Parameter.ParameterName} ({Parameter.Direction})" : $"{Parameter.ParameterName} = {Parameter.Value} ({Parameter.Direction})";
         #endregion
 
         #region equals
-        public bool Equals(ParameterizedExpression obj)
+        public bool Equals(ParameterizedExpression? obj)
         {
             if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
 
             if (DeclaredType != obj.DeclaredType) return false;
 
-            if (Parameter is null && obj.Parameter is object) return false;
-            if (Parameter is object && obj.Parameter is null) return false;
-            if (!Parameter.Equals(obj.Parameter)) return false;
+            if (Parameter is null && obj.Parameter is not null) return false;
+            if (Parameter is not null && obj.Parameter is null) return false;
+            if (Parameter is not null && !Parameter.Equals(obj.Parameter)) return false;
 
-            if (Metadata is null && obj.Metadata is object) return false;
-            if (Metadata is object && obj.Metadata is null) return false;
-            if (!Metadata.Equals(obj.Metadata)) return false;
+            if (Metadata is null && obj.Metadata is not null) return false;
+            if (Metadata is not null && obj.Metadata is null) return false;
+            if (Metadata is not null && !Metadata.Equals(obj.Metadata)) return false;
 
             return true;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
             => obj is ParameterizedExpression exp && Equals(exp);
 
         public override int GetHashCode()
@@ -80,8 +82,8 @@ namespace HatTrick.DbEx.Sql.Expression
 
                 int hash = @base;
                 hash = (hash * multiplier) ^ DeclaredType.GetHashCode();
-                hash = (hash * multiplier) ^ (Parameter is object ? Parameter.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ (Metadata is object ? Metadata.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (Parameter is not null ? Parameter.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (Metadata is not null ? Metadata.GetHashCode() : 0);
                 return hash;
             }
         }

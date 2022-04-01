@@ -15,15 +15,12 @@ namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
             model.ArithmeticOperations = TypeBuilder.CreateBuilder().AddAllTypes().Except<object>().ToList().Select(@type => new ArithmeticOperationsTemplateModel
             {
                 OperationType = @type,
-                ReturnType = ArithmeticBuilder.InferReturnTypeByPrecedence(typeModel, @type),
+                ReturnType = TypeBuilder.Get<object>(),
                 Operations = ArithmeticBuilder.CreateBuilder().InferArithmeticOperations(typeModel, @type).ToList()
             }).ToList();
         }
 
         public override void Generate(string templatePath, string outputSubdirectory)
-        {
-            foreach (var @type in TypeBuilder.CreateBuilder().AddAllTypes().ToList())
-                Generate(templatePath, outputSubdirectory, $"{@type.Name}{functionName}FunctionExpression.generated.cs", CreateModel("HatTrick.DbEx.Sql.Expression", @type));
-        }
+            => Generate(templatePath, outputSubdirectory, $"Object{functionName}FunctionExpression.generated.cs", CreateModel("HatTrick.DbEx.Sql.Expression", TypeBuilder.Get<object>()));
     }
 }

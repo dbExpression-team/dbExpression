@@ -12,20 +12,10 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
     public class RuntimeSqlDatabaseConfigurationTests : TestBase
     {
         [Fact]
-        public void Does_bypassing_configuring_for_a_sql_server_version_return_null_configuration()
-        {
-            //given
-            var dbInstance = new db() as IRuntimeSqlDatabase;
-
-            //when & then
-            var ex = Assert.Throws<ArgumentNullException>(() => dbInstance.UseConfigurationFactory(null));
-        }
-
-        [Fact]
         public void Does_bypassing_configuring_for_a_sql_server_version_throw_correct_exception_on_query_execution()
         {
             //given
-            static Person exec() => db.SelectOne<Person>().From(dbo.Person).Execute();
+            static Person? exec() => db.SelectOne<Person>().From(dbo.Person).Execute();
 
             //when
             var ex = Assert.Throws<DbExpressionConfigurationException>(exec);
@@ -40,8 +30,8 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
         {
             //given
             var database = ConfigureForMsSqlVersion(version);
-            database.QueryExpressionFactory = null;
-            static Person exec() => db.SelectOne<Person>().From(dbo.Person).Execute();
+            database.QueryExpressionFactory = null!;
+            static Person? exec() => db.SelectOne<Person>().From(dbo.Person).Execute();
 
             //when
             var ex = Assert.Throws<DbExpressionConfigurationException>(exec);
@@ -56,8 +46,8 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
         {
             //given
             var database = ConfigureForMsSqlVersion(version);
-            database.MetadataProvider = null;
-            static Person exec() => db.SelectOne<Person>().From(dbo.Person).Execute();
+            database.MetadataProvider = null!;
+            static Person? exec() => db.SelectOne<Person>().From(dbo.Person).Execute();
 
             //when
             var ex = Assert.Throws<DbExpressionConfigurationException>(exec);

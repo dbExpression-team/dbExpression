@@ -5,6 +5,7 @@ using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
+using HatTrick.DbEx.Sql.Builder.Alias;
 using System;
 using System.Collections.Generic;
 using Xunit;
@@ -310,7 +311,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.IsNull(dbex.Alias<decimal>("lines", "PurchasePrice"), 0).As("alias")
+                    db.fx.IsNull(("lines", "PurchasePrice"), 0m).As("alias")
                 ).From(dbo.Purchase)
                 .LeftJoin(
                     db.SelectOne<PurchaseLine>()
@@ -320,10 +321,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Where(dbo.Purchase.Id == 1);
 
             //when               
-            object result = exp.Execute();
+            decimal result = exp.Execute();
 
             //then
-            result.Should().BeOfType<decimal>().Which.Should().BeApproximately(expected, 0.001m, "Rounding errors in isnull");
+            result.Should().BeApproximately(expected, 0.001m, "Rounding errors in isnull");
         }
     }
 }

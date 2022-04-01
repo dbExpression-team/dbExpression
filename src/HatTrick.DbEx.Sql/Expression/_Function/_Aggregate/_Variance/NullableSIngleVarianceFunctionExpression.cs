@@ -23,53 +23,52 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableSingleVarianceFunctionExpression :
         NullableVarianceFunctionExpression<float,float?>,
         NullableSingleElement,
-        AnySingleElement,
         IEquatable<NullableSingleVarianceFunctionExpression>
     {
         #region constructors
-        public NullableSingleVarianceFunctionExpression(NullableByteElement expression) : base(expression)
+        public NullableSingleVarianceFunctionExpression(AnyElement<byte?> expression) : base(expression)
         {
 
         }
 
-        public NullableSingleVarianceFunctionExpression(NullableInt16Element expression) : base(expression)
+        public NullableSingleVarianceFunctionExpression(AnyElement<short?> expression) : base(expression)
         {
 
         }
 
-        public NullableSingleVarianceFunctionExpression(NullableInt32Element expression) : base(expression)
+        public NullableSingleVarianceFunctionExpression(AnyElement<int?> expression) : base(expression)
         {
 
         }
 
-        public NullableSingleVarianceFunctionExpression(NullableInt64Element expression) : base(expression)
+        public NullableSingleVarianceFunctionExpression(AnyElement<long?> expression) : base(expression)
         {
 
         }
 
-        public NullableSingleVarianceFunctionExpression(NullableDoubleElement expression) : base(expression)
+        public NullableSingleVarianceFunctionExpression(AnyElement<double?> expression) : base(expression)
         {
 
         }
 
-        public NullableSingleVarianceFunctionExpression(NullableDecimalElement expression) : base(expression)
+        public NullableSingleVarianceFunctionExpression(AnyElement<decimal?> expression) : base(expression)
         {
 
         }
 
-        public NullableSingleVarianceFunctionExpression(NullableSingleElement expression) : base(expression)
+        public NullableSingleVarianceFunctionExpression(AnyElement<float?> expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public NullableSingleElement As(string alias)
-            => new NullableSingleSelectExpression(this).As(alias);
+        public AnyElement<float?> As(string alias)
+            => new SelectExpression<float?>(this).As(alias);
         #endregion
 
         #region distinct
-        public NullableSingleVarianceFunctionExpression Distinct()
+        public new NullableSingleVarianceFunctionExpression Distinct()
         {
             IsDistinct = true;
             return this;
@@ -77,11 +76,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(NullableSingleVarianceFunctionExpression obj)
-            => obj is NullableSingleVarianceFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableSingleVarianceFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableSingleVarianceFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableSingleVarianceFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

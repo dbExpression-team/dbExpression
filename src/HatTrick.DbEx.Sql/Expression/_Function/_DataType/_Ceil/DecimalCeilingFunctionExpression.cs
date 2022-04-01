@@ -23,27 +23,26 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class DecimalCeilingFunctionExpression :
         CeilingFunctionExpression<decimal>,
         DecimalElement,
-        AnyDecimalElement,
         IEquatable<DecimalCeilingFunctionExpression>
     {
         #region constructors
-        public DecimalCeilingFunctionExpression(DecimalElement expression) : base(expression)
+        public DecimalCeilingFunctionExpression(AnyElement<decimal> expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public DecimalElement As(string alias)
-            => new DecimalSelectExpression(this).As(alias);
+        public AnyElement<decimal> As(string alias)
+            => new SelectExpression<decimal>(this).As(alias);
         #endregion
 
         #region equals
-        public bool Equals(DecimalCeilingFunctionExpression obj)
-            => obj is DecimalCeilingFunctionExpression && base.Equals(obj);
+        public bool Equals(DecimalCeilingFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is DecimalCeilingFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is DecimalCeilingFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

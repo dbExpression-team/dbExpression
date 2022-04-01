@@ -24,7 +24,6 @@ namespace HatTrick.DbEx.MsSql.Expression
 {
     public partial class GetDateFunctionExpression : DataTypeFunctionExpression,
         IExpressionElement<DateTime>,
-        AnyDateTimeElement,
         DateTimeElement,
         IEquatable<GetDateFunctionExpression>
     {
@@ -37,8 +36,8 @@ namespace HatTrick.DbEx.MsSql.Expression
 
         #region methods
         #region as
-        public DateTimeElement As(string alias)
-            => new DateTimeSelectExpression(this).As(alias);
+        public AnyElement<DateTime> As(string alias)
+            => new SelectExpression<DateTime>(this).As(alias);
         #endregion
 
         #region to string
@@ -46,11 +45,11 @@ namespace HatTrick.DbEx.MsSql.Expression
         #endregion
 
         #region equals
-        public bool Equals(GetDateFunctionExpression obj)
-            => base.Equals(obj); 
+        public bool Equals(GetDateFunctionExpression? obj)
+            => obj is not null && base.Equals(obj); 
 
-        public override bool Equals(object obj)
-            => obj is GetDateFunctionExpression exp ? Equals(exp) : false;
+        public override bool Equals(object? obj)
+            => obj is GetDateFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

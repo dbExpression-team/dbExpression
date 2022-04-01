@@ -77,6 +77,10 @@ GROUP BY
 ```
 - - -
 
+dbExpression was designed to work in two distinct modes, singleton or instance based.  The decision for which is mode to use is typically based on the type of project, the team environment, and just what works best for you - it's your choice!
+* Statically using static startup configuration and a static class to fluently build and execute queries.  This is great for environments or projects where this is all that is needed.
+* Instance based via dependency injection where an instance of the representation of your database is used to fluently build and execute queries.  Perfect for environments that use dependency injection.
+
 ## Use dbExpression
 dbExpression is quick and easy to get up and running using two packages available on NuGet:
 1) [dbExpression Microsoft SQL Server package](https://www.nuget.org/packages/HatTrick.DbEx.MsSql/)

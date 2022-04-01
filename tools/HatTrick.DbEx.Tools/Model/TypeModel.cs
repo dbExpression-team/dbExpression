@@ -16,24 +16,37 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿namespace HatTrick.DbEx.Tools.Model
+using System;
+
+namespace HatTrick.DbEx.Tools.Model
 {
     public class TypeModel
-    { 
+    {
+        private readonly TypeSpecialCase? _specialCase;
+
         public string TypeName { get; private set; }
         public string Alias { get; private set; }
         public string NullableAlias { get; private set; }
         public bool IsNullable { get; private set; }
         public bool IsArray { get; private set; }
-        public bool IsEnum { get; private set; }
+        public string? Initializer { get; private set; }
+        public bool IsSystemType => _specialCase is null || IsString;
+        public bool IsEnum => _specialCase == TypeSpecialCase.Enum;
+        public bool IsString => _specialCase == TypeSpecialCase.String;
+        public bool IsUserDefinedType => _specialCase == TypeSpecialCase.UserDefinedType;
 
-        public TypeModel(string typeName, string alias, bool isNullable, bool isEnum = false, bool isArray = false)
+        public TypeModel(string typeName, string alias, string nullableAlias, string? initializer, bool isNullable, TypeSpecialCase? specialCase, bool isArray = false)
         {
+            if (string.IsNullOrWhiteSpace(typeName))
+                throw new ArgumentException($"{nameof(typeName)} is required.");
+            if (string.IsNullOrWhiteSpace(alias))
+                throw new ArgumentException($"{nameof(alias)} is required.");
+            _specialCase = specialCase;
             TypeName = typeName;
             Alias = alias;
-            NullableAlias = isNullable ? $"{alias}?" : alias;
+            Initializer = initializer;
+            NullableAlias = nullableAlias;
             IsNullable = isNullable;
-            IsEnum = isEnum;
             IsArray = isArray;
         }
     }

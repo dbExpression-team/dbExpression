@@ -1,10 +1,8 @@
 using Blazorise;
 using Blazorise.Icons.Material;
 using Blazorise.Material;
-using HatTrick.DbEx.MsSql.Configuration;
-using HatTrick.DbEx.Sql.Mapper;
+using HatTrick.DbEx.Sql.Expression;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -13,10 +11,7 @@ using Microsoft.Extensions.Hosting;
 using ServerSideBlazorApp.Data;
 using ServerSideBlazorApp.DataService;
 using ServerSideBlazorApp.Service;
-using System;
-using System.Linq;
-using System.Net.Http;
-using HatTrick.DbEx.Sql.Connection;
+using System.Text.Json;
 
 namespace ServerSideBlazorApp
 {
@@ -35,6 +30,7 @@ namespace ServerSideBlazorApp
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            services.AddHttpContextAccessor();
 
             //add dbExpression dependencies to the service collection.  Note in the configuration of a specific database,
             //the delegate contains the ServiceProvider, which can be used to resolve services
@@ -43,43 +39,37 @@ namespace ServerSideBlazorApp
 
                     dbex.AddMsSql2019Database<CRMDatabase>(
                         (serviceProvider, database) =>
-                        {
-                            database.ConnectionString.Use(Configuration.GetConnectionString("Default"));
+                            {
+                                database.ConnectionString.Use(Configuration.GetConnectionString("Default"));
 
-                            database.Conversions.UseDefaultFactory(x =>
-                                x.OverrideForEnumType<PaymentMethodType>().PersistAsString()
-                                    .OverrideForEnumType<PaymentSourceType>().PersistAsString()
-                            );
-                        });
+                                database.Conversions.UseDefaultFactory(x =>
+                                    x.OverrideForEnumType<PaymentMethodType>().PersistAsString()
+                                        .OverrideForEnumType<PaymentSourceType>().PersistAsString()
+                                );
+
+                                //description for a product is stored as serialized json.  Note the clrType override in dbex.config.json that generates a property type of 'ServerSideBlazorApp.Data.ProductDescription'
+                                database.Conversions.UseDefaultFactory(x =>
+                                    x.OverrideForReferenceType<ProductDescription>().Use(
+                                        productDescription => productDescription is null ? null : JsonSerializer.Serialize(productDescription), //serialize to json as it goes in to the database
+                                        dbValue => string.IsNullOrWhiteSpace(dbValue as string) ? default : JsonSerializer.Deserialize<ProductDescription>((dbValue as string)!)) //deserialize to ProductDescription as it comes from the database
+                                    );
+                            },
+                            lifetime: ServiceLifetime.Scoped //could easily be ommitted and the default of "Singleton" would be applied; including as an example of creating a lifetime for the database as "Scoped"
+                        );
                     }
                 );
 
             services.AddBlazorise(options =>
-              {
-                  options.ChangeTextOnKeyPress = true; // optional
-              })
+                {
+                    options.Debounce = true;
+                    options.DebounceInterval = 300;
+                })
               .AddMaterialProviders()
               .AddMaterialIcons();
 
-            services.AddSingleton<CustomerService>();
-            services.AddSingleton<OrderService>();
-            services.AddSingleton<ProductService>();
-
-            //following required as a workaround for MatBlazor
-            // Server Side Blazor doesn't register HttpClient by default
-            if (!services.Any(x => x.ServiceType == typeof(HttpClient)))
-            {
-                // Setup HttpClient for server side in a client side compatible fashion
-                services.AddScoped<HttpClient>(s =>
-                {
-                    // Creating the URI helper needs to wait until the JS Runtime is initialized, so defer it.
-                    var uriHelper = s.GetRequiredService<NavigationManager>();
-                    return new HttpClient
-                    {
-                        BaseAddress = new Uri(uriHelper.BaseUri)
-                    };
-                });
-            }
+            services.AddScoped<CustomerService>();
+            services.AddScoped<OrderService>();
+            services.AddScoped<ProductService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -96,19 +86,10 @@ namespace ServerSideBlazorApp
                 app.UseHsts();
             }
 
-            //UseDbExpression is required when AddDbExpression is used in ConfigureServices.  No specific order for UseDbExpression is mandated,
-            //but it must occur before any code that uses dbExpression to build and execute queries.  If you have middleware that uses dbExpression,
-            //ensure they are listed with their "Use<Middelware>()" equivalent AFTER UseDbExpression.
-            app.UseDbExpression();
-
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
-
-            //app.ApplicationServices
-            //  .UseMaterialProviders()
-            //  .UseMaterialIcons();
 
             app.UseEndpoints(endpoints =>
             {

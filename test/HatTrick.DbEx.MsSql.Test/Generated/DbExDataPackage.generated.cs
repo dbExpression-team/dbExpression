@@ -1,6 +1,6 @@
 using System;
 using HatTrick.DbEx.Sql;
-
+#nullable enable
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 namespace DbEx.dboData
 {
@@ -27,12 +27,12 @@ namespace DbEx.dboData
     {
         #region interface
         public virtual int Id { get; set; }
-        public virtual DbEx.Data.AddressType? AddressType { get; set; }
-        public virtual string Line1 { get; set; }
-        public virtual string Line2 { get; set; }
-        public virtual string City { get; set; }
-        public virtual string State { get; set; }
-        public virtual string Zip { get; set; }
+        public virtual DbEx.Data.AddressType? AddressType { get; set; } = null;
+        public virtual string Line1 { get; set; } = string.Empty;
+        public virtual string? Line2 { get; set; } = null;
+        public virtual string City { get; set; } = string.Empty;
+        public virtual string State { get; set; } = string.Empty;
+        public virtual string Zip { get; set; } = string.Empty;
         public virtual DateTime DateCreated { get; set; }
         public virtual DateTime DateUpdated { get; set; }
         #endregion
@@ -50,14 +50,14 @@ namespace DbEx.dboData
     {
         #region interface
         public virtual int Id { get; set; }
-        public virtual string FirstName { get; set; }
-        public virtual string LastName { get; set; }
-        public virtual DateTime? BirthDate { get; set; }
+        public virtual string FirstName { get; set; } = string.Empty;
+        public virtual string LastName { get; set; } = string.Empty;
+        public virtual DateTime? BirthDate { get; set; } = null;
         public virtual DbEx.Data.GenderType GenderType { get; set; }
-        public virtual int? CreditLimit { get; set; }
-        public virtual int? YearOfLastCreditLimitReview { get; set; }
+        public virtual int? CreditLimit { get; set; } = null;
+        public virtual int? YearOfLastCreditLimitReview { get; set; } = null;
         public virtual DateTimeOffset RegistrationDate { get; set; }
-        public virtual DateTimeOffset? LastLoginDate { get; set; }
+        public virtual DateTimeOffset? LastLoginDate { get; set; } = null;
         public virtual DateTime DateCreated { get; set; }
         public virtual DateTime DateUpdated { get; set; }
         #endregion
@@ -93,20 +93,20 @@ namespace DbEx.dboData
     {
         #region interface
         public virtual int Id { get; set; }
-        public virtual DbEx.Data.ProductCategoryType? ProductCategoryType { get; set; }
-        public virtual string Name { get; set; }
-        public virtual string Description { get; set; }
+        public virtual DbEx.Data.ProductCategoryType? ProductCategoryType { get; set; } = null;
+        public virtual string Name { get; set; } = string.Empty;
+        public virtual HatTrick.DbEx.MsSql.Test.ProductDescription? Description { get; set; } = null;
         public virtual double ListPrice { get; set; }
         public virtual double Price { get; set; }
         public virtual int Quantity { get; set; }
-        public virtual byte[] Image { get; set; }
-        public virtual decimal? Height { get; set; }
-        public virtual decimal? Width { get; set; }
-        public virtual decimal? Depth { get; set; }
-        public virtual decimal? Weight { get; set; }
+        public virtual byte[]? Image { get; set; } = null;
+        public virtual decimal? Height { get; set; } = null;
+        public virtual decimal? Width { get; set; } = null;
+        public virtual decimal? Depth { get; set; } = null;
+        public virtual decimal? Weight { get; set; } = null;
         public virtual decimal ShippingWeight { get; set; }
-        public virtual TimeSpan? ValidStartTimeOfDayForPurchase { get; set; }
-        public virtual TimeSpan? ValidEndTimeOfDayForPurchase { get; set; }
+        public virtual TimeSpan? ValidStartTimeOfDayForPurchase { get; set; } = null;
+        public virtual TimeSpan? ValidEndTimeOfDayForPurchase { get; set; } = null;
         public virtual DateTime DateCreated { get; set; }
         public virtual DateTime DateUpdated { get; set; }
         #endregion
@@ -125,15 +125,15 @@ namespace DbEx.dboData
         #region interface
         public virtual int Id { get; set; }
         public virtual int PersonId { get; set; }
-        public virtual string OrderNumber { get; set; }
-        public virtual string TotalPurchaseQuantity { get; set; }
+        public virtual string OrderNumber { get; set; } = string.Empty;
+        public virtual string TotalPurchaseQuantity { get; set; } = string.Empty;
         public virtual double TotalPurchaseAmount { get; set; }
         public virtual DateTime PurchaseDate { get; set; }
-        public virtual DateTime? ShipDate { get; set; }
-        public virtual DateTime? ExpectedDeliveryDate { get; set; }
-        public virtual Guid? TrackingIdentifier { get; set; }
+        public virtual DateTime? ShipDate { get; set; } = null;
+        public virtual DateTime? ExpectedDeliveryDate { get; set; } = null;
+        public virtual Guid? TrackingIdentifier { get; set; } = null;
         public virtual DbEx.Data.PaymentMethodType PaymentMethodType { get; set; }
-        public virtual DbEx.Data.PaymentSourceType? PaymentSourceType { get; set; }
+        public virtual DbEx.Data.PaymentSourceType? PaymentSourceType { get; set; } = null;
         public virtual DateTime DateCreated { get; set; }
         public virtual DateTime DateUpdated { get; set; }
         #endregion
@@ -172,12 +172,198 @@ namespace DbEx.dboData
     {
         #region interface
         public virtual int Id { get; set; }
-        public virtual double? TotalAmount { get; set; }
-        public virtual int? TotalCount { get; set; }
+        public virtual double? TotalAmount { get; set; } = null;
+        public virtual int? TotalCount { get; set; } = null;
         #endregion
 
         #region constructor
         public PersonTotalPurchasesView()
+        {
+        }
+        #endregion
+    }
+    #endregion
+
+}
+namespace DbEx.unit_testData
+{
+    #region alias
+    public partial class alias : IDbEntity
+    {
+        #region interface
+        public virtual string? identifier { get; set; } = null;
+        public virtual string? _identifier { get; set; } = null;
+        public virtual string? __identifier { get; set; } = null;
+        public virtual string? name { get; set; } = null;
+        public virtual string? _name { get; set; } = null;
+        public virtual string? __name { get; set; } = null;
+        public virtual string? schema { get; set; } = null;
+        public virtual string? _schema { get; set; } = null;
+        public virtual string? __schema { get; set; } = null;
+        public virtual string? _alias { get; set; } = null;
+        public virtual string? __alias { get; set; } = null;
+        public virtual string? entity { get; set; } = null;
+        public virtual string? _entity { get; set; } = null;
+        public virtual string? __entity { get; set; } = null;
+        #endregion
+
+        #region constructor
+        public alias()
+        {
+        }
+        #endregion
+    }
+    #endregion
+
+    #region entity
+    public partial class entity : IDbEntity
+    {
+        #region interface
+        public virtual string? identifier { get; set; } = null;
+        public virtual string? _identifier { get; set; } = null;
+        public virtual string? __identifier { get; set; } = null;
+        public virtual string? name { get; set; } = null;
+        public virtual string? _name { get; set; } = null;
+        public virtual string? __name { get; set; } = null;
+        public virtual string? schema { get; set; } = null;
+        public virtual string? _schema { get; set; } = null;
+        public virtual string? __schema { get; set; } = null;
+        public virtual string? alias { get; set; } = null;
+        public virtual string? _alias { get; set; } = null;
+        public virtual string? __alias { get; set; } = null;
+        public virtual string? _entity { get; set; } = null;
+        public virtual string? __entity { get; set; } = null;
+        #endregion
+
+        #region constructor
+        public entity()
+        {
+        }
+        #endregion
+    }
+    #endregion
+
+    #region expression element type
+    public partial class ExpressionElementType : IDbEntity
+    {
+        #region interface
+        public virtual int Id { get; set; }
+        public virtual bool Boolean { get; set; }
+        public virtual bool? NullableBoolean { get; set; } = null;
+        public virtual byte Byte { get; set; }
+        public virtual byte? NullableByte { get; set; } = null;
+        public virtual byte[] ByteArray { get; set; } = new byte[0];
+        public virtual byte[]? NullableByteArray { get; set; } = null;
+        public virtual DateTime DateTime { get; set; }
+        public virtual DateTime? NullableDateTime { get; set; } = null;
+        public virtual DateTimeOffset DateTimeOffset { get; set; }
+        public virtual DateTimeOffset? NullableDateTimeOffset { get; set; } = null;
+        public virtual decimal Decimal { get; set; }
+        public virtual decimal? NullableDecimal { get; set; } = null;
+        public virtual double Double { get; set; }
+        public virtual double? NullableDouble { get; set; } = null;
+        public virtual Guid Guid { get; set; }
+        public virtual Guid? NullableGuid { get; set; } = null;
+        public virtual short Int16 { get; set; }
+        public virtual short? NullableInt16 { get; set; } = null;
+        public virtual int Int32 { get; set; }
+        public virtual int? NullableInt32 { get; set; } = null;
+        public virtual long Int64 { get; set; }
+        public virtual long? NullableInt64 { get; set; } = null;
+        public virtual float Single { get; set; }
+        public virtual float? NullableSingle { get; set; } = null;
+        public virtual string String { get; set; } = string.Empty;
+        public virtual string? NullableString { get; set; } = null;
+        public virtual TimeSpan TimeSpan { get; set; }
+        public virtual TimeSpan? NullableTimeSpan { get; set; } = null;
+        #endregion
+
+        #region constructor
+        public ExpressionElementType()
+        {
+        }
+        #endregion
+    }
+    #endregion
+
+    #region identifier
+    public partial class identifier : IDbEntity
+    {
+        #region interface
+        public virtual string? _identifier { get; set; } = null;
+        public virtual string? __identifier { get; set; } = null;
+        public virtual string? name { get; set; } = null;
+        public virtual string? _name { get; set; } = null;
+        public virtual string? __name { get; set; } = null;
+        public virtual string? schema { get; set; } = null;
+        public virtual string? _schema { get; set; } = null;
+        public virtual string? __schema { get; set; } = null;
+        public virtual string? alias { get; set; } = null;
+        public virtual string? _alias { get; set; } = null;
+        public virtual string? __alias { get; set; } = null;
+        public virtual string? entity { get; set; } = null;
+        public virtual string? _entity { get; set; } = null;
+        public virtual string? __entity { get; set; } = null;
+        #endregion
+
+        #region constructor
+        public identifier()
+        {
+        }
+        #endregion
+    }
+    #endregion
+
+    #region name
+    public partial class name : IDbEntity
+    {
+        #region interface
+        public virtual string? identifier { get; set; } = null;
+        public virtual string? _identifier { get; set; } = null;
+        public virtual string? __identifier { get; set; } = null;
+        public virtual string? _name { get; set; } = null;
+        public virtual string? __name { get; set; } = null;
+        public virtual string? schema { get; set; } = null;
+        public virtual string? _schema { get; set; } = null;
+        public virtual string? __schema { get; set; } = null;
+        public virtual string? alias { get; set; } = null;
+        public virtual string? _alias { get; set; } = null;
+        public virtual string? __alias { get; set; } = null;
+        public virtual string? entity { get; set; } = null;
+        public virtual string? _entity { get; set; } = null;
+        public virtual string? __entity { get; set; } = null;
+        #endregion
+
+        #region constructor
+        public name()
+        {
+        }
+        #endregion
+    }
+    #endregion
+
+    #region schema
+    public partial class schema : IDbEntity
+    {
+        #region interface
+        public virtual string? identifier { get; set; } = null;
+        public virtual string? _identifier { get; set; } = null;
+        public virtual string? __identifier { get; set; } = null;
+        public virtual string? name { get; set; } = null;
+        public virtual string? _name { get; set; } = null;
+        public virtual string? __name { get; set; } = null;
+        public virtual string? _schema { get; set; } = null;
+        public virtual string? __schema { get; set; } = null;
+        public virtual string? alias { get; set; } = null;
+        public virtual string? _alias { get; set; } = null;
+        public virtual string? __alias { get; set; } = null;
+        public virtual string? entity { get; set; } = null;
+        public virtual string? _entity { get; set; } = null;
+        public virtual string? __entity { get; set; } = null;
+        #endregion
+
+        #region constructor
+        public schema()
         {
         }
         #endregion
@@ -192,7 +378,7 @@ namespace DbEx.secData
     {
         #region interface
         public virtual int Id { get; set; }
-        public virtual string SocialSecurityNumber { get; set; }
+        public virtual string SocialSecurityNumber { get; set; } = string.Empty;
         public virtual DateTime DateCreated { get; set; }
         public virtual DateTime DateUpdated { get; set; }
         #endregion

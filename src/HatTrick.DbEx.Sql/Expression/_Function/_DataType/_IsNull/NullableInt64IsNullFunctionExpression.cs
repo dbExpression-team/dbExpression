@@ -23,11 +23,10 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableInt64IsNullFunctionExpression :
         NullableIsNullFunctionExpression<long,long?>,
         NullableInt64Element,
-        AnyInt64Element,
         IEquatable<NullableInt64IsNullFunctionExpression>
     {
         #region constructors
-        public NullableInt64IsNullFunctionExpression(AnyInt64Element expression, NullableInt64Element value)
+        public NullableInt64IsNullFunctionExpression(AnyElement<long?> expression, AnyElement<long?> value)
             : base(expression, value)
         {
 
@@ -35,16 +34,16 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public NullableInt64Element As(string alias)
-            => new NullableInt64SelectExpression(this).As(alias);
+        public AnyElement<long?> As(string alias)
+            => new SelectExpression<long?>(this).As(alias);
         #endregion
 
         #region equals
-        public bool Equals(NullableInt64IsNullFunctionExpression obj)
-            => obj is NullableInt64IsNullFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableInt64IsNullFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableInt64IsNullFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableInt64IsNullFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

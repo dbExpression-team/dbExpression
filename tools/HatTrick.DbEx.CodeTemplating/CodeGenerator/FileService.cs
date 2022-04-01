@@ -15,10 +15,10 @@ namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
             OutputSubdirectory = outputSubdirectory;
         }
 
-        public string ReadFile(string path)
+        public static string ReadFile(string path)
                 => File.ReadAllText(path);
 
-        public void WriteFile(string path, string content)
+        public static void WriteFile(string path, string content)
             => File.WriteAllText(path, content);
 
         public string GetTemplate()
@@ -37,7 +37,7 @@ namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
         {
             var exePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var appPathMatcher = new Regex(@"(?<!fil)[A-Za-z]:\\+[\S\s]*?(?=\\+bin)");
-            return appPathMatcher.Match(exePath).Value;
+            return appPathMatcher.Match(exePath!).Value;
         }
     }
 }

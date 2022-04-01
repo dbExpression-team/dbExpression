@@ -23,33 +23,32 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableInt32SumFunctionExpression :
         NullableSumFunctionExpression<int,int?>,
         NullableInt32Element,
-        AnyInt32Element,
         IEquatable<NullableInt32SumFunctionExpression>
     {
         #region constructors
-        public NullableInt32SumFunctionExpression(NullableByteElement expression) : base(expression)
+        public NullableInt32SumFunctionExpression(AnyElement<byte?> expression) : base(expression)
         {
 
         }
 
-        public NullableInt32SumFunctionExpression(NullableInt16Element expression) : base(expression)
+        public NullableInt32SumFunctionExpression(AnyElement<short?> expression) : base(expression)
         {
 
         }
 
-        public NullableInt32SumFunctionExpression(NullableInt32Element expression) : base(expression)
+        public NullableInt32SumFunctionExpression(AnyElement<int?> expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public NullableInt32Element As(string alias)
-            => new NullableInt32SelectExpression(this).As(alias);
+        public AnyElement<int?> As(string alias)
+            => new SelectExpression<int?>(this).As(alias);
         #endregion
 
         #region distinct
-        public NullableInt32SumFunctionExpression Distinct()
+        public new NullableInt32SumFunctionExpression Distinct()
         {
             IsDistinct = true;
             return this;
@@ -57,11 +56,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(NullableInt32SumFunctionExpression obj)
-            => obj is NullableInt32SumFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableInt32SumFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableInt32SumFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableInt32SumFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

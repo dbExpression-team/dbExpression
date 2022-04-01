@@ -44,27 +44,28 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region to string
-        public override string ToString() => $"DATEPART({datePart.ToString().ToLower()}, {expression})";
+        public override string? ToString() => $"DATEPART({datePart.ToString()?.ToLower()}, {expression})";
         #endregion
 
         #region equals
-        public bool Equals(DatePartFunctionExpression obj)
+        public bool Equals(DatePartFunctionExpression? obj)
         {
-            if (!base.Equals(obj)) return false;
+            if (obj is null) return false;
+            if (ReferenceEquals(this, obj)) return true;
 
-            if (expression is null && obj.expression is object) return false;
-            if (expression is object && obj.expression is null) return false;
-            if (!expression.Equals(obj.expression)) return false;
+            if (expression is null && obj.expression is not null) return false;
+            if (expression is not null && obj.expression is null) return false;
+            if (expression is not null && !expression.Equals(obj.expression)) return false;
 
-            if (this.datePart is null && obj.datePart is object) return false;
-            if (this.datePart is object && obj.datePart is null) return false;
-            if (!this.datePart.Equals(obj.datePart)) return false;
+            if (datePart is null && obj.datePart is not null) return false;
+            if (datePart is not null && obj.datePart is null) return false;
+            if (datePart is not null && !datePart.Equals(obj.datePart)) return false;
 
             return true;
         }
 
-        public override bool Equals(object obj)
-         => obj is DatePartFunctionExpression exp ? Equals(exp) : false;
+        public override bool Equals(object? obj)
+         => obj is DatePartFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
         {
@@ -73,8 +74,8 @@ namespace HatTrick.DbEx.Sql.Expression
                 const int multiplier = 16777619;
 
                 int hash = base.GetHashCode();
-                hash = (hash * multiplier) ^ (expression is object ? expression.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ (datePart is object ? datePart.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (expression is not null ? expression.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (datePart is not null ? datePart.GetHashCode() : 0);
                 return hash;
             }
         }
@@ -82,7 +83,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region implicit operators
         public static implicit operator GroupByExpression(DatePartFunctionExpression datePart) 
-            => new GroupByExpression(new Int32ExpressionMediator(datePart));
+            => new(new Int32ExpressionMediator(datePart));
         #endregion
     }
 }

@@ -31,13 +31,13 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
 
         #region constructors
-        public UpdateQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, UpdateQueryExpression expression)
+        public UpdateQueryExpressionBuilder(SqlDatabaseRuntimeConfiguration config, UpdateQueryExpression expression)
             : base(config, expression)
         {
             Expression = expression ?? throw new ArgumentNullException(nameof(expression));
         }
 
-        protected UpdateQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, UpdateQueryExpression expression, EntityExpression entity)
+        protected UpdateQueryExpressionBuilder(SqlDatabaseRuntimeConfiguration config, UpdateQueryExpression expression, Table entity)
             : base(config, expression)
         {
             Expression = expression ?? throw new ArgumentNullException(nameof(expression));
@@ -47,7 +47,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         #region methods
         /// <inheritdoc />
-        UpdateEntitiesContinuation<TEntity> UpdateEntities.From<TEntity>(Entity<TEntity> entity)
+        UpdateEntitiesContinuation<TEntity> UpdateEntities.From<TEntity>(Table<TEntity> entity)
             => CreateTypedBuilder(Configuration, Expression, entity as EntityExpression<TEntity> ?? throw new DbExpressionException($"Expected {nameof(entity)} to be of type {nameof(EntityExpression)}."));
 
         /// <inheritdoc />
@@ -57,7 +57,7 @@ namespace HatTrick.DbEx.Sql.Builder
             return this;
         }
 
-        protected UpdateEntitiesContinuation<TEntity> CreateTypedBuilder<TEntity>(RuntimeSqlDatabaseConfiguration configuration, UpdateQueryExpression expression, EntityExpression<TEntity> entity)
+        protected static UpdateEntitiesContinuation<TEntity> CreateTypedBuilder<TEntity>(SqlDatabaseRuntimeConfiguration configuration, UpdateQueryExpression expression, EntityExpression<TEntity> entity)
             where TEntity : class, IDbEntity
             => new UpdateEntitiesUpdateQueryExpressionBuilder<TEntity>(configuration, expression, entity);
 
@@ -66,10 +66,11 @@ namespace HatTrick.DbEx.Sql.Builder
             if (expression is null)
                 return;
 
-            if (!(expression is FilterExpressionSet set))
+            if (expression is not FilterExpressionSet set)
                 throw new DbExpressionException($"Expected {nameof(expression)} to be of type {nameof(FilterExpressionSet)}.");
 
-            if (Expression.Where is null || Expression.Where.IsEmpty)
+            var where = (Expression.Where as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>)?.Expression;
+            if (where is null || where.IsEmpty || Expression.Where is null)
                 Expression.Where = set;
             else
                 Expression.Where &= set;

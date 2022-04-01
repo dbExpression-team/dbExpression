@@ -22,8 +22,7 @@ using System.Data;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class ParameterExpression<TValue> : ParameterExpression,
-        IExpressionElement<TValue>,
-        IEquatable<ParameterExpression<TValue>>
+        IExpressionElement<TValue>
     {
         #region constructors
         public ParameterExpression(string identifier, string name, ParameterDirection direction) : base(identifier, name, typeof(TValue), direction)
@@ -40,17 +39,6 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
-        #endregion
-
-        #region equals
-        public bool Equals(ParameterExpression<TValue> obj)
-            => obj is ParameterExpression<TValue> && base.Equals(obj);
-
-        public override bool Equals(object obj)
-            => obj is ParameterExpression<TValue> exp && base.Equals(exp);
-
-        public override int GetHashCode()
-            => base.GetHashCode();
         #endregion
     }
 }

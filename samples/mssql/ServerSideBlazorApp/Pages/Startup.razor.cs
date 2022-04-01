@@ -48,16 +48,14 @@ namespace ServerSideBlazorApp.Pages
 
         private bool EvaluateCanConnect()
         {
-            using (var conn = db.GetConnection())
+            using var conn = db.GetConnection();
+            try
             {
-                try
-                {
-                    conn.Open();
-                }
-                catch (SqlException)
-                {
-                    return false;
-                }
+                conn.Open();
+            }
+            catch (SqlException)
+            {
+                return false;
             }
             return true;
         }

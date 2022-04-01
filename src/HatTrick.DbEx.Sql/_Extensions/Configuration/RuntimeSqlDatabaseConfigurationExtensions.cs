@@ -23,13 +23,13 @@ namespace HatTrick.DbEx.Sql.Configuration
 {
     public static class RuntimeSqlDatabaseConfigurationExtensions
     {
-        public static void Validate(this RuntimeSqlDatabaseConfiguration configuration)
+        public static void Validate(this SqlDatabaseRuntimeConfiguration configuration)
         {
             if (!configuration.TryValidate(out List<string> validationErrors))
                 throw new DbExpressionConfigurationException($"Database configuration is invalid.  The following factories/providers have not been configured: {string.Join(", ", validationErrors)}.");
         }
 
-        public static bool TryValidate(this RuntimeSqlDatabaseConfiguration configuration, out List<string> validationErrors)
+        public static bool TryValidate(this SqlDatabaseRuntimeConfiguration configuration, out List<string> validationErrors)
         {
             var validations = new List<string>();
             try

@@ -23,33 +23,32 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableInt32AverageFunctionExpression :
         NullableAverageFunctionExpression<int,int?>,
         NullableInt32Element,
-        AnyInt32Element,
         IEquatable<NullableInt32AverageFunctionExpression>
     {
         #region constructors
-        public NullableInt32AverageFunctionExpression(NullableByteElement expression) : base(expression)
+        public NullableInt32AverageFunctionExpression(AnyElement<byte?> expression) : base(expression)
         {
 
         }
 
-        public NullableInt32AverageFunctionExpression(NullableInt16Element expression) : base(expression)
+        public NullableInt32AverageFunctionExpression(AnyElement<short?> expression) : base(expression)
         {
 
         }
 
-        public NullableInt32AverageFunctionExpression(NullableInt32Element expression) : base(expression)
+        public NullableInt32AverageFunctionExpression(AnyElement<int?> expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public NullableInt32Element As(string alias)
-            => new NullableInt32SelectExpression(this).As(alias);
+        public AnyElement<int?> As(string alias)
+            => new SelectExpression<int?>(this).As(alias);
         #endregion
 
         #region distinct
-        public NullableInt32AverageFunctionExpression Distinct()
+        public new NullableInt32AverageFunctionExpression Distinct()
         {
             IsDistinct = true;
             return this;
@@ -57,11 +56,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(NullableInt32AverageFunctionExpression obj)
-            => obj is NullableInt32AverageFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableInt32AverageFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableInt32AverageFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableInt32AverageFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

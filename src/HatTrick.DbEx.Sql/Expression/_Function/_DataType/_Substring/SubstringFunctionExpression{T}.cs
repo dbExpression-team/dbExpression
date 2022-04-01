@@ -22,42 +22,22 @@ namespace HatTrick.DbEx.Sql.Expression
         IExpressionElement<TValue>
     {
         #region constructors
-        protected SubstringFunctionExpression(StringElement expression, Int32Element start, Int32Element length) : base(expression, start, length, typeof(TValue))
+        protected SubstringFunctionExpression(StringElement expression, AnyElement<int> start, AnyElement<int> length) : base(expression, start, length, typeof(TValue))
         {
 
         }
 
-        protected SubstringFunctionExpression(StringElement expression, Int32Element start, Int64Element length) : base(expression, start, length, typeof(TValue))
+        protected SubstringFunctionExpression(StringElement expression, AnyElement<int> start, AnyElement<long> length) : base(expression, start, length, typeof(TValue))
         {
 
         }
 
-        protected SubstringFunctionExpression(StringElement expression, Int64Element start, Int32Element length) : base(expression, start, length, typeof(TValue))
+        protected SubstringFunctionExpression(StringElement expression, AnyElement<long> start, AnyElement<int> length) : base(expression, start, length, typeof(TValue))
         {
 
         }
 
-        protected SubstringFunctionExpression(StringElement expression, Int64Element start, Int64Element length) : base(expression, start, length, typeof(TValue))
-        {
-
-        }
-
-        protected SubstringFunctionExpression(AnyObjectElement expression, Int32Element start, Int32Element length) : base(expression, start, length, typeof(TValue))
-        {
-
-        }
-
-        protected SubstringFunctionExpression(AnyObjectElement expression, Int32Element start, Int64Element length) : base(expression, start, length, typeof(TValue))
-        {
-
-        }
-
-        protected SubstringFunctionExpression(AnyObjectElement expression, Int64Element start, Int32Element length) : base(expression, start, length, typeof(TValue))
-        {
-
-        }
-
-        protected SubstringFunctionExpression(AnyObjectElement expression, Int64Element start, Int64Element length) : base(expression, start, length, typeof(TValue))
+        protected SubstringFunctionExpression(StringElement expression, AnyElement<long> start, AnyElement<long> length) : base(expression, start, length, typeof(TValue))
         {
 
         }

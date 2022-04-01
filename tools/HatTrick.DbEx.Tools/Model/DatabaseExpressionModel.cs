@@ -16,16 +16,26 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿namespace HatTrick.DbEx.Tools.Model
+using System;
+
+namespace HatTrick.DbEx.Tools.Model
 {
     public class DatabaseExpressionModel
     {
+        public LanguageFeatures LanguageFeatures { get; }
         public string NamespaceRoot { get; }
         public string Name { get; }
         public string AccessorName { get; }
 
-        public DatabaseExpressionModel(string name, string namespaceRoot, string accessorName)
+        public DatabaseExpressionModel(LanguageFeatures features, string name, string namespaceRoot, string accessorName)
         {
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException($"{nameof(name)} is required.");
+            if (string.IsNullOrWhiteSpace(namespaceRoot))
+                throw new ArgumentException($"{nameof(namespaceRoot)} is required.");
+            if (string.IsNullOrWhiteSpace(accessorName))
+                throw new ArgumentException($"{nameof(accessorName)} is required.");
+            LanguageFeatures = features ?? throw new ArgumentNullException(nameof(features));
             Name = name;
             NamespaceRoot = namespaceRoot;
             AccessorName = accessorName;

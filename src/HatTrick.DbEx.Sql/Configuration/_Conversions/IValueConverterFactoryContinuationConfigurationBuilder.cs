@@ -33,7 +33,14 @@ namespace HatTrick.DbEx.Sql.Configuration
         /// Override the default behaviour of converting values to and from a different value type using the provided value converter. 
         /// </summary>
         /// <typeparam name="TValue">The type of the value that will be converted to another value type.</typeparam>
-        IValueTypeValueConverterConfigurationBuilder<TValue> OverrideForType<TValue>()
+        IValueTypeValueConverterConfigurationBuilder<TValue> OverrideForValueType<TValue>()
             where TValue : struct, IComparable;
+
+        /// <summary>
+        /// Override the default behaviour of converting values to and from a reference type using the provided value converter. 
+        /// </summary>
+        /// <typeparam name="TType">The reference type that will be converted to a value type compatable with the database platform.</typeparam>
+        IReferenceTypeValueConverterConfigurationBuilder<TType> OverrideForReferenceType<TType>()
+            where TType : class;
     }
 }

@@ -25,12 +25,62 @@ namespace HatTrick.DbEx.MsSql.Expression
         IExpressionElement<TValue>
     {
         #region constructors
-        protected CharIndexFunctionExpression(StringElement pattern, IExpressionElement expression) : base(pattern, expression, typeof(TValue))
+        protected CharIndexFunctionExpression(AnyElement<string> pattern, AnyElement<string> expression) : base(pattern, expression, typeof(TValue))
         {
 
         }
 
-        protected CharIndexFunctionExpression(StringElement pattern, IExpressionElement expression, IExpressionElement startSearchPosition) : base(pattern, expression, startSearchPosition, typeof(TValue))
+        protected CharIndexFunctionExpression(AnyElement<string> pattern, AnyElement<string> expression, AnyElement<long> startSearchPosition) : base(pattern, expression, startSearchPosition, typeof(TValue))
+        {
+
+        }
+
+        protected CharIndexFunctionExpression(AnyElement<string> pattern, AnyElement<string> expression, AnyElement<int> startSearchPosition) : base(pattern, expression, startSearchPosition, typeof(TValue))
+        {
+
+        }
+
+        protected CharIndexFunctionExpression(StringElement pattern, AnyElement<string> expression) : base(pattern, expression, typeof(TValue))
+        {
+
+        }
+
+        protected CharIndexFunctionExpression(StringElement pattern, AnyElement<string> expression, AnyElement<long> startSearchPosition) : base(pattern, expression, startSearchPosition, typeof(TValue))
+        {
+
+        }
+
+        protected CharIndexFunctionExpression(StringElement pattern, AnyElement<string> expression, AnyElement<int> startSearchPosition) : base(pattern, expression, startSearchPosition, typeof(TValue))
+        {
+
+        }
+
+        protected CharIndexFunctionExpression(StringElement pattern, StringElement expression) : base(pattern, expression, typeof(TValue))
+        {
+
+        }
+
+        protected CharIndexFunctionExpression(StringElement pattern, StringElement expression, AnyElement<long> startSearchPosition) : base(pattern, expression, startSearchPosition, typeof(TValue))
+        {
+
+        }
+
+        protected CharIndexFunctionExpression(StringElement pattern, StringElement expression, AnyElement<int> startSearchPosition) : base(pattern, expression, startSearchPosition, typeof(TValue))
+        {
+
+        }
+
+        protected CharIndexFunctionExpression(AnyElement<string> pattern, StringElement expression) : base(pattern, expression, typeof(TValue))
+        {
+
+        }
+
+        protected CharIndexFunctionExpression(AnyElement<string> pattern, StringElement expression, AnyElement<long> startSearchPosition) : base(pattern, expression, startSearchPosition, typeof(TValue))
+        {
+
+        }
+
+        protected CharIndexFunctionExpression(AnyElement<string> pattern, StringElement expression, AnyElement<int> startSearchPosition) : base(pattern, expression, startSearchPosition, typeof(TValue))
         {
 
         }

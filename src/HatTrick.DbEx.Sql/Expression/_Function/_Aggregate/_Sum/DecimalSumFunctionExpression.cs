@@ -23,23 +23,22 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class DecimalSumFunctionExpression :
         SumFunctionExpression<decimal>,
         DecimalElement,
-        AnyDecimalElement,
         IEquatable<DecimalSumFunctionExpression>
     {
         #region constructors
-        public DecimalSumFunctionExpression(DecimalElement expression) : base(expression)
+        public DecimalSumFunctionExpression(AnyElement<decimal> expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public DecimalElement As(string alias)
-            => new DecimalSelectExpression(this).As(alias);
+        public AnyElement<decimal> As(string alias)
+            => new SelectExpression<decimal>(this).As(alias);
         #endregion
 
         #region distinct
-        public DecimalSumFunctionExpression Distinct()
+        public new DecimalSumFunctionExpression Distinct()
         {
             IsDistinct = true;
             return this;
@@ -47,11 +46,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(DecimalSumFunctionExpression obj)
-            => obj is DecimalSumFunctionExpression && base.Equals(obj);
+        public bool Equals(DecimalSumFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is DecimalSumFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is DecimalSumFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

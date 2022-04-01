@@ -23,23 +23,17 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class DateTimeOffsetMinimumFunctionExpression :
         MinimumFunctionExpression<DateTimeOffset>,
         DateTimeOffsetElement,
-        AnyDateTimeOffsetElement, 
         IEquatable<DateTimeOffsetMinimumFunctionExpression>
     {
         #region constructors
-        public DateTimeOffsetMinimumFunctionExpression(DateTimeOffsetElement expression) : base(expression)
+        public DateTimeOffsetMinimumFunctionExpression(AnyElement<DateTimeOffset> expression) : base(expression)
         {
 
         }
         #endregion
 
-        #region as
-        public DateTimeOffsetElement As(string alias)
-            => new DateTimeOffsetSelectExpression(this).As(alias);
-        #endregion
-
         #region distinct
-        public DateTimeOffsetMinimumFunctionExpression Distinct()
+        public new DateTimeOffsetMinimumFunctionExpression Distinct()
         {
             IsDistinct = true;
             return this;
@@ -47,11 +41,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(DateTimeOffsetMinimumFunctionExpression obj)
-            => obj is DateTimeOffsetMinimumFunctionExpression && base.Equals(obj);
+        public bool Equals(DateTimeOffsetMinimumFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is DateTimeOffsetMinimumFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is DateTimeOffsetMinimumFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

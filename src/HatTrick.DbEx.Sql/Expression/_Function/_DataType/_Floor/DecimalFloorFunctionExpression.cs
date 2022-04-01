@@ -23,27 +23,21 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class DecimalFloorFunctionExpression :
         FloorFunctionExpression<decimal>,
         DecimalElement,
-        AnyDecimalElement,
         IEquatable<DecimalFloorFunctionExpression>
     {
         #region constructors
-        public DecimalFloorFunctionExpression(DecimalElement expression) : base(expression)
+        public DecimalFloorFunctionExpression(AnyElement<decimal> expression) : base(expression)
         {
 
         }
         #endregion
 
-        #region as
-        public DecimalElement As(string alias)
-            => new DecimalSelectExpression(this).As(alias);
-        #endregion
-
         #region equals
-        public bool Equals(DecimalFloorFunctionExpression obj)
-            => obj is DecimalFloorFunctionExpression && base.Equals(obj);
+        public bool Equals(DecimalFloorFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is DecimalFloorFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is DecimalFloorFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

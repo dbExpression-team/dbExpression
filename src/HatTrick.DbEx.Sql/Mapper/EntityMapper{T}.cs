@@ -24,11 +24,11 @@ namespace HatTrick.DbEx.Sql.Mapper
     public class EntityMapper<T> : IEntityMapper<T>
         where T : class, IDbEntity
     {
-        Action<ISqlFieldReader, T> map;
+        private readonly Action<ISqlFieldReader, T> map;
 
         Action<ISqlFieldReader, T> IEntityMapper<T>.Map => map;
 
-        public Action<ISqlFieldReader, IDbEntity> Map => (reader, entity) => map(reader, entity as T);
+        public Action<ISqlFieldReader, IDbEntity> Map => (reader, entity) => map(reader, entity as T ?? throw new DbExpressionException($"Expected entity to be of type {typeof(T)}."));
 
         public EntityMapper(Action<ISqlFieldReader, T> map)
         {

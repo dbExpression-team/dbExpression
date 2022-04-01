@@ -23,27 +23,26 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class ByteCeilingFunctionExpression : 
         CeilingFunctionExpression<byte>,
         ByteElement,
-        AnyByteElement,
         IEquatable<ByteCeilingFunctionExpression>
     {
         #region constructors
-        public ByteCeilingFunctionExpression(ByteElement expression) : base(expression)
+        public ByteCeilingFunctionExpression(AnyElement<byte> expression) : base(expression)
         { 
         
         }
         #endregion
 
         #region as
-        public ByteElement As(string alias)
-            => new ByteSelectExpression(this).As(alias);
+        public AnyElement<byte> As(string alias)
+            => new SelectExpression<byte>(this).As(alias);
         #endregion
 
         #region equals
-        public bool Equals(ByteCeilingFunctionExpression obj)
-            => obj is ByteCeilingFunctionExpression && base.Equals(obj);
+        public bool Equals(ByteCeilingFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is ByteCeilingFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is ByteCeilingFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

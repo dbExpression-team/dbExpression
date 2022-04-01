@@ -23,7 +23,7 @@ namespace HatTrick.DbEx.CodeTemplating.Builder
         private static readonly TypeModel _timeSpan = new TypeModel<TimeSpan>("TimeSpan");
         private static readonly TypeModel _object = new TypeModel<object>("object");
 
-        private static readonly Dictionary<Type, TypeModel> allTypes = new Dictionary<Type, TypeModel>()
+        private static readonly Dictionary<Type, TypeModel> allTypes = new()
         {
             { typeof(bool), _bool },
             { typeof(byte), _byte },
@@ -41,7 +41,7 @@ namespace HatTrick.DbEx.CodeTemplating.Builder
             { typeof(object), _object }
        };
 
-        private static readonly Dictionary<Type, TypeModel> numericTypes = new Dictionary<Type, TypeModel>()
+        private static readonly Dictionary<Type, TypeModel> numericTypes = new()
         {
             { typeof(byte), _byte },
             { typeof(decimal), _decimal },
@@ -52,14 +52,14 @@ namespace HatTrick.DbEx.CodeTemplating.Builder
             { typeof(long), _long }
         };
 
-        private static readonly Dictionary<Type, TypeModel> dateTypes = new Dictionary<Type, TypeModel>()
+        private static readonly Dictionary<Type, TypeModel> dateTypes = new()
         {
             { typeof(DateTime), _dateTime },
             { typeof(DateTimeOffset), _dateTimeOffset }
        };
 
-        private HashSet<TypeModel> @types = new HashSet<TypeModel>();
-        private HashSet<TypeModel> exceptTypes = new HashSet<TypeModel>();
+        private readonly HashSet<TypeModel> @types = new();
+        private readonly HashSet<TypeModel> exceptTypes = new();
 
         public TypeBuilder AddAllTypes()
         {
@@ -94,14 +94,13 @@ namespace HatTrick.DbEx.CodeTemplating.Builder
 
         public TypeBuilder Add(TypeModel type)
         {
-            if (!@types.Contains(type))
+            if (type is not null && !@types.Contains(type))
                 @types.Add(type);
             return this;
         }
 
         public TypeBuilder Except<T>()
         {
-            var t = typeof(T);
             if (!exceptTypes.Contains(allTypes[typeof(T)]))
                 exceptTypes.Add(allTypes[typeof(T)]);
             return this;
@@ -120,13 +119,13 @@ namespace HatTrick.DbEx.CodeTemplating.Builder
         public List<TypeModel> ToList() => @types.Except(exceptTypes).ToList();
 
         public static TypeBuilder CreateBuilder()
-            => new TypeBuilder();
+            => new();
 
         public static TypeModel Get<T>()
             => allTypes[typeof(T)];
 
         public static TypeModel Create<T>()
-            => new TypeModel(typeof(T), allTypes[typeof(T)].Alias);
+            => new(typeof(T), allTypes[typeof(T)].Alias);
 
         public static TypeModel Get(Type type)
             => allTypes[type];

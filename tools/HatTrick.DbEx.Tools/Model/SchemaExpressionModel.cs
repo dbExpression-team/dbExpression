@@ -18,17 +18,30 @@
 
 ﻿using HatTrick.Model.MsSql;
 using System;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Tools.Model
 {
     public class SchemaExpressionModel
     {
+        public LanguageFeatures LanguageFeatures { get; }
         public DatabaseExpressionModel DatabaseExpression { get; }
         public string NamespaceRoot { get; }
         public string Name { get; }
 
-        public SchemaExpressionModel(DatabaseExpressionModel database, MsSqlSchema schema, string namespaceRoot, string name)
+        public Dictionary<string, string> ArgNamePsuedonyms = new()
         {
+            { "identifier", "identifier" },
+            { "name", "name" },
+            { "alias", "alias" },
+            { "schema", "schema" }
+        };
+
+        public SchemaExpressionModel(LanguageFeatures features, DatabaseExpressionModel database, MsSqlSchema schema, string namespaceRoot, string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException($"{nameof(name)} is required.");
+            LanguageFeatures = features ?? throw new ArgumentNullException(nameof(features));
             DatabaseExpression = database ?? throw new ArgumentNullException(nameof(database));
             Name = name;
             NamespaceRoot = namespaceRoot;

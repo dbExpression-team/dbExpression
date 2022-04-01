@@ -43,7 +43,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         /// </summary>
         /// <typeparam name="convertToDatabase">A custom delegate that will convert a <typeparamref name="TEnum"/>? into an <see cref="object"/> for persistence in the database.</param>
         /// <typeparam name="convertFromDatabase">A custom delegate that will convert an <see cref="object"/> read from the database into the type <typeparamref name="TEnum"/>?.</param>
-        IValueConverterFactoryContinuationConfigurationBuilder Use(Func<TEnum?, object> convertToDatabase, Func<object, TEnum?> convertFromDatabase);
+        IValueConverterFactoryContinuationConfigurationBuilder Use(Func<TEnum?, object?> convertToDatabase, Func<object?, TEnum?> convertFromDatabase);
 
         /// <summary>
         /// Persist enumeration values as strings in the target database.

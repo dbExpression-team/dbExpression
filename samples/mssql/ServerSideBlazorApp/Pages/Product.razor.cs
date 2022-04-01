@@ -7,12 +7,12 @@ namespace ServerSideBlazorApp.Pages
     public partial class Product : ComponentBase
     {
         #region internals
-        private string ReturnUrl { get; set; }
-        private ProductDetailModel Model { get; set; }
+        private string? ReturnUrl { get; set; }
+        private ProductDetailModel? Model { get; set; }
         #endregion
 
         #region interface
-        [Parameter] public string Id { get; set; }
+        [Parameter] public string Id { get; set; } = string.Empty;
         #endregion
 
         #region methods

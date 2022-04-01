@@ -21,13 +21,30 @@ using System;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableStringIsNullFunctionExpression :
-        NullableIsNullFunctionExpression<string,string>,
+        NullableIsNullFunctionExpression<string,string?>,
         NullableStringElement,
-        AnyStringElement,
         IEquatable<NullableStringIsNullFunctionExpression>
     {
         #region constructors
+        public NullableStringIsNullFunctionExpression(NullableStringElement expression, AnyStringElement value)
+            : base(expression, value)
+        {
+
+        }
+
         public NullableStringIsNullFunctionExpression(AnyStringElement expression, NullableStringElement value)
+            : base(expression, value)
+        {
+
+        }
+
+        public NullableStringIsNullFunctionExpression(AnyElement<string?> expression, NullableStringElement value)
+            : base(expression, value)
+        {
+
+        }
+
+        public NullableStringIsNullFunctionExpression(AnyElement<string?> expression, AnyElement<string?> value)
             : base(expression, value)
         {
 
@@ -41,15 +58,15 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region like
         public FilterExpressionSet Like(string phrase)
-            => new FilterExpressionSet(new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
+            => new(new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
         #endregion
 
         #region equals
-        public bool Equals(NullableStringIsNullFunctionExpression obj)
-            => obj is NullableStringIsNullFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableStringIsNullFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableStringIsNullFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableStringIsNullFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

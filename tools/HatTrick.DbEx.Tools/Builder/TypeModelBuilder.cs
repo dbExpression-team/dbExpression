@@ -26,143 +26,172 @@ namespace HatTrick.DbEx.Tools.Builder
 {
     public static class TypeModelBuilder
     {
-        private static Func<bool, TypeModel> NewBooleanTypeModel = isNullable => new TypeModel(nameof(Boolean), "bool", isNullable);
-        private static Func<bool, TypeModel> NewByteTypeModel = isNullable => new TypeModel(nameof(Byte), "byte", isNullable);
-        private static Func<bool, TypeModel> NewByteArrayTypeModel = isNullable => new TypeModel("ByteArray", "byte[]", isNullable:false, isEnum:false, isArray:true);
-        private static Func<bool, TypeModel> NewDateTimeTypeModel = isNullable => new TypeModel(nameof(DateTime), nameof(DateTime), isNullable);
-        private static Func<bool, TypeModel> NewDateTimeOffsetTypeModel = isNullable => new TypeModel(nameof(DateTimeOffset), nameof(DateTimeOffset), isNullable);
-        private static Func<bool, TypeModel> NewDecimalTypeModel = isNullable => new TypeModel(nameof(Decimal), "decimal", isNullable);
-        private static Func<bool, TypeModel> NewDoubleTypeModel = isNullable => new TypeModel(nameof(Double), "double", isNullable);
-        private static Func<bool, TypeModel> NewSingleTypeModel = isNullable => new TypeModel(nameof(Single), "float", isNullable);
-        private static Func<bool, TypeModel> NewGuidTypeModel = isNullable => new TypeModel(nameof(Guid), nameof(Guid), isNullable);
-        private static Func<bool, TypeModel> NewInt64TypeModel = isNullable => new TypeModel(nameof(Int64), "long", isNullable);
-        private static Func<bool, TypeModel> NewInt32TypeModel = isNullable => new TypeModel(nameof(Int32), "int", isNullable);
-        private static Func<bool, TypeModel> NewObjectTypeModel = isNullable => new TypeModel(nameof(Object), "object", false);
-        private static Func<bool, TypeModel> NewInt16TypeModel = isNullable => new TypeModel(nameof(Int16), "short", isNullable);
-        private static Func<bool, TypeModel> NewStringTypeModel = isNullable => new TypeModel(nameof(String), "string", false);
-        private static Func<bool, TypeModel> NewTimeSpanTypeModel = isNullable => new TypeModel(nameof(TimeSpan), nameof(TimeSpan), true);
+        private static readonly Dictionary<string,Type> KnownTypes = new()
+        { 
+            { nameof(Boolean), typeof(bool) },
+            { "bool", typeof(bool) },
+            { nameof(Byte), typeof(byte) },
+            { "byte", typeof(byte) },
+            { "ByteArray", typeof(byte[]) },
+            { nameof(DateTime), typeof(DateTime) },
+            { nameof(DateTimeOffset), typeof(DateTimeOffset) },
+            { nameof(Decimal), typeof(decimal) },
+            { "decimal", typeof(decimal) },
+            { nameof(Double), typeof(double) },
+            { "double", typeof(double) },
+            { nameof(Guid), typeof(Guid) },
+            { nameof(Single), typeof(float) },
+            { "float", typeof(float) },
+            { nameof(Int64), typeof(long) },
+            { "long", typeof(long) },
+            { nameof(Int32), typeof(int) },
+            { "int", typeof(int) },
+            { nameof(Int16), typeof(short) },
+            { "short", typeof(short) },
+            { nameof(String), typeof(string) },
+            { "string", typeof(string) },
+            { nameof(TimeSpan), typeof(TimeSpan) }
+        };
 
-        private static IDictionary<string,Func<bool, TypeModel>> TypeModelFactories = new Dictionary<string,Func<bool, TypeModel>>();
-
-        static TypeModelBuilder()
+        private static readonly Dictionary<string, string> TypeNameConversions = new()
         {
-            TypeModelFactories.Add(nameof(Boolean), NewBooleanTypeModel);
-            TypeModelFactories.Add("bool", NewBooleanTypeModel);
+            { "bool", nameof(Boolean) },
+            { "byte", nameof(Byte) },
+            { "decimal", nameof(Decimal) },
+            { "double", nameof(Double) },
+            { "float", nameof(Single) },
+            { "long", nameof(Int64) },
+            { "int", nameof(Int32) },
+            { "short", nameof(Int16) },
+            { "string", nameof(String) }
+        };
 
-            TypeModelFactories.Add("byte", NewByteTypeModel);
-            TypeModelFactories.Add(nameof(Byte), NewByteTypeModel);
-
-            TypeModelFactories.Add("byte[]", NewByteArrayTypeModel);
-            TypeModelFactories.Add("Byte[]", NewByteArrayTypeModel);
-            TypeModelFactories.Add("ByteArray", NewByteArrayTypeModel);
-
-            TypeModelFactories.Add(nameof(DateTime), NewDateTimeTypeModel);
-
-            TypeModelFactories.Add(nameof(DateTimeOffset), NewDateTimeOffsetTypeModel);
-
-            TypeModelFactories.Add(nameof(Decimal), NewDecimalTypeModel);
-            TypeModelFactories.Add("decimal", NewDecimalTypeModel);
-
-            TypeModelFactories.Add(nameof(Double), NewDoubleTypeModel);
-            TypeModelFactories.Add("double", NewDoubleTypeModel);
-
-            TypeModelFactories.Add(nameof(Single), NewSingleTypeModel);
-            TypeModelFactories.Add("float", NewSingleTypeModel);
-
-            TypeModelFactories.Add(nameof(Guid), NewGuidTypeModel);
-
-            TypeModelFactories.Add(nameof(Int64), NewInt64TypeModel);
-            TypeModelFactories.Add("long", NewInt64TypeModel);
-
-            TypeModelFactories.Add(nameof(Int32), NewInt32TypeModel);
-            TypeModelFactories.Add("int", NewInt32TypeModel);
-
-            TypeModelFactories.Add(nameof(Int16), NewInt16TypeModel);
-            TypeModelFactories.Add("short", NewInt16TypeModel);
-
-            TypeModelFactories.Add(nameof(Object), NewObjectTypeModel);
-            TypeModelFactories.Add("object", NewObjectTypeModel);
-
-            TypeModelFactories.Add(nameof(String), NewStringTypeModel);
-            TypeModelFactories.Add("string", NewStringTypeModel);
-
-            TypeModelFactories.Add(nameof(TimeSpan), NewTimeSpanTypeModel);
-        }
-
-        public static TypeModel CreateTypeModel(SqlDbType sqlType, string clrTypeOverride, bool isNullable, bool isEnum)
+        private static readonly Dictionary<string, string> Aliases = new()
         {
-            if (string.IsNullOrWhiteSpace(clrTypeOverride))
-                return TypeModelFactories[GetBySqlDbType(sqlType)](isNullable);
+            { nameof(Boolean), "bool" },
+            { "bool", "bool" },
+            { nameof(Byte), "byte" },
+            { "byte", "byte" },
+            { "ByteArray", "byte[]" },
+            { nameof(Decimal), "decimal" },
+            { "decimal", "decimal" },
+            { nameof(Double), "double" },
+            { "double", "double" },
+            { nameof(Single), "float" },
+            { "float", "float" },
+            { nameof(Int64), "long" },
+            { "long", "long" },
+            { nameof(Int32), "int" },
+            { "int", "int" },
+            { nameof(Int16), "short" },
+            { "short", "short" },
+            { nameof(String), "string" },
+            { "string", "string" }
+        };
 
-            if (clrTypeOverride.StartsWith("System."))
-                clrTypeOverride = clrTypeOverride.Substring(7);
-
-            isNullable = clrTypeOverride.EndsWith("?");
-            if (isNullable)
-                clrTypeOverride = clrTypeOverride.Substring(0, clrTypeOverride.Length - 1);
-
-            if (TypeModelFactories.ContainsKey(clrTypeOverride))
-                return TypeModelFactories[clrTypeOverride](isNullable);
-
-            var nullableTypeModel = new TypeModel(clrTypeOverride, clrTypeOverride, true, isEnum, clrTypeOverride.Contains("[]"));
-            var typeModel = new TypeModel(clrTypeOverride, clrTypeOverride, false, isEnum, clrTypeOverride.Contains("[]"));
-            TypeModelFactories.Add(clrTypeOverride, _isNullable => _isNullable ? nullableTypeModel : typeModel);
-
-            return TypeModelFactories[clrTypeOverride](isNullable);
-        }
-
-        private static string GetBySqlDbType(SqlDbType sqlType)
+        private static readonly Dictionary<SqlDbType, string> SqlDbTypeToSystemTypeMap = new()
         {
-            switch (sqlType)
+            { SqlDbType.BigInt, nameof(Int64) },
+            { SqlDbType.Binary, "ByteArray" },
+            { SqlDbType.Image, "ByteArray" },
+            { SqlDbType.Timestamp, "ByteArray" },
+            { SqlDbType.VarBinary, "ByteArray" },
+            { SqlDbType.Bit, nameof(Boolean) },
+            { SqlDbType.Char, nameof(String) },
+            { SqlDbType.NChar, nameof(String) },
+            { SqlDbType.NText, nameof(String) },
+            { SqlDbType.NVarChar, nameof(String) },
+            { SqlDbType.Text, nameof(String) },
+            { SqlDbType.VarChar, nameof(String) },
+            { SqlDbType.Date, nameof(DateTime) },
+            { SqlDbType.DateTime, nameof(DateTime) },
+            { SqlDbType.DateTime2, nameof(DateTime) },
+            { SqlDbType.SmallDateTime, nameof(DateTime) },
+            { SqlDbType.DateTimeOffset, nameof(DateTimeOffset) },
+            { SqlDbType.Decimal, nameof(Decimal) },
+            { SqlDbType.Float, nameof(Double) },
+            { SqlDbType.Money, nameof(Double) },
+            { SqlDbType.SmallMoney, nameof(Double) },
+            { SqlDbType.Int, nameof(Int32) },
+            { SqlDbType.SmallInt, nameof(Int16) },
+            { SqlDbType.TinyInt, nameof(Byte) },
+            { SqlDbType.UniqueIdentifier, nameof(Guid) },
+            { SqlDbType.Real, nameof(Single) },
+            { SqlDbType.Time, nameof(TimeSpan) }
+        };
+
+        public static TypeModel CreateTypeModel(LanguageFeatures features, SqlDbType sqlType, string? clrTypeOverride, bool isNullable, TypeSpecialCase? specialCase)
+        {
+            string typeName = ResolveTypeName(sqlType, clrTypeOverride) 
+                ?? throw new NotImplementedException($"The sql database type {sqlType} is not compatible with dbExpression.");
+
+            bool isArray = typeName.EndsWith("Array");
+            if (isArray)
+                isNullable = (features.Nullable.IsFeatureEnabled && isNullable) || isNullable;
+
+            Type? knownType = KnownTypes.ContainsKey(typeName) ? KnownTypes[typeName] : null;
+            if (specialCase is null)
             {
-                case SqlDbType.BigInt: return nameof(Int64);
-
-                case SqlDbType.Binary:
-                case SqlDbType.Image:
-                case SqlDbType.Timestamp:
-                case SqlDbType.VarBinary: return "ByteArray";
-
-                case SqlDbType.Bit: return nameof(Boolean);
-
-                case SqlDbType.Char:
-                case SqlDbType.NChar:
-                case SqlDbType.NText:
-                case SqlDbType.NVarChar:
-                case SqlDbType.Text:
-                case SqlDbType.VarChar: return nameof(String);
-
-                case SqlDbType.Date:
-                case SqlDbType.DateTime:
-                case SqlDbType.DateTime2:
-                case SqlDbType.SmallDateTime: return nameof(DateTime);
-
-                case SqlDbType.DateTimeOffset: return nameof(DateTimeOffset);
-
-                case SqlDbType.Decimal: return nameof(Decimal);
-
-                case SqlDbType.Float:
-                case SqlDbType.Money:
-                case SqlDbType.SmallMoney: return nameof(Double);
-
-                case SqlDbType.Int: return nameof(Int32);
-
-                case SqlDbType.SmallInt: return nameof(Int16);
-
-                case SqlDbType.TinyInt: return nameof(Byte);
-
-                case SqlDbType.UniqueIdentifier: return nameof(Guid);
-
-                case SqlDbType.Real: return nameof(Single);
-
-                case SqlDbType.Time: return nameof(TimeSpan);
-
-                case SqlDbType.Udt:
-                case SqlDbType.Structured:
-                case SqlDbType.Variant:
-                case SqlDbType.Xml:
-                default:
-                    throw new NotImplementedException($"The sql database type {sqlType} is not compatible with dbExpression.");
+                if (knownType == typeof(string))
+                {
+                    specialCase = TypeSpecialCase.String;
+                }
+                else if (knownType is null)
+                {
+                    specialCase = TypeSpecialCase.UserDefinedType;
+                    isNullable = features.Nullable.IsFeatureEnabled;
+                }
             }
+            if (specialCase == TypeSpecialCase.String)
+                isNullable = isNullable && features.Nullable.IsFeatureEnabled;
+
+            if (isNullable && typeName.EndsWith("?"))
+                typeName = typeName[0..^1];
+
+            string alias = Aliases.ContainsKey(typeName) ? Aliases[typeName] : typeName;
+            string nullableAlias = isNullable ? GetAlias(features, typeName, alias, isArray, specialCase) : alias;
+            string? initializer = features.Nullable.IsFeatureEnabled ? GetInitializer(typeName, alias, isNullable, isArray) : null;
+
+            return new TypeModel(typeName, alias, nullableAlias, initializer, isNullable, specialCase, isArray);
+        }
+
+        private static string? ResolveTypeName(SqlDbType sqlType, string? clrTypeOverride)
+        {
+            string? typeName = SqlDbTypeToSystemTypeMap.ContainsKey(sqlType) ? SqlDbTypeToSystemTypeMap[sqlType] : null;
+            if (typeName is null)
+                return typeName;
+            if (!string.IsNullOrWhiteSpace(clrTypeOverride))
+                typeName = clrTypeOverride;
+            if (typeName.StartsWith("System."))
+                typeName = typeName[7..];
+            if (TypeNameConversions.ContainsKey(typeName))
+                typeName = TypeNameConversions[typeName];
+            return typeName;
+        }
+
+        private static string? GetInitializer(string typeName, string alias, bool isNullable, bool isArray)
+        {
+            if (typeName == nameof(String)) return isNullable ? "null" : "string.Empty";
+            if (isArray)
+                return isNullable ? "null" : $"new {alias.Replace("[]", "[0]")}";
+            return isNullable ? "null" : null;
+        }
+
+        private static string GetAlias(LanguageFeatures features, string typeName, string alias, bool isArray, TypeSpecialCase? specialCase)
+        {
+            if (specialCase is not null)
+            { 
+                if (specialCase.Value == TypeSpecialCase.Enum) return $"{alias}?";
+                return features.Nullable.IsFeatureEnabled ? $"{alias}?" : alias;
+            }
+
+            if (KnownTypes.ContainsKey(typeName))
+            {
+                if (isArray) return features.Nullable.IsFeatureEnabled ? $"{alias}?" : alias;
+                return $"{alias}?";
+            }
+
+            return alias;
         }
     }
 }

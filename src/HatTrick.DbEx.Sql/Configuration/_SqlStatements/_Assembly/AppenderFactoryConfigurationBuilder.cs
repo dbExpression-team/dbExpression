@@ -24,9 +24,9 @@ namespace HatTrick.DbEx.Sql.Configuration
     public class AppenderFactoryConfigurationBuilder : IAppenderFactoryConfigurationBuilder
     {
         private readonly ISqlStatementAssemblyGroupingConfigurationBuilders caller;
-        private readonly RuntimeSqlDatabaseConfiguration configuration;
+        private readonly SqlDatabaseRuntimeConfiguration configuration;
 
-        public AppenderFactoryConfigurationBuilder(ISqlStatementAssemblyGroupingConfigurationBuilders caller, RuntimeSqlDatabaseConfiguration configuration)
+        public AppenderFactoryConfigurationBuilder(ISqlStatementAssemblyGroupingConfigurationBuilders caller, SqlDatabaseRuntimeConfiguration configuration)
         {
             this.caller = caller ?? throw new ArgumentNullException(nameof(caller));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
@@ -40,14 +40,14 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         public ISqlStatementAssemblyGroupingConfigurationBuilders Use<TAppenderFactory>()
             where TAppenderFactory : class, IAppenderFactory, new()
-            => Use<TAppenderFactory>(null);
+            => Use<TAppenderFactory>(_ => { });
 
         public ISqlStatementAssemblyGroupingConfigurationBuilders Use<TAppenderFactory>(Action<TAppenderFactory> configureFactory)
             where TAppenderFactory : class, IAppenderFactory, new()
         {
-            if (!(configuration.AppenderFactory is TAppenderFactory))
+            if (configuration.AppenderFactory is not TAppenderFactory)
                 configuration.AppenderFactory = new TAppenderFactory();
-            configureFactory?.Invoke(configuration.AppenderFactory as TAppenderFactory);
+            configureFactory?.Invoke((configuration.AppenderFactory as TAppenderFactory)!);
             return caller;
         }
 
@@ -59,7 +59,7 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         public ISqlStatementAssemblyGroupingConfigurationBuilders UseDefaultFactory()
         {
-            if (!(configuration.AppenderFactory is AppenderFactory))
+            if (configuration.AppenderFactory is not AppenderFactory)
                 configuration.AppenderFactory = new AppenderFactory();
             return caller;
         }

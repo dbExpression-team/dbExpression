@@ -23,11 +23,10 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class StringCastFunctionExpression :
         CastFunctionExpression<string>,
         StringElement,
-        AnyStringElement,
         IEquatable<StringCastFunctionExpression>
     {
         #region constructors
-        public StringCastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType, int size)
+        public StringCastFunctionExpression(AnyElement expression, DbTypeExpression convertToDbType, int size)
             : base(expression, convertToDbType, size)
         {
 
@@ -41,15 +40,15 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region like
         public FilterExpressionSet Like(string phrase)
-            => new FilterExpressionSet(new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
+            => new (new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
         #endregion
 
         #region equals
-        public bool Equals(StringCastFunctionExpression obj)
-            => obj is StringCastFunctionExpression && base.Equals(obj);
+        public bool Equals(StringCastFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is StringCastFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is StringCastFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

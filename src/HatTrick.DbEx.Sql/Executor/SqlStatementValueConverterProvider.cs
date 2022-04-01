@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.Sql.Executor
     public class SqlStatementValueConverterProvider : IValueConverterProvider
     {
         #region internals
-        private readonly IEnumerable<IExpressionTypeProvider> typeProviders;
+        private readonly IEnumerable<IExpressionTypeProvider?>? typeProviders;
         private readonly IValueConverterFactory valueConverterFactory;
         #endregion
 
@@ -37,16 +37,16 @@ namespace HatTrick.DbEx.Sql.Executor
             this.valueConverterFactory = valueConverterFactory ?? throw new ArgumentNullException(nameof(valueConverterFactory));
         }
 
-        public SqlStatementValueConverterProvider(IValueConverterFactory valueConverterFactory, IEnumerable<FieldExpression> fieldExpressions)
+        public SqlStatementValueConverterProvider(IValueConverterFactory valueConverterFactory, IEnumerable<FieldExpression?> fieldExpressions)
         {
             this.valueConverterFactory = valueConverterFactory ?? throw new ArgumentNullException(nameof(valueConverterFactory));
             this.typeProviders = fieldExpressions ?? throw new ArgumentNullException(nameof(fieldExpressions));
         }
 
-        public SqlStatementValueConverterProvider(IValueConverterFactory valueConverterFactory, IEnumerable<ParameterizedExpression> outputParameters)
+        public SqlStatementValueConverterProvider(IValueConverterFactory valueConverterFactory, IEnumerable<ParameterizedExpression?> outputParameters)
         {
             this.valueConverterFactory = valueConverterFactory ?? throw new ArgumentNullException(nameof(valueConverterFactory));
-            this.typeProviders = outputParameters ?? throw new ArgumentNullException(nameof(typeProviders));
+            this.typeProviders = outputParameters ?? throw new ArgumentNullException(nameof(outputParameters));
         }
 
         public SqlStatementValueConverterProvider(IValueConverterFactory valueConverterFactory, SelectExpressionSet selectExpressionSet)
@@ -59,16 +59,25 @@ namespace HatTrick.DbEx.Sql.Executor
         #endregion
 
         #region methods
-        public IValueConverter FindConverter(int fieldIndex, Type requestedType, object value)
+        public IValueConverter? FindConverter(int fieldIndex, Type requestedType, object value)
         {
-            var provider = typeProviders?.ElementAt(fieldIndex);
+            IValueConverter? converter;
 
             //provider's declared type takes precedence over requested type (could be requesting an "int", when the declared type is "int?")
-            if (provider is object)
-                return valueConverterFactory.CreateConverter(provider.DeclaredType);
+            var provider = typeProviders?.ElementAt(fieldIndex);
+            if (provider is not null)
+            {
+                converter = valueConverterFactory.CreateConverter(provider.DeclaredType);
+                if (converter is not null)
+                    return converter;
+            }
 
             if (value is DBNull && !requestedType.IsNullableType() && requestedType.IsConvertibleToNullableType())
-                return valueConverterFactory.CreateConverter(typeof(Nullable<>).MakeGenericType(requestedType));
+            {
+                converter = valueConverterFactory.CreateConverter(typeof(Nullable<>).MakeGenericType(requestedType));
+                if (converter is not null)
+                    return converter;
+            }
 
             return valueConverterFactory.CreateConverter(requestedType);
         }

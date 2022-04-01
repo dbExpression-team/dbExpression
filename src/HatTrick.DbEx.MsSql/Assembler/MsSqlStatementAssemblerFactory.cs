@@ -23,11 +23,11 @@ namespace HatTrick.DbEx.MsSql.Assembler
 {
     public class MsSqlStatementAssemblerFactory : SqlStatementAssemblerFactory
     {
-        private static readonly MsSqlSelectSqlStatementAssembler selectSqlStatementAssembler = new MsSqlSelectSqlStatementAssembler();
-        private static readonly MsSqlInsertSqlStatementAssembler insertManySqlStatementAssembler = new MsSqlInsertSqlStatementAssembler();
-        private static readonly MsSqlDeleteSqlStatementAssembler deleteSqlStatementAssembler = new MsSqlDeleteSqlStatementAssembler();
-        private static readonly MsSqlUpdateSqlStatementAssembler updateSqlStatementAssembler = new MsSqlUpdateSqlStatementAssembler();
-        private static readonly MsSqlStoredProcedureSqlStatementAssembler storedProcedureSqlStaementAssembler = new MsSqlStoredProcedureSqlStatementAssembler();
+        private static readonly MsSqlSelectSqlStatementAssembler selectSqlStatementAssembler = new();
+        private static readonly MsSqlInsertSqlStatementAssembler insertManySqlStatementAssembler = new();
+        private static readonly MsSqlDeleteSqlStatementAssembler deleteSqlStatementAssembler = new();
+        private static readonly MsSqlUpdateSqlStatementAssembler updateSqlStatementAssembler = new();
+        private static readonly MsSqlStoredProcedureSqlStatementAssembler storedProcedureSqlStaementAssembler = new();
 
         #region constructors
         public MsSqlStatementAssemblerFactory()

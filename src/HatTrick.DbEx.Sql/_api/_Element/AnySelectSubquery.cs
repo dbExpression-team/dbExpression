@@ -21,7 +21,7 @@
 namespace HatTrick.DbEx.Sql
 {
 #pragma warning disable IDE1006 // Naming Styles
-    public interface AnySelectSubquery : IExpressionElement
+    public interface AnySelectSubquery : IExpressionElement, IQueryExpressionProvider
 #pragma warning restore IDE1006 // Naming Styles
     {
     }

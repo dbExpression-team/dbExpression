@@ -20,14 +20,20 @@
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public abstract class CoalesceFunctionExpression<TValue> : CoalesceFunctionExpression,
-        IExpressionElement<TValue>
+    public class CoalesceFunctionExpression<TValue> : CoalesceFunctionExpression,
+        IExpressionElement<TValue>,
+        AnyElement<TValue>
     {
         #region constructors
-        protected CoalesceFunctionExpression(IEnumerable<IExpressionElement> expressions) : base(expressions, typeof(TValue))
+        public CoalesceFunctionExpression(IList<AnyElement> expressions) : base(expressions, typeof(TValue))
         {
 
         }
+        #endregion
+
+        #region as
+        public AnyElement<TValue> As(string alias)
+            => new SelectExpression<TValue>(this, alias);
         #endregion
     }
 }

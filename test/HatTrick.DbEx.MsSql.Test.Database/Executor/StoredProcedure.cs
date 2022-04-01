@@ -43,7 +43,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var person = db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue().Execute();
 
             //then
-            ((int)person.Id).Should().Be(id);
+            ((int)person!.Id).Should().Be(id);
         }
         
         [Theory]
@@ -57,7 +57,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var person = db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue().Execute();
 
             //then
-            ((object)person).Should().BeNull();
+            ((object?)person).Should().BeNull();
         }
 
         [Theory]
@@ -82,7 +82,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             //when               
-            var persons = db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues(row => new Person { Id = row.ReadField().GetValue<int>() }).Execute();
+            var persons = db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues(row => new Person { Id = row.ReadField()!.GetValue<int>() }).Execute();
 
             //then
             persons.Should().HaveCount(expected);
@@ -167,10 +167,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var count = 0;
 
             //when               
-            var person = db.sp.dbo.SelectPerson_As_Dynamic_With_Input_And_Output(id, p => count = p[nameof(count)].GetValue<int>()).GetValue().Execute();
+            var person = db.sp.dbo.SelectPerson_As_Dynamic_With_Input_And_Output(id, p => count = p[nameof(count)]!.GetValue<int>()).GetValue().Execute();
 
             //then
-            ((int)person.Id).Should().Be(id);
+            ((int)person!.Id).Should().Be(id);
             count.Should().Be(id);
         }
 
@@ -183,7 +183,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var count = 0;
 
             //when               
-            var persons = db.sp.dbo.SelectPerson_As_DynamicList_With_Input_And_Output(id, p => count = p[nameof(count)].GetValue<int>()).GetValues().Execute();
+            var persons = db.sp.dbo.SelectPerson_As_DynamicList_With_Input_And_Output(id, p => count = p[nameof(count)]!.GetValue<int>()).GetValues().Execute();
 
             //then
             persons.Should().HaveCount(expected);
@@ -199,7 +199,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var outCreditLimit = 0;
 
             //when               
-            var personId = db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput(id, creditLimit, p => outCreditLimit = p[nameof(creditLimit)].GetValue<int>()).GetValue<int>().Execute();
+            var personId = db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput(id, creditLimit, p => outCreditLimit = p[nameof(creditLimit)]!.GetValue<int>()).GetValue<int>().Execute();
 
             //then
             personId.Should().Be(id);
@@ -215,7 +215,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var outCreditLimit = 0;
 
             //when               
-            var persons = db.sp.dbo.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput(id, creditLimit, p => outCreditLimit = p[nameof(creditLimit)].GetValue<int>()).GetValues().Execute();
+            var persons = db.sp.dbo.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput(id, creditLimit, p => outCreditLimit = p[nameof(creditLimit)]!.GetValue<int>()).GetValues().Execute();
 
             //then
             persons.Should().HaveCount(expected);
@@ -231,10 +231,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var outCreditLimit = 0;
 
             //when               
-            var person = db.sp.dbo.SelectPerson_As_Dynamic_With_Input_And_InputOutput(id, creditLimit, p => outCreditLimit = p[nameof(creditLimit)].GetValue<int>()).GetValue().Execute();
+            var person = db.sp.dbo.SelectPerson_As_Dynamic_With_Input_And_InputOutput(id, creditLimit, p => outCreditLimit = p[nameof(creditLimit)]!.GetValue<int>()).GetValue().Execute();
 
             //then
-            ((int)person.Id).Should().Be(id);
+            ((int)person!.Id).Should().Be(id);
             outCreditLimit.Should().Be(creditLimit * 2);
         }
 
@@ -247,7 +247,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var outCreditLimit = 0;
 
             //when               
-            var persons = db.sp.dbo.SelectPerson_As_DynamicList_With_Input_And_InputOutput(id, creditLimit, p => outCreditLimit = p[nameof(creditLimit)].GetValue<int>()).GetValues().Execute();
+            var persons = db.sp.dbo.SelectPerson_As_DynamicList_With_Input_And_InputOutput(id, creditLimit, p => outCreditLimit = p[nameof(creditLimit)]!.GetValue<int>()).GetValues().Execute();
 
             //then
             persons.Should().HaveCount(expected);
@@ -315,7 +315,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var person = await db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue().ExecuteAsync();
 
             //then
-            ((int)person.Id).Should().Be(id);
+            ((int)person!.Id).Should().Be(id);
         }
 
         [Theory]
@@ -329,7 +329,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var person = await db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue().ExecuteAsync();
 
             //then
-            ((object)person).Should().BeNull();
+            ((object?)person).Should().BeNull();
         }
 
         [Theory]
@@ -354,7 +354,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             //when               
-            var persons = await db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues(row => new Person { Id = row.ReadField().GetValue<int>() }).ExecuteAsync();
+            var persons = await db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues(row => new Person { Id = row.ReadField()!.GetValue<int>() }).ExecuteAsync();
 
             //then
             persons.Should().HaveCount(expected);
@@ -439,10 +439,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var count = 0;
 
             //when               
-            var person = await db.sp.dbo.SelectPerson_As_Dynamic_With_Input_And_Output(id, p => count = p[nameof(count)].GetValue<int>()).GetValue().ExecuteAsync();
+            var person = await db.sp.dbo.SelectPerson_As_Dynamic_With_Input_And_Output(id, p => count = p[nameof(count)]!.GetValue<int>()).GetValue().ExecuteAsync();
 
             //then
-            ((int)person.Id).Should().Be(id);
+            ((int)person!.Id).Should().Be(id);
             count.Should().Be(id);
         }
 
@@ -455,7 +455,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var count = 0;
 
             //when               
-            var persons = await db.sp.dbo.SelectPerson_As_DynamicList_With_Input_And_Output(id, p => count = p[nameof(count)].GetValue<int>()).GetValues().ExecuteAsync();
+            var persons = await db.sp.dbo.SelectPerson_As_DynamicList_With_Input_And_Output(id, p => count = p[nameof(count)]!.GetValue<int>()).GetValues().ExecuteAsync();
 
             //then
             persons.Should().HaveCount(expected);
@@ -471,7 +471,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var outCreditLimit = 0;
 
             //when               
-            var personId = await db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput(id, creditLimit, p => outCreditLimit = p[nameof(creditLimit)].GetValue<int>()).GetValue<int>().ExecuteAsync();
+            var personId = await db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput(id, creditLimit, p => outCreditLimit = p[nameof(creditLimit)]!.GetValue<int>()).GetValue<int>().ExecuteAsync();
 
             //then
             personId.Should().Be(id);
@@ -487,7 +487,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var outCreditLimit = 0;
 
             //when               
-            var persons = await db.sp.dbo.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput(id, creditLimit, p => outCreditLimit = p[nameof(creditLimit)].GetValue<int>()).GetValues().ExecuteAsync();
+            var persons = await db.sp.dbo.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput(id, creditLimit, p => outCreditLimit = p[nameof(creditLimit)]!.GetValue<int>()).GetValues().ExecuteAsync();
 
             //then
             persons.Should().HaveCount(expected);
@@ -503,10 +503,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var outCreditLimit = 0;
 
             //when               
-            var person = await db.sp.dbo.SelectPerson_As_Dynamic_With_Input_And_InputOutput(id, creditLimit, p => outCreditLimit = p[nameof(creditLimit)].GetValue<int>()).GetValue().ExecuteAsync();
+            var person = await db.sp.dbo.SelectPerson_As_Dynamic_With_Input_And_InputOutput(id, creditLimit, p => outCreditLimit = p[nameof(creditLimit)]!.GetValue<int>()).GetValue().ExecuteAsync();
 
             //then
-            ((int)person.Id).Should().Be(id);
+            ((int)person!.Id).Should().Be(id);
             outCreditLimit.Should().Be(creditLimit * 2);
         }
 
@@ -519,7 +519,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var outCreditLimit = 0;
 
             //when               
-            var persons = await db.sp.dbo.SelectPerson_As_DynamicList_With_Input_And_InputOutput(id, creditLimit, p => outCreditLimit = p[nameof(creditLimit)].GetValue<int>()).GetValues().ExecuteAsync();
+            var persons = await db.sp.dbo.SelectPerson_As_DynamicList_With_Input_And_InputOutput(id, creditLimit, p => outCreditLimit = p[nameof(creditLimit)]!.GetValue<int>()).GetValues().ExecuteAsync();
 
             //then
             persons.Should().HaveCount(expected);

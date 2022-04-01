@@ -25,52 +25,31 @@ namespace HatTrick.DbEx.MsSql.Expression
     public partial class NullableInt64RoundFunctionExpression :
         NullableRoundFunctionExpression<long,long?>,
         NullableInt64Element,
-        AnyInt64Element,
         IEquatable<NullableInt64RoundFunctionExpression>
     {
         #region constructors
-        public NullableInt64RoundFunctionExpression(NullableInt64Element expression, IntegralNumericElement length) : base(expression, length)
+        public NullableInt64RoundFunctionExpression(AnyElement<long?> expression, AnyElement length) : base(expression, length)
         {
 
         }
 
-        public NullableInt64RoundFunctionExpression(NullableInt64Element expression, IntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
-        {
-
-        }
-
-        public NullableInt64RoundFunctionExpression(NullableInt64Element expression, NullableIntegralNumericElement length) : base(expression, length)
-        {
-
-        }
-
-        public NullableInt64RoundFunctionExpression(NullableInt64Element expression, NullableIntegralNumericElement length, IntegralNumericElement function) : base(expression, length, function)
-        {
-
-        }
-
-        public NullableInt64RoundFunctionExpression(NullableInt64Element expression, IntegralNumericElement length, NullableIntegralNumericElement function) : base(expression, length, function)
-        {
-
-        }
-
-        public NullableInt64RoundFunctionExpression(NullableInt64Element expression, NullableIntegralNumericElement length, NullableIntegralNumericElement function) : base(expression, length, function)
+        public NullableInt64RoundFunctionExpression(AnyElement<long?> expression, AnyElement length, AnyElement function) : base(expression, length, function)
         {
 
         }
         #endregion
 
         #region as
-        public NullableInt64Element As(string alias)
-             => new NullableInt64SelectExpression(this).As(alias);
+        public AnyElement<long?> As(string alias)
+             => new SelectExpression<long?>(this).As(alias);
         #endregion
 
         #region equals
-        public bool Equals(NullableInt64RoundFunctionExpression obj)
-            => obj is NullableInt64RoundFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableInt64RoundFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableInt64RoundFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableInt64RoundFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

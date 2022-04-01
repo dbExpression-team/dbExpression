@@ -34,6 +34,6 @@ namespace HatTrick.DbEx.Sql
         /// </para>
         /// </summary>
         /// <returns><see cref="InsertEntitiesTermination{TEntity}"/>, a fluent continuation for the construction of a sql INSERT query expression for inserting <typeparamref name="TEntity"/> entities.</returns>
-        InsertEntitiesTermination<TEntity> Into(Entity<TEntity> entity);
+        InsertEntitiesTermination<TEntity> Into(Table<TEntity> entity);
     }
 }

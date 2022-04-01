@@ -20,6 +20,6 @@
 {
     public abstract class QueryExpression : IExpressionElement
     {
-        public IEntityExpression BaseEntity { get; set; }
+        public Table? BaseEntity { get; set; }
     }    
 }

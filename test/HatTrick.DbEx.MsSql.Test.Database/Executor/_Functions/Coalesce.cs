@@ -1,4 +1,5 @@
-﻿using DbEx.DataService;
+﻿using DbEx.Data;
+using DbEx.DataService;
 using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
@@ -25,7 +26,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ).From(dbo.Purchase);
 
             //when               
-            IList<DateTime?> dates = exp.Execute();
+            IList<object?> dates = exp.Execute();
 
             //then
             dates.Should().HaveCount(expected);
@@ -46,7 +47,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ).From(dbo.Purchase);
 
             //when               
-            IList<DateTime?> dates = exp.Execute();
+            IList<object?> dates = exp.Execute();
 
             //then
             dates.Should().HaveCount(expected);
@@ -90,7 +91,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ).From(dbo.Purchase);
 
             //when               
-            IList<DateTime> dates = exp.Execute();
+            IList<object?> dates = exp.Execute();
 
             //then
             dates.Should().HaveCount(expected);
@@ -112,7 +113,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ).From(dbo.Purchase);
 
             //when               
-            IList<DateTime> dates = exp.Execute();
+            IList<object?> dates = exp.Execute();
 
             //then
             dates.Should().HaveCount(expected);
@@ -129,12 +130,12 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     db.fx.Coalesce(
                         dbo.Purchase.ShipDate,
                         dbo.Purchase.ExpectedDeliveryDate,
-                        (DateTime?)null
+                        (DateTime?)null!
                     ).As("relevant_date")
                 ).From(dbo.Purchase);
 
             //when               
-            IList<DateTime?> dates = exp.Execute();
+            IList<object?> dates = exp.Execute();
 
             //then
             dates.Should().HaveCount(expected);
@@ -156,7 +157,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ).From(dbo.Purchase);
 
             //when               
-            IList<DateTime?> dates = exp.Execute();
+            IList<object?> dates = exp.Execute();
 
             //then
             dates.Should().HaveCount(expected);
@@ -176,10 +177,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .OrderBy(db.fx.Coalesce(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate));
 
             //when               
-            DateTime? result = exp.Execute();
+            object? result = exp.Execute();
 
             //then
-            result.Value.Year.Should().Be(expected);
+            result.Should().BeOfType<DateTime>().Which.Year.Should().Be(expected);
         }
 
         [Theory]
@@ -196,10 +197,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .OrderBy(db.fx.Coalesce(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate).Desc);
 
             //when               
-            DateTime? result = exp.Execute();
+            object? result = exp.Execute();
 
             //then
-            result.Value.Year.Should().Be(expected);
+            result.Should().BeOfType<DateTime>().Which.Year.Should().Be(expected);
         }
 
         [Theory]
@@ -216,10 +217,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .OrderBy(db.fx.Coalesce(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate));
 
             //when               
-            DateTime? result = exp.Execute();
+            object? result = exp.Execute();
 
             //then
-            result.Value.Year.Should().Be(expected);
+            result.Should().BeOfType<DateTime>().Which.Year.Should().Be(expected);
         }
 
         [Theory]
@@ -236,10 +237,49 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .OrderBy(db.fx.Coalesce(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate).Desc);
 
             //when               
-            DateTime? result = exp.Execute();
+            object? result = exp.Execute();
 
             //then
-            result.Value.Year.Should().Be(expected);
+            result.Should().BeOfType<DateTime>().Which.Year.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_coalesce_of_ship_date_and_expected_delivery_date_with_aliasing_succeed(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectOne(
+                   db.fx.Coalesce(dbo.Purchase.ShipDate, dbo.Purchase.ExpectedDeliveryDate).As("alias")
+                ).From(dbo.Purchase)
+                .Where(dbo.Purchase.ShipDate == DBNull.Value & dbo.Purchase.ExpectedDeliveryDate == DBNull.Value);
+
+            //when               
+            object? result = exp.Execute();
+
+            //then
+            result.Should().BeNull();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_coalesce_of_ship_date_and_expected_delivery_date_and_id_with_aliasing_succeed(int version, int expected = 13)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectOne(
+                   db.fx.Coalesce(dbo.Purchase.ShipDate, dbo.Purchase.ExpectedDeliveryDate, dbo.Purchase.Id).As("alias")
+                ).From(dbo.Purchase)
+                .Where(dbo.Purchase.Id == 13)
+                .OrderBy(dbo.Purchase.Id);
+
+            //when               
+            object? result = exp.Execute();
+
+            //then
+            result.Should().BeOfType<DateTime>().Which.Should().Be(new DateTime(1900, 1, expected + 1)); //sql server returns "1900-01-01" as the default for datetime
         }
 
         [Theory]
@@ -255,7 +295,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .GroupBy(db.fx.Coalesce(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate));
 
             //when               
-            IList<DateTime?> dates = exp.Execute();
+            IList<object?> dates = exp.Execute();
 
             //then
             dates.Should().HaveCount(expected);
@@ -274,7 +314,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .GroupBy(db.fx.Coalesce(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate));
 
             //when               
-            IList<DateTime?> dates = exp.Execute();
+            IList<object?> dates = exp.Execute();
 
             //then
             dates.Should().HaveCount(expected);
@@ -292,7 +332,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ).From(dbo.Purchase);
 
             //when               
-            IList<DateTime?> dates = exp.Execute();
+            IList<object?> dates = exp.Execute();
 
             //then
             dates.Should().HaveCount(expected);
@@ -306,11 +346,11 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(
-                    db.fx.Coalesce(dbo.Purchase.ShipDate, dbo.Purchase.ExpectedDeliveryDate, (DateTime?)null).As("relevant_date")
+                    db.fx.Coalesce(dbo.Purchase.ShipDate, dbo.Purchase.ExpectedDeliveryDate, (DateTime?)null!).As("relevant_date")
                 ).From(dbo.Purchase);
 
             //when               
-            IList<DateTime?> dates = exp.Execute();
+            IList<object?> dates = exp.Execute();
 
             //then
             dates.Should().HaveCount(expected);
@@ -329,10 +369,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Where(dbo.Product.ValidStartTimeOfDayForPurchase == DBNull.Value & dbo.Product.ValidEndTimeOfDayForPurchase == DBNull.Value);
 
             //when               
-            IList<TimeSpan> dates = exp.Execute();
+            IList<object?> dates = exp.Execute();
 
             //then
-            dates.Should().OnlyContain(x => x == TimeSpan.FromHours(expected));
+            dates.Should().OnlyContain(x => (TimeSpan?)x == TimeSpan.FromHours(expected));
         }
 
         [Theory]
@@ -343,15 +383,72 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(
-                    db.fx.Coalesce(dbo.Product.ValidStartTimeOfDayForPurchase, dbo.Product.ValidEndTimeOfDayForPurchase, (TimeSpan?)null).As("relevant_date")
+                    db.fx.Coalesce(dbo.Product.ValidStartTimeOfDayForPurchase, dbo.Product.ValidEndTimeOfDayForPurchase, (TimeSpan?)null!).As("relevant_date")
                 ).From(dbo.Product)
                 .Where(dbo.Product.ValidStartTimeOfDayForPurchase == DBNull.Value & dbo.Product.ValidEndTimeOfDayForPurchase == DBNull.Value);
 
             //when               
-            IList<TimeSpan?> dates = exp.Execute();
+            IList<object?> dates = exp.Execute();
 
             //then
             dates.Should().OnlyContain(x => x == null);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_coalesce_of_productcategorytype_for_product_and_terminate_with_null_succeed(int version, int expectedCount = 1)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectMany(
+                    db.fx.Coalesce(dbo.Product.ProductCategoryType, dbo.Product.ProductCategoryType, (ProductCategoryType?)null!).As("relevant")
+                ).From(dbo.Product)
+                .Where(dbo.Product.ProductCategoryType == DBNull.Value);
+
+            //when               
+            IList<ProductCategoryType?> types = exp.Execute();
+
+            //then
+            types.Should().OnlyContain(x => x == null).And.HaveCount(expectedCount);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_coalesce_of_productcategorytype_for_product_and_terminate_with_valid_productcategorytype_succeed(int version, int expectedCount = 1)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectMany(
+                    db.fx.Coalesce(dbo.Product.ProductCategoryType, dbo.Product.ProductCategoryType, ProductCategoryType.Books).As("relevant")
+                ).From(dbo.Product)
+                .Where(dbo.Product.ProductCategoryType == DBNull.Value);
+
+            //when               
+            IList<ProductCategoryType> types = exp.Execute();
+
+            //then
+            types.Should().OnlyContain(x => x == ProductCategoryType.Books).And.HaveCount(expectedCount);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_coalesce_of_productcategorytype_for_product_and_terminate_with_productcategorytype_succeed(int version, int expectedCount = 1)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectMany(
+                    db.fx.Coalesce(dbo.Product.ProductCategoryType, dbo.Product.ProductCategoryType, dbo.Product.ProductCategoryType).As("relevant")
+                ).From(dbo.Product)
+                .Where(dbo.Product.ProductCategoryType == DBNull.Value);
+
+            //when               
+            IList<ProductCategoryType?> types = exp.Execute();
+
+            //then
+            types.Should().OnlyContain(x => x == null).And.HaveCount(expectedCount);
         }
     }
 }

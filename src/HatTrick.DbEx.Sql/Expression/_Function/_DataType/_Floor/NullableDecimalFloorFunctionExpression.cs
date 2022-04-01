@@ -23,27 +23,26 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableDecimalFloorFunctionExpression :
         NullableFloorFunctionExpression<decimal,decimal?>,
         NullableDecimalElement,
-        AnyDecimalElement,
         IEquatable<NullableDecimalFloorFunctionExpression>
     {
         #region constructors
-        public NullableDecimalFloorFunctionExpression(NullableDecimalElement expression) : base(expression)
+        public NullableDecimalFloorFunctionExpression(AnyElement<decimal?> expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public NullableDecimalElement As(string alias)
-            => new NullableDecimalSelectExpression(this).As(alias);
+        public AnyElement<decimal?> As(string alias)
+            => new SelectExpression<decimal?>(this).As(alias);
         #endregion
 
         #region equals
-        public bool Equals(NullableDecimalFloorFunctionExpression obj)
-            => obj is NullableDecimalFloorFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableDecimalFloorFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableDecimalFloorFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableDecimalFloorFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

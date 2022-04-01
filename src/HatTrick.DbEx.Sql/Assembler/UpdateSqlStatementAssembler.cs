@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         #region methods
         public override void AssembleStatement(QueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            if (!(expression is UpdateQueryExpression update))
+            if (expression is not UpdateQueryExpression update)
                 throw new DbExpressionException($"Expected {nameof(expression)} to be of type {nameof(UpdateQueryExpression)}, but is actually type {expression.GetType()}");
 
             AssembleStatement(update, builder, context);
@@ -39,7 +39,7 @@ namespace HatTrick.DbEx.Sql.Assembler
 
             if (expression.Top.HasValue)
             {
-                builder.Appender.Write(" TOP(").Write(expression.Top.ToString()).Write(")");
+                builder.Appender.Write(" TOP(").Write(expression.Top.Value.ToString()).Write(")");
             }
 
             builder.Appender.LineBreak()
@@ -48,7 +48,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             context.PushEntityAppendStyle(EntityExpressionAppendStyle.None);
             try
             {
-                builder.AppendElement(expression.BaseEntity, context);
+                builder.AppendElement(expression.BaseEntity ?? throw new DbExpressionException("Expected base entity to not be null"), context);
             }
             finally
             {
@@ -99,7 +99,11 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         protected virtual void AppendWhereClause(UpdateQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            if (expression.Where?.LeftArg is null && expression.Where?.RightArg is null)
+            if (expression.Where is null)
+                return;
+
+            var elements = (expression.Where as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>)?.Expression;
+            if (elements?.LeftArg is null && elements?.RightArg is null)
                 return;
 
             builder.Appender.Indent().Write("WHERE")

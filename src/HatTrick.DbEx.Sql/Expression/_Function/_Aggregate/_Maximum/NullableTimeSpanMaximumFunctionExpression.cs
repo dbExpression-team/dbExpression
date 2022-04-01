@@ -23,11 +23,10 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableTimeSpanMaximumFunctionExpression :
         NullableMaximumFunctionExpression<TimeSpan,TimeSpan?>,
         NullableTimeSpanElement,
-        AnyTimeSpanElement,
         IEquatable<NullableTimeSpanMaximumFunctionExpression>
     {
         #region constructors
-        public NullableTimeSpanMaximumFunctionExpression(NullableTimeSpanElement expression) 
+        public NullableTimeSpanMaximumFunctionExpression(AnyElement<TimeSpan?> expression) 
             : base(expression)
         {
 
@@ -35,12 +34,12 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public NullableTimeSpanElement As(string alias)
-            => new NullableTimeSpanSelectExpression(this).As(alias);
+        public AnyElement<TimeSpan?> As(string alias)
+            => new SelectExpression<TimeSpan?>(this).As(alias);
         #endregion
 
         #region distinct
-        public NullableTimeSpanMaximumFunctionExpression Distinct()
+        public new NullableTimeSpanMaximumFunctionExpression Distinct()
         {
             IsDistinct = true;
             return this;
@@ -48,11 +47,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(NullableTimeSpanMaximumFunctionExpression obj)
-            => obj is NullableTimeSpanMaximumFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableTimeSpanMaximumFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableTimeSpanMaximumFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableTimeSpanMaximumFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

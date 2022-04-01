@@ -23,11 +23,15 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class StringReplaceFunctionExpression :
         ReplaceFunctionExpression<string>,
         StringElement,
-        AnyStringElement,
         IEquatable<StringReplaceFunctionExpression>
     {
         #region constructors
-        public StringReplaceFunctionExpression(StringElement expression, StringElement pattern, StringElement replacement) : base(expression, pattern, replacement)
+        public StringReplaceFunctionExpression(AnyStringElement expression, AnyElement pattern, AnyElement replacement) : base(expression, pattern, replacement)
+        {
+
+        }
+
+        public StringReplaceFunctionExpression(AnyElement<string?> expression, AnyElement pattern, AnyElement replacement) : base(expression, pattern, replacement)
         {
 
         }
@@ -40,15 +44,15 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region like
         public FilterExpressionSet Like(string phrase)
-            => new FilterExpressionSet(new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
+            => new(new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
         #endregion
 
         #region equals
-        public bool Equals(StringReplaceFunctionExpression obj)
-            => obj is StringReplaceFunctionExpression && base.Equals(obj);
+        public bool Equals(StringReplaceFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is StringReplaceFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is StringReplaceFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

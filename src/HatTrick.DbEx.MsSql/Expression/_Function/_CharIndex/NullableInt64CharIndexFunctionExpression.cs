@@ -25,107 +25,94 @@ namespace HatTrick.DbEx.MsSql.Expression
     public partial class NullableInt64CharIndexFunctionExpression :
         NullableCharIndexFunctionExpression<long,long?>,
         NullableInt64Element,
-        AnyInt64Element,
         IEquatable<NullableInt64CharIndexFunctionExpression>
     {
         #region constructors
-        public NullableInt64CharIndexFunctionExpression(NullableStringElement pattern, NullableStringElement expression) : base(pattern, expression)
+        public NullableInt64CharIndexFunctionExpression(NullableStringElement pattern, AnyStringElement expression) : base(pattern, expression)
         {
 
         }
 
-        public NullableInt64CharIndexFunctionExpression(NullableStringElement pattern, NullableStringElement expression, Int64Element startSearchPosition) : base(pattern, expression, startSearchPosition)
+        public NullableInt64CharIndexFunctionExpression(NullableStringElement pattern, AnyStringElement expression, AnyElement<long> startSearchPosition) : base(pattern, expression, startSearchPosition)
         {
 
         }
 
-        public NullableInt64CharIndexFunctionExpression(NullableStringElement pattern, NullableStringElement expression, Int32Element startSearchPosition) : base(pattern, expression, startSearchPosition)
+        public NullableInt64CharIndexFunctionExpression(NullableStringElement pattern, AnyStringElement expression, AnyElement<int> startSearchPosition) : base(pattern, expression, startSearchPosition)
         {
 
         }
 
-        public NullableInt64CharIndexFunctionExpression(NullableStringElement pattern, NullableStringElement expression, NullableInt64Element startSearchPosition) : base(pattern, expression, startSearchPosition)
+        public NullableInt64CharIndexFunctionExpression(NullableStringElement pattern, AnyStringElement expression, AnyElement<long?> startSearchPosition) : base(pattern, expression, startSearchPosition)
         {
 
         }
 
-        public NullableInt64CharIndexFunctionExpression(NullableStringElement pattern, NullableStringElement expression, NullableInt32Element startSearchPosition) : base(pattern, expression, startSearchPosition)
+        public NullableInt64CharIndexFunctionExpression(NullableStringElement pattern, AnyStringElement expression, AnyElement<int?> startSearchPosition) : base(pattern, expression, startSearchPosition)
         {
 
         }
 
-        public NullableInt64CharIndexFunctionExpression(StringElement pattern, NullableStringElement expression) : base(pattern, expression)
+        public NullableInt64CharIndexFunctionExpression(AnyStringElement pattern, NullableStringElement expression) : base(pattern, expression)
         {
 
         }
 
-        public NullableInt64CharIndexFunctionExpression(StringElement pattern, NullableStringElement expression, Int64Element startSearchPosition) : base(pattern, expression, startSearchPosition)
+        public NullableInt64CharIndexFunctionExpression(AnyStringElement pattern, NullableStringElement expression, AnyElement<long> startSearchPosition) : base(pattern, expression, startSearchPosition)
         {
 
         }
 
-        public NullableInt64CharIndexFunctionExpression(StringElement pattern, NullableStringElement expression, Int32Element startSearchPosition) : base(pattern, expression, startSearchPosition)
+        public NullableInt64CharIndexFunctionExpression(AnyStringElement pattern, NullableStringElement expression, AnyElement<int> startSearchPosition) : base(pattern, expression, startSearchPosition)
         {
 
         }
 
-        public NullableInt64CharIndexFunctionExpression(StringElement pattern, NullableStringElement expression, NullableInt64Element startSearchPosition) : base(pattern, expression, startSearchPosition)
+        public NullableInt64CharIndexFunctionExpression(AnyStringElement pattern, NullableStringElement expression, AnyElement<long?> startSearchPosition) : base(pattern, expression, startSearchPosition)
         {
 
         }
 
-        public NullableInt64CharIndexFunctionExpression(StringElement pattern, NullableStringElement expression, NullableInt32Element startSearchPosition) : base(pattern, expression, startSearchPosition)
+        public NullableInt64CharIndexFunctionExpression(AnyStringElement pattern, NullableStringElement expression, AnyElement<int?> startSearchPosition) : base(pattern, expression, startSearchPosition)
         {
 
         }
 
-        public NullableInt64CharIndexFunctionExpression(StringElement pattern, StringElement expression, NullableInt64Element startSearchPosition) : base(pattern, expression, startSearchPosition)
+        public NullableInt64CharIndexFunctionExpression(NullableStringExpressionMediator pattern, NullableStringExpressionMediator expression) : base(pattern, expression)
+        {
+
+        }
+        public NullableInt64CharIndexFunctionExpression(NullableStringExpressionMediator pattern, NullableStringExpressionMediator expression, AnyElement<int> startSearchPosition) : base(pattern, expression, startSearchPosition)
         {
 
         }
 
-        public NullableInt64CharIndexFunctionExpression(StringElement pattern, StringElement expression, NullableInt32Element startSearchPosition) : base(pattern, expression, startSearchPosition)
+        public NullableInt64CharIndexFunctionExpression(NullableStringExpressionMediator pattern, NullableStringExpressionMediator expression, AnyElement<int?> startSearchPosition) : base(pattern, expression, startSearchPosition)
         {
 
         }
-
-        public NullableInt64CharIndexFunctionExpression(NullableStringElement pattern, StringElement expression) : base(pattern, expression)
+        
+        public NullableInt64CharIndexFunctionExpression(NullableStringExpressionMediator pattern, NullableStringExpressionMediator expression, AnyElement<long> startSearchPosition) : base(pattern, expression, startSearchPosition)
         {
 
         }
-
-        public NullableInt64CharIndexFunctionExpression(NullableStringElement pattern, StringElement expression, Int64Element startSearchPosition) : base(pattern, expression, startSearchPosition)
-        {
-
-        }
-
-        public NullableInt64CharIndexFunctionExpression(NullableStringElement pattern, StringElement expression, Int32Element startSearchPosition) : base(pattern, expression, startSearchPosition)
-        {
-
-        }
-
-        public NullableInt64CharIndexFunctionExpression(NullableStringElement pattern, StringElement expression, NullableInt64Element startSearchPosition) : base(pattern, expression, startSearchPosition)
-        {
-
-        }
-
-        public NullableInt64CharIndexFunctionExpression(NullableStringElement pattern, StringElement expression, NullableInt32Element startSearchPosition) : base(pattern, expression, startSearchPosition)
+        public NullableInt64CharIndexFunctionExpression(NullableStringExpressionMediator pattern, NullableStringExpressionMediator expression, AnyElement<long?> startSearchPosition) : base(pattern, expression, startSearchPosition)
         {
 
         }
         #endregion
 
         #region as
-        public NullableInt64Element As(string alias)
-            => new NullableInt64SelectExpression(this).As(alias);
+        public AnyElement<long?> As(string alias)
+            => new SelectExpression<long?>(this).As(alias);
         #endregion
 
         #region equals
-        public bool Equals(NullableInt64CharIndexFunctionExpression obj)
-            => obj is NullableInt64CharIndexFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableInt64CharIndexFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableInt64CharIndexFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableInt64CharIndexFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

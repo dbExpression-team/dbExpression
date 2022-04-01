@@ -5,7 +5,7 @@
     {{
         public {:procedureExpressionName}StoredProcedure(
             string identifier
-            ,SchemaExpression schema
+            ,Schema schema
             {#each $.Parameters}
             {#if $.ParameterExpression.RequiresInput}
             ,{$.ParameterExpression.Type.NullableAlias} {($.ParameterExpression.Name, "@") => TrimStart}
@@ -14,21 +14,11 @@
             {#if $.HasOutputParameters}
             ,Action<ISqlOutputParameterList> outputParameters
             {/if}
-        ) : base(
-                $"{{identifier}}.{:procedureName}"
-                ,"{:procedureName}"
-                ,schema
-                {?var:isFirst = true}
-                ,new List<ParameterExpression> 
-                {{ 
-                    {#each $.Parameters}
-                    {+#if !:isFirst},{+/if}{+?:isFirst = false}new ParameterExpression<{$.ParameterExpression.Type.NullableAlias}>($"{{identifier}}.{:procedureName}.{$.Parameter.Name}", "{($.ParameterExpression.Name, "@") => TrimStart}"{#if $.ParameterExpression.RequiresInput}, {($.ParameterExpression.Name, "@") => TrimStart}{/if}, ParameterDirection.{$.ParameterExpression.Direction})
-                    {/each}
-                }}
-                {#if $.HasOutputParameters}
-                ,outputParameters
-                {/if}
-            )
-        {{ }}
+        ) : base($"{{identifier}}.{:procedureName}", "{:procedureName}", schema{#if $.HasOutputParameters}, outputParameters{/if})
+        {{ 
+            {#each $.Parameters}
+            Attributes.Parameters.Add("{($.ParameterExpression.Name, "@") => TrimStart}", new ParameterExpression<{$.ParameterExpression.Type.NullableAlias}>($"{{identifier}}.{:procedureName}.{$.Parameter.Name}", "{($.ParameterExpression.Name, "@") => TrimStart}"{#if $.ParameterExpression.RequiresInput}, {($.ParameterExpression.Name, "@") => TrimStart}{/if}, ParameterDirection.{$.ParameterExpression.Direction}));
+            {/each}
+        }}
     }}
     #endregion

@@ -23,23 +23,17 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class TimeSpanMinimumFunctionExpression :
         MinimumFunctionExpression<TimeSpan>,
         TimeSpanElement,
-        AnyTimeSpanElement,
         IEquatable<TimeSpanMinimumFunctionExpression>
     {
         #region constructors
-        public TimeSpanMinimumFunctionExpression(TimeSpanElement expression) : base(expression)
+        public TimeSpanMinimumFunctionExpression(AnyElement<TimeSpan> expression) : base(expression)
         {
 
         }
         #endregion
 
-        #region as
-        public TimeSpanElement As(string alias)
-            => new TimeSpanSelectExpression(this).As(alias);
-        #endregion
-
         #region distinct
-        public TimeSpanMinimumFunctionExpression Distinct()
+        public new TimeSpanMinimumFunctionExpression Distinct()
         {
             IsDistinct = true;
             return this;
@@ -47,11 +41,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(TimeSpanMinimumFunctionExpression obj)
-            => obj is TimeSpanMinimumFunctionExpression && base.Equals(obj);
+        public bool Equals(TimeSpanMinimumFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is TimeSpanMinimumFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is TimeSpanMinimumFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

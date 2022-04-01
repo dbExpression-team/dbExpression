@@ -21,13 +21,30 @@ using System;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableStringLeftFunctionExpression :
-        NullableLeftFunctionExpression<string,string>,
+        NullableLeftFunctionExpression<string,string?>,
         NullableStringElement,
-        AnyStringElement,
         IEquatable<NullableStringLeftFunctionExpression>
     {
         #region constructors
-        public NullableStringLeftFunctionExpression(NullableStringElement expression, Int32Element characterCount) 
+        public NullableStringLeftFunctionExpression(AnyElement<string?> expression, AnyElement<int> characterCount)
+            : base(expression, characterCount)
+        {
+
+        }
+
+        public NullableStringLeftFunctionExpression(NullableStringElement expression, AnyElement<int> characterCount)
+            : base(expression, characterCount)
+        {
+
+        }
+
+        public NullableStringLeftFunctionExpression(NullableStringElement expression, AnyElement<int?> characterCount)
+            : base(expression, characterCount)
+        {
+
+        }
+
+        public NullableStringLeftFunctionExpression(StringElement expression, AnyElement<int?> characterCount)
             : base(expression, characterCount)
         {
 
@@ -41,15 +58,15 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region like
         public FilterExpressionSet Like(string phrase)
-            => new FilterExpressionSet(new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
+            => new(new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
         #endregion
 
         #region equals
-        public bool Equals(NullableStringLeftFunctionExpression obj)
-            => obj is NullableStringLeftFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableStringLeftFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is NullableStringLeftFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is NullableStringLeftFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

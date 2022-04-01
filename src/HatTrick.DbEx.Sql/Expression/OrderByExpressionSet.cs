@@ -24,7 +24,8 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public class OrderByExpressionSet :
         AnyOrderByClause,
-        IExpressionListProvider<AnyOrderByClause>
+        IExpressionListProvider<AnyOrderByClause>,
+        IEquatable<OrderByExpressionSet>
     {
         #region interface
         public IEnumerable<AnyOrderByClause> Expressions { get; private set; }  = new List<AnyOrderByClause>();
@@ -32,8 +33,8 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region constructors
         private OrderByExpressionSet()
-        { 
-        
+        {
+
         }
 
         public OrderByExpressionSet(AnyOrderByClause orderBy)
@@ -57,30 +58,69 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region to string
-        public override string ToString() => string.Join(", ", Expressions.Select(g => g.ToString()));
+        public override string? ToString() => string.Join(", ", Expressions.Select(g => g.ToString()));
+        #endregion
+
+        #region equals
+        public bool Equals(OrderByExpressionSet? obj)
+        {
+            if (obj is null) return false;
+            if (ReferenceEquals(this, obj)) return true;
+
+            if (!Expressions.SequenceEqual(obj.Expressions)) return false;
+
+            return true;
+        }
+
+        public override bool Equals(object? obj)
+            => obj is OrderByExpressionSet exp && Equals(exp);
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                const int @base = (int)2166136261;
+                const int multiplier = 16777619;
+
+                int hash = @base;
+                foreach (var expression in Expressions)
+                    hash = (hash * multiplier) ^ (expression is not null ? expression.GetHashCode() : 0);
+                return hash;
+            }
+        }
         #endregion
 
         #region condition & operators
-        public static OrderByExpressionSet operator &(OrderByExpressionSet aSet, OrderByExpression b)
+        public static OrderByExpressionSet operator &(OrderByExpressionSet? a, OrderByExpression? b)
         {
-            if (aSet is null)
+            if (a is null && b is null)
+                return new();
+
+            if (a is null)
             {
-                aSet = b;
+                a = new(b!);
             }
-            else
+            else if (b is not null)
             {
-                aSet.Expressions = aSet.Expressions.Concat(new AnyOrderByClause[1] { b });
+                a.Expressions = a.Expressions.Concat(new AnyOrderByClause[1] { b });
             }
-            return aSet;
+            return a;
+
         }
 
-        public static OrderByExpressionSet operator &(OrderByExpressionSet aSet, OrderByExpressionSet bSet)
+        public static OrderByExpressionSet operator &(OrderByExpressionSet? a, OrderByExpressionSet? b)
         {
-            if (aSet is null)
-                return bSet;
+            if (a is null && b is null)
+                return new();
 
-            aSet.Expressions = aSet.Expressions.Concat(bSet?.Expressions);
-            return aSet;
+            if (a is null)
+                return b!;
+
+            if (b?.Expressions is null)
+                return a;
+
+            a.Expressions = a.Expressions.Concat(b.Expressions);
+            return a;
         }
         #endregion
     }

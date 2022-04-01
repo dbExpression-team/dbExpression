@@ -24,7 +24,11 @@ namespace HatTrick.DbEx.Sql.Assembler
     {
         #region methods
         public override void AppendElement(DbTypeExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
-            => builder.Appender.Write(expression.Expression.ToString());
+        {
+            var value = expression.Expression.ToString();
+            if (!string.IsNullOrWhiteSpace(value))
+                builder.Appender.Write(value);
+        }
         #endregion
     }
 }

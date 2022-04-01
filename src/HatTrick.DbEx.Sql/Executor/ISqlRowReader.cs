@@ -22,7 +22,7 @@ namespace HatTrick.DbEx.Sql.Executor
 {
     public interface ISqlRowReader : IDisposable
     {
-        ISqlFieldReader ReadRow();
+        ISqlFieldReader? ReadRow();
         void Close();
     }
 }

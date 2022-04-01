@@ -23,26 +23,25 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class StringSubstringFunctionExpression :
         SubstringFunctionExpression<string>,
         StringElement,
-        AnyStringElement,
         IEquatable<StringSubstringFunctionExpression>
     {
         #region constructors
-        public StringSubstringFunctionExpression(StringElement expression, Int32Element start, Int32Element length) : base(expression, start, length)
+        public StringSubstringFunctionExpression(StringElement expression, AnyElement<int> start, AnyElement<int> length) : base(expression, start, length)
         {
 
         }
 
-        public StringSubstringFunctionExpression(StringElement expression, Int32Element start, Int64Element length) : base(expression, start, length)
+        public StringSubstringFunctionExpression(StringElement expression, AnyElement<int> start, AnyElement<long> length) : base(expression, start, length)
         {
 
         }
 
-        public StringSubstringFunctionExpression(StringElement expression, Int64Element start, Int32Element length) : base(expression, start, length)
+        public StringSubstringFunctionExpression(StringElement expression, AnyElement<long> start, AnyElement<int> length) : base(expression, start, length)
         {
 
         }
 
-        public StringSubstringFunctionExpression(StringElement expression, Int64Element start, Int64Element length) : base(expression, start, length)
+        public StringSubstringFunctionExpression(StringElement expression, AnyElement<long> start, AnyElement<long> length) : base(expression, start, length)
         {
 
         }
@@ -55,15 +54,15 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region like
         public FilterExpressionSet Like(string phrase)
-            => new FilterExpressionSet(new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
+            => new(new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
         #endregion
 
         #region equals
-        public bool Equals(StringSubstringFunctionExpression obj)
-            => obj is StringSubstringFunctionExpression && base.Equals(obj);
+        public bool Equals(StringSubstringFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is StringSubstringFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is StringSubstringFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

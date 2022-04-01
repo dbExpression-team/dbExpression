@@ -31,7 +31,7 @@ namespace HatTrick.DbEx.Sql.Executor
         #region internals
         private bool disposed;
         private int currentRowIndex;
-        private readonly Dictionary<int, IValueConverter> fieldConverters = new Dictionary<int, IValueConverter>();
+        private readonly Dictionary<int, IValueConverter> fieldConverters = new();
         protected ISqlConnection SqlConnection { get; private set; }
         protected DbDataReader DataReader { get; private set; }
         protected CancellationToken CancellationToken { get; private set; }
@@ -52,7 +52,7 @@ namespace HatTrick.DbEx.Sql.Executor
         #endregion
 
         #region methods
-        public async Task<ISqlFieldReader> ReadRowAsync()
+        public async Task<ISqlFieldReader?> ReadRowAsync()
         {
             CancellationToken.ThrowIfCancellationRequested();
 
@@ -83,32 +83,33 @@ namespace HatTrick.DbEx.Sql.Executor
                 Close();
                 throw;
             }
-            return null;
+            return default;
         }
 
-        protected IValueConverter FindConverter(ISqlField field, Type requestedType)
+        protected IValueConverter? FindConverter(ISqlField field, Type requestedType)
         {
             if (fieldConverters.ContainsKey(field.Index))
                 return fieldConverters[field.Index];
 
             if (requestedType == typeof(object))
-            {
                 requestedType = field.DataType.IsConvertibleToNullableType() ? typeof(Nullable<>).MakeGenericType(field.DataType) : field.DataType;
-            }
+
             var converter = Converters.FindConverter(field.Index, requestedType, field.RawValue);
-            fieldConverters.Add(field.Index, converter);
+
+            if (converter is not null)
+                fieldConverters.Add(field.Index, converter);
+
             return converter;
         }
 
         public void Close()
         {
-            if (DataReader is object)
+            if (DataReader is not null)
             {
                 if (!DataReader.IsClosed)
                     DataReader.Close();
 
                 DataReader.Dispose();
-                DataReader = null;
             }
         }
 

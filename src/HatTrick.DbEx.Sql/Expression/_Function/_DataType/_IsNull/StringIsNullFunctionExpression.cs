@@ -23,7 +23,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class StringIsNullFunctionExpression :
         IsNullFunctionExpression<string>,
         StringElement,
-        AnyStringElement,
         IEquatable<StringIsNullFunctionExpression>
     {
         #region constructors
@@ -34,21 +33,21 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public StringElement As(string alias)
+        public new StringElement As(string alias)
             => new StringSelectExpression(this).As(alias);
         #endregion
 
         #region like
         public FilterExpressionSet Like(string phrase)
-            => new FilterExpressionSet(new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
+            => new (new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
         #endregion
 
         #region equals
-        public bool Equals(StringIsNullFunctionExpression obj)
-            => obj is StringIsNullFunctionExpression && base.Equals(obj);
+        public bool Equals(StringIsNullFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is StringIsNullFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is StringIsNullFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

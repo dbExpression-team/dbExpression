@@ -24,12 +24,12 @@ namespace HatTrick.DbEx.Sql.Expression
         IExpressionElement<TValue>
     {
         #region constructors
-        protected LTrimFunctionExpression(StringElement expression) : base(expression, typeof(TValue))
+        protected LTrimFunctionExpression(AnyElement<string> expression) : base(expression, typeof(TValue))
         {
 
         }
 
-        protected LTrimFunctionExpression(AnyObjectElement expression) : base(expression, typeof(TValue))
+        protected LTrimFunctionExpression(StringElement expression) : base(expression, typeof(TValue))
         {
 
         }

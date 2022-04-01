@@ -22,7 +22,6 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class CurrentTimestampFunctionExpression : DataTypeFunctionExpression,
         IExpressionElement<DateTime>,
-        AnyDateTimeElement,
         DateTimeElement,
         IEquatable<CurrentTimestampFunctionExpression>
     {
@@ -36,20 +35,20 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region methods
         #region as
-        public DateTimeElement As(string alias)
-            => new DateTimeSelectExpression(this).As(alias);
+        public AnyElement<DateTime> As(string alias)
+            => new SelectExpression<DateTime>(this).As(alias);
         #endregion
 
         #region to string
-        public override string ToString() => "CURRENT_TIMESTAMP";
+        public override string? ToString() => "CURRENT_TIMESTAMP";
         #endregion
 
         #region equals
-        public bool Equals(CurrentTimestampFunctionExpression obj)
+        public bool Equals(CurrentTimestampFunctionExpression? obj)
             => base.Equals(obj);
 
-        public override bool Equals(object obj)
-         => obj is CurrentTimestampFunctionExpression exp ? Equals(exp) : false;
+        public override bool Equals(object? obj)
+         => obj is CurrentTimestampFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

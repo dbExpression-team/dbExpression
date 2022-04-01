@@ -23,16 +23,15 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class StringTrimFunctionExpression :
         TrimFunctionExpression<string>,
         StringElement,
-        AnyStringElement,
         IEquatable<StringTrimFunctionExpression>
     {
         #region constructors
-        public StringTrimFunctionExpression(StringElement expression) : base(expression)
+        public StringTrimFunctionExpression(AnyElement<string> expression) : base(expression)
         {
 
         }
 
-        public StringTrimFunctionExpression(AnyObjectElement expression) : base(expression)
+        public StringTrimFunctionExpression(StringElement expression) : base(expression)
         {
 
         }
@@ -44,11 +43,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(StringTrimFunctionExpression obj)
-            => obj is StringTrimFunctionExpression && base.Equals(obj);
+        public bool Equals(StringTrimFunctionExpression? obj)
+            => obj is not null && base.Equals(obj);
 
-        public override bool Equals(object obj)
-            => obj is StringTrimFunctionExpression exp && base.Equals(exp);
+        public override bool Equals(object? obj)
+            => obj is StringTrimFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();
