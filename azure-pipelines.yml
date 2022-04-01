@@ -84,7 +84,7 @@ stages:
         displayName: 'Publish Test Results'
         inputs:
           testResultsFormat: VSTest
-          testResultsFiles: $(Pipeline.Workspace)/$(stageLocationName)/results/mssql-core.tests.trx
+          testResultsFiles: $(Pipeline.Workspace)/results/mssql-core.tests.trx
           testRunTitle: 'MSSQL (Core)'
           mergeTestResults: true
           failTaskOnFailedTests: true
