@@ -493,10 +493,10 @@ namespace HatTrick.DbEx.Tools.Service
                 svc.Feedback.Push(To.Warn, $"override.apply.allowupdate at overrides[{atIndex}] is invalid");
                 svc.Feedback.Push(To.Warn, $"allowupdate is only valid on table columns");
             }
-            if (ovrd.Apply.ClrType != null && !distinct.All(m => (m is MsSqlColumn)))
+            if (ovrd.Apply.ClrType != null && !distinct.All(m => (m is MsSqlColumn) || (m is MsSqlParameter)))
             {
                 svc.Feedback.Push(To.Warn, $"override.apply.clrtype at overrides[{atIndex}] is invalid");
-                svc.Feedback.Push(To.Warn, $"clrtype is only valid on columns");
+                svc.Feedback.Push(To.Warn, $"clrtype is only valid on columns and parameters");
             }
             if (ovrd.Apply.Interfaces != null && ovrd.Apply.Interfaces.Length > 0 && !distinct.All(m => (m is MsSqlTable) || (m is MsSqlView)))
             {
