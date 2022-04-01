@@ -79,11 +79,12 @@ stages:
         inputs:
           command: test
           projects: $(Pipeline.Workspace)/$(stageLocationName)/test/HatTrick.DbEx.MsSql.Test.Code/*.csproj
-          arguments: '--configuration $(buildConfiguration) --logger "trx;LogFileName=$(Pipeline.Workspace)/$(stageLocationName)/results/mssql-core.tests.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Exclude="[*Test]*"'
+          arguments: '--configuration $(buildConfiguration) --logger "trx;LogFileName=$(Pipeline.Workspace)/$(stageLocationName)/results/mssql-core.tests.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Include="[HatTrick.DbEx.*Sql]*" /p:Exclude="[*Test]*"'
       - task: CopyFiles@2
         displayName: 'Copy Code Coverage Files to Staging Location'
         inputs:
-          contents: $(Pipeline.Workspace)/$(stageLocationName)/test/HatTrick.DbEx.MsSql.Test.Code/*.cobertura.xml
+          sourceFolder: $(Pipeline.Workspace)/$(stageLocationName)/test/HatTrick.DbEx.MsSql.Test.Code
+          contents: *.cobertura.xml
           targetFolder: $(Pipeline.Workspace)/$(stageLocationName)/results
       - task: PublishTestResults@2
         displayName: 'Publish Test Results'
@@ -112,8 +113,8 @@ stages:
         artifact: mssql-core-results
  
   - stage: Test_Execution
-#    pool:
-#      vmImage: 'ubuntu-latest'
+    pool:
+      vmImage: 'ubuntu-latest'
     dependsOn: Build
     displayName: 'Test MSSQL Platforms'
     jobs:
