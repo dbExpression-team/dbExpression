@@ -78,7 +78,7 @@ stages:
         displayName: 'Execute Tests'
         inputs:
           command: test
-          projects: $(Pipeline.Workspace)/$(stageLocationName)/test/HatTrick.DbEx.MsSql.Test.Code/*.csproj
+          projects: $(Pipeline.Workspace)/$(stageLocationName)/test/HatTrick.DbEx.MsSql.Test.Code/bin/$(buildConfiguration)/net$(netCoreVersion)/HatTrick.DbEx.MsSql.Test.Code.dll
           arguments: '--configuration $(buildConfiguration) --logger "trx;LogFileName=$(Pipeline.Workspace)/$(stageLocationName)/results/mssql-core.tests.trx" --results-directory "$(Pipeline.Workspace)/$(stageLocationName)/results" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Exclude="[*Test]*"'
       - task: PublishTestResults@2
         displayName: 'Publish Test Results'
