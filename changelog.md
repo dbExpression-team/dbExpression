@@ -1,12 +1,11 @@
 # Changelog
 
-## [0.9.0]
+## [0.9.0] - 2022-04-01
 
 ### Added
 - Support for nullable reference types
 
 ### Changed
-
 - C# 9.0 
 	- set langversion to 9.0
 	- updated code base to account for new language features, for example "is not null" instead of "is object" and new() instead of new XXX() (where identified by IDE - many more left)
@@ -35,6 +34,13 @@
 - issue #283: Can't use select statement as subquery with update statement
 - issue #284: Can't issue an update on a field using a value from a derived table
 
+### Breaking Changes
+- Configuration
+	- with the addition of nullable reference types, the fluent configuration builder for value converters (during application startup) changed.  
+		The method to register a value converter for a type, where the type is a primitive data type, changed "OverrideForType" to "OverrideForValueType";
+	- The property value of the property named "Type" in the code gen configuration changed from "MsSqlDb" to "MsSql" (the docs had the correct value of "MsSql", but the code used "MsSqlDb").
+	- with dependency injection, the use of "UseDbExpression" in the "Configure" method is no longer required and has been removed.
+
 ## [0.8.5] - 2022-01-13
 
 ### Added
@@ -44,7 +50,6 @@
 
 ### Fixed
 - NuGet packaging now includes symbol packages
-
 
 ### Breaking Changes
 
