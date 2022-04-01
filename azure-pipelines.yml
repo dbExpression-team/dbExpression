@@ -30,24 +30,8 @@ variables:
     branchName: $[ replace(variables['System.PullRequest.SourceBranch'], 'refs/heads/', '') ]
 
 stages:
-#  - stage: Initialize
-#    displayName: 'Initialize Agent'
-#    jobs:
-#    - job: Install
-#      displayName: 'Install Agent Dependencies'
-#      steps:
-#      - checkout: none
-#      - task: NuGetToolInstaller@0
-#        displayName: Install NuGet
-#        inputs:
-#          versionSpec: 5.8.0
-#      - task: DockerInstaller@0
-#        displayName: Install Docker CLI
-#        inputs:
-#          dockerVersion: '17.09.0-ce'
 
   - stage: Build
-#    dependsOn: Initialize
     displayName: 'Build and Package'
     jobs:
     - job:
@@ -91,7 +75,7 @@ stages:
       - task: CopyFiles@2
         displayName: 'Copy Code Coverage Files to Staging Location'
         inputs:
-          contents: $(Pipeline.Workspace)\$(stageLocationName)\**\*.cobertura.xml
+          contents: $(Pipeline.Workspace)\$(stageLocationName)\**
           targetFolder: $(Pipeline.Workspace)\$(stageLocationName)\results
       - publish: $(Pipeline.Workspace)\$(stageLocationName)\results
         displayName: 'Publish Results to Staging Location'
