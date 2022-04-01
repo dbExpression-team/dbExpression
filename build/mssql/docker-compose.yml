@@ -26,6 +26,6 @@ services:
       MSSQL_VERSION: ${MSSQL_VERSION}     
     volumes:
       - ./results:/results
-      - ./test/HatTrick.DbEx.MsSql.Test.Database/bin/${BUILD_CONFIGURATION}/${TARGET_FRAMEWORK_MONIKER}:/src
+      - ./test/HatTrick.DbEx.MsSql.Test.Database:/src
     depends_on:
       - mssql
