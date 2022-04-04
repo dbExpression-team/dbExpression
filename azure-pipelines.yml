@@ -75,6 +75,9 @@ stages:
       - powershell: dir -Recurse *.xml
         displayName: 'List Files'
         workingDirectory: $(Pipeline.Workspace)/$(stageLocationName)
+      - powershell: dir -Recurse *.xml
+        displayName: 'List Files'
+        workingDirectory: $(Agent.BuildDirectory)
       - task: CopyFiles@2
         displayName: 'Copy Code Coverage Files to Staging Location'
         inputs:
