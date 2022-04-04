@@ -72,7 +72,7 @@ stages:
           testRunTitle: 'MSSQL (Core)'
           mergeTestResults: true
           failTaskOnFailedTests: true
-      - powershell: dir -Recurse
+      - powershell: dir -Recurse *.xml
         displayName: 'List Files'
         workingDirectory: $(Pipeline.Workspace)/$(stageLocationName)
 # 
