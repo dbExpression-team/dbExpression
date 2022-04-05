@@ -1,7 +1,7 @@
 parameters:
-  artifactName: ''
+  artifact: ''
   rootPath: ''
-  buildFilesTemplatePath: ''
+  buildTemplatesPath: ''
   buildConfiguration: ''
   targetFrameworkMoniker: ''
   mssqlVersions: []
@@ -13,14 +13,14 @@ jobs:
     steps:
     - checkout: none
     - download: current
-      artifact: ${{ parameters.artifactName }}
+      artifact: ${{ parameters.artifact }}
     
     - task: PowerShell@2
       displayName: 'Create Docker Config Files'
       inputs:
-        filePath: ${{ parameters.buildFilesTemplatePath }}/create-docker-config.ps1
+        filePath: ${{ parameters.buildTemplatesPath }}/create-docker-config.ps1
         arguments: '-MSSQL_VERSION ${{ mssqlVersion }} -BUILD_CONFIGURATION ${{ parameters.buildConfiguration }} -TARGET_FRAMEWORK_MONIKER ${{ parameters.targetFrameworkMoniker }}'
-        workingDirectory: ${{ parameters.buildFilesTemplatePath }}
+        workingDirectory: ${{ parameters.buildTemplatesPath }}
     
     - task: DockerCompose@0
       displayName: 'Execute Tests'

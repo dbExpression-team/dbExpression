@@ -65,10 +65,10 @@ stages:
           projects: $(Pipeline.Workspace)\$(stageLocationName)\test\HatTrick.DbEx.MsSql.Test.Code\*.csproj
           arguments: '--configuration $(buildConfiguration) --logger "trx;LogFileName=$(Pipeline.Workspace)/$(stageLocationName)/results/mssql-core.tests.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Include="[HatTrick.DbEx.*Sql]*" /p:Exclude="[*Test]*"'
       - task: PublishTestResults@2
-        displayName: 'Publish Test Results'
+        displayName: 'Publish Test Results to Temp'
         inputs:
           testResultsFormat: xUnit
-          testResultsFiles: $(Pipeline.Workspace)\$(stageLocationName)\mssql-core-results\mssql-core.tests.trx
+          testResultsFiles: $(Pipeline.Workspace)\tmp\mssql-core.tests.trx
           testRunTitle: 'MSSQL (Core)'
           mergeTestResults: true
           failTaskOnFailedTests: true
@@ -83,23 +83,22 @@ stages:
         inputs:
           targetPath: $(Pipeline.Workspace)\tmp
           artifactName: mssql-core-results
-
-# 
-#  - stage: Test_Execution
-#    pool:
-#      vmImage: 'ubuntu-latest'
-#    dependsOn: Build
-#    displayName: 'Test MSSQL Platforms'
-#    jobs:
-#    - template: build/mssql/mssql-integration-testing-template.yml
-#      parameters:
-#        artifactName: $(stageLocationName)
-#        rootPath: $(Pipeline.Workspace)/$(stageLocationName)
-#        buildFilesTemplatePath: $(Pipeline.Workspace)/$(stageLocationName)/build/mssql
-#        buildConfiguration: $(buildConfiguration)
-#        targetFrameworkMoniker: net$(netCoreVersion)
-#        mssqlVersions: ['2017','2019']
-#    
+ 
+  - stage: Test_Execution
+    pool:
+      vmImage: 'ubuntu-latest'
+    dependsOn: Build
+    displayName: 'Test MSSQL Platforms'
+    jobs:
+    - template: build/mssql/mssql-integration-testing-template.yml
+      parameters:
+        artifact: $(stageLocationName)
+        rootPath: $(Pipeline.Workspace)/$(stageLocationName)
+        buildTemplatesPath: $(Pipeline.Workspace)/$(stageLocationName)/build/mssql
+        buildConfiguration: $(buildConfiguration)
+        targetFrameworkMoniker: net$(netCoreVersion)
+        mssqlVersions: ['2017','2019']
+    
 #  - stage: Publish_Reports
 #    dependsOn:
 #      - Test_Code
