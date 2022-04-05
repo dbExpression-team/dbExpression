@@ -114,13 +114,13 @@ stages:
       - task: reportgenerator@5
         displayName: 'Merge Code Coverage Reports'
         inputs:
-          reports: $(Pipeline.Workspace)\$(stageLocationName)\mssql*\*coverage*.xml
-          targetdir: $(Pipeline.Workspace)\$(stageLocationName)\reports
+          reports: $(Pipeline.Workspace)\mssql*\*coverage*.xml
+          targetdir: $(Pipeline.Workspace)\mssql-all-results
           reporttypes: 'HtmlInline_AzurePipelines;Cobertura;Badges'
       - task: PublishCodeCoverageResults@1
         displayName: 'Publish Code Coverage Reports'
         inputs:
           codeCoverageTool: Cobertura
-          pathToSources: $(Pipeline.Workspace)\$(stageLocationName)\reports
-          summaryFileLocation: $(Pipeline.Workspace)\$(stageLocationName)\reports
-          reportDirectory: $(Pipeline.Workspace)\$(stageLocationName)\reports'
+          pathToSources: $(Pipeline.Workspace)\$(stageLocationName)\src
+          summaryFileLocation: $(Pipeline.Workspace)\mssql-all-results
+          reportDirectory: $(Pipeline.Workspace)\reports'
