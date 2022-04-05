@@ -78,11 +78,17 @@ stages:
       - powershell: dir -Recurse *.xml
         displayName: 'List Files'
         workingDirectory: $(Agent.BuildDirectory)
+      - powershell: |
+          Write-Host "$(Pipeline.Workspace)" $(Pipeline.Workspace)
+          Write-Host "$(Agent.BuildDirectory)" $(Agent.BuildDirectory)
+        displayName: 'Write Variables'
+        workingDirectory: $(Agent.BuildDirectory)
       - task: CopyFiles@2
         displayName: 'Copy Code Coverage Files to Staging Location'
         inputs:
-          contents: $(Agent.BuildDirectory)\$(stageLocationName)\test\HatTrick.DbEx.MsSql.Test.Code\coverage.net461.cobertura.xml
-          targetFolder: $(Pipeline.Workspace)\$(stageLocationName)\results
+          contents: *.cobertura.xml
+          sourceFolder: $(Pipeline.Workspace)\$(stageLocationName)\test\HatTrick.DbEx.MsSql.Test.Code
+          targetFolder: $(Pipeline.Workspace)\$(stageLocationName)\mssql-core-results
 # 
 #  - stage: Test_Execution
 #    pool:
