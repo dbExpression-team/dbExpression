@@ -62,7 +62,7 @@ stages:
         displayName: 'Execute Tests'
         inputs:
           command: test
-          projects: $(Pipeline.Workspace)/$(stageLocationName)\test\HatTrick.DbEx.MsSql.Test.Code\*.csproj
+          projects: $(Pipeline.Workspace)\$(stageLocationName)\test\HatTrick.DbEx.MsSql.Test.Code\*.csproj
           arguments: '--configuration $(buildConfiguration) --logger "trx;LogFileName=$(Pipeline.Workspace)/$(stageLocationName)/results/mssql-core.tests.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Include="[HatTrick.DbEx.*Sql]*" /p:Exclude="[*Test]*"'
       - task: PublishTestResults@2
         displayName: 'Publish Test Results'
@@ -74,14 +74,14 @@ stages:
           failTaskOnFailedTests: true
       - powershell: dir -Recurse *.xml
         displayName: 'List Files'
-        workingDirectory: $(Pipeline.Workspace)/$(stageLocationName)
+        workingDirectory: $(Pipeline.Workspace)\$(stageLocationName)
       - powershell: dir -Recurse *.xml
         displayName: 'List Files'
         workingDirectory: $(Agent.BuildDirectory)
       - task: CopyFiles@2
         displayName: 'Copy Code Coverage Files to Staging Location'
         inputs:
-          contents: $(Agent.BuildDirectory)\test\HatTrick.DbEx.MsSql.Test.Code\coverage.net461.cobertura.xml
+          contents: $(Agent.BuildDirectory)\$(stageLocationName)\test\HatTrick.DbEx.MsSql.Test.Code\coverage.net461.cobertura.xml
           targetFolder: $(Pipeline.Workspace)\$(stageLocationName)\results
 # 
 #  - stage: Test_Execution
