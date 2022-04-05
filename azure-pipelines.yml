@@ -72,23 +72,17 @@ stages:
           testRunTitle: 'MSSQL (Core)'
           mergeTestResults: true
           failTaskOnFailedTests: true
-      - powershell: dir -Recurse *.xml
-        displayName: 'List Files'
-        workingDirectory: $(Pipeline.Workspace)\$(stageLocationName)
-      - powershell: dir -Recurse *.xml
-        displayName: 'List Files'
-        workingDirectory: $(Agent.BuildDirectory)
-      - powershell: |
-          Write-Host "$(Pipeline.Workspace)" $(Pipeline.Workspace)
-          Write-Host "$(Agent.BuildDirectory)" $(Agent.BuildDirectory)
-        displayName: 'Write Variables'
-        workingDirectory: $(Agent.BuildDirectory)
-      - task: CopyFiles@2
-        displayName: 'Copy Code Coverage Files to Staging Location'
+      - task: PublishPipelineArtifact@1
+        displayName: 'Publish Code Coverage Files to Staging Location'
         inputs:
-          contents: '*.cobertura.xml'
-          sourceFolder: $(Pipeline.Workspace)\$(stageLocationName)\test\HatTrick.DbEx.MsSql.Test.Code
-          targetFolder: $(Pipeline.Workspace)\$(stageLocationName)\mssql-core-results
+          targetPath: $(Pipeline.Workspace)\$(stageLocationName)\test\HatTrick.DbEx.MsSql.Test.Code
+          artifactName: mssql-core-results
+#      - task: CopyFiles@2
+#        displayName: 'Copy Code Coverage Files to Staging Location'
+#        inputs:
+#          contents: '*.cobertura.xml'
+#          sourceFolder: $(Pipeline.Workspace)\$(stageLocationName)\test\HatTrick.DbEx.MsSql.Test.Code
+#          targetFolder: $(Pipeline.Workspace)\mssql-core-results
 # 
 #  - stage: Test_Execution
 #    pool:
