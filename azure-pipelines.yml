@@ -86,7 +86,7 @@ stages:
       - task: CopyFiles@2
         displayName: 'Copy Code Coverage Files to Staging Location'
         inputs:
-          contents: *.cobertura.xml
+          contents: '*.cobertura.xml'
           sourceFolder: $(Pipeline.Workspace)\$(stageLocationName)\test\HatTrick.DbEx.MsSql.Test.Code
           targetFolder: $(Pipeline.Workspace)\$(stageLocationName)\mssql-core-results
 # 
