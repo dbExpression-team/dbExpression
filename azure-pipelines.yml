@@ -72,17 +72,18 @@ stages:
           testRunTitle: 'MSSQL (Core)'
           mergeTestResults: true
           failTaskOnFailedTests: true
+      - task: CopyFiles@2
+        displayName: 'Copy Code Coverage Files to Temp'
+        inputs:
+          contents: '*.cobertura.xml'
+          sourceFolder: $(Pipeline.Workspace)\$(stageLocationName)\test\HatTrick.DbEx.MsSql.Test.Code
+          targetFolder: $(Pipeline.Workspace)\tmp
       - task: PublishPipelineArtifact@1
         displayName: 'Publish Code Coverage Files to Staging Location'
         inputs:
-          targetPath: $(Pipeline.Workspace)\$(stageLocationName)\test\HatTrick.DbEx.MsSql.Test.Code
+          targetPath: $(Pipeline.Workspace)\tmp
           artifactName: mssql-core-results
-#      - task: CopyFiles@2
-#        displayName: 'Copy Code Coverage Files to Staging Location'
-#        inputs:
-#          contents: '*.cobertura.xml'
-#          sourceFolder: $(Pipeline.Workspace)\$(stageLocationName)\test\HatTrick.DbEx.MsSql.Test.Code
-#          targetFolder: $(Pipeline.Workspace)\mssql-core-results
+
 # 
 #  - stage: Test_Execution
 #    pool:
