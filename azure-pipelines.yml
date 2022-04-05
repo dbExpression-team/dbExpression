@@ -68,6 +68,7 @@ stages:
         displayName: 'Publish Test Results to Temp'
         inputs:
           testResultsFormat: xUnit
+          # Publish to a temp location so the downstream PublishPipelineArtifact@1 task publishes these files instead of overwriting them
           testResultsFiles: $(Pipeline.Workspace)\tmp\mssql-core.tests.trx
           testRunTitle: 'MSSQL (Core)'
           mergeTestResults: true
@@ -99,27 +100,27 @@ stages:
         targetFrameworkMoniker: net$(netCoreVersion)
         mssqlVersions: ['2017','2019']
     
-#  - stage: Publish_Reports
-#    dependsOn:
-#      - Test_Code
-#      - Test_Execution
-#    displayName: 'Publish Reports'
-#    jobs:
-#    - job:
-#      displayName: 'Publish Code Coverage'
-#      steps:
-#      - checkout: none
-#      - download: current
-#      - task: reportgenerator@5
-#        displayName: 'Merge Code Coverage Reports'
-#        inputs:
-#          reports: $(Pipeline.Workspace)\$(stageLocationName)\mssql*\*coverage*.xml
-#          targetdir: $(Pipeline.Workspace)\$(stageLocationName)\reports
-#          reporttypes: 'HtmlInline_AzurePipelines;Cobertura;Badges'
-#      - task: PublishCodeCoverageResults@1
-#        displayName: 'Publish Code Coverage Reports'
-#        inputs:
-#          codeCoverageTool: Cobertura
-#          pathToSources: $(Pipeline.Workspace)\$(stageLocationName)\reports
-#          summaryFileLocation: $(Pipeline.Workspace)\$(stageLocationName)\reports
-#          reportDirectory: $(Pipeline.Workspace)\$(stageLocationName)\reports'
+  - stage: Publish_Reports
+    dependsOn:
+      - Test_Code
+      - Test_Execution
+    displayName: 'Publish Reports'
+    jobs:
+    - job:
+      displayName: 'Publish Code Coverage'
+      steps:
+      - checkout: none
+      - download: current
+      - task: reportgenerator@5
+        displayName: 'Merge Code Coverage Reports'
+        inputs:
+          reports: $(Pipeline.Workspace)\$(stageLocationName)\mssql*\*coverage*.xml
+          targetdir: $(Pipeline.Workspace)\$(stageLocationName)\reports
+          reporttypes: 'HtmlInline_AzurePipelines;Cobertura;Badges'
+      - task: PublishCodeCoverageResults@1
+        displayName: 'Publish Code Coverage Reports'
+        inputs:
+          codeCoverageTool: Cobertura
+          pathToSources: $(Pipeline.Workspace)\$(stageLocationName)\reports
+          summaryFileLocation: $(Pipeline.Workspace)\$(stageLocationName)\reports
+          reportDirectory: $(Pipeline.Workspace)\$(stageLocationName)\reports'
