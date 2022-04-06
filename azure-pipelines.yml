@@ -69,21 +69,21 @@ stages:
         inputs:
           testResultsFormat: xUnit
           # Publish to a temp location so the downstream PublishPipelineArtifact@1 task publishes these files instead of overwriting them
-          testResultsFiles: $(Pipeline.Workspace)\tmp\mssql-core.tests.trx
+          testResultsFiles: $(Pipeline.Workspace)\$(stageLocationName)\mssql-core.tests.trx # $(Pipeline.Workspace)\tmp\mssql-core.tests.trx
           testRunTitle: 'MSSQL (Core)'
           mergeTestResults: true
           failTaskOnFailedTests: true
-      - task: CopyFiles@2
-        displayName: 'Copy Code Coverage Files to Temp'
-        inputs:
-          contents: '*.cobertura.xml'
-          sourceFolder: $(Pipeline.Workspace)\$(stageLocationName)\test\HatTrick.DbEx.MsSql.Test.Code
-          targetFolder: $(Pipeline.Workspace)\tmp
+#      - task: CopyFiles@2
+#        displayName: 'Copy Code Coverage Files to Temp'
+#        inputs:
+#          contents: '*.cobertura.xml'
+#          sourceFolder: $(Pipeline.Workspace)\$(stageLocationName)\test\HatTrick.DbEx.MsSql.Test.Code
+#          targetFolder: $(Pipeline.Workspace)\tmp
       - task: PublishPipelineArtifact@1
         displayName: 'Publish Code Coverage Files to Staging Location'
         inputs:
-          targetPath: $(Pipeline.Workspace)\tmp
-          artifactName: mssql-core-results
+          targetPath: $(Pipeline.Workspace)\$(stageLocationName) #$(Pipeline.Workspace)\tmp
+          artifactName: db-ex
  
   - stage: Test_Execution
     pool:
@@ -114,7 +114,7 @@ stages:
       - task: reportgenerator@5
         displayName: 'Merge Code Coverage Reports'
         inputs:
-          reports: $(Pipeline.Workspace)\mssql*\*coverage*.xml
+          reports: $(Pipeline.Workspace)\$(stageLocationName)\*coverage*.xml
           targetdir: $(Pipeline.Workspace)\mssql-all-results
           reporttypes: 'HtmlInline_AzurePipelines;Cobertura;Badges'
       - task: PublishCodeCoverageResults@1
