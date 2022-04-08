@@ -131,3 +131,8 @@ stages:
           pathToSources: $(Pipeline.Workspace)\$(stageLocationName)\src
           summaryFileLocation: $(Pipeline.Workspace)\mssql-all-results\cobertura.xml
           reportDirectory: $(Pipeline.Workspace)\mssql-all-results'
+      - task: PublishPipelineArtifact@1
+        displayName: 'Publish Code Coverage Files to Staging Location'
+        inputs:
+          targetPath: $(Pipeline.Workspace)\mssql-all-results
+          artifactName: reports
