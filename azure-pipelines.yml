@@ -68,8 +68,7 @@ stages:
         displayName: 'Publish Test Results to Temp'
         inputs:
           testResultsFormat: xUnit
-          # Publish to a temp location so the downstream PublishPipelineArtifact@1 task publishes these files instead of overwriting them
-          testResultsFiles: $(Pipeline.Workspace)\tmp\mssql-core.tests.trx
+          testResultsFiles: $(Pipeline.Workspace)\test\HatTrick.DbEx.MsSql.Test.Code\mssql-core.tests.trx
           testRunTitle: 'MSSQL (Core)'
           mergeTestResults: true
           failTaskOnFailedTests: true
@@ -134,5 +133,5 @@ stages:
       - task: PublishPipelineArtifact@1
         displayName: 'Publish Code Coverage Files to Staging Location'
         inputs:
-          targetPath: $(Pipeline.Workspace)\mssql-all-results
+          targetPath: $(Pipeline.Workspace)
           artifactName: reports
