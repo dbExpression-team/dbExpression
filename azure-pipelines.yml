@@ -130,4 +130,4 @@ stages:
           codeCoverageTool: Cobertura
           pathToSources: $(Pipeline.Workspace)\$(stageLocationName)\src
           summaryFileLocation: $(Pipeline.Workspace)\mssql-all-results\cobertura.xml
-          reportDirectory: $(Pipeline.Workspace)\reports'
+          reportDirectory: $(Pipeline.Workspace)\mssql-all-results'
