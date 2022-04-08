@@ -111,6 +111,13 @@ stages:
       steps:
       - checkout: none
       - download: current
+      - task: PowerShell@2
+        displayName: 'Correct Source Paths in Coverage Files'
+        inputs:
+          filePath: $(Pipeline.Workspace)/$(stageLocationName)/build/fix-code-coverage-files.ps1
+          arguments: 'CodeCoverageFilePaths "$(Pipeline.Workspace)\mssql-core-results\coverage.net6.0.cobertura.xml;$(Pipeline.Workspace)\mssql-core-results\coverage.net461.cobertura.xml;$(Pipeline.Workspace)\mssql-2017-results\coverage.net6.0.cobertura.xml;$(Pipeline.Workspace)\mssql-2019-results\coverage.net6.0.cobertura.xml" -PathToSourceFiles "$(Pipeline.Workspace)\$(stageLocationName)\src\"'
+          workingDirectory: $(Pipeline.Workspace)/$(stageLocationName)/build
+          pwsh: true
       - task: reportgenerator@5
         displayName: 'Merge Code Coverage Reports'
         inputs:
