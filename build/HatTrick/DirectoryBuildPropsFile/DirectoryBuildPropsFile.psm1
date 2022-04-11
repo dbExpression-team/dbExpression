@@ -74,4 +74,4 @@ function New-DirectoryBuildPropsFile()
     return [DirectoryBuildPropsFile]::new($OutputPath, $AssemblyVersion, $IncludeBuildNumberPartsInPackageVersion)
 }
 
-Export-ModuleMember -Function New-DirectoryBuildPropsFile, RewriteDirectoryBuildPropsFile
+Export-ModuleMember -Function New-DirectoryBuildPropsFile
