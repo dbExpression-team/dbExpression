@@ -26,7 +26,7 @@ class CodeCoverageFiles
 		    $xml.Load($file)
 		
             $needSave = $false;
-		    foreach ($node in $xml.SelectNodes($XPathToSourceNode)) 
+		    foreach ($node in $xml.SelectNodes($this.XPathToSourceNode)) 
 		    {
                 if ($node.InnerText -ne $this.PathToSourceFiles)
                 {
