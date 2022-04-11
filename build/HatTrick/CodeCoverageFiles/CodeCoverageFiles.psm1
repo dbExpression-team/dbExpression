@@ -3,15 +3,17 @@ Set-StrictMode -Version Latest
 class CodeCoverageFiles
 {
     [ValidateNotNullOrEmpty()][string]$CodeCoverageFilePaths
-	[ValidateNotNullOrEmpty()][string]$PathToSourceFiles
+    [ValidateNotNullOrEmpty()][string]$PathToSourceFiles
+    [ValidateNotNullOrEmpty()][string]$XPathToSourceNode
 
     CodeCoverageFiles(
         [string]$CodeCoverageFilePaths,
         [string]$PathToSourceFiles
-    )
+        [string]$XPathToSourceNode)
     {
         $this.CodeCoverageFilePaths = $CodeCoverageFilePaths
         $this.PathToSourceFiles = $PathToSourceFiles
+        $this.XPathToSourceNode = $XPathToSourceNode    
     }
 	
 	[void] ReplaceSourceLocation()
@@ -23,7 +25,7 @@ class CodeCoverageFiles
 		    $xml.Load($file)
 		
             $needSave = $false;
-		    foreach ($node in $xml.SelectNodes("/coverage/sources/source")) 
+		    foreach ($node in $xml.SelectNodes($XPathToSourceNode)) 
 		    {
                 if ($node.InnerText -ne $this.PathToSourceFiles)
                 {
@@ -45,10 +47,11 @@ function New-CodeCoverageFiles()
     param
     (
         [string]$CodeCoverageFilePaths,
-        [string]$PathToSourceFiles
+        [string]$PathToSourceFiles,
+        [string]$XPathToSourceNode
     )
 
-    return [CodeCoverageFiles]::new($CodeCoverageFilePaths, $PathToSourceFiles)
+    return [CodeCoverageFiles]::new($CodeCoverageFilePaths, $PathToSourceFiles, $XPathToSourceNode)
 }
 
 Export-ModuleMember -Function New-CodeCoverageFiles
