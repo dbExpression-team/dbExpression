@@ -8,8 +8,9 @@ class CodeCoverageFiles
 
     CodeCoverageFiles(
         [string]$CodeCoverageFilePaths,
-        [string]$PathToSourceFiles
-        [string]$XPathToSourceNode)
+        [string]$PathToSourceFiles,
+        [string]$XPathToSourceNode
+    )
     {
         $this.CodeCoverageFilePaths = $CodeCoverageFilePaths
         $this.PathToSourceFiles = $PathToSourceFiles
