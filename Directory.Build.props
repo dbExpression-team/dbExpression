@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <Project>
 	<PropertyGroup>
-		<VersionPrefix>0.9.0</VersionPrefix>
+		<VersionPrefix>0.9.1</VersionPrefix>
 		<PackageIcon>images/htl-nuget-logo.png</PackageIcon>
-		<PackageReleaseNotes>See release notes at https://github.com/HatTrickLabs/dbExpression/releases/tag/v0.9.0</PackageReleaseNotes>
+		<PackageReleaseNotes>See release notes at https://github.com/HatTrickLabs/dbExpression/releases/tag/v0.9.1</PackageReleaseNotes>
 	</PropertyGroup>
 	<ItemGroup>
 		<None Include="../../build/htl-nuget-logo.png" Pack="true" Visible="false" PackagePath="images/htl-nuget-logo.png" />
