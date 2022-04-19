@@ -66,14 +66,23 @@ namespace HatTrick.DbEx.Sql.Builder
             if (expression is null)
                 return;
 
-            if (expression is not FilterExpressionSet set)
-                throw new DbExpressionException($"Expected {nameof(expression)} to be of type {typeof(FilterExpressionSet)}.");
-
-            var where = (Expression.Where as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>)?.Expression;
-            if (where is null || where.IsEmpty || Expression.Where is null)
-                Expression.Where = set;
-            else
-                Expression.Where &= set;
+            if (expression is FilterExpression single)
+            {
+                if (Expression.Where is null)
+                    Expression.Where = new(single);
+                else
+                    Expression.Where &= single;
+            }
+            else if (expression is FilterExpressionSet set)
+            {
+                if (expression is IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements> provider && provider.Expression?.Args is not null && provider.Expression.Args.Any())
+                {
+                    if (Expression.Where is null)
+                        Expression.Where = set;
+                    else
+                        Expression.Where &= set;
+                }
+            }
         }
 
         protected virtual void ApplyCrossJoin(AnyEntity entity)

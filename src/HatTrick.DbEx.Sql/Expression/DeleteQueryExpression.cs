@@ -16,7 +16,8 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using System.Text;
+using System.Linq;
+using System.Text;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -42,7 +43,8 @@ namespace HatTrick.DbEx.Sql.Expression
             sb.Append(' ');
             sb.Append(Joins);
             sb.Append(' ');
-            if (!(Where as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>)?.Expression?.IsEmpty is not null)
+            var where = (Where as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>)?.Expression;
+            if (where is not null && where.Args.Any())
             {
                 sb.Append("WHERE ");
                 sb.Append(Where);

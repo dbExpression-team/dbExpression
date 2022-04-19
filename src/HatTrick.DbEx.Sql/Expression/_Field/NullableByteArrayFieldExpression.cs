@@ -62,10 +62,10 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region filter operators
         #region DBNull
-        public static FilterExpressionSet operator ==(NullableByteArrayFieldExpression a, DBNull b) => new(new FilterExpression<bool?>(a, new LiteralExpression<byte[]>(b, a), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableByteArrayFieldExpression a, DBNull b) => new(new FilterExpression<bool?>(a, new LiteralExpression<byte[]>(b, a), FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator ==(DBNull a, NullableByteArrayFieldExpression b) => new(new FilterExpression<bool?>(new LiteralExpression<byte[]>(a, b), b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(DBNull a, NullableByteArrayFieldExpression b) => new(new FilterExpression<bool?>(new LiteralExpression<byte[]>(a, b), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpression operator ==(NullableByteArrayFieldExpression a, DBNull b) => new FilterExpression<bool?>(a, new LiteralExpression<byte[]>(b, a), FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(NullableByteArrayFieldExpression a, DBNull b) => new FilterExpression<bool?>(a, new LiteralExpression<byte[]>(b, a), FilterExpressionOperator.NotEqual);
+        public static FilterExpression operator ==(DBNull a, NullableByteArrayFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<byte[]>(a, b), b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(DBNull a, NullableByteArrayFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<byte[]>(a, b), b, FilterExpressionOperator.NotEqual);
         #endregion
 
         #region byte[]

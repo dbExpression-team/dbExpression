@@ -34,7 +34,7 @@ namespace HatTrick.DbEx.Sql.Attribute
             return value?.GetEnumFromString<FilterExpressionOperator, ExpressionOperatorAttribute>(a => a.Operator);
         }
 
-        public static SortedDictionary<FilterExpressionOperator, string?> GetValuesAndFilterOperators(this Type type, Func<string, string>? formatValue)
+        public static SortedDictionary<FilterExpressionOperator, string?> GetValuesAndFilterOperators(this Type type, Func<string, string>? formatValue = null)
         {
             if (formatValue is null)
                 return type.GetEnumAsSortedDictionary<FilterExpressionOperator>(op => GetFilterOperator(op));

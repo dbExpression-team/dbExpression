@@ -53,21 +53,21 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region filter operators
         #region byte[]
-        public static FilterExpressionSet operator ==(ByteArrayExpressionMediator a, byte[] b) => new(new FilterExpression(a, new LiteralExpression<byte[]>(b), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(ByteArrayExpressionMediator a, byte[] b) => new(new FilterExpression(a, new LiteralExpression<byte[]>(b), FilterExpressionOperator.NotEqual));
+        public static FilterExpression operator ==(ByteArrayExpressionMediator a, byte[] b) => new FilterExpression<bool>(a, new LiteralExpression<byte[]>(b), FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(ByteArrayExpressionMediator a, byte[] b) => new FilterExpression<bool>(a, new LiteralExpression<byte[]>(b), FilterExpressionOperator.NotEqual);
 
-        public static FilterExpressionSet operator ==(byte[] a, ByteArrayExpressionMediator b) => new(new FilterExpression(new LiteralExpression<byte[]>(a), b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(byte[] a, ByteArrayExpressionMediator b) => new(new FilterExpression(new LiteralExpression<byte[]>(a), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpression operator ==(byte[] a, ByteArrayExpressionMediator b) => new FilterExpression<bool>(new LiteralExpression<byte[]>(a), b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(byte[] a, ByteArrayExpressionMediator b) => new FilterExpression<bool>(new LiteralExpression<byte[]>(a), b, FilterExpressionOperator.NotEqual);
         #endregion
 
         #region fields
-        public static FilterExpressionSet operator ==(ByteArrayExpressionMediator a, ByteArrayFieldExpression b) => new(new FilterExpression(a, b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(ByteArrayExpressionMediator a, ByteArrayFieldExpression b) => new(new FilterExpression(a, b, FilterExpressionOperator.NotEqual));
+        public static FilterExpression operator ==(ByteArrayExpressionMediator a, ByteArrayFieldExpression b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(ByteArrayExpressionMediator a, ByteArrayFieldExpression b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.NotEqual);
         #endregion
 
         #region mediators
-        public static FilterExpressionSet operator ==(ByteArrayExpressionMediator a, ByteArrayExpressionMediator b) => new(new FilterExpression(a, b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(ByteArrayExpressionMediator a, ByteArrayExpressionMediator b) => new(new FilterExpression(a, b, FilterExpressionOperator.NotEqual));
+        public static FilterExpression operator ==(ByteArrayExpressionMediator a, ByteArrayExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(ByteArrayExpressionMediator a, ByteArrayExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.NotEqual);
         #endregion
         #endregion
     }

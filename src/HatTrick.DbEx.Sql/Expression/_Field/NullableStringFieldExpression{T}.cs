@@ -34,8 +34,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region in value set
-        public override FilterExpressionSet In(params string?[] value) => new(new FilterExpression<bool>(this, new InExpression<string?>(this, value), FilterExpressionOperator.None));
-        public override FilterExpressionSet In(IEnumerable<string?> value) => new(new FilterExpression<bool>(this, new InExpression<string?>(this, value), FilterExpressionOperator.None));
+        public override FilterExpression In(params string?[] value) => new FilterExpression<bool>(this, new InExpression<string?>(this, value), FilterExpressionOperator.None);
+        public override FilterExpression In(IEnumerable<string?> value) => new FilterExpression<bool>(this, new InExpression<string?>(this, value), FilterExpressionOperator.None);
         #endregion
 
         #region equals

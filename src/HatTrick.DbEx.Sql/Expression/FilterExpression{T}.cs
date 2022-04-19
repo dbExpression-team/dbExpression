@@ -47,16 +47,5 @@ namespace HatTrick.DbEx.Sql.Expression
         public override int GetHashCode()
             => base.GetHashCode();
         #endregion
-
-        #region implicit operators
-        public static implicit operator FilterExpressionSet(FilterExpression<T> a)
-            => new(a);
-
-        public static implicit operator HavingExpression(FilterExpression<T> a)
-            => new(a);
-
-        public static implicit operator JoinOnExpressionSet(FilterExpression<T> a)
-            => a.ConvertToJoinOnExpressionSet();
-        #endregion
     }
 }

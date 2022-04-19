@@ -41,8 +41,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region like
-        public FilterExpressionSet Like(string phrase)
-            => new(new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
+        public FilterExpression Like(string phrase)
+            => new FilterExpression<bool>(this, new LikeExpression(phrase), FilterExpressionOperator.None);
         #endregion
 
         #region equals

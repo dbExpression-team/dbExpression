@@ -115,7 +115,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 return;
 
             var elements = (expression.Where as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>)?.Expression;
-            if (elements?.LeftArg is null && elements?.RightArg is null)
+            if (!elements?.Args?.Any() ?? false)
                 return;
 
             builder.Appender.Indent().Write("WHERE")
