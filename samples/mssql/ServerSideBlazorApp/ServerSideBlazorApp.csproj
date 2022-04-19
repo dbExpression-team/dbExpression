@@ -33,7 +33,7 @@
 		<PackageReference Include="Blazorise.Icons.FontAwesome" Version="1.0.1" />
 		<PackageReference Include="Blazorise.Icons.Material" Version="1.0.1" />
 		<PackageReference Include="Blazorise.Material" Version="1.0.1" />
-		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.2" />
+		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.3" />
 	</ItemGroup>
 
 </Project>

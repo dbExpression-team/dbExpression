@@ -61,8 +61,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region alias
-        public static FilterExpressionSet operator ==(ByteArrayFieldExpression a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(ByteArrayFieldExpression a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual));
+        public static FilterExpression operator ==(ByteArrayFieldExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(ByteArrayFieldExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
         #endregion
         #endregion
     }

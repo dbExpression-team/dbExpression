@@ -39,6 +39,11 @@ namespace HatTrick.DbEx.Sql.Expression
         {
             expression = havingCondition ?? throw new ArgumentNullException(nameof(havingCondition));
         }
+
+        public HavingExpression(FilterExpression havingCondition)
+        {
+            expression = new(havingCondition ?? throw new ArgumentNullException(nameof(havingCondition)));
+        }
         #endregion
 
         #region to string

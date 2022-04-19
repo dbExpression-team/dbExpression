@@ -26,8 +26,8 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableDateTimeFieldExpression
     {
         #region in value set
-        public override FilterExpressionSet In(params DateTime?[] value) => new(new FilterExpression<bool?>(this, new InExpression<DateTime?>(this, value), FilterExpressionOperator.None));
-        public override FilterExpressionSet In(IEnumerable<DateTime?> value) => new(new FilterExpression<bool?>(this, new InExpression<DateTime?>(this, value), FilterExpressionOperator.None));
+        public override FilterExpression In(params DateTime?[] value) => new FilterExpression<bool?>(this, new InExpression<DateTime?>(this, value), FilterExpressionOperator.None);
+        public override FilterExpression In(IEnumerable<DateTime?> value) => new FilterExpression<bool?>(this, new InExpression<DateTime?>(this, value), FilterExpressionOperator.None);
         #endregion
 
         #region implicit operators
@@ -339,89 +339,89 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region filter operators
         #region DBNull
-        public static FilterExpressionSet operator ==(NullableDateTimeFieldExpression a, DBNull b) => new(new FilterExpression<bool?>(a, new LiteralExpression<DateTime?>(b, a), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableDateTimeFieldExpression a, DBNull b) => new(new FilterExpression<bool?>(a, new LiteralExpression<DateTime?>(b, a), FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator ==(DBNull a, NullableDateTimeFieldExpression b) => new(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a, b), b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(DBNull a, NullableDateTimeFieldExpression b) => new(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a, b), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpression operator ==(NullableDateTimeFieldExpression a, DBNull b) => new FilterExpression<bool?>(a, new LiteralExpression<DateTime?>(b, a), FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(NullableDateTimeFieldExpression a, DBNull b) => new FilterExpression<bool?>(a, new LiteralExpression<DateTime?>(b, a), FilterExpressionOperator.NotEqual);
+        public static FilterExpression operator ==(DBNull a, NullableDateTimeFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a, b), b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(DBNull a, NullableDateTimeFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a, b), b, FilterExpressionOperator.NotEqual);
         #endregion
 
         #region data types
         #region DateTime
-        public static FilterExpressionSet operator ==(NullableDateTimeFieldExpression a, DateTime b) => new(new FilterExpression<bool?>(a, new LiteralExpression<DateTime>(b, a), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableDateTimeFieldExpression a, DateTime b) => new(new FilterExpression<bool?>(a, new LiteralExpression<DateTime>(b, a), FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator <(NullableDateTimeFieldExpression a, DateTime b) => new(new FilterExpression<bool?>(a, new LiteralExpression<DateTime>(b, a), FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator >(NullableDateTimeFieldExpression a, DateTime b) => new(new FilterExpression<bool?>(a, new LiteralExpression<DateTime>(b, a), FilterExpressionOperator.GreaterThan));
-        public static FilterExpressionSet operator <=(NullableDateTimeFieldExpression a, DateTime b) => new(new FilterExpression<bool?>(a, new LiteralExpression<DateTime>(b, a), FilterExpressionOperator.LessThanOrEqual));
-        public static FilterExpressionSet operator >=(NullableDateTimeFieldExpression a, DateTime b) => new(new FilterExpression<bool?>(a, new LiteralExpression<DateTime>(b, a), FilterExpressionOperator.GreaterThanOrEqual));
+        public static FilterExpression operator ==(NullableDateTimeFieldExpression a, DateTime b) => new FilterExpression<bool?>(a, new LiteralExpression<DateTime>(b, a), FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(NullableDateTimeFieldExpression a, DateTime b) => new FilterExpression<bool?>(a, new LiteralExpression<DateTime>(b, a), FilterExpressionOperator.NotEqual);
+        public static FilterExpression operator <(NullableDateTimeFieldExpression a, DateTime b) => new FilterExpression<bool?>(a, new LiteralExpression<DateTime>(b, a), FilterExpressionOperator.LessThan);
+        public static FilterExpression operator >(NullableDateTimeFieldExpression a, DateTime b) => new FilterExpression<bool?>(a, new LiteralExpression<DateTime>(b, a), FilterExpressionOperator.GreaterThan);
+        public static FilterExpression operator <=(NullableDateTimeFieldExpression a, DateTime b) => new FilterExpression<bool?>(a, new LiteralExpression<DateTime>(b, a), FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression operator >=(NullableDateTimeFieldExpression a, DateTime b) => new FilterExpression<bool?>(a, new LiteralExpression<DateTime>(b, a), FilterExpressionOperator.GreaterThanOrEqual);
 
-        public static FilterExpressionSet operator ==(DateTime a, NullableDateTimeFieldExpression b) => new(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a, b), b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(DateTime a, NullableDateTimeFieldExpression b) => new(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a, b), b, FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator <(DateTime a, NullableDateTimeFieldExpression b) => new(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a, b), b, FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator >(DateTime a, NullableDateTimeFieldExpression b) => new(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a, b), b, FilterExpressionOperator.GreaterThan));
-        public static FilterExpressionSet operator <=(DateTime a, NullableDateTimeFieldExpression b) => new(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a, b), b, FilterExpressionOperator.LessThanOrEqual));
-        public static FilterExpressionSet operator >=(DateTime a, NullableDateTimeFieldExpression b) => new(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a, b), b, FilterExpressionOperator.GreaterThanOrEqual));
+        public static FilterExpression operator ==(DateTime a, NullableDateTimeFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a, b), b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(DateTime a, NullableDateTimeFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a, b), b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression operator <(DateTime a, NullableDateTimeFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a, b), b, FilterExpressionOperator.LessThan);
+        public static FilterExpression operator >(DateTime a, NullableDateTimeFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a, b), b, FilterExpressionOperator.GreaterThan);
+        public static FilterExpression operator <=(DateTime a, NullableDateTimeFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a, b), b, FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression operator >=(DateTime a, NullableDateTimeFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a, b), b, FilterExpressionOperator.GreaterThanOrEqual);
 
-        public static FilterExpressionSet operator ==(NullableDateTimeFieldExpression a, DateTime? b) => new(new FilterExpression<bool?>(a, new LiteralExpression<DateTime?>(b, a), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableDateTimeFieldExpression a, DateTime? b) => new(new FilterExpression<bool?>(a, new LiteralExpression<DateTime?>(b, a), FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator <(NullableDateTimeFieldExpression a, DateTime? b) => new(new FilterExpression<bool?>(a, new LiteralExpression<DateTime?>(b, a), FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator >(NullableDateTimeFieldExpression a, DateTime? b) => new(new FilterExpression<bool?>(a, new LiteralExpression<DateTime?>(b, a), FilterExpressionOperator.GreaterThan));
-        public static FilterExpressionSet operator <=(NullableDateTimeFieldExpression a, DateTime? b) => new(new FilterExpression<bool?>(a, new LiteralExpression<DateTime?>(b, a), FilterExpressionOperator.LessThanOrEqual));
-        public static FilterExpressionSet operator >=(NullableDateTimeFieldExpression a, DateTime? b) => new(new FilterExpression<bool?>(a, new LiteralExpression<DateTime?>(b, a), FilterExpressionOperator.GreaterThanOrEqual));
+        public static FilterExpression operator ==(NullableDateTimeFieldExpression a, DateTime? b) => new FilterExpression<bool?>(a, new LiteralExpression<DateTime?>(b, a), FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(NullableDateTimeFieldExpression a, DateTime? b) => new FilterExpression<bool?>(a, new LiteralExpression<DateTime?>(b, a), FilterExpressionOperator.NotEqual);
+        public static FilterExpression operator <(NullableDateTimeFieldExpression a, DateTime? b) => new FilterExpression<bool?>(a, new LiteralExpression<DateTime?>(b, a), FilterExpressionOperator.LessThan);
+        public static FilterExpression operator >(NullableDateTimeFieldExpression a, DateTime? b) => new FilterExpression<bool?>(a, new LiteralExpression<DateTime?>(b, a), FilterExpressionOperator.GreaterThan);
+        public static FilterExpression operator <=(NullableDateTimeFieldExpression a, DateTime? b) => new FilterExpression<bool?>(a, new LiteralExpression<DateTime?>(b, a), FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression operator >=(NullableDateTimeFieldExpression a, DateTime? b) => new FilterExpression<bool?>(a, new LiteralExpression<DateTime?>(b, a), FilterExpressionOperator.GreaterThanOrEqual);
 
-        public static FilterExpressionSet operator ==(DateTime? a, NullableDateTimeFieldExpression b) => new(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a, b), b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(DateTime? a, NullableDateTimeFieldExpression b) => new(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a, b), b, FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator <(DateTime? a, NullableDateTimeFieldExpression b) => new(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a, b), b, FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator >(DateTime? a, NullableDateTimeFieldExpression b) => new(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a, b), b, FilterExpressionOperator.GreaterThan));
-        public static FilterExpressionSet operator <=(DateTime? a, NullableDateTimeFieldExpression b) => new(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a, b), b, FilterExpressionOperator.LessThanOrEqual));
-        public static FilterExpressionSet operator >=(DateTime? a, NullableDateTimeFieldExpression b) => new(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a, b), b, FilterExpressionOperator.GreaterThanOrEqual));
+        public static FilterExpression operator ==(DateTime? a, NullableDateTimeFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a, b), b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(DateTime? a, NullableDateTimeFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a, b), b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression operator <(DateTime? a, NullableDateTimeFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a, b), b, FilterExpressionOperator.LessThan);
+        public static FilterExpression operator >(DateTime? a, NullableDateTimeFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a, b), b, FilterExpressionOperator.GreaterThan);
+        public static FilterExpression operator <=(DateTime? a, NullableDateTimeFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a, b), b, FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression operator >=(DateTime? a, NullableDateTimeFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a, b), b, FilterExpressionOperator.GreaterThanOrEqual);
         #endregion
         #endregion
 
         #region fields
-        public static FilterExpressionSet operator ==(NullableDateTimeFieldExpression a, DateTimeFieldExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableDateTimeFieldExpression a, DateTimeFieldExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator <(NullableDateTimeFieldExpression a, DateTimeFieldExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator >(NullableDateTimeFieldExpression a, DateTimeFieldExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan));
-        public static FilterExpressionSet operator <=(NullableDateTimeFieldExpression a, DateTimeFieldExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual));
-        public static FilterExpressionSet operator >=(NullableDateTimeFieldExpression a, DateTimeFieldExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual));
+        public static FilterExpression operator ==(NullableDateTimeFieldExpression a, DateTimeFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(NullableDateTimeFieldExpression a, DateTimeFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression operator <(NullableDateTimeFieldExpression a, DateTimeFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        public static FilterExpression operator >(NullableDateTimeFieldExpression a, DateTimeFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        public static FilterExpression operator <=(NullableDateTimeFieldExpression a, DateTimeFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression operator >=(NullableDateTimeFieldExpression a, DateTimeFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
 
-        public static FilterExpressionSet operator ==(NullableDateTimeFieldExpression a, NullableDateTimeFieldExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableDateTimeFieldExpression a, NullableDateTimeFieldExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator <(NullableDateTimeFieldExpression a, NullableDateTimeFieldExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator >(NullableDateTimeFieldExpression a, NullableDateTimeFieldExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan));
-        public static FilterExpressionSet operator <=(NullableDateTimeFieldExpression a, NullableDateTimeFieldExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual));
-        public static FilterExpressionSet operator >=(NullableDateTimeFieldExpression a, NullableDateTimeFieldExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual));
+        public static FilterExpression operator ==(NullableDateTimeFieldExpression a, NullableDateTimeFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(NullableDateTimeFieldExpression a, NullableDateTimeFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression operator <(NullableDateTimeFieldExpression a, NullableDateTimeFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        public static FilterExpression operator >(NullableDateTimeFieldExpression a, NullableDateTimeFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        public static FilterExpression operator <=(NullableDateTimeFieldExpression a, NullableDateTimeFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression operator >=(NullableDateTimeFieldExpression a, NullableDateTimeFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
         #endregion
         
         #region mediators
-        public static FilterExpressionSet operator ==(NullableDateTimeFieldExpression a, DateTimeExpressionMediator b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableDateTimeFieldExpression a, DateTimeExpressionMediator b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator <(NullableDateTimeFieldExpression a, DateTimeExpressionMediator b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator >(NullableDateTimeFieldExpression a, DateTimeExpressionMediator b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan));
-        public static FilterExpressionSet operator <=(NullableDateTimeFieldExpression a, DateTimeExpressionMediator b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual));
-        public static FilterExpressionSet operator >=(NullableDateTimeFieldExpression a, DateTimeExpressionMediator b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual));
+        public static FilterExpression operator ==(NullableDateTimeFieldExpression a, DateTimeExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(NullableDateTimeFieldExpression a, DateTimeExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression operator <(NullableDateTimeFieldExpression a, DateTimeExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        public static FilterExpression operator >(NullableDateTimeFieldExpression a, DateTimeExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        public static FilterExpression operator <=(NullableDateTimeFieldExpression a, DateTimeExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression operator >=(NullableDateTimeFieldExpression a, DateTimeExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
 
-        public static FilterExpressionSet operator ==(NullableDateTimeFieldExpression a, NullableDateTimeExpressionMediator b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableDateTimeFieldExpression a, NullableDateTimeExpressionMediator b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator <(NullableDateTimeFieldExpression a, NullableDateTimeExpressionMediator b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator >(NullableDateTimeFieldExpression a, NullableDateTimeExpressionMediator b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan));
-        public static FilterExpressionSet operator <=(NullableDateTimeFieldExpression a, NullableDateTimeExpressionMediator b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual));
-        public static FilterExpressionSet operator >=(NullableDateTimeFieldExpression a, NullableDateTimeExpressionMediator b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual));
+        public static FilterExpression operator ==(NullableDateTimeFieldExpression a, NullableDateTimeExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(NullableDateTimeFieldExpression a, NullableDateTimeExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression operator <(NullableDateTimeFieldExpression a, NullableDateTimeExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        public static FilterExpression operator >(NullableDateTimeFieldExpression a, NullableDateTimeExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        public static FilterExpression operator <=(NullableDateTimeFieldExpression a, NullableDateTimeExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression operator >=(NullableDateTimeFieldExpression a, NullableDateTimeExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
         #endregion
 
         #region alias
-        public static FilterExpressionSet operator ==(NullableDateTimeFieldExpression a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableDateTimeFieldExpression a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator <(NullableDateTimeFieldExpression a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator >(NullableDateTimeFieldExpression a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan));
-        public static FilterExpressionSet operator <=(NullableDateTimeFieldExpression a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual));
-        public static FilterExpressionSet operator >=(NullableDateTimeFieldExpression a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual));
-        public static FilterExpressionSet operator ==(NullableDateTimeFieldExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression<DateTime?>(b), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableDateTimeFieldExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression<DateTime?>(b), FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator <(NullableDateTimeFieldExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression<DateTime?>(b), FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator >(NullableDateTimeFieldExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression<DateTime?>(b), FilterExpressionOperator.GreaterThan));
-        public static FilterExpressionSet operator <=(NullableDateTimeFieldExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression<DateTime?>(b), FilterExpressionOperator.LessThanOrEqual));
-        public static FilterExpressionSet operator >=(NullableDateTimeFieldExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression<DateTime?>(b), FilterExpressionOperator.GreaterThanOrEqual));
+        public static FilterExpression operator ==(NullableDateTimeFieldExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(NullableDateTimeFieldExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression operator <(NullableDateTimeFieldExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        public static FilterExpression operator >(NullableDateTimeFieldExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        public static FilterExpression operator <=(NullableDateTimeFieldExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression operator >=(NullableDateTimeFieldExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpression operator ==(NullableDateTimeFieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<DateTime?>(b), FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(NullableDateTimeFieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<DateTime?>(b), FilterExpressionOperator.NotEqual);
+        public static FilterExpression operator <(NullableDateTimeFieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<DateTime?>(b), FilterExpressionOperator.LessThan);
+        public static FilterExpression operator >(NullableDateTimeFieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<DateTime?>(b), FilterExpressionOperator.GreaterThan);
+        public static FilterExpression operator <=(NullableDateTimeFieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<DateTime?>(b), FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression operator >=(NullableDateTimeFieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<DateTime?>(b), FilterExpressionOperator.GreaterThanOrEqual);
         #endregion
         #endregion
     }

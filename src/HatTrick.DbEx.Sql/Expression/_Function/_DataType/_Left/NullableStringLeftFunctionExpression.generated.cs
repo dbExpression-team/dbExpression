@@ -142,65 +142,65 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region filter operators
         #region DBNull
-        public static FilterExpressionSet operator ==(NullableStringLeftFunctionExpression a, DBNull b) => new(new FilterExpression<bool?>(a, new LiteralExpression<string?>(b), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableStringLeftFunctionExpression a, DBNull b) => new(new FilterExpression<bool?>(a, new LiteralExpression<string?>(b), FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator ==(DBNull a, NullableStringLeftFunctionExpression b) => new(new FilterExpression<bool?>(new LiteralExpression<string?>(a), b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(DBNull a, NullableStringLeftFunctionExpression b) => new(new FilterExpression<bool?>(new LiteralExpression<string?>(a), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpression operator ==(NullableStringLeftFunctionExpression a, DBNull b) => new FilterExpression<bool?>(a, new LiteralExpression<string?>(b), FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(NullableStringLeftFunctionExpression a, DBNull b) => new FilterExpression<bool?>(a, new LiteralExpression<string?>(b), FilterExpressionOperator.NotEqual);
+        public static FilterExpression operator ==(DBNull a, NullableStringLeftFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<string?>(a), b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(DBNull a, NullableStringLeftFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<string?>(a), b, FilterExpressionOperator.NotEqual);
         #endregion
 
         #region data type
         #region string?
-        public static FilterExpressionSet operator ==(NullableStringLeftFunctionExpression a, string? b) => new(new FilterExpression<bool?>(a, new LiteralExpression<string?>(b), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableStringLeftFunctionExpression a, string? b) => new(new FilterExpression<bool?>(a, new LiteralExpression<string?>(b), FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator <(NullableStringLeftFunctionExpression a, string? b) => new(new FilterExpression<bool?>(a, new LiteralExpression<string?>(b), FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator >(NullableStringLeftFunctionExpression a, string? b) => new(new FilterExpression<bool?>(a, new LiteralExpression<string?>(b), FilterExpressionOperator.GreaterThan));
-        public static FilterExpressionSet operator <=(NullableStringLeftFunctionExpression a, string? b) => new(new FilterExpression<bool?>(a, new LiteralExpression<string?>(b), FilterExpressionOperator.LessThanOrEqual));
-        public static FilterExpressionSet operator >=(NullableStringLeftFunctionExpression a, string? b) => new(new FilterExpression<bool?>(a, new LiteralExpression<string?>(b), FilterExpressionOperator.GreaterThanOrEqual));
+        public static FilterExpression operator ==(NullableStringLeftFunctionExpression a, string? b) => new FilterExpression<bool?>(a, new LiteralExpression<string?>(b), FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(NullableStringLeftFunctionExpression a, string? b) => new FilterExpression<bool?>(a, new LiteralExpression<string?>(b), FilterExpressionOperator.NotEqual);
+        public static FilterExpression operator <(NullableStringLeftFunctionExpression a, string? b) => new FilterExpression<bool?>(a, new LiteralExpression<string?>(b), FilterExpressionOperator.LessThan);
+        public static FilterExpression operator >(NullableStringLeftFunctionExpression a, string? b) => new FilterExpression<bool?>(a, new LiteralExpression<string?>(b), FilterExpressionOperator.GreaterThan);
+        public static FilterExpression operator <=(NullableStringLeftFunctionExpression a, string? b) => new FilterExpression<bool?>(a, new LiteralExpression<string?>(b), FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression operator >=(NullableStringLeftFunctionExpression a, string? b) => new FilterExpression<bool?>(a, new LiteralExpression<string?>(b), FilterExpressionOperator.GreaterThanOrEqual);
 
-        public static FilterExpressionSet operator ==(string? a, NullableStringLeftFunctionExpression b) => new(new FilterExpression<bool?>(new LiteralExpression<string?>(a), b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(string? a, NullableStringLeftFunctionExpression b) => new(new FilterExpression<bool?>(new LiteralExpression<string?>(a), b, FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator <(string? a, NullableStringLeftFunctionExpression b) => new(new FilterExpression<bool?>(new LiteralExpression<string?>(a), b, FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator >(string? a, NullableStringLeftFunctionExpression b) => new(new FilterExpression<bool?>(new LiteralExpression<string?>(a), b, FilterExpressionOperator.GreaterThan));
-        public static FilterExpressionSet operator <=(string? a, NullableStringLeftFunctionExpression b) => new(new FilterExpression<bool?>(new LiteralExpression<string?>(a), b, FilterExpressionOperator.LessThanOrEqual));
-        public static FilterExpressionSet operator >=(string? a, NullableStringLeftFunctionExpression b) => new(new FilterExpression<bool?>(new LiteralExpression<string?>(a), b, FilterExpressionOperator.GreaterThanOrEqual));
+        public static FilterExpression operator ==(string? a, NullableStringLeftFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<string?>(a), b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(string? a, NullableStringLeftFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<string?>(a), b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression operator <(string? a, NullableStringLeftFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<string?>(a), b, FilterExpressionOperator.LessThan);
+        public static FilterExpression operator >(string? a, NullableStringLeftFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<string?>(a), b, FilterExpressionOperator.GreaterThan);
+        public static FilterExpression operator <=(string? a, NullableStringLeftFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<string?>(a), b, FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression operator >=(string? a, NullableStringLeftFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<string?>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
 
         #endregion
         #endregion
 
         #region fields
-        public static FilterExpressionSet operator ==(NullableStringLeftFunctionExpression a, StringFieldExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableStringLeftFunctionExpression a, StringFieldExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator <(NullableStringLeftFunctionExpression a, StringFieldExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator >(NullableStringLeftFunctionExpression a, StringFieldExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan));
-        public static FilterExpressionSet operator <=(NullableStringLeftFunctionExpression a, StringFieldExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual));
-        public static FilterExpressionSet operator >=(NullableStringLeftFunctionExpression a, StringFieldExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual));
+        public static FilterExpression operator ==(NullableStringLeftFunctionExpression a, StringFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(NullableStringLeftFunctionExpression a, StringFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression operator <(NullableStringLeftFunctionExpression a, StringFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        public static FilterExpression operator >(NullableStringLeftFunctionExpression a, StringFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        public static FilterExpression operator <=(NullableStringLeftFunctionExpression a, StringFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression operator >=(NullableStringLeftFunctionExpression a, StringFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
         
 
         #endregion
 
         #region mediators
-        public static FilterExpressionSet operator ==(NullableStringLeftFunctionExpression a, StringExpressionMediator b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableStringLeftFunctionExpression a, StringExpressionMediator b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator <(NullableStringLeftFunctionExpression a, StringExpressionMediator b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator >(NullableStringLeftFunctionExpression a, StringExpressionMediator b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan));
-        public static FilterExpressionSet operator <=(NullableStringLeftFunctionExpression a, StringExpressionMediator b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual));
-        public static FilterExpressionSet operator >=(NullableStringLeftFunctionExpression a, StringExpressionMediator b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual));
+        public static FilterExpression operator ==(NullableStringLeftFunctionExpression a, StringExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(NullableStringLeftFunctionExpression a, StringExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression operator <(NullableStringLeftFunctionExpression a, StringExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        public static FilterExpression operator >(NullableStringLeftFunctionExpression a, StringExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        public static FilterExpression operator <=(NullableStringLeftFunctionExpression a, StringExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression operator >=(NullableStringLeftFunctionExpression a, StringExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
 
         #endregion
 
         #region alias
-        public static FilterExpressionSet operator ==(NullableStringLeftFunctionExpression a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableStringLeftFunctionExpression a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator <(NullableStringLeftFunctionExpression a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator >(NullableStringLeftFunctionExpression a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan));
-        public static FilterExpressionSet operator <=(NullableStringLeftFunctionExpression a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual));
-        public static FilterExpressionSet operator >=(NullableStringLeftFunctionExpression a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual));
-        public static FilterExpressionSet operator ==(NullableStringLeftFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression<string?>(b), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableStringLeftFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression<string?>(b), FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator <(NullableStringLeftFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression<string?>(b), FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator >(NullableStringLeftFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression<string?>(b), FilterExpressionOperator.GreaterThan));
-        public static FilterExpressionSet operator <=(NullableStringLeftFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression<string?>(b), FilterExpressionOperator.LessThanOrEqual));
-        public static FilterExpressionSet operator >=(NullableStringLeftFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression<string?>(b), FilterExpressionOperator.GreaterThanOrEqual));
+        public static FilterExpression operator ==(NullableStringLeftFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(NullableStringLeftFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression operator <(NullableStringLeftFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        public static FilterExpression operator >(NullableStringLeftFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        public static FilterExpression operator <=(NullableStringLeftFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression operator >=(NullableStringLeftFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpression operator ==(NullableStringLeftFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<string?>(b), FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(NullableStringLeftFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<string?>(b), FilterExpressionOperator.NotEqual);
+        public static FilterExpression operator <(NullableStringLeftFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<string?>(b), FilterExpressionOperator.LessThan);
+        public static FilterExpression operator >(NullableStringLeftFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<string?>(b), FilterExpressionOperator.GreaterThan);
+        public static FilterExpression operator <=(NullableStringLeftFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<string?>(b), FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression operator >=(NullableStringLeftFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<string?>(b), FilterExpressionOperator.GreaterThanOrEqual);
         #endregion
 
         #endregion

@@ -93,6 +93,27 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
+        public void Does_selecting_concatenated_address_fields_succeed(int version, int id = 1)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectOne(
+                    dbo.Address.Line1 + " " + db.fx.IsNull(dbo.Address.Line2, string.Empty)
+                    + Environment.NewLine
+                    + dbo.Address.City + ", " + dbo.Address.State + " " + dbo.Address.Zip
+                ).From(dbo.Address)
+                .Where(dbo.Address.Id == id);
+
+            //when               
+            string? result = exp.Execute();
+
+            //then
+            result.Should().Be($"100 1st St Principal's office{Environment.NewLine}South Park, CO 80456");
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
         public void Does_selecting_many_address_line2_where_null_succeed(int version, int expected = 27)
         {
             //given

@@ -30,7 +30,6 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, queryExpression);
             string whereClause;
 
-
             //when
             builder.AppendElement(queryExpression.Where!, new AssemblyContext(new SqlStatementAssemblerConfiguration()));
             whereClause = builder.Appender.ToString()!;

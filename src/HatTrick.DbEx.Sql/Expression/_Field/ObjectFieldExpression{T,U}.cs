@@ -46,8 +46,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region in
-        public override FilterExpressionSet In(params TType[] value) => new(new FilterExpression<bool>(this, new InExpression<TType>(this, value), FilterExpressionOperator.None));
-        public override FilterExpressionSet In(IEnumerable<TType> value) => new(new FilterExpression<bool>(this, new InExpression<TType>(this, value), FilterExpressionOperator.None));
+        public override FilterExpression In(params TType[] value) => new FilterExpression<bool>(this, new InExpression<TType>(this, value), FilterExpressionOperator.None);
+        public override FilterExpression In(IEnumerable<TType> value) => new FilterExpression<bool>(this, new InExpression<TType>(this, value), FilterExpressionOperator.None);
         #endregion
     }
 }

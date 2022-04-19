@@ -21,7 +21,7 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class JoinOnExpression :
-        IExpressionElement,
+        IFilterExpressionElement,
         IEquatable<JoinOnExpression>
     {
         #region interface
@@ -92,11 +92,6 @@ namespace HatTrick.DbEx.Sql.Expression
                 return hash;
             }
         }
-        #endregion
-
-        #region implicit filter expression set operator
-        public static implicit operator JoinOnExpressionSet(JoinOnExpression a)
-            => new(a);
         #endregion
 
         #region negation operator

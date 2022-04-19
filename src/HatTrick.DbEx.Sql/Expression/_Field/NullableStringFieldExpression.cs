@@ -45,8 +45,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region like
-        public FilterExpressionSet Like(string phrase)
-            => new(new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
+        public FilterExpression Like(string phrase)
+            => new FilterExpression<bool>(this, new LikeExpression(phrase), FilterExpressionOperator.None);
         #endregion
 
         #region equals
@@ -61,12 +61,12 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region fields
-        public static FilterExpressionSet operator ==(NullableStringFieldExpression a, NullableStringFieldExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableStringFieldExpression a, NullableStringFieldExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator <(NullableStringFieldExpression a, NullableStringFieldExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator >(NullableStringFieldExpression a, NullableStringFieldExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan));
-        public static FilterExpressionSet operator <=(NullableStringFieldExpression a, NullableStringFieldExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual));
-        public static FilterExpressionSet operator >=(NullableStringFieldExpression a, NullableStringFieldExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual));
+        public static FilterExpression operator ==(NullableStringFieldExpression a, NullableStringFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(NullableStringFieldExpression a, NullableStringFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression operator <(NullableStringFieldExpression a, NullableStringFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        public static FilterExpression operator >(NullableStringFieldExpression a, NullableStringFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        public static FilterExpression operator <=(NullableStringFieldExpression a, NullableStringFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression operator >=(NullableStringFieldExpression a, NullableStringFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
         #endregion
     }
 }

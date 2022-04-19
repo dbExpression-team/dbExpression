@@ -41,39 +41,33 @@ namespace HatTrick.DbEx.Sql.Assembler
         public override void AppendElement(FilterExpressionSet exp, ISqlStatementBuilder builder, AssemblyContext context)
         {
             var expression = (exp as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>).Expression;
-            if (expression is null || (expression.LeftArg is null && expression.RightArg is null))
+            if (expression is null || !expression.Args.Any())
                 return;
 
-            //helper action used to conditionally append text to the appender
-            void ifAppend(bool condition, Action<IAppender> trueAction, Action<IAppender>? falseAction = null) { if (condition) trueAction(builder.Appender); else if (falseAction is not null) falseAction(builder.Appender); }
-
-            //implicit conversion will create a FilterExpressionSet for a single filter, evaluate whether each arg is "simple" or "complex" for the current
-            var leftIsAComplexExpression = !(expression.LeftArg is FilterExpression || expression.LeftArg is FilterExpressionSet leftSet && (leftSet as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>).Expression.IsSingleArg);
-            var rightIsAComplexExpression = !(expression.RightArg is FilterExpression || expression.RightArg is FilterExpressionSet rightSet && (rightSet as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>).Expression.IsSingleArg);
-
             //if the expression set is negated, render "NOT"
-            ifAppend(expression.Negate, AppendNegateStart);
+            var argCount = expression.Args.Count();
+            if (expression.Negate)
+                AppendNegateStart(builder.Appender);
 
-            if (expression.LeftArg is not null)
+            for (var i = 0; i < argCount; i++)
             {
-                ifAppend(leftIsAComplexExpression, AppendParensStart);
+                var current = expression.Args.ElementAt(i);
+                var elementSet = expression.Args.ElementAt(i) as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>;
 
-                builder.AppendElement(expression.LeftArg, context);
+                if (argCount > 1 && elementSet is not null)
+                    AppendParensStart(builder.Appender);
+                  
+                builder.AppendElement(current, context);
 
-                ifAppend(leftIsAComplexExpression, AppendParensEnd);
-            }
-            if (expression.RightArg is not null)
-            {
-                AppendConditionalOperator(builder.Appender, expression.ConditionalOperator);
+                if (argCount > 1 && elementSet is not null)
+                    AppendParensEnd(builder.Appender);
 
-                ifAppend(rightIsAComplexExpression, AppendParensStart);
-
-                builder.AppendElement(expression.RightArg, context);
-
-                ifAppend(rightIsAComplexExpression, AppendParensEnd);
+                if (i < argCount - 1) 
+                    AppendConditionalOperator(builder.Appender, expression.ConditionalOperator);
             }
 
-            ifAppend(expression.Negate, AppendNegateEnd);
+            if (expression.Negate)
+                AppendNegateEnd(builder.Appender);
         }
 
         private static void AppendNegateStart(IAppender appender)

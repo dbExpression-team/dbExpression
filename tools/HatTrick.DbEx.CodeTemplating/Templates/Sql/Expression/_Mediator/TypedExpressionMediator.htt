@@ -110,11 +110,11 @@ namespace {Namespace}
         #region {Type.Alias}
         {-#each Filters-}
         {-#each Operations-}
-        public static FilterExpressionSet operator {FilterOperatorSymbol}({:mediatorType.Name}ExpressionMediator a, {:mediatorType.Alias} b) => new(new FilterExpression<bool{#if :mediatorType.Type => IsTypeOfObject}?{/if}>(a, new LiteralExpression<{:mediatorType.Alias}>(b), FilterExpressionOperator.{FilterOperatorName}));
+        public static FilterExpression operator {FilterOperatorSymbol}({:mediatorType.Name}ExpressionMediator a, {:mediatorType.Alias} b) => new FilterExpression<bool{#if :mediatorType.Type => IsTypeOfObject}?{/if}>(a, new LiteralExpression<{:mediatorType.Alias}>(b), FilterExpressionOperator.{FilterOperatorName});
         {-/each-}
 
         {-#each Operations-}
-        public static FilterExpressionSet operator {FilterOperatorSymbol}({:mediatorType.Alias} a, {:mediatorType.Name}ExpressionMediator b) => new(new FilterExpression<bool{#if :mediatorType.Type => IsTypeOfObject}?{/if}>(new LiteralExpression<{:mediatorType.Alias}>(a), b, FilterExpressionOperator.{FilterOperatorName}));
+        public static FilterExpression operator {FilterOperatorSymbol}({:mediatorType.Alias} a, {:mediatorType.Name}ExpressionMediator b) => new FilterExpression<bool{#if :mediatorType.Type => IsTypeOfObject}?{/if}>(new LiteralExpression<{:mediatorType.Alias}>(a), b, FilterExpressionOperator.{FilterOperatorName});
         {-/each-}
         {-/each-}
         #endregion
@@ -123,7 +123,7 @@ namespace {Namespace}
         {-#each Filters-}
         {-#each Operations-}
         {-#if !:mediatorType.Type => IsTypeOfObject-}
-        public static FilterExpressionSet operator {FilterOperatorSymbol}({:mediatorType.Name}ExpressionMediator a, {:mediatorType.Name}FieldExpression b) => new(new FilterExpression<bool>(a, b, FilterExpressionOperator.{FilterOperatorName}));
+        public static FilterExpression operator {FilterOperatorSymbol}({:mediatorType.Name}ExpressionMediator a, {:mediatorType.Name}FieldExpression b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.{FilterOperatorName});
         {-/if-}
         {-/each-}
         {-/each-}
@@ -132,7 +132,7 @@ namespace {Namespace}
         {-#each Filters-}
         {-#each Operations-}
         {-#if !:mediatorType.Type => IsTypeOfObject-}
-        public static FilterExpressionSet operator {FilterOperatorSymbol}({:mediatorType.Name}ExpressionMediator a, Nullable{:mediatorType.Name}FieldExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.{FilterOperatorName}));
+        public static FilterExpression operator {FilterOperatorSymbol}({:mediatorType.Name}ExpressionMediator a, Nullable{:mediatorType.Name}FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.{FilterOperatorName});
         {-/if-}
         {-/each-}
         {-/each-}
@@ -142,12 +142,12 @@ namespace {Namespace}
         #region mediators
         {-#each Filters-}
         {-#each Operations-}
-        public static FilterExpressionSet operator {FilterOperatorSymbol}({:mediatorType.Name}ExpressionMediator a, {:mediatorType.Name}ExpressionMediator b) => new(new FilterExpression<bool>(a, b, FilterExpressionOperator.{FilterOperatorName}));
+        public static FilterExpression operator {FilterOperatorSymbol}({:mediatorType.Name}ExpressionMediator a, {:mediatorType.Name}ExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.{FilterOperatorName});
         {-/each-}
 
         {-#if Type.IsNullable-}
         {-#each Operations-}
-        public static FilterExpressionSet operator {FilterOperatorSymbol}({:mediatorType.Name}ExpressionMediator a, Nullable{:mediatorType.Name}ExpressionMediator b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.{FilterOperatorName}));
+        public static FilterExpression operator {FilterOperatorSymbol}({:mediatorType.Name}ExpressionMediator a, Nullable{:mediatorType.Name}ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.{FilterOperatorName});
         {-/each-}
         {-/if-}
         {-/each-}
@@ -156,10 +156,10 @@ namespace {Namespace}
         #region alias
         {-#each Filters-}
         {-#each Operations-}
-        public static FilterExpressionSet operator {FilterOperatorSymbol}({:mediatorType.Name}ExpressionMediator a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.{FilterOperatorName}));
+        public static FilterExpression operator {FilterOperatorSymbol}({:mediatorType.Name}ExpressionMediator a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.{FilterOperatorName});
         {-/each-}
         {-#each Operations-}
-        public static FilterExpressionSet operator {FilterOperatorSymbol}({:mediatorType.Name}ExpressionMediator a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression<{:mediatorType.Alias}>(b), FilterExpressionOperator.{FilterOperatorName}));
+        public static FilterExpression operator {FilterOperatorSymbol}({:mediatorType.Name}ExpressionMediator a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<{:mediatorType.Alias}>(b), FilterExpressionOperator.{FilterOperatorName});
         {-/each-}
         {-/each-}
         #endregion
