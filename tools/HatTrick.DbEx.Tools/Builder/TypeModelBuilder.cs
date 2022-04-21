@@ -17,7 +17,6 @@
 #endregion
 
 ﻿using HatTrick.DbEx.Tools.Model;
-using HatTrick.Model.MsSql;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -26,76 +25,13 @@ namespace HatTrick.DbEx.Tools.Builder
 {
     public static class TypeModelBuilder
     {
-        private static readonly Dictionary<string,Type> KnownTypes = new()
-        { 
-            { nameof(Boolean), typeof(bool) },
-            { "bool", typeof(bool) },
-            { nameof(Byte), typeof(byte) },
-            { "byte", typeof(byte) },
-            { "ByteArray", typeof(byte[]) },
-            { nameof(DateTime), typeof(DateTime) },
-            { nameof(DateTimeOffset), typeof(DateTimeOffset) },
-            { nameof(Decimal), typeof(decimal) },
-            { "decimal", typeof(decimal) },
-            { nameof(Double), typeof(double) },
-            { "double", typeof(double) },
-            { nameof(Guid), typeof(Guid) },
-            { nameof(Single), typeof(float) },
-            { "float", typeof(float) },
-            { nameof(Int64), typeof(long) },
-            { "long", typeof(long) },
-            { nameof(Int32), typeof(int) },
-            { "int", typeof(int) },
-            { nameof(Int16), typeof(short) },
-            { "short", typeof(short) },
-            { nameof(String), typeof(string) },
-            { "string", typeof(string) },
-            { nameof(TimeSpan), typeof(TimeSpan) }
-        };
-
-        private static readonly Dictionary<string, string> TypeNameConversions = new()
-        {
-            { "bool", nameof(Boolean) },
-            { "byte", nameof(Byte) },
-            { "decimal", nameof(Decimal) },
-            { "double", nameof(Double) },
-            { "float", nameof(Single) },
-            { "long", nameof(Int64) },
-            { "int", nameof(Int32) },
-            { "short", nameof(Int16) },
-            { "string", nameof(String) }
-        };
-
-        private static readonly Dictionary<string, string> Aliases = new()
-        {
-            { nameof(Boolean), "bool" },
-            { "bool", "bool" },
-            { nameof(Byte), "byte" },
-            { "byte", "byte" },
-            { "ByteArray", "byte[]" },
-            { nameof(Decimal), "decimal" },
-            { "decimal", "decimal" },
-            { nameof(Double), "double" },
-            { "double", "double" },
-            { nameof(Single), "float" },
-            { "float", "float" },
-            { nameof(Int64), "long" },
-            { "long", "long" },
-            { nameof(Int32), "int" },
-            { "int", "int" },
-            { nameof(Int16), "short" },
-            { "short", "short" },
-            { nameof(String), "string" },
-            { "string", "string" }
-        };
-
         private static readonly Dictionary<SqlDbType, string> SqlDbTypeToSystemTypeMap = new()
         {
             { SqlDbType.BigInt, nameof(Int64) },
-            { SqlDbType.Binary, "ByteArray" },
-            { SqlDbType.Image, "ByteArray" },
-            { SqlDbType.Timestamp, "ByteArray" },
-            { SqlDbType.VarBinary, "ByteArray" },
+            { SqlDbType.Binary, "byte[]" },
+            { SqlDbType.Image, "byte[]" },
+            { SqlDbType.Timestamp, "byte[]" },
+            { SqlDbType.VarBinary, "byte[]" },
             { SqlDbType.Bit, nameof(Boolean) },
             { SqlDbType.Char, nameof(String) },
             { SqlDbType.NChar, nameof(String) },
@@ -120,39 +56,44 @@ namespace HatTrick.DbEx.Tools.Builder
             { SqlDbType.Time, nameof(TimeSpan) }
         };
 
-        public static TypeModel CreateTypeModel(LanguageFeatures features, SqlDbType sqlType, string? clrTypeOverride, bool isNullable, TypeSpecialCase? specialCase)
+        public static TypeModel CreateTypeModel(LanguageFeatures features, SqlDbType sqlType, string? clrTypeOverride, bool isDbNullable, bool isEnum)
         {
-            string typeName = ResolveTypeName(sqlType, clrTypeOverride) 
-                ?? throw new NotImplementedException($"The sql database type {sqlType} is not compatible with dbExpression.");
+            string typeName = ResolveTypeName(sqlType, clrTypeOverride) ?? throw new NotImplementedException($"The sql database type {sqlType} is not compatible with dbExpression.");
 
-            bool isArray = typeName.EndsWith("Array");
-            if (isArray)
-                isNullable = (features.Nullable.IsFeatureEnabled && isNullable) || isNullable;
+            var isNullableType = IsNullableType(isDbNullable, clrTypeOverride);
 
-            Type? knownType = KnownTypes.ContainsKey(typeName) ? KnownTypes[typeName] : null;
-            if (specialCase is null)
-            {
-                if (knownType == typeof(string))
-                {
-                    specialCase = TypeSpecialCase.String;
-                }
-                else if (knownType is null)
-                {
-                    specialCase = TypeSpecialCase.UserDefinedType;
-                    isNullable = features.Nullable.IsFeatureEnabled;
-                }
-            }
-            if (specialCase == TypeSpecialCase.String)
-                isNullable = isNullable && features.Nullable.IsFeatureEnabled;
-
-            if (isNullable && typeName.EndsWith("?"))
+            if (typeName.EndsWith("?"))
                 typeName = typeName[0..^1];
 
-            string alias = Aliases.ContainsKey(typeName) ? Aliases[typeName] : typeName;
-            string nullableAlias = isNullable ? GetAlias(features, typeName, alias, isArray, specialCase) : alias;
-            string? initializer = features.Nullable.IsFeatureEnabled ? GetInitializer(typeName, alias, isNullable, isArray) : null;
+            bool isArray = typeName.EndsWith("[]");
+            if (isArray)
+                typeName = typeName[0..^2];
 
-            return new TypeModel(typeName, alias, nullableAlias, initializer, isNullable, specialCase, isArray);
+            switch (typeName.ToLower())
+            {
+                case "bool":
+                case "boolean": return new BooleanTypeModel(isNullableType, features.Nullable.IsFeatureEnabled, isArray);
+                case "byte": return new ByteTypeModel(isNullableType, features.Nullable.IsFeatureEnabled, isArray);
+                case "datetime": return new DateTimeTypeModel(isNullableType, features.Nullable.IsFeatureEnabled, isArray);
+                case "datetimeoffset": return new DateTimeOffsetTypeModel(isNullableType, features.Nullable.IsFeatureEnabled, isArray);
+                case "decimal": return new DecimalTypeModel(isNullableType, features.Nullable.IsFeatureEnabled, isArray);
+                case "double": return new DoubleTypeModel(isNullableType, features.Nullable.IsFeatureEnabled, isArray);
+                case "guid": return new GuidTypeModel(isNullableType, features.Nullable.IsFeatureEnabled, isArray);
+                case "short":
+                case "int16":  return new Int16TypeModel(isNullableType, features.Nullable.IsFeatureEnabled, isArray);
+                case "int":
+                case "int32": return new Int32TypeModel(isNullableType, features.Nullable.IsFeatureEnabled, isArray);
+                case "long":
+                case "int64": return new Int64TypeModel(isNullableType, features.Nullable.IsFeatureEnabled, isArray);
+                case "float":
+                case "single": return new SingleTypeModel(isNullableType, features.Nullable.IsFeatureEnabled, isArray);
+                case "string": return new StringTypeModel(isNullableType, features.Nullable.IsFeatureEnabled, isArray);
+                case "timespan": return new TimeSpanTypeModel(isNullableType, features.Nullable.IsFeatureEnabled, isArray);
+            }
+            if (isEnum)
+                return new EnumTypeModel(typeName, isNullableType, features.Nullable.IsFeatureEnabled, isArray);
+
+            return new UserDefinedTypeModel(typeName, isNullableType, features.Nullable.IsFeatureEnabled, isArray);
         }
 
         private static string? ResolveTypeName(SqlDbType sqlType, string? clrTypeOverride)
@@ -164,34 +105,12 @@ namespace HatTrick.DbEx.Tools.Builder
                 typeName = clrTypeOverride;
             if (typeName.StartsWith("System."))
                 typeName = typeName[7..];
-            if (TypeNameConversions.ContainsKey(typeName))
-                typeName = TypeNameConversions[typeName];
             return typeName;
         }
 
-        private static string? GetInitializer(string typeName, string alias, bool isNullable, bool isArray)
+        private static bool IsNullableType(bool isDbNullable, string? clrTypeOverride)
         {
-            if (typeName == nameof(String)) return isNullable ? "null" : "string.Empty";
-            if (isArray)
-                return isNullable ? "null" : $"new {alias.Replace("[]", "[0]")}";
-            return isNullable ? "null" : null;
-        }
-
-        private static string GetAlias(LanguageFeatures features, string typeName, string alias, bool isArray, TypeSpecialCase? specialCase)
-        {
-            if (specialCase is not null)
-            { 
-                if (specialCase.Value == TypeSpecialCase.Enum) return $"{alias}?";
-                return features.Nullable.IsFeatureEnabled ? $"{alias}?" : alias;
-            }
-
-            if (KnownTypes.ContainsKey(typeName))
-            {
-                if (isArray) return features.Nullable.IsFeatureEnabled ? $"{alias}?" : alias;
-                return $"{alias}?";
-            }
-
-            return alias;
+            return (!string.IsNullOrEmpty(clrTypeOverride) && clrTypeOverride.EndsWith("?")) || (string.IsNullOrEmpty(clrTypeOverride) && isDbNullable);
         }
     }
 }

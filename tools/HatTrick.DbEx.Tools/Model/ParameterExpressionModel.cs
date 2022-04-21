@@ -19,7 +19,7 @@ namespace HatTrick.DbEx.Tools.Model
 		{
 			ProcedureExpression = procedureExpression;
 			Name = name;
-			Type = TypeModelBuilder.CreateTypeModel(features, parameter.SqlType, clrTypeOverride, parameter.IsNullable, isEnum ? TypeSpecialCase.Enum : null);
+			Type = TypeModelBuilder.CreateTypeModel(features, parameter.SqlType, clrTypeOverride, parameter.IsNullable, isEnum);
 			Direction = direction;
 		}
 

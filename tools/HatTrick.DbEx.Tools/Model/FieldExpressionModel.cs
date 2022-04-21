@@ -69,7 +69,7 @@ namespace HatTrick.DbEx.Tools.Model
             EntityExpression = entity ?? throw new ArgumentNullException(nameof(entity));
             LanguageFeatures = features ?? throw new ArgumentNullException(nameof(features));
             Name = name;
-            Type = TypeModelBuilder.CreateTypeModel(features, column.SqlType, clrTypeOverride, column.IsNullable, isEnum ? TypeSpecialCase.Enum : null);
+            Type = TypeModelBuilder.CreateTypeModel(features, column.SqlType, clrTypeOverride, column.IsNullable, isEnum);
             AllowInsert = allowInsert;
             AllowUpdate = allowUpdate;
         }
@@ -162,7 +162,7 @@ namespace HatTrick.DbEx.Tools.Model
             if (Type.IsNullable)
                 name += "Nullable";
 
-            name += Type.IsEnum ? "Enum" : Type.TypeName;
+            name += Type.IsEnum ? "Enum" : Type.IsArray ? "ByteArray" : Type.TypeName;
             name += "FieldExpression<";
             name += EntityExpression.Name;
 

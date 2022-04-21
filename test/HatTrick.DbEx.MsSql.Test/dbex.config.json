@@ -73,7 +73,7 @@
 		},
 		{
 			"apply": {
-				"clrType": "HatTrick.DbEx.MsSql.Test.ProductDescription",
+				"clrType": "HatTrick.DbEx.MsSql.Test.ProductDescription?",
 				"to": {
 					"path": "dbo.Product.Description"
 				}
