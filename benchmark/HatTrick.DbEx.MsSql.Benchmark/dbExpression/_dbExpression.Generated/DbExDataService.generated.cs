@@ -2972,8 +2972,8 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
 
 
         /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity.Line2Field"/> representing the "dbo.Address.Line2" column in the database, 
-        /// with a .NET type of <see cref="string"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity.Line2Field"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity.Line2Field"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3272,7 +3272,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         #endregion
 
         #region line2 field expression
-        public partial class Line2Field : StringFieldExpression<Address>
+        public partial class Line2Field : NullableStringFieldExpression<Address>
         {
             #region constructors
             public Line2Field(string identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3283,8 +3283,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
 
             #region set
             public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4294,8 +4295,8 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
 
 
         /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.DescriptionField"/> representing the "dbo.Product.Description" column in the database, 
-        /// with a .NET type of <see cref="string"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.DescriptionField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.DescriptionField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4375,7 +4376,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
 
         /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.ImageField"/> representing the "dbo.Product.Image" column in the database, 
         /// with a .NET type of <see cref="byte"/>[].  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.ImageField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{ByteArray}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Byte[]}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4818,7 +4819,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         #endregion
 
         #region description field expression
-        public partial class DescriptionField : StringFieldExpression<Product>
+        public partial class DescriptionField : NullableStringFieldExpression<Product>
         {
             #region constructors
             public DescriptionField(string identifier, string name, Table entity) : base(identifier, name, entity)
@@ -4829,8 +4830,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
 
             #region set
             public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion

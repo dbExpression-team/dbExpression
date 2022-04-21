@@ -194,7 +194,6 @@ namespace DbEx.DataService
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
-        ///, for example "unit_test.ExpressionElementType.ByteArray" or "db.fx.IsNull(unit_test.ExpressionElementType.ByteArray, new byte[0])"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<byte[]> SelectOne(AnyElement<byte[]> element)
@@ -690,7 +689,6 @@ namespace DbEx.DataService
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
-        ///, for example "unit_test.ExpressionElementType.ByteArray" or "db.fx.IsNull(unit_test.ExpressionElementType.ByteArray, new byte[0])"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<byte[]> SelectMany(AnyElement<byte[]> element)
@@ -1338,7 +1336,6 @@ namespace DbEx.DataService
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
-        ///, for example "unit_test.ExpressionElementType.ByteArray" or "db.fx.IsNull(unit_test.ExpressionElementType.ByteArray, new byte[0])"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<byte[]> SelectOne(AnyElement<byte[]> element)
@@ -1834,7 +1831,6 @@ namespace DbEx.DataService
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
-        ///, for example "unit_test.ExpressionElementType.ByteArray" or "db.fx.IsNull(unit_test.ExpressionElementType.ByteArray, new byte[0])"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<byte[]> SelectMany(AnyElement<byte[]> element)
@@ -4463,7 +4459,7 @@ namespace DbEx.dboDataService
 
         /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.ImageField"/> representing the "dbo.Product.Image" column in the database, 
         /// with a .NET type of <see cref="byte"/>[].  The <see cref="DbEx.dboDataService.ProductEntity.ImageField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{ByteArray}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Byte[]}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -8464,7 +8460,7 @@ namespace DbEx.unit_testDataService
 
         /// <summary>A <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.ByteArrayField"/> representing the "unit_test.ExpressionElementType.ByteArray" column in the database, 
         /// with a .NET type of <see cref="byte"/>[].  The <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.ByteArrayField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{ByteArray}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Byte[]}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -8484,7 +8480,7 @@ namespace DbEx.unit_testDataService
 
         /// <summary>A <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableByteArrayField"/> representing the "unit_test.ExpressionElementType.NullableByteArray" column in the database, 
         /// with a .NET type of <see cref="byte"/>[].  The <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableByteArrayField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{ByteArray}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Byte[]}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
