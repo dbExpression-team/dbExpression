@@ -101,9 +101,9 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion        
 
         #region string?
-        public static NullableStringExpressionMediator operator +(NullableStringFieldExpression a, string? b) => new(new ArithmeticExpression(a, new LiteralExpression<string?>(b, a), ArithmeticExpressionOperator.Add));
+        public static NullableStringExpressionMediator operator +(NullableStringFieldExpression a, string? b) => new(new ArithmeticExpression(a, new LiteralExpression<string?>(b), ArithmeticExpressionOperator.Add));
 
-        public static NullableStringExpressionMediator operator +(string? a, NullableStringFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<string?>(a, b), b, ArithmeticExpressionOperator.Add));
+        public static NullableStringExpressionMediator operator +(string? a, NullableStringFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<string?>(a), b, ArithmeticExpressionOperator.Add));
 
         #endregion        
 
@@ -149,9 +149,27 @@ namespace HatTrick.DbEx.Sql.Expression
 
 
         #region string?
-        public static NullableStringExpressionMediator operator +(NullableStringFieldExpression a, StringExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        //here
+        public static NullableStringExpressionMediator operator +(NullableStringFieldExpression a, StringExpressionMediator b)
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
 
-        public static NullableStringExpressionMediator operator +(NullableStringFieldExpression a, NullableStringExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+
+        public static NullableStringExpressionMediator operator +(NullableStringFieldExpression a, NullableStringExpressionMediator b)
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                be.Expression.Args.Insert(0, a);
+                return b;
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
         #endregion
 
 

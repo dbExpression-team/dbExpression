@@ -1,15 +1,11 @@
-﻿using DbEx.DataService;
-using DbEx.dboDataService;
-using DbEx.secData;
+﻿using DbEx.dboDataService;
 using DbEx.secDataService;
 using FluentAssertions;
-using HatTrick.DbEx.Sql.Builder;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 using Xunit;
-
-using secPersonEntity = DbEx.secDataService.PersonEntity;
 using dboPersonEntity = DbEx.dboDataService.PersonEntity;
+using secPersonEntity = DbEx.secDataService.PersonEntity;
 
 namespace HatTrick.DbEx.MsSql.Test.Expression
 {

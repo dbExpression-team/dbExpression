@@ -400,133 +400,822 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region mediator
         #region bool
-
         #endregion
         
         #region byte
-        public static NullableInt64ExpressionMediator operator +(NullableInt64IsNullFunctionExpression a, ByteExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableInt64ExpressionMediator operator -(NullableInt64IsNullFunctionExpression a, ByteExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt64ExpressionMediator operator *(NullableInt64IsNullFunctionExpression a, ByteExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt64ExpressionMediator operator /(NullableInt64IsNullFunctionExpression a, ByteExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt64ExpressionMediator operator %(NullableInt64IsNullFunctionExpression a, ByteExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static NullableInt64ExpressionMediator operator +(NullableInt64IsNullFunctionExpression a, ByteExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
 
-        public static NullableInt64ExpressionMediator operator +(NullableInt64IsNullFunctionExpression a, NullableByteExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableInt64ExpressionMediator operator -(NullableInt64IsNullFunctionExpression a, NullableByteExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt64ExpressionMediator operator *(NullableInt64IsNullFunctionExpression a, NullableByteExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt64ExpressionMediator operator /(NullableInt64IsNullFunctionExpression a, NullableByteExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt64ExpressionMediator operator %(NullableInt64IsNullFunctionExpression a, NullableByteExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static NullableInt64ExpressionMediator operator -(NullableInt64IsNullFunctionExpression a, ByteExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        }
+
+        public static NullableInt64ExpressionMediator operator *(NullableInt64IsNullFunctionExpression a, ByteExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Multiply)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        }
+
+        public static NullableInt64ExpressionMediator operator /(NullableInt64IsNullFunctionExpression a, ByteExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Divide)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        }
+
+        public static NullableInt64ExpressionMediator operator %(NullableInt64IsNullFunctionExpression a, ByteExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Modulo)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        }
+
+        public static NullableInt64ExpressionMediator operator +(NullableInt64IsNullFunctionExpression a, NullableByteExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
+
+        public static NullableInt64ExpressionMediator operator -(NullableInt64IsNullFunctionExpression a, NullableByteExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        }
+
+        public static NullableInt64ExpressionMediator operator *(NullableInt64IsNullFunctionExpression a, NullableByteExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Multiply)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        }
+
+        public static NullableInt64ExpressionMediator operator /(NullableInt64IsNullFunctionExpression a, NullableByteExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Divide)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        }
+
+        public static NullableInt64ExpressionMediator operator %(NullableInt64IsNullFunctionExpression a, NullableByteExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Modulo)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        }
+
         #endregion
         
         #region decimal
-        public static NullableDecimalExpressionMediator operator +(NullableInt64IsNullFunctionExpression a, DecimalExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableDecimalExpressionMediator operator -(NullableInt64IsNullFunctionExpression a, DecimalExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static NullableDecimalExpressionMediator operator *(NullableInt64IsNullFunctionExpression a, DecimalExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static NullableDecimalExpressionMediator operator /(NullableInt64IsNullFunctionExpression a, DecimalExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static NullableDecimalExpressionMediator operator %(NullableInt64IsNullFunctionExpression a, DecimalExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static NullableDecimalExpressionMediator operator +(NullableInt64IsNullFunctionExpression a, DecimalExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
 
-        public static NullableDecimalExpressionMediator operator +(NullableInt64IsNullFunctionExpression a, NullableDecimalExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableDecimalExpressionMediator operator -(NullableInt64IsNullFunctionExpression a, NullableDecimalExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static NullableDecimalExpressionMediator operator *(NullableInt64IsNullFunctionExpression a, NullableDecimalExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static NullableDecimalExpressionMediator operator /(NullableInt64IsNullFunctionExpression a, NullableDecimalExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static NullableDecimalExpressionMediator operator %(NullableInt64IsNullFunctionExpression a, NullableDecimalExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static NullableDecimalExpressionMediator operator -(NullableInt64IsNullFunctionExpression a, DecimalExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        }
+
+        public static NullableDecimalExpressionMediator operator *(NullableInt64IsNullFunctionExpression a, DecimalExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Multiply)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        }
+
+        public static NullableDecimalExpressionMediator operator /(NullableInt64IsNullFunctionExpression a, DecimalExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Divide)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        }
+
+        public static NullableDecimalExpressionMediator operator %(NullableInt64IsNullFunctionExpression a, DecimalExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Modulo)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        }
+
+        public static NullableDecimalExpressionMediator operator +(NullableInt64IsNullFunctionExpression a, NullableDecimalExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                be.Expression.Args.Insert(0, a);
+                return b;
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
+
+        public static NullableDecimalExpressionMediator operator -(NullableInt64IsNullFunctionExpression a, NullableDecimalExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            {
+                be.Expression.Args.Insert(0, a);
+                return b;
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        }
+
+        public static NullableDecimalExpressionMediator operator *(NullableInt64IsNullFunctionExpression a, NullableDecimalExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Multiply)
+            {
+                be.Expression.Args.Insert(0, a);
+                return b;
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        }
+
+        public static NullableDecimalExpressionMediator operator /(NullableInt64IsNullFunctionExpression a, NullableDecimalExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Divide)
+            {
+                be.Expression.Args.Insert(0, a);
+                return b;
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        }
+
+        public static NullableDecimalExpressionMediator operator %(NullableInt64IsNullFunctionExpression a, NullableDecimalExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Modulo)
+            {
+                be.Expression.Args.Insert(0, a);
+                return b;
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        }
+
         #endregion
         
         #region DateTime
-        public static NullableDateTimeExpressionMediator operator +(NullableInt64IsNullFunctionExpression a, DateTimeExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(NullableInt64IsNullFunctionExpression a, DateTimeExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeExpressionMediator operator +(NullableInt64IsNullFunctionExpression a, DateTimeExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
 
-        public static NullableDateTimeExpressionMediator operator +(NullableInt64IsNullFunctionExpression a, NullableDateTimeExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(NullableInt64IsNullFunctionExpression a, NullableDateTimeExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeExpressionMediator operator -(NullableInt64IsNullFunctionExpression a, DateTimeExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        }
+
+        public static NullableDateTimeExpressionMediator operator +(NullableInt64IsNullFunctionExpression a, NullableDateTimeExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                be.Expression.Args.Insert(0, a);
+                return b;
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
+
+        public static NullableDateTimeExpressionMediator operator -(NullableInt64IsNullFunctionExpression a, NullableDateTimeExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            {
+                be.Expression.Args.Insert(0, a);
+                return b;
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        }
+
         #endregion
         
         #region DateTimeOffset
-        public static NullableDateTimeOffsetExpressionMediator operator +(NullableInt64IsNullFunctionExpression a, DateTimeOffsetExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeOffsetExpressionMediator operator -(NullableInt64IsNullFunctionExpression a, DateTimeOffsetExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeOffsetExpressionMediator operator +(NullableInt64IsNullFunctionExpression a, DateTimeOffsetExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
 
-        public static NullableDateTimeOffsetExpressionMediator operator +(NullableInt64IsNullFunctionExpression a, NullableDateTimeOffsetExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeOffsetExpressionMediator operator -(NullableInt64IsNullFunctionExpression a, NullableDateTimeOffsetExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeOffsetExpressionMediator operator -(NullableInt64IsNullFunctionExpression a, DateTimeOffsetExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        }
+
+        public static NullableDateTimeOffsetExpressionMediator operator +(NullableInt64IsNullFunctionExpression a, NullableDateTimeOffsetExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                be.Expression.Args.Insert(0, a);
+                return b;
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
+
+        public static NullableDateTimeOffsetExpressionMediator operator -(NullableInt64IsNullFunctionExpression a, NullableDateTimeOffsetExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            {
+                be.Expression.Args.Insert(0, a);
+                return b;
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        }
+
         #endregion
         
         #region double
-        public static NullableDoubleExpressionMediator operator +(NullableInt64IsNullFunctionExpression a, DoubleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableDoubleExpressionMediator operator -(NullableInt64IsNullFunctionExpression a, DoubleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static NullableDoubleExpressionMediator operator *(NullableInt64IsNullFunctionExpression a, DoubleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static NullableDoubleExpressionMediator operator /(NullableInt64IsNullFunctionExpression a, DoubleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static NullableDoubleExpressionMediator operator %(NullableInt64IsNullFunctionExpression a, DoubleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static NullableDoubleExpressionMediator operator +(NullableInt64IsNullFunctionExpression a, DoubleExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
 
-        public static NullableDoubleExpressionMediator operator +(NullableInt64IsNullFunctionExpression a, NullableDoubleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableDoubleExpressionMediator operator -(NullableInt64IsNullFunctionExpression a, NullableDoubleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static NullableDoubleExpressionMediator operator *(NullableInt64IsNullFunctionExpression a, NullableDoubleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static NullableDoubleExpressionMediator operator /(NullableInt64IsNullFunctionExpression a, NullableDoubleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static NullableDoubleExpressionMediator operator %(NullableInt64IsNullFunctionExpression a, NullableDoubleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static NullableDoubleExpressionMediator operator -(NullableInt64IsNullFunctionExpression a, DoubleExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        }
+
+        public static NullableDoubleExpressionMediator operator *(NullableInt64IsNullFunctionExpression a, DoubleExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Multiply)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        }
+
+        public static NullableDoubleExpressionMediator operator /(NullableInt64IsNullFunctionExpression a, DoubleExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Divide)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        }
+
+        public static NullableDoubleExpressionMediator operator %(NullableInt64IsNullFunctionExpression a, DoubleExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Modulo)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        }
+
+        public static NullableDoubleExpressionMediator operator +(NullableInt64IsNullFunctionExpression a, NullableDoubleExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                be.Expression.Args.Insert(0, a);
+                return b;
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
+
+        public static NullableDoubleExpressionMediator operator -(NullableInt64IsNullFunctionExpression a, NullableDoubleExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            {
+                be.Expression.Args.Insert(0, a);
+                return b;
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        }
+
+        public static NullableDoubleExpressionMediator operator *(NullableInt64IsNullFunctionExpression a, NullableDoubleExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Multiply)
+            {
+                be.Expression.Args.Insert(0, a);
+                return b;
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        }
+
+        public static NullableDoubleExpressionMediator operator /(NullableInt64IsNullFunctionExpression a, NullableDoubleExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Divide)
+            {
+                be.Expression.Args.Insert(0, a);
+                return b;
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        }
+
+        public static NullableDoubleExpressionMediator operator %(NullableInt64IsNullFunctionExpression a, NullableDoubleExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Modulo)
+            {
+                be.Expression.Args.Insert(0, a);
+                return b;
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        }
+
         #endregion
         
         #region float
-        public static NullableSingleExpressionMediator operator +(NullableInt64IsNullFunctionExpression a, SingleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableSingleExpressionMediator operator -(NullableInt64IsNullFunctionExpression a, SingleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static NullableSingleExpressionMediator operator *(NullableInt64IsNullFunctionExpression a, SingleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static NullableSingleExpressionMediator operator /(NullableInt64IsNullFunctionExpression a, SingleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static NullableSingleExpressionMediator operator %(NullableInt64IsNullFunctionExpression a, SingleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static NullableSingleExpressionMediator operator +(NullableInt64IsNullFunctionExpression a, SingleExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
 
-        public static NullableSingleExpressionMediator operator +(NullableInt64IsNullFunctionExpression a, NullableSingleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableSingleExpressionMediator operator -(NullableInt64IsNullFunctionExpression a, NullableSingleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static NullableSingleExpressionMediator operator *(NullableInt64IsNullFunctionExpression a, NullableSingleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static NullableSingleExpressionMediator operator /(NullableInt64IsNullFunctionExpression a, NullableSingleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static NullableSingleExpressionMediator operator %(NullableInt64IsNullFunctionExpression a, NullableSingleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static NullableSingleExpressionMediator operator -(NullableInt64IsNullFunctionExpression a, SingleExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        }
+
+        public static NullableSingleExpressionMediator operator *(NullableInt64IsNullFunctionExpression a, SingleExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Multiply)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        }
+
+        public static NullableSingleExpressionMediator operator /(NullableInt64IsNullFunctionExpression a, SingleExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Divide)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        }
+
+        public static NullableSingleExpressionMediator operator %(NullableInt64IsNullFunctionExpression a, SingleExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Modulo)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        }
+
+        public static NullableSingleExpressionMediator operator +(NullableInt64IsNullFunctionExpression a, NullableSingleExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                be.Expression.Args.Insert(0, a);
+                return b;
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
+
+        public static NullableSingleExpressionMediator operator -(NullableInt64IsNullFunctionExpression a, NullableSingleExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            {
+                be.Expression.Args.Insert(0, a);
+                return b;
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        }
+
+        public static NullableSingleExpressionMediator operator *(NullableInt64IsNullFunctionExpression a, NullableSingleExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Multiply)
+            {
+                be.Expression.Args.Insert(0, a);
+                return b;
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        }
+
+        public static NullableSingleExpressionMediator operator /(NullableInt64IsNullFunctionExpression a, NullableSingleExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Divide)
+            {
+                be.Expression.Args.Insert(0, a);
+                return b;
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        }
+
+        public static NullableSingleExpressionMediator operator %(NullableInt64IsNullFunctionExpression a, NullableSingleExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Modulo)
+            {
+                be.Expression.Args.Insert(0, a);
+                return b;
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        }
+
         #endregion
         
         #region Guid
-
         #endregion
         
         #region short
-        public static NullableInt64ExpressionMediator operator +(NullableInt64IsNullFunctionExpression a, Int16ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableInt64ExpressionMediator operator -(NullableInt64IsNullFunctionExpression a, Int16ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt64ExpressionMediator operator *(NullableInt64IsNullFunctionExpression a, Int16ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt64ExpressionMediator operator /(NullableInt64IsNullFunctionExpression a, Int16ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt64ExpressionMediator operator %(NullableInt64IsNullFunctionExpression a, Int16ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static NullableInt64ExpressionMediator operator +(NullableInt64IsNullFunctionExpression a, Int16ExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
 
-        public static NullableInt64ExpressionMediator operator +(NullableInt64IsNullFunctionExpression a, NullableInt16ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableInt64ExpressionMediator operator -(NullableInt64IsNullFunctionExpression a, NullableInt16ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt64ExpressionMediator operator *(NullableInt64IsNullFunctionExpression a, NullableInt16ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt64ExpressionMediator operator /(NullableInt64IsNullFunctionExpression a, NullableInt16ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt64ExpressionMediator operator %(NullableInt64IsNullFunctionExpression a, NullableInt16ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static NullableInt64ExpressionMediator operator -(NullableInt64IsNullFunctionExpression a, Int16ExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        }
+
+        public static NullableInt64ExpressionMediator operator *(NullableInt64IsNullFunctionExpression a, Int16ExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Multiply)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        }
+
+        public static NullableInt64ExpressionMediator operator /(NullableInt64IsNullFunctionExpression a, Int16ExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Divide)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        }
+
+        public static NullableInt64ExpressionMediator operator %(NullableInt64IsNullFunctionExpression a, Int16ExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Modulo)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        }
+
+        public static NullableInt64ExpressionMediator operator +(NullableInt64IsNullFunctionExpression a, NullableInt16ExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
+
+        public static NullableInt64ExpressionMediator operator -(NullableInt64IsNullFunctionExpression a, NullableInt16ExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        }
+
+        public static NullableInt64ExpressionMediator operator *(NullableInt64IsNullFunctionExpression a, NullableInt16ExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Multiply)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        }
+
+        public static NullableInt64ExpressionMediator operator /(NullableInt64IsNullFunctionExpression a, NullableInt16ExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Divide)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        }
+
+        public static NullableInt64ExpressionMediator operator %(NullableInt64IsNullFunctionExpression a, NullableInt16ExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Modulo)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        }
+
         #endregion
         
         #region int
-        public static NullableInt64ExpressionMediator operator +(NullableInt64IsNullFunctionExpression a, Int32ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableInt64ExpressionMediator operator -(NullableInt64IsNullFunctionExpression a, Int32ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt64ExpressionMediator operator *(NullableInt64IsNullFunctionExpression a, Int32ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt64ExpressionMediator operator /(NullableInt64IsNullFunctionExpression a, Int32ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt64ExpressionMediator operator %(NullableInt64IsNullFunctionExpression a, Int32ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static NullableInt64ExpressionMediator operator +(NullableInt64IsNullFunctionExpression a, Int32ExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
 
-        public static NullableInt64ExpressionMediator operator +(NullableInt64IsNullFunctionExpression a, NullableInt32ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableInt64ExpressionMediator operator -(NullableInt64IsNullFunctionExpression a, NullableInt32ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt64ExpressionMediator operator *(NullableInt64IsNullFunctionExpression a, NullableInt32ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt64ExpressionMediator operator /(NullableInt64IsNullFunctionExpression a, NullableInt32ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt64ExpressionMediator operator %(NullableInt64IsNullFunctionExpression a, NullableInt32ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static NullableInt64ExpressionMediator operator -(NullableInt64IsNullFunctionExpression a, Int32ExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        }
+
+        public static NullableInt64ExpressionMediator operator *(NullableInt64IsNullFunctionExpression a, Int32ExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Multiply)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        }
+
+        public static NullableInt64ExpressionMediator operator /(NullableInt64IsNullFunctionExpression a, Int32ExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Divide)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        }
+
+        public static NullableInt64ExpressionMediator operator %(NullableInt64IsNullFunctionExpression a, Int32ExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Modulo)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        }
+
+        public static NullableInt64ExpressionMediator operator +(NullableInt64IsNullFunctionExpression a, NullableInt32ExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
+
+        public static NullableInt64ExpressionMediator operator -(NullableInt64IsNullFunctionExpression a, NullableInt32ExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        }
+
+        public static NullableInt64ExpressionMediator operator *(NullableInt64IsNullFunctionExpression a, NullableInt32ExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Multiply)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        }
+
+        public static NullableInt64ExpressionMediator operator /(NullableInt64IsNullFunctionExpression a, NullableInt32ExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Divide)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        }
+
+        public static NullableInt64ExpressionMediator operator %(NullableInt64IsNullFunctionExpression a, NullableInt32ExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Modulo)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        }
+
         #endregion
         
         #region long
-        public static NullableInt64ExpressionMediator operator +(NullableInt64IsNullFunctionExpression a, Int64ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableInt64ExpressionMediator operator -(NullableInt64IsNullFunctionExpression a, Int64ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt64ExpressionMediator operator *(NullableInt64IsNullFunctionExpression a, Int64ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt64ExpressionMediator operator /(NullableInt64IsNullFunctionExpression a, Int64ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt64ExpressionMediator operator %(NullableInt64IsNullFunctionExpression a, Int64ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static NullableInt64ExpressionMediator operator +(NullableInt64IsNullFunctionExpression a, Int64ExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
 
-        public static NullableInt64ExpressionMediator operator +(NullableInt64IsNullFunctionExpression a, NullableInt64ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableInt64ExpressionMediator operator -(NullableInt64IsNullFunctionExpression a, NullableInt64ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-        public static NullableInt64ExpressionMediator operator *(NullableInt64IsNullFunctionExpression a, NullableInt64ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
-        public static NullableInt64ExpressionMediator operator /(NullableInt64IsNullFunctionExpression a, NullableInt64ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
-        public static NullableInt64ExpressionMediator operator %(NullableInt64IsNullFunctionExpression a, NullableInt64ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static NullableInt64ExpressionMediator operator -(NullableInt64IsNullFunctionExpression a, Int64ExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        }
+
+        public static NullableInt64ExpressionMediator operator *(NullableInt64IsNullFunctionExpression a, Int64ExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Multiply)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        }
+
+        public static NullableInt64ExpressionMediator operator /(NullableInt64IsNullFunctionExpression a, Int64ExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Divide)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        }
+
+        public static NullableInt64ExpressionMediator operator %(NullableInt64IsNullFunctionExpression a, Int64ExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Modulo)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        }
+
+        public static NullableInt64ExpressionMediator operator +(NullableInt64IsNullFunctionExpression a, NullableInt64ExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                be.Expression.Args.Insert(0, a);
+                return b;
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
+
+        public static NullableInt64ExpressionMediator operator -(NullableInt64IsNullFunctionExpression a, NullableInt64ExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            {
+                be.Expression.Args.Insert(0, a);
+                return b;
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        }
+
+        public static NullableInt64ExpressionMediator operator *(NullableInt64IsNullFunctionExpression a, NullableInt64ExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Multiply)
+            {
+                be.Expression.Args.Insert(0, a);
+                return b;
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        }
+
+        public static NullableInt64ExpressionMediator operator /(NullableInt64IsNullFunctionExpression a, NullableInt64ExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Divide)
+            {
+                be.Expression.Args.Insert(0, a);
+                return b;
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        }
+
+        public static NullableInt64ExpressionMediator operator %(NullableInt64IsNullFunctionExpression a, NullableInt64ExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Modulo)
+            {
+                be.Expression.Args.Insert(0, a);
+                return b;
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        }
+
         #endregion
         
         #region string?
-
         #endregion
         
         #region TimeSpan
-
         #endregion
         
         #endregion

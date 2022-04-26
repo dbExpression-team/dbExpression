@@ -79,18 +79,88 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region mediators
         #region DateTime
-        public static DateTimeExpressionMediator operator +(DateTimeOffsetDateAddFunctionExpression a, DateTimeExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static DateTimeExpressionMediator operator -(DateTimeOffsetDateAddFunctionExpression a, DateTimeExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static DateTimeExpressionMediator operator +(DateTimeOffsetDateAddFunctionExpression a, DateTimeExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                be.Expression.Args.Insert(0, a);
+                return b;
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
 
-        public static NullableDateTimeExpressionMediator operator +(DateTimeOffsetDateAddFunctionExpression a, NullableDateTimeExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(DateTimeOffsetDateAddFunctionExpression a, NullableDateTimeExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static DateTimeExpressionMediator operator -(DateTimeOffsetDateAddFunctionExpression a, DateTimeExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            {
+                be.Expression.Args.Insert(0, a);
+                return b;
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        }
+
+        public static NullableDateTimeExpressionMediator operator +(DateTimeOffsetDateAddFunctionExpression a, NullableDateTimeExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                be.Expression.Args.Insert(0, a);
+                return b;
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
+
+        public static NullableDateTimeExpressionMediator operator -(DateTimeOffsetDateAddFunctionExpression a, NullableDateTimeExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            {
+                be.Expression.Args.Insert(0, a);
+                return b;
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        }
+
         #endregion        
         #region DateTimeOffset
-        public static DateTimeOffsetExpressionMediator operator +(DateTimeOffsetDateAddFunctionExpression a, DateTimeOffsetExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static DateTimeOffsetExpressionMediator operator -(DateTimeOffsetDateAddFunctionExpression a, DateTimeOffsetExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static DateTimeOffsetExpressionMediator operator +(DateTimeOffsetDateAddFunctionExpression a, DateTimeOffsetExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                be.Expression.Args.Insert(0, a);
+                return b;
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
 
-        public static NullableDateTimeOffsetExpressionMediator operator +(DateTimeOffsetDateAddFunctionExpression a, NullableDateTimeOffsetExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeOffsetExpressionMediator operator -(DateTimeOffsetDateAddFunctionExpression a, NullableDateTimeOffsetExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static DateTimeOffsetExpressionMediator operator -(DateTimeOffsetDateAddFunctionExpression a, DateTimeOffsetExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            {
+                be.Expression.Args.Insert(0, a);
+                return b;
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        }
+
+        public static NullableDateTimeOffsetExpressionMediator operator +(DateTimeOffsetDateAddFunctionExpression a, NullableDateTimeOffsetExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                be.Expression.Args.Insert(0, a);
+                return b;
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
+
+        public static NullableDateTimeOffsetExpressionMediator operator -(DateTimeOffsetDateAddFunctionExpression a, NullableDateTimeOffsetExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            {
+                be.Expression.Args.Insert(0, a);
+                return b;
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        }
+
         #endregion        
         #endregion
 

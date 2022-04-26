@@ -2,9 +2,13 @@
 using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
-using HatTrick.DbEx.Sql;
+using HatTrick.DbEx.Sql.Expression;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using Xunit;
+using Xunit.Sdk;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 {
@@ -85,6 +89,158 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //then
             result.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersionWithData(typeof(CurrentMsSqlVersion), 1, 1)]
+        [MsSqlVersionWithData(typeof(CurrentMsSqlVersion), 2, 2)]
+        [MsSqlVersionWithData(typeof(CurrentMsSqlVersion), 11, 11)]
+        public void Does_arithmetic_of_a_field_added_to_an_int_literal_value_calculate_correctly(int version, int id, int expected)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //when
+            int value = db.SelectOne(dbo.Person.Id + 0)
+                .From(dbo.Person)
+                .Where(dbo.Person.Id == id)
+                .Execute();
+
+            //then
+            value.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersionWithData(typeof(CurrentMsSqlVersion), 1, 1)]
+        [MsSqlVersionWithData(typeof(CurrentMsSqlVersion), 3, 3)]
+        [MsSqlVersionWithData(typeof(CurrentMsSqlVersion), 49, 49)]
+        public void Does_arithmetic_of_an_int_literal_value_added_to_a_field_calculate_correctly(int version, int id, int expected = 1)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //when
+            int value = db.SelectOne(0 + dbo.Person.Id)
+                .From(dbo.Person)
+                .Where(dbo.Person.Id == id)
+                .Execute();
+
+            //then
+            value.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersionWithData(typeof(CurrentMsSqlVersion), 1, 5)]
+        [MsSqlVersionWithData(typeof(CurrentMsSqlVersion), 3, 9)]
+        [MsSqlVersionWithData(typeof(CurrentMsSqlVersion), 49, 101)]
+        public void Does_arithmetic_of_an_int_literal_value_added_to_a_field_and_another_int_literal_value_calculate_correctly(int version, int id = 1, int expected = 4)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //when
+            int value = db.SelectOne(id + dbo.Person.Id + 3)
+                .From(dbo.Person)
+                .Where(dbo.Person.Id == id)
+                .Execute();
+
+            //then
+            value.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersionWithData(typeof(CurrentMsSqlVersion), 1, 5)]
+        [MsSqlVersionWithData(typeof(CurrentMsSqlVersion), 3, 9)]
+        [MsSqlVersionWithData(typeof(CurrentMsSqlVersion), 49, 101)]
+        public void Does_arithmetic_of_an_int_literal_value_added_to_an_int_literal_value_added_to_a_field_use_compiler_addition_and_calculate_correctly(int version, int id, int expected)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //when
+            int value = db.SelectOne(id + 3 + dbo.Person.Id)
+                .From(dbo.Person)
+                .Where(dbo.Person.Id == id)
+                .Execute();
+
+            //then
+            value.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersionWithData(typeof(CurrentMsSqlVersion), 1, -1)]
+        [MsSqlVersionWithData(typeof(CurrentMsSqlVersion), 3, 3)]
+        [MsSqlVersionWithData(typeof(CurrentMsSqlVersion), 49, 95)]
+        public void Does_arithmetic_of_an_int_literal_value_added_to_a_field_value_and_subtracting_an_int_literal_value_calculate_correctly(int version, int id, int expected)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //when
+            int value = db.SelectOne(id + dbo.Person.Id - 3)
+                .From(dbo.Person)
+                .Where(dbo.Person.Id == id)
+                .Execute();
+
+            //then
+            value.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersionWithData(typeof(CurrentMsSqlVersion), 1, -1)]
+        [MsSqlVersionWithData(typeof(CurrentMsSqlVersion), 3, 3)]
+        [MsSqlVersionWithData(typeof(CurrentMsSqlVersion), 49, 95)]
+        public void Does_arithmetic_of_an_int_literal_value_added_to_a_precedence_declared_field_value_subtracting_an_int_literal_value_calculate_correctly(int version, int id, int expected)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //when
+            int value = db.SelectOne(id + (dbo.Person.Id - 3))
+                .From(dbo.Person)
+                .Where(dbo.Person.Id == id)
+                .Execute();
+
+            //then
+            value.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersionWithData(typeof(CurrentMsSqlVersion), 1, -39)]
+        [MsSqlVersionWithData(typeof(CurrentMsSqlVersion), 3, 3)]
+        [MsSqlVersionWithData(typeof(CurrentMsSqlVersion), 49, 969)]
+        public void Does_arithmetic_of_an_int_literal_value_added_to_a_precedence_declared_field_value_subtracting_an_int_literal_value_than_multiplied_by_int_literal_value_calculate_correctly(int version, int id, int expected)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //when
+            int value = db.SelectOne(id + (dbo.Person.Id - 3) * 20)
+                .From(dbo.Person)
+                .Where(dbo.Person.Id == id)
+                .Execute();
+
+            //then
+            value.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersionWithData(typeof(CurrentMsSqlVersion), 1, -44)]
+        [MsSqlVersionWithData(typeof(CurrentMsSqlVersion), 3, -2)]
+        [MsSqlVersionWithData(typeof(CurrentMsSqlVersion), 49, 964)]
+        public void Does_arithmetic_expression_of_an_int_literal_value_added_to_a_precedence_declared_field_value_subtracting_a_double_literal_value_than_multiplied_by_int_literal_value_calculate_correctly(int version, int id, double expected)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //when
+            double value = db.SelectOne(id + (dbo.Person.Id - 3.25d) * 20)
+                .From(dbo.Person)
+                .Where(dbo.Person.Id == id)
+                .Execute();
+
+            //then
+            value.Should().Be(expected);
         }
     }
 }

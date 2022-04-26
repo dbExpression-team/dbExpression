@@ -184,53 +184,298 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region mediators
         #region byte
-        public static DateTimeExpressionMediator operator +(DateTimeMinimumFunctionExpression a, ByteExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static DateTimeExpressionMediator operator -(DateTimeMinimumFunctionExpression a, ByteExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static DateTimeExpressionMediator operator +(DateTimeMinimumFunctionExpression a, ByteExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
 
-        public static NullableDateTimeExpressionMediator operator +(DateTimeMinimumFunctionExpression a, NullableByteExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(DateTimeMinimumFunctionExpression a, NullableByteExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static DateTimeExpressionMediator operator -(DateTimeMinimumFunctionExpression a, ByteExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        }
+
+        public static NullableDateTimeExpressionMediator operator +(DateTimeMinimumFunctionExpression a, NullableByteExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
+
+        public static NullableDateTimeExpressionMediator operator -(DateTimeMinimumFunctionExpression a, NullableByteExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        }
+
         #endregion        
         #region decimal
-        public static DateTimeExpressionMediator operator +(DateTimeMinimumFunctionExpression a, DecimalExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static DateTimeExpressionMediator operator -(DateTimeMinimumFunctionExpression a, DecimalExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static DateTimeExpressionMediator operator +(DateTimeMinimumFunctionExpression a, DecimalExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
 
-        public static NullableDateTimeExpressionMediator operator +(DateTimeMinimumFunctionExpression a, NullableDecimalExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(DateTimeMinimumFunctionExpression a, NullableDecimalExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static DateTimeExpressionMediator operator -(DateTimeMinimumFunctionExpression a, DecimalExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        }
+
+        public static NullableDateTimeExpressionMediator operator +(DateTimeMinimumFunctionExpression a, NullableDecimalExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
+
+        public static NullableDateTimeExpressionMediator operator -(DateTimeMinimumFunctionExpression a, NullableDecimalExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        }
+
         #endregion        
         #region double
-        public static DateTimeExpressionMediator operator +(DateTimeMinimumFunctionExpression a, DoubleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static DateTimeExpressionMediator operator -(DateTimeMinimumFunctionExpression a, DoubleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static DateTimeExpressionMediator operator +(DateTimeMinimumFunctionExpression a, DoubleExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
 
-        public static NullableDateTimeExpressionMediator operator +(DateTimeMinimumFunctionExpression a, NullableDoubleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(DateTimeMinimumFunctionExpression a, NullableDoubleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static DateTimeExpressionMediator operator -(DateTimeMinimumFunctionExpression a, DoubleExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        }
+
+        public static NullableDateTimeExpressionMediator operator +(DateTimeMinimumFunctionExpression a, NullableDoubleExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
+
+        public static NullableDateTimeExpressionMediator operator -(DateTimeMinimumFunctionExpression a, NullableDoubleExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        }
+
         #endregion        
         #region float
-        public static DateTimeExpressionMediator operator +(DateTimeMinimumFunctionExpression a, SingleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static DateTimeExpressionMediator operator -(DateTimeMinimumFunctionExpression a, SingleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static DateTimeExpressionMediator operator +(DateTimeMinimumFunctionExpression a, SingleExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
 
-        public static NullableDateTimeExpressionMediator operator +(DateTimeMinimumFunctionExpression a, NullableSingleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(DateTimeMinimumFunctionExpression a, NullableSingleExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static DateTimeExpressionMediator operator -(DateTimeMinimumFunctionExpression a, SingleExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        }
+
+        public static NullableDateTimeExpressionMediator operator +(DateTimeMinimumFunctionExpression a, NullableSingleExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
+
+        public static NullableDateTimeExpressionMediator operator -(DateTimeMinimumFunctionExpression a, NullableSingleExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        }
+
         #endregion        
         #region short
-        public static DateTimeExpressionMediator operator +(DateTimeMinimumFunctionExpression a, Int16ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static DateTimeExpressionMediator operator -(DateTimeMinimumFunctionExpression a, Int16ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static DateTimeExpressionMediator operator +(DateTimeMinimumFunctionExpression a, Int16ExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
 
-        public static NullableDateTimeExpressionMediator operator +(DateTimeMinimumFunctionExpression a, NullableInt16ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(DateTimeMinimumFunctionExpression a, NullableInt16ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static DateTimeExpressionMediator operator -(DateTimeMinimumFunctionExpression a, Int16ExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        }
+
+        public static NullableDateTimeExpressionMediator operator +(DateTimeMinimumFunctionExpression a, NullableInt16ExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
+
+        public static NullableDateTimeExpressionMediator operator -(DateTimeMinimumFunctionExpression a, NullableInt16ExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        }
+
         #endregion        
         #region int
-        public static DateTimeExpressionMediator operator +(DateTimeMinimumFunctionExpression a, Int32ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static DateTimeExpressionMediator operator -(DateTimeMinimumFunctionExpression a, Int32ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static DateTimeExpressionMediator operator +(DateTimeMinimumFunctionExpression a, Int32ExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
 
-        public static NullableDateTimeExpressionMediator operator +(DateTimeMinimumFunctionExpression a, NullableInt32ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(DateTimeMinimumFunctionExpression a, NullableInt32ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static DateTimeExpressionMediator operator -(DateTimeMinimumFunctionExpression a, Int32ExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        }
+
+        public static NullableDateTimeExpressionMediator operator +(DateTimeMinimumFunctionExpression a, NullableInt32ExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
+
+        public static NullableDateTimeExpressionMediator operator -(DateTimeMinimumFunctionExpression a, NullableInt32ExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        }
+
         #endregion        
         #region long
-        public static DateTimeExpressionMediator operator +(DateTimeMinimumFunctionExpression a, Int64ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static DateTimeExpressionMediator operator -(DateTimeMinimumFunctionExpression a, Int64ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static DateTimeExpressionMediator operator +(DateTimeMinimumFunctionExpression a, Int64ExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
 
-        public static NullableDateTimeExpressionMediator operator +(DateTimeMinimumFunctionExpression a, NullableInt64ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(DateTimeMinimumFunctionExpression a, NullableInt64ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static DateTimeExpressionMediator operator -(DateTimeMinimumFunctionExpression a, Int64ExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        }
+
+        public static NullableDateTimeExpressionMediator operator +(DateTimeMinimumFunctionExpression a, NullableInt64ExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
+
+        public static NullableDateTimeExpressionMediator operator -(DateTimeMinimumFunctionExpression a, NullableInt64ExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            {
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        }
+
         #endregion        
         #endregion
 

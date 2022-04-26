@@ -86,13 +86,30 @@ namespace {Namespace}
         {-?var:operationType = $.OperationType-}
         #region {:operationType.Alias}
         {-#each Operations-}
-        public static ObjectExpressionMediator operator {ArithmeticOperatorSymbol}(AliasExpression<T> a, {:operationType.Name}ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.{ArithmeticOperatorName}));
+        public static ObjectExpressionMediator operator {ArithmeticOperatorSymbol}(AliasExpression<T> a, {:operationType.Name}ExpressionMediator b) 
+        {{
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.{ArithmeticOperatorName})
+            {{
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }}
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.{ArithmeticOperatorName}));
+        }}
+
         {-/each-}
 
         {-#if :mediatorType.IsNullable-}
         {-#each Operations-}
         {-#if :operationType.IsNullable-}
-        public static ObjectExpressionMediator operator {ArithmeticOperatorSymbol}(AliasExpression<T> a, Nullable{:operationType.Name}ExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.{ArithmeticOperatorName}));
+        public static ObjectExpressionMediator operator {ArithmeticOperatorSymbol}(AliasExpression<T> a, Nullable{:operationType.Name}ExpressionMediator b) 
+        {{
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.{ArithmeticOperatorName})
+            {{
+                be.Expression.Args.Insert(0, a);
+                return new(b.Expression);
+            }}
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.{ArithmeticOperatorName}));
+        }}
         {-/if-}
         {-/each-}
         {-/if-}

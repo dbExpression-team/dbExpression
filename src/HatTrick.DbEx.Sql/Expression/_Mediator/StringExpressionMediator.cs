@@ -57,7 +57,26 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region arithmetic operators
-        public static StringExpressionMediator operator +(StringExpressionMediator a, StringExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static StringExpressionMediator operator +(StringExpressionMediator a, StringExpressionMediator b)
+        {
+            if (a.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> ae)
+            {
+                if (ae.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+                {
+                    ae.Expression.Args.Add(b);
+                    return a;
+                }
+            }
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be)
+            {
+                if (be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+                {
+                    be.Expression.Args.Insert(0, a);
+                    return b;
+                }
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
         #endregion
     }
 }

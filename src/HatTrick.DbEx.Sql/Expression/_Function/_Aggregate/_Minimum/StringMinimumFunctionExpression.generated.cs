@@ -100,25 +100,18 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region mediators
         #region byte
-
         #endregion        
         #region decimal
-
         #endregion        
         #region double
-
         #endregion        
         #region float
-
         #endregion        
         #region short
-
         #endregion        
         #region int
-
         #endregion        
         #region long
-
         #endregion        
         #endregion
 

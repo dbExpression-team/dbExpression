@@ -18,30 +18,54 @@
 
 ﻿using HatTrick.DbEx.Sql.Attribute;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class ArithmeticExpression :
         IExpressionElement,
+        IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements>,
         IEquatable<ArithmeticExpression>
     {
+        #region internals
+        private static readonly Lazy<Dictionary<ArithmeticExpressionOperator, string>> operatorMap = new(() => typeof(ArithmeticExpressionOperator).GetValuesAndArithmeticOperators().ToDictionary(k => k.Key, v => v.Value!));
+        private readonly ArithmeticExpressionElements elements;
+        #endregion
+
         #region interface
-        public IExpressionElement LeftArg { get; }
-        public IExpressionElement RightArg { get; }
-        public ArithmeticExpressionOperator ExpressionOperator { get; }
+        ArithmeticExpressionElements IExpressionProvider<ArithmeticExpressionElements>.Expression => elements;
         #endregion
 
         #region constructors
         public ArithmeticExpression(IExpressionElement leftArg, IExpressionElement rightArg, ArithmeticExpressionOperator arithmeticOperator)
         {
-            LeftArg = leftArg ?? throw new ArgumentNullException(nameof(leftArg));
-            RightArg = rightArg ?? throw new ArgumentNullException(nameof(rightArg));
-            ExpressionOperator = arithmeticOperator;
+            elements = new ArithmeticExpressionElements(leftArg ?? throw new ArgumentNullException(nameof(leftArg)), rightArg ?? throw new ArgumentNullException(nameof(rightArg)), arithmeticOperator);
         }
         #endregion
 
         #region to string
-        public override string? ToString() => $"({LeftArg} {ExpressionOperator.GetArithmeticOperator()} {RightArg})";
+        public override string? ToString()
+        {
+            var sb = new StringBuilder();
+            for (var i = 0; i < elements.Args.Count(); i++)
+            {
+                ArithmeticExpression? isArithmeticExpression = elements.Args[i] as ArithmeticExpression ?? (elements.Args[i] as ExpressionMediator)?.Expression as ArithmeticExpression;
+                if (isArithmeticExpression is not null)
+                    sb.Append('(');
+                sb.Append(elements.Args[i].ToString());
+                if (isArithmeticExpression is not null)
+                    sb.Append(')');
+                if (i < elements.Args.Count - 1)
+                {
+                    sb.Append(' ');
+                    sb.Append(operatorMap.Value[elements.ArithmeticOperator]);
+                    sb.Append(' ');
+                }
+            }
+            return sb.ToString();
+        }
         #endregion
 
         #region equals
@@ -50,11 +74,7 @@ namespace HatTrick.DbEx.Sql.Expression
             if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
 
-            if (!ExpressionOperator.Equals(obj.ExpressionOperator)) return false;
-
-            if (!LeftArg.Equals(obj.LeftArg)) return false;
-
-            if (!RightArg.Equals(obj.RightArg)) return false;
+            if (!elements.Equals(obj.elements)) return false;
 
             return true;
         }
@@ -70,11 +90,89 @@ namespace HatTrick.DbEx.Sql.Expression
                 const int multiplier = 16777619;
 
                 int hash = @base;
-                hash = (hash * multiplier) ^ (LeftArg is not null ? LeftArg.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ (RightArg is not null ? RightArg.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ ExpressionOperator.GetHashCode();
+                hash = (hash * multiplier) ^ (elements is not null ? elements.GetHashCode() : 0);
                 return hash;
             }
+        }
+        #endregion
+
+        #region implicit operators
+        public static ArithmeticExpression operator +(ArithmeticExpression a, ArithmeticExpression? b)
+            => Operator(a, b, ArithmeticExpressionOperator.Add);
+
+        public static ArithmeticExpression operator -(ArithmeticExpression a, ArithmeticExpression? b)
+            => Operator(a, b, ArithmeticExpressionOperator.Subtract);
+
+        public static ArithmeticExpression operator *(ArithmeticExpression a, ArithmeticExpression? b)
+            => Operator(a, b, ArithmeticExpressionOperator.Multiply);
+
+        public static ArithmeticExpression operator /(ArithmeticExpression a, ArithmeticExpression? b)
+            => Operator(a, b, ArithmeticExpressionOperator.Divide);
+
+        private static ArithmeticExpression Operator(ArithmeticExpression? a, ArithmeticExpression? b, ArithmeticExpressionOperator expressionOperator)
+        {
+            if (a is null && b is null) throw new ArgumentNullException(nameof(a));
+            if (b is null) return a!;
+
+            if (a!.elements.ArithmeticOperator == b.elements.ArithmeticOperator)
+            {
+                foreach(var be in b.elements.Args)
+                    a.elements.Args.Add(be);
+                return a;
+            }
+            return new ArithmeticExpression(a, b, expressionOperator);
+        }
+        #endregion
+
+        #region classes
+        public class ArithmeticExpressionElements : IExpressionElement, IEquatable<ArithmeticExpressionElements>
+        {
+            #region interface
+            public ArithmeticExpressionOperator ArithmeticOperator { get; set; }
+            public IList<IExpressionElement> Args { get; } = new List<IExpressionElement>();
+            #endregion
+
+            #region constructors
+            public ArithmeticExpressionElements(IExpressionElement leftArg, IExpressionElement? rightArg, ArithmeticExpressionOperator arithmeticOperator)
+            {
+                ArithmeticOperator = arithmeticOperator;
+
+                Args.Add(leftArg);
+                if (rightArg is not null)
+                    Args.Add(rightArg);
+            }
+            #endregion
+
+            #region equals
+            public bool Equals(ArithmeticExpressionElements? obj)
+            {
+                if (obj is null) return false;
+                if (ReferenceEquals(this, obj)) return true;
+
+                if (!Args.SequenceEqual(obj.Args)) return false;
+                if (ArithmeticOperator != obj.ArithmeticOperator) return false;
+
+                return true;
+            }
+
+            public override bool Equals(object? obj)
+                => obj is ArithmeticExpressionElements exp && Equals(exp);
+
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    const int @base = (int)2166136261;
+                    const int multiplier = 16777619;
+
+                    int hash = @base;
+                    foreach (var exp in Args)
+                        hash = (hash * multiplier) ^ (exp is not null ? exp.GetHashCode() : 0);
+                    hash = (hash * multiplier) ^ ArithmeticOperator.GetHashCode();
+                    return hash;
+                }
+            }
+            #endregion
         }
         #endregion
     }

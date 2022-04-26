@@ -27,91 +27,88 @@ namespace HatTrick.DbEx.Sql.Expression
         #region arithmetic operators
         #region data type
         #region bool
-
-
-
         #endregion
         
         #region byte
-
-
-
         #endregion
         
         #region decimal
-
-
-
         #endregion
         
         #region DateTime
-
-
-
         #endregion
         
         #region DateTimeOffset
-
-
-
         #endregion
         
         #region double
-
-
-
         #endregion
         
         #region float
-
-
-
         #endregion
         
         #region Guid
-
-
-
         #endregion
         
         #region short
-
-
-
         #endregion
         
         #region int
-
-
-
         #endregion
         
         #region long
-
-
-
         #endregion
         
         #region string?
-        public static StringExpressionMediator operator +(StringExpressionMediator a, string? b) => new(new ArithmeticExpression(a, new LiteralExpression<string?>(b), ArithmeticExpressionOperator.Add));
+        public static StringExpressionMediator operator +(StringExpressionMediator a, string? b)
+        {
+            if (a.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> ae && ae.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                ae.Expression.Args.Add(new LiteralExpression<string?>(b));
+                return a;
+            }
+            return new(new ArithmeticExpression(a, new LiteralExpression<string?>(b), ArithmeticExpressionOperator.Add));
+        }
 
-        public static StringExpressionMediator operator +(string? a, StringExpressionMediator b) => new(new ArithmeticExpression(new LiteralExpression<string?>(a), b, ArithmeticExpressionOperator.Add));
+        public static StringExpressionMediator operator +(string? a, StringExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                be.Expression.Args.Insert(0, new LiteralExpression<string?>(a));
+                return b;
+            }
+            return new(new ArithmeticExpression(new LiteralExpression<string?>(a), b, ArithmeticExpressionOperator.Add));
+        }
 
         #endregion
         
         #region TimeSpan
-
-
-
         #endregion
         
         #endregion
 
         #region fields
         #region string?
-        public static StringExpressionMediator operator +(StringExpressionMediator a, StringFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static StringExpressionMediator operator +(StringExpressionMediator a, StringFieldExpression b) 
+        {
+            if (a.Expression is ArithmeticExpression am && am is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> ae && ae.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                ae.Expression.Args.Add(b);
+                return a;
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
 
-        public static NullableStringExpressionMediator operator +(StringExpressionMediator a, NullableStringFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static NullableStringExpressionMediator operator +(StringExpressionMediator a, NullableStringFieldExpression b)
+        {
+            if (a.Expression is ArithmeticExpression am && am is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> ae && ae.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                ae.Expression.Args.Add(b);
+                return new(a.Expression);
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
+
         #endregion
 
         #endregion
@@ -120,8 +117,27 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region alias
-        public static StringExpressionMediator operator +(StringExpressionMediator a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        public static StringExpressionMediator operator +(StringExpressionMediator a, (string TableAlias, string FieldAlias) b) => new(new ArithmeticExpression(a, new AliasExpression<string?>(b), ArithmeticExpressionOperator.Add));
+        public static StringExpressionMediator operator +(StringExpressionMediator a, AliasExpression b) 
+        {
+            if (a.Expression is ArithmeticExpression am && am is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> ae && ae.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                ae.Expression.Args.Add(b);
+                return a;
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
+
+
+        public static StringExpressionMediator operator +(StringExpressionMediator a, (string TableAlias, string FieldAlias) b)
+        {
+            if (a.Expression is ArithmeticExpression am && am is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> ae && ae.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                ae.Expression.Args.Add(new AliasExpression<string?>(b));
+                return a;
+            }
+            return new(new ArithmeticExpression(a, new AliasExpression<string?>(b), ArithmeticExpressionOperator.Add));
+        }
+
         #endregion
         #endregion
 
