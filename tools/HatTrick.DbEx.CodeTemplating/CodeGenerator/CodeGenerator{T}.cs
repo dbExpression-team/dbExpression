@@ -23,6 +23,8 @@ namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
             ngin.LambdaRepo.Register("GetArithmeticOperationsForType", (Func<IList<ArithmeticOperationsTemplateModel>, Type, IList<ArithmeticOperationTemplateModel>>)((operations, type) => operations.SingleOrDefault(x => x.OperationType?.Type == type)?.Operations ?? new List<ArithmeticOperationTemplateModel>()));
             ngin.LambdaRepo.Register("IsTypeOfObject", (Func<Type, bool>)((type) => type == typeof(object)));
             ngin.LambdaRepo.Register("IsNotTypeOfObject", (Func<Type, bool>)((type) => type != typeof(object)));
+            ngin.LambdaRepo.Register("IsSameType", (Func<TypeModel, TypeModel, bool>)((t1, t2) => t1.Type == t2.Type));
+            ngin.LambdaRepo.Register("IsNotSameType", (Func<TypeModel, TypeModel, bool>)((t1, t2) => t1.Type != t2.Type));
             //ngin.ProgressListener = (i, s) => Console.WriteLine($"{i}: {s}");
             var output = ngin.Merge(data);
             FileService.WriteFile(fileService.GetOutputPath(fileName), output);

@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             {
                 var param = builder.Parameters.CreateInputParameter(
                     expression.Expression,
-                    (expression.Field as IExpressionTypeProvider).DeclaredType,
+                    expression.Field.DeclaredType,
                     builder.FindMetadata(expression.Field) ?? throw new DbExpressionException($"Expected to find metadata for {expression.Field}, but metadata is actually null."),
                     context
                 );

@@ -27,68 +27,36 @@ namespace HatTrick.DbEx.Sql.Expression
         #region arithmetic operators
         #region data type
         #region byte
-
-
-
         #endregion
         
         #region decimal
-
-
-
         #endregion
         
         #region DateTime
-
-
-
         #endregion
         
         #region DateTimeOffset
-
-
-
         #endregion
         
         #region double
-
-
-
         #endregion
         
         #region float
-
-
-
         #endregion
         
         #region short
-
-
-
         #endregion
         
         #region int
-
-
-
         #endregion
         
         #region long
-
-
-
         #endregion
         
         #region string?
-
-
         #endregion
         
         #region TimeSpan
-
-
-
         #endregion
         
         #endregion
@@ -98,52 +66,42 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region mediators
         #region byte
-
         #endregion
         
         #region decimal
-
         #endregion
         
         #region DateTime
-
         #endregion
         
         #region DateTimeOffset
-
         #endregion
         
         #region double
-
         #endregion
         
         #region float
-
         #endregion
         
         #region short
-
         #endregion
         
         #region int
-
         #endregion
         
         #region long
-
         #endregion
         
         #region string?
-
         #endregion
         
         #region TimeSpan
-
         #endregion
         
         #endregion
 
         #region alias
+
         #endregion
         #endregion
 

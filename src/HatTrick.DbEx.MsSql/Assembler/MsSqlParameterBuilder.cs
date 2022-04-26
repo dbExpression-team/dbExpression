@@ -91,80 +91,71 @@ namespace HatTrick.DbEx.MsSql.Assembler
 
         protected virtual ParameterizedExpression CreateParameter<T>(string name, T value, AssemblyContext context, ParameterDirection direction)
         {
-            var (type, converted) = ConvertDbParameterValue(value is object ? value.GetType() : typeof(T), value);
-            var typeMap = typeMaps.FindByClrType(type)
+            var valueType = value is not null ? value.GetType() : typeof(T);
+            var (convertedType, convertedValue) = ConvertDbParameterValue(valueType, value);
+            var typeMap = typeMaps.FindByClrType(convertedType) ?? typeMaps.FindByClrType(valueType)
                 ?? throw new DbExpressionException($"Type resolution failed, cannot construct a {nameof(SqlParameter)} based on the supplied clr type {typeof(T)}.  This is an internal issue that cannot be resolved; please report as an issue.");
 
             if (context.TrySharingExistingParameter)
             {
-                var existing = FindExistingParameter(converted, type, typeMap.DbType, direction, null, null, null);
-                if (existing?.Parameter is object)
+                var existing = FindExistingParameter(convertedValue, convertedType, typeMap.DbType, direction, null, null, null);
+                if (existing?.Parameter is not null)
                     return existing;
             }
 
-            var parameter = CreateDbParameter(name, converted, typeMap.PlatformType, null, null, null, direction);
-            return new ParameterizedExpression(type, parameter);
+            var parameter = CreateDbParameter(name, convertedValue, typeMap.PlatformType, null, null, null, direction);
+            return new ParameterizedExpression(convertedType, parameter);
         }
 
         protected virtual ParameterizedExpression CreateParameter(string name, object value, Type valueType, AssemblyContext context, ParameterDirection direction)
         {
-            var (type, converted) = ConvertDbParameterValue(valueType, value);
-            var typeMap = typeMaps.FindByClrType(type)
+            var (convertedType, convertedValue) = ConvertDbParameterValue(valueType, value);
+            var typeMap = typeMaps.FindByClrType(convertedType) ?? typeMaps.FindByClrType(valueType)
                 ?? throw new DbExpressionException($"Type resolution failed, cannot construct a {nameof(SqlParameter)} based on the supplied clr type {valueType}.  This is an internal issue that cannot be resolved; please report as an issue.");
 
             if (context.TrySharingExistingParameter)
             {
-                var existing = FindExistingParameter(converted, type, typeMap.DbType, direction, null, null, null);
-                if (existing?.Parameter is object)
+                var existing = FindExistingParameter(convertedValue, convertedType, typeMap.DbType, direction, null, null, null);
+                if (existing?.Parameter is not null)
                     return existing;
             }
 
-            var parameter = CreateDbParameter(name, converted, typeMap.PlatformType, null, null, null, direction);
-            return new ParameterizedExpression(type, parameter);
+            var parameter = CreateDbParameter(name, convertedValue, typeMap.PlatformType, null, null, null, direction);
+            return new ParameterizedExpression(convertedType, parameter);
         }
 
         protected virtual ParameterizedExpression CreateParameter<T>(string name, T value, Type declaredType, SqlDbType sqlDbType, ISqlMetadata meta, int? size, byte? precision, byte? scale, AssemblyContext context, ParameterDirection direction)
         {
-            var (type, converted) = ConvertDbParameterValue(declaredType, value);
-            var typeMap = typeMaps.FindByPlatformType(sqlDbType)
+            var (convertedType, convertedValue) = ConvertDbParameterValue(declaredType, value);
+            var typeMap = typeMaps.FindByPlatformType(sqlDbType) ?? typeMaps.FindByClrType(convertedType)
                 ?? throw new DbExpressionException($"Type resolution failed, cannot construct a {nameof(SqlParameter)} based on the {nameof(SqlDbType)} {sqlDbType}.  This is an internal issue that cannot be resolved; please report as an issue.");
 
             if (context.TrySharingExistingParameter)
             {
-                var existing = FindExistingParameter(converted, type, typeMap.DbType, direction, size, precision, scale);
-                if (existing?.Parameter is object)
+                var existing = FindExistingParameter(convertedValue, convertedType, typeMap.DbType, direction, size, precision, scale);
+                if (existing?.Parameter is not null)
                     return existing;
             }
 
-            var parameter = CreateDbParameter(name, converted, typeMap.PlatformType, size, precision, scale, direction);
+            var parameter = CreateDbParameter(name, convertedValue, typeMap.PlatformType, size, precision, scale, direction);
             return new ParameterizedExpression(typeMap.ClrType, parameter, meta);
         }
 
         protected virtual ParameterizedExpression CreateParameter(string name, Type valueType, SqlDbType sqlDbType, int? size, byte? precision, byte? scale, ParameterDirection direction)
-        {
-            var parameter = CreateDbParameter(name, sqlDbType, size, precision, scale, ParameterDirection.Output);
-            return new ParameterizedExpression(valueType, parameter);
-        }
+            => new ParameterizedExpression(valueType, CreateDbParameter(name, sqlDbType, size, precision, scale, ParameterDirection.Output));
 
-        protected virtual (Type Type, object? ConvertedValue) ConvertDbParameterValue<T>(Type type, T? value)
+        protected virtual (Type ConvertedType, object? ConvertedValue) ConvertDbParameterValue<T>(Type type, T? value)
             => ConvertDbParameterValue(type, value, valueConverterFactory.CreateConverter(type));
 
-        protected virtual (Type Type, object? ConvertedValue) ConvertDbParameterValue(Type type, object? value)
-        {
-            if ((value is DBNull || value is null) && !type.IsNullableType())
-            {
-                return (type, value);
-            }
-            var converter = valueConverterFactory.CreateConverter(type);
-            return ConvertDbParameterValue(type, value, converter);
-        }
+        protected virtual (Type ConvertedType, object? ConvertedValue) ConvertDbParameterValue(Type type, object? value)
+            => ConvertDbParameterValue(type, value, valueConverterFactory.CreateConverter(type));
 
-        protected virtual (Type Type, object? ConvertedValue) ConvertDbParameterValue(Type type, object? value, IValueConverter converter)
+        protected virtual (Type ConvertedType, object? ConvertedValue) ConvertDbParameterValue(Type type, object? value, IValueConverter converter)
         {
             var converted = value is DBNull || !(value is not null) ? converter.ConvertToDatabase(null) : converter.ConvertToDatabase(value);
             if (converted.ConvertedValue is null)
                 converted.ConvertedValue = DBNull.Value;
-            return converted;
+            return (converted.ConvertedValue.GetType(), converted.ConvertedValue);
         }
 
         protected virtual DbParameter CreateDbParameter<T>(string name, T value, SqlDbType dbType, int? size, byte? precision, byte? scale, ParameterDirection direction)

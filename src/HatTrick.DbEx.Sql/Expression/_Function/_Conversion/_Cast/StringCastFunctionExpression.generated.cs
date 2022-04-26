@@ -157,44 +157,40 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region mediators
         #region bool
-
         #endregion        
         #region byte
-
         #endregion        
         #region decimal
-
         #endregion        
         #region DateTime
-
         #endregion        
         #region DateTimeOffset
-
         #endregion        
         #region double
-
         #endregion        
         #region float
-
         #endregion        
         #region Guid
-
         #endregion        
         #region short
-
         #endregion        
         #region int
-
         #endregion        
         #region long
-
         #endregion        
         #region string?
-        public static StringExpressionMediator operator +(StringCastFunctionExpression a, StringExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static StringExpressionMediator operator +(StringCastFunctionExpression a, StringExpressionMediator b) 
+        {
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            {
+                be.Expression.Args.Insert(0, a);
+                return b;
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
 
         #endregion        
         #region TimeSpan
-
         #endregion        
         #endregion
 

@@ -32,37 +32,23 @@ namespace HatTrick.DbEx.Sql.Assembler
             arithmeticOperatorMap = typeof(ArithmeticExpressionOperator).GetValuesAndArithmeticOperators(x => string.IsNullOrWhiteSpace(x) ? " " : $" {x} ").ToDictionary(k => k.Key, v => v.Value!);
         }
 
-        public override void AppendElement(ArithmeticExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
+        public override void AppendElement(ArithmeticExpression exp, ISqlStatementBuilder builder, AssemblyContext context)
         {
+            var expression = (exp as IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements>).Expression;
+            if (expression is null || !expression.Args.Any())
+                return;
+
             builder.Appender.Write("(");
 
-            //left part of arithmetic operation
-            if (expression.LeftArg is LiteralExpression leftLiteral)
-            {
-                var param = builder.Parameters.CreateInputParameter(leftLiteral.Expression, context);
-                builder.Parameters.AddParameter(param);
-                builder.Appender.Write(param.Parameter.ParameterName);
-            }
-            else
-            {
-                //left part isn't a primitive type, append using builder
-                builder.AppendElement(expression.LeftArg, context);
-            }
+            var argCount = expression.Args.Count();
 
-            //append the operator
-            builder.Appender.Write(arithmeticOperatorMap[expression.ExpressionOperator]);
+            for (var i = 0; i < argCount; i++)
+            {
+                var current = expression.Args.ElementAt(i);
+                builder.AppendElement(current, context);
 
-            //right part of arithmetic operation
-            if (expression.RightArg is LiteralExpression rightLiteral)
-            {
-                var param = builder.Parameters.CreateInputParameter(rightLiteral.Expression, context);
-                builder.Parameters.AddParameter(param);
-                builder.Appender.Write(param.Parameter.ParameterName);
-            }
-            else
-            {
-                //right part isn't a primitive type, append using builder
-                builder.AppendElement(expression.RightArg, context);
+                if (i < argCount - 1)
+                    builder.Appender.Write(arithmeticOperatorMap[expression.ArithmeticOperator]);
             }
 
             builder.Appender.Write(")");
