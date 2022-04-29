@@ -48,7 +48,7 @@ stages:
         displayName: 'Publish to Staging Location'
         artifact: $(stageLocationName)
 
-  - stage: Test_Code
+  - stage: Test_MsSql_Unit
     dependsOn: Build
     displayName: 'Test MSSQL Core'
     jobs:
@@ -62,7 +62,7 @@ stages:
         displayName: 'Execute Tests'
         inputs:
           command: test
-          projects: $(Pipeline.Workspace)\$(stageLocationName)\test\HatTrick.DbEx.MsSql.Test.Code\*.csproj
+          projects: $(Pipeline.Workspace)\$(stageLocationName)\test\HatTrick.DbEx.MsSql.Test.Unit\*.csproj
           arguments: '--configuration $(buildConfiguration) --logger "trx;LogFileName=$(Pipeline.Workspace)\$(stageLocationName)\tmp\mssql-core.tests.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Include="[HatTrick.DbEx.*Sql*]*" /p:Exclude="[*Test]*"'
       - task: PublishTestResults@2
         displayName: 'Publish Test Results to Temp'
@@ -76,7 +76,7 @@ stages:
         displayName: 'Copy Code Coverage Files to Temp'
         inputs:
           contents: '*.cobertura.xml'
-          sourceFolder: $(Pipeline.Workspace)\$(stageLocationName)\test\HatTrick.DbEx.MsSql.Test.Code
+          sourceFolder: $(Pipeline.Workspace)\$(stageLocationName)\test\HatTrick.DbEx.MsSql.Test.Unit
           targetFolder: $(Pipeline.Workspace)\$(stageLocationName)\tmp
       - task: PublishPipelineArtifact@1
         displayName: 'Publish Code Coverage Files to Staging Location'
@@ -84,7 +84,7 @@ stages:
           targetPath: $(Pipeline.Workspace)\$(stageLocationName)\tmp
           artifactName: mssql-core-results
  
-  - stage: Test_Execution
+  - stage: Test_MsSql_Integration
     pool:
       vmImage: 'ubuntu-latest'
     dependsOn: Build
@@ -99,7 +99,7 @@ stages:
         targetFrameworkMoniker: net$(netCoreVersion)
         mssqlVersions: ['2017','2019']
     
-  - stage: Test_Dependency_Injection
+  - stage: Test_MsSql_Dependency_Injection
     dependsOn: Build
     displayName: 'Test Dependency Injection'
     jobs:
@@ -137,9 +137,9 @@ stages:
     
   - stage: Publish_Reports
     dependsOn:
-      - Test_Code
-      - Test_Execution
-      - Test_Dependency_Injection
+      - Test_MsSql_Unit
+      - Test_MsSql_Integration
+      - Test_MsSql_Dependency_Injection
     displayName: 'Publish Reports'
     jobs:
     - job:

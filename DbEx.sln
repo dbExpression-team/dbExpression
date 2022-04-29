@@ -21,9 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HatTrick.DbEx.CodeTemplatin
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HatTrick.DbEx.MsSql.Test", "test\HatTrick.DbEx.MsSql.Test\HatTrick.DbEx.MsSql.Test.csproj", "{4030B26B-E3CF-41E1-B3AB-D914A34D8BB6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HatTrick.DbEx.MsSql.Test.Database", "test\HatTrick.DbEx.MsSql.Test.Database\HatTrick.DbEx.MsSql.Test.Database.csproj", "{85EBBD1D-8B5B-41F5-8A15-D9F66529B95E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HatTrick.DbEx.MsSql.Test.Integration", "test\HatTrick.DbEx.MsSql.Test.Integration\HatTrick.DbEx.MsSql.Test.Integration.csproj", "{85EBBD1D-8B5B-41F5-8A15-D9F66529B95E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HatTrick.DbEx.MsSql.Test.Code", "test\HatTrick.DbEx.MsSql.Test.Code\HatTrick.DbEx.MsSql.Test.Code.csproj", "{9DB2D9D2-B927-47FE-9377-F28C14978144}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HatTrick.DbEx.MsSql.Test.Unit", "test\HatTrick.DbEx.MsSql.Test.Unit\HatTrick.DbEx.MsSql.Test.Unit.csproj", "{9DB2D9D2-B927-47FE-9377-F28C14978144}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HatTrick.DbEx.Sql.Test", "test\HatTrick.DbEx.Sql.Test\HatTrick.DbEx.Sql.Test.csproj", "{1073990F-F866-43D2-BF65-8B811885A4C7}"
 EndProject
