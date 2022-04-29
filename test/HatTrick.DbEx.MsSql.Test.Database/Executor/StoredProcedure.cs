@@ -5,6 +5,7 @@ using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
+using HatTrick.DbEx.Sql.Connection;
 using HatTrick.DbEx.Sql.Executor;
 using System;
 using System.Collections.Generic;
@@ -86,6 +87,120 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //then
             persons.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_execute_stored_procedure_with_input_parameter_and_command_timeout_and_return_list_of_person(int version, int id = 0, int expectedCommandTimeout = 45, int expected = 50)
+        {
+            //given
+            int commandTimeout = 0;
+            var config = ConfigureForMsSqlVersion(version, c => c.Events.OnAfterSqlStatementExecution(context => commandTimeout = context.DbCommand.CommandTimeout));
+
+            //when               
+            var persons = db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues(row => new Person { Id = row.ReadField()!.GetValue<int>() }).Execute(expectedCommandTimeout);
+
+            //then
+            persons.Should().HaveCount(expected);
+            commandTimeout.Should().Be(expectedCommandTimeout);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_execute_stored_procedure_with_input_parameter_and_provided_connection_and_return_list_of_person(int version, int id = 0, int expected = 50)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+
+            //when               
+            using var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var persons = db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues(row => new Person { Id = row.ReadField()!.GetValue<int>() }).Execute(connection);
+
+            //then
+            persons.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_execute_stored_procedure_with_input_parameter_and_provided_connection_and_command_timeout_and_return_list_of_person(int version, int id = 0, int expectedCommandTimeout = 45, int expected = 50)
+        {
+            //given
+            int commandTimeout = 0;
+            var config = ConfigureForMsSqlVersion(version, c => c.Events.OnAfterSqlStatementExecution(context => commandTimeout = context.DbCommand.CommandTimeout));
+
+            //when               
+            using var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var persons = db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues(row => new Person { Id = row.ReadField()!.GetValue<int>() }).Execute(connection, expectedCommandTimeout);
+
+            //then
+            persons.Should().HaveCount(expected);
+            commandTimeout.Should().Be(expectedCommandTimeout);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_execute_stored_procedure_with_input_parameter_and_return_a_person(int version, int id = 1)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //when               
+            var person = db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue(row => new Person { Id = row.ReadField()!.GetValue<int>() }).Execute();
+
+            //then
+            person.Should().NotBeNull();
+            person!.Id.Should().Be(id);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_execute_stored_procedure_with_input_parameter_and_command_timeout_and_return_a_person(int version, int id = 1, int expectedCommandTimeout = 45)
+        {
+            //given
+            int commandTimeout = 0;
+            var config = ConfigureForMsSqlVersion(version, c => c.Events.OnAfterSqlStatementExecution(context => commandTimeout = context.DbCommand.CommandTimeout));
+
+            //when               
+            var person = db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue(row => new Person { Id = row.ReadField()!.GetValue<int>() }).Execute(expectedCommandTimeout);
+
+            //then
+            person.Should().NotBeNull();
+            person!.Id.Should().Be(id);
+            commandTimeout.Should().Be(expectedCommandTimeout);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_execute_stored_procedure_with_input_parameter_and_provided_connection_and_return_a_person(int version, int id = 1)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+
+            //when               
+            using var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var person = db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue(row => new Person { Id = row.ReadField()!.GetValue<int>() }).Execute(connection);
+
+            //then
+            person.Should().NotBeNull();
+            person!.Id.Should().Be(id);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_execute_stored_procedure_with_input_parameter_and_provided_connection_and_command_timeout_and_return_a_person(int version, int id = 1, int expectedCommandTimeout = 45)
+        {
+            //given
+            int commandTimeout = 0;
+            var config = ConfigureForMsSqlVersion(version, c => c.Events.OnAfterSqlStatementExecution(context => commandTimeout = context.DbCommand.CommandTimeout));
+
+            //when               
+            using var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var person = db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue(row => new Person { Id = row.ReadField()!.GetValue<int>() }).Execute(connection, expectedCommandTimeout);
+
+            //then
+            person.Should().NotBeNull();
+            person!.Id.Should().Be(id);
+            commandTimeout.Should().Be(expectedCommandTimeout);
         }
 
         [Theory]
@@ -362,6 +477,54 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
+        public async Task Can_execute_async_stored_procedure_with_input_parameter_and_command_timeout_and_return_list_of_person(int version, int id = 0, int expectedCommandTimeout = 45, int expected = 50)
+        {
+            //given
+            int commandTimeout = 0;
+            var config = ConfigureForMsSqlVersion(version, c => c.Events.OnAfterSqlStatementExecution(context => commandTimeout = context.DbCommand.CommandTimeout));
+
+            //when               
+            var persons = await db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues(row => new Person { Id = row.ReadField()!.GetValue<int>() }).ExecuteAsync(expectedCommandTimeout);
+
+            //then
+            persons.Should().HaveCount(expected);
+            commandTimeout.Should().Be(expectedCommandTimeout);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_execute_async_stored_procedure_with_input_parameter_and_provided_connection_and_return_list_of_person(int version, int id = 0, int expected = 50)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+
+            //when               
+            using var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var persons = await db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues(row => new Person { Id = row.ReadField()!.GetValue<int>() }).ExecuteAsync(connection);
+
+            //then
+            persons.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_execute_async_stored_procedure_with_input_parameter_and_provided_connection_and_command_timeout_and_return_list_of_person(int version, int id = 0, int expectedCommandTimeout = 45, int expected = 50)
+        {
+            //given
+            int commandTimeout = 0;
+            var config = ConfigureForMsSqlVersion(version, c => c.Events.OnAfterSqlStatementExecution(context => commandTimeout = context.DbCommand.CommandTimeout));
+
+            //when               
+            using var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var persons = await db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues(row => new Person { Id = row.ReadField()!.GetValue<int>() }).ExecuteAsync(connection, expectedCommandTimeout);
+
+            //then
+            persons.Should().HaveCount(expected);
+            commandTimeout.Should().Be(expectedCommandTimeout);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
         public async Task Can_execute_async_stored_procedure_with_null_input_parameter_and_return_dynamic_list(int version, int? id = null)
         {
             //given
@@ -524,6 +687,72 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //then
             persons.Should().HaveCount(expected);
             outCreditLimit.Should().Be(creditLimit * 2);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_execute_async_stored_procedure_with_input_parameter_and_return_a_person(int version, int id = 1)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //when               
+            var person = await db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue(row => new Person { Id = row.ReadField()!.GetValue<int>() }).ExecuteAsync();
+
+            //then
+            person.Should().NotBeNull();
+            person!.Id.Should().Be(id);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_execute_async_stored_procedure_with_input_parameter_and_command_timeout_and_return_a_person(int version, int id = 1, int expectedCommandTimeout = 45)
+        {
+            //given
+            int commandTimeout = 0;
+            var config = ConfigureForMsSqlVersion(version, c => c.Events.OnAfterSqlStatementExecution(context => commandTimeout = context.DbCommand.CommandTimeout));
+
+            //when               
+            var person = await db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue(row => new Person { Id = row.ReadField()!.GetValue<int>() }).ExecuteAsync(expectedCommandTimeout);
+
+            //then
+            person.Should().NotBeNull();
+            person!.Id.Should().Be(id);
+            commandTimeout.Should().Be(expectedCommandTimeout);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_execute_async_stored_procedure_with_input_parameter_and_provided_connection_and_return_a_person(int version, int id = 1)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+
+            //when               
+            using var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var person = await db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue(row => new Person { Id = row.ReadField()!.GetValue<int>() }).ExecuteAsync(connection);
+
+            //then
+            person.Should().NotBeNull();
+            person!.Id.Should().Be(id);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_execute_async_stored_procedure_with_input_parameter_and_provided_connection_and_command_timeout_and_return_a_person(int version, int id = 1, int expectedCommandTimeout = 45)
+        {
+            //given
+            int commandTimeout = 0;
+            var config = ConfigureForMsSqlVersion(version, c => c.Events.OnAfterSqlStatementExecution(context => commandTimeout = context.DbCommand.CommandTimeout));
+
+            //when               
+            using var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var person = await db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue(row => new Person { Id = row.ReadField()!.GetValue<int>() }).ExecuteAsync(connection, expectedCommandTimeout);
+
+            //then
+            person.Should().NotBeNull();
+            person!.Id.Should().Be(id);
+            commandTimeout.Should().Be(expectedCommandTimeout);
         }
 
         [Theory]

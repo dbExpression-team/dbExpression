@@ -26,6 +26,7 @@ using {$};
 
 namespace {Namespace}
 {{
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public partial class Nullable{:mediatorType}ExpressionMediator
     {{
         #region arithmetic operators 

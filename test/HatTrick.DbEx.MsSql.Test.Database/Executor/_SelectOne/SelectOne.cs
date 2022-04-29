@@ -273,5 +273,59 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //then
             (value!.foo as byte[]).Should().NotBeEmpty();
         }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_select_sys_date_time(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //when
+            DateTime value = await db.SelectOne(
+                    db.fx.SysDateTime()
+                )
+                .From(dbo.Person)
+                .ExecuteAsync();
+
+            //then
+            (value - DateTime.Now).Should().BeLessThan(TimeSpan.FromSeconds(5));
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_select_sys_date_time_offset(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //when
+            DateTimeOffset value = await db.SelectOne(
+                    db.fx.SysDateTimeOffset()
+                )
+                .From(dbo.Person)
+                .ExecuteAsync();
+
+            //then
+            (value - DateTimeOffset.Now).Should().BeLessThan(TimeSpan.FromSeconds(5));
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_select_sys_utc_date_time(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //when
+            DateTime value = await db.SelectOne(
+                    db.fx.SysUtcDateTime()
+                )
+                .From(dbo.Person)
+                .ExecuteAsync();
+
+            //then
+            (value - DateTime.UtcNow).Should().BeLessThan(TimeSpan.FromSeconds(5));
+        }
     }
 }

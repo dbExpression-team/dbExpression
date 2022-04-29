@@ -23,8 +23,8 @@ using System;
 namespace HatTrick.DbEx.MsSql.Expression
 {
     public partial class SysDateTimeOffsetFunctionExpression : DataTypeFunctionExpression,
-        IExpressionElement<DateTime>,
-        DateTimeElement,
+        IExpressionElement<DateTimeOffset>,
+        DateTimeOffsetElement,
         IEquatable<SysDateTimeOffsetFunctionExpression>
     {
         #region constructors
@@ -35,10 +35,9 @@ namespace HatTrick.DbEx.MsSql.Expression
         #endregion
 
         #region as
-        public AnyElement<DateTime> As(string alias)
-            => new SelectExpression<DateTime>(this).As(alias);
+        public AnyElement<DateTimeOffset> As(string alias)
+            => new SelectExpression<DateTimeOffset>(this).As(alias);
         #endregion
-
 
         #region to string
         public override string ToString() => "GetUtcDate()";

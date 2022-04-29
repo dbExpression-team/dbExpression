@@ -1,6 +1,7 @@
 ﻿using DbEx.DataService;
 using DbEx.dboDataService;
 using FluentAssertions;
+using HatTrick.DbEx.MsSql.Types;
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Expression;
@@ -774,6 +775,45 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             newParameter.Should().Be(parameter);
             newParameter.Parameter.Precision.Should().Be(4);
             newParameter.Parameter.Scale.Should().Be(2);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_adding_a_string_parameter_with_empty_value_and_metadata_type_char_produce_parameter_with_correct_sqldbtype(int version)
+        {
+            //given
+            var value = string.Empty;
+            var database = ConfigureForMsSqlVersion(version);
+            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
+            var databaseMetadata = new MsSqlDbSqlDatabaseMetadata(nameof(MsSqlDb), nameof(MsSqlDb));
+            var fieldMetadata = new MsSqlFieldMetadata(databaseMetadata.Schemas[nameof(dbo)].Entities[$"{nameof(dbo)}.{nameof(dbo.Person)}"], $"{nameof(dbo)}.{nameof(dbo.Person)}.{nameof(dbo.Person.FirstName)}", $"{nameof(dbo)}.{nameof(dbo.Person)}.{nameof(dbo.Person.FirstName)}", SqlDbType.Char, 0);
+
+            //when
+            var parameter = parameterBuilder.CreateInputParameter(value, typeof(string), fieldMetadata, context);
+
+            //then
+            parameter.Parameter.DbType.Should().Be(DbType.AnsiString);
+            parameter.Parameter.Size.Should().Be(1);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_adding_a_byte_array_parameter_with_empty_value_and_metadata_type_binary_produce_parameter_with_correct_sqldbtype(int version)
+        {
+            //given
+            var value = Array.Empty<byte>();
+            var database = ConfigureForMsSqlVersion(version);
+            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
+            var databaseMetadata = new MsSqlDbSqlDatabaseMetadata(nameof(MsSqlDb), nameof(MsSqlDb));
+            var fieldMetadata = new MsSqlFieldMetadata(databaseMetadata.Schemas[nameof(dbo)].Entities[$"{nameof(dbo)}.{nameof(dbo.Product)}"], $"{nameof(dbo)}.{nameof(dbo.Product)}.{nameof(dbo.Product.Image)}", $"{nameof(dbo)}.{nameof(dbo.Product)}.{nameof(dbo.Product.Image)}", SqlDbType.Binary, 0);
+
+            //when
+            var parameter = parameterBuilder.CreateInputParameter(value, typeof(byte[]), fieldMetadata, context);
+
+            //then
+            parameter.Parameter.DbType.Should().Be(DbType.Binary);
         }
     }
 }

@@ -77,16 +77,18 @@ namespace HatTrick.DbEx.MsSql.Assembler
             }
 
             //add windowing function
+            builder.Appender.Indentation++.Indent();
             if (context.Configuration.PrependCommaOnSelectClause)
-                builder.Appender.Write(", ");
-            builder.Appender.Indentation++.Indent().Write("ROW_NUMBER() OVER (");
+                builder.Appender.Write(',');
+            builder.Appender.Write("ROW_NUMBER() OVER (");
 
             var orderBys = expression.OrderBy?.Expressions?.ToList();
             if (orderBys is not null)
             {
+                builder.Appender.Write("ORDER BY ");
                 for (var i = 0; i < orderBys.Count; i++)
                 {
-                    builder.Appender.Indent();
+                    //builder.Appender.Indent();
 
                     context.PushEntityAppendStyle(EntityExpressionAppendStyle.None);
                     try
@@ -99,7 +101,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
                     }
 
                     if (i < orderBys.Count - 1)
-                        builder.Appender.Write(", ");
+                        builder.Appender.Write(',');
                 }
             }
             builder.Appender.Write(") AS [__index]").LineBreak();
@@ -113,10 +115,13 @@ namespace HatTrick.DbEx.MsSql.Assembler
             //end CTE
             var offsetParam = builder.Parameters.CreateInputParameter((expression.Offset ?? 0) + 1, context);
             builder.Parameters.AddParameter(offsetParam);
-            var limitParam = builder.Parameters.CreateInputParameter((expression.Offset ?? 0 + expression.Limit ?? expression.Offset ?? -1) + 1, context);
+            var limitParam = builder.Parameters.CreateInputParameter((expression.Offset ?? 0) + (expression.Limit ?? expression.Offset), context);
+
             builder.Parameters.AddParameter(limitParam);
 
-            builder.Appender.Indent().Write("AS ")
+            builder.Appender.Indent().Indentation--.Indent()
+                    .Write(')').LineBreak()
+                    .Write("AS ")
                     .Write(context.Configuration.IdentifierDelimiter.Begin)
                     .Write(expression.BaseEntity!.Identifier)
                     .Write(context.Configuration.IdentifierDelimiter.End)

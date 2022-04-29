@@ -23,16 +23,23 @@ class CodeCoverageFiles
         foreach ($file in $files)
         {
 		    $xml = New-Object Xml
-		    $xml.Load($file)
+            try
+            {
+		        $xml.Load($file)
+            }
+            catch [System.IO.FileNotFoundException]
+            {
+                "Cannot load xml as the file was not found:" + $file
+            }
 		
             $needSave = $false;
 		    foreach ($node in $xml.SelectNodes($this.XPathToSourceNode)) 
 		    {
-                if ($node.InnerText -ne $this.PathToSourceFiles)
+                if (!$node.InnerText.StartsWith($this.PathToSourceFiles))
                 {
 			        $node.InnerText = $this.PathToSourceFiles
                     $needSave = $true;
-                }
+                }                
 		    }
             if ($needSave -eq $true)
             {

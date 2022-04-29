@@ -23,6 +23,7 @@ using HatTrick.DbEx.Sql.Expression;
 
 namespace HatTrick.DbEx.MsSql.Expression
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public partial class DecimalRoundFunctionExpression
     {
         #region implicit operators

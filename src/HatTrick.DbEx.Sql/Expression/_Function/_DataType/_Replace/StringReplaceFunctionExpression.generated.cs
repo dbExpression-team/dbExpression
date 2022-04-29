@@ -22,6 +22,7 @@ using System;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public partial class StringReplaceFunctionExpression
     {
         #region implicit operators

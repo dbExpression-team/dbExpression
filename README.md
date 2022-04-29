@@ -7,6 +7,7 @@ dbExpression is a Microsoft SQL Server database connector that enables fluent co
 ## Build Status
 
 [![Build Status](https://dev.azure.com/hattricklabs/DbEx/_apis/build/status/HatTrickLabs.db-ex?branchName=master)](https://dev.azure.com/hattricklabs/DbEx/_build/latest?definitionId=2&branchName=master)
+[![Code Coverage](https://img.shields.io/azure-devops/coverage/hattricklabs/DbEx/2/master)](https://img.shields.io/azure-devops/coverage/hattricklabs/DbEx/2/master?style=plastic)
 
 Using linux versions of Microsoft SQL Server on Docker images, integration tests are executed against the following versions:
 
@@ -77,9 +78,9 @@ GROUP BY
 ```
 - - -
 
-dbExpression was designed to work in two distinct modes, singleton or instance based.  The decision for which is mode to use is typically based on the type of project, the team environment, and just what works best for you - it's your choice!
-* Statically using static startup configuration and a static class to fluently build and execute queries.  This is great for environments or projects where this is all that is needed.
-* Instance based via dependency injection where an instance of the representation of your database is used to fluently build and execute queries.  Perfect for environments that use dependency injection.
+dbExpression was designed to work in two distinct modes, singleton or instance based.  The decision for which mode to use is typically based on the type of project, the team environment, and just what works best for you - it's your choice!
+* Statically using startup configuration and a static database accessor to fluently build and execute queries.  This is great for environments or projects where this is all that is needed.
+* Instance based via dependency injection where an instance of the database accessor is used to fluently build and execute queries.  Perfect for environments that use dependency injection.
 
 ## Use dbExpression
 dbExpression is quick and easy to get up and running using two packages available on NuGet:

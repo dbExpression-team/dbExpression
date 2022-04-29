@@ -27,6 +27,7 @@ using {$};
 
 namespace {Namespace}
 {{
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public partial class Nullable{:dataType.Name}{:functionName}FunctionExpression
     {{
         #region implicit operators

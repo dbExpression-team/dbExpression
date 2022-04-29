@@ -21,6 +21,7 @@
 
 namespace HatTrick.DbEx.Sql.Expression
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public partial class EnumIsNullFunctionExpression<TEnum>
     {
         #region implicit operators

@@ -27,6 +27,7 @@ using {$};
 
 namespace {Namespace}
 {{
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public partial class Nullable{Type.Name}FieldExpression
     {{
         #region in value set

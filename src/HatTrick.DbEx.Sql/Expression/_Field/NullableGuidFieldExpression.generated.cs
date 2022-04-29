@@ -23,6 +23,7 @@ using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public partial class NullableGuidFieldExpression
     {
         #region in value set

@@ -26,6 +26,7 @@ using {$};
 
 namespace {Namespace}
 {{
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public partial class NullableEnum{:functionName}FunctionExpression<TEnum>
     {{
         #region implicit operators

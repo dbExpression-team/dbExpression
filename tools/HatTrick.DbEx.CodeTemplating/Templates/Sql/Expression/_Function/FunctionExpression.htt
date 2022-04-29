@@ -27,6 +27,7 @@ using {$};
 
 namespace {Namespace}
 {{
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public partial class {:functionName}FunctionExpression
     {{
         #region implicit operators

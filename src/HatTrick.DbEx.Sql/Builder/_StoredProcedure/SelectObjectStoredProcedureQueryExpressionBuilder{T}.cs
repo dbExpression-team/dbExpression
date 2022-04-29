@@ -44,7 +44,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #region methods
         #region SelectObjectStoredProcedureTermination
         /// <inheritdoc />
-        IList<T> SelectObjectStoredProcedureTermination<T>.Execute()
+        T? SelectObjectStoredProcedureTermination<T>.Execute()
         {
             using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
             return ExecuteObjectPipeline(
@@ -54,7 +54,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-		IList<T> SelectObjectStoredProcedureTermination<T>.Execute(ISqlConnection connection)
+		T? SelectObjectStoredProcedureTermination<T>.Execute(ISqlConnection connection)
         {
             return ExecuteObjectPipeline(
                 connection,
@@ -63,7 +63,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-		IList<T> SelectObjectStoredProcedureTermination<T>.Execute(int commandTimeout)
+		T? SelectObjectStoredProcedureTermination<T>.Execute(int commandTimeout)
         {
             using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
             return ExecuteObjectPipeline(
@@ -73,7 +73,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-		IList<T> SelectObjectStoredProcedureTermination<T>.Execute(ISqlConnection connection, int commandTimeout)
+		T? SelectObjectStoredProcedureTermination<T>.Execute(ISqlConnection connection, int commandTimeout)
         {
             return ExecuteObjectPipeline(
                 connection,
@@ -82,7 +82,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        async Task<IList<T>> SelectObjectStoredProcedureTermination<T>.ExecuteAsync(CancellationToken cancellationToken)
+        async Task<T?> SelectObjectStoredProcedureTermination<T>.ExecuteAsync(CancellationToken cancellationToken)
         {
             using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
             return await ExecuteObjectPipelineAsync(
@@ -93,7 +93,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-		async Task<IList<T>> SelectObjectStoredProcedureTermination<T>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
+		async Task<T?> SelectObjectStoredProcedureTermination<T>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
         {
             return await ExecuteObjectPipelineAsync(
                 connection,
@@ -103,7 +103,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-		async Task<IList<T>> SelectObjectStoredProcedureTermination<T>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
+		async Task<T?> SelectObjectStoredProcedureTermination<T>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
         {
             using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
             return await ExecuteObjectPipelineAsync(
@@ -114,7 +114,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-		async Task<IList<T>> SelectObjectStoredProcedureTermination<T>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
+		async Task<T?> SelectObjectStoredProcedureTermination<T>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
         {
             return await ExecuteObjectPipelineAsync(
                 connection,
@@ -123,11 +123,11 @@ namespace HatTrick.DbEx.Sql.Builder
             ).ConfigureAwait(false);
         }
 
-        protected virtual IList<T> ExecuteObjectPipeline(ISqlConnection connection, Action<IDbCommand>? configureCommand)
-            => CreateStoredProcedureExecutionPipeline().ExecuteSelectObjectList(Expression, map, connection, configureCommand);
+        protected virtual T? ExecuteObjectPipeline(ISqlConnection connection, Action<IDbCommand>? configureCommand)
+            => CreateStoredProcedureExecutionPipeline().ExecuteSelectObject(Expression, map, connection, configureCommand);
 
-        protected virtual async Task<IList<T>> ExecuteObjectPipelineAsync(ISqlConnection connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
-            => await CreateStoredProcedureExecutionPipeline().ExecuteSelectObjectListAsync(Expression, map, connection, configureCommand, ct).ConfigureAwait(false);
+        protected virtual async Task<T?> ExecuteObjectPipelineAsync(ISqlConnection connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
+            => await CreateStoredProcedureExecutionPipeline().ExecuteSelectObjectAsync(Expression, map, connection, configureCommand, ct).ConfigureAwait(false);
         #endregion
         #endregion
     }
