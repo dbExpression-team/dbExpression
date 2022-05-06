@@ -1,12 +1,38 @@
 # Changelog
 
-## [0.9.1]
+## [0.9.1] - 2022-05-09
 
 ### Added
+- Benchmark reports
+- Code coverage reports
 
 ### Changed
+- FilterExpressions- The implementation of filters was not correct. When an element is composed as a filter (i.e. "element1 < element2"), the result should be a FilterExpression, not a FilterExpressionSet.
+FilterExpressionSet used the same composition of elements as FilterExpression, having a LeftArg and RightArg. But a FilterExpresionSet should hold any number N of expressions, not constrained
+to LeftArg and RightArg. This work was to correct these mis-alignments:
+
+	- Changed FilterExpressionSet to contain a list of FilterExpression/FilterExpressionSet instead of a LeftArg and RightArg, enabling chaining multiple elements that have the same conditional operator
+	- Changed implicit operators for filters to return FilterExpression instead of FilterExpressionSet
+	- Changed In expressions to return FilterExpression instead of FilterExpressionSet
+	- Implementation of FilterExpressionSetAppender was greatly simplified
+	- Removed implicit operators as they are now handled correctly via constructors and other methods
+	- FilterExpression -> FilterExpressionSet
+	- FilterExpression -> HavingExpression
+
+- Arithmetic Expressions - Reduced number of appended parenthesis by changing ArithmeticExpression to contain a list of args instead of a "LeftArg" and "RightArg"
+
+	- Elements used in arithmetic with another ArithmeticExpression are appended to the ArithmeticExpression's list if the arithmetic operator is the same
+	- When composing ArithmeticExpression's with a FieldExpression, the FieldExpression is not provided to the constructed LiteralExpression, ensuring the type of the value is used to construct db parameters (this
+	also fixes a discovered issue in doing arithmetic with a FieldExpression of one type and a value type that differs)
+
+- Additionally deprecated unused classes:
+	- JoinOnExpressionSet
+	- JoinOnExpressionSetAppender
+
+Corrected IsNull function to allow for null and empty strings at termination instead of throwing ArgumentException
 
 ### Fixed
+- issue where type overrides were not applied in generated code if supplied in dbex.config.json
 
 ### Breaking Changes
 
