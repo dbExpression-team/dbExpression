@@ -61,7 +61,7 @@ And here's the SQL statement dbExpression assembled and executed against the tar
 ```sql
 exec sp_executesql N'SELECT
 	[dbo].[Person].[Id]
-	,(([dbo].[Person].[FirstName] + @P1) + [dbo].[Person].[LastName]) AS [CustomerName]
+	,([dbo].[Person].[FirstName] + @P1 + [dbo].[Person].[LastName]) AS [CustomerName]
 	,COUNT([dbo].[Purchase].[ShipDate]) AS [ShippedCount]
 	,DATEPART(year, [dbo].[Purchase].[ShipDate]) AS [ShippedYear]
 FROM
