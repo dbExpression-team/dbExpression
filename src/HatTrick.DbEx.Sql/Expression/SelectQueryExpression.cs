@@ -25,6 +25,7 @@ namespace HatTrick.DbEx.Sql.Expression
     {
         #region interface
         public SelectExpressionSet Select { get; set; } = new SelectExpressionSet();
+        public Table? From { get; set; }
         public bool? Distinct { get; set; }
         public int? Top { get; set; }
         public int? Offset { get; set; }
@@ -39,40 +40,42 @@ namespace HatTrick.DbEx.Sql.Expression
         #region to string
         public override string? ToString()
         {
-            var sb = new StringBuilder("SELECT ");
+            var sb = new StringBuilder("SELECT");
             if (Distinct.HasValue && Distinct.Value)
-                sb.Append("DISTINCT ");
+                sb.Append(" DISTINCT");
             if (Top.HasValue)
             {
-                sb.Append("TOP ");
+                sb.Append(" TOP ");
                 sb.Append(Top);
-                sb.Append(' ');
             }
+            sb.Append(' ');
             sb.Append(Select);
             sb.Append(" FROM ");
-            sb.Append(BaseEntity);
-            sb.Append(' ');
-            sb.Append(Joins);
-            sb.Append(' ');
+            sb.Append(From);
+            if (Joins is not null && Joins.Expressions.Any())
+            {
+                sb.Append(' ');
+                sb.Append(Joins);
+            }
             var where = (Where as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>)?.Expression;
             if (where is not null && where.Args.Any())
             {
-                sb.Append("WHERE ");
+                sb.Append(" WHERE ");
                 sb.Append(Where);
             }
             if (OrderBy?.Expressions is not null)
             {
-                sb.Append("ORDER BY ");
+                sb.Append(" ORDER BY ");
                 sb.Append(OrderBy);
             }
             if (GroupBy?.Expressions is not null)
             {
-                sb.Append("GROUP BY ");
+                sb.Append(" GROUP BY ");
                 sb.Append(GroupBy);
             }
             if (Having is not null)
             {
-                sb.Append("HAVING ");
+                sb.Append(" HAVING ");
                 sb.Append(Having);
             }
 

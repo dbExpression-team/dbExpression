@@ -22,6 +22,6 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public class StoredProcedureQueryExpression : QueryExpression
     {
-        public new StoredProcedure? BaseEntity { get; set; }
+        public StoredProcedure? BaseEntity { get; set; }
     }
 }

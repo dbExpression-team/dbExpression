@@ -20,7 +20,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             //given
             var database = ConfigureForMsSqlVersion(version);
 
-            ITerminationExpressionBuilder exp = 
+            ITerminationExpressionBuilder<MsSqlDb> exp = 
 
                 db.SelectOne(sec.Person.Id)
                     .From(sec.Person)
@@ -31,7 +31,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             string whereClause;
 
             //when
-            builder.AppendElement(queryExpression.Where!, new AssemblyContext(new SqlStatementAssemblerConfiguration()));
+            builder.AppendElement(queryExpression.Where!, database.AssemblerConfiguration.ToAssemblyContext());
             whereClause = builder.Appender.ToString()!;
 
             //then

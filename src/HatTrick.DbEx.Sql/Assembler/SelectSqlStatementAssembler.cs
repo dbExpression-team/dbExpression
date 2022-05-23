@@ -72,9 +72,9 @@ namespace HatTrick.DbEx.Sql.Assembler
             builder.Appender.Indentation--;
         }
 
-        protected virtual void AppendFromClause(QueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
+        protected virtual void AppendFromClause(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            builder.Appender.Indent().Write("FROM").LineBreak();
+            builder.Appender.LineBreak().Indent().Write("FROM").LineBreak();
 
             builder.Appender
                 .Indentation++
@@ -83,16 +83,14 @@ namespace HatTrick.DbEx.Sql.Assembler
             context.PushEntityAppendStyle(EntityExpressionAppendStyle.Declaration);
             try
             {
-                builder.AppendElement(expression.BaseEntity ?? throw new DbExpressionException("Expected base entity to not be null"), context);
+                builder.AppendElement(expression.From ?? throw new DbExpressionException("Expected base entity to not be null"), context);
             }
             finally
             {
                 context.PopEntityAppendStyle();
             }
 
-            builder.Appender
-                .Indentation--
-                .LineBreak();
+            builder.Appender.Indentation--;
         }
 
         protected virtual void AppendJoinClause(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
@@ -100,13 +98,11 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (expression.Joins?.Expressions is null || !expression.Joins.Expressions.Any())
                 return;
 
-            builder.Appender
-                .Indentation++;
+            builder.Appender.LineBreak().Indentation++;
 
             builder.AppendElement(expression.Joins, context);
 
-            builder.Appender
-                .Indentation--;
+            builder.Appender.Indentation--;
         }
 
         protected virtual void AppendWhereClause(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
@@ -118,15 +114,15 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (!elements?.Args?.Any() ?? false)
                 return;
 
-            builder.Appender.Indent().Write("WHERE")
+            builder.Appender.LineBreak()
+                .Indent().Write("WHERE")
                 .Indentation++;
 
             builder.Appender.LineBreak().Indent();
 
             builder.AppendElement(expression.Where, context);
 
-            builder.Appender.LineBreak()
-                .Indentation--;
+            builder.Appender.Indentation--;
         }
 
         protected virtual void AppendGroupByClause(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
@@ -134,7 +130,8 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (expression.GroupBy?.Expressions is null || !expression.GroupBy.Expressions.Any())
                 return;
 
-            builder.Appender.Indent().Write("GROUP BY").LineBreak()
+            builder.Appender.LineBreak()
+                .Indent().Write("GROUP BY").LineBreak()
                 .Indentation++;
 
             context.PushAppendStyles(EntityExpressionAppendStyle.Alias, FieldExpressionAppendStyle.None);
@@ -147,8 +144,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 context.PopAppendStyles();
             }
 
-            builder.Appender
-                .Indentation--;
+            builder.Appender.Indentation--;
         }
 
         protected virtual void AppendHavingClause(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
@@ -160,7 +156,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (having is null || (having as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>).Expression is null)
                 return;
 
-            builder.Appender.Indent().Write("HAVING").LineBreak()
+            builder.Appender.LineBreak().Indent().Write("HAVING").LineBreak()
                 .Indentation++;
 
             context.PushAppendStyles(EntityExpressionAppendStyle.Alias, FieldExpressionAppendStyle.None);
@@ -173,8 +169,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 context.PopAppendStyles();
             }
 
-            builder.Appender.LineBreak()
-                .Indentation--;
+            builder.Appender.Indentation--;
         }
 
         protected virtual void AppendOrderByClause(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
@@ -182,7 +177,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (expression.OrderBy?.Expressions is null || !expression.OrderBy.Expressions.Any())
                 return;
 
-            builder.Appender.Indent().Write("ORDER BY").LineBreak()
+            builder.Appender.LineBreak().Indent().Write("ORDER BY").LineBreak()
                 .Indentation++;
 
             context.PushAppendStyles(EntityExpressionAppendStyle.Alias, FieldExpressionAppendStyle.None);
@@ -195,8 +190,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 context.PopAppendStyles();
             }
 
-            builder.Appender
-                .Indentation--;
+            builder.Appender.Indentation--;
         }
     }
 }

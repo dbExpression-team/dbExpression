@@ -23,7 +23,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Experimental.Batch
             var d4 = db.Delete().From(dbo.Address).InnerJoin(dbo.PersonAddress).On(dbo.Address.Id == dbo.PersonAddress.AddressId).Where(dbo.PersonAddress.PersonId == 3);
             var d5 = db.Delete().From(dbo.Person).Where(dbo.Person.Id == 3);
 
-            (new BatchBuilder(config) as IBatchBuilder).Add(d1, d2, d3, d4, d5).Execute();
+            (new BatchBuilder<MsSqlDb>(config) as IBatchBuilder<MsSqlDb>).Add(d1, d2, d3, d4, d5).Execute();
         }
 
         [Theory]
@@ -40,7 +40,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Experimental.Batch
             var d4 = db.Delete().From(dbo.Address).InnerJoin(dbo.PersonAddress).On(dbo.Address.Id == dbo.PersonAddress.AddressId).Where(dbo.PersonAddress.PersonId == 3);
             var d5 = db.Delete().From(dbo.Person).Where(dbo.Person.Id == 3);
 
-            await (new BatchBuilder(config) as IBatchBuilder).Add(d1, d2, d3, d4, d5).ExecuteAsync();
+            await (new BatchBuilder<MsSqlDb>(config) as IBatchBuilder<MsSqlDb>).Add(d1, d2, d3, d4, d5).ExecuteAsync();
         }
     }
 }

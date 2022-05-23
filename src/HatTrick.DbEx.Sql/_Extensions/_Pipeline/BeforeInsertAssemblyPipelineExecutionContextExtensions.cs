@@ -31,12 +31,12 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(fieldName)} is required.");
 
             if (!context.TrySetFieldValue(fieldName, value))
-                throw new DbExpressionException($"Could not set field {fieldName} value on entity {context.Expression.BaseEntity?.Name ?? "[UNKNOWN]"}.");
+                throw new DbExpressionException($"Could not set field {fieldName} value on entity {context.Expression.Into?.Name ?? "[UNKNOWN]"}.");
         }
         public static void SetFieldValue<T>(this BeforeInsertAssemblyPipelineExecutionContext context, string fieldName, DBNull value)
         {
             if (!context.TrySetFieldValue(fieldName, value))
-                throw new DbExpressionException($"Could not set field {fieldName} value on entity {context.Expression.BaseEntity?.Name ?? "[UNKNOWN]"}.");
+                throw new DbExpressionException($"Could not set field {fieldName} value on entity {context.Expression.Into?.Name ?? "[UNKNOWN]"}.");
         }
         public static void SetFieldValue<T>(this BeforeInsertAssemblyPipelineExecutionContext context, EnumFieldExpression<T> fieldExpression, T value)
             where T : struct, Enum, IComparable
@@ -45,7 +45,7 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentNullException(nameof(fieldExpression));
 
             if (!DoTrySetFieldValue(context, fieldExpression, value))
-                throw new DbExpressionException($"Could not set field {(fieldExpression as IExpressionNameProvider).Name} value on entity {context.Expression.BaseEntity?.Name ?? "[UNKNOWN]"}.");
+                throw new DbExpressionException($"Could not set field {(fieldExpression as IExpressionNameProvider).Name} value on entity {context.Expression.Into?.Name ?? "[UNKNOWN]"}.");
         }
         public static void SetFieldValue<T>(this BeforeInsertAssemblyPipelineExecutionContext context, NullableEnumFieldExpression<T> fieldExpression, T? value)
            where T : struct, Enum, IComparable
@@ -54,7 +54,7 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentNullException(nameof(fieldExpression));
 
             if (!DoTrySetFieldValue(context, fieldExpression, value))
-                throw new DbExpressionException($"Could not set field {(fieldExpression as IExpressionNameProvider).Name} value on entity {context.Expression.BaseEntity?.Name ?? "[UNKNOWN]"}.");
+                throw new DbExpressionException($"Could not set field {(fieldExpression as IExpressionNameProvider).Name} value on entity {context.Expression.Into?.Name ?? "[UNKNOWN]"}.");
         }
         public static void SetFieldValue<T>(this BeforeInsertAssemblyPipelineExecutionContext context, NullableEnumFieldExpression<T> fieldExpression, DBNull value)
             where T : struct, Enum, IComparable
@@ -63,7 +63,7 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentNullException(nameof(fieldExpression));
 
             if (!DoTrySetFieldValue(context, fieldExpression, value))
-                throw new DbExpressionException($"Could not set field {(fieldExpression as IExpressionNameProvider).Name} value on entity {context.Expression.BaseEntity?.Name ?? "[UNKNOWN]"}.");
+                throw new DbExpressionException($"Could not set field {(fieldExpression as IExpressionNameProvider).Name} value on entity {context.Expression.Into?.Name ?? "[UNKNOWN]"}.");
         }
         public static void SetFieldValue<T>(this BeforeInsertAssemblyPipelineExecutionContext context, FieldExpression<T> fieldExpression, T value)
         {
@@ -71,7 +71,7 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentNullException(nameof(fieldExpression));
 
             if (!DoTrySetFieldValue(context, fieldExpression, value))
-                throw new DbExpressionException($"Could not set field {(fieldExpression as IExpressionNameProvider).Name} value on entity {context.Expression.BaseEntity?.Name ?? "[UNKNOWN]"}.");
+                throw new DbExpressionException($"Could not set field {(fieldExpression as IExpressionNameProvider).Name} value on entity {context.Expression.Into?.Name ?? "[UNKNOWN]"}.");
         }
         public static bool TrySetFieldValue<T>(this BeforeInsertAssemblyPipelineExecutionContext context, string fieldName, T value)
         {
@@ -80,11 +80,7 @@ namespace HatTrick.DbEx.Sql
 
             try
             {
-                if (context.Expression is not InsertQueryExpression insert)
-                    return false;
-
-                var entity = insert.BaseEntity as EntityExpression ?? throw new DbExpressionException($"Expected query expression base entity to be of type {typeof(EntityExpression)}");
-                var field = (entity as Table).Fields?.SingleOrDefault(x => string.Compare(x.Name, fieldName, true) == 0);
+                var field = context.Expression.Into!.Fields?.SingleOrDefault(x => string.Compare(x.Name, fieldName, true) == 0);
                 if (field is null)
                     return false;
 
@@ -126,23 +122,20 @@ namespace HatTrick.DbEx.Sql
                 if (field is null)
                     return false;
 
-                if (context.Expression is not InsertQueryExpression insert)
-                    return false;
-
-                var found = insert.BaseEntity!.Fields.SingleOrDefault(x => string.Compare(x.Name, (field as IExpressionNameProvider).Name, true) == 0);
+                var found = context.Expression.Into!.Fields.SingleOrDefault(x => string.Compare(x.Name, (field as IExpressionNameProvider).Name, true) == 0);
                 if (found is null)
                     return true;
 
-                if ((field as Field).Table != insert.BaseEntity)
+                if ((field as Field).Table != context.Expression.Into)
                     return true;
 
-                for (var i = 0; i < insert.Inserts.Count; i++)
+                for (var i = 0; i < context.Expression.Inserts.Count; i++)
                 {
-                    var provider = insert.Inserts[i] as IExpressionListProvider<InsertExpression>;
+                    var provider = context.Expression.Inserts[i] as IExpressionListProvider<InsertExpression>;
                     var existing = provider.Expressions.SingleOrDefault(x => (x as IAssignmentExpressionProvider).Assignee == field);
                     if (existing is null)
                     {
-                        insert.Inserts[i] = new InsertExpressionSet(insert.Inserts[i].Entity, provider.Expressions.Concat(new[] { new InsertExpression<T>(value, field) }));
+                        context.Expression.Inserts[i] = new InsertExpressionSet(context.Expression.Inserts[i].Entity, provider.Expressions.Concat(new[] { new InsertExpression<T>(value, field) }));
                     }
                     else
                     {

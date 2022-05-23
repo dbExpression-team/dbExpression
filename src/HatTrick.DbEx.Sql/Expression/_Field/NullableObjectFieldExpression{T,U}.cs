@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.Sql.Expression
         NullableObjectFieldExpression<TType>,
         IEquatable<NullableObjectFieldExpression<TEntity, TType>>
         where TEntity : class, IDbEntity
-        where TType : class
+        where TType : class?
     {
         #region constructors
         public NullableObjectFieldExpression(string identifier, string name, Table entity) : base(identifier, name, entity)

@@ -31,310 +31,328 @@ namespace HatTrick.DbEx.MsSql.Builder
     public class MsSqlQueryExpressionBuilder
     {
         #region select one
-        public virtual SelectEntity<TEntity> CreateSelectEntityBuilder<TEntity>(MsSqlSqlDatabaseRuntimeConfiguration configuration)
+        public virtual SelectEntity<TDatabase, TEntity> CreateSelectEntityBuilder<TDatabase, TEntity>(MsSqlSqlDatabaseRuntimeConfiguration configuration)
+            where TDatabase : class, ISqlDatabaseRuntime
             where TEntity : class, IDbEntity, new()
-        {
-            var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
-            expression.Top = 1;
-            return new SelectEntityQueryExpressionBuilder<TEntity>(configuration, expression);
-        }
+            => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne<TEntity>();
 
-        public virtual SelectDynamic CreateSelectDynamicBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement field1, AnyElement field2, params AnyElement[] fields)
-        {
-            var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
-            var expressions = new List<SelectExpression>(fields.Length + 2)
-            {
-                field1?.ToSelectExpression(configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(field1)),
-                field2?.ToSelectExpression(configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(field2))
-            };
-            expressions.AddRange(fields.Select(field => field.ToSelectExpression(configuration.MetadataProvider)));
-            expression.Top = 1;
-            expression.Select = new SelectExpressionSet(expressions);
-            return new SelectDynamicSelectQueryExpressionBuilder(configuration, expression);
-        }
+        public virtual SelectDynamic<TDatabase> CreateSelectDynamicBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement element1, AnyElement element2, params AnyElement[] elements)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne(element1, element2, elements);
 
-        public virtual SelectDynamic CreateSelectDynamicBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, IEnumerable<AnyElement> fields)
-        {
-            var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
-            expression.Select = new SelectExpressionSet(fields.Select(field => field?.ToSelectExpression(configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(field))));
-            return new SelectDynamicSelectQueryExpressionBuilder(configuration, expression);
-        }
+        public virtual SelectDynamic<TDatabase> CreateSelectDynamicBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, IEnumerable<AnyElement> elements)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne(elements);
 
-        public virtual SelectValue<TEnum> CreateSelectValueBuilder<TEnum>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<TEnum> field)
+        public virtual SelectValue<TDatabase, TEnum> CreateSelectValueBuilder<TDatabase, TEnum>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<TEnum> element)
+            where TDatabase : class, ISqlDatabaseRuntime
             where TEnum : struct, Enum, IComparable
-        {
-            var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
-            expression.Top = 1;
-            expression.Select = new SelectExpressionSet(field?.ToSelectExpression(configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(field)));
-            return new SelectValueSelectQueryExpressionBuilder<TEnum>(configuration, expression);
-        }
+            => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne(element);
 
-        public virtual SelectValue<TEnum?> CreateSelectValueBuilder<TEnum>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<TEnum?> field)
+        public virtual SelectValue<TDatabase, TEnum?> CreateSelectValueBuilder<TDatabase, TEnum>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<TEnum?> element)
+            where TDatabase : class, ISqlDatabaseRuntime
             where TEnum : struct, Enum, IComparable
-        {
-            var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
-            expression.Top = 1;
-            expression.Select = new SelectExpressionSet(field?.ToSelectExpression(configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(field)));
-            return new SelectValueSelectQueryExpressionBuilder<TEnum?>(configuration, expression);
-        }
+            => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne(element);
 
-        public virtual SelectValue<object> CreateSelectValueBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, ObjectElement field)
-            => CreateSelectValueBuilder(configuration, field);
+        public virtual SelectValue<TDatabase, object> CreateSelectValueBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, ObjectElement element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne(element)!;
 
-        public virtual SelectValue<object?> CreateSelectValueBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, NullableObjectElement field)
-            => CreateSelectValueBuilder(configuration, field);
+        public virtual SelectValue<TDatabase, object?> CreateSelectValueBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, NullableObjectElement element)
+            where TDatabase : class, ISqlDatabaseRuntime
+           => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne(element);
 
-        public virtual SelectValue<T> CreateSelectValueBuilder<T>(MsSqlSqlDatabaseRuntimeConfiguration configuration, ObjectElement<T> field)
-            => CreateSelectValueBuilder<T>(configuration, field as AnyElement);
+        public virtual SelectObject<TDatabase, T> CreateSelectValueBuilder<TDatabase, T>(MsSqlSqlDatabaseRuntimeConfiguration configuration, ObjectElement<T> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            where T : class
+            => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne(element);
 
-        public virtual SelectValue<T?> CreateSelectValueBuilder<T>(MsSqlSqlDatabaseRuntimeConfiguration configuration, NullableObjectElement<T> field)
-            => CreateSelectValueBuilder<T?>(configuration, field as AnyElement);
+        public virtual SelectObject<TDatabase, T?> CreateSelectValueBuilder<TDatabase, T>(MsSqlSqlDatabaseRuntimeConfiguration configuration, NullableObjectElement<T> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            where T : class?
+            => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne(element);
 
-        public virtual SelectValue<bool> CreateSelectValueBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<bool> field)
-            => CreateSelectValueBuilder<bool>(configuration, field);
+        public virtual SelectValue<TDatabase, bool> CreateSelectValueBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<bool> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne(element);
 
-        public virtual SelectValue<bool?> CreateSelectValueBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<bool?> field)
-            => CreateSelectValueBuilder<bool?>(configuration, field);
+        public virtual SelectValue<TDatabase, bool?> CreateSelectValueBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<bool?> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne(element);
 
-        public virtual SelectValue<byte> CreateSelectValueBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<byte> field)
-            => CreateSelectValueBuilder<byte>(configuration, field);
+        public virtual SelectValue<TDatabase, byte> CreateSelectValueBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<byte> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne(element);
 
-        public virtual SelectValue<byte?> CreateSelectValueBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<byte?> field)
-            => CreateSelectValueBuilder<byte?>(configuration, field);
+        public virtual SelectValue<TDatabase, byte?> CreateSelectValueBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<byte?> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne(element);
 
-        public virtual SelectValue<byte[]> CreateSelectValueBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<byte[]> field)
-            => CreateSelectValueBuilder<byte[]>(configuration, field);
+        public virtual SelectValue<TDatabase, byte[]> CreateSelectValueBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<byte[]> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne(element);
 
-        public virtual SelectValue<DateTime> CreateSelectValueBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<DateTime> field)
-            => CreateSelectValueBuilder<DateTime>(configuration, field);
+        public virtual SelectValue<TDatabase, DateTime> CreateSelectValueBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<DateTime> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne(element);
 
-        public virtual SelectValue<DateTime?> CreateSelectValueBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<DateTime?> field)
-            => CreateSelectValueBuilder<DateTime?>(configuration, field);
+        public virtual SelectValue<TDatabase, DateTime?> CreateSelectValueBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<DateTime?> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne(element);
 
-        public virtual SelectValue<DateTimeOffset> CreateSelectValueBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<DateTimeOffset> field)
-            => CreateSelectValueBuilder<DateTimeOffset>(configuration, field);
+        public virtual SelectValue<TDatabase, DateTimeOffset> CreateSelectValueBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<DateTimeOffset> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne(element);
 
-        public virtual SelectValue<DateTimeOffset?> CreateSelectValueBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<DateTimeOffset?> field)
-            => CreateSelectValueBuilder<DateTimeOffset?>(configuration, field);
+        public virtual SelectValue<TDatabase, DateTimeOffset?> CreateSelectValueBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<DateTimeOffset?> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne(element);
 
-        public virtual SelectValue<decimal> CreateSelectValueBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<decimal> field)
-            => CreateSelectValueBuilder<decimal>(configuration, field);
+        public virtual SelectValue<TDatabase, decimal> CreateSelectValueBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<decimal> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne(element);
 
-        public virtual SelectValue<decimal?> CreateSelectValueBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<decimal?> field)
-            => CreateSelectValueBuilder<decimal?>(configuration, field);
+        public virtual SelectValue<TDatabase, decimal?> CreateSelectValueBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<decimal?> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne(element);
 
-        public virtual SelectValue<double> CreateSelectValueBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<double> field)
-            => CreateSelectValueBuilder<double>(configuration, field);
+        public virtual SelectValue<TDatabase, double> CreateSelectValueBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<double> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne(element);
 
-        public virtual SelectValue<double?> CreateSelectValueBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<double?> field)
-            => CreateSelectValueBuilder<double?>(configuration, field);
+        public virtual SelectValue<TDatabase, double?> CreateSelectValueBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<double?> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne(element);
 
-        public virtual SelectValue<Guid> CreateSelectValueBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<Guid> field)
-            => CreateSelectValueBuilder<Guid>(configuration, field);
+        public virtual SelectValue<TDatabase, Guid> CreateSelectValueBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<Guid> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne(element);
 
-        public virtual SelectValue<Guid?> CreateSelectValueBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<Guid?> field)
-            => CreateSelectValueBuilder<Guid?>(configuration, field);
+        public virtual SelectValue<TDatabase, Guid?> CreateSelectValueBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<Guid?> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne(element);
 
-        public virtual SelectValue<short> CreateSelectValueBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<short> field)
-            => CreateSelectValueBuilder<short>(configuration, field);
+        public virtual SelectValue<TDatabase, short> CreateSelectValueBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<short> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne(element);
 
-        public virtual SelectValue<short?> CreateSelectValueBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<short?> field)
-            => CreateSelectValueBuilder<short?>(configuration, field);
+        public virtual SelectValue<TDatabase, short?> CreateSelectValueBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<short?> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne(element);
 
-        public virtual SelectValue<int> CreateSelectValueBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<int> field)
-            => CreateSelectValueBuilder<int>(configuration, field);
+        public virtual SelectValue<TDatabase, int> CreateSelectValueBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<int> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne(element);
 
-        public virtual SelectValue<int?> CreateSelectValueBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<int?> field)
-            => CreateSelectValueBuilder<int?>(configuration, field);
+        public virtual SelectValue<TDatabase, int?> CreateSelectValueBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<int?> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne(element);
 
-        public virtual SelectValue<long> CreateSelectValueBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<long> field)
-            => CreateSelectValueBuilder<long>(configuration, field);
+        public virtual SelectValue<TDatabase, long> CreateSelectValueBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<long> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne(element);
 
-        public virtual SelectValue<long?> CreateSelectValueBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<long?> field)
-            => CreateSelectValueBuilder<long?>(configuration, field);
+        public virtual SelectValue<TDatabase, long?> CreateSelectValueBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<long?> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne(element);
 
-        public virtual SelectValue<float> CreateSelectValueBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<float> field)
-            => CreateSelectValueBuilder<float>(configuration, field);
+        public virtual SelectValue<TDatabase, float> CreateSelectValueBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<float> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne(element);
 
-        public virtual SelectValue<float?> CreateSelectValueBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<float?> field)
-            => CreateSelectValueBuilder<float?>(configuration, field);
+        public virtual SelectValue<TDatabase, float?> CreateSelectValueBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<float?> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne(element);
 
-        public virtual SelectValue<string> CreateSelectValueBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, StringElement field)
-            => CreateSelectValueBuilder<string>(configuration, field);
+        public virtual SelectValue<TDatabase, string> CreateSelectValueBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, StringElement element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne(element);
 
-        public virtual SelectValue<string?> CreateSelectValueBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, NullableStringElement field)
-           => CreateSelectValueBuilder<string?>(configuration, field);
+        public virtual SelectValue<TDatabase, string?> CreateSelectValueBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, NullableStringElement element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne(element);
 
-        public virtual SelectValue<string?> CreateSelectValueBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, SelectExpression<string?> field)
-           => CreateSelectValueBuilder<string?>(configuration, field);
+        public virtual SelectValue<TDatabase, string?> CreateSelectValueBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, SelectExpression<string?> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne(element);
 
-        public virtual SelectValue<TimeSpan> CreateSelectValueBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<TimeSpan> field)
-            => CreateSelectValueBuilder<TimeSpan>(configuration, field);
+        public virtual SelectValue<TDatabase, TimeSpan> CreateSelectValueBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<TimeSpan> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne(element);
 
-        public virtual SelectValue<TimeSpan?> CreateSelectValueBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<TimeSpan?> field)
-            => CreateSelectValueBuilder<TimeSpan?>(configuration, field);
-
-        private static SelectValue<TValue> CreateSelectValueBuilder<TValue>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement field)
-        {
-            var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
-            expression.Top = 1;
-            expression.Select = new SelectExpressionSet(field?.ToSelectExpression(configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(field)));
-            return new SelectValueSelectQueryExpressionBuilder<TValue>(configuration, expression);
-        }
+        public virtual SelectValue<TDatabase, TimeSpan?> CreateSelectValueBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<TimeSpan?> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne(element);
         #endregion
 
         #region select many
-        public virtual SelectEntities<TEntity> CreateSelectEntitiesBuilder<TEntity>(MsSqlSqlDatabaseRuntimeConfiguration configuration)
+        public virtual SelectEntities<TDatabase, TEntity> CreateSelectEntitiesBuilder<TDatabase, TEntity>(MsSqlSqlDatabaseRuntimeConfiguration configuration)
+            where TDatabase : class, ISqlDatabaseRuntime
             where TEntity : class, IDbEntity, new()
-        {
-            var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
-            return new SelectEntitiesSelectQueryExpressionBuilder<TEntity>(configuration, expression);
-        }
+            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany<TEntity>();
 
-        public virtual SelectDynamics CreateSelectDynamicsBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement field1, AnyElement field2, params AnyElement[] fields)
-        {
-            var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
-            var expressions = new List<SelectExpression>(fields.Length + 2)
-            {
-                field1?.ToSelectExpression(configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(field1)),
-                field2?.ToSelectExpression(configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(field2))
-            };
-            expressions.AddRange(fields.Select(field => field.ToSelectExpression(configuration.MetadataProvider)));
-            expression.Select = new SelectExpressionSet(expressions);
-            return new SelectDynamicsSelectQueryExpressionBuilder(configuration, expression);
-        }
+        public virtual SelectDynamics<TDatabase> CreateSelectDynamicsBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement element1, AnyElement element2, params AnyElement[] elements)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany(element1, element2, elements);
 
-        public virtual SelectDynamics CreateSelectDynamicsBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, IEnumerable<AnyElement> fields)
-        {
-            var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
-            expression.Select = new SelectExpressionSet(fields.Select(field => field?.ToSelectExpression(configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(field))));
-            return new SelectDynamicsSelectQueryExpressionBuilder(configuration, expression);
-        }
+        public virtual SelectDynamics<TDatabase> CreateSelectDynamicsBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, IEnumerable<AnyElement> elements)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany(elements);
 
-        public virtual SelectValues<TEnum> CreateSelectValuesBuilder<TEnum>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<TEnum> field)
+        public virtual SelectValues<TDatabase, TEnum> CreateSelectValuesBuilder<TDatabase, TEnum>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<TEnum> element)
+            where TDatabase : class, ISqlDatabaseRuntime
             where TEnum : struct, Enum, IComparable
-        {
-            var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
-            expression.Select = new SelectExpressionSet(field?.ToSelectExpression(configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(field)));
-            return new SelectValuesSelectQueryExpressionBuilder<TEnum>(configuration, expression);
-        }
+            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany(element);
 
-        public virtual SelectValues<TEnum?> CreateSelectValuesBuilder<TEnum>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<TEnum?> field)
+        public virtual SelectValues<TDatabase, TEnum?> CreateSelectValuesBuilder<TDatabase, TEnum>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<TEnum?> element)
+            where TDatabase : class, ISqlDatabaseRuntime
             where TEnum : struct, Enum, IComparable
-        {
-            var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
-            expression.Select = new SelectExpressionSet(field?.ToSelectExpression(configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(field)));
-            return new SelectValuesSelectQueryExpressionBuilder<TEnum?>(configuration, expression);
-        }
+            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany(element);
 
-        public virtual SelectValues<object> CreateSelectValuesBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, ObjectElement field)
-             => CreateSelectValuesBuilder(configuration, field);
+        public virtual SelectValues<TDatabase, object> CreateSelectValuesBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, ObjectElement element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany(element)!;
 
-        public virtual SelectValues<object?> CreateSelectValuesBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, NullableObjectElement field)
-            => CreateSelectValuesBuilder(configuration, field);
+        public virtual SelectValues<TDatabase, object?> CreateSelectValuesBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, NullableObjectElement element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany(element);
 
-        public virtual SelectValues<T> CreateSelectValuesBuilder<T>(MsSqlSqlDatabaseRuntimeConfiguration configuration, ObjectElement<T> field)
-            => CreateSelectValuesBuilder<T>(configuration, field as AnyElement);
+        public virtual SelectObjects<TDatabase, T> CreateSelectValuesBuilder<TDatabase, T>(MsSqlSqlDatabaseRuntimeConfiguration configuration, ObjectElement<T> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            where T : class
+            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany(element);
 
-        public virtual SelectValues<T?> CreateSelectValuesBuilder<T>(MsSqlSqlDatabaseRuntimeConfiguration configuration, NullableObjectElement<T> field)
-            => CreateSelectValuesBuilder<T?>(configuration, field as AnyElement);
+        public virtual SelectObjects<TDatabase, T?> CreateSelectValuesBuilder<TDatabase, T>(MsSqlSqlDatabaseRuntimeConfiguration configuration, NullableObjectElement<T> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            where T: class?
+            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany(element);
 
-        public virtual SelectValues<bool> CreateSelectValuesBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<bool> field)
-            => CreateSelectValuesBuilder<bool>(configuration, field);
+        public virtual SelectValues<TDatabase, bool> CreateSelectValuesBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<bool> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany(element);
 
-        public virtual SelectValues<bool?> CreateSelectValuesBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<bool?> field)
-            => CreateSelectValuesBuilder<bool?>(configuration, field);
+        public virtual SelectValues<TDatabase, bool?> CreateSelectValuesBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<bool?> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany(element);
 
-        public virtual SelectValues<byte> CreateSelectValuesBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<byte> field)
-            => CreateSelectValuesBuilder<byte>(configuration, field);
+        public virtual SelectValues<TDatabase, byte> CreateSelectValuesBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<byte> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany(element);
 
-        public virtual SelectValues<byte?> CreateSelectValuesBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<byte?> field)
-            => CreateSelectValuesBuilder<byte?>(configuration, field);
+        public virtual SelectValues<TDatabase, byte?> CreateSelectValuesBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<byte?> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany(element);
 
-        public virtual SelectValues<byte[]> CreateSelectValuesBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<byte[]> field)
-            => CreateSelectValuesBuilder<byte[]>(configuration, field);
+        public virtual SelectValues<TDatabase, byte[]> CreateSelectValuesBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<byte[]> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany(element);
 
-        public virtual SelectValues<DateTime> CreateSelectValuesBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<DateTime> field)
-            => CreateSelectValuesBuilder<DateTime>(configuration, field);
+        public virtual SelectValues<TDatabase, DateTime> CreateSelectValuesBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<DateTime> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany(element);
 
-        public virtual SelectValues<DateTime?> CreateSelectValuesBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<DateTime?> field)
-            => CreateSelectValuesBuilder<DateTime?>(configuration, field);
+        public virtual SelectValues<TDatabase, DateTime?> CreateSelectValuesBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<DateTime?> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany(element);
 
-        public virtual SelectValues<DateTimeOffset> CreateSelectValuesBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<DateTimeOffset> field)
-            => CreateSelectValuesBuilder<DateTimeOffset>(configuration, field);
+        public virtual SelectValues<TDatabase, DateTimeOffset> CreateSelectValuesBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<DateTimeOffset> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany(element);
 
-        public virtual SelectValues<DateTimeOffset?> CreateSelectValuesBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<DateTimeOffset?> field)
-            => CreateSelectValuesBuilder<DateTimeOffset?>(configuration, field);
+        public virtual SelectValues<TDatabase, DateTimeOffset?> CreateSelectValuesBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<DateTimeOffset?> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany(element);
 
-        public virtual SelectValues<decimal> CreateSelectValuesBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<decimal> field)
-            => CreateSelectValuesBuilder<decimal>(configuration, field);
+        public virtual SelectValues<TDatabase, decimal> CreateSelectValuesBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<decimal> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany(element);
 
-        public virtual SelectValues<decimal?> CreateSelectValuesBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<decimal?> field)
-            => CreateSelectValuesBuilder<decimal?>(configuration, field);
+        public virtual SelectValues<TDatabase, decimal?> CreateSelectValuesBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<decimal?> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany(element);
 
-        public virtual SelectValues<double> CreateSelectValuesBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<double> field)
-            => CreateSelectValuesBuilder<double>(configuration, field);
+        public virtual SelectValues<TDatabase, double> CreateSelectValuesBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<double> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany(element);
 
-        public virtual SelectValues<double?> CreateSelectValuesBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<double?> field)
-            => CreateSelectValuesBuilder<double?>(configuration, field);
+        public virtual SelectValues<TDatabase, double?> CreateSelectValuesBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<double?> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany(element);
 
-        public virtual SelectValues<Guid> CreateSelectValuesBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<Guid> field)
-            => CreateSelectValuesBuilder<Guid>(configuration, field);
+        public virtual SelectValues<TDatabase, Guid> CreateSelectValuesBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<Guid> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany(element);
 
-        public virtual SelectValues<Guid?> CreateSelectValuesBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<Guid?> field)
-            => CreateSelectValuesBuilder<Guid?>(configuration, field);
+        public virtual SelectValues<TDatabase, Guid?> CreateSelectValuesBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<Guid?> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany(element);
 
-        public virtual SelectValues<short> CreateSelectValuesBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<short> field)
-            => CreateSelectValuesBuilder<short>(configuration, field);
+        public virtual SelectValues<TDatabase, short> CreateSelectValuesBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<short> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany(element);
 
-        public virtual SelectValues<short?> CreateSelectValuesBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<short?> field)
-            => CreateSelectValuesBuilder<short?>(configuration, field);
+        public virtual SelectValues<TDatabase, short?> CreateSelectValuesBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<short?> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany(element);
 
-        public virtual SelectValues<int> CreateSelectValuesBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<int> field)
-            => CreateSelectValuesBuilder<int>(configuration, field);
+        public virtual SelectValues<TDatabase, int> CreateSelectValuesBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<int> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany(element);
 
-        public virtual SelectValues<int?> CreateSelectValuesBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<int?> field)
-            => CreateSelectValuesBuilder<int?>(configuration, field);
+        public virtual SelectValues<TDatabase, int?> CreateSelectValuesBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<int?> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany(element);
 
-        public virtual SelectValues<long> CreateSelectValuesBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<long> field)
-            => CreateSelectValuesBuilder<long>(configuration, field);
+        public virtual SelectValues<TDatabase, long> CreateSelectValuesBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<long> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany(element);
 
-        public virtual SelectValues<long?> CreateSelectValuesBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<long?> field)
-            => CreateSelectValuesBuilder<long?>(configuration, field);
+        public virtual SelectValues<TDatabase, long?> CreateSelectValuesBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<long?> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany(element);
 
-        public virtual SelectValues<float> CreateSelectValuesBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<float> field)
-            => CreateSelectValuesBuilder<float>(configuration, field);
+        public virtual SelectValues<TDatabase, float> CreateSelectValuesBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<float> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany(element);
 
-        public virtual SelectValues<float?> CreateSelectValuesBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<float?> field)
-            => CreateSelectValuesBuilder<float?>(configuration, field);
+        public virtual SelectValues<TDatabase, float?> CreateSelectValuesBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<float?> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany(element);
 
-        public virtual SelectValues<string> CreateSelectValuesBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, StringElement field)
-            => CreateSelectValuesBuilder<string>(configuration, field);
+        public virtual SelectValues<TDatabase, string> CreateSelectValuesBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, StringElement element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany(element);
 
-        public virtual SelectValues<string?> CreateSelectValuesBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, NullableStringElement field)
-            => CreateSelectValuesBuilder<string?>(configuration, field);
+        public virtual SelectValues<TDatabase, string?> CreateSelectValuesBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, NullableStringElement element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany(element);
 
-        public virtual SelectValues<string?> CreateSelectValuesBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, SelectExpression<string?> field)
-            => CreateSelectValuesBuilder<string?>(configuration, field);
+        public virtual SelectValues<TDatabase, string?> CreateSelectValuesBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, SelectExpression<string?> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany(element);
 
-        public virtual SelectValues<TimeSpan> CreateSelectValuesBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<TimeSpan> field)
-            => CreateSelectValuesBuilder<TimeSpan>(configuration, field);
+        public virtual SelectValues<TDatabase, TimeSpan> CreateSelectValuesBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<TimeSpan> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany(element);
 
-        public virtual SelectValues<TimeSpan?> CreateSelectValuesBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<TimeSpan?> field)
-            => CreateSelectValuesBuilder<TimeSpan?>(configuration, field);
+        public virtual SelectValues<TDatabase, TimeSpan?> CreateSelectValuesBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<TimeSpan?> element)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany(element);
 
-        private static SelectValues<TValue> CreateSelectValuesBuilder<TValue>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement field)
-        {
-            var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
-            expression.Select = new SelectExpressionSet(field?.ToSelectExpression(configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(field)));
-            return new SelectValuesSelectQueryExpressionBuilder<TValue>(configuration, expression);
-        }
+        private static TReturn CreateSelectBuilder<TDatabase, TReturn>(MsSqlSqlDatabaseRuntimeConfiguration configuration)
+            where TDatabase : class, ISqlDatabaseRuntime
+            where TReturn : class
+            => (new SelectSetQueryExpressionBuilder<TDatabase>(
+                    (configuration.QueryExpressionFactory ?? throw new DbExpressionConfigurationException("Could not resolve a query expression factory, please ensure a query expression factory has been properly registered.")).CreateQueryExpression<SelectSetQueryExpression>() ?? throw new DbExpressionException($"Expected query expression factory to return an expression for type {nameof(SelectSetQueryExpression)}"),
+                    configuration
+                ) as TReturn) ?? throw new DbExpressionException($"Expected query builder to implement interface {typeof(TReturn)}, but it does not.");
         #endregion
 
         #region update
-        public virtual UpdateEntities CreateUpdateExpressionBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, EntityFieldAssignment assignment, params EntityFieldAssignment[] assignments)
+        public virtual UpdateEntities<TDatabase> CreateUpdateExpressionBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, EntityFieldAssignment assignment, params EntityFieldAssignment[] assignments)
+            where TDatabase : class, ISqlDatabaseRuntime
         {
-            var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<UpdateQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
+            var expression = (configuration.QueryExpressionFactory ?? throw new DbExpressionConfigurationException("Could not resolve a query expression factory, please ensure a query expression factory has been properly registered.")).CreateQueryExpression<UpdateQueryExpression>() ?? throw new DbExpressionException($"Expected query expression factory to return an expression for type {nameof(UpdateQueryExpression)}");
             expression.Assign = new AssignmentExpressionSet(
                 new List<AssignmentExpression>(assignments.Length + 1)
                 {
@@ -342,49 +360,64 @@ namespace HatTrick.DbEx.MsSql.Builder
                 }
                 .Concat(assignments.Select(x => x as AssignmentExpression ?? throw new DbExpressionException($"Expected all {nameof(assignments)} to be assignable to {typeof(AssignmentExpression)}.")))
             );
-            return new UpdateQueryExpressionBuilder(configuration, expression);
+            return new UpdateQueryExpressionBuilder<TDatabase>(expression, configuration);
         }
 
-        public virtual UpdateEntities CreateUpdateExpressionBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, IEnumerable<EntityFieldAssignment> assignments)
+        public virtual UpdateEntities<TDatabase> CreateUpdateExpressionBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, IEnumerable<EntityFieldAssignment> assignments)
+            where TDatabase : class, ISqlDatabaseRuntime
         {
-            var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<UpdateQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
+            var expression = (configuration.QueryExpressionFactory ?? throw new DbExpressionConfigurationException("Could not resolve a query expression factory, please ensure a query expression factory has been properly registered.")).CreateQueryExpression<UpdateQueryExpression>() ?? throw new DbExpressionException($"Expected query expression factory to return an expression for type {nameof(UpdateQueryExpression)}");
             expression.Assign = new AssignmentExpressionSet((assignments ?? throw new ArgumentNullException(nameof(assignments))).Select(x => x as AssignmentExpression ?? throw new DbExpressionException($"Expected all {nameof(assignments)} to be assignable to {typeof(AssignmentExpression)}.")));
-            return new UpdateQueryExpressionBuilder(configuration, expression);
+            return new UpdateQueryExpressionBuilder<TDatabase>(expression, configuration);
         }
         #endregion
 
         #region delete
-        public virtual DeleteEntities CreateDeleteExpressionBulder(MsSqlSqlDatabaseRuntimeConfiguration configuration)
-        {
-            var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<DeleteQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
-            return new DeleteQueryExpressionBuilder(configuration, expression);
-        }
+        public virtual DeleteEntities<TDatabase> CreateDeleteExpressionBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => new DeleteQueryExpressionBuilder<TDatabase>(
+                (configuration.QueryExpressionFactory ?? throw new DbExpressionConfigurationException("Could not resolve a query expression factory, please ensure a query expression factory has been properly registered.")).CreateQueryExpression<DeleteQueryExpression>() ?? throw new DbExpressionException($"Expected query expression factory to return an expression for type {nameof(DeleteQueryExpression)}"),
+                configuration
+            );
         #endregion
 
         #region insert
-        public virtual InsertEntity<TEntity> CreateInsertExpressionBuilder<TEntity>(MsSqlSqlDatabaseRuntimeConfiguration configuration, TEntity instance)
+        public virtual InsertEntity<TDatabase, TEntity> CreateInsertExpressionBuilder<TDatabase, TEntity>(MsSqlSqlDatabaseRuntimeConfiguration configuration, TEntity instance)
+            where TDatabase : class, ISqlDatabaseRuntime
             where TEntity : class, IDbEntity
-            => new MsSqlInsertQueryExpressionBuilder<TEntity>(configuration, (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<InsertQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression."), new List<TEntity> { instance ?? throw new ArgumentNullException(nameof(instance)) });
-
-        public virtual InsertEntities<TEntity> CreateInsertExpressionBuilder<TEntity>(MsSqlSqlDatabaseRuntimeConfiguration configuration, TEntity entity, params TEntity[] entities)
-            where TEntity : class, IDbEntity
-            => new MsSqlInsertQueryExpressionBuilder<TEntity>(
+            => new MsSqlInsertQueryExpressionBuilder<TDatabase, TEntity>(
+                (configuration.QueryExpressionFactory ?? throw new DbExpressionConfigurationException("Could not resolve a query expression factory, please ensure a query expression factory has been properly registered.")).CreateQueryExpression<InsertQueryExpression>() ?? throw new DbExpressionException($"Expected query expression factory to return an expression for type {nameof(InsertQueryExpression)}"),
                 configuration, 
-                (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<InsertQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression."),
+                new List<TEntity> { instance ?? throw new ArgumentNullException(nameof(instance)) }
+            );
+
+        public virtual InsertEntities<TDatabase, TEntity> CreateInsertExpressionBuilder<TDatabase, TEntity>(MsSqlSqlDatabaseRuntimeConfiguration configuration, TEntity entity, params TEntity[] entities)
+            where TDatabase : class, ISqlDatabaseRuntime
+            where TEntity : class, IDbEntity
+            => new MsSqlInsertQueryExpressionBuilder<TDatabase, TEntity>(
+                (configuration.QueryExpressionFactory ?? throw new DbExpressionConfigurationException("Could not resolve a query expression factory, please ensure a query expression factory has been properly registered.")).CreateQueryExpression<InsertQueryExpression>() ?? throw new DbExpressionException($"Expected query expression factory to return an expression for type {nameof(InsertQueryExpression)}"),
+                configuration, 
                 new List<TEntity>(entities.Length + 1) { entity }.Concat(entities)
             );
 
-        public virtual InsertEntities<TEntity> CreateInsertExpressionBuilder<TEntity>(MsSqlSqlDatabaseRuntimeConfiguration configuration, IEnumerable<TEntity> instances)
+        public virtual InsertEntities<TDatabase, TEntity> CreateInsertExpressionBuilder<TDatabase, TEntity>(MsSqlSqlDatabaseRuntimeConfiguration configuration, IEnumerable<TEntity> instances)
+            where TDatabase : class, ISqlDatabaseRuntime
             where TEntity : class, IDbEntity
-            => new MsSqlInsertQueryExpressionBuilder<TEntity>(configuration, (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<InsertQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression."), instances ?? throw new ArgumentNullException(nameof(instances)));
+            => new MsSqlInsertQueryExpressionBuilder<TDatabase, TEntity>(
+                (configuration.QueryExpressionFactory ?? throw new DbExpressionConfigurationException("Could not resolve a query expression factory, please ensure a query expression factory has been properly registered.")).CreateQueryExpression<InsertQueryExpression>() ?? throw new DbExpressionException($"Expected query expression factory to return an expression for type {nameof(InsertQueryExpression)}"),
+                configuration, 
+                instances ?? throw new ArgumentNullException(nameof(instances))
+            );
         #endregion
 
         #region stored procedure
-        public virtual StoredProcedureContinuation CreateStoredProcedureBuilder(MsSqlSqlDatabaseRuntimeConfiguration configuration, StoredProcedureExpression entity)
-        {
-            var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<StoredProcedureQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
-            return new StoredProcedureQueryExpressionBuilder(configuration, expression, entity);
-        }
+        public virtual StoredProcedureContinuation<TDatabase> CreateStoredProcedureBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, StoredProcedureExpression entity)
+            where TDatabase : class, ISqlDatabaseRuntime
+            => new StoredProcedureQueryExpressionBuilder<TDatabase>(
+                (configuration.QueryExpressionFactory ?? throw new DbExpressionConfigurationException("Could not resolve a query expression factory, please ensure a query expression factory has been properly registered.")).CreateQueryExpression<StoredProcedureQueryExpression>() ?? throw new DbExpressionException($"Expected query expression factory to return an expression for type {nameof(StoredProcedureQueryExpression)}"),
+                configuration, 
+                entity
+            );
         #endregion
     }
 }

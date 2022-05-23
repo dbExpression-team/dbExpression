@@ -58,7 +58,15 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region to string
-        public override string? ToString() => JoinType == JoinOperationExpressionOperator.CROSS ? $"{JoinType} JOIN {JoinToo}" : $"{JoinType} JOIN {JoinToo} ON {JoinOnExpression}";
+        public override string? ToString()
+        {
+            var joinToo = JoinToo.ToString();
+            if (JoinToo is QueryExpression)
+                joinToo = $"({joinToo})";
+            if (JoinType == JoinOperationExpressionOperator.CROSS)
+                return $"{JoinType} JOIN {joinToo}";
+            return $"{JoinType} JOIN {joinToo} ON {JoinOnExpression}";
+        }
         #endregion
 
         #region equals

@@ -1,0 +1,585 @@
+﻿using DbEx.Data;
+using DbEx.DataService;
+using DbEx.dboData;
+using DbEx.dboDataService;
+using FluentAssertions;
+using HatTrick.DbEx.MsSql.Test.Executor;
+using HatTrick.DbEx.Sql;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Xunit;
+
+namespace HatTrick.DbEx.MsSql.Test.Integration
+{
+    [Trait("Operation", "UNION")]
+    public partial class UnionTests : ExecutorTestBase
+    {
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_union_two_dynamic_records_successfully(int version, int expected = 50)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp =
+
+                db.SelectMany(
+                    dbo.Person.Id,
+                    dbo.Person.FirstName,
+                    dbo.Person.LastName
+                )
+                .From(dbo.Person)
+                .Where(dbo.Person.Id < 5)
+
+                .Union
+                .SelectMany(
+                    dbo.Person.Id,
+                    dbo.Person.FirstName,
+                    dbo.Person.LastName
+                )
+                .From(dbo.Person)
+                .Where(dbo.Person.Id >= 5);
+
+            //when               
+            IList<dynamic> results = exp.Execute();
+
+            //then
+            results.Should().HaveCount(expected);
+            results.Select(x => (int)x.Id).Should().OnlyHaveUniqueItems().And.OnlyContain(x => Enumerable.Range(1,50).Contains(x));
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_union_all_two_dynamic_records_successfully(int version, int expected = 100)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp =
+
+                db.SelectMany(
+                    dbo.Person.Id,
+                    dbo.Person.FirstName,
+                    dbo.Person.LastName
+                )
+                .From(dbo.Person)
+
+                .UnionAll
+                .SelectMany(
+                    dbo.Person.Id,
+                    dbo.Person.FirstName,
+                    dbo.Person.LastName
+                )
+                .From(dbo.Person);
+
+            //when               
+            IList<dynamic> results = exp.Execute();
+
+            //then
+            results.Should().HaveCount(expected);
+            results.Select(x => (int)x.Id).Should().OnlyContain(x => Enumerable.Range(1, 50).Contains(x));
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_union_two_dynamic_records_from_different_tables_successfully(int version, int expected = 82) //50 people + 32 addresses
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp =
+
+                db.SelectMany(
+                    dbo.Person.Id,
+                    dbo.Person.FirstName,
+                    dbo.Person.LastName
+                )
+                .From(dbo.Person)
+
+                .Union
+                .SelectMany(
+                    dbo.Address.Id,
+                    dbo.Address.Line1,
+                    dbo.Address.Line2
+                )
+                .From(dbo.Address);
+
+            //when               
+            IList<dynamic> results = exp.Execute();
+
+            //then
+            results.Should().HaveCount(expected);
+            results.Select(x => (int)x.Id).Should().OnlyContain(x => Enumerable.Range(1, 50).Contains(x));
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_union_all_two_dynamic_records_from_different_tables_successfully(int version, int expected = 82) //50 people + 32 addresses
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp =
+
+                db.SelectMany(
+                    dbo.Person.Id,
+                    dbo.Person.FirstName,
+                    dbo.Person.LastName
+                )
+                .From(dbo.Person)
+
+                .UnionAll
+                .SelectMany(
+                    dbo.Address.Id,
+                    dbo.Address.Line1,
+                    dbo.Address.Line2
+                )
+                .From(dbo.Address);
+
+            //when               
+            IList<dynamic> results = exp.Execute();
+
+            //then
+            results.Should().HaveCount(expected);
+            results.Select(x => (int)x.Id).Should().OnlyContain(x => Enumerable.Range(1, 50).Contains(x));
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_union_multiple_dynamic_records_from_different_tables_successfully(int version, int expected = 91) //50 people + 32 addresses + 9 products
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp =
+
+                db.SelectMany(
+                    dbo.Person.Id,
+                    dbo.Person.FirstName,
+                    dbo.Person.LastName
+                )
+                .From(dbo.Person)
+
+                .Union
+                .SelectMany(
+                    dbo.Address.Id,
+                    dbo.Address.Line1,
+                    dbo.Address.Line2
+                )
+                .From(dbo.Address)
+
+                .Union
+                .SelectMany(
+                    dbo.Product.Id,
+                    dbo.Product.Name,
+                    dbo.Product.Description
+                )
+                .From(dbo.Product);
+
+            //when               
+            IList<dynamic> results = exp.Execute();
+
+            //then
+            results.Should().HaveCount(expected);
+            results.Select(x => (int)x.Id).Should().OnlyContain(x => Enumerable.Range(1, 50).Contains(x));
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_union_multiple_dynamic_records_with_aliasing_from_different_tables_successfully(int version, int expected = 91) //50 people + 32 addresses + 9 products
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp =
+
+                db.SelectMany(
+                    dbo.Person.Id.As("CommonId"),
+                    dbo.Person.FirstName.As("PrimaryIdentifier"),
+                    dbo.Person.LastName.As("SecondaryIdentifier")
+                )
+                .From(dbo.Person)
+
+                .Union
+                .SelectMany(
+                    dbo.Address.Id,
+                    dbo.Address.City,
+                    dbo.Address.State
+                )
+                .From(dbo.Address)
+
+                .Union
+                .SelectMany(
+                    dbo.Product.Id,
+                    dbo.Product.Name,
+                    dbo.Product.Description
+                )
+                .From(dbo.Product);
+
+            //when               
+            IList<dynamic> results = exp.Execute();
+
+            //then
+            results.Should().HaveCount(expected);
+            results.Select(x => (int)x.CommonId).Should().OnlyContain(x => Enumerable.Range(1, 50).Contains(x));
+            results.Select(x => (string)x.PrimaryIdentifier).Should().NotBeNullOrEmpty();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_union_multiple_dynamic_records_with_all_fields_aliased_from_different_tables_successfully(int version, int expected = 91) //50 people + 32 addresses + 9 products
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp =
+
+                db.SelectMany(
+                    dbo.Person.Id.As("CommonId"),
+                    dbo.Person.FirstName.As("PrimaryIdentifier"),
+                    dbo.Person.LastName.As("SecondaryIdentifier")
+                )
+                .From(dbo.Person)
+
+                .Union
+                .SelectMany(
+                    dbo.Address.Id.As("AnotherId"),
+                    dbo.Address.City.As("Locale"),
+                    dbo.Address.State.As("Region")
+                )
+                .From(dbo.Address)
+
+                .Union
+                .SelectMany(
+                    dbo.Product.Id.As("SomeOtherId"),
+                    dbo.Product.Name.As("Title"),
+                    dbo.Product.Description.As("ProductDescription")
+                )
+                .From(dbo.Product);
+
+            //when               
+            IList<dynamic> results = exp.Execute();
+
+            //then
+            results.Should().HaveCount(expected);
+            results.Select(x => (int)x.CommonId).Should().OnlyContain(x => Enumerable.Range(1, 50).Contains(x));
+            results.Select(x => (string)x.PrimaryIdentifier).Should().NotBeNullOrEmpty();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_union_all_multiple_dynamic_records_from_different_tables_successfully(int version, int expected = 91) //50 people + 32 addresses + 9 products
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp =
+
+                db.SelectMany(
+                    dbo.Person.Id,
+                    dbo.Person.FirstName,
+                    dbo.Person.LastName
+                )
+                .From(dbo.Person)
+
+                .UnionAll
+                .SelectMany(
+                    dbo.Address.Id,
+                    dbo.Address.Line1,
+                    dbo.Address.Line2
+                )
+                .From(dbo.Address)
+
+                .UnionAll
+                .SelectMany(
+                    dbo.Product.Id,
+                    dbo.Product.Name,
+                    dbo.Product.Description
+                )
+                .From(dbo.Product);
+
+            //when               
+            IList<dynamic> results = exp.Execute();
+
+            //then
+            results.Should().HaveCount(expected);
+            results.Select(x => (int)x.Id).Should().OnlyContain(x => Enumerable.Range(1, 50).Contains(x));
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_intermix_union_and_union_all_with_multiple_dynamic_records_from_different_tables_successfully(int version, int expected = 91) //50 people + 32 addresses + 9 products
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp =
+
+                db.SelectMany(
+                    dbo.Person.Id,
+                    dbo.Person.FirstName,
+                    dbo.Person.LastName
+                )
+                .From(dbo.Person)
+
+                .Union
+                .SelectMany(
+                    dbo.Address.Id,
+                    dbo.Address.Line1,
+                    dbo.Address.Line2
+                )
+                .From(dbo.Address)
+
+                .UnionAll
+                .SelectMany(
+                    dbo.Product.Id,
+                    dbo.Product.Name,
+                    dbo.Product.Description
+                )
+                .From(dbo.Product);
+
+            //when               
+            IList<dynamic> results = exp.Execute();
+
+            //then
+            results.Should().HaveCount(expected);
+            results.Select(x => (int)x.Id).Should().OnlyContain(x => Enumerable.Range(1, 50).Contains(x));
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_union_two_entities_successfully(int version, int expected = 50)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp =
+
+                db.SelectMany<Person>()
+                .From(dbo.Person)
+                .Where(dbo.Person.Id < 5)
+
+                .Union
+                .SelectMany<Person>()
+                .From(dbo.Person)
+                .Where(dbo.Person.Id >= 5);
+
+            //when               
+            IList<Person> results = exp.Execute();
+
+            //then
+            results.Should().HaveCount(expected);
+            results.Select(x => x.Id).Should().OnlyHaveUniqueItems().And.OnlyContain(x => Enumerable.Range(1, 50).Contains(x));
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_union_all_two_entities_successfully(int version, int expected = 100)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp =
+
+                db.SelectMany<Person>()
+                .From(dbo.Person)
+
+                .UnionAll
+                .SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            IList<Person> results = exp.Execute();
+
+            //then
+            results.Should().HaveCount(expected);
+            results.Select(x => x.Id).Should().OnlyContain(x => Enumerable.Range(1, 50).Contains(x));
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_union_two_values_successfully(int version, int expected = 50)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp =
+
+                db.SelectMany(dbo.Person.Id)
+                .From(dbo.Person)
+                .Where(dbo.Person.Id < 5)
+
+                .Union
+                .SelectMany(dbo.Person.Id)
+                .From(dbo.Person)
+                .Where(dbo.Person.Id >= 5);
+
+            //when               
+            IList<int> results = exp.Execute();
+
+            //then
+            results.Should().HaveCount(expected);
+            results.Should().OnlyHaveUniqueItems().And.OnlyContain(x => Enumerable.Range(1, 50).Contains(x));
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_union_all_two_values_successfully(int version, int expected = 100)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp =
+
+                db.SelectMany(dbo.Person.Id)
+                .From(dbo.Person)
+
+                .UnionAll
+                .SelectMany(dbo.Person.Id)
+                .From(dbo.Person);
+
+            //when               
+            IList<int> results = exp.Execute();
+
+            //then
+            results.Should().HaveCount(expected);
+            results.Should().OnlyContain(x => Enumerable.Range(1, 50).Contains(x));
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_union_two_enums_successfully(int version, int expected = 2)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp =
+
+                db.SelectMany(dbo.Person.GenderType)
+                .From(dbo.Person)
+                .Where(dbo.Person.Id < 5)
+
+                .Union
+                .SelectMany(dbo.Person.GenderType)
+                .From(dbo.Person)
+                .Where(dbo.Person.Id >= 5);
+
+            //when               
+            IList<GenderType> results = exp.Execute();
+
+            //then
+            results.Should().HaveCount(expected);
+            Enum.GetValues<GenderType>().Should().HaveCount(expected);  //ensure test fails if new enum value is added
+            results.Should().OnlyHaveUniqueItems().And.OnlyContain(x => Enum.GetValues<GenderType>().Contains(x));
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_union_all_two_enums_successfully(int version, int expected = 100)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp =
+
+                db.SelectMany(dbo.Person.GenderType)
+                .From(dbo.Person)
+
+                .UnionAll
+                .SelectMany(dbo.Person.GenderType)
+                .From(dbo.Person);
+
+            //when               
+            IList<GenderType> results = exp.Execute();
+
+            //then
+            results.Should().HaveCount(expected);
+            results.Should().OnlyContain(x => Enum.GetValues<GenderType>().Contains(x));
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_union_two_objects_successfully(int version, int expected = 9)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp =
+
+                db.SelectMany(dbo.Product.Description)
+                .From(dbo.Product)
+                .Where(dbo.Product.Id < 2)
+
+                .Union
+                .SelectMany(dbo.Product.Description)
+                .From(dbo.Product)
+                .Where(dbo.Product.Id >= 2);
+
+            //when               
+            IList<ProductDescription?> results = exp.Execute();
+
+            //then
+            results.Should().HaveCount(expected);
+            results.Should().OnlyHaveUniqueItems();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_union_all_two_objects_successfully(int version, int expected = 18)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp =
+
+                db.SelectMany(dbo.Product.Description)
+                .From(dbo.Product)
+
+                .UnionAll
+                .SelectMany(dbo.Product.Description)
+                .From(dbo.Product);
+
+            //when               
+            IList<ProductDescription?> results = exp.Execute();
+
+            //then
+            results.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_union_all_two_objects_with_ordering_successfully(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp =
+
+                db.SelectMany(
+                    dbo.Person.Id,
+                    db.fx.Concat(dbo.Person.FirstName, " ", dbo.Person.LastName).As("Key"),
+                    dbo.Person.FirstName.As("Part1"),
+                    dbo.Person.LastName.As("Part2")
+                )
+                .From(dbo.Person)
+                .Union
+                .SelectMany(
+                    dbo.Address.Id,
+                    db.fx.Concat(dbo.Address.Line1, " ", dbo.Address.Line2),
+                    dbo.Address.Line1,
+                    dbo.Address.Line2
+                )
+                .From(dbo.Address)
+
+                //.OrderBy("Key")
+                ;
+
+            //when               
+            IList<dynamic> results = exp.Execute();
+
+            //then
+            false.Should().BeTrue("Order by is not currently supported in union statements.");
+        }
+    }
+}

@@ -2,11 +2,11 @@
 using DbEx.secData;
 using DbEx.secDataService;
 using FluentAssertions;
-using HatTrick.DbEx.Sql.Builder;
+using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Expression;
 using Xunit;
 
-namespace HatTrick.DbEx.MsSql.Test.Builder
+namespace HatTrick.DbEx.MsSql.Test.Unit.Builder
 {
     [Trait("Statement", "SELECT")]
     public class SelectExpressionBuilderTests : TestBase
@@ -18,7 +18,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             //given
             ConfigureForMsSqlVersion(version);
 
-            ITerminationExpressionBuilder exp;
+            SelectValueContinuation<MsSqlDb,int> exp;
             SelectQueryExpression expressionSet;
 
             //when
@@ -31,7 +31,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             expressionSet.Select.Expressions.Should().ContainSingle()
                 .Which.Expression.Should().BeOfType<PersonEntity.IdField>();
 
-            expressionSet.BaseEntity.Should().NotBeNull()
+            expressionSet.From.Should().NotBeNull()
                 .And.BeOfType<PersonEntity>();
         }
 
@@ -42,7 +42,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             //given
             ConfigureForMsSqlVersion(version);
 
-            ITerminationExpressionBuilder exp;
+            SelectDynamicContinuation<MsSqlDb> exp;
             SelectQueryExpression expressionSet;
 
             //when
@@ -60,7 +60,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             expressionSet.Select.Expressions.Should().ContainSingle(x => x.Expression.Equals(sec.Person.DateCreated))
                 .Which.Expression.Should().BeOfType<PersonEntity.DateCreatedField>();
 
-            expressionSet.BaseEntity.Should().NotBeNull()
+            expressionSet.From.Should().NotBeNull()
                 .And.BeOfType<PersonEntity>();
         }
     }

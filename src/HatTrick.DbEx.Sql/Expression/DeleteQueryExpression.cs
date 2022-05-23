@@ -24,6 +24,7 @@ namespace HatTrick.DbEx.Sql.Expression
     public class DeleteQueryExpression : QueryExpression
     {
         #region interface
+        public Table? From { get; set; }
         public int? Top { get; set; }
         public FilterExpressionSet? Where { get; set; }
         public JoinExpressionSet? Joins { get; set; }
@@ -39,7 +40,7 @@ namespace HatTrick.DbEx.Sql.Expression
                 sb.Append(Top);
             }
             sb.Append("FROM ");
-            sb.Append(BaseEntity);
+            sb.Append(From);
             sb.Append(' ');
             sb.Append(Joins);
             sb.Append(' ');

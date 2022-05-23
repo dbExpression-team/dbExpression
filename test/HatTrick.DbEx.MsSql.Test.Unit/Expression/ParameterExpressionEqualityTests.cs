@@ -5,7 +5,7 @@ using HatTrick.DbEx.Sql.Expression;
 using System.Data;
 using Xunit;
 
-namespace HatTrick.DbEx.MsSql.Test.Expression
+namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
 {
     public class ParameterExpressionSetEqualityTests : TestBase
     {

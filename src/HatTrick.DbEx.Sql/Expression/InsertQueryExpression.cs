@@ -25,6 +25,7 @@ namespace HatTrick.DbEx.Sql.Expression
     public class InsertQueryExpression : QueryExpression
     {
         public IDictionary<int, InsertExpressionSet> Inserts { get; set; } = new Dictionary<int, InsertExpressionSet>();
+        public Table? Into { get; set; }
         public IList<FieldExpression> Outputs { get; set; } = Array.Empty<FieldExpression>();
 
         #region to string
@@ -33,7 +34,7 @@ namespace HatTrick.DbEx.Sql.Expression
             var sb = new StringBuilder("INSERT ");
             sb.Append(Inserts);
             sb.Append(" INTO ");
-            sb.Append(BaseEntity);
+            sb.Append(Into);
             sb.Append(' ');
 
             return sb.ToString();

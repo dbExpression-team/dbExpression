@@ -66,12 +66,13 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (_sqlStatement is not null)
                 return _sqlStatement;
 
-            var context = new AssemblyContext(assemblerConfiguration);
+            var context = assemblerConfiguration.ToAssemblyContext();
 
             var assembler = assemblerFactory.CreateSqlStatementAssembler(query)
                 ?? throw new DbExpressionConfigurationException($"Could not resolve an assembler for query type '{query.GetType()}', please ensure an assembler has been registered during startup initialization of DbExpression.");
 
             assembler.AssembleStatement(query, this, context);
+            Appender.Write(context.StatementTerminator);
 
             return _sqlStatement = new SqlStatement(Appender, Parameters.Parameters);
         }

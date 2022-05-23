@@ -21,6 +21,7 @@ namespace HatTrick.DbEx.Sql
 #pragma warning disable IDE1006 // Naming Styles
     public interface NullableObjectElement<T> : AnyObjectElement<T>
 #pragma warning restore IDE1006 // Naming Styles
+        where T : class?
     {
         NullableObjectElement<T> As(string alias);
     }

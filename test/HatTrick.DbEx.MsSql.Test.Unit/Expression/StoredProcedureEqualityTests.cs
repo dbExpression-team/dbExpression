@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Data;
 using Xunit;
 
-namespace HatTrick.DbEx.MsSql.Test.Expression
+namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
 {
     public class StoredProcedureExpressionSetEqualityTests : TestBase
     {

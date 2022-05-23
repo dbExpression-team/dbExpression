@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.9.1] - 2022-05-09
+## [0.9.1] - 2022-05-23
 
 ### Added
 - Benchmark reports
@@ -10,7 +10,6 @@
 - FilterExpressions- The implementation of filters was not correct. When an element is composed as a filter (i.e. "element1 < element2"), the result should be a FilterExpression, not a FilterExpressionSet.
 FilterExpressionSet used the same composition of elements as FilterExpression, having a LeftArg and RightArg. But a FilterExpresionSet should hold any number N of expressions, not constrained
 to LeftArg and RightArg. This work was to correct these mis-alignments:
-
 	- Changed FilterExpressionSet to contain a list of FilterExpression/FilterExpressionSet instead of a LeftArg and RightArg, enabling chaining multiple elements that have the same conditional operator
 	- Changed implicit operators for filters to return FilterExpression instead of FilterExpressionSet
 	- Changed In expressions to return FilterExpression instead of FilterExpressionSet
@@ -18,21 +17,33 @@ to LeftArg and RightArg. This work was to correct these mis-alignments:
 	- Removed implicit operators as they are now handled correctly via constructors and other methods
 	- FilterExpression -> FilterExpressionSet
 	- FilterExpression -> HavingExpression
-
 - Arithmetic Expressions - Reduced number of appended parenthesis by changing ArithmeticExpression to contain a list of args instead of a "LeftArg" and "RightArg"
-
 	- Elements used in arithmetic with another ArithmeticExpression are appended to the ArithmeticExpression's list if the arithmetic operator is the same
 	- When composing ArithmeticExpression's with a FieldExpression, the FieldExpression is not provided to the constructed LiteralExpression, ensuring the type of the value is used to construct db parameters (this
 	also fixes a discovered issue in doing arithmetic with a FieldExpression of one type and a value type that differs)
-
-- Additionally deprecated unused classes:
+- Query Expressions
+	- Added a new SelectSetQueryExpression (derives from QueryExpression), which enables composing queries with multiple queries joine as a single statement
+		- Added support for Union and Union All operations
+		- DOES NOT support multiple return types/mappings, uses the select expression set from the first select query expression to determine how to match ALL returned data
+	- Removed BaseEntity from base QueryExpression in favor of more relevant properties on each derived QueryExpressionType:
+		- InsertQueryExpression: BaseEntity -> Into
+		- DeleteQueryExpression: BaseEntity -> From
+		- UpdatQueryExpression: BaseEntity -> From
+		- SelectQueryExpression: BaseEntity -> From		
+- Reworked AssemblyContext to fully manage properties that were originally pass-thru/delegated to database configuration.  This enables changes to be made to AssemblyContext as a query expression is assembled 
+	into a statement without changing global state of database configuration.
+- Removed generic version of NullableObjectElement and ObjectElement, the generic constraint of object/object? provided no value.
+- Added additional generic constraint to query expression builders that identifies the database the builder is building a statement for.
+- Corrected IsNull function to allow for null and empty strings at termination instead of throwing ArgumentException.
+- Improved query output formatting, specifically eliminating line break prior to appending a statement termination character.
+- Deprecated unused classes:
 	- JoinOnExpressionSet
 	- JoinOnExpressionSetAppender
-
-Corrected IsNull function to allow for null and empty strings at termination instead of throwing ArgumentException
+	- RawExpression
+	- RawExpressionAppender
 
 ### Fixed
-- issue where type overrides were not applied in generated code if supplied in dbex.config.json
+- Issue where type overrides were not applied in generated code if supplied in dbex.config.json (#304)
 
 ### Breaking Changes
 

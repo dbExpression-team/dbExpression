@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
 
         #region interface
-        public override Type EntityType => entity.GetType();
+        public Type EntityType => entity.GetType();
         #endregion
 
         #region constructors

@@ -26,10 +26,13 @@ using System.Data;
 using System.Dynamic;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Pipeline
 {
-    public class SelectQueryExpressionExecutionPipeline : ISelectQueryExpressionExecutionPipeline
+    public class SelectQueryExpressionExecutionPipeline : 
+        ISelectQueryExpressionExecutionPipeline,
+        ISelectSetQueryExpressionExecutionPipeline
     {
         #region internals
         private readonly SqlDatabaseRuntimeConfiguration database;
@@ -70,6 +73,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             T? entity = default;
             ExecuteSelectQuery(
                 expression,
+                new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select),
                 connection,
                 configureCommand,
                 reader =>
@@ -84,8 +88,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         return;
 
                     var mapper = database.MapperFactory.CreateEntityMapper(
-                        expression.BaseEntity as Table<T> 
-                            ?? throw new DbExpressionException($"Expected base entity to be type {typeof(Table<T>)}, but is actually {expression.BaseEntity?.GetType()?.ToString() ?? "<null>"}.")
+                        expression.From as Table<T> 
+                            ?? throw new DbExpressionException($"Expected base entity to be type {typeof(Table<T>)}, but is actually {expression.From?.GetType()?.ToString() ?? "<null>"}.")
                         );
                     mapper.Map(row, entity);
                 }
@@ -99,6 +103,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             T? entity = default;
             ExecuteSelectQuery(
                 expression,
+                new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select),
                 connection,
                 configureCommand,
                 reader =>
@@ -126,6 +131,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         {
             ExecuteSelectQuery(
                 expression,
+                new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select),
                 connection,
                 configureCommand,
                 reader =>
@@ -153,6 +159,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             T? entity = default;
             ExecuteSelectQuery(
                 expression,
+                new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select),
                 connection,
                 configureCommand,
                 reader =>
@@ -185,6 +192,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             T? entity = default;
             await ExecuteSelectQueryAsync(
                 expression,
+                new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select),
                 connection,
                 configureCommand,
                 async reader =>
@@ -199,8 +207,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         entity = database.EntityFactory.CreateEntity<T>() 
                             ?? throw new DbExpressionException($"Expected entity factory to provide an entity of type {typeof(T)}, but <null> was returned.");
                         var mapper = database.MapperFactory.CreateEntityMapper(
-                            expression.BaseEntity as Table<T>
-                                ?? throw new DbExpressionException($"Expected base entity to be type {typeof(Table<T>)}, but is actually {expression.BaseEntity?.GetType()?.ToString() ?? "<null>"}.")
+                            expression.From as Table<T>
+                                ?? throw new DbExpressionException($"Expected base entity to be type {typeof(Table<T>)}, but is actually {expression.From?.GetType()?.ToString() ?? "<null>"}.")
                         );
                         mapper.Map(row, entity);
                     }
@@ -221,6 +229,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         {
             await ExecuteSelectQueryAsync(
                 expression,
+                new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select),
                 connection,
                 configureCommand,
                 async reader =>
@@ -249,6 +258,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             T? entity = default;
             await ExecuteSelectQueryAsync(
                 expression,
+                new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select),
                 connection,
                 configureCommand,
                 async reader =>
@@ -280,6 +290,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             T? entity = default;
             await ExecuteSelectQueryAsync(
                 expression,
+                new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select),
                 connection,
                 configureCommand,
                 async reader =>
@@ -308,6 +319,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         {
             await ExecuteSelectQueryAsync(
                 expression,
+                new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select),
                 connection,
                 configureCommand,
                 async reader =>
@@ -336,6 +348,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             T? entity = default;
             await ExecuteSelectQueryAsync(
                 expression,
+                new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select),
                 connection,
                 configureCommand,
                 async reader =>
@@ -363,16 +376,36 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
 
         #region entity list
+        public virtual IList<T> ExecuteSelectEntityList<T>(SelectSetQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand)
+            where T : class, IDbEntity, new()
+            => ExecuteSelectEntityList<T>(
+                expression,
+                expression.Expressions.First().SelectQueryExpression.From as Table<T>
+                    ?? throw new DbExpressionException($"Expected base entity to be type {typeof(Table<T>)}, but is actually {expression.Expressions.FirstOrDefault()?.SelectQueryExpression?.From?.GetType()?.ToString() ?? "<null>"}."),
+                new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Expressions.First().SelectQueryExpression.Select), 
+                connection, 
+                configureCommand
+            );
+
         public virtual IList<T> ExecuteSelectEntityList<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand)
+            where T : class, IDbEntity, new()
+            => ExecuteSelectEntityList<T>(
+                expression,
+                expression.From as Table<T>
+                    ?? throw new DbExpressionException($"Expected base entity to be type {typeof(Table<T>)}, but is actually {expression.From?.GetType()?.ToString() ?? "<null>"}."),
+                new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select),
+                connection,
+                configureCommand
+            );
+
+        private IList<T> ExecuteSelectEntityList<T>(QueryExpression expression, Table<T> from, IValueConverterProvider converterProvider, ISqlConnection connection, Action<IDbCommand>? configureCommand)
             where T : class, IDbEntity, new()
         {
             var entities = new List<T>();
-            var mapper = database.MapperFactory.CreateEntityMapper(
-                expression.BaseEntity as Table<T>
-                    ?? throw new DbExpressionException($"Expected base entity to be type {typeof(Table<T>)}, but is actually {expression.BaseEntity?.GetType()?.ToString() ?? "<null>"}.")
-            ); 
+            var mapper = database.MapperFactory.CreateEntityMapper(from ?? throw new ArgumentNullException(nameof(from))); 
             ExecuteSelectQuery(
                 expression,
+                converterProvider,
                 connection,
                 configureCommand,
                 reader =>
@@ -391,16 +424,38 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return entities;
         }
 
+        public virtual IList<T> ExecuteSelectEntityList<T>(SelectSetQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, T?> map)
+            where T : class, IDbEntity, new()
+            => ExecuteSelectEntityList<T>(
+                expression,
+                expression.Expressions.First().SelectQueryExpression.From as Table<T>
+                    ?? throw new DbExpressionException($"Expected base entity to be type {typeof(Table<T>)}, but is actually {expression.Expressions.FirstOrDefault()?.SelectQueryExpression?.From?.GetType()?.ToString() ?? "<null>"}."),
+                new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Expressions.First().SelectQueryExpression.Select),
+                connection,
+                configureCommand,
+                map
+            );
+
         public virtual IList<T> ExecuteSelectEntityList<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, T?> map)
+            where T : class, IDbEntity, new()
+            => ExecuteSelectEntityList<T>(
+                expression,
+                expression.From as Table<T>
+                    ?? throw new DbExpressionException($"Expected base entity to be type {typeof(Table<T>)}, but is actually {expression.From?.GetType()?.ToString() ?? "<null>"}."),
+                new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select),
+                connection,
+                configureCommand,
+                map
+            );
+
+        private IList<T> ExecuteSelectEntityList<T>(QueryExpression expression, Table<T> from, IValueConverterProvider converterProvider, ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, T?> map)
             where T : class, IDbEntity, new()
         {
             var entities = new List<T>();
-            var mapper = database.MapperFactory.CreateEntityMapper(
-                expression.BaseEntity as Table<T>
-                    ?? throw new DbExpressionException($"Expected base entity to be type {typeof(Table<T>)}, but is actually {expression.BaseEntity?.GetType()?.ToString() ?? "<null>"}.")
-            );
+            var mapper = database.MapperFactory.CreateEntityMapper(from ?? throw new ArgumentNullException(nameof(from)));
             ExecuteSelectQuery(
                 expression,
+                converterProvider,
                 connection,
                 configureCommand,
                 reader =>
@@ -425,11 +480,32 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return entities;
         }
 
+        public virtual void ExecuteSelectEntityList<T>(SelectSetQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> map)
+            where T : class, IDbEntity
+            => ExecuteSelectEntityList<T>(
+                expression,
+                new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Expressions.First().SelectQueryExpression.Select),
+                connection,
+                configureCommand,
+                map
+            );
+
         public virtual void ExecuteSelectEntityList<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> map)
+            where T : class, IDbEntity
+            => ExecuteSelectEntityList<T>(
+                expression,
+                new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select),
+                connection,
+                configureCommand,
+                map
+            );
+
+        private void ExecuteSelectEntityList<T>(QueryExpression expression, IValueConverterProvider converterProvider, ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> map)
             where T : class, IDbEntity
         {
             ExecuteSelectQuery(
                 expression,
+                converterProvider,
                 connection,
                 configureCommand,
                 reader =>
@@ -451,12 +527,21 @@ namespace HatTrick.DbEx.Sql.Pipeline
             );
         }
 
+        public virtual IList<T> ExecuteSelectEntityList<T>(SelectSetQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader, T> map)
+            where T : class, IDbEntity, new()
+            => ExecuteSelectEntityList<T>(expression, new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Expressions.First().SelectQueryExpression.Select), connection, configureCommand, map);
+
         public virtual IList<T> ExecuteSelectEntityList<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader, T> map)
+            where T : class, IDbEntity, new()
+            => ExecuteSelectEntityList<T>(expression, new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select), connection, configureCommand, map);
+
+        private IList<T> ExecuteSelectEntityList<T>(QueryExpression expression, IValueConverterProvider converterProvider, ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader, T> map)
             where T : class, IDbEntity, new()
         {
             var entities = new List<T>();
             ExecuteSelectQuery(
                 expression,
+                converterProvider,
                 connection,
                 configureCommand,
                 reader =>
@@ -482,16 +567,38 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return entities;
         }
 
-        public virtual async Task<IList<T>> ExecuteSelectEntityListAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
+        public virtual Task<IList<T>> ExecuteSelectEntityListAsync<T>(SelectSetQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
+            where T : class, IDbEntity, new()
+            => ExecuteSelectEntityListAsync<T>(
+                expression,
+                expression.Expressions.First().SelectQueryExpression.From as Table<T>
+                    ?? throw new DbExpressionException($"Expected base entity to be type {typeof(Table<T>)}, but is actually {expression.Expressions.FirstOrDefault()?.SelectQueryExpression?.From?.GetType()?.ToString() ?? "<null>"}."),
+                new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Expressions.First().SelectQueryExpression.Select),
+                connection,
+                configureCommand,
+                ct
+            );
+
+        public virtual Task<IList<T>> ExecuteSelectEntityListAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
+            where T : class, IDbEntity, new()
+            => ExecuteSelectEntityListAsync<T>(
+                expression,
+                expression.From as Table<T>
+                    ?? throw new DbExpressionException($"Expected base entity to be type {typeof(Table<T>)}, but is actually {expression.From?.GetType()?.ToString() ?? "<null>"}."),
+                new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select),
+                connection,
+                configureCommand,
+                ct
+            );
+
+        private async Task<IList<T>> ExecuteSelectEntityListAsync<T>(QueryExpression expression, Table<T> from, IValueConverterProvider converterProvider, ISqlConnection connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
             where T : class, IDbEntity, new()
         {
             var entities = new List<T>();
-            var mapper = database.MapperFactory.CreateEntityMapper(
-                expression.BaseEntity as Table<T>
-                    ?? throw new DbExpressionException($"Expected base entity to be type {typeof(Table<T>)}, but is actually {expression.BaseEntity?.GetType()?.ToString() ?? "<null>"}.")
-            );
+            var mapper = database.MapperFactory.CreateEntityMapper(from ?? throw new ArgumentNullException(nameof(from)));
             await ExecuteSelectQueryAsync(
                 expression,
+                converterProvider,
                 connection,
                 configureCommand,
                 async reader =>
@@ -509,13 +616,36 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 ct
             ).ConfigureAwait(false);
             return entities;
-        }        
+        }
 
-        public virtual async Task ExecuteSelectEntityListAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> map, CancellationToken ct)
+        public virtual Task ExecuteSelectEntityListAsync<T>(SelectSetQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> map, CancellationToken ct)
+            where T : class, IDbEntity
+            => ExecuteSelectEntityListAsync<T>(
+                expression,
+                new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Expressions.First().SelectQueryExpression.Select),
+                connection,
+                configureCommand,
+                map,
+                ct
+            );
+
+        public virtual Task ExecuteSelectEntityListAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> map, CancellationToken ct)
+            where T : class, IDbEntity
+            => ExecuteSelectEntityListAsync<T>(
+                expression, 
+                new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select), 
+                connection, 
+                configureCommand, 
+                map, 
+                ct
+            );
+
+        private async Task ExecuteSelectEntityListAsync<T>(QueryExpression expression, IValueConverterProvider converterProvider, ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> map, CancellationToken ct)
             where T : class, IDbEntity
         {
             await ExecuteSelectQueryAsync(
                 expression,
+                converterProvider,
                 connection,
                 configureCommand,
                 async reader =>
@@ -538,12 +668,34 @@ namespace HatTrick.DbEx.Sql.Pipeline
             ).ConfigureAwait(false);
         }
 
-        public virtual async Task<IList<T>> ExecuteSelectEntityListAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader, T> map, CancellationToken ct)
+        public virtual Task<IList<T>> ExecuteSelectEntityListAsync<T>(SelectSetQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader, T> map, CancellationToken ct)
+            where T : class, IDbEntity, new()
+            => ExecuteSelectEntityListAsync<T>(
+                expression, 
+                new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Expressions.First().SelectQueryExpression.Select), 
+                connection, 
+                configureCommand, 
+                map, 
+                ct
+            );
+
+        public virtual Task<IList<T>> ExecuteSelectEntityListAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader, T> map, CancellationToken ct)
+            where T : class, IDbEntity, new()
+            => ExecuteSelectEntityListAsync<T>(
+                expression, new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select), 
+                connection, 
+                configureCommand, 
+                map, 
+                ct
+            );
+
+        private async Task<IList<T>> ExecuteSelectEntityListAsync<T>(QueryExpression expression, IValueConverterProvider converterProvider, ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader, T> map, CancellationToken ct)
             where T : class, IDbEntity, new()
         {
             var values = new List<T>();
             await ExecuteSelectQueryAsync(
                 expression,
+                converterProvider,
                 connection,
                 configureCommand,
                 async reader =>
@@ -570,16 +722,40 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return values;
         }
 
-        public virtual async Task<IList<T>> ExecuteSelectEntityListAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, T?> map, CancellationToken ct)
+        public virtual Task<IList<T>> ExecuteSelectEntityListAsync<T>(SelectSetQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, T?> map, CancellationToken ct)
+            where T : class, IDbEntity, new()
+            => ExecuteSelectEntityListAsync<T>(
+                expression,
+                expression.Expressions.First().SelectQueryExpression.From as Table<T>
+                    ?? throw new DbExpressionException($"Expected base entity to be type {typeof(Table<T>)}, but is actually {expression.Expressions.FirstOrDefault()?.SelectQueryExpression?.From?.GetType()?.ToString() ?? "<null>"}."),
+                new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Expressions.First().SelectQueryExpression.Select), 
+                connection, 
+                configureCommand, 
+                map, 
+                ct
+            );
+
+        public virtual Task<IList<T>> ExecuteSelectEntityListAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, T?> map, CancellationToken ct)
+            where T : class, IDbEntity, new()
+            => ExecuteSelectEntityListAsync<T>(
+                expression,
+                expression.From as Table<T>
+                    ?? throw new DbExpressionException($"Expected base entity to be type {typeof(Table<T>)}, but is actually {expression.From?.GetType()?.ToString() ?? "<null>"}."),
+                new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select), 
+                connection, 
+                configureCommand, 
+                map, 
+                ct
+            );
+
+        private async Task<IList<T>> ExecuteSelectEntityListAsync<T>(QueryExpression expression, Table<T> from, IValueConverterProvider converterProvider, ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, T?> map, CancellationToken ct)
             where T : class, IDbEntity, new()
         {
             var entities = new List<T>();
-            var mapper = database.MapperFactory.CreateEntityMapper(
-                expression.BaseEntity as Table<T>
-                    ?? throw new DbExpressionException($"Expected base entity to be type {typeof(Table<T>)}, but is actually {expression.BaseEntity?.GetType()?.ToString() ?? "<null>"}.")
-            );
+            var mapper = database.MapperFactory.CreateEntityMapper(from ?? throw new ArgumentNullException(nameof(from)));
             await ExecuteSelectQueryAsync(
                 expression,
+                converterProvider,
                 connection,
                 configureCommand,
                 async reader =>
@@ -605,11 +781,20 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return entities;
         }
 
-        public virtual async Task ExecuteSelectEntityListAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, Task> map, CancellationToken ct)
+        public virtual Task ExecuteSelectEntityListAsync<T>(SelectSetQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, Task> map, CancellationToken ct)
+            where T : class, IDbEntity
+            => ExecuteSelectEntityListAsync<T>(expression, new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Expressions.First().SelectQueryExpression.Select), connection, configureCommand, map, ct);
+        
+        public virtual Task ExecuteSelectEntityListAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, Task> map, CancellationToken ct)
+            where T : class, IDbEntity
+            => ExecuteSelectEntityListAsync<T>(expression, new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select), connection, configureCommand, map, ct);
+        
+        private async Task ExecuteSelectEntityListAsync<T>(QueryExpression expression, IValueConverterProvider converterProvider, ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, Task> map, CancellationToken ct)
             where T : class, IDbEntity
         {
             await ExecuteSelectQueryAsync(
                 expression,
+                converterProvider,
                 connection,
                 configureCommand,
                 async reader =>
@@ -632,12 +817,21 @@ namespace HatTrick.DbEx.Sql.Pipeline
             ).ConfigureAwait(false);
         }
 
-        public virtual async Task<IList<T>> ExecuteSelectEntityListAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, T, Task> map, CancellationToken ct)
+        public virtual Task<IList<T>> ExecuteSelectEntityListAsync<T>(SelectSetQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, T, Task> map, CancellationToken ct)
+            where T : class, IDbEntity, new()
+            => ExecuteSelectEntityListAsync<T>(expression, new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Expressions.First().SelectQueryExpression.Select), connection, configureCommand, map, ct);
+
+        public virtual Task<IList<T>> ExecuteSelectEntityListAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, T, Task> map, CancellationToken ct)
+            where T : class, IDbEntity, new()
+            => ExecuteSelectEntityListAsync<T>(expression, new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select), connection, configureCommand, map, ct);
+
+        private async Task<IList<T>> ExecuteSelectEntityListAsync<T>(QueryExpression expression, IValueConverterProvider converterProvider, ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, T, Task> map, CancellationToken ct)
             where T : class, IDbEntity, new()
         {
             var entities = new List<T>();
             await ExecuteSelectQueryAsync(
                 expression,
+                converterProvider,
                 connection,
                 configureCommand,
                 async reader =>
@@ -671,6 +865,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             T? value = default;
             ExecuteSelectQuery(
                 expression,
+                new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select),
                 connection,
                 configureCommand,
                 reader =>
@@ -698,6 +893,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             T? value = default;
             await ExecuteSelectQueryAsync(
                 expression,
+                new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select),
                 connection,
                 configureCommand,
                 async reader =>
@@ -724,15 +920,22 @@ namespace HatTrick.DbEx.Sql.Pipeline
             ).ConfigureAwait(false);
             return value;
         }
-        
+
         #endregion
 
         #region value list
+        public virtual IList<T> ExecuteSelectValueList<T>(SelectSetQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand)
+            => ExecuteSelectValueList<T>(expression, new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Expressions.First().SelectQueryExpression.Select), connection, configureCommand);
+
         public virtual IList<T> ExecuteSelectValueList<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand)
+            => ExecuteSelectValueList<T>(expression, new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select), connection, configureCommand);
+
+        private IList<T> ExecuteSelectValueList<T>(QueryExpression expression, IValueConverterProvider converterProvider, ISqlConnection connection, Action<IDbCommand>? configureCommand)
         {
             var values = new List<T>();
             ExecuteSelectQuery(
                 expression,
+                converterProvider,
                 connection,
                 configureCommand,
                 reader =>
@@ -759,10 +962,17 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return values;
         }
 
+        public virtual void ExecuteSelectValueList<T>(SelectSetQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<T?> read)
+            => ExecuteSelectValueList<T>(expression, new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Expressions.First().SelectQueryExpression.Select), connection, configureCommand, read);
+
         public virtual void ExecuteSelectValueList<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<T?> read)
+            => ExecuteSelectValueList<T>(expression, new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select), connection, configureCommand, read);
+
+        private void ExecuteSelectValueList<T>(QueryExpression expression, IValueConverterProvider converterProvider, ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<T?> read)
         {
             ExecuteSelectQuery(
                 expression,
+                converterProvider,
                 connection,
                 configureCommand,
                 reader =>
@@ -797,11 +1007,18 @@ namespace HatTrick.DbEx.Sql.Pipeline
             );
         }
 
-        public virtual async Task<IList<T>> ExecuteSelectValueListAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
+        public virtual Task<IList<T>> ExecuteSelectValueListAsync<T>(SelectSetQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
+            => ExecuteSelectValueListAsync<T>(expression, new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Expressions.First().SelectQueryExpression.Select), connection, configureCommand, ct);
+
+        public virtual Task<IList<T>> ExecuteSelectValueListAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
+            => ExecuteSelectValueListAsync<T>(expression, new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select), connection, configureCommand, ct);
+
+        private async Task<IList<T>> ExecuteSelectValueListAsync<T>(QueryExpression expression, IValueConverterProvider converterProvider, ISqlConnection connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
         {
             var values = new List<T>();
             await ExecuteSelectQueryAsync(
                 expression,
+                converterProvider,
                 connection,
                 configureCommand,
                 async reader =>
@@ -829,10 +1046,17 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return values;
         }
 
-        public virtual async Task ExecuteSelectValueListAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<T?> read, CancellationToken ct)
+        public virtual Task ExecuteSelectValueListAsync<T>(SelectSetQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<T?> read, CancellationToken ct)
+            => ExecuteSelectValueListAsync<T>(expression, new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Expressions.First().SelectQueryExpression.Select), connection, configureCommand, read, ct);
+
+        public virtual Task ExecuteSelectValueListAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<T?> read, CancellationToken ct)
+            => ExecuteSelectValueListAsync<T>(expression, new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select), connection, configureCommand, read, ct);
+        
+        private async Task ExecuteSelectValueListAsync<T>(QueryExpression expression, IValueConverterProvider converterProvider, ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<T?> read, CancellationToken ct)
         {
             await ExecuteSelectQueryAsync(
                 expression,
+                converterProvider,
                 connection,
                 configureCommand,
                 async reader =>
@@ -869,10 +1093,17 @@ namespace HatTrick.DbEx.Sql.Pipeline
             ).ConfigureAwait(false);
         }
 
-        public virtual async Task ExecuteSelectValueListAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<T?, Task> read, CancellationToken ct)
+        public virtual Task ExecuteSelectValueListAsync<T>(SelectSetQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<T?, Task> read, CancellationToken ct)
+            => ExecuteSelectValueListAsync<T>(expression, new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Expressions.First().SelectQueryExpression.Select), connection, configureCommand, read, ct);
+
+        public virtual Task ExecuteSelectValueListAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<T?, Task> read, CancellationToken ct)
+            => ExecuteSelectValueListAsync<T>(expression, new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select), connection, configureCommand, read, ct);
+        
+        private async Task ExecuteSelectValueListAsync<T>(QueryExpression expression, IValueConverterProvider converterProvider, ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<T?, Task> read, CancellationToken ct)
         {
             await ExecuteSelectQueryAsync(
                 expression,
+                converterProvider,
                 connection,
                 configureCommand,
                 async reader =>
@@ -916,6 +1147,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             dynamic? value = default;
             ExecuteSelectQuery(
                 expression,
+                new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select),
                 connection,
                 configureCommand,
                 reader =>
@@ -937,6 +1169,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         {
             ExecuteSelectQuery(
                 expression,
+                new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select),
                 connection,
                 configureCommand,
                 reader =>
@@ -963,6 +1196,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             dynamic? value = default;
             await ExecuteSelectQueryAsync(
                 expression,
+                new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select),
                 connection,
                 configureCommand,
                 async reader =>
@@ -986,6 +1220,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         {
             await ExecuteSelectQueryAsync(
                 expression,
+                new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select),
                 connection,
                 configureCommand,
                 async reader =>
@@ -1012,6 +1247,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         {
             await ExecuteSelectQueryAsync(
                 expression,
+                new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select),
                 connection,
                 configureCommand,
                 async reader =>
@@ -1036,12 +1272,19 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
 
         #region dynamic list
+        public virtual IList<dynamic> ExecuteSelectDynamicList(SelectSetQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand)
+            => ExecuteSelectDynamicList(expression, new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Expressions.First().SelectQueryExpression.Select), connection, configureCommand);
+
         public virtual IList<dynamic> ExecuteSelectDynamicList(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand)
+            => ExecuteSelectDynamicList(expression, new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select), connection, configureCommand);
+
+        private IList<dynamic> ExecuteSelectDynamicList(QueryExpression expression, IValueConverterProvider converterProvider, ISqlConnection connection, Action<IDbCommand>? configureCommand)
         {
             var values = new List<dynamic>();
             var mapper = database.MapperFactory.CreateExpandoObjectMapper();
             ExecuteSelectQuery(
                 expression,
+                converterProvider,
                 connection,
                 configureCommand,
                 reader =>
@@ -1058,11 +1301,18 @@ namespace HatTrick.DbEx.Sql.Pipeline
             );
             return values;
         }
+
+        public virtual void ExecuteSelectDynamicList(SelectSetQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> read)
+            => ExecuteSelectDynamicList(expression, new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Expressions.First().SelectQueryExpression.Select), connection, configureCommand, read);
 
         public virtual void ExecuteSelectDynamicList(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> read)
+            => ExecuteSelectDynamicList(expression, new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select), connection, configureCommand, read);
+
+        private void ExecuteSelectDynamicList(QueryExpression expression, IValueConverterProvider converterProvider, ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> read)
         {
             ExecuteSelectQuery(
                 expression,
+                converterProvider,
                 connection,
                 configureCommand,
                 reader =>
@@ -1084,12 +1334,19 @@ namespace HatTrick.DbEx.Sql.Pipeline
             );
         }
 
-        public virtual async Task<IList<dynamic>> ExecuteSelectDynamicListAsync(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
+        public virtual Task<IList<dynamic>> ExecuteSelectDynamicListAsync(SelectSetQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
+            => ExecuteSelectDynamicListAsync(expression, new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Expressions.First().SelectQueryExpression.Select), connection, configureCommand, ct);
+
+        public virtual Task<IList<dynamic>> ExecuteSelectDynamicListAsync(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
+            => ExecuteSelectDynamicListAsync(expression, new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select), connection, configureCommand, ct);
+
+        private async Task<IList<dynamic>> ExecuteSelectDynamicListAsync(QueryExpression expression, IValueConverterProvider converterProvider, ISqlConnection connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
         {
             var values = new List<dynamic>();
             var mapper = database.MapperFactory.CreateExpandoObjectMapper();
             await ExecuteSelectQueryAsync(
                 expression,
+                converterProvider,
                 connection,
                 configureCommand,
                 async reader =>
@@ -1108,10 +1365,17 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return values;
         }
 
-        public virtual async Task ExecuteSelectDynamicListAsync(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> read, CancellationToken ct)
+        public virtual Task ExecuteSelectDynamicListAsync(SelectSetQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> read, CancellationToken ct)
+            => ExecuteSelectDynamicListAsync(expression, new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Expressions.First().SelectQueryExpression.Select), connection, configureCommand, read, ct);
+
+        public virtual Task ExecuteSelectDynamicListAsync(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> read, CancellationToken ct)
+            => ExecuteSelectDynamicListAsync(expression, new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select), connection, configureCommand, read, ct);
+        
+        private async Task ExecuteSelectDynamicListAsync(QueryExpression expression, IValueConverterProvider converterProvider, ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> read, CancellationToken ct)
         {
             await ExecuteSelectQueryAsync(
                 expression,
+                converterProvider,
                 connection,
                 configureCommand,
                 async reader =>
@@ -1134,10 +1398,17 @@ namespace HatTrick.DbEx.Sql.Pipeline
             ).ConfigureAwait(false);
         }
 
-        public virtual async Task ExecuteSelectDynamicListAsync(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, Task> read, CancellationToken ct)
+        public virtual Task ExecuteSelectDynamicListAsync(SelectSetQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, Task> read, CancellationToken ct)
+            => ExecuteSelectDynamicListAsync(expression, new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Expressions.First().SelectQueryExpression.Select), connection, configureCommand, read, ct);
+        
+        public virtual Task ExecuteSelectDynamicListAsync(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, Task> read, CancellationToken ct)
+            => ExecuteSelectDynamicListAsync(expression, new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select), connection, configureCommand, read, ct);
+
+        private async Task ExecuteSelectDynamicListAsync(QueryExpression expression, IValueConverterProvider converterProvider, ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, Task> read, CancellationToken ct)
         {
             await ExecuteSelectQueryAsync(
                 expression,
+                converterProvider,
                 connection,
                 configureCommand,
                 async reader =>
@@ -1168,6 +1439,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             T? value = default;
             ExecuteSelectQuery(
                 expression,
+                new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select),
                 connection,
                 configureCommand,
                 reader =>
@@ -1195,6 +1467,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             T? value = default;
             await ExecuteSelectQueryAsync(
                 expression,
+                new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select),
                 connection,
                 configureCommand,
                 async reader =>
@@ -1223,6 +1496,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             T? value = default;
             await ExecuteSelectQueryAsync(
                 expression,
+                new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select),
                 connection,
                 configureCommand,
                 async reader =>
@@ -1248,11 +1522,18 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
 
         #region object list
+        public virtual IList<T> ExecuteSelectObjectList<T>(SelectSetQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, T?> map)
+            => ExecuteSelectObjectList(expression, new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Expressions.First().SelectQueryExpression.Select), connection, configureCommand, map);
+
         public virtual IList<T> ExecuteSelectObjectList<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, T?> map)
+            => ExecuteSelectObjectList(expression, new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select), connection, configureCommand, map);
+
+        private IList<T> ExecuteSelectObjectList<T>(QueryExpression expression, IValueConverterProvider converterProvider, ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, T?> map)
         {
             var values = new List<T>();
             ExecuteSelectQuery(
                 expression,
+                converterProvider,
                 connection,
                 configureCommand,
                 reader =>
@@ -1277,11 +1558,18 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return values;
         }
 
-        public virtual async Task<IList<T>> ExecuteSelectObjectListAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, T?> map, CancellationToken ct)
+        public virtual Task<IList<T>> ExecuteSelectObjectListAsync<T>(SelectSetQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, T?> map, CancellationToken ct)
+            => ExecuteSelectObjectListAsync(expression, new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Expressions.First().SelectQueryExpression.Select), connection, configureCommand, map, ct);
+        
+        public virtual Task<IList<T>> ExecuteSelectObjectListAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, T?> map, CancellationToken ct)
+             => ExecuteSelectObjectListAsync(expression, new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select), connection, configureCommand, map, ct);
+        
+        private async Task<IList<T>> ExecuteSelectObjectListAsync<T>(QueryExpression expression, IValueConverterProvider converterProvider, ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, T?> map, CancellationToken ct)
         {
             var values = new List<T>();
             await ExecuteSelectQueryAsync(
                 expression,
+                converterProvider,
                 connection,
                 configureCommand,
                 async reader =>
@@ -1307,11 +1595,18 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return values;
         }
 
-        public virtual async Task<IList<T>> ExecuteSelectObjectListAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, Task<T?>> map, CancellationToken ct)
+        public virtual Task<IList<T>> ExecuteSelectObjectListAsync<T>(SelectSetQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, Task<T?>> map, CancellationToken ct)
+            => ExecuteSelectObjectListAsync(expression, new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Expressions.First().SelectQueryExpression.Select), connection, configureCommand, map, ct);
+        
+        public virtual Task<IList<T>> ExecuteSelectObjectListAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, Task<T?>> map, CancellationToken ct)
+            => ExecuteSelectObjectListAsync(expression, new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select), connection, configureCommand, map, ct);
+
+        private async Task<IList<T>> ExecuteSelectObjectListAsync<T>(QueryExpression expression, IValueConverterProvider converterProvider, ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, Task<T?>> map, CancellationToken ct)
         {
             var values = new List<T>();
             await ExecuteSelectQueryAsync(
                 expression,
+                converterProvider,
                 connection,
                 configureCommand,
                 async reader =>
@@ -1339,7 +1634,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
 
         private void ExecuteSelectQuery(
-            SelectQueryExpression expression,
+            QueryExpression expression,
+            IValueConverterProvider valueConverterProvider,
             ISqlConnection connection,
             Action<IDbCommand>? configureCommand,
             Action<ISqlRowReader> transform
@@ -1364,9 +1660,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
             var reader = executor.ExecuteQuery(
                 statement, 
                 connection,
-                new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select),
+                valueConverterProvider,
                 cmd => {
-                    cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
                     beforeExecution?.Invoke(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(database, expression, cmd, statement))); 
                     configureCommand?.Invoke(cmd); 
                 },
@@ -1382,7 +1677,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
         }
 
         private async Task ExecuteSelectQueryAsync(
-            SelectQueryExpression expression,
+            QueryExpression expression,
+            IValueConverterProvider valueConverterProvider,
             ISqlConnection connection,
             Action<IDbCommand>? configureCommand,
             Func<IAsyncSqlRowReader, Task> transform,
@@ -1421,10 +1717,9 @@ namespace HatTrick.DbEx.Sql.Pipeline
             var reader = await executor.ExecuteQueryAsync(
                 statement,
                 connection,
-                new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select),
+                valueConverterProvider,
                 async cmd =>
                 {
-                    cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
                     if (beforeExecution is not null)
                     {
                         await beforeExecution.InvokeAsync(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(database, expression, cmd, statementBuilder.CreateSqlStatement())), ct).ConfigureAwait(false);

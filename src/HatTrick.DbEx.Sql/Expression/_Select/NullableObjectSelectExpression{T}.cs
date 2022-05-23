@@ -20,6 +20,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public class NullableObjectSelectExpression<T> : SelectExpression<T>,
         NullableObjectElement<T>
+        where T : class?
     {
         #region constructors
         public NullableObjectSelectExpression(NullableObjectElement<T> expression)

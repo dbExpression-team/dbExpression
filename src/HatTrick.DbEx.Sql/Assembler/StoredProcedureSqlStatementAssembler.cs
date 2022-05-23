@@ -24,8 +24,9 @@ namespace HatTrick.DbEx.Sql.Assembler
     {
         public override void AssembleStatement(QueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            if (!(expression is StoredProcedureQueryExpression sproc))
+            if (expression is not StoredProcedureQueryExpression sproc)
                 throw new DbExpressionException($"Expected {nameof(expression)} to be of type {nameof(StoredProcedureQueryExpression)}, but is actually type {expression.GetType()}");
+            context.StatementTerminator = '\0';
             AssembleStatement(sproc, builder, context);
         }
 

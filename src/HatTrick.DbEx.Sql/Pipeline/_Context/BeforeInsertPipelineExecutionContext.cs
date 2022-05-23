@@ -30,15 +30,17 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
 
         #region interface
+        public new InsertQueryExpression Expression { get; private set; }
         public ISqlParameterBuilder ParameterBuilder { get; private set; }
         public SqlStatement SqlStatement { get; private set; }
-        public override Type EntityType => entity.GetType();
+        public Type EntityType => entity.GetType();
         #endregion
 
         #region constructors
         public BeforeInsertPipelineExecutionContext(SqlDatabaseRuntimeConfiguration database, InsertQueryExpression expression, IDbEntity entity, ISqlParameterBuilder parameterBuilder, SqlStatement statement)
             : base(database, expression)
         {
+            Expression = expression ?? throw new ArgumentNullException(nameof(expression));
             ParameterBuilder = parameterBuilder ?? throw new ArgumentNullException(nameof(parameterBuilder));
             SqlStatement = statement ?? throw new ArgumentNullException(nameof(statement));
             this.entity = entity ?? throw new ArgumentNullException(nameof(entity));

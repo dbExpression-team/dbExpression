@@ -4,7 +4,7 @@ using FluentAssertions;
 using HatTrick.DbEx.Sql.Expression;
 using Xunit;
 
-namespace HatTrick.DbEx.MsSql.Test.Expression
+namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
 {
     public class SelectExpressionSetEqualityTests : TestBase
     {

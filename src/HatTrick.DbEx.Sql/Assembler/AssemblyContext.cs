@@ -34,19 +34,21 @@ namespace HatTrick.DbEx.Sql.Assembler
         #endregion
 
         #region interface
-        public SqlStatementAssemblerConfiguration Configuration { get; set; } = new SqlStatementAssemblerConfiguration();
+        public bool IncludeSchemaName { get; set; } = true;
+        public bool PrependCommaOnSelectClause { get; set; } = false;
+        public SqlStatementAssemblerConfiguration.Delimeters IdentifierDelimiter { get; set; } = new SqlStatementAssemblerConfiguration.Delimeters('[', ']');
+        public char StatementTerminator { get; set; } = ';'; 
         public FieldExpressionAppendStyle FieldExpressionAppendStyle => fieldStyles.FirstOrDefault();
         public EntityExpressionAppendStyle EntityExpressionAppendStyle => entityStyles.FirstOrDefault();
         public bool TrySharingExistingParameter { get; set; }
         #endregion
 
         #region constructors
-        public AssemblyContext(SqlStatementAssemblerConfiguration configuration)
+        public AssemblyContext()
         {
             //set defaults
             fieldStyles.Push(FieldExpressionAppendStyle.None);
             entityStyles.Push(EntityExpressionAppendStyle.None);
-            Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
         #endregion
 

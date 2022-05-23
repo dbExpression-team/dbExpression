@@ -37,12 +37,12 @@ namespace HatTrick.DbEx.MsSql.Assembler
             const string insertValuesName = "__values";
 
             var template = expression.Inserts.First().Value;
-            var identityField = expression.BaseEntity!.Fields.SingleOrDefault(x => builder.FindMetadata(x)?.IsIdentity == true);
+            var identityField = expression.Into!.Fields.SingleOrDefault(x => builder.FindMetadata(x)?.IsIdentity == true);
             var identity = identityField is not null ? identityField as FieldExpression ?? throw new DbExpressionException($"Expected identity field to be of type {typeof(FieldExpression)}") : null;
 
             builder.Appender.Indent().Write("SET NOCOUNT ON;").LineBreak();
             builder.Appender.Indent().Write("MERGE ");
-            builder.AppendElement(expression.BaseEntity, context);
+            builder.AppendElement(expression.Into, context);
             builder.Appender.Write(" USING (").LineBreak();
 
             builder.Appender.Indent().Write("VALUES").LineBreak().Indentation++;
@@ -83,9 +83,9 @@ namespace HatTrick.DbEx.MsSql.Assembler
             builder.Appender.LineBreak().Indentation--;
 
             builder.Appender.Indent().Write(") AS ")
-                .Write(context.Configuration.IdentifierDelimiter.Begin)
+                .Write(context.IdentifierDelimiter.Begin)
                 .Write(insertValuesName)
-                .Write(context.Configuration.IdentifierDelimiter.End)
+                .Write(context.IdentifierDelimiter.End)
                 .Indent().Write(" (").LineBreak()
                 .Indentation++;
 
@@ -104,9 +104,9 @@ namespace HatTrick.DbEx.MsSql.Assembler
                 builder.Appender.Write(", ").LineBreak();
                 if (i == templateInserts.Count - 1)
                 {
-                    builder.Appender.Indent().Write(context.Configuration.IdentifierDelimiter.Begin)
+                    builder.Appender.Indent().Write(context.IdentifierDelimiter.Begin)
                         .Write(ordinalColumnName)
-                        .Write(context.Configuration.IdentifierDelimiter.End);
+                        .Write(context.IdentifierDelimiter.End);
                 }
             }
 
@@ -141,9 +141,9 @@ namespace HatTrick.DbEx.MsSql.Assembler
                     if (identity is object && (templateInserts[i] as IAssignmentExpressionProvider).Assignee == identity)
                         continue; //don't emit identity columns with the values; they can't be inserted into the table
 
-                    builder.Appender.Indent().Write(context.Configuration.IdentifierDelimiter.Begin)
+                    builder.Appender.Indent().Write(context.IdentifierDelimiter.Begin)
                         .Write(insertValuesName)
-                        .Write(context.Configuration.IdentifierDelimiter.End)
+                        .Write(context.IdentifierDelimiter.End)
                         .Write(".");
 
                     builder.AppendElement((templateInserts[i] as IAssignmentExpressionProvider).Assignee, context);
@@ -162,15 +162,15 @@ namespace HatTrick.DbEx.MsSql.Assembler
 
             builder.Appender.Indent().Write("OUTPUT").LineBreak().Indentation++;
             builder.Appender.Indent()
-                .Write(context.Configuration.IdentifierDelimiter.Begin)
+                .Write(context.IdentifierDelimiter.Begin)
                 .Write(insertValuesName)
-                .Write(context.Configuration.IdentifierDelimiter.End);
+                .Write(context.IdentifierDelimiter.End);
 
             //write the delimited ordinal column name
             builder.Appender.Write(".")
-                .Write(context.Configuration.IdentifierDelimiter.Begin)
+                .Write(context.IdentifierDelimiter.Begin)
                 .Write(ordinalColumnName)
-                .Write(context.Configuration.IdentifierDelimiter.End)
+                .Write(context.IdentifierDelimiter.End)
                 .Write(", ").LineBreak();
 
             //write out all fields for the select from INSERTED table
@@ -178,9 +178,9 @@ namespace HatTrick.DbEx.MsSql.Assembler
             {
                 builder.Appender.Indent();
                 builder.Appender
-                    .Write(context.Configuration.IdentifierDelimiter.Begin)
+                    .Write(context.IdentifierDelimiter.Begin)
                     .Write("inserted")
-                    .Write(context.Configuration.IdentifierDelimiter.End)
+                    .Write(context.IdentifierDelimiter.End)
                     .Write('.');
                 builder.AppendElement(
                     expression.Outputs[i],

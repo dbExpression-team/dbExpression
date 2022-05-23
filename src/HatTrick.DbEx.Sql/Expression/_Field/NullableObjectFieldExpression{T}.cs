@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.Sql.Expression
         FieldExpression<T>,
         NullableObjectElement<T>,
         IEquatable<NullableObjectFieldExpression<T>>
-        where T : class
+        where T : class?
     {
         #region constructors
         protected NullableObjectFieldExpression(string identifier, string name, Table entity) : base(identifier, name, typeof(T), entity)
@@ -73,8 +73,10 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region fields
+#pragma warning disable CS8634 // The type cannot be used as type parameter in the generic type or method. Nullability of type argument doesn't match 'class' constraint.
         public static FilterExpression operator ==(NullableObjectFieldExpression<T> a, ObjectFieldExpression<T> b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
         public static FilterExpression operator !=(NullableObjectFieldExpression<T> a, ObjectFieldExpression<T> b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+#pragma warning restore CS8634 // The type cannot be used as type parameter in the generic type or method. Nullability of type argument doesn't match 'class' constraint.
         #endregion
 
         #region mediators
