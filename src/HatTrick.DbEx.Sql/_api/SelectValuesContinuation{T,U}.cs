@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql
     public interface SelectValuesContinuation<TDatabase, TValue> :
 #pragma warning restore IDE1006 // Naming Styles
         SelectValuesTermination<TDatabase, TValue>,
-        UnionSelectAnyInitiation<TDatabase>
+        UnionSelectValuesInitiation<TDatabase, TValue>
         where TDatabase : class, ISqlDatabaseRuntime
     {
         /// <summary>
@@ -33,9 +33,9 @@ namespace HatTrick.DbEx.Sql
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/where-transact-sql">Microsoft docs on WHERE</see>
         /// </para>
         /// </summary>
-        /// <param name="where">Any filter predicate of type <see cref="AnyWhereClause"/>.</param>
+        /// <param name="where">Any filter predicate of type <see cref="AnyWhereExpression"/>.</param>
         /// <returns><see cref="SelectValuesContinuation{TDatabase, TValue}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="TValue"/> values.</returns>
-        SelectValuesContinuation<TDatabase, TValue> Where(AnyWhereClause? where);
+        SelectValuesContinuation<TDatabase, TValue> Where(AnyWhereExpression? where);
 
         /// <summary>
         /// Construct the ORDER BY clause of a sql SELECT query expression for a list of <typeparamref name="TValue"/> values.
@@ -43,9 +43,9 @@ namespace HatTrick.DbEx.Sql
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-order-by-clause-transact-sql">Microsoft docs on ORDER BY</see>
         /// </para>
         /// </summary>
-        /// <param name="orderBy">A list of expressions of type <see cref="AnyOrderByClause"/> indicating the order and direction for sorting.</param>
+        /// <param name="orderBy">A list of expressions of type <see cref="AnyOrderByExpression"/> indicating the order and direction for sorting.</param>
         /// <returns><see cref="SelectValuesOrderByContinuation{TDatabase, TValue}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="TValue"/> values.</returns>
-        SelectValuesOrderByContinuation<TDatabase, TValue> OrderBy(params AnyOrderByClause[] orderBy);
+        SelectValuesOrderByContinuation<TDatabase, TValue> OrderBy(params AnyOrderByExpression[] orderBy);
 
         /// <summary>
         /// Construct the ORDER BY clause of a sql SELECT query expression for a list of <typeparamref name="TValue"/> values.
@@ -53,9 +53,9 @@ namespace HatTrick.DbEx.Sql
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-order-by-clause-transact-sql">Microsoft docs on ORDER BY</see>
         /// </para>
         /// </summary>
-        /// <param name="orderBy">A list of expressions of type <see cref="AnyOrderByClause"/> specifying the order and direction for sorting.</param>
+        /// <param name="orderBy">A list of expressions of type <see cref="AnyOrderByExpression"/> specifying the order and direction for sorting.</param>
         /// <returns><see cref="SelectValuesOrderByContinuation{TDatabase, TValue}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="TValue"/> values.</returns>
-        SelectValuesOrderByContinuation<TDatabase, TValue> OrderBy(IEnumerable<AnyOrderByClause>? orderBy);
+        SelectValuesOrderByContinuation<TDatabase, TValue> OrderBy(IEnumerable<AnyOrderByExpression>? orderBy);
 
         /// <summary>
         /// Construct the GROUP BY clause of a sql SELECT query expression for a list of <typeparamref name="TValue"/> values.
@@ -63,9 +63,9 @@ namespace HatTrick.DbEx.Sql
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-group-by-transact-sql">Microsoft docs on GROUP BY</see>
         /// </para>
         /// </summary>
-        /// <param name="groupBy">A list of expressions of type <see cref="AnyGroupByClause"/> specifying how to group the selected results.</param>
+        /// <param name="groupBy">A list of expressions of type <see cref="AnyGroupByExpression"/> specifying how to group the selected results.</param>
         /// <returns><see cref="SelectValuesContinuation{TDatabase, TEntity}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="TValue"/> values.</returns>
-        SelectValuesContinuation<TDatabase, TValue> GroupBy(params AnyGroupByClause[] groupBy);
+        SelectValuesContinuation<TDatabase, TValue> GroupBy(params AnyGroupByExpression[] groupBy);
 
         /// <summary>
         /// Construct the GROUP BY clause of a sql SELECT query expression for a list of <typeparamref name="TValue"/> values.
@@ -73,9 +73,9 @@ namespace HatTrick.DbEx.Sql
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-group-by-transact-sql">Microsoft docs on GROUP BY</see>
         /// </para>
         /// </summary>
-        /// <param name="groupBy">A list of expressions of type <see cref="AnyGroupByClause"/> specifying how to group the selected results.</param>
+        /// <param name="groupBy">A list of expressions of type <see cref="AnyGroupByExpression"/> specifying how to group the selected results.</param>
         /// <returns><see cref="SelectValuesContinuation{TDatabase, TValue}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="TValue"/> values.</returns>
-        SelectValuesContinuation<TDatabase, TValue> GroupBy(IEnumerable<AnyGroupByClause>? groupBy);
+        SelectValuesContinuation<TDatabase, TValue> GroupBy(IEnumerable<AnyGroupByExpression>? groupBy);
 
         /// <summary>
         /// Construct the HAVING clause of a sql SELECT query expression for a list of <typeparamref name="TValue"/> values.
@@ -83,9 +83,9 @@ namespace HatTrick.DbEx.Sql
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-having-transact-sql">Microsoft docs on HAVING</see>
         /// </para>
         /// </summary>
-        /// <param name="having">A list of expressions of type <see cref="AnyHavingClause"/> specifying conditions on the grouping or aggregation of selected results.</param>
+        /// <param name="having">A list of expressions of type <see cref="AnyHavingExpression"/> specifying conditions on the grouping or aggregation of selected results.</param>
         /// <returns><see cref="SelectValuesContinuation{TDatabase, TValue}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="TValue"/> values.</returns>
-        SelectValuesContinuation<TDatabase, TValue> Having(AnyHavingClause? having);
+        SelectValuesContinuation<TDatabase, TValue> Having(AnyHavingExpression? having);
 
         /// <summary>
         /// Construct an INNER JOIN clause of a sql SELECT query expression for a list of <typeparamref name="TValue"/> values.
@@ -104,8 +104,8 @@ namespace HatTrick.DbEx.Sql
         /// </para>
         /// </summary>
         /// <param name="subquery">Any expression of type <see cref="AnySelectSubquery"/> specifying a SELECT query expression to join to.</param>
-        /// <returns><see cref="JoinOnWithAlias{SelectValuesContinuation{TDatabase, TValue}}"/>, a fluent continuation for the construction of a sql JOIN expression for a list of <typeparamref name="TValue"/> values.</returns>
-        JoinOnWithAlias<SelectValuesContinuation<TDatabase, TValue>> InnerJoin(AnySelectSubquery subquery);
+        /// <returns><see cref="WithAlias{JoinOn{SelectValuesContinuation{TDatabase, TValue}}}"/>, a fluent continuation for the construction of a sql JOIN expression for a list of <typeparamref name="TValue"/> values.</returns>
+        WithAlias<JoinOn<SelectValuesContinuation<TDatabase, TValue>>> InnerJoin(AnySelectSubquery subquery);
 
         /// <summary>
         /// Construct an LEFT JOIN clause of a sql SELECT query expression for a list of <typeparamref name="TValue"/> values.
@@ -124,8 +124,8 @@ namespace HatTrick.DbEx.Sql
         /// </para>
         /// </summary>
         /// <param name="subquery">Any expression of type <see cref="AnySelectSubquery"/> specifying a SELECT query expression to join to.</param>
-        /// <returns><see cref="JoinOnWithAlias{SelectValuesContinuation{TDatabase, TValue}}"/>, a fluent continuation for the construction of a sql JOIN expression for a list of <typeparamref name="TValue"/> values.</returns>
-        JoinOnWithAlias<SelectValuesContinuation<TDatabase, TValue>> LeftJoin(AnySelectSubquery subquery);
+        /// <returns><see cref="WithAlias{JoinOn{SelectValuesContinuation{TDatabase, TValue}}}"/>, a fluent continuation for the construction of a sql JOIN expression for a list of <typeparamref name="TValue"/> values.</returns>
+        WithAlias<JoinOn<SelectValuesContinuation<TDatabase, TValue>>> LeftJoin(AnySelectSubquery subquery);
 
         /// <summary>
         /// Construct an RIGHT JOIN clause of a sql SELECT query expression for a list of <typeparamref name="TValue"/> values.
@@ -144,8 +144,8 @@ namespace HatTrick.DbEx.Sql
         /// </para>
         /// </summary>
         /// <param name="subquery">Any expression of type <see cref="AnySelectSubquery"/> specifying a SELECT query expression to join to.</param>
-        /// <returns><see cref="JoinOnWithAlias{SelectValuesContinuation{TDatabase, TValue}}"/>, a fluent continuation for the construction of a sql JOIN expression for a list of <typeparamref name="TValue"/> values.</returns>
-        JoinOnWithAlias<SelectValuesContinuation<TDatabase, TValue>> RightJoin(AnySelectSubquery subquery);
+        /// <returns><see cref="WithAlias{JoinOn{SelectValuesContinuation{TDatabase, TValue}}}"/>, a fluent continuation for the construction of a sql JOIN expression for a list of <typeparamref name="TValue"/> values.</returns>
+        WithAlias<JoinOn<SelectValuesContinuation<TDatabase, TValue>>> RightJoin(AnySelectSubquery subquery);
 
         /// <summary>
         /// Construct an FULL JOIN clause of a sql SELECT query expression for a list of <typeparamref name="TValue"/> values.
@@ -164,8 +164,8 @@ namespace HatTrick.DbEx.Sql
         /// </para>
         /// </summary>
         /// <param name="subquery">Any expression of type <see cref="AnySelectSubquery"/> specifying a SELECT query expression to join to.</param>
-        /// <returns><see cref="JoinOnWithAlias{SelectValuesContinuation{TDatabase, TValue}}"/>, a fluent continuation for the construction of a sql JOIN expression for a list of <typeparamref name="TValue"/> values.</returns>
-        JoinOnWithAlias<SelectValuesContinuation<TDatabase, TValue>> FullJoin(AnySelectSubquery subquery);
+        /// <returns><see cref="WithAlias{JoinOn{SelectValuesContinuation{TDatabase, TValue}}}"/>, a fluent continuation for the construction of a sql JOIN expression for a list of <typeparamref name="TValue"/> values.</returns>
+        WithAlias<JoinOn<SelectValuesContinuation<TDatabase, TValue>>> FullJoin(AnySelectSubquery subquery);
 
         /// <summary>
         /// Construct an CROSS JOIN clause of a sql SELECT query expression for a list of <typeparamref name="TValue"/> values.

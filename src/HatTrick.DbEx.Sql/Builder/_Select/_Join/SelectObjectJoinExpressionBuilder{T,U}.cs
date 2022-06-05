@@ -23,7 +23,7 @@ namespace HatTrick.DbEx.Sql.Builder
 {
     public class SelectObjectJoinExpressionBuilder<TDatabase, TObject> : SelectJoinExpressionBuilder<TDatabase, SelectValueContinuation<TDatabase, TObject>>,
         JoinOn<SelectObjectContinuation<TDatabase, TObject>>,
-        JoinOnWithAlias<SelectObjectContinuation<TDatabase, TObject>>
+        WithAlias<JoinOn<SelectObjectContinuation<TDatabase, TObject>>>
         where TDatabase : class, ISqlDatabaseRuntime
         where TObject : class?
     {
@@ -41,14 +41,14 @@ namespace HatTrick.DbEx.Sql.Builder
 
         #region methods
         /// <inheritdoc />
-        JoinOn<SelectObjectContinuation<TDatabase, TObject>> JoinOnWithAlias<SelectObjectContinuation<TDatabase, TObject>>.As(string alias)
+        JoinOn<SelectObjectContinuation<TDatabase, TObject>> WithAlias<JoinOn<SelectObjectContinuation<TDatabase, TObject>>>.As(string alias)
         {
             As(alias);
             return this;
         }
 
         /// <inheritdoc />
-        SelectObjectContinuation<TDatabase, TObject> JoinOn<SelectObjectContinuation<TDatabase, TObject>>.On(AnyJoinOnClause joinOn)
+        SelectObjectContinuation<TDatabase, TObject> JoinOn<SelectObjectContinuation<TDatabase, TObject>>.On(AnyJoinOnExpression joinOn)
         {
             On(joinOn);
             return caller;

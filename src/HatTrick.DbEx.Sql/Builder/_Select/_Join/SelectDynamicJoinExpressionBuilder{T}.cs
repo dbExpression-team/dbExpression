@@ -21,17 +21,17 @@ using System;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
-    public class SelectDynamicsJoinBuilder<TDatabase> : SelectJoinExpressionBuilder<TDatabase, SelectDynamicsContinuation<TDatabase>>,
-        JoinOn<SelectDynamicsContinuation<TDatabase>>,
-        JoinOnWithAlias<SelectDynamicsContinuation<TDatabase>>
+    public class SelectDynamicJoinExpressionBuilder<TDatabase> : SelectJoinExpressionBuilder<TDatabase, SelectDynamicContinuation<TDatabase>>,
+        JoinOn<SelectDynamicContinuation<TDatabase>>,
+        WithAlias<JoinOn<SelectDynamicContinuation<TDatabase>>>
         where TDatabase : class, ISqlDatabaseRuntime
     {
         #region internals
-        private readonly SelectDynamicsContinuation<TDatabase> caller;
+        private readonly SelectDynamicContinuation<TDatabase> caller;
         #endregion
 
         #region constructors
-        public SelectDynamicsJoinBuilder(SelectQueryExpression expression, IExpressionElement joinTo, JoinOperationExpressionOperator joinType, SelectDynamicsContinuation<TDatabase> caller)
+        public SelectDynamicJoinExpressionBuilder(SelectQueryExpression expression, IExpressionElement joinTo, JoinOperationExpressionOperator joinType, SelectDynamicContinuation<TDatabase> caller)
             : base(expression, joinTo, joinType)
         {
             this.caller = caller ?? throw new ArgumentNullException(nameof(caller));
@@ -40,14 +40,14 @@ namespace HatTrick.DbEx.Sql.Builder
 
         #region methods
         /// <inheritdoc />
-        JoinOn<SelectDynamicsContinuation<TDatabase>> JoinOnWithAlias<SelectDynamicsContinuation<TDatabase>>.As(string alias)
+        JoinOn<SelectDynamicContinuation<TDatabase>> WithAlias<JoinOn<SelectDynamicContinuation<TDatabase>>>.As(string alias)
         {
             As(alias);
             return this;
         }
 
         /// <inheritdoc />
-        SelectDynamicsContinuation<TDatabase> JoinOn<SelectDynamicsContinuation<TDatabase>>.On(AnyJoinOnClause joinOn)
+        SelectDynamicContinuation<TDatabase> JoinOn<SelectDynamicContinuation<TDatabase>>.On(AnyJoinOnExpression joinOn)
         {
             On(joinOn);
             return caller;

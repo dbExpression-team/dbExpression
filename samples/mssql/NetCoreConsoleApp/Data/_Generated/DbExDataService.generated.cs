@@ -127,12 +127,11 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableObjectElement{T}" />
+        /// <param name="element">An expression of type <see cref="AliasedElement{T}" />      
         /// </param>
-        /// <returns><see cref="SelectValue{SimpleConsoleDb, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        /// <typeparam name="T">The type of the object to select.</typeparam>
-        public static SelectObject<SimpleConsoleDb, T> SelectOne<T>(NullableObjectElement<T> element)
-            where T : class
+        /// <returns><see cref="SelectValues{SimpleConsoleDb, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <typeparam name="T">The type of the value to select.</typeparam>
+        public static SelectValue<SimpleConsoleDb, T> SelectOne<T>(AliasedElement<T> element)
             => SimpleConsoleDb.SelectOne<T>(element);
 
         /// <summary>
@@ -449,19 +448,6 @@ namespace SimpleConsole.DataService
             => SimpleConsoleDb.SelectOne(element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <see cref="string" /> value.
-        /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
-        /// </para>
-        /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{String}" />
-        ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
-        ///</param>
-        /// <returns><see cref="SelectValue{SimpleConsoleDb, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<SimpleConsoleDb, string> SelectOne(SelectExpression<string> element) 
-            => SimpleConsoleDb.SelectOne(element);
-
-        /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" /> value.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
@@ -612,12 +598,11 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableObjectElement{T}" />
+        /// <param name="element">An expression of type <see cref="AliasedElement{T}" />      
         /// </param>
         /// <returns><see cref="SelectValues{SimpleConsoleDb, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        /// <typeparam name="T">The type of the object to select.</typeparam>
-        public static SelectObjects<SimpleConsoleDb, T> SelectMany<T>(NullableObjectElement<T> element)
-            where T : class
+        /// <typeparam name="T">The type of the value to select.</typeparam>
+        public static SelectValues<SimpleConsoleDb, T> SelectMany<T>(AliasedElement<T> element)
             => SimpleConsoleDb.SelectMany<T>(element);
 
         /// <summary>
@@ -934,19 +919,6 @@ namespace SimpleConsole.DataService
             => SimpleConsoleDb.SelectMany(element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a list of <see cref="string" /> values.
-        /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
-        /// </para>
-        /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{String}" />
-        ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
-        ///</param>
-        /// <returns><see cref="SelectValues{SimpleConsoleDb, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<SimpleConsoleDb, string> SelectMany(SelectExpression<string> element)
-            => SimpleConsoleDb.SelectMany(element);
-
-        /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" /> values.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
@@ -1120,9 +1092,10 @@ namespace SimpleConsole.DataService
         InsertEntitiesInitiation<SimpleConsoleDb>
     {
         #region internals
-        private static List<SchemaExpression> _schemas = new List<SchemaExpression>();
-        private static SqlDatabaseMetadataProvider _metadata = new SqlDatabaseMetadataProvider(new SimpleConsoleDbSqlDatabaseMetadata("SimpleConsoleDb", "MsSqlDbExTest"));
-       
+        private static readonly List<SchemaExpression> _schemas = new List<SchemaExpression>();
+        private static readonly SqlDatabaseMetadataProvider _metadata = new SqlDatabaseMetadataProvider(new SimpleConsoleDbSqlDatabaseMetadata("SimpleConsoleDb", "MsSqlDbExTest"));
+        private static readonly Dictionary<Type, Table> _entityTypeToTableMap = new Dictionary<Type, Table>();
+
         private SimpleConsoleDbStoredProcedures _sp;
 
         private MsSqlSqlDatabaseRuntimeConfiguration Configuration { get; }
@@ -1139,10 +1112,19 @@ namespace SimpleConsole.DataService
             var dboSchema = new _dboDataService.dboSchemaExpression("dbo");
             _schemas.Add(dboSchema);
             _dboDataService.dbo.UseSchema(dboSchema);
+            _entityTypeToTableMap.Add(typeof(dboData.AccessAuditLog), dboSchema.AccessAuditLog);
+            _entityTypeToTableMap.Add(typeof(dboData.Address), dboSchema.Address);
+            _entityTypeToTableMap.Add(typeof(dboData.Person), dboSchema.Person);
+            _entityTypeToTableMap.Add(typeof(dboData.PersonAddress), dboSchema.PersonAddress);
+            _entityTypeToTableMap.Add(typeof(dboData.Product), dboSchema.Product);
+            _entityTypeToTableMap.Add(typeof(dboData.Purchase), dboSchema.Purchase);
+            _entityTypeToTableMap.Add(typeof(dboData.PurchaseLine), dboSchema.PurchaseLine);
+            _entityTypeToTableMap.Add(typeof(dboData.PersonTotalPurchasesView), dboSchema.PersonTotalPurchasesView);
 
             var secSchema = new _secDataService.secSchemaExpression("sec");
             _schemas.Add(secSchema);
             _secDataService.sec.UseSchema(secSchema);
+            _entityTypeToTableMap.Add(typeof(secData.Person), secSchema.Person);
 
         }
 
@@ -1174,7 +1156,7 @@ namespace SimpleConsole.DataService
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
         public SelectEntity<SimpleConsoleDb, TEntity> SelectOne<TEntity>()
             where TEntity : class, IDbEntity, new()
-            => Configuration.QueryExpressionBuilder.CreateSelectEntityBuilder<SimpleConsoleDb, TEntity>(Configuration);
+            => Configuration.QueryExpressionBuilder.CreateSelectEntityBuilder<SimpleConsoleDb, TEntity>(Configuration, GetTable<TEntity>());
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="TEnum"/> value.
@@ -1250,12 +1232,10 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableObjectElement{T}" />
+        /// <param name="element">An expression of type <see cref="AliasedElement{T}" />    
         /// </param>
         /// <returns><see cref="SelectValue{SimpleConsoleDb, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        /// <typeparam name="T">The type of the object to select.</typeparam>
-        public SelectObject<SimpleConsoleDb, T> SelectOne<T>(NullableObjectElement<T> element)
-            where T : class
+        public SelectValue<SimpleConsoleDb, T> SelectOne<T>(AliasedElement<T> element)
             => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<SimpleConsoleDb, T>(Configuration, element);
 
         /// <summary>
@@ -1572,19 +1552,6 @@ namespace SimpleConsole.DataService
             => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<SimpleConsoleDb>(Configuration, element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <see cref="string" /> value.
-        /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
-        /// </para>
-        /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{String}" />
-        ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
-        /// </param>
-        /// <returns><see cref="SelectValue{SimpleConsoleDb, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<SimpleConsoleDb, string> SelectOne(SelectExpression<string> element) 
-            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<SimpleConsoleDb>(Configuration, element);
-
-        /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" /> value.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
@@ -1661,7 +1628,7 @@ namespace SimpleConsole.DataService
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
         public SelectEntities<SimpleConsoleDb, TEntity> SelectMany<TEntity>()
            where TEntity : class, IDbEntity, new()
-           => Configuration.QueryExpressionBuilder.CreateSelectEntitiesBuilder<SimpleConsoleDb, TEntity>(Configuration);
+           => Configuration.QueryExpressionBuilder.CreateSelectEntitiesBuilder<SimpleConsoleDb, TEntity>(Configuration, GetTable<TEntity>());
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="TEnum"/> values.
@@ -1735,12 +1702,10 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableObjectElement{T}" />
+        /// <param name="element">An expression of type <see cref="AliasedElement{T}" />    
         /// </param>
         /// <returns><see cref="SelectValues{SimpleConsoleDb, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        /// <typeparam name="T">The type of the object to select.</typeparam>
-        public SelectObjects<SimpleConsoleDb, T> SelectMany<T>(NullableObjectElement<T> element)
-            where T : class
+        public SelectValues<SimpleConsoleDb, T> SelectMany<T>(AliasedElement<T> element)
             => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<SimpleConsoleDb, T>(Configuration, element);
 
         /// <summary>
@@ -2057,19 +2022,6 @@ namespace SimpleConsole.DataService
             => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<SimpleConsoleDb>(Configuration, element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a list of <see cref="string" /> values.
-        /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
-        /// </para>
-        /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{String}" />
-        ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
-        /// </param>
-        /// <returns><see cref="SelectValues{SimpleConsoleDb, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<SimpleConsoleDb, string> SelectMany(SelectExpression<string> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<SimpleConsoleDb>(Configuration, element);
-
-        /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" /> values.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
@@ -2229,6 +2181,14 @@ namespace SimpleConsole.DataService
         public ISqlConnection GetConnection()
             => new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
         #endregion
+
+        protected virtual Table<TEntity> GetTable<TEntity>()
+            where TEntity : class, IDbEntity
+        {
+            if (!_entityTypeToTableMap.ContainsKey(typeof(TEntity)))
+                throw new DbExpressionException($"Entity type {typeof(TEntity)} is not known.");
+            return _entityTypeToTableMap[typeof(TEntity)] as Table<TEntity> ?? throw new DbExpressionException($"Map contains an invalid reference for type {typeof(TEntity)}.");
+        }
         #endregion
 
         #region sp

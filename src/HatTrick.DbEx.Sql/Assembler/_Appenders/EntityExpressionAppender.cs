@@ -42,23 +42,18 @@ namespace HatTrick.DbEx.Sql.Assembler
                 builder.AppendElement((expression as Table).Schema, context);
                 builder.Appender.Write(".");
             }
+
             builder.Appender
                 .Write(context.IdentifierDelimiter.Begin)
                 .Write((builder.FindMetadata(expression) ?? throw new DbExpressionException($"Expected to find metadata for {expression}, but metadata is actually null.")).Name)
                 .Write(context.IdentifierDelimiter.End);
 
-            if (context.EntityExpressionAppendStyle == EntityExpressionAppendStyle.Declaration)
-            {
-                AppendAlias(expression, builder, context);
-            }
+            AppendAlias(expression, builder, context);
         }
 
         protected static void AppendAlias(IExpressionAliasProvider aliasable, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            if (string.IsNullOrWhiteSpace(aliasable.Alias))
-                return;
-
-            if (context.EntityExpressionAppendStyle == EntityExpressionAppendStyle.None)
+            if (string.IsNullOrWhiteSpace(aliasable.Alias) || context.EntityExpressionAppendStyle != EntityExpressionAppendStyle.Declaration)
                 return;
 
             builder.Appender.Write(" AS ")

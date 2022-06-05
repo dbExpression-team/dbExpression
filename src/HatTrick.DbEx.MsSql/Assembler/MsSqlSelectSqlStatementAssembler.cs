@@ -79,7 +79,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
             //add windowing function
             builder.Appender.Indentation++.Indent();
             if (context.PrependCommaOnSelectClause)
-                builder.Appender.Write(',');
+                builder.Appender.LineBreak().Indent().Write(',');
             builder.Appender.Write("ROW_NUMBER() OVER (");
 
             var orderBys = expression.OrderBy?.Expressions?.ToList();
@@ -123,11 +123,12 @@ namespace HatTrick.DbEx.MsSql.Assembler
                     .Write(')').LineBreak()
                     .Write("AS ")
                     .Write(context.IdentifierDelimiter.Begin)
-                    .Write(expression.From!.Identifier)
+                    .Write((expression.From!.Expression as Table)!.Identifier)
                     .Write(context.IdentifierDelimiter.End)
                     .LineBreak()
                 .Indentation--.Indent().Write("WHERE").LineBreak()
                 .Indentation++
+                    .Indent()
                     .Write("[__index] BETWEEN ")
                     .Write(offsetParam.Parameter.ParameterName)
                     .Write(" AND ")

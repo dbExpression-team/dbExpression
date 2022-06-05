@@ -24,16 +24,19 @@ namespace HatTrick.DbEx.Sql.Builder
 {
     public abstract class QueryExpressionBuilder<TDatabase> :
         ITerminationExpressionBuilder<TDatabase>,
-        IQueryExpressionProvider
+        IQueryExpressionProvider,
+        IExpressionAliasProvider
         where TDatabase : class, ISqlDatabaseRuntime
     {
         #region internals
+        private string? _alias;
         protected SqlDatabaseRuntimeConfiguration Configuration { get; private set; }
         protected abstract QueryExpression Expression { get; }
         #endregion
 
         #region interface
         QueryExpression IQueryExpressionProvider.Expression => Expression;
+        string? IExpressionAliasProvider.Alias => _alias;
         #endregion
 
         #region constructors
@@ -41,6 +44,14 @@ namespace HatTrick.DbEx.Sql.Builder
         {
             this.Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
+        #endregion
+
+        #region methods
+        protected void ApplyAlias(string alias)
+            => _alias = alias;
+
+        public override string? ToString()
+            => Expression.ToString();
         #endregion
     }
 }

@@ -42,8 +42,24 @@ namespace HatTrick.DbEx.Sql
         /// </summary>
         /// <returns><see cref="AliasExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/>.</returns>
         /// <remarks>This version is required when creating aliases of any element that equates to a <see cref="String"/> type (<see cref="AnyStringElement"/> element).</remarks>
-        public static AliasExpression<object> Alias(string tableName, string fieldName)
+        public static AliasExpression<object?> Alias(string tableName, string fieldName)
             => new((tableName, fieldName));
+
+        /// <summary>
+        /// Create an alias for use with other expressions.  Typically, these are expressions like order by clauses and group by clauses (although you can use the generic form as well).
+        /// </summary>
+        /// <returns><see cref="AliasExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/>.</returns>
+        /// <remarks>This version is required when creating aliases of any element that equates to a <see cref="String"/> type (<see cref="AnyStringElement"/> element).</remarks>
+        public static AliasExpression<T> Alias<T>(string alias)
+            => new(alias);
+
+        /// <summary>
+        /// Create an alias for use with other expressions.  Typically, these are expressions like order by clauses and group by clauses (although you can use the generic form as well).
+        /// </summary>
+        /// <returns><see cref="AliasExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/>.</returns>
+        /// <remarks>This version is required when creating aliases of any element that equates to a <see cref="String"/> type (<see cref="AnyStringElement"/> element).</remarks>
+        public static AliasExpression Alias(string alias)
+            => new(alias, typeof(object));
 
         /// <summary>
         /// Change the encapsulated type of an element to a nullable.

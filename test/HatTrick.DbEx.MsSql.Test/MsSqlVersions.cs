@@ -17,7 +17,6 @@ namespace HatTrick.DbEx.MsSql.Test
     /// is set and that is NOT the specific version requested, the returning enumerable would be empty.</remarks>
     public static class MsSqlVersions
     {
-        [SuppressMessage("Design", "CA1034:Nested types should not be visible", Justification = "Helper class to simplify specification of use of all Sql Server versions for tests.")]
         [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
         public sealed class AllVersionsAttribute : ClassDataAttribute
         {
@@ -30,7 +29,6 @@ namespace HatTrick.DbEx.MsSql.Test
                 => new List<object[]> { new object[] { new CurrentMsSqlVersion().Version } };
         }
 
-        [SuppressMessage("Design", "CA1034:Nested types should not be visible", Justification = "Helper class to simplify specification of target Sql Server version for tests.")]
         [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
         public sealed class AllVersionsExceptAttribute : ClassDataAttribute
         {

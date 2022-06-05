@@ -3,6 +3,7 @@ using DbEx.secData;
 using DbEx.secDataService;
 using FluentAssertions;
 using HatTrick.DbEx.Sql;
+using HatTrick.DbEx.Sql.Builder;
 using HatTrick.DbEx.Sql.Expression;
 using Xunit;
 
@@ -18,20 +19,20 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Builder
             //given
             ConfigureForMsSqlVersion(version);
 
-            SelectValueContinuation<MsSqlDb,int> exp;
-            SelectQueryExpression expressionSet;
+            SelectValueContinuation<MsSqlDb,int> builder;
+            SelectQueryExpression expression;
 
             //when
-            exp = db.SelectOne(sec.Person.Id)
+            builder = db.SelectOne(sec.Person.Id)
                .From(sec.Person);
 
-            expressionSet = ((exp as IQueryExpressionProvider)!.Expression as SelectQueryExpression)!;
+            expression = ((builder as IQueryExpressionProvider)!.Expression as SelectQueryExpression)!;
 
             //then
-            expressionSet.Select.Expressions.Should().ContainSingle()
+            expression.Select.Expressions.Should().ContainSingle()
                 .Which.Expression.Should().BeOfType<PersonEntity.IdField>();
 
-            expressionSet.From.Should().NotBeNull()
+            expression.From!.Expression.Should().NotBeNull()
                 .And.BeOfType<PersonEntity>();
         }
 
@@ -42,25 +43,25 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Builder
             //given
             ConfigureForMsSqlVersion(version);
 
-            SelectDynamicContinuation<MsSqlDb> exp;
-            SelectQueryExpression expressionSet;
+            SelectDynamicContinuation<MsSqlDb> builder;
+            SelectQueryExpression expression;
 
             //when
-            exp = db.SelectOne(sec.Person.Id, sec.Person.DateCreated)
+            builder = db.SelectOne(sec.Person.Id, sec.Person.DateCreated)
                .From(sec.Person);
 
-            expressionSet = ((exp as IQueryExpressionProvider)!.Expression as SelectQueryExpression)!;
+            expression = ((builder as IQueryExpressionProvider)!.Expression as SelectQueryExpression)!;
 
             //then
-            expressionSet.Select.Expressions.Should().HaveCount(2);
+            expression.Select.Expressions.Should().HaveCount(2);
 
-            expressionSet.Select.Expressions.Should().Contain(x => x.Expression.Equals(sec.Person.Id))
+            expression.Select.Expressions.Should().Contain(x => x.Expression.Equals(sec.Person.Id))
                 .Which.Expression.Should().BeOfType<PersonEntity.IdField>();
 
-            expressionSet.Select.Expressions.Should().ContainSingle(x => x.Expression.Equals(sec.Person.DateCreated))
+            expression.Select.Expressions.Should().ContainSingle(x => x.Expression.Equals(sec.Person.DateCreated))
                 .Which.Expression.Should().BeOfType<PersonEntity.DateCreatedField>();
 
-            expressionSet.From.Should().NotBeNull()
+            expression.From!.Expression.Should().NotBeNull()
                 .And.BeOfType<PersonEntity>();
         }
     }

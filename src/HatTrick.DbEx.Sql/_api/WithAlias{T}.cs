@@ -21,8 +21,19 @@
 namespace HatTrick.DbEx.Sql
 {
 #pragma warning disable IDE1006 // Naming Styles
-    public interface AnyJoinOnClause : IFilterExpressionElement
+    public interface WithAlias<TCaller>
 #pragma warning restore IDE1006 // Naming Styles
     {
+        /// <summary>
+        /// Specify an alias for the expression.
+        /// <para>
+        /// Use the <paramref name="alias"/> value from this operation as the 'tableName' parameter when creating an <see cref="AliasExpression"/> 
+        /// (for the joined sql SELECT query expression) for use with outer expressions:
+        /// <code>dbex.alias({tableName}, {fieldName})</code>
+        /// </para>
+        /// </summary>
+        /// <param name="alias">The alias to apply to the expression.</param>
+        /// <returns><typeparamref name="TCaller"/>, a fluent continuation for the construction of a query expression.</returns>
+        TCaller As(string alias);
     }
 }

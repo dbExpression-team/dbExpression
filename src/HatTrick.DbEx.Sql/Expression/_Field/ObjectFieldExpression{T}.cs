@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.Sql.Expression
         FieldExpression<T>,
         ObjectElement<T>,
         IEquatable<ObjectFieldExpression<T>>
-        where T: class
+        where T: class?
     {
         #region constructors
         protected ObjectFieldExpression(string identifier, string name, Table entity) : base(identifier, name, typeof(T), entity)

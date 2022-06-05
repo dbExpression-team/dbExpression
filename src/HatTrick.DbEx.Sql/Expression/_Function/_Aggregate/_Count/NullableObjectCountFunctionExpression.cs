@@ -17,13 +17,12 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableObjectCountFunctionExpression :
         CountFunctionExpression<object?>,
-        NullableObjectElement<object?>,
+        NullableObjectElement,
         IEquatable<NullableObjectCountFunctionExpression>
     {
         #region constructors
@@ -34,8 +33,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public NullableObjectElement<object?> As(string alias)
-            => new NullableObjectSelectExpression<object?>(this).As(alias);
+        public NullableObjectElement As(string alias)
+            => new NullableObjectSelectExpression(this).As(alias);
         #endregion
 
         #region distinct

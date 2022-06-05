@@ -19,7 +19,7 @@
 namespace HatTrick.DbEx.Sql
 {
 #pragma warning disable IDE1006 // Naming Styles   
-    public interface UnionSelectAnyInitiation<TDatabase>
+    public interface UnionSelectDynamicsInitiation<TDatabase>
 #pragma warning restore IDE1006 // Naming Styles
         where TDatabase : class, ISqlDatabaseRuntime
     {
@@ -29,8 +29,8 @@ namespace HatTrick.DbEx.Sql
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/language-elements/set-operators-union-transact-sql">Microsoft docs on UNION</see>
         /// </para>
         /// </summary>
-        /// <returns><see cref="UnionSelectAnyContinuation{TDatabase}"/>, a fluent continuation for the construction of a sql SELECT query expression.</returns>
-        UnionSelectAnyContinuation<TDatabase> Union { get; }
+        /// <returns><see cref="UnionSelectDynamicsContinuation{TDatabase}"/>, a fluent continuation for the construction of a sql SELECT query expression.</returns>
+        UnionSelectDynamicsContinuation<TDatabase> Union();
 
         /// <summary>
         /// Construct an a sql SELECT query expression to UNION ALL with the previous SELECT query expression.
@@ -38,7 +38,7 @@ namespace HatTrick.DbEx.Sql
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/language-elements/set-operators-union-transact-sql">Microsoft docs on UNION</see>
         /// </para>
         /// </summary>
-        /// <returns><see cref="UnionSelectAnyContinuation{TDatabase}"/>, a fluent continuation for the construction of a sql SELECT query expression.</returns>
-        UnionSelectAnyContinuation<TDatabase> UnionAll { get; }
+        /// <returns><see cref="UnionSelectDynamicsContinuation{TDatabase}"/>, a fluent continuation for the construction of a sql SELECT query expression.</returns>
+        UnionSelectDynamicsContinuation<TDatabase> UnionAll();
     }
 }

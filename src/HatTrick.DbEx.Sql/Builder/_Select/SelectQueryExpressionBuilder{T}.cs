@@ -25,35 +25,24 @@ using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
-    public abstract class SelectQueryExpressionBuilder<TDatabase> : QueryExpressionBuilder<TDatabase>,
-        UnionSelectAnyInitiation<TDatabase>
+    public abstract class SelectQueryExpressionBuilder<TDatabase> : QueryExpressionBuilder<TDatabase>
         where TDatabase : class, ISqlDatabaseRuntime
     {
         #region internals
-        protected readonly Func<UnionSelectAnyInitiation<TDatabase>> union;
-        private SelectQueryExpression _expression;
-        protected override QueryExpression Expression => SelectQueryExpression;
+        protected override QueryExpression Expression => (Controller as IQueryExpressionProvider).Expression;
         #endregion
 
         #region interface
-        public SelectQueryExpression SelectQueryExpression => _expression;
-        
-        UnionSelectAnyContinuation<TDatabase> UnionSelectAnyInitiation<TDatabase>.Union
-            => union!().Union;
-
-        UnionSelectAnyContinuation<TDatabase> UnionSelectAnyInitiation<TDatabase>.UnionAll
-            => union!().UnionAll;
+        public SelectSetQueryExpressionBuilder<TDatabase> Controller { get; private set; }
         #endregion
 
         #region constructors
         protected SelectQueryExpressionBuilder(
-            SelectQueryExpression expression,
-            SqlDatabaseRuntimeConfiguration config, 
-            Func<UnionSelectAnyInitiation<TDatabase>> union
+            SqlDatabaseRuntimeConfiguration config,
+            SelectSetQueryExpressionBuilder<TDatabase> controller
         ): base(config)
         {
-            _expression = expression ?? throw new ArgumentNullException(nameof(expression));
-            this.union = union ?? throw new ArgumentNullException(nameof(union));
+            Controller = controller ?? throw new ArgumentNullException(nameof(controller));
         }
         #endregion
 
@@ -61,60 +50,65 @@ namespace HatTrick.DbEx.Sql.Builder
         protected virtual void ApplyFrom<T>(Table<T> entity)
             where T : class, IDbEntity
         {
-            SelectQueryExpression.From = entity ?? throw new ArgumentNullException(nameof(entity));
+            Controller.Current.From = new FromExpression(entity ?? throw new ArgumentNullException(nameof(entity)));
+        }
+
+        protected virtual void ApplyFrom(AnySelectSubquery query)
+        {
+            Controller.Current.From = new FromExpression((query as IQueryExpressionProvider)?.Expression ?? throw new ArgumentNullException(nameof(query)));
         }
 
         protected void ApplyTop(int value)
         {
-            SelectQueryExpression.Top = value;
+            Controller.Current.Top = value;
         }
 
         protected void ApplyDistinct()
         {
-            SelectQueryExpression.Distinct = true;
+            Controller.Current.Distinct = true;
         }
 
-        protected void ApplyWhere(AnyWhereClause? expression)
+        protected void ApplyWhere(AnyWhereExpression? expression)
         {
             if (expression is null)
                 return;
 
             if (expression is FilterExpression single)
             {
-                if (SelectQueryExpression.Where is null)
-                    SelectQueryExpression.Where = new(single);
+                if (Controller.Current.Where is null)
+                    Controller.Current.Where = new(single);
                 else
-                    SelectQueryExpression.Where &= single;
+                    Controller.Current.Where &= single;
             }
             else if (expression is FilterExpressionSet set)
             {
                 if (expression is IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements> provider && provider.Expression?.Args is not null && provider.Expression.Args.Any())
                 {
-                    if (SelectQueryExpression.Where is null)
-                        SelectQueryExpression.Where = set;
+                    if (Controller.Current.Where is null)
+                        Controller.Current.Where = set;
                     else
-                        SelectQueryExpression.Where &= set;
+                        Controller.Current.Where &= set;
                 }
             }
         }
 
-        protected void ApplyOrderBy(IEnumerable<AnyOrderByClause>? orderBy)
+        protected void ApplyOrderBy(IEnumerable<AnyOrderByExpression>? orderBy)
         {
             if (orderBy is null || !orderBy.Any())
                 return;
 
-            SelectQueryExpression.OrderBy &= new OrderByExpressionSet(orderBy);
+            Controller.Current.OrderBy &= new OrderByExpressionSet(orderBy);
         }
 
-        protected void ApplyGroupBy(IEnumerable<AnyGroupByClause>? groupBy)
+        protected void ApplyGroupBy(IEnumerable<AnyGroupByExpression>? groupBy)
         {
             if (groupBy is null || !groupBy.Any())
                 return;
 
-            SelectQueryExpression.GroupBy &= new GroupByExpressionSet(groupBy);
+            Controller.Current.GroupBy &= new GroupByExpressionSet(groupBy);
         }
 
-        protected void ApplyHaving(AnyHavingClause? having)
+        protected void ApplyHaving(AnyHavingExpression? having)
         {
             if (having is null)
                 return;
@@ -122,25 +116,22 @@ namespace HatTrick.DbEx.Sql.Builder
             if (having is not FilterExpressionSet set)
                 set = new(having);
 
-            SelectQueryExpression.Having &= new HavingExpression(set);
+            Controller.Current.Having &= new HavingExpression(set);
         }
 
         protected void ApplyCrossJoin(AnyEntity entity)
         {
-            SelectQueryExpression.Joins = SelectQueryExpression.Joins is null ?
+            Controller.Current.Joins = Controller.Current.Joins is null ?
                 new JoinExpressionSet(new JoinExpression(entity, JoinOperationExpressionOperator.CROSS, null))
                 :
-                new JoinExpressionSet(SelectQueryExpression.Joins.Expressions.Concat(new JoinExpression[1] { new JoinExpression(entity, JoinOperationExpressionOperator.CROSS, null) }));
+                new JoinExpressionSet(Controller.Current.Joins.Expressions.Concat(new JoinExpression[1] { new JoinExpression(entity, JoinOperationExpressionOperator.CROSS, null) }));
         }
 
         protected void ApplyOffset(int value)
-            => SelectQueryExpression.Offset = value;
+            => Controller.Current.Offset = value;
 
         protected void ApplyLimit(int value)
-            => SelectQueryExpression.Limit = value;
-
-        protected virtual ISelectQueryExpressionExecutionPipeline CreateSelectExecutionPipeline()
-            => Configuration.ExecutionPipelineFactory?.CreateQueryExecutionPipeline(Configuration, SelectQueryExpression) ?? throw new DbExpressionConfigurationException($"Could not resolve/create an execution pipeline for type '{GetType()}',  please review and ensure the correct configuration for DbExpression.");
+            => Controller.Current.Limit = value;
         #endregion
     }
 }

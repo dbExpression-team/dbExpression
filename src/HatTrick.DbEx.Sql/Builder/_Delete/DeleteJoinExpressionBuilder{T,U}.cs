@@ -43,7 +43,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
 
         #region methods
-        protected void On(AnyJoinOnClause joinOn)
+        protected void On(AnyJoinOnExpression joinOn)
         {
             var join = new JoinExpression(joinTo, joinType, joinOn);
 

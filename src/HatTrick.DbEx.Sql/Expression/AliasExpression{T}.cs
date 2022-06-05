@@ -21,10 +21,22 @@ using System;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class AliasExpression<T> : AliasExpression,
-        AnyElement<T>,
+        AliasedElement<T>,
         IEquatable<AliasExpression<T>>
     {
         #region constructors
+        public AliasExpression(string singleAlias)
+            : base(singleAlias, typeof(T))
+        {
+
+        }
+
+        public AliasExpression(string singleAlias, Type declaredType)
+            : base(singleAlias, declaredType)
+        {
+
+        }
+
         public AliasExpression((string TableName, string FieldName) alias)
             : base(alias, typeof(T))
         {
@@ -39,8 +51,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public SelectExpression<T> As(string alias)
-            => new(this, alias);
+        public AliasedElement<T> As(string alias)
+            => new SelectExpression<T>(this, alias);
 
         AnyElement<T> AnyElement<T>.As(string alias)
             => new SelectExpression<T>(this).As(alias);

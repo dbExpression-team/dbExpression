@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.Sql.Expression
     {
         #region interface
         public SelectExpressionSet Select { get; set; } = new SelectExpressionSet();
-        public Table? From { get; set; }
+        public FromExpression? From { get; set; }
         public bool? Distinct { get; set; }
         public int? Top { get; set; }
         public int? Offset { get; set; }

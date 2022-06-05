@@ -32,6 +32,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         private static readonly AssignmentExpressionSetAppender assignmentSetAppender = new();
         private static readonly SelectExpressionAppender selectAppender = new();
         private static readonly SelectExpressionSetAppender selectSetAppender = new();
+        private static readonly FromExpressionAppender fromAppender = new();
         private static readonly FilterExpressionAppender filterAppender = new();
         private static readonly FilterExpressionSetAppender filterSetAppender = new();
         private static readonly JoinExpressionAppender joinAppender = new();
@@ -90,7 +91,8 @@ namespace HatTrick.DbEx.Sql.Assembler
             RegisterElementAppender(assignmentSetAppender);
             RegisterElementAppender(selectAppender);
             RegisterElementAppender(selectSetAppender);
-            RegisterElementAppender(filterAppender);
+            RegisterElementAppender(fromAppender);
+            RegisterElementAppender(filterAppender); 
             RegisterElementAppender(filterSetAppender);
             RegisterElementAppender(joinAppender);
             RegisterElementAppender(joinSetAppender);

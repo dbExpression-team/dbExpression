@@ -51,7 +51,8 @@ namespace HatTrick.DbEx.Sql.Assembler
                         builder.AppendElement(query.ConcatenationExpression, context);
                         builder.Appender.LineBreak();
                     }
-                    context.PushFieldAppendStyle(FieldExpressionAppendStyle.None);
+                    if (!pushedStyle)
+                        context.PushFieldAppendStyle(FieldExpressionAppendStyle.None);
                     pushedStyle = true;
                 }
             }

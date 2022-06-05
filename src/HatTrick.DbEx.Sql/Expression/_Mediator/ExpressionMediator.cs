@@ -23,8 +23,8 @@ namespace HatTrick.DbEx.Sql.Expression
     public abstract class ExpressionMediator : 
         AnyElement,
         IFilterExpressionElement,
-        AnyOrderByClause,
-        AnyGroupByClause,
+        AnyOrderByExpression,
+        AnyGroupByExpression,
         IExpressionTypeProvider,
         IEquatable<ExpressionMediator>
     {

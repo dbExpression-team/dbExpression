@@ -32,9 +32,9 @@ namespace HatTrick.DbEx.Sql
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/search-condition-transact-sql">Microsoft docs on search condition for UPDATE</see>
         /// </para>
         /// </summary>
-        /// <param name="where">Any filter predicate of type <see cref="AnyWhereClause"/>.</param>
+        /// <param name="where">Any filter predicate of type <see cref="AnyWhereExpression"/>.</param>
         /// <returns><see cref="UpdateEntitiesContinuation{TTDatabase, Entity}"/>, a fluent continuation for the construction of a sql UPDATE query expression for updating <typeparamref name="TEntity"/> entities.</returns>
-        UpdateEntitiesContinuation<TDatabase, TEntity> Where(AnyWhereClause where);
+        UpdateEntitiesContinuation<TDatabase, TEntity> Where(AnyWhereExpression where);
 
         /// <summary>
         /// Construct an INNER JOIN clause of a sql UPDATE query expression for updating <typeparamref name="TEntity"/> entities.
@@ -53,8 +53,8 @@ namespace HatTrick.DbEx.Sql
         /// </para>
         /// </summary>
         /// <param name="subquery">Any expression of type <see cref="AnySelectSubquery"/> specifying a SELECT query expression to join to.</param>
-        /// <returns><see cref="JoinOnWithAlias{UpdateEntitiesContinuation{TDatabase, TEntity}}"/>, a fluent continuation for the construction of a sql JOIN expression for updating <typeparamref name="TEntity"/> entities.</returns>
-        JoinOnWithAlias<UpdateEntitiesContinuation<TDatabase, TEntity>> InnerJoin(AnySelectSubquery subquery);
+        /// <returns><see cref="WithAlias{JoinOn{UpdateEntitiesContinuation{TDatabase, TEntity}}}"/>, a fluent continuation for the construction of a sql JOIN expression for updating <typeparamref name="TEntity"/> entities.</returns>
+        WithAlias<JoinOn<UpdateEntitiesContinuation<TDatabase, TEntity>>> InnerJoin(AnySelectSubquery subquery);
 
         /// <summary>
         /// Construct an LEFT JOIN clause of a sql UPDATE query expression for updating <typeparamref name="TEntity"/> entities.
@@ -73,8 +73,8 @@ namespace HatTrick.DbEx.Sql
         /// </para>
         /// </summary>
         /// <param name="subquery">Any expression of type <see cref="AnySelectSubquery"/> specifying a SELECT query expression to join to.</param>
-        /// <returns><see cref="JoinOnWithAlias{UpdateEntitiesContinuation{TDatabase, TEntity}}"/>, a fluent continuation for the construction of a sql JOIN expression for updating <typeparamref name="TEntity"/> entities.</returns>
-        JoinOnWithAlias<UpdateEntitiesContinuation<TDatabase, TEntity>> LeftJoin(AnySelectSubquery subquery);
+        /// <returns><see cref="WithAlias{JoinOn{UpdateEntitiesContinuation{TDatabase, TEntity}}}"/>, a fluent continuation for the construction of a sql JOIN expression for updating <typeparamref name="TEntity"/> entities.</returns>
+        WithAlias<JoinOn<UpdateEntitiesContinuation<TDatabase, TEntity>>> LeftJoin(AnySelectSubquery subquery);
 
         /// <summary>
         /// Construct an RIGHT JOIN clause of a sql UPDATE query expression for updating <typeparamref name="TEntity"/> entities.
@@ -93,8 +93,8 @@ namespace HatTrick.DbEx.Sql
         /// </para>
         /// </summary>
         /// <param name="subquery">Any expression of type <see cref="AnySelectSubquery"/> specifying a SELECT query expression to join to.</param>
-        /// <returns><see cref="JoinOnWithAlias{UpdateEntitiesContinuation{TDatabase, TEntity}}"/>, a fluent continuation for the construction of a sql JOIN expression for updating <typeparamref name="TEntity"/> entities.</returns>
-        JoinOnWithAlias<UpdateEntitiesContinuation<TDatabase, TEntity>> RightJoin(AnySelectSubquery subquery);
+        /// <returns><see cref="WithAlias{JoinOn{UpdateEntitiesContinuation{TDatabase, TEntity}}}"/>, a fluent continuation for the construction of a sql JOIN expression for updating <typeparamref name="TEntity"/> entities.</returns>
+        WithAlias<JoinOn<UpdateEntitiesContinuation<TDatabase, TEntity>>> RightJoin(AnySelectSubquery subquery);
 
         /// <summary>
         /// Construct an FULL JOIN clause of a sql UPDATE query expression for updating <typeparamref name="TEntity"/> entities.
@@ -113,8 +113,8 @@ namespace HatTrick.DbEx.Sql
         /// </para>
         /// </summary>
         /// <param name="subquery">Any expression of type <see cref="AnySelectSubquery"/> specifying a SELECT query expression to join to.</param>
-        /// <returns><see cref="JoinOnWithAlias{UpdateEntitiesContinuation{TDatabase, TEntity}}"/>, a fluent continuation for the construction of a sql JOIN expression for updating <typeparamref name="TEntity"/> entities.</returns>
-        JoinOnWithAlias<UpdateEntitiesContinuation<TDatabase, TEntity>> FullJoin(AnySelectSubquery subquery);
+        /// <returns><see cref="WithAlias{JoinOn{UpdateEntitiesContinuation{TDatabase, TEntity}}}"/>, a fluent continuation for the construction of a sql JOIN expression for updating <typeparamref name="TEntity"/> entities.</returns>
+        WithAlias<JoinOn<UpdateEntitiesContinuation<TDatabase, TEntity>>> FullJoin(AnySelectSubquery subquery);
 
         /// <summary>
         /// Construct an CROSS JOIN clause of a sql UPDATE query expression for updating <typeparamref name="TEntity"/> entities.

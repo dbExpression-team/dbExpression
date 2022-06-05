@@ -21,6 +21,7 @@ using HatTrick.DbEx.Sql.Connection;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -29,27 +30,41 @@ namespace HatTrick.DbEx.Sql.Builder
     public class SelectValueSelectQueryExpressionBuilder<TDatabase, TValue> : SelectQueryExpressionBuilder<TDatabase>,
         SelectValue<TDatabase, TValue>,
         SelectValueContinuation<TDatabase, TValue>,
+        WithAlias<SelectValueContinuation<TDatabase, TValue>>,
         SelectValueTermination<TDatabase, TValue>
         where TDatabase : class, ISqlDatabaseRuntime
     {
-        #region internals
-        private readonly Func<SelectValueTermination<TDatabase, TValue>> _executor;
-        private SelectValueTermination<TDatabase, TValue> Executor => _executor();
-        #endregion
-
         #region constructors
         public SelectValueSelectQueryExpressionBuilder(
-            SelectQueryExpression expression,
             SqlDatabaseRuntimeConfiguration config,
-            Func<UnionSelectAnyInitiation<TDatabase>> union,
-            Func<SelectValueTermination<TDatabase, TValue>> executor
-        ) : base(expression, config, union)
+            SelectSetQueryExpressionBuilder<TDatabase> controller
+        ) : base(config, controller)
         {
-            _executor = executor ?? throw new ArgumentNullException(nameof(executor));
+
         }
         #endregion
 
         #region methods
+        #region UnionSelectValuesInitiation<TDatabase>
+        UnionSelectValuesContinuation<TDatabase, TValue> UnionSelectValuesInitiation<TDatabase, TValue>.Union()
+        {
+            Controller.ApplyUnion();
+            return new SelectValuesSelectQueryExpressionBuilder<TDatabase, TValue>(
+                Configuration,
+                Controller
+            );
+        }
+
+        UnionSelectValuesContinuation<TDatabase, TValue> UnionSelectValuesInitiation<TDatabase, TValue>.UnionAll()
+        {
+            Controller.ApplyUnionAll();
+            return new SelectValuesSelectQueryExpressionBuilder<TDatabase, TValue>(
+                Configuration,
+                Controller
+            );
+        }
+        #endregion
+
         #region SelectValue<TDatabase, TValue>
         /// <inheritdoc />
         SelectValueContinuation<TDatabase, TValue> SelectValue<TDatabase, TValue>.From<TEntity>(Table<TEntity> entity)
@@ -57,46 +72,53 @@ namespace HatTrick.DbEx.Sql.Builder
             ApplyFrom(entity);
             return this;
         }
+
+        /// <inheritdoc />
+        WithAlias<SelectValueContinuation<TDatabase, TValue>> SelectValue<TDatabase, TValue>.From(AnySelectSubquery query)
+        {
+            ApplyFrom(query);
+            return this;
+        }
         #endregion
 
         #region SelectValueContinuation<TDatabase, TValue>
         /// <inheritdoc />
-        SelectValueContinuation<TDatabase, TValue> SelectValueContinuation<TDatabase, TValue>.OrderBy(params AnyOrderByClause[] orderBy)
+        SelectValueContinuation<TDatabase, TValue> SelectValueContinuation<TDatabase, TValue>.OrderBy(params AnyOrderByExpression[] orderBy)
         {
             ApplyOrderBy(orderBy);
             return this;
         }
 
         /// <inheritdoc />
-        SelectValueContinuation<TDatabase, TValue> SelectValueContinuation<TDatabase, TValue>.OrderBy(IEnumerable<AnyOrderByClause>? orderBy)
+        SelectValueContinuation<TDatabase, TValue> SelectValueContinuation<TDatabase, TValue>.OrderBy(IEnumerable<AnyOrderByExpression>? orderBy)
         {
             ApplyOrderBy(orderBy);
             return this;
         }
 
         /// <inheritdoc />
-        SelectValueContinuation<TDatabase, TValue> SelectValueContinuation<TDatabase, TValue>.GroupBy(params AnyGroupByClause[] groupBy)
+        SelectValueContinuation<TDatabase, TValue> SelectValueContinuation<TDatabase, TValue>.GroupBy(params AnyGroupByExpression[] groupBy)
         {
             ApplyGroupBy(groupBy);
             return this;
         }
 
         /// <inheritdoc />
-        SelectValueContinuation<TDatabase, TValue> SelectValueContinuation<TDatabase, TValue>.GroupBy(IEnumerable<AnyGroupByClause>? groupBy)
+        SelectValueContinuation<TDatabase, TValue> SelectValueContinuation<TDatabase, TValue>.GroupBy(IEnumerable<AnyGroupByExpression>? groupBy)
         {
             ApplyGroupBy(groupBy);
             return this;
         }
 
         /// <inheritdoc />
-        SelectValueContinuation<TDatabase, TValue> SelectValueContinuation<TDatabase, TValue>.Having(AnyHavingClause? having)
+        SelectValueContinuation<TDatabase, TValue> SelectValueContinuation<TDatabase, TValue>.Having(AnyHavingExpression? having)
         {
             ApplyHaving(having);
             return this;
         }
 
         /// <inheritdoc />
-        SelectValueContinuation<TDatabase, TValue> SelectValueContinuation<TDatabase, TValue>.Where(AnyWhereClause? where)
+        SelectValueContinuation<TDatabase, TValue> SelectValueContinuation<TDatabase, TValue>.Where(AnyWhereExpression? where)
         {
             ApplyWhere(where);
             return this;
@@ -104,35 +126,35 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <inheritdoc />
         JoinOn<SelectValueContinuation<TDatabase, TValue>> SelectValueContinuation<TDatabase, TValue>.InnerJoin(AnyEntity entity)
-            => new SelectValueJoinExpressionBuilder<TDatabase, TValue>(SelectQueryExpression, entity, JoinOperationExpressionOperator.INNER, this);
+            => new SelectValueJoinExpressionBuilder<TDatabase, TValue>(Controller.Current, entity, JoinOperationExpressionOperator.INNER, this);
 
         /// <inheritdoc />
-        JoinOnWithAlias<SelectValueContinuation<TDatabase, TValue>> SelectValueContinuation<TDatabase, TValue>.InnerJoin(AnySelectSubquery subquery)
-            => new SelectValueJoinExpressionBuilder<TDatabase, TValue>(SelectQueryExpression, subquery.Expression, JoinOperationExpressionOperator.INNER, this);
+        WithAlias<JoinOn<SelectValueContinuation<TDatabase, TValue>>> SelectValueContinuation<TDatabase, TValue>.InnerJoin(AnySelectSubquery subquery)
+            => new SelectValueJoinExpressionBuilder<TDatabase, TValue>(Controller.Current, subquery.Expression, JoinOperationExpressionOperator.INNER, this);
 
         /// <inheritdoc />
         JoinOn<SelectValueContinuation<TDatabase, TValue>> SelectValueContinuation<TDatabase, TValue>.LeftJoin(AnyEntity entity)
-            => new SelectValueJoinExpressionBuilder<TDatabase, TValue>(SelectQueryExpression, entity, JoinOperationExpressionOperator.LEFT, this);
+            => new SelectValueJoinExpressionBuilder<TDatabase, TValue>(Controller.Current, entity, JoinOperationExpressionOperator.LEFT, this);
 
         /// <inheritdoc />
-        JoinOnWithAlias<SelectValueContinuation<TDatabase, TValue>> SelectValueContinuation<TDatabase, TValue>.LeftJoin(AnySelectSubquery subquery)
-            => new SelectValueJoinExpressionBuilder<TDatabase, TValue>(SelectQueryExpression, subquery.Expression, JoinOperationExpressionOperator.LEFT, this);
+        WithAlias<JoinOn<SelectValueContinuation<TDatabase, TValue>>> SelectValueContinuation<TDatabase, TValue>.LeftJoin(AnySelectSubquery subquery)
+            => new SelectValueJoinExpressionBuilder<TDatabase, TValue>(Controller.Current, subquery.Expression, JoinOperationExpressionOperator.LEFT, this);
 
         /// <inheritdoc />
         JoinOn<SelectValueContinuation<TDatabase, TValue>> SelectValueContinuation<TDatabase, TValue>.RightJoin(AnyEntity entity)
-            => new SelectValueJoinExpressionBuilder<TDatabase, TValue>(SelectQueryExpression, entity, JoinOperationExpressionOperator.RIGHT, this);
+            => new SelectValueJoinExpressionBuilder<TDatabase, TValue>(Controller.Current, entity, JoinOperationExpressionOperator.RIGHT, this);
 
         /// <inheritdoc />
-        JoinOnWithAlias<SelectValueContinuation<TDatabase, TValue>> SelectValueContinuation<TDatabase, TValue>.RightJoin(AnySelectSubquery subquery)
-            => new SelectValueJoinExpressionBuilder<TDatabase, TValue>(SelectQueryExpression, subquery.Expression, JoinOperationExpressionOperator.RIGHT, this);
+        WithAlias<JoinOn<SelectValueContinuation<TDatabase, TValue>>> SelectValueContinuation<TDatabase, TValue>.RightJoin(AnySelectSubquery subquery)
+            => new SelectValueJoinExpressionBuilder<TDatabase, TValue>(Controller.Current, subquery.Expression, JoinOperationExpressionOperator.RIGHT, this);
 
         /// <inheritdoc />
         JoinOn<SelectValueContinuation<TDatabase, TValue>> SelectValueContinuation<TDatabase, TValue>.FullJoin(AnyEntity entity)
-            => new SelectValueJoinExpressionBuilder<TDatabase, TValue>(SelectQueryExpression, entity, JoinOperationExpressionOperator.FULL, this);
+            => new SelectValueJoinExpressionBuilder<TDatabase, TValue>(Controller.Current, entity, JoinOperationExpressionOperator.FULL, this);
 
         /// <inheritdoc />
-        JoinOnWithAlias<SelectValueContinuation<TDatabase, TValue>> SelectValueContinuation<TDatabase, TValue>.FullJoin(AnySelectSubquery subquery)
-            => new SelectValueJoinExpressionBuilder<TDatabase, TValue>(SelectQueryExpression, subquery.Expression, JoinOperationExpressionOperator.FULL, this);
+        WithAlias<JoinOn<SelectValueContinuation<TDatabase, TValue>>> SelectValueContinuation<TDatabase, TValue>.FullJoin(AnySelectSubquery subquery)
+            => new SelectValueJoinExpressionBuilder<TDatabase, TValue>(Controller.Current, subquery.Expression, JoinOperationExpressionOperator.FULL, this);
 
         /// <inheritdoc />
         SelectValueContinuation<TDatabase, TValue> SelectValueContinuation<TDatabase, TValue>.CrossJoin(AnyEntity entity)
@@ -140,40 +162,121 @@ namespace HatTrick.DbEx.Sql.Builder
             ApplyCrossJoin(entity);
             return this;
         }
+
+        /// <inheritdoc />
+        SelectValueContinuation<TDatabase, TValue> WithAlias<SelectValueContinuation<TDatabase, TValue>>.As(string alias)
+        {
+            Controller.Current.From!.As(alias);
+            return this;
+        }
         #endregion
 
         #region SelectValueTermination<TDatabase, TValue>
         /// <inheritdoc />
         TValue? SelectValueTermination<TDatabase, TValue>.Execute()
-            => Executor.Execute();
+        {
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            return ExecutePipeline(
+                connection,
+                null
+            );
+        }
 
         /// <inheritdoc />
         TValue? SelectValueTermination<TDatabase, TValue>.Execute(int commandTimeout)
-            => Executor.Execute(commandTimeout);
+        {
+            if (commandTimeout <= 0)
+                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            return ExecutePipeline(
+                connection,
+                command => command.CommandTimeout = commandTimeout
+            );
+        }
 
         /// <inheritdoc />
         TValue? SelectValueTermination<TDatabase, TValue>.Execute(ISqlConnection connection)
-            => Executor.Execute(connection);
+        {
+            return ExecutePipeline(
+                connection ?? throw new ArgumentNullException(nameof(connection)),
+                null
+            );
+        }
 
         /// <inheritdoc />
         TValue? SelectValueTermination<TDatabase, TValue>.Execute(ISqlConnection connection, int commandTimeout)
-            => Executor.Execute(connection, commandTimeout);
+        {
+            if (commandTimeout <= 0)
+                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            return ExecutePipeline(
+                connection ?? throw new ArgumentNullException(nameof(connection)),
+                command => command.CommandTimeout = commandTimeout
+            );
+        }
 
         /// <inheritdoc />
         async Task<TValue?> SelectValueTermination<TDatabase, TValue>.ExecuteAsync(CancellationToken cancellationToken)
-            => await Executor.ExecuteAsync(cancellationToken).ConfigureAwait(false);
+        {
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            return await ExecutePipelineAsync(
+                connection,
+                null,
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
 
         /// <inheritdoc />
         async Task<TValue?> SelectValueTermination<TDatabase, TValue>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
-            => await Executor.ExecuteAsync(commandTimeout, cancellationToken).ConfigureAwait(false);
+        {
+            if (commandTimeout <= 0)
+                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            return await ExecutePipelineAsync(
+                connection,
+                command => command.CommandTimeout = commandTimeout,
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
 
         /// <inheritdoc />
         async Task<TValue?> SelectValueTermination<TDatabase, TValue>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
-            => await Executor.ExecuteAsync(connection, cancellationToken).ConfigureAwait(false);
+        {
+            return await ExecutePipelineAsync(
+                connection ?? throw new ArgumentNullException(nameof(connection)),
+                null,
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
 
         /// <inheritdoc />
         async Task<TValue?> SelectValueTermination<TDatabase, TValue>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
-            => await Executor.ExecuteAsync(connection, commandTimeout, cancellationToken).ConfigureAwait(false);
+        {
+            if (commandTimeout <= 0)
+                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            return await ExecutePipelineAsync(
+                connection ?? throw new ArgumentNullException(nameof(connection)),
+                command => command.CommandTimeout = commandTimeout,
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
+
+        protected virtual TValue? ExecutePipeline(ISqlConnection connection, Action<IDbCommand>? configureCommand)
+        {
+            var expression = Controller.Current;
+            var pipeline = Configuration.ExecutionPipelineFactory?.CreateQueryExecutionPipeline(Configuration, expression) ?? throw new DbExpressionConfigurationException($"Could not resolve/create an execution pipeline for type '{expression.GetType()}'.");
+            return pipeline.ExecuteSelectValue<TValue>(expression, connection, configureCommand);
+        }
+
+        protected virtual async Task<TValue?> ExecutePipelineAsync(ISqlConnection connection, Action<IDbCommand>? configureCommand, CancellationToken cancellationToken)
+        {
+            var expression = Controller.Current;
+            var pipeline = Configuration.ExecutionPipelineFactory?.CreateQueryExecutionPipeline(Configuration, expression) ?? throw new DbExpressionConfigurationException($"Could not resolve/create an execution pipeline for type '{expression.GetType()}'.");
+            return await pipeline.ExecuteSelectValueAsync<TValue>(expression, connection, configureCommand, cancellationToken).ConfigureAwait(false);
+        }
         #endregion
         #endregion
     }

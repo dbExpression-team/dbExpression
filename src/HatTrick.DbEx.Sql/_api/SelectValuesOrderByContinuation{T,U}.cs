@@ -40,9 +40,9 @@ namespace HatTrick.DbEx.Sql
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-group-by-transact-sql">Microsoft docs on GROUP BY</see>
         /// </para>
         /// </summary>
-        /// <param name="groupBy">A list of expressions of type <see cref="AnyGroupByClause"/> specifying how to group the selected results.</param>
+        /// <param name="groupBy">A list of expressions of type <see cref="AnyGroupByExpression"/> specifying how to group the selected results.</param>
         /// <returns><see cref="SelectValuesOrderByContinuation{TDatabase, TValue}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="TValue"/> values.</returns>
-        SelectValuesOrderByContinuation<TDatabase, TValue> GroupBy(params AnyGroupByClause[] groupBy);
+        SelectValuesOrderByContinuation<TDatabase, TValue> GroupBy(params AnyGroupByExpression[] groupBy);
 
         /// <summary>
         /// Construct the GROUP BY clause of a sql SELECT query expression for a list of <typeparamref name="TValue"/> values.
@@ -50,9 +50,9 @@ namespace HatTrick.DbEx.Sql
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-group-by-transact-sql">Microsoft docs on GROUP BY</see>
         /// </para>
         /// </summary>
-        /// <param name="groupBy">A list of expressions of type <see cref="AnyGroupByClause"/> specifying how to group the selected results.</param>
+        /// <param name="groupBy">A list of expressions of type <see cref="AnyGroupByExpression"/> specifying how to group the selected results.</param>
         /// <returns><see cref="SelectValuesOrderByContinuation{TDatabase, TValue}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="TValue"/> values.</returns>
-        SelectValuesOrderByContinuation<TDatabase, TValue> GroupBy(IEnumerable<AnyGroupByClause>? groupBy);
+        SelectValuesOrderByContinuation<TDatabase, TValue> GroupBy(IEnumerable<AnyGroupByExpression>? groupBy);
 
         /// <summary>
         /// Construct the HAVING clause of a sql SELECT query expression for a list of <typeparamref name="TValue"/> values.
@@ -60,8 +60,8 @@ namespace HatTrick.DbEx.Sql
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-having-transact-sql">Microsoft docs on HAVING</see>
         /// </para>
         /// </summary>
-        /// <param name="having">A list of expressions of type <see cref="AnyHavingClause"/> specifying conditions on the grouping or aggregation of selected results.</param>
+        /// <param name="having">A list of expressions of type <see cref="AnyHavingExpression"/> specifying conditions on the grouping or aggregation of selected results.</param>
         /// <returns><see cref="SelectValuesOrderByContinuation{TDatabase, TEntity}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="TValue"/> values.</returns>
-        SelectValuesOrderByContinuation<TDatabase, TValue> Having(AnyHavingClause? having);
+        SelectValuesOrderByContinuation<TDatabase, TValue> Having(AnyHavingExpression? having);
     }
 }

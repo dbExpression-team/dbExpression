@@ -22,7 +22,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class FunctionExpression :
         AnyElement,
-        AnyOrderByClause,
+        AnyOrderByExpression,
         IFunctionExpression,
         IExpressionTypeProvider,
         IEquatable<FunctionExpression>

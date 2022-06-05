@@ -24,11 +24,11 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public class GroupByExpressionSet : 
         IExpressionElement,
-        IExpressionListProvider<AnyGroupByClause>,
+        IExpressionListProvider<AnyGroupByExpression>,
         IEquatable<GroupByExpressionSet>
     {
         #region interface
-        public IEnumerable<AnyGroupByClause> Expressions { get; private set; } = Array.Empty<AnyGroupByClause>();
+        public IEnumerable<AnyGroupByExpression> Expressions { get; private set; } = Array.Empty<AnyGroupByExpression>();
         #endregion
 
         #region constructors
@@ -37,21 +37,21 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
 
-        public GroupByExpressionSet(AnyGroupByClause groupBy)
+        public GroupByExpressionSet(AnyGroupByExpression groupBy)
         {
-            Expressions = Expressions.Concat(new AnyGroupByClause[1] { (groupBy ?? throw new ArgumentNullException(nameof(groupBy))) is GroupByExpression ? groupBy : new GroupByExpression(groupBy) });
+            Expressions = Expressions.Concat(new AnyGroupByExpression[1] { (groupBy ?? throw new ArgumentNullException(nameof(groupBy))) is GroupByExpression ? groupBy : new GroupByExpression(groupBy) });
         }
 
         public GroupByExpressionSet(GroupByExpression aGroupBy, GroupByExpression bGroupBy)
         {
-            Expressions = new List<AnyGroupByClause>
+            Expressions = new List<AnyGroupByExpression>
             {
                 aGroupBy ?? throw new ArgumentNullException(nameof(aGroupBy)),
                 bGroupBy ?? throw new ArgumentNullException(nameof(bGroupBy))
             };
         }
 
-        public GroupByExpressionSet(IEnumerable<AnyGroupByClause> groupBys)
+        public GroupByExpressionSet(IEnumerable<AnyGroupByExpression> groupBys)
         {
             Expressions = (groupBys ?? throw new ArgumentNullException(nameof(groupBys))).Select(x => x is GroupByExpression ? x : new GroupByExpression(x));
         }
@@ -102,7 +102,7 @@ namespace HatTrick.DbEx.Sql.Expression
             }
             else
             {
-                a.Expressions = a.Expressions.Concat(new AnyGroupByClause[1] { b! });
+                a.Expressions = a.Expressions.Concat(new AnyGroupByExpression[1] { b! });
             }
             return a;
         }

@@ -21,7 +21,7 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class GroupByExpression :
-        AnyGroupByClause,
+        AnyGroupByExpression,
         IExpressionProvider<IExpressionElement>,
         IEquatable<GroupByExpression>
     {

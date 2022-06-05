@@ -22,7 +22,9 @@ using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql
 {
+#pragma warning disable IDE1006 // Naming Styles
     public interface SelectOneInitiation<TDatabase>
+#pragma warning restore IDE1006 // Naming Styles
         where TDatabase : class, ISqlDatabaseRuntime
     {
         #region entity
@@ -101,23 +103,21 @@ namespace HatTrick.DbEx.Sql
         /// <returns><see cref="SelectObject{TDatabase, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the object to select.</typeparam>
         SelectObject<TDatabase, T> SelectOne<T>(ObjectElement<T> element)
-            where T : class;
-
-        /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/>? value.
-        /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
-        /// </para>
-        /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableObjectElement{T}" />?
-        /// </param>
-        /// <returns><see cref="SelectObject{TDatabase, T}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        /// <typeparam name="T">The type of the object to select.</typeparam>
-        SelectObject<TDatabase, T?> SelectOne<T>(NullableObjectElement<T> element)
             where T : class?;
         #endregion
 
         #region data type
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <typeparam name="TValue" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AliasedElement{TValue}" />
+        ///</param>
+        /// <returns><see cref="SelectValue{TDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        SelectValue<TDatabase, TValue> SelectOne<TValue>(AliasedElement<TValue> element);
+
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="bool" /> value.
         /// <para>
@@ -392,17 +392,6 @@ namespace HatTrick.DbEx.Sql
         /// </param>
         /// <returns><see cref="SelectValue{TDatabase, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         SelectValue<TDatabase, string?> SelectOne(NullableStringElement element);
-
-        /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <see cref="string" />? value.
-        /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
-        /// </para>
-        /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
-        /// </param>
-        /// <returns><see cref="SelectValue{TDatabase, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        SelectValue<TDatabase, string?> SelectOne(SelectExpression<string?> element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" /> value.

@@ -42,7 +42,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         #region methods
         /// <inheritdoc />
-        DeleteEntitiesContinuation<TDatabase, TEntity> DeleteEntitiesContinuation<TDatabase, TEntity>.Where(AnyWhereClause where)
+        DeleteEntitiesContinuation<TDatabase, TEntity> DeleteEntitiesContinuation<TDatabase, TEntity>.Where(AnyWhereExpression where)
         {
             ApplyWhere(where);
             return this;
@@ -53,7 +53,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new DeleteEntitiesJoinExpressionBuilder<TDatabase, TEntity>(DeleteQueryExpression, entity, JoinOperationExpressionOperator.INNER, this);
 
         /// <inheritdoc />
-        JoinOnWithAlias<DeleteEntitiesContinuation<TDatabase, TEntity>> DeleteEntitiesContinuation<TDatabase, TEntity>.InnerJoin(AnySelectSubquery subquery)
+        WithAlias<JoinOn<DeleteEntitiesContinuation<TDatabase, TEntity>>> DeleteEntitiesContinuation<TDatabase, TEntity>.InnerJoin(AnySelectSubquery subquery)
             => new DeleteEntitiesJoinExpressionBuilder<TDatabase, TEntity>(DeleteQueryExpression, subquery.Expression, JoinOperationExpressionOperator.INNER, this);
 
         /// <inheritdoc />
@@ -61,7 +61,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new DeleteEntitiesJoinExpressionBuilder<TDatabase, TEntity>(DeleteQueryExpression, entity, JoinOperationExpressionOperator.LEFT, this);
 
         /// <inheritdoc />
-        JoinOnWithAlias<DeleteEntitiesContinuation<TDatabase, TEntity>> DeleteEntitiesContinuation<TDatabase, TEntity>.LeftJoin(AnySelectSubquery subquery)
+        WithAlias<JoinOn<DeleteEntitiesContinuation<TDatabase, TEntity>>> DeleteEntitiesContinuation<TDatabase, TEntity>.LeftJoin(AnySelectSubquery subquery)
             => new DeleteEntitiesJoinExpressionBuilder<TDatabase, TEntity>(DeleteQueryExpression, subquery.Expression, JoinOperationExpressionOperator.LEFT, this);
 
         /// <inheritdoc />
@@ -69,7 +69,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new DeleteEntitiesJoinExpressionBuilder<TDatabase, TEntity>(DeleteQueryExpression, entity, JoinOperationExpressionOperator.RIGHT, this);
 
         /// <inheritdoc />
-        JoinOnWithAlias<DeleteEntitiesContinuation<TDatabase, TEntity>> DeleteEntitiesContinuation<TDatabase, TEntity>.RightJoin(AnySelectSubquery subquery)
+        WithAlias<JoinOn<DeleteEntitiesContinuation<TDatabase, TEntity>>> DeleteEntitiesContinuation<TDatabase, TEntity>.RightJoin(AnySelectSubquery subquery)
             => new DeleteEntitiesJoinExpressionBuilder<TDatabase, TEntity>(DeleteQueryExpression, subquery.Expression, JoinOperationExpressionOperator.RIGHT, this);
 
         /// <inheritdoc />
@@ -77,7 +77,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new DeleteEntitiesJoinExpressionBuilder<TDatabase, TEntity>(DeleteQueryExpression, entity, JoinOperationExpressionOperator.FULL, this);
 
         /// <inheritdoc />
-        JoinOnWithAlias<DeleteEntitiesContinuation<TDatabase, TEntity>> DeleteEntitiesContinuation<TDatabase, TEntity>.FullJoin(AnySelectSubquery subquery)
+        WithAlias<JoinOn<DeleteEntitiesContinuation<TDatabase, TEntity>>> DeleteEntitiesContinuation<TDatabase, TEntity>.FullJoin(AnySelectSubquery subquery)
             => new DeleteEntitiesJoinExpressionBuilder<TDatabase, TEntity>(DeleteQueryExpression, subquery.Expression, JoinOperationExpressionOperator.FULL, this);
 
         /// <inheritdoc />

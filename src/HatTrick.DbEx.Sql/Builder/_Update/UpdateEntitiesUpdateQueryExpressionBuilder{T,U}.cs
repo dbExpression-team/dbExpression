@@ -43,7 +43,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         #region methods
         /// <inheritdoc />
-        UpdateEntitiesContinuation<TDatabase, TEntity> UpdateEntitiesContinuation<TDatabase, TEntity>.Where(AnyWhereClause where)
+        UpdateEntitiesContinuation<TDatabase, TEntity> UpdateEntitiesContinuation<TDatabase, TEntity>.Where(AnyWhereExpression where)
         {
             Where(where);
             return this;
@@ -51,35 +51,35 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <inheritdoc />
         JoinOn<UpdateEntitiesContinuation<TDatabase, TEntity>> UpdateEntitiesContinuation<TDatabase, TEntity>.InnerJoin(AnyEntity entity)
-            => new UpdateEntitiesJoinBuilder<TDatabase, TEntity>(UpdateQueryExpression, entity, JoinOperationExpressionOperator.INNER, this);
+            => new UpdateEntitiesJoinExpressionBuilder<TDatabase, TEntity>(UpdateQueryExpression, entity, JoinOperationExpressionOperator.INNER, this);
 
         /// <inheritdoc />
-        JoinOnWithAlias<UpdateEntitiesContinuation<TDatabase, TEntity>> UpdateEntitiesContinuation<TDatabase, TEntity>.InnerJoin(AnySelectSubquery subquery)
-            => new UpdateEntitiesJoinBuilder<TDatabase, TEntity>(UpdateQueryExpression, subquery.Expression, JoinOperationExpressionOperator.INNER, this);
+        WithAlias<JoinOn<UpdateEntitiesContinuation<TDatabase, TEntity>>> UpdateEntitiesContinuation<TDatabase, TEntity>.InnerJoin(AnySelectSubquery subquery)
+            => new UpdateEntitiesJoinExpressionBuilder<TDatabase, TEntity>(UpdateQueryExpression, subquery.Expression, JoinOperationExpressionOperator.INNER, this);
 
         /// <inheritdoc />
         JoinOn<UpdateEntitiesContinuation<TDatabase, TEntity>> UpdateEntitiesContinuation<TDatabase, TEntity>.LeftJoin(AnyEntity entity)
-            => new UpdateEntitiesJoinBuilder<TDatabase, TEntity>(UpdateQueryExpression, entity, JoinOperationExpressionOperator.LEFT, this);
+            => new UpdateEntitiesJoinExpressionBuilder<TDatabase, TEntity>(UpdateQueryExpression, entity, JoinOperationExpressionOperator.LEFT, this);
 
         /// <inheritdoc />
-        JoinOnWithAlias<UpdateEntitiesContinuation<TDatabase, TEntity>> UpdateEntitiesContinuation<TDatabase, TEntity>.LeftJoin(AnySelectSubquery subquery)
-            => new UpdateEntitiesJoinBuilder<TDatabase, TEntity>(UpdateQueryExpression, subquery.Expression, JoinOperationExpressionOperator.LEFT, this);
+        WithAlias<JoinOn<UpdateEntitiesContinuation<TDatabase, TEntity>>> UpdateEntitiesContinuation<TDatabase, TEntity>.LeftJoin(AnySelectSubquery subquery)
+            => new UpdateEntitiesJoinExpressionBuilder<TDatabase, TEntity>(UpdateQueryExpression, subquery.Expression, JoinOperationExpressionOperator.LEFT, this);
 
         /// <inheritdoc />
         JoinOn<UpdateEntitiesContinuation<TDatabase, TEntity>> UpdateEntitiesContinuation<TDatabase, TEntity>.RightJoin(AnyEntity entity)
-            => new UpdateEntitiesJoinBuilder<TDatabase, TEntity>(UpdateQueryExpression, entity, JoinOperationExpressionOperator.RIGHT, this);
+            => new UpdateEntitiesJoinExpressionBuilder<TDatabase, TEntity>(UpdateQueryExpression, entity, JoinOperationExpressionOperator.RIGHT, this);
 
         /// <inheritdoc />
-        JoinOnWithAlias<UpdateEntitiesContinuation<TDatabase, TEntity>> UpdateEntitiesContinuation<TDatabase, TEntity>.RightJoin(AnySelectSubquery subquery)
-            => new UpdateEntitiesJoinBuilder<TDatabase, TEntity>(UpdateQueryExpression, subquery.Expression, JoinOperationExpressionOperator.RIGHT, this);
+        WithAlias<JoinOn<UpdateEntitiesContinuation<TDatabase, TEntity>>> UpdateEntitiesContinuation<TDatabase, TEntity>.RightJoin(AnySelectSubquery subquery)
+            => new UpdateEntitiesJoinExpressionBuilder<TDatabase, TEntity>(UpdateQueryExpression, subquery.Expression, JoinOperationExpressionOperator.RIGHT, this);
 
         /// <inheritdoc />
         JoinOn<UpdateEntitiesContinuation<TDatabase, TEntity>> UpdateEntitiesContinuation<TDatabase, TEntity>.FullJoin(AnyEntity entity)
-            => new UpdateEntitiesJoinBuilder<TDatabase, TEntity>(UpdateQueryExpression, entity, JoinOperationExpressionOperator.FULL, this);
+            => new UpdateEntitiesJoinExpressionBuilder<TDatabase, TEntity>(UpdateQueryExpression, entity, JoinOperationExpressionOperator.FULL, this);
 
         /// <inheritdoc />
-        JoinOnWithAlias<UpdateEntitiesContinuation<TDatabase, TEntity>> UpdateEntitiesContinuation<TDatabase, TEntity>.FullJoin(AnySelectSubquery subquery)
-            => new UpdateEntitiesJoinBuilder<TDatabase, TEntity>(UpdateQueryExpression, subquery.Expression, JoinOperationExpressionOperator.FULL, this);
+        WithAlias<JoinOn<UpdateEntitiesContinuation<TDatabase, TEntity>>> UpdateEntitiesContinuation<TDatabase, TEntity>.FullJoin(AnySelectSubquery subquery)
+            => new UpdateEntitiesJoinExpressionBuilder<TDatabase, TEntity>(UpdateQueryExpression, subquery.Expression, JoinOperationExpressionOperator.FULL, this);
 
         /// <inheritdoc />
         UpdateEntitiesContinuation<TDatabase, TEntity> UpdateEntitiesContinuation<TDatabase, TEntity>.CrossJoin(AnyEntity entity)

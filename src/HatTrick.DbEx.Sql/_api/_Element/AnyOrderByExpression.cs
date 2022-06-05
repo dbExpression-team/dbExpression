@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,32 +16,13 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-namespace HatTrick.DbEx.Sql.Expression
+﻿using HatTrick.DbEx.Sql.Expression;
+
+namespace HatTrick.DbEx.Sql
 {
-    public class NullableObjectSelectExpression<T> : SelectExpression<T>,
-        NullableObjectElement<T>
-        where T : class?
+#pragma warning disable IDE1006 // Naming Styles
+    public interface AnyOrderByExpression : IExpressionElement
+#pragma warning restore IDE1006 // Naming Styles
     {
-        #region constructors
-        public NullableObjectSelectExpression(NullableObjectElement<T> expression)
-            : base(expression)
-        {
-
-        }
-
-        public NullableObjectSelectExpression(NullableObjectElement<T> expression, string alias)
-            : base(expression, alias)
-        {
-
-        }
-        #endregion
-
-        #region as
-        public new NullableObjectElement<T> As(string alias)
-        {
-            Alias = alias;
-            return this;
-        }
-        #endregion
     }
 }

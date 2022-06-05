@@ -17,14 +17,13 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Dynamic;
 
 namespace HatTrick.DbEx.Sql
 {
 #pragma warning disable IDE1006 // Naming Styles
     public interface SelectDynamicsContinuation<TDatabase> :
 #pragma warning restore IDE1006 // Naming Styles
-        UnionSelectAnyInitiation<TDatabase>,
+        UnionSelectDynamicsInitiation<TDatabase>,
         SelectDynamicsTermination<TDatabase>
         where TDatabase : class, ISqlDatabaseRuntime
     {
@@ -34,9 +33,9 @@ namespace HatTrick.DbEx.Sql
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/where-transact-sql">Microsoft docs on WHERE</see>
         /// </para>
         /// </summary>
-        /// <param name="where">Any filter predicate of type <see cref="AnyWhereClause"/>.</param>
+        /// <param name="where">Any filter predicate of type <see cref="AnyWhereExpression"/>.</param>
         /// <returns><see cref="SelectDynamicsContinuation{TDatabase}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="dynamic"/> values.</returns>
-        SelectDynamicsContinuation<TDatabase> Where(AnyWhereClause? where);
+        SelectDynamicsContinuation<TDatabase> Where(AnyWhereExpression? where);
 
         /// <summary>
         /// Construct the ORDER BY clause of a sql SELECT query expression for a list of <typeparamref name="dynamic"/> values.
@@ -44,9 +43,9 @@ namespace HatTrick.DbEx.Sql
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-order-by-clause-transact-sql">Microsoft docs on ORDER BY</see>
         /// </para>
         /// </summary>
-        /// <param name="orderBy">A list of expressions of type <see cref="AnyOrderByClause"/> indicating the order and direction for sorting.</param>
+        /// <param name="orderBy">A list of expressions of type <see cref="AnyOrderByExpression"/> indicating the order and direction for sorting.</param>
         /// <returns><see cref="SelectDynamicsOrderByContinuation{TDatabase}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="dynamic"/> values.</returns>
-        SelectDynamicsOrderByContinuation<TDatabase> OrderBy(params AnyOrderByClause[] orderBy);
+        SelectDynamicsOrderByContinuation<TDatabase> OrderBy(params AnyOrderByExpression[] orderBy);
 
         /// <summary>
         /// Construct the ORDER BY clause of a sql SELECT query expression for a list of <typeparamref name="dynamic"/> values.
@@ -54,9 +53,9 @@ namespace HatTrick.DbEx.Sql
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-order-by-clause-transact-sql">Microsoft docs on ORDER BY</see>
         /// </para>
         /// </summary>
-        /// <param name="orderBy">A list of expressions of type <see cref="AnyOrderByClause"/> specifying the order and direction for sorting.</param>
+        /// <param name="orderBy">A list of expressions of type <see cref="AnyOrderByExpression"/> specifying the order and direction for sorting.</param>
         /// <returns><see cref="SelectDynamicsOrderByContinuation{TDatabase}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="dynamic"/> values.</returns>
-        SelectDynamicsOrderByContinuation<TDatabase> OrderBy(IEnumerable<AnyOrderByClause>? orderBy);
+        SelectDynamicsOrderByContinuation<TDatabase> OrderBy(IEnumerable<AnyOrderByExpression>? orderBy);
 
         /// <summary>
         /// Construct the GROUP BY clause of a sql SELECT query expression for a list of <typeparamref name="dynamic"/> values.
@@ -64,9 +63,9 @@ namespace HatTrick.DbEx.Sql
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-group-by-transact-sql">Microsoft docs on GROUP BY</see>
         /// </para>
         /// </summary>
-        /// <param name="groupBy">A list of expressions of type <see cref="AnyGroupByClause"/> specifying how to group the selected results.</param>
+        /// <param name="groupBy">A list of expressions of type <see cref="AnyGroupByExpression"/> specifying how to group the selected results.</param>
         /// <returns><see cref="SelectDynamicsContinuation{TDatabase}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="dynamic"/> values.</returns>
-        SelectDynamicsContinuation<TDatabase> GroupBy(params AnyGroupByClause[] groupBy);
+        SelectDynamicsContinuation<TDatabase> GroupBy(params AnyGroupByExpression[] groupBy);
 
         /// <summary>
         /// Construct the GROUP BY clause of a sql SELECT query expression for a list of <typeparamref name="dynamic"/> values.
@@ -74,9 +73,9 @@ namespace HatTrick.DbEx.Sql
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-group-by-transact-sql">Microsoft docs on GROUP BY</see>
         /// </para>
         /// </summary>
-        /// <param name="groupBy">A list of expressions of type <see cref="AnyGroupByClause"/> specifying how to group the selected results.</param>
+        /// <param name="groupBy">A list of expressions of type <see cref="AnyGroupByExpression"/> specifying how to group the selected results.</param>
         /// <returns><see cref="SelectDynamicsContinuation{TDatabase}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="dynamic"/> values.</returns>
-        SelectDynamicsContinuation<TDatabase> GroupBy(IEnumerable<AnyGroupByClause>? groupBy);
+        SelectDynamicsContinuation<TDatabase> GroupBy(IEnumerable<AnyGroupByExpression>? groupBy);
 
         /// <summary>
         /// Construct the HAVING clause of a sql SELECT query expression for a list of <typeparamref name="dynamic"/> values.
@@ -84,9 +83,9 @@ namespace HatTrick.DbEx.Sql
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-having-transact-sql">Microsoft docs on HAVING</see>
         /// </para>
         /// </summary>
-        /// <param name="having">A list of expressions of type <see cref="AnyHavingClause"/> specifying conditions on the grouping or aggregation of selected results.</param>
+        /// <param name="having">A list of expressions of type <see cref="AnyHavingExpression"/> specifying conditions on the grouping or aggregation of selected results.</param>
         /// <returns><see cref="SelectDynamicsContinuation{TDatabase}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="dynamic"/> values.</returns>
-        SelectDynamicsContinuation<TDatabase> Having(AnyHavingClause? having);
+        SelectDynamicsContinuation<TDatabase> Having(AnyHavingExpression? having);
 
         /// <summary>
         /// Construct an INNER JOIN clause of a sql SELECT query expression for a list of <typeparamref name="dynamic"/> values.
@@ -105,8 +104,8 @@ namespace HatTrick.DbEx.Sql
         /// </para>
         /// </summary>
         /// <param name="subquery">Any expression of type <see cref="AnySelectSubquery"/> specifying a SELECT query expression to join to.</param>
-        /// <returns><see cref="JoinOnWithAlias{SelectDynamicsContinuation{TDatabase}}"/>, a fluent continuation for the construction of a sql JOIN expression for a list of <typeparamref name="dynamic"/> values.</returns>
-        JoinOnWithAlias<SelectDynamicsContinuation<TDatabase>> InnerJoin(AnySelectSubquery subquery);
+        /// <returns><see cref="WithAlias{JoinOn{SelectDynamicsContinuation{TDatabase}}}"/>, a fluent continuation for the construction of a sql JOIN expression for a list of <typeparamref name="dynamic"/> values.</returns>
+        WithAlias<JoinOn<SelectDynamicsContinuation<TDatabase>>> InnerJoin(AnySelectSubquery subquery);
 
         /// <summary>
         /// Construct an LEFT JOIN clause of a sql SELECT query expression for a list of <typeparamref name="dynamic"/> values.
@@ -125,8 +124,8 @@ namespace HatTrick.DbEx.Sql
         /// </para>
         /// </summary>
         /// <param name="subquery">Any expression of type <see cref="AnySelectSubquery"/> specifying a SELECT query expression to join to.</param>
-        /// <returns><see cref="JoinOnWithAlias{SelectDynamicsContinuation{TDatabase}}"/>, a fluent continuation for the construction of a sql JOIN expression for a list of <typeparamref name="dynamic"/> values.</returns>
-        JoinOnWithAlias<SelectDynamicsContinuation<TDatabase>> LeftJoin(AnySelectSubquery subquery);
+        /// <returns><see cref="WithAlias{JoinOn{SelectDynamicsContinuation{TDatabase}}}"/>, a fluent continuation for the construction of a sql JOIN expression for a list of <typeparamref name="dynamic"/> values.</returns>
+        WithAlias<JoinOn<SelectDynamicsContinuation<TDatabase>>> LeftJoin(AnySelectSubquery subquery);
 
         /// <summary>
         /// Construct an RIGHT JOIN clause of a sql SELECT query expression for a list of <typeparamref name="dynamic"/> values.
@@ -145,8 +144,8 @@ namespace HatTrick.DbEx.Sql
         /// </para>
         /// </summary>
         /// <param name="subquery">Any expression of type <see cref="AnySelectSubquery"/> specifying a SELECT query expression to join to.</param>
-        /// <returns><see cref="JoinOnWithAlias{SelectDynamicsContinuation{TDatabase}}"/>, a fluent continuation for the construction of a sql JOIN expression for a list of <typeparamref name="dynamic"/> values.</returns>
-        JoinOnWithAlias<SelectDynamicsContinuation<TDatabase>> RightJoin(AnySelectSubquery subquery);
+        /// <returns><see cref="WithAlias{JoinOn{SelectDynamicsContinuation{TDatabase}}}"/>, a fluent continuation for the construction of a sql JOIN expression for a list of <typeparamref name="dynamic"/> values.</returns>
+        WithAlias<JoinOn<SelectDynamicsContinuation<TDatabase>>> RightJoin(AnySelectSubquery subquery);
 
         /// <summary>
         /// Construct an FULL JOIN clause of a sql SELECT query expression for a list of <typeparamref name="dynamic"/> values.
@@ -165,8 +164,8 @@ namespace HatTrick.DbEx.Sql
         /// </para>
         /// </summary>
         /// <param name="subquery">Any expression of type <see cref="AnySelectSubquery"/> specifying a SELECT query expression to join to.</param>
-        /// <returns><see cref="JoinOnWithAlias{SelectDynamicsContinuation{TDatabase}}"/>, a fluent continuation for the construction of a sql JOIN expression for a list of <typeparamref name="dynamic"/> values.</returns>
-        JoinOnWithAlias<SelectDynamicsContinuation<TDatabase>> FullJoin(AnySelectSubquery subquery);
+        /// <returns><see cref="WithAlias{JoinOn{SelectDynamicsContinuation{TDatabase}}}"/>, a fluent continuation for the construction of a sql JOIN expression for a list of <typeparamref name="dynamic"/> values.</returns>
+        WithAlias<JoinOn<SelectDynamicsContinuation<TDatabase>>> FullJoin(AnySelectSubquery subquery);
 
         /// <summary>
         /// Construct an CROSS JOIN clause of a sql SELECT query expression for a list of <typeparamref name="dynamic"/> values.

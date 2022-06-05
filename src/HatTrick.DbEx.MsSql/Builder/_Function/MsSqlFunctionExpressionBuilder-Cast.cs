@@ -34,17 +34,25 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="element">Any expression of type <see cref="ObjectElement{T}"/> to convert to a different sql data type.</param>
         /// <returns><see cref="MsSqlCast"/> to specify the sql data type to convert to.</returns>
         public virtual MsSqlCast Cast<T>(ObjectElement<T> element)
-            where T: class
+            where T: class?
             => new MsSqlCastFunctionExpressionBuilder(element);
 
         /// <summary>
         /// Construct an expression for the CAST transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql">Microsoft docs on CAST</see></para>
         /// </summary>
-        /// <param name="element">Any expression of type <see cref="NullableObjectElement{T}"/> to convert to a different sql data type.</param>
+        /// <param name="element">Any expression of type <see cref="ObjectElement"/> to convert to a different sql data type.</param>
         /// <returns><see cref="MsSqlCast"/> to specify the sql data type to convert to.</returns>
-        public virtual MsSqlCast Cast<T>(NullableObjectElement<T> element)
-            where T : class?
+        public virtual MsSqlCast Cast(ObjectElement element)
+            => new MsSqlCastFunctionExpressionBuilder(element);
+
+        /// <summary>
+        /// Construct an expression for the CAST transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql">Microsoft docs on CAST</see></para>
+        /// </summary>
+        /// <param name="element">Any expression of type <see cref="NullableObjectElement"/> to convert to a different sql data type.</param>
+        /// <returns><see cref="MsSqlCast"/> to specify the sql data type to convert to.</returns>
+        public virtual MsSqlCast Cast(NullableObjectElement element)
             => new MsSqlCastFunctionExpressionBuilder(element);
         #endregion
 

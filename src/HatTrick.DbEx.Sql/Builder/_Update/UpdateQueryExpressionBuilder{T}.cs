@@ -62,7 +62,7 @@ namespace HatTrick.DbEx.Sql.Builder
             return new UpdateEntitiesUpdateQueryExpressionBuilder<TDatabase, TEntity>(expression, configuration);
         }
 
-        protected void Where(AnyWhereClause expression)
+        protected void Where(AnyWhereExpression expression)
         {
             if (expression is null)
                 return;

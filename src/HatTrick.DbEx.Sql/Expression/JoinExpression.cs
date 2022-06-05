@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<JoinExpression>
     {
         #region interface
-        public AnyJoinOnClause? JoinOnExpression { get; private set; }
+        public AnyJoinOnExpression? JoinOnExpression { get; private set; }
         public IExpressionElement JoinToo { get; private set; }
         public JoinOperationExpressionOperator JoinType { get; private set; }
         private string? alias;
@@ -35,13 +35,13 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        public JoinExpression(IExpressionElement joinToo, JoinOperationExpressionOperator joinType, AnyJoinOnClause? onCondition)
+        public JoinExpression(IExpressionElement joinToo, JoinOperationExpressionOperator joinType, AnyJoinOnExpression? onCondition)
             : this(joinToo, joinType, onCondition, null)
         {
 
         }
 
-        protected JoinExpression(IExpressionElement joinToo, JoinOperationExpressionOperator joinType, AnyJoinOnClause? onCondition, string? alias)
+        protected JoinExpression(IExpressionElement joinToo, JoinOperationExpressionOperator joinType, AnyJoinOnExpression? onCondition, string? alias)
         {
             JoinToo = joinToo ?? throw new ArgumentNullException(nameof(joinToo));
             JoinType = joinType;

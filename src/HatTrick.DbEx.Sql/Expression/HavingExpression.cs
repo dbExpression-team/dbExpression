@@ -21,7 +21,7 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class HavingExpression :
-        AnyHavingClause,
+        AnyHavingExpression,
         IExpressionProvider<FilterExpressionSet>,
         IFilterExpressionElement,
         IEquatable<HavingExpression>

@@ -52,6 +52,7 @@ namespace HatTrick.DbEx.Sql
         /// </para>
         /// </summary>
         /// <returns><see cref="SelectEntitiesContinuation{TDatabase, TEntity}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
-        SelectEntitiesContinuation<TDatabase, TEntity> From(Table<TEntity> entity);
+        SelectEntitiesContinuation<TDatabase, TEntity> From<TFrom>(Table<TFrom> entity)
+            where TFrom : class, IDbEntity;
     }
 }

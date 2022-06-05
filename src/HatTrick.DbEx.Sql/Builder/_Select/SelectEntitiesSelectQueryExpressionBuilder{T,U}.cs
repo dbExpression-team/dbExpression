@@ -29,38 +29,65 @@ using System.Threading.Tasks;
 namespace HatTrick.DbEx.Sql.Builder
 {
     public class SelectEntitiesSelectQueryExpressionBuilder<TDatabase, TEntity> : SelectQueryExpressionBuilder<TDatabase>,
-        IExpressionBuilder<TDatabase, TEntity>,
         SelectEntities<TDatabase, TEntity>,
         SelectEntitiesContinuation<TDatabase, TEntity>,
-        SelectEntitiesOffsetContinuation<TDatabase, TEntity>,
+        WithAlias<SelectEntitiesContinuation<TDatabase, TEntity>>,
         SelectEntitiesOrderByContinuation<TDatabase, TEntity>,
-        SelectEntitiesTermination<TDatabase, TEntity>
+        SelectEntitiesOffsetContinuation<TDatabase, TEntity>,
+        UnionSelectEntitiesContinuation<TDatabase, TEntity>
         where TDatabase : class, ISqlDatabaseRuntime
         where TEntity : class, IDbEntity, new()
     {
         #region internals
-        private readonly Func<SelectEntitiesTermination<TDatabase, TEntity>> _executor;
-        private SelectEntitiesTermination<TDatabase, TEntity> Executor => _executor();
+        private readonly Table<TEntity> table;
         #endregion
 
         #region constructors
         public SelectEntitiesSelectQueryExpressionBuilder(
-            SelectQueryExpression expression,
             SqlDatabaseRuntimeConfiguration config,
-            Func<UnionSelectAnyInitiation<TDatabase>> union,
-            Func<SelectEntitiesTermination<TDatabase, TEntity>> executor
-        ) : base(expression, config, union)
+            SelectSetQueryExpressionBuilder<TDatabase> controller,
+            Table<TEntity> table
+        ) : base(config, controller)
         {
-            _executor = executor ?? throw new ArgumentNullException(nameof(executor));
+            this.table = table ?? throw new ArgumentNullException(nameof(table));
         }
         #endregion
 
         #region methods
-        protected override void ApplyFrom<T>(Table<T> entity)
+        #region UnionSelectEntitiesInitiation<TDatabase, TEntity>
+        UnionSelectEntitiesContinuation<TDatabase, TEntity> UnionSelectEntitiesInitiation<TDatabase, TEntity>.Union()
         {
-            base.ApplyFrom(entity);
-            SelectQueryExpression.Select = new SelectExpressionSet(entity.BuildInclusiveSelectExpression());
+            Controller.ApplyUnion();
+            return this;
         }
+
+        UnionSelectEntitiesContinuation<TDatabase, TEntity> UnionSelectEntitiesInitiation<TDatabase, TEntity>.UnionAll()
+        {
+            Controller.ApplyUnionAll();
+            return this;
+        }
+        #endregion
+
+        #region UnionSelectValuesContinuation<TDatabase, TValue>
+        /// <inheritdoc>
+        SelectEntities<TDatabase, TEntity> UnionSelectEntitiesContinuation<TDatabase, TEntity>.SelectOne()
+        {
+            var select = Controller.Current.Select;
+            var exp = Controller.StartNew();
+            exp.Select = select;
+            exp.Top = 1;
+            return this;
+        }
+
+        /// <inheritdoc>
+        SelectEntities<TDatabase, TEntity> UnionSelectEntitiesContinuation<TDatabase, TEntity>.SelectMany()
+        {
+            var select = Controller.Current.Select;
+            var exp = Controller.StartNew();
+            exp.Select = select;
+            return this;
+        }
+        #endregion
 
         #region SelectEntities<TDatabase, TEntity>
         /// <inheritdoc />
@@ -78,7 +105,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        SelectEntitiesContinuation<TDatabase, TEntity> SelectEntities<TDatabase, TEntity>.From(Table<TEntity> entity)
+        SelectEntitiesContinuation<TDatabase, TEntity> SelectEntities<TDatabase, TEntity>.From<TFrom>(Table<TFrom> entity)
         {
             ApplyFrom(entity);
             return this;
@@ -87,42 +114,42 @@ namespace HatTrick.DbEx.Sql.Builder
 
         #region SelectEntitiesContinuation<TDatabase, TEntity>
         /// <inheritdoc />
-        SelectEntitiesOrderByContinuation<TDatabase, TEntity> SelectEntitiesContinuation<TDatabase, TEntity>.OrderBy(params AnyOrderByClause[] orderBy)
+        SelectEntitiesOrderByContinuation<TDatabase, TEntity> SelectEntitiesContinuation<TDatabase, TEntity>.OrderBy(params AnyOrderByExpression[] orderBy)
         {
             ApplyOrderBy(orderBy);
             return this;
         }
 
         /// <inheritdoc />
-        SelectEntitiesOrderByContinuation<TDatabase, TEntity> SelectEntitiesContinuation<TDatabase, TEntity>.OrderBy(IEnumerable<AnyOrderByClause>? orderBy)
+        SelectEntitiesOrderByContinuation<TDatabase, TEntity> SelectEntitiesContinuation<TDatabase, TEntity>.OrderBy(IEnumerable<AnyOrderByExpression>? orderBy)
         {
             ApplyOrderBy(orderBy);
             return this;
         }
 
         /// <inheritdoc />
-        SelectEntitiesContinuation<TDatabase, TEntity> SelectEntitiesContinuation<TDatabase, TEntity>.GroupBy(params AnyGroupByClause[] groupBy)
+        SelectEntitiesContinuation<TDatabase, TEntity> SelectEntitiesContinuation<TDatabase, TEntity>.GroupBy(params AnyGroupByExpression[] groupBy)
         {
             ApplyGroupBy(groupBy);
             return this;
         }
 
         /// <inheritdoc />
-        SelectEntitiesContinuation<TDatabase, TEntity> SelectEntitiesContinuation<TDatabase, TEntity>.GroupBy(IEnumerable<AnyGroupByClause>? groupBy)
+        SelectEntitiesContinuation<TDatabase, TEntity> SelectEntitiesContinuation<TDatabase, TEntity>.GroupBy(IEnumerable<AnyGroupByExpression>? groupBy)
         {
             ApplyGroupBy(groupBy);
             return this;
         }
 
         /// <inheritdoc />
-        SelectEntitiesContinuation<TDatabase, TEntity> SelectEntitiesContinuation<TDatabase, TEntity>.Having(AnyHavingClause? having)
+        SelectEntitiesContinuation<TDatabase, TEntity> SelectEntitiesContinuation<TDatabase, TEntity>.Having(AnyHavingExpression? having)
         {
             ApplyHaving(having);
             return this;
         }
 
         /// <inheritdoc />
-        SelectEntitiesContinuation<TDatabase, TEntity> SelectEntitiesContinuation<TDatabase, TEntity>.Where(AnyWhereClause? where)
+        SelectEntitiesContinuation<TDatabase, TEntity> SelectEntitiesContinuation<TDatabase, TEntity>.Where(AnyWhereExpression? where)
         {
             ApplyWhere(where);
             return this;
@@ -130,40 +157,47 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <inheritdoc />
         JoinOn<SelectEntitiesContinuation<TDatabase, TEntity>> SelectEntitiesContinuation<TDatabase, TEntity>.InnerJoin(AnyEntity entity)
-            => new SelectEntitiesJoinExpressionBuilder<TDatabase, TEntity>(SelectQueryExpression, entity, JoinOperationExpressionOperator.INNER, this);
+            => new SelectEntitiesJoinExpressionBuilder<TDatabase, TEntity>(Controller.Current, entity, JoinOperationExpressionOperator.INNER, this);
 
         /// <inheritdoc />
-        JoinOnWithAlias<SelectEntitiesContinuation<TDatabase, TEntity>> SelectEntitiesContinuation<TDatabase, TEntity>.InnerJoin(AnySelectSubquery subquery)
-            => new SelectEntitiesJoinExpressionBuilder<TDatabase, TEntity>(SelectQueryExpression, subquery.Expression, JoinOperationExpressionOperator.INNER, this);
+        WithAlias<JoinOn<SelectEntitiesContinuation<TDatabase, TEntity>>> SelectEntitiesContinuation<TDatabase, TEntity>.InnerJoin(AnySelectSubquery subquery)
+            => new SelectEntitiesJoinExpressionBuilder<TDatabase, TEntity>(Controller.Current, subquery.Expression, JoinOperationExpressionOperator.INNER, this);
 
         /// <inheritdoc />
         JoinOn<SelectEntitiesContinuation<TDatabase, TEntity>> SelectEntitiesContinuation<TDatabase, TEntity>.LeftJoin(AnyEntity entity)
-            => new SelectEntitiesJoinExpressionBuilder<TDatabase, TEntity>(SelectQueryExpression, entity, JoinOperationExpressionOperator.LEFT, this);
+            => new SelectEntitiesJoinExpressionBuilder<TDatabase, TEntity>(Controller.Current, entity, JoinOperationExpressionOperator.LEFT, this);
 
         /// <inheritdoc />
-        JoinOnWithAlias<SelectEntitiesContinuation<TDatabase, TEntity>> SelectEntitiesContinuation<TDatabase, TEntity>.LeftJoin(AnySelectSubquery subquery)
-            => new SelectEntitiesJoinExpressionBuilder<TDatabase, TEntity>(SelectQueryExpression, subquery.Expression, JoinOperationExpressionOperator.LEFT, this);
+        WithAlias<JoinOn<SelectEntitiesContinuation<TDatabase, TEntity>>> SelectEntitiesContinuation<TDatabase, TEntity>.LeftJoin(AnySelectSubquery subquery)
+            => new SelectEntitiesJoinExpressionBuilder<TDatabase, TEntity>(Controller.Current, subquery.Expression, JoinOperationExpressionOperator.LEFT, this);
 
         /// <inheritdoc />
         JoinOn<SelectEntitiesContinuation<TDatabase, TEntity>> SelectEntitiesContinuation<TDatabase, TEntity>.RightJoin(AnyEntity entity)
-            => new SelectEntitiesJoinExpressionBuilder<TDatabase, TEntity>(SelectQueryExpression, entity, JoinOperationExpressionOperator.RIGHT, this);
+            => new SelectEntitiesJoinExpressionBuilder<TDatabase, TEntity>(Controller.Current, entity, JoinOperationExpressionOperator.RIGHT, this);
 
         /// <inheritdoc />
-        JoinOnWithAlias<SelectEntitiesContinuation<TDatabase, TEntity>> SelectEntitiesContinuation<TDatabase, TEntity>.RightJoin(AnySelectSubquery subquery)
-            => new SelectEntitiesJoinExpressionBuilder<TDatabase, TEntity>(SelectQueryExpression, subquery.Expression, JoinOperationExpressionOperator.RIGHT, this);
+        WithAlias<JoinOn<SelectEntitiesContinuation<TDatabase, TEntity>>> SelectEntitiesContinuation<TDatabase, TEntity>.RightJoin(AnySelectSubquery subquery)
+            => new SelectEntitiesJoinExpressionBuilder<TDatabase, TEntity>(Controller.Current, subquery.Expression, JoinOperationExpressionOperator.RIGHT, this);
 
         /// <inheritdoc />
         JoinOn<SelectEntitiesContinuation<TDatabase, TEntity>> SelectEntitiesContinuation<TDatabase, TEntity>.FullJoin(AnyEntity entity)
-            => new SelectEntitiesJoinExpressionBuilder<TDatabase, TEntity>(SelectQueryExpression, entity, JoinOperationExpressionOperator.FULL, this);
+            => new SelectEntitiesJoinExpressionBuilder<TDatabase, TEntity>(Controller.Current, entity, JoinOperationExpressionOperator.FULL, this);
 
         /// <inheritdoc />
-        JoinOnWithAlias<SelectEntitiesContinuation<TDatabase, TEntity>> SelectEntitiesContinuation<TDatabase, TEntity>.FullJoin(AnySelectSubquery subquery)
-            => new SelectEntitiesJoinExpressionBuilder<TDatabase, TEntity>(SelectQueryExpression, subquery.Expression, JoinOperationExpressionOperator.FULL, this);
+        WithAlias<JoinOn<SelectEntitiesContinuation<TDatabase, TEntity>>> SelectEntitiesContinuation<TDatabase, TEntity>.FullJoin(AnySelectSubquery subquery)
+            => new SelectEntitiesJoinExpressionBuilder<TDatabase, TEntity>(Controller.Current, subquery.Expression, JoinOperationExpressionOperator.FULL, this);
 
         /// <inheritdoc />
         SelectEntitiesContinuation<TDatabase, TEntity> SelectEntitiesContinuation<TDatabase, TEntity>.CrossJoin(AnyEntity entity)
         {
             ApplyCrossJoin(entity);
+            return this;
+        }
+
+        /// <inheritdoc />
+        SelectEntitiesContinuation<TDatabase, TEntity> WithAlias<SelectEntitiesContinuation<TDatabase, TEntity>>.As(string alias)
+        {
+            Controller.Current.From!.As(alias);
             return this;
         }
         #endregion
@@ -177,28 +211,28 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        SelectEntitiesOrderByContinuation<TDatabase, TEntity> SelectEntitiesOrderByContinuation<TDatabase, TEntity>.GroupBy(params AnyGroupByClause[] groupBy)
+        SelectEntitiesOrderByContinuation<TDatabase, TEntity> SelectEntitiesOrderByContinuation<TDatabase, TEntity>.GroupBy(params AnyGroupByExpression[] groupBy)
         {
             ApplyGroupBy(groupBy);
             return this;
         }
 
         /// <inheritdoc />
-        SelectEntitiesOrderByContinuation<TDatabase, TEntity> SelectEntitiesOrderByContinuation<TDatabase, TEntity>.GroupBy(IEnumerable<AnyGroupByClause>? groupBy)
+        SelectEntitiesOrderByContinuation<TDatabase, TEntity> SelectEntitiesOrderByContinuation<TDatabase, TEntity>.GroupBy(IEnumerable<AnyGroupByExpression>? groupBy)
         {
             ApplyGroupBy(groupBy);
             return this;
         }
 
         /// <inheritdoc />
-        SelectEntitiesOrderByContinuation<TDatabase, TEntity> SelectEntitiesOrderByContinuation<TDatabase, TEntity>.Having(AnyHavingClause? having)
+        SelectEntitiesOrderByContinuation<TDatabase, TEntity> SelectEntitiesOrderByContinuation<TDatabase, TEntity>.Having(AnyHavingExpression? having)
         {
             ApplyHaving(having);
             return this;
         }
 
         /// <inheritdoc />
-        SelectEntitiesOrderByContinuation<TDatabase, TEntity> Limit<SelectEntitiesOrderByContinuation<TDatabase, TEntity>>.Having(AnyHavingClause? having)
+        SelectEntitiesOrderByContinuation<TDatabase, TEntity> Limit<SelectEntitiesOrderByContinuation<TDatabase, TEntity>>.Having(AnyHavingExpression? having)
         {
             ApplyHaving(having);
             return this;
@@ -217,163 +251,534 @@ namespace HatTrick.DbEx.Sql.Builder
         #region SelectEntitiesTermination<TDatabase, TEntity>
         /// <inheritdoc />
         IList<TEntity> SelectEntitiesTermination<TDatabase, TEntity>.Execute()
-            => Executor.Execute();
+        {
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            return ExecutePipeline(
+                connection,
+                null
+            );
+        }
 
         /// <inheritdoc />
         IList<TEntity> SelectEntitiesTermination<TDatabase, TEntity>.Execute(int commandTimeout)
-            => Executor.Execute(commandTimeout);
+        {
+            if (commandTimeout <= 0)
+                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            return ExecutePipeline(
+                connection,
+                command => command.CommandTimeout = commandTimeout
+            );
+        }
 
         /// <inheritdoc />
         IList<TEntity> SelectEntitiesTermination<TDatabase, TEntity>.Execute(ISqlConnection connection)
-            => Executor.Execute(connection);
+        {
+            return ExecutePipeline(
+                connection ?? throw new ArgumentNullException(nameof(connection)),
+                null
+            );
+        }
 
         /// <inheritdoc />
         IList<TEntity> SelectEntitiesTermination<TDatabase, TEntity>.Execute(ISqlConnection connection, int commandTimeout)
-            => Executor.Execute(connection, commandTimeout);
+        {
+            if (commandTimeout <= 0)
+                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            return ExecutePipeline(
+                connection ?? throw new ArgumentNullException(nameof(connection)),
+                command => command.CommandTimeout = commandTimeout
+            );
+        }
 
         /// <inheritdoc />
         IList<TEntity> SelectEntitiesTermination<TDatabase, TEntity>.Execute(Func<ISqlFieldReader, TEntity> map)
-            => Executor.Execute(map);
+        {
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            return ExecutePipeline(
+                connection,
+                null,
+                map ?? throw new ArgumentNullException(nameof(map))
+            );
+        }
 
         /// <inheritdoc />
         IList<TEntity> SelectEntitiesTermination<TDatabase, TEntity>.Execute(int commandTimeout, Func<ISqlFieldReader, TEntity> map)
-            => Executor.Execute(commandTimeout, map);
+        {
+            if (commandTimeout <= 0)
+                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            return ExecutePipeline(
+                connection,
+                command => command.CommandTimeout = commandTimeout,
+                map ?? throw new ArgumentNullException(nameof(map))
+            );
+        }
 
         /// <inheritdoc />
         IList<TEntity> SelectEntitiesTermination<TDatabase, TEntity>.Execute(ISqlConnection connection, Func<ISqlFieldReader, TEntity> map)
-            => Executor.Execute(connection, map);
+        {
+            return ExecutePipeline(
+                connection ?? throw new ArgumentNullException(nameof(connection)),
+                null,
+                map ?? throw new ArgumentNullException(nameof(map))
+            );
+        }
 
         /// <inheritdoc />
         IList<TEntity> SelectEntitiesTermination<TDatabase, TEntity>.Execute(ISqlConnection connection, int commandTimeout, Func<ISqlFieldReader, TEntity> map)
-            => Executor.Execute(connection, commandTimeout, map);
+        {
+            if (commandTimeout <= 0)
+                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            return ExecutePipeline(
+                connection ?? throw new ArgumentNullException(nameof(connection)),
+                command => command.CommandTimeout = commandTimeout,
+                map ?? throw new ArgumentNullException(nameof(map))
+            );
+        }
 
         /// <inheritdoc />
         void SelectEntitiesTermination<TDatabase, TEntity>.Execute(Action<ISqlFieldReader> map)
-            => Executor.Execute(map);
+        {
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            ExecutePipeline(
+                connection,
+                null,
+                map ?? throw new ArgumentNullException(nameof(map))
+            );
+        }
 
         /// <inheritdoc />
         void SelectEntitiesTermination<TDatabase, TEntity>.Execute(int commandTimeout, Action<ISqlFieldReader> map)
-            => Executor.Execute(commandTimeout, map);
+        {
+            if (commandTimeout <= 0)
+                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            ExecutePipeline(
+                connection,
+                command => command.CommandTimeout = commandTimeout,
+                map ?? throw new ArgumentNullException(nameof(map))
+            );
+        }
 
         /// <inheritdoc />
         void SelectEntitiesTermination<TDatabase, TEntity>.Execute(ISqlConnection connection, Action<ISqlFieldReader> read)
-            => Executor.Execute(connection, read);
+        {
+            ExecutePipeline(
+                connection ?? throw new ArgumentNullException(nameof(connection)),
+                null,
+                read ?? throw new ArgumentNullException(nameof(read))
+            );
+        }
 
         /// <inheritdoc />
         void SelectEntitiesTermination<TDatabase, TEntity>.Execute(ISqlConnection connection, int commandTimeout, Action<ISqlFieldReader> read)
-            => Executor.Execute(connection, commandTimeout, read);
+        {
+            if (commandTimeout <= 0)
+                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            ExecutePipeline(
+                connection ?? throw new ArgumentNullException(nameof(connection)),
+                command => command.CommandTimeout = commandTimeout,
+                read ?? throw new ArgumentNullException(nameof(read))
+            );
+        }
 
         /// <inheritdoc />
         IList<TEntity> SelectEntitiesTermination<TDatabase, TEntity>.Execute(Action<ISqlFieldReader, TEntity> map)
-            => Executor.Execute(map);
+        {
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            return ExecutePipeline(
+                connection,
+                null,
+                map ?? throw new ArgumentNullException(nameof(map))
+            );
+        }
 
         /// <inheritdoc />
         IList<TEntity> SelectEntitiesTermination<TDatabase, TEntity>.Execute(int commandTimeout, Action<ISqlFieldReader, TEntity> map)
-            => Executor.Execute(commandTimeout, map);
+        {
+            if (commandTimeout <= 0)
+                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            return ExecutePipeline(
+                connection,
+                command => command.CommandTimeout = commandTimeout,
+                map ?? throw new ArgumentNullException(nameof(map))
+            );
+        }
 
         /// <inheritdoc />
         IList<TEntity> SelectEntitiesTermination<TDatabase, TEntity>.Execute(ISqlConnection connection, Action<ISqlFieldReader, TEntity> map)
-            => Executor.Execute(connection, map);
+        {
+            return ExecutePipeline(
+                connection ?? throw new ArgumentNullException(nameof(connection)),
+                null,
+                map ?? throw new ArgumentNullException(nameof(map))
+            );
+        }
 
         /// <inheritdoc />
         IList<TEntity> SelectEntitiesTermination<TDatabase, TEntity>.Execute(ISqlConnection connection, int commandTimeout, Action<ISqlFieldReader, TEntity> map)
-            => Executor.Execute(connection, commandTimeout, map);
+        {
+            if (commandTimeout <= 0)
+                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            return ExecutePipeline(
+                connection ?? throw new ArgumentNullException(nameof(connection)),
+                command => command.CommandTimeout = commandTimeout,
+                map ?? throw new ArgumentNullException(nameof(map))
+            );
+        }
 
         /// <inheritdoc />
         async Task<IList<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(CancellationToken cancellationToken)
-            => await Executor.ExecuteAsync(cancellationToken).ConfigureAwait(false);
+        {
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            return await ExecutePipelineAsync(
+                connection,
+                null,
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
 
         /// <inheritdoc />
         async Task<IList<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
-            => await Executor.ExecuteAsync(commandTimeout, cancellationToken).ConfigureAwait(false);
+        {
+            if (commandTimeout <= 0)
+                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            return await ExecutePipelineAsync(
+                connection,
+                command => command.CommandTimeout = commandTimeout,
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
 
         /// <inheritdoc />
         async Task<IList<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
-            => await Executor.ExecuteAsync(connection, cancellationToken).ConfigureAwait(false);
+        {
+            return await ExecutePipelineAsync(
+                connection ?? throw new ArgumentNullException(nameof(connection)),
+                null,
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
 
         /// <inheritdoc />
         async Task<IList<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
-            => await Executor.ExecuteAsync(connection, commandTimeout, cancellationToken).ConfigureAwait(false);
+        {
+            if (commandTimeout <= 0)
+                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            return await ExecutePipelineAsync(
+                connection ?? throw new ArgumentNullException(nameof(connection)),
+                command => command.CommandTimeout = commandTimeout,
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
 
         /// <inheritdoc />
         async Task SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(Action<ISqlFieldReader> read, CancellationToken cancellationToken)
-            => await Executor.ExecuteAsync(read, cancellationToken).ConfigureAwait(false);
+        {
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            await ExecutePipelineAsync(
+                connection,
+                null,
+                read ?? throw new ArgumentNullException(nameof(read)),
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
 
         /// <inheritdoc />
         async Task SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(int commandTimeout, Action<ISqlFieldReader> read, CancellationToken cancellationToken)
-            => await Executor.ExecuteAsync(commandTimeout, read, cancellationToken).ConfigureAwait(false);
+        {
+            if (commandTimeout <= 0)
+                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            await ExecutePipelineAsync(
+                connection,
+                command => command.CommandTimeout = commandTimeout,
+                read ?? throw new ArgumentNullException(nameof(read)),
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
 
         /// <inheritdoc />
         async Task SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(ISqlConnection connection, Action<ISqlFieldReader> read, CancellationToken cancellationToken)
-            => await Executor.ExecuteAsync(connection, read, cancellationToken).ConfigureAwait(false);
+        {
+            await ExecutePipelineAsync(
+                connection ?? throw new ArgumentNullException(nameof(connection)),
+                null,
+                read ?? throw new ArgumentNullException(nameof(read)),
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
 
         /// <inheritdoc />
         async Task SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(ISqlConnection connection, int commandTimeout, Action<ISqlFieldReader> read, CancellationToken cancellationToken)
-            => await Executor.ExecuteAsync(connection, commandTimeout, read, cancellationToken).ConfigureAwait(false);
+        {
+            if (commandTimeout <= 0)
+                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            await ExecutePipelineAsync(
+                connection ?? throw new ArgumentNullException(nameof(connection)),
+                command => command.CommandTimeout = commandTimeout,
+                read ?? throw new ArgumentNullException(nameof(read)),
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
 
         /// <inheritdoc />
         async Task<IList<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(Action<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken)
-            => await Executor.ExecuteAsync(map, cancellationToken).ConfigureAwait(false);
+        {
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            return await ExecutePipelineAsync(
+                connection,
+                null,
+                map ?? throw new ArgumentNullException(nameof(map)),
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
 
         /// <inheritdoc />
         async Task<IList<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(int commandTimeout, Action<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken)
-            => await Executor.ExecuteAsync(commandTimeout, map, cancellationToken).ConfigureAwait(false);
+        {
+            if (commandTimeout <= 0)
+                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            return await ExecutePipelineAsync(
+                connection,
+                command => command.CommandTimeout = commandTimeout,
+                map ?? throw new ArgumentNullException(nameof(map)),
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
 
         /// <inheritdoc />
         async Task<IList<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(ISqlConnection connection, Action<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken)
-            => await Executor.ExecuteAsync(connection, map, cancellationToken).ConfigureAwait(false);
+        {
+            return await ExecutePipelineAsync(
+                connection ?? throw new ArgumentNullException(nameof(connection)),
+                null,
+                map ?? throw new ArgumentNullException(nameof(map)),
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
 
         /// <inheritdoc />
         async Task<IList<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(ISqlConnection connection, int commandTimeout, Action<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken)
-            => await Executor.ExecuteAsync(connection, commandTimeout, map, cancellationToken).ConfigureAwait(false);
+        {
+            if (commandTimeout <= 0)
+                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            return await ExecutePipelineAsync(
+                connection ?? throw new ArgumentNullException(nameof(connection)),
+                command => command.CommandTimeout = commandTimeout,
+                map ?? throw new ArgumentNullException(nameof(map)),
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
 
         /// <inheritdoc />
         async Task<IList<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(Func<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken)
-            => await Executor.ExecuteAsync(map, cancellationToken).ConfigureAwait(false);
+        {
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            return await ExecutePipelineAsync(
+                connection,
+                null,
+                map ?? throw new ArgumentNullException(nameof(map)),
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
 
         /// <inheritdoc />
         async Task<IList<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(int commandTimeout, Func<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken)
-            => await Executor.ExecuteAsync(commandTimeout, map, cancellationToken).ConfigureAwait(false);
+        {
+            if (commandTimeout <= 0)
+                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            return await ExecutePipelineAsync(
+                connection,
+                command => command.CommandTimeout = commandTimeout,
+                map ?? throw new ArgumentNullException(nameof(map)),
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
 
         /// <inheritdoc />
         async Task<IList<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(ISqlConnection connection, Func<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken)
-            => await Executor.ExecuteAsync(connection, map, cancellationToken).ConfigureAwait(false);
+        {
+            return await ExecutePipelineAsync(
+                connection ?? throw new ArgumentNullException(nameof(connection)),
+                null,
+                map ?? throw new ArgumentNullException(nameof(map)),
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
 
         /// <inheritdoc />
         async Task<IList<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(ISqlConnection connection, int commandTimeout, Func<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken)
-            => await Executor.ExecuteAsync(connection, commandTimeout, map, cancellationToken).ConfigureAwait(false);
+        {
+            if (commandTimeout <= 0)
+                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            return await ExecutePipelineAsync(
+                connection ?? throw new ArgumentNullException(nameof(connection)),
+                command => command.CommandTimeout = commandTimeout,
+                map ?? throw new ArgumentNullException(nameof(map)),
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
 
         /// <inheritdoc />
         async Task SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(Func<ISqlFieldReader, Task> read, CancellationToken cancellationToken)
-            => await Executor.ExecuteAsync(read, cancellationToken).ConfigureAwait(false);
+        {
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            await ExecutePipelineAsync(
+                connection,
+                null,
+                read ?? throw new ArgumentNullException(nameof(read)),
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
 
         /// <inheritdoc />
         async Task SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(int commandTimeout, Func<ISqlFieldReader, Task> read, CancellationToken cancellationToken)
-            => await Executor.ExecuteAsync(commandTimeout, read, cancellationToken).ConfigureAwait(false);
+        {
+            if (commandTimeout <= 0)
+                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            await ExecutePipelineAsync(
+                connection,
+                command => command.CommandTimeout = commandTimeout,
+                read ?? throw new ArgumentNullException(nameof(read)),
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
 
         /// <inheritdoc />
         async Task SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(ISqlConnection connection, Func<ISqlFieldReader, Task> read, CancellationToken cancellationToken)
-            => await Executor.ExecuteAsync(connection, read, cancellationToken).ConfigureAwait(false);
+        {
+            await ExecutePipelineAsync(
+                connection ?? throw new ArgumentNullException(nameof(connection)),
+                null,
+                read ?? throw new ArgumentNullException(nameof(read)),
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
 
         /// <inheritdoc />
         async Task SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(ISqlConnection connection, int commandTimeout, Func<ISqlFieldReader, Task> read, CancellationToken cancellationToken)
-            => await Executor.ExecuteAsync(connection, commandTimeout, read, cancellationToken).ConfigureAwait(false);
+        {
+            if (commandTimeout <= 0)
+                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            await ExecutePipelineAsync(
+                connection ?? throw new ArgumentNullException(nameof(connection)),
+                command => command.CommandTimeout = commandTimeout,
+                read ?? throw new ArgumentNullException(nameof(read)),
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
 
         /// <inheritdoc />
         async Task<IList<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(Func<ISqlFieldReader, TEntity, Task> map, CancellationToken cancellationToken)
-            => await Executor.ExecuteAsync(map, cancellationToken).ConfigureAwait(false);
+        {
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            return await ExecutePipelineAsync(
+                connection,
+                null,
+                map ?? throw new ArgumentNullException(nameof(map)),
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
 
         /// <inheritdoc />
         async Task<IList<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(int commandTimeout, Func<ISqlFieldReader, TEntity, Task> map, CancellationToken cancellationToken)
-            => await Executor.ExecuteAsync(commandTimeout, map, cancellationToken).ConfigureAwait(false);
+        {
+            if (commandTimeout <= 0)
+                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            return await ExecutePipelineAsync(
+                connection,
+                command => command.CommandTimeout = commandTimeout,
+                map ?? throw new ArgumentNullException(nameof(map)),
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
 
         /// <inheritdoc />
         async Task<IList<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(ISqlConnection connection, Func<ISqlFieldReader, TEntity, Task> map, CancellationToken cancellationToken)
-            => await Executor.ExecuteAsync(connection, map, cancellationToken).ConfigureAwait(false);
+        {
+            return await ExecutePipelineAsync(
+                connection ?? throw new ArgumentNullException(nameof(connection)),
+                null,
+                map ?? throw new ArgumentNullException(nameof(map)),
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
 
         /// <inheritdoc />
         async Task<IList<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(ISqlConnection connection, int commandTimeout, Func<ISqlFieldReader, TEntity, Task> map, CancellationToken cancellationToken)
-            => await Executor.ExecuteAsync(connection, commandTimeout, map, cancellationToken).ConfigureAwait(false);
+        {
+            if (commandTimeout <= 0)
+                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            return await ExecutePipelineAsync(
+                connection ?? throw new ArgumentNullException(nameof(connection)),
+                command => command.CommandTimeout = commandTimeout,
+                map ?? throw new ArgumentNullException(nameof(map)),
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
+
+        #region execute pipeline
+        protected virtual IList<TEntity> ExecutePipeline(ISqlConnection connection, Action<IDbCommand>? configureCommand)
+            => Controller.CreateExecutionPipeline().ExecuteSelectEntityList<TEntity>(Controller.SelectSetQueryExpression, table, connection, configureCommand);
+
+        protected virtual IList<TEntity> ExecutePipeline(ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, TEntity> map)
+            => Controller.CreateExecutionPipeline().ExecuteSelectEntityList<TEntity>(Controller.SelectSetQueryExpression, table, connection, configureCommand, map);
+
+        protected virtual void ExecutePipeline(ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> read)
+            => Controller.CreateExecutionPipeline().ExecuteSelectEntityList<TEntity>(Controller.SelectSetQueryExpression, table, connection, configureCommand, read);
+
+        protected virtual IList<TEntity> ExecutePipeline(ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader, TEntity> map)
+            => Controller.CreateExecutionPipeline().ExecuteSelectEntityList<TEntity>(Controller.SelectSetQueryExpression, table, connection, configureCommand, map);
+
+        protected virtual async Task<IList<TEntity>> ExecutePipelineAsync(ISqlConnection connection, Action<IDbCommand>? configureCommand, CancellationToken cancellationToken)
+            => await Controller.CreateExecutionPipeline().ExecuteSelectEntityListAsync<TEntity>(Controller.SelectSetQueryExpression, table, connection, configureCommand, cancellationToken).ConfigureAwait(false);
+
+        protected virtual async Task ExecutePipelineAsync(ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> read, CancellationToken cancellationToken)
+            => await Controller.CreateExecutionPipeline().ExecuteSelectEntityListAsync<TEntity>(Controller.SelectSetQueryExpression, table, connection, configureCommand, read, cancellationToken).ConfigureAwait(false);
+
+        protected virtual async Task<IList<TEntity>> ExecutePipelineAsync(ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken)
+            => await Controller.CreateExecutionPipeline().ExecuteSelectEntityListAsync<TEntity>(Controller.SelectSetQueryExpression, table, connection, configureCommand, map, cancellationToken).ConfigureAwait(false);
+
+        protected virtual async Task<IList<TEntity>> ExecutePipelineAsync<T>(ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken)
+            => await Controller.CreateExecutionPipeline().ExecuteSelectEntityListAsync<TEntity>(Controller.SelectSetQueryExpression, table, connection, configureCommand, map, cancellationToken).ConfigureAwait(false);
+
+        protected virtual async Task<IList<TEntity>> ExecutePipelineAsync(ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken)
+            => await Controller.CreateExecutionPipeline().ExecuteSelectEntityListAsync<TEntity>(Controller.SelectSetQueryExpression, table, connection, configureCommand, map, cancellationToken).ConfigureAwait(false);
+
+        protected virtual async Task ExecutePipelineAsync(ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, Task> map, CancellationToken cancellationToken)
+            => await Controller.CreateExecutionPipeline().ExecuteSelectEntityListAsync<TEntity>(Controller.SelectSetQueryExpression, table, connection, configureCommand, map, cancellationToken).ConfigureAwait(false);
+
+        protected virtual async Task<IList<TEntity>> ExecutePipelineAsync(ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, TEntity, Task> map, CancellationToken cancellationToken)
+            => await Controller.CreateExecutionPipeline().ExecuteSelectEntityListAsync<TEntity>(Controller.SelectSetQueryExpression, table, connection, configureCommand, map, cancellationToken).ConfigureAwait(false);
+        #endregion
         #endregion
         #endregion
     }

@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql
     public interface SelectObjectContinuation<TDatabase, TObject> :
 #pragma warning restore IDE1006 // Naming Styles
         SelectObjectTermination<TDatabase, TObject>,
-        UnionSelectAnyInitiation<TDatabase>
+        UnionSelectObjectsInitiation<TDatabase, TObject>
         where TDatabase : class, ISqlDatabaseRuntime
         where TObject : class?
     {
@@ -34,9 +34,9 @@ namespace HatTrick.DbEx.Sql
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/where-transact-sql">Microsoft docs on WHERE</see>
         /// </para>
         /// </summary>
-        /// <param name="where">Any filter predicate of type <see cref="AnyWhereClause"/>.</param>
+        /// <param name="where">Any filter predicate of type <see cref="AnyWhereExpression"/>.</param>
         /// <returns><see cref="SelectObjectContinuation{TDatabase, TObject}"/>, a fluent continuation for the construction of a sql SELECT query expression for a single <typeparamref name="TObject"/> value.</returns>
-        SelectObjectContinuation<TDatabase, TObject> Where(AnyWhereClause? where);
+        SelectObjectContinuation<TDatabase, TObject> Where(AnyWhereExpression? where);
 
         /// <summary>
         /// Construct the ORDER BY clause of a sql SELECT query expression for a single <typeparamref name="TObject"/> value.
@@ -44,9 +44,9 @@ namespace HatTrick.DbEx.Sql
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-order-by-clause-transact-sql">Microsoft docs on ORDER BY</see>
         /// </para>
         /// </summary>
-        /// <param name="orderBy">A list of expressions of type <see cref="AnyOrderByClause"/> indicating the order and direction for sorting.</param>
+        /// <param name="orderBy">A list of expressions of type <see cref="AnyOrderByExpression"/> indicating the order and direction for sorting.</param>
         /// <returns><see cref="SelectObjectContinuation{TDatabase, TObject}"/>, a fluent continuation for the construction of a sql SELECT query expression for a single <typeparamref name="TObject"/> value.</returns>
-        SelectObjectContinuation<TDatabase, TObject> OrderBy(params AnyOrderByClause[] orderBy);
+        SelectObjectContinuation<TDatabase, TObject> OrderBy(params AnyOrderByExpression[] orderBy);
 
         /// <summary>
         /// Construct the ORDER BY clause of a sql SELECT query expression for a single <typeparamref name="TObject"/> value.
@@ -54,9 +54,9 @@ namespace HatTrick.DbEx.Sql
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-order-by-clause-transact-sql">Microsoft docs on ORDER BY</see>
         /// </para>
         /// </summary>
-        /// <param name="orderBy">A list of expressions of type <see cref="AnyOrderByClause"/> indicating the order and direction for sorting.</param>
+        /// <param name="orderBy">A list of expressions of type <see cref="AnyOrderByExpression"/> indicating the order and direction for sorting.</param>
         /// <returns><see cref="SelectObjectContinuation{TDatabase, TObject}"/>, a fluent continuation for the construction of a sql SELECT query expression for a single <typeparamref name="TObject"/> value.</returns>
-        SelectObjectContinuation<TDatabase, TObject> OrderBy(IEnumerable<AnyOrderByClause>? orderBy);
+        SelectObjectContinuation<TDatabase, TObject> OrderBy(IEnumerable<AnyOrderByExpression>? orderBy);
 
         /// <summary>
         /// Construct the GROUP BY clause of a sql SELECT query expression for a single <typeparamref name="TObject"/> value.
@@ -64,9 +64,9 @@ namespace HatTrick.DbEx.Sql
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-group-by-transact-sql">Microsoft docs on GROUP BY</see>
         /// </para>
         /// </summary>
-        /// <param name="groupBy">A list of expressions of type <see cref="AnyGroupByClause"/> specifying how to group the selected results.</param>
+        /// <param name="groupBy">A list of expressions of type <see cref="AnyGroupByExpression"/> specifying how to group the selected results.</param>
         /// <returns><see cref="SelectObjectContinuation{TDatabase, TObject}"/>, a fluent continuation for the construction of a sql SELECT query expression for a single <typeparamref name="TObject"/> value.</returns>
-        SelectObjectContinuation<TDatabase, TObject> GroupBy(params AnyGroupByClause[] groupBy);
+        SelectObjectContinuation<TDatabase, TObject> GroupBy(params AnyGroupByExpression[] groupBy);
 
         /// <summary>
         /// Construct the GROUP BY clause of a sql SELECT query expression for a single <typeparamref name="TObject"/> value.
@@ -74,9 +74,9 @@ namespace HatTrick.DbEx.Sql
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-group-by-transact-sql">Microsoft docs on GROUP BY</see>
         /// </para>
         /// </summary>
-        /// <param name="groupBy">A list of expressions of type <see cref="AnyGroupByClause"/> specifying how to group the selected results.</param>
+        /// <param name="groupBy">A list of expressions of type <see cref="AnyGroupByExpression"/> specifying how to group the selected results.</param>
         /// <returns><see cref="SelectObjectContinuation{TDatabase, TObject}"/>, a fluent continuation for the construction of a sql SELECT query expression for a single <typeparamref name="TObject"/> value.</returns>
-        SelectObjectContinuation<TDatabase, TObject> GroupBy(IEnumerable<AnyGroupByClause>? groupBy);
+        SelectObjectContinuation<TDatabase, TObject> GroupBy(IEnumerable<AnyGroupByExpression>? groupBy);
 
         /// <summary>
         /// Construct the HAVING clause of a sql SELECT query expression for a single <typeparamref name="TObject"/> value.
@@ -84,9 +84,9 @@ namespace HatTrick.DbEx.Sql
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-having-transact-sql">Microsoft docs on HAVING</see>
         /// </para>
         /// </summary>
-        /// <param name="having">A list of expressions of type <see cref="AnyHavingClause"/> specifying conditions on the grouping or aggregation of selected results.</param>
+        /// <param name="having">A list of expressions of type <see cref="AnyHavingExpression"/> specifying conditions on the grouping or aggregation of selected results.</param>
         /// <returns><see cref="SelectObjectContinuation{TDatabase, TObject}"/>, a fluent continuation for the construction of a sql SELECT query expression for a single <typeparamref name="TObject"/> value.</returns>
-        SelectObjectContinuation<TDatabase, TObject> Having(AnyHavingClause? having);
+        SelectObjectContinuation<TDatabase, TObject> Having(AnyHavingExpression? having);
 
         /// <summary>
         /// Construct an INNER JOIN clause of a sql SELECT query expression for a single <typeparamref name="TObject"/> value.
@@ -105,8 +105,8 @@ namespace HatTrick.DbEx.Sql
         /// </para>
         /// </summary>
         /// <param name="subquery">Any expression of type <see cref="AnySelectSubquery"/> specifying a SELECT query expression to join to.</param>
-        /// <returns><see cref="JoinOnWithAlias{SelectObjectContinuation{TDatabase, TEntity}}"/>, a fluent continuation for the construction of a sql JOIN expression for a single <typeparamref name="TObject"/> value.</returns>
-        JoinOnWithAlias<SelectObjectContinuation<TDatabase, TObject>> InnerJoin(AnySelectSubquery subquery);
+        /// <returns><see cref="WithAlias{JoinOn{SelectObjectContinuation{TDatabase, TEntity}}}"/>, a fluent continuation for the construction of a sql JOIN expression for a single <typeparamref name="TObject"/> value.</returns>
+        WithAlias<JoinOn<SelectObjectContinuation<TDatabase, TObject>>> InnerJoin(AnySelectSubquery subquery);
 
         /// <summary>
         /// Construct an LEFT JOIN clause of a sql SELECT query expression for a single <typeparamref name="TObject"/> value.
@@ -125,8 +125,8 @@ namespace HatTrick.DbEx.Sql
         /// </para>
         /// </summary>
         /// <param name="subquery">Any expression of type <see cref="AnySelectSubquery"/> specifying a SELECT query expression to join to.</param>
-        /// <returns><see cref="JoinOnWithAlias{SelectObjectContinuation{TDatabase, TObject}}"/>, a fluent continuation for the construction of a sql JOIN expression for a single <typeparamref name="TObject"/> value.</returns>
-        JoinOnWithAlias<SelectObjectContinuation<TDatabase, TObject>> LeftJoin(AnySelectSubquery subquery);
+        /// <returns><see cref="WithAlias{JoinOn{SelectObjectContinuation{TDatabase, TObject}}}"/>, a fluent continuation for the construction of a sql JOIN expression for a single <typeparamref name="TObject"/> value.</returns>
+        WithAlias<JoinOn<SelectObjectContinuation<TDatabase, TObject>>> LeftJoin(AnySelectSubquery subquery);
 
         /// <summary>
         /// Construct an RIGHT JOIN clause of a sql SELECT query expression for a single <typeparamref name="TObject"/> value.
@@ -145,8 +145,8 @@ namespace HatTrick.DbEx.Sql
         /// </para>
         /// </summary>
         /// <param name="subquery">Any expression of type <see cref="AnySelectSubquery"/> specifying a SELECT query expression to join to.</param>
-        /// <returns><see cref="JoinOnWithAlias{SelectObjectContinuation{TDatabase, TObject}}"/>, a fluent continuation for the construction of a sql JOIN expression for a single <typeparamref name="TObject"/> value.</returns>
-        JoinOnWithAlias<SelectObjectContinuation<TDatabase, TObject>> RightJoin(AnySelectSubquery subquery);
+        /// <returns><see cref="WithAlias{JoinOn{SelectObjectContinuation{TDatabase, TObject}}}"/>, a fluent continuation for the construction of a sql JOIN expression for a single <typeparamref name="TObject"/> value.</returns>
+        WithAlias<JoinOn<SelectObjectContinuation<TDatabase, TObject>>> RightJoin(AnySelectSubquery subquery);
 
         /// <summary>
         /// Construct an FULL JOIN clause of a sql SELECT query expression for a single <typeparamref name="TObject"/> value.
@@ -165,8 +165,8 @@ namespace HatTrick.DbEx.Sql
         /// </para>
         /// </summary>
         /// <param name="subquery">Any expression of type <see cref="AnySelectSubquery"/> specifying a SELECT query expression to join to.</param>
-        /// <returns><see cref="JoinOnWithAlias{SelectObjectContinuation{TDatabase, TObject}}"/>, a fluent continuation for the construction of a sql JOIN expression for a single <typeparamref name="TObject"/> value.</returns>
-        JoinOnWithAlias<SelectObjectContinuation<TDatabase, TObject>> FullJoin(AnySelectSubquery subquery);
+        /// <returns><see cref="WithAlias{JoinOn{SelectObjectContinuation{TDatabase, TObject}}}"/>, a fluent continuation for the construction of a sql JOIN expression for a single <typeparamref name="TObject"/> value.</returns>
+        WithAlias<JoinOn<SelectObjectContinuation<TDatabase, TObject>>> FullJoin(AnySelectSubquery subquery);
 
         /// <summary>
         /// Construct an CROSS JOIN clause of a sql SELECT query expression for a single <typeparamref name="TObject"/> value.

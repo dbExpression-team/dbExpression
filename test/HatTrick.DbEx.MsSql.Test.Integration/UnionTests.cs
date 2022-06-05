@@ -32,7 +32,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .From(dbo.Person)
                 .Where(dbo.Person.Id < 5)
 
-                .Union
+                .Union()
                 .SelectMany(
                     dbo.Person.Id,
                     dbo.Person.FirstName,
@@ -65,7 +65,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 )
                 .From(dbo.Person)
 
-                .UnionAll
+                .UnionAll()
                 .SelectMany(
                     dbo.Person.Id,
                     dbo.Person.FirstName,
@@ -97,7 +97,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 )
                 .From(dbo.Person)
 
-                .Union
+                .Union()
                 .SelectMany(
                     dbo.Address.Id,
                     dbo.Address.Line1,
@@ -129,7 +129,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 )
                 .From(dbo.Person)
 
-                .UnionAll
+                .UnionAll()
                 .SelectMany(
                     dbo.Address.Id,
                     dbo.Address.Line1,
@@ -161,7 +161,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 )
                 .From(dbo.Person)
 
-                .Union
+                .Union()
                 .SelectMany(
                     dbo.Address.Id,
                     dbo.Address.Line1,
@@ -169,7 +169,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 )
                 .From(dbo.Address)
 
-                .Union
+                .Union()
                 .SelectMany(
                     dbo.Product.Id,
                     dbo.Product.Name,
@@ -201,7 +201,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 )
                 .From(dbo.Person)
 
-                .Union
+                .Union()
                 .SelectMany(
                     dbo.Address.Id,
                     dbo.Address.City,
@@ -209,7 +209,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 )
                 .From(dbo.Address)
 
-                .Union
+                .Union()
                 .SelectMany(
                     dbo.Product.Id,
                     dbo.Product.Name,
@@ -242,7 +242,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 )
                 .From(dbo.Person)
 
-                .Union
+                .Union()
                 .SelectMany(
                     dbo.Address.Id.As("AnotherId"),
                     dbo.Address.City.As("Locale"),
@@ -250,7 +250,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 )
                 .From(dbo.Address)
 
-                .Union
+                .Union()
                 .SelectMany(
                     dbo.Product.Id.As("SomeOtherId"),
                     dbo.Product.Name.As("Title"),
@@ -283,7 +283,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 )
                 .From(dbo.Person)
 
-                .UnionAll
+                .UnionAll()
                 .SelectMany(
                     dbo.Address.Id,
                     dbo.Address.Line1,
@@ -291,7 +291,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 )
                 .From(dbo.Address)
 
-                .UnionAll
+                .UnionAll()
                 .SelectMany(
                     dbo.Product.Id,
                     dbo.Product.Name,
@@ -323,7 +323,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 )
                 .From(dbo.Person)
 
-                .Union
+                .Union()
                 .SelectMany(
                     dbo.Address.Id,
                     dbo.Address.Line1,
@@ -331,7 +331,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 )
                 .From(dbo.Address)
 
-                .UnionAll
+                .UnionAll()
                 .SelectMany(
                     dbo.Product.Id,
                     dbo.Product.Name,
@@ -360,8 +360,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .From(dbo.Person)
                 .Where(dbo.Person.Id < 5)
 
-                .Union
-                .SelectMany<Person>()
+                .Union()
+                .SelectMany()
                 .From(dbo.Person)
                 .Where(dbo.Person.Id >= 5);
 
@@ -385,8 +385,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 db.SelectMany<Person>()
                 .From(dbo.Person)
 
-                .UnionAll
-                .SelectMany<Person>()
+                .UnionAll()
+                .SelectMany()
                 .From(dbo.Person);
 
             //when               
@@ -410,7 +410,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .From(dbo.Person)
                 .Where(dbo.Person.Id < 5)
 
-                .Union
+                .Union()
                 .SelectMany(dbo.Person.Id)
                 .From(dbo.Person)
                 .Where(dbo.Person.Id >= 5);
@@ -435,7 +435,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person)
 
-                .UnionAll
+                .UnionAll()
                 .SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
 
@@ -460,7 +460,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .From(dbo.Person)
                 .Where(dbo.Person.Id < 5)
 
-                .Union
+                .Union()
                 .SelectMany(dbo.Person.GenderType)
                 .From(dbo.Person)
                 .Where(dbo.Person.Id >= 5);
@@ -486,7 +486,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 db.SelectMany(dbo.Person.GenderType)
                 .From(dbo.Person)
 
-                .UnionAll
+                .UnionAll()
                 .SelectMany(dbo.Person.GenderType)
                 .From(dbo.Person);
 
@@ -511,7 +511,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .From(dbo.Product)
                 .Where(dbo.Product.Id < 2)
 
-                .Union
+                .Union()
                 .SelectMany(dbo.Product.Description)
                 .From(dbo.Product)
                 .Where(dbo.Product.Id >= 2);
@@ -536,7 +536,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 db.SelectMany(dbo.Product.Description)
                 .From(dbo.Product)
 
-                .UnionAll
+                .UnionAll()
                 .SelectMany(dbo.Product.Description)
                 .From(dbo.Product);
 
@@ -549,7 +549,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Can_union_all_two_objects_with_ordering_successfully(int version)
+        public void Can_union_of_value_with_ordering_execute_successfully(int version, int expected = 50)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -557,29 +557,88 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp =
 
                 db.SelectMany(
-                    dbo.Person.Id,
-                    db.fx.Concat(dbo.Person.FirstName, " ", dbo.Person.LastName).As("Key"),
-                    dbo.Person.FirstName.As("Part1"),
-                    dbo.Person.LastName.As("Part2")
+                    db.fx.Concat(dbo.Person.FirstName, " ", dbo.Person.LastName).As("Key")
                 )
                 .From(dbo.Person)
-                .Union
+                .Union()
                 .SelectMany(
-                    dbo.Address.Id,
-                    db.fx.Concat(dbo.Address.Line1, " ", dbo.Address.Line2),
-                    dbo.Address.Line1,
-                    dbo.Address.Line2
+                    db.fx.Concat(dbo.Person.FirstName, " ", dbo.Person.LastName)
                 )
-                .From(dbo.Address)
-
-                //.OrderBy("Key")
-                ;
+                .From(dbo.Person)
+                .OrderBy(
+                    dbex.Alias("Key")
+                );
 
             //when               
-            IList<dynamic> results = exp.Execute();
+            IList<string> results = exp.Execute();
 
             //then
-            false.Should().BeTrue("Order by is not currently supported in union statements.");
+            results.Should().HaveCount(expected);
+            results.Should().BeInAscendingOrder();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_union_all_of_value_with_ordering_execute_successfully(int version, int expected = 100)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp =
+
+                db.SelectMany(
+                    db.fx.Concat(dbo.Person.FirstName, " ", dbo.Person.LastName).As("Key")
+                )
+                .From(dbo.Person)
+                .UnionAll()
+                .SelectMany(
+                    db.fx.Concat(dbo.Person.FirstName, "ABC", dbo.Person.LastName)
+                )
+                .From(dbo.Person)
+                .OrderBy(
+                    dbex.Alias("Key")
+                );
+
+            //when               
+            IList<string> results = exp.Execute();
+
+            //then
+            results.Should().HaveCount(expected);
+            results.Should().BeInAscendingOrder();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_select_with_union_all_of_value_subquery_with_ordering_execute_successfully(int version, int expected = 100)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp =
+
+                db.SelectMany(
+                    dbex.Alias<string>("Key")
+                ).From(
+                    db.SelectMany(
+                        db.fx.Concat(dbo.Person.FirstName, " ", dbo.Person.LastName).As("Key")
+                    )
+                    .From(dbo.Person)
+                    .UnionAll()
+                    .SelectMany(
+                        db.fx.Concat(dbo.Person.FirstName, "ABC", dbo.Person.LastName)
+                    )
+                    .From(dbo.Person)                    
+                ).As("x")
+                .OrderBy(
+                    dbex.Alias("Key")
+                );
+
+            //when               
+            IList<string> results = exp.Execute();
+
+            //then
+            results.Should().HaveCount(expected);
+            results.Should().BeInAscendingOrder();
         }
     }
 }

@@ -16,8 +16,6 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using HatTrick.DbEx.Sql.Expression;
-
 namespace HatTrick.DbEx.Sql
 {
 #pragma warning disable IDE1006 // Naming Styles
@@ -34,5 +32,14 @@ namespace HatTrick.DbEx.Sql
         /// <returns><see cref="SelectValueContinuation{TDatabase,TValue}"/>, a fluent continuation for the construction of a sql SELECT query expression for a single <typeparamref name="TValue"/> value.</returns>
         SelectValueContinuation<TDatabase, TValue> From<TEntity>(Table<TEntity> entity)
             where TEntity : class, IDbEntity;
+
+        /// <summary>
+        /// Construct the FROM clause of a sql SELECT query expression for a single <typeparamref name="TValue"/> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/from-transact-sql">Microsoft docs on FROM</see>
+        /// </para>
+        /// </summary>
+        /// <returns><see cref="WithAlias{SelectValueContinuation{TDatabase, TValue}}"/>,  a fluent continuation for providing an alias for the subquery.</returns>
+        WithAlias<SelectValueContinuation<TDatabase, TValue>> From(AnySelectSubquery query);
     }
 }

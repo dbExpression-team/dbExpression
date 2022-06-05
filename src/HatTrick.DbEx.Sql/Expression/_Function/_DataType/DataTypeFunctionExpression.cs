@@ -21,7 +21,7 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class DataTypeFunctionExpression : FunctionExpression,
-        AnyGroupByClause
+        AnyGroupByExpression
     {
         #region constructors
         protected DataTypeFunctionExpression(Type declaredType) 

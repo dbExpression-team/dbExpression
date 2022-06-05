@@ -23,7 +23,7 @@ namespace HatTrick.DbEx.Sql
 #pragma warning disable IDE1006 // Naming Styles
     public interface SelectEntitiesContinuation<TDatabase, TEntity> :
 #pragma warning restore IDE1006 // Naming Styles
-        UnionSelectAnyInitiation<TDatabase>,
+        UnionSelectEntitiesInitiation<TDatabase, TEntity>,
         SelectEntitiesTermination<TDatabase, TEntity>
         where TDatabase : class, ISqlDatabaseRuntime
         where TEntity : class, IDbEntity, new()
@@ -34,9 +34,9 @@ namespace HatTrick.DbEx.Sql
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/where-transact-sql">Microsoft docs on WHERE</see>
         /// </para>
         /// </summary>
-        /// <param name="where">Any filter predicate of type <see cref="AnyWhereClause"/>.</param>
+        /// <param name="where">Any filter predicate of type <see cref="AnyWhereExpression"/>.</param>
         /// <returns><see cref="SelectEntitiesContinuation{TDatabase, TEntity}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
-        SelectEntitiesContinuation<TDatabase, TEntity> Where(AnyWhereClause? where);
+        SelectEntitiesContinuation<TDatabase, TEntity> Where(AnyWhereExpression? where);
 
         /// <summary>
         /// Construct the ORDER BY clause of a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.
@@ -44,9 +44,9 @@ namespace HatTrick.DbEx.Sql
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-order-by-clause-transact-sql">Microsoft docs on ORDER BY</see>
         /// </para>
         /// </summary>
-        /// <param name="orderBy">A list of expressions of type <see cref="AnyOrderByClause"/> indicating the order and direction for sorting.</param>
+        /// <param name="orderBy">A list of expressions of type <see cref="AnyOrderByExpression"/> indicating the order and direction for sorting.</param>
         /// <returns><see cref="SelectEntitiesOrderByContinuation{TDatabase, TEntity}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
-        SelectEntitiesOrderByContinuation<TDatabase, TEntity> OrderBy(params AnyOrderByClause[] orderBy);
+        SelectEntitiesOrderByContinuation<TDatabase, TEntity> OrderBy(params AnyOrderByExpression[] orderBy);
 
         /// <summary>
         /// Construct the ORDER BY clause of a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.
@@ -54,9 +54,9 @@ namespace HatTrick.DbEx.Sql
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-order-by-clause-transact-sql">Microsoft docs on ORDER BY</see>
         /// </para>
         /// </summary>
-        /// <param name="orderBy">A list of expressions of type <see cref="AnyOrderByClause"/> specifying the order and direction for sorting.</param>
+        /// <param name="orderBy">A list of expressions of type <see cref="AnyOrderByExpression"/> specifying the order and direction for sorting.</param>
         /// <returns><see cref="SelectEntitiesOrderByContinuation{TDatabase, TEntity}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
-        SelectEntitiesOrderByContinuation<TDatabase, TEntity> OrderBy(IEnumerable<AnyOrderByClause>? orderBy);
+        SelectEntitiesOrderByContinuation<TDatabase, TEntity> OrderBy(IEnumerable<AnyOrderByExpression>? orderBy);
 
         /// <summary>
         /// Construct the GROUP BY clause of a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.
@@ -64,9 +64,9 @@ namespace HatTrick.DbEx.Sql
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-group-by-transact-sql">Microsoft docs on GROUP BY</see>
         /// </para>
         /// </summary>
-        /// <param name="groupBy">A list of expressions of type <see cref="AnyGroupByClause"/> specifying how to group the selected results.</param>
+        /// <param name="groupBy">A list of expressions of type <see cref="AnyGroupByExpression"/> specifying how to group the selected results.</param>
         /// <returns><see cref="SelectEntitiesContinuation{TDatabase, TEntity}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
-        SelectEntitiesContinuation<TDatabase, TEntity> GroupBy(params AnyGroupByClause[] groupBy);
+        SelectEntitiesContinuation<TDatabase, TEntity> GroupBy(params AnyGroupByExpression[] groupBy);
 
         /// <summary>
         /// Construct the GROUP BY clause of a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.
@@ -74,9 +74,9 @@ namespace HatTrick.DbEx.Sql
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-group-by-transact-sql">Microsoft docs on GROUP BY</see>
         /// </para>
         /// </summary>
-        /// <param name="groupBy">A list of expressions of type <see cref="AnyGroupByClause"/> specifying how to group the selected results.</param>
+        /// <param name="groupBy">A list of expressions of type <see cref="AnyGroupByExpression"/> specifying how to group the selected results.</param>
         /// <returns><see cref="SelectEntitiesContinuation{TDatabase, TEntity}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
-        SelectEntitiesContinuation<TDatabase, TEntity> GroupBy(IEnumerable<AnyGroupByClause>? groupBy);
+        SelectEntitiesContinuation<TDatabase, TEntity> GroupBy(IEnumerable<AnyGroupByExpression>? groupBy);
 
         /// <summary>
         /// Construct the HAVING clause of a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.
@@ -84,9 +84,9 @@ namespace HatTrick.DbEx.Sql
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-having-transact-sql">Microsoft docs on HAVING</see>
         /// </para>
         /// </summary>
-        /// <param name="having\">A list of expressions of type <see cref="AnyHavingClause"/> specifying conditions on the grouping or aggregation of selected results.</param>
+        /// <param name="having\">A list of expressions of type <see cref="AnyHavingExpression"/> specifying conditions on the grouping or aggregation of selected results.</param>
         /// <returns><see cref="SelectEntitiesContinuation{TDatabase, TEntity}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
-        SelectEntitiesContinuation<TDatabase, TEntity> Having(AnyHavingClause? having);
+        SelectEntitiesContinuation<TDatabase, TEntity> Having(AnyHavingExpression? having);
 
         /// <summary>
         /// Construct an INNER JOIN clause of a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.
@@ -105,8 +105,8 @@ namespace HatTrick.DbEx.Sql
         /// </para>
         /// </summary>
         /// <param name="subquery">Any expression of type <see cref="AnySelectSubquery"/> specifying a SELECT query expression to join to.</param>
-        /// <returns><see cref="JoinOnWithAlias{SelectEntitiesContinuation{TDatabase, TEntity}}"/>, a fluent continuation for the construction of a sql JOIN expression for a list of <typeparamref name="TEntity"/> entities.</returns>
-        JoinOnWithAlias<SelectEntitiesContinuation<TDatabase, TEntity>> InnerJoin(AnySelectSubquery subquery);
+        /// <returns><see cref="WithAlias{JoinOn{SelectEntitiesContinuation{TDatabase, TEntity}}}"/>, a fluent continuation for the construction of a sql JOIN expression for a list of <typeparamref name="TEntity"/> entities.</returns>
+        WithAlias<JoinOn<SelectEntitiesContinuation<TDatabase, TEntity>>> InnerJoin(AnySelectSubquery subquery);
 
         /// <summary>
         /// Construct an LEFT JOIN clause of a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.
@@ -125,8 +125,8 @@ namespace HatTrick.DbEx.Sql
         /// </para>
         /// </summary>
         /// <param name="subquery">Any expression of type <see cref="AnySelectSubquery"/> specifying a SELECT query expression to join to.</param>
-        /// <returns><see cref="JoinOnWithAlias{SelectEntitiesContinuation{TDatabase, TEntity}}"/>, a fluent continuation for the construction of a sql JOIN expression for a list of <typeparamref name="TEntity"/> entities.</returns>
-        JoinOnWithAlias<SelectEntitiesContinuation<TDatabase, TEntity>> LeftJoin(AnySelectSubquery subquery);
+        /// <returns><see cref="WithAlias{JoinOn{SelectEntitiesContinuation{TDatabase, TEntity}}}"/>, a fluent continuation for the construction of a sql JOIN expression for a list of <typeparamref name="TEntity"/> entities.</returns>
+        WithAlias<JoinOn<SelectEntitiesContinuation<TDatabase, TEntity>>> LeftJoin(AnySelectSubquery subquery);
 
         /// <summary>
         /// Construct an RIGHT JOIN clause of a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.
@@ -145,8 +145,8 @@ namespace HatTrick.DbEx.Sql
         /// </para>
         /// </summary>
         /// <param name="subquery">Any expression of type <see cref="AnySelectSubquery"/> specifying a SELECT query expression to join to.</param>
-        /// <returns><see cref="JoinOnWithAlias{SelectEntitiesContinuation{TDatabase, TEntity}}"/>, a fluent continuation for the construction of a sql JOIN expression for a list of <typeparamref name="TEntity"/> entities.</returns>
-        JoinOnWithAlias<SelectEntitiesContinuation<TDatabase, TEntity>> RightJoin(AnySelectSubquery subquery);
+        /// <returns><see cref="WithAlias{JoinOn{SelectEntitiesContinuation{TDatabase, TEntity}}}"/>, a fluent continuation for the construction of a sql JOIN expression for a list of <typeparamref name="TEntity"/> entities.</returns>
+        WithAlias<JoinOn<SelectEntitiesContinuation<TDatabase, TEntity>>> RightJoin(AnySelectSubquery subquery);
 
         /// <summary>
         /// Construct an FULL JOIN clause of a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.
@@ -165,8 +165,8 @@ namespace HatTrick.DbEx.Sql
         /// </para>
         /// </summary>
         /// <param name="subquery">Any expression of type <see cref="AnySelectSubquery"/> specifying a SELECT query expression to join to.</param>
-        /// <returns><see cref="JoinOnWithAlias{SelectEntitiesContinuation{TDatabase, TEntity}}"/>, a fluent continuation for the construction of a sql JOIN expression for a list of <typeparamref name="TEntity"/> entities.</returns>
-        JoinOnWithAlias<SelectEntitiesContinuation<TDatabase, TEntity>> FullJoin(AnySelectSubquery subquery);
+        /// <returns><see cref="WithAlias{JoinOn{SelectEntitiesContinuation{TDatabase, TEntity}}}"/>, a fluent continuation for the construction of a sql JOIN expression for a list of <typeparamref name="TEntity"/> entities.</returns>
+        WithAlias<JoinOn<SelectEntitiesContinuation<TDatabase, TEntity>>> FullJoin(AnySelectSubquery subquery);
 
         /// <summary>
         /// Construct an CROSS JOIN clause of a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.

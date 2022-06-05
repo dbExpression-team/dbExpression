@@ -18,19 +18,20 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Builder
             //given
             ConfigureForMsSqlVersion(version);
 
-            SelectValuesContinuation<MsSqlDb,int> exp;
+            SelectValuesContinuation<MsSqlDb,int> builder;
             SelectQueryExpression expressionSet;
+
             //when
-            exp = db.SelectMany(sec.Person.Id)
+            builder = db.SelectMany(sec.Person.Id)
                .From(sec.Person);
 
-            expressionSet = ((exp as IQueryExpressionProvider)!.Expression as SelectQueryExpression)!;
+            expressionSet = ((builder as IQueryExpressionProvider)!.Expression as SelectQueryExpression)!;
 
             //then
             expressionSet.Select.Expressions.Should().ContainSingle(x => x.Expression.Equals(sec.Person.Id))
                 .Which.Expression.Should().BeOfType<PersonEntity.IdField>();
 
-            expressionSet.From.Should().NotBeNull()
+            expressionSet.From!.Expression.Should().NotBeNull()
                 .And.BeOfType<PersonEntity>();
         }
 
@@ -41,14 +42,14 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Builder
             //given
             ConfigureForMsSqlVersion(version);
 
-            SelectDynamicsContinuation<MsSqlDb> exp;
+            SelectDynamicsContinuation<MsSqlDb> builder;
             SelectQueryExpression expressionSet;
 
             //when
-            exp = db.SelectMany(sec.Person.Id, sec.Person.DateCreated)
+            builder = db.SelectMany(sec.Person.Id, sec.Person.DateCreated)
                .From(sec.Person);
 
-            expressionSet = ((exp as IQueryExpressionProvider)!.Expression as SelectQueryExpression)!;
+            expressionSet = ((builder as IQueryExpressionProvider)!.Expression as SelectQueryExpression)!;
 
             //then
             expressionSet.Select.Expressions.Should().HaveCount(2);
@@ -59,7 +60,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Builder
             expressionSet.Select.Expressions.Should().ContainSingle(x => x.Expression.Equals(sec.Person.DateCreated))
                 .Which.Expression.Should().BeOfType<PersonEntity.DateCreatedField>();
 
-            expressionSet.From.Should().NotBeNull()
+            expressionSet.From!.Expression.Should().NotBeNull()
                 .And.BeOfType<PersonEntity>();
         }
     }

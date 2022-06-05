@@ -20,9 +20,6 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public class UnionExpression : IExpressionElement
     {
-        #region to string
-        public override string? ToString()
-            => "UNION";
-        #endregion   
+        public override string? ToString() => "UNION";
     }
 }

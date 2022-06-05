@@ -118,21 +118,20 @@ namespace ServerSideBlazorApp.DataService
         /// <returns><see cref="SelectValue{CRMDatabase, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the object to select.</typeparam>
         public static SelectObject<CRMDatabase, T> SelectOne<T>(ObjectElement<T> element)
-            where T : class
+            where T : class?
             => CRMDatabase.SelectOne<T>(element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/>? value.
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/> value.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableObjectElement{T}" />?
+        /// <param name="element">An expression of type <see cref="AliasedElement{T}" />      
         /// </param>
-        /// <returns><see cref="SelectValue{CRMDatabase, T}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        /// <typeparam name="T">The type of the object to select.</typeparam>
-        public static SelectObject<CRMDatabase, T?> SelectOne<T>(NullableObjectElement<T> element)
-            where T : class?
+        /// <returns><see cref="SelectValues{CRMDatabase, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <typeparam name="T">The type of the value to select.</typeparam>
+        public static SelectValue<CRMDatabase, T> SelectOne<T>(AliasedElement<T> element)
             => CRMDatabase.SelectOne<T>(element);
 
         /// <summary>
@@ -449,19 +448,6 @@ namespace ServerSideBlazorApp.DataService
             => CRMDatabase.SelectOne(element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <see cref="string" />? value.
-        /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
-        /// </para>
-        /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
-        ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
-        ///</param>
-        /// <returns><see cref="SelectValue{CRMDatabase, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<CRMDatabase, string?> SelectOne(SelectExpression<string?> element) 
-            => CRMDatabase.SelectOne(element);
-
-        /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" /> value.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
@@ -603,21 +589,20 @@ namespace ServerSideBlazorApp.DataService
         /// <returns><see cref="SelectValues{CRMDatabase, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the object to select.</typeparam>
         public static SelectObjects<CRMDatabase, T> SelectMany<T>(ObjectElement<T> element)
-            where T : class
+            where T : class?
             => CRMDatabase.SelectMany<T>(element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/>? values.
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/> values.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableObjectElement{T}" />?
+        /// <param name="element">An expression of type <see cref="AliasedElement{T}" />      
         /// </param>
-        /// <returns><see cref="SelectValues{CRMDatabase, T}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        /// <typeparam name="T">The type of the object to select.</typeparam>
-        public static SelectObjects<CRMDatabase, T?> SelectMany<T>(NullableObjectElement<T> element)
-            where T : class?
+        /// <returns><see cref="SelectValues{CRMDatabase, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <typeparam name="T">The type of the value to select.</typeparam>
+        public static SelectValues<CRMDatabase, T> SelectMany<T>(AliasedElement<T> element)
             => CRMDatabase.SelectMany<T>(element);
 
         /// <summary>
@@ -934,19 +919,6 @@ namespace ServerSideBlazorApp.DataService
             => CRMDatabase.SelectMany(element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a list of <see cref="string" />? values.
-        /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
-        /// </para>
-        /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
-        ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
-        ///</param>
-        /// <returns><see cref="SelectValues{CRMDatabase, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<CRMDatabase, string?> SelectMany(SelectExpression<string?> element)
-            => CRMDatabase.SelectMany(element);
-
-        /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" /> values.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
@@ -1120,9 +1092,10 @@ namespace ServerSideBlazorApp.DataService
         InsertEntitiesInitiation<CRMDatabase>
     {
         #region internals
-        private static List<SchemaExpression> _schemas = new List<SchemaExpression>();
-        private static SqlDatabaseMetadataProvider _metadata = new SqlDatabaseMetadataProvider(new CRMDatabaseSqlDatabaseMetadata("CRMDatabase", "MsSqlDbExTest"));
-       
+        private static readonly List<SchemaExpression> _schemas = new List<SchemaExpression>();
+        private static readonly SqlDatabaseMetadataProvider _metadata = new SqlDatabaseMetadataProvider(new CRMDatabaseSqlDatabaseMetadata("CRMDatabase", "MsSqlDbExTest"));
+        private static readonly Dictionary<Type, Table> _entityTypeToTableMap = new Dictionary<Type, Table>();
+
         private CRMDatabaseStoredProcedures? _sp;
 
         private MsSqlSqlDatabaseRuntimeConfiguration Configuration { get; }
@@ -1139,10 +1112,18 @@ namespace ServerSideBlazorApp.DataService
             var dboSchema = new _dboDataService.dboSchemaExpression("dbo");
             _schemas.Add(dboSchema);
             _dboDataService.dbo.UseSchema(dboSchema);
+            _entityTypeToTableMap.Add(typeof(dboData.Address), dboSchema.Address);
+            _entityTypeToTableMap.Add(typeof(dboData.Customer), dboSchema.Customer);
+            _entityTypeToTableMap.Add(typeof(dboData.CustomerAddress), dboSchema.CustomerAddress);
+            _entityTypeToTableMap.Add(typeof(dboData.Product), dboSchema.Product);
+            _entityTypeToTableMap.Add(typeof(dboData.Purchase), dboSchema.Purchase);
+            _entityTypeToTableMap.Add(typeof(dboData.PurchaseLine), dboSchema.PurchaseLine);
+            _entityTypeToTableMap.Add(typeof(dboData.PersonTotalPurchasesView), dboSchema.PersonTotalPurchasesView);
 
             var secSchema = new _secDataService.secSchemaExpression("sec");
             _schemas.Add(secSchema);
             _secDataService.sec.UseSchema(secSchema);
+            _entityTypeToTableMap.Add(typeof(secData.Person), secSchema.Person);
 
         }
 
@@ -1174,7 +1155,7 @@ namespace ServerSideBlazorApp.DataService
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
         public SelectEntity<CRMDatabase, TEntity> SelectOne<TEntity>()
             where TEntity : class, IDbEntity, new()
-            => Configuration.QueryExpressionBuilder.CreateSelectEntityBuilder<CRMDatabase, TEntity>(Configuration);
+            => Configuration.QueryExpressionBuilder.CreateSelectEntityBuilder<CRMDatabase, TEntity>(Configuration, GetTable<TEntity>());
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="TEnum"/> value.
@@ -1241,21 +1222,19 @@ namespace ServerSideBlazorApp.DataService
         /// <returns><see cref="SelectValues{CRMDatabase, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the object to select.</typeparam>
         public SelectObject<CRMDatabase, T> SelectOne<T>(ObjectElement<T> element)
-            where T : class
+            where T : class?
             => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<CRMDatabase, T>(Configuration, element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/>? value.
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/> value.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableObjectElement{T}" />?
+        /// <param name="element">An expression of type <see cref="AliasedElement{T}" />    
         /// </param>
-        /// <returns><see cref="SelectValue{CRMDatabase, T}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        /// <typeparam name="T">The type of the object to select.</typeparam>
-        public SelectObject<CRMDatabase, T?> SelectOne<T>(NullableObjectElement<T> element)
-            where T : class?
+        /// <returns><see cref="SelectValue{CRMDatabase, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<CRMDatabase, T> SelectOne<T>(AliasedElement<T> element)
             => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<CRMDatabase, T>(Configuration, element);
 
         /// <summary>
@@ -1572,19 +1551,6 @@ namespace ServerSideBlazorApp.DataService
             => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<CRMDatabase>(Configuration, element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <see cref="string" />? value.
-        /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
-        /// </para>
-        /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
-        ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
-        /// </param>
-        /// <returns><see cref="SelectValue{CRMDatabase, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<CRMDatabase, string?> SelectOne(SelectExpression<string?> element) 
-            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<CRMDatabase>(Configuration, element);
-
-        /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" /> value.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
@@ -1661,7 +1627,7 @@ namespace ServerSideBlazorApp.DataService
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
         public SelectEntities<CRMDatabase, TEntity> SelectMany<TEntity>()
            where TEntity : class, IDbEntity, new()
-           => Configuration.QueryExpressionBuilder.CreateSelectEntitiesBuilder<CRMDatabase, TEntity>(Configuration);
+           => Configuration.QueryExpressionBuilder.CreateSelectEntitiesBuilder<CRMDatabase, TEntity>(Configuration, GetTable<TEntity>());
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="TEnum"/> values.
@@ -1726,21 +1692,19 @@ namespace ServerSideBlazorApp.DataService
         /// <returns><see cref="SelectValues{CRMDatabase, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the object to select.</typeparam>
         public SelectObjects<CRMDatabase, T> SelectMany<T>(ObjectElement<T> element)
-            where T : class
+            where T : class?
             => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<CRMDatabase, T>(Configuration, element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/>? values.
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/> values.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableObjectElement{T}" />?
+        /// <param name="element">An expression of type <see cref="AliasedElement{T}" />    
         /// </param>
-        /// <returns><see cref="SelectValues{CRMDatabase, T}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        /// <typeparam name="T">The type of the object to select.</typeparam>
-        public SelectObjects<CRMDatabase, T?> SelectMany<T>(NullableObjectElement<T> element)
-            where T : class?
+        /// <returns><see cref="SelectValues{CRMDatabase, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<CRMDatabase, T> SelectMany<T>(AliasedElement<T> element)
             => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<CRMDatabase, T>(Configuration, element);
 
         /// <summary>
@@ -2057,19 +2021,6 @@ namespace ServerSideBlazorApp.DataService
             => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<CRMDatabase>(Configuration, element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a list of <see cref="string" />? values.
-        /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
-        /// </para>
-        /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
-        ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
-        /// </param>
-        /// <returns><see cref="SelectValues{CRMDatabase, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<CRMDatabase, string?> SelectMany(SelectExpression<string?> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<CRMDatabase>(Configuration, element);
-
-        /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" /> values.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
@@ -2229,6 +2180,14 @@ namespace ServerSideBlazorApp.DataService
         public ISqlConnection GetConnection()
             => new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
         #endregion
+
+        protected virtual Table<TEntity> GetTable<TEntity>()
+            where TEntity : class, IDbEntity
+        {
+            if (!_entityTypeToTableMap.ContainsKey(typeof(TEntity)))
+                throw new DbExpressionException($"Entity type {typeof(TEntity)} is not known.");
+            return _entityTypeToTableMap[typeof(TEntity)] as Table<TEntity> ?? throw new DbExpressionException($"Map contains an invalid reference for type {typeof(TEntity)}.");
+        }
         #endregion
 
         #region sp
@@ -4599,7 +4558,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region description field expression
-        public partial class DescriptionField : NullableObjectFieldExpression<Product,ServerSideBlazorApp.Data.ProductDescription>
+        public partial class DescriptionField : ObjectFieldExpression<Product,ServerSideBlazorApp.Data.ProductDescription?>
         {
             #region constructors
             public DescriptionField(string identifier, string name, Table entity) : base(identifier, name, entity)

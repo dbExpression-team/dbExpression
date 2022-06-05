@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,13 +16,14 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Expression;
-
 namespace HatTrick.DbEx.Sql
 {
 #pragma warning disable IDE1006 // Naming Styles
-    public interface AnyOrderByClause : IExpressionElement
+    public interface AliasedElement : 
 #pragma warning restore IDE1006 // Naming Styles
+        AnyElement, 
+        AnyOrderByExpression,
+        AnyGroupByExpression
     {
     }
 }

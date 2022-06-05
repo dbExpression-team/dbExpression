@@ -196,7 +196,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                         .InnerJoin(
                             db.SelectMany(
                                 foo.PurchaseId,
-                                foo.PurchasePrice)
+                                foo.PurchasePrice
+                            )
                             .From(foo)
                             .Where(foo.PurchasePrice == 30)
                         ).As("t2").On(dbo.Purchase.Id == foo.As("t2").PurchaseId)

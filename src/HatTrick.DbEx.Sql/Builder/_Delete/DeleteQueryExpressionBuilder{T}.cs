@@ -64,7 +64,7 @@ namespace HatTrick.DbEx.Sql.Builder
             where TEntity : class, IDbEntity
             => new DeleteEntitiesDeleteQueryExpressionBuilder<TDatabase, TEntity>(expression, configuration, entity);
 
-        protected virtual void ApplyWhere(AnyWhereClause expression)
+        protected virtual void ApplyWhere(AnyWhereExpression expression)
         {
             if (expression is null)
                 return;

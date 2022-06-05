@@ -16,7 +16,6 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Expression;
 using System;
 
 namespace HatTrick.DbEx.Sql.Mapper
@@ -40,21 +39,14 @@ namespace HatTrick.DbEx.Sql.Mapper
         public IEntityMapper<TEntity> CreateEntityMapper<TEntity>(Table<TEntity> entity)
             where TEntity : class, IDbEntity
         {
-            var mapper = entityMapperFactory(typeof(TEntity));
+            var mapper = entityMapperFactory(typeof(TEntity)) ?? throw new DbExpressionConfigurationException($"The factory returned a null mapper for entity type {typeof(TEntity)}.");
             if (mapper is IEntityMapper<TEntity> entityMapper)
                 return entityMapper;
-            if (mapper is null)
-                throw new DbExpressionConfigurationException($"The factory returned a null mapper for entity type {typeof(TEntity)}.");
             throw new DbExpressionConfigurationException($"The factory is not an {typeof(IEntityMapper<TEntity>).Name}, cannot use the factory to create a mapper for entity type {typeof(TEntity)}.");
         }
 
         public IExpandoObjectMapper CreateExpandoObjectMapper()
-        {
-            var mapper = expandoObjectMapperFactory();
-            if (mapper is not null)
-                return mapper;
-            throw new DbExpressionConfigurationException($"The factory returned a null mapper for an {typeof(IExpandoObjectMapper).Name}");
-        }
+            => expandoObjectMapperFactory() ?? throw new DbExpressionConfigurationException($"The factory returned a null mapper for an {typeof(IExpandoObjectMapper).Name}");
         #endregion
     }
 }

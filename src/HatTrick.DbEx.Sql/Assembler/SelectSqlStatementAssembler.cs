@@ -17,6 +17,7 @@
 #endregion
 
 using HatTrick.DbEx.Sql.Expression;
+using System;
 using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Assembler
@@ -74,23 +75,12 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         protected virtual void AppendFromClause(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
+            if (expression.From?.Expression is null)
+                throw new DbExpressionException($"Expected {nameof(expression.From)} expression to not be null.", new ArgumentNullException(nameof(expression)));
+
             builder.Appender.LineBreak().Indent().Write("FROM").LineBreak();
 
-            builder.Appender
-                .Indentation++
-                .Indent();
-
-            context.PushEntityAppendStyle(EntityExpressionAppendStyle.Declaration);
-            try
-            {
-                builder.AppendElement(expression.From ?? throw new DbExpressionException("Expected base entity to not be null"), context);
-            }
-            finally
-            {
-                context.PopEntityAppendStyle();
-            }
-
-            builder.Appender.Indentation--;
+            builder.AppendElement(expression.From, context);
         }
 
         protected virtual void AppendJoinClause(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)

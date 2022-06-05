@@ -120,21 +120,20 @@ namespace DbEx.DataService
         /// <returns><see cref="SelectValue{MsSqlDb, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the object to select.</typeparam>
         public static SelectObject<MsSqlDb, T> SelectOne<T>(ObjectElement<T> element)
-            where T : class
+            where T : class?
             => MsSqlDb.SelectOne<T>(element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/>? value.
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/> value.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableObjectElement{T}" />?
+        /// <param name="element">An expression of type <see cref="AliasedElement{T}" />      
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDb, T}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        /// <typeparam name="T">The type of the object to select.</typeparam>
-        public static SelectObject<MsSqlDb, T?> SelectOne<T>(NullableObjectElement<T> element)
-            where T : class?
+        /// <returns><see cref="SelectValues{MsSqlDb, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <typeparam name="T">The type of the value to select.</typeparam>
+        public static SelectValue<MsSqlDb, T> SelectOne<T>(AliasedElement<T> element)
             => MsSqlDb.SelectOne<T>(element);
 
         /// <summary>
@@ -462,19 +461,6 @@ namespace DbEx.DataService
             => MsSqlDb.SelectOne(element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <see cref="string" />? value.
-        /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
-        /// </para>
-        /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
-        ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
-        ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDb, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDb, string?> SelectOne(SelectExpression<string?> element) 
-            => MsSqlDb.SelectOne(element);
-
-        /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" /> value.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
@@ -617,21 +603,20 @@ namespace DbEx.DataService
         /// <returns><see cref="SelectValues{MsSqlDb, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the object to select.</typeparam>
         public static SelectObjects<MsSqlDb, T> SelectMany<T>(ObjectElement<T> element)
-            where T : class
+            where T : class?
             => MsSqlDb.SelectMany<T>(element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/>? values.
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/> values.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableObjectElement{T}" />?
+        /// <param name="element">An expression of type <see cref="AliasedElement{T}" />      
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, T}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        /// <typeparam name="T">The type of the object to select.</typeparam>
-        public static SelectObjects<MsSqlDb, T?> SelectMany<T>(NullableObjectElement<T> element)
-            where T : class?
+        /// <returns><see cref="SelectValues{MsSqlDb, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <typeparam name="T">The type of the value to select.</typeparam>
+        public static SelectValues<MsSqlDb, T> SelectMany<T>(AliasedElement<T> element)
             => MsSqlDb.SelectMany<T>(element);
 
         /// <summary>
@@ -959,19 +944,6 @@ namespace DbEx.DataService
             => MsSqlDb.SelectMany(element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a list of <see cref="string" />? values.
-        /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
-        /// </para>
-        /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
-        ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
-        ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDb, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDb, string?> SelectMany(SelectExpression<string?> element)
-            => MsSqlDb.SelectMany(element);
-
-        /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" /> values.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
@@ -1146,9 +1118,10 @@ namespace DbEx.DataService
         InsertEntitiesInitiation<MsSqlDb>
     {
         #region internals
-        private static List<SchemaExpression> _schemas = new List<SchemaExpression>();
-        private static SqlDatabaseMetadataProvider _metadata = new SqlDatabaseMetadataProvider(new MsSqlDbSqlDatabaseMetadata("MsSqlDb", "MsSqlDbExTest"));
-       
+        private static readonly List<SchemaExpression> _schemas = new List<SchemaExpression>();
+        private static readonly SqlDatabaseMetadataProvider _metadata = new SqlDatabaseMetadataProvider(new MsSqlDbSqlDatabaseMetadata("MsSqlDb", "MsSqlDbExTest"));
+        private static readonly Dictionary<Type, Table> _entityTypeToTableMap = new Dictionary<Type, Table>();
+
         private MsSqlDbStoredProcedures? _sp;
 
         private MsSqlSqlDatabaseRuntimeConfiguration Configuration { get; }
@@ -1165,14 +1138,29 @@ namespace DbEx.DataService
             var dboSchema = new _dboDataService.dboSchemaExpression("dbo");
             _schemas.Add(dboSchema);
             _dboDataService.dbo.UseSchema(dboSchema);
+            _entityTypeToTableMap.Add(typeof(dboData.AccessAuditLog), dboSchema.AccessAuditLog);
+            _entityTypeToTableMap.Add(typeof(dboData.Address), dboSchema.Address);
+            _entityTypeToTableMap.Add(typeof(dboData.Person), dboSchema.Person);
+            _entityTypeToTableMap.Add(typeof(dboData.PersonAddress), dboSchema.PersonAddress);
+            _entityTypeToTableMap.Add(typeof(dboData.Product), dboSchema.Product);
+            _entityTypeToTableMap.Add(typeof(dboData.Purchase), dboSchema.Purchase);
+            _entityTypeToTableMap.Add(typeof(dboData.PurchaseLine), dboSchema.PurchaseLine);
+            _entityTypeToTableMap.Add(typeof(dboData.PersonTotalPurchasesView), dboSchema.PersonTotalPurchasesView);
 
             var unit_testSchema = new _unit_testDataService.unit_testSchemaExpression("unit_test");
             _schemas.Add(unit_testSchema);
             _unit_testDataService.unit_test.UseSchema(unit_testSchema);
+            _entityTypeToTableMap.Add(typeof(unit_testData.alias), unit_testSchema.alias);
+            _entityTypeToTableMap.Add(typeof(unit_testData.entity), unit_testSchema.entity);
+            _entityTypeToTableMap.Add(typeof(unit_testData.ExpressionElementType), unit_testSchema.ExpressionElementType);
+            _entityTypeToTableMap.Add(typeof(unit_testData.identifier), unit_testSchema.identifier);
+            _entityTypeToTableMap.Add(typeof(unit_testData.name), unit_testSchema.name);
+            _entityTypeToTableMap.Add(typeof(unit_testData.schema), unit_testSchema.schema);
 
             var secSchema = new _secDataService.secSchemaExpression("sec");
             _schemas.Add(secSchema);
             _secDataService.sec.UseSchema(secSchema);
+            _entityTypeToTableMap.Add(typeof(secData.Person), secSchema.Person);
 
         }
 
@@ -1204,7 +1192,7 @@ namespace DbEx.DataService
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
         public SelectEntity<MsSqlDb, TEntity> SelectOne<TEntity>()
             where TEntity : class, IDbEntity, new()
-            => Configuration.QueryExpressionBuilder.CreateSelectEntityBuilder<MsSqlDb, TEntity>(Configuration);
+            => Configuration.QueryExpressionBuilder.CreateSelectEntityBuilder<MsSqlDb, TEntity>(Configuration, GetTable<TEntity>());
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="TEnum"/> value.
@@ -1271,21 +1259,19 @@ namespace DbEx.DataService
         /// <returns><see cref="SelectValues{MsSqlDb, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the object to select.</typeparam>
         public SelectObject<MsSqlDb, T> SelectOne<T>(ObjectElement<T> element)
-            where T : class
+            where T : class?
             => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<MsSqlDb, T>(Configuration, element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/>? value.
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/> value.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableObjectElement{T}" />?
+        /// <param name="element">An expression of type <see cref="AliasedElement{T}" />    
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDb, T}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        /// <typeparam name="T">The type of the object to select.</typeparam>
-        public SelectObject<MsSqlDb, T?> SelectOne<T>(NullableObjectElement<T> element)
-            where T : class?
+        /// <returns><see cref="SelectValue{MsSqlDb, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<MsSqlDb, T> SelectOne<T>(AliasedElement<T> element)
             => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<MsSqlDb, T>(Configuration, element);
 
         /// <summary>
@@ -1613,19 +1599,6 @@ namespace DbEx.DataService
             => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<MsSqlDb>(Configuration, element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <see cref="string" />? value.
-        /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
-        /// </para>
-        /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
-        ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
-        /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDb, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDb, string?> SelectOne(SelectExpression<string?> element) 
-            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<MsSqlDb>(Configuration, element);
-
-        /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" /> value.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
@@ -1703,7 +1676,7 @@ namespace DbEx.DataService
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
         public SelectEntities<MsSqlDb, TEntity> SelectMany<TEntity>()
            where TEntity : class, IDbEntity, new()
-           => Configuration.QueryExpressionBuilder.CreateSelectEntitiesBuilder<MsSqlDb, TEntity>(Configuration);
+           => Configuration.QueryExpressionBuilder.CreateSelectEntitiesBuilder<MsSqlDb, TEntity>(Configuration, GetTable<TEntity>());
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="TEnum"/> values.
@@ -1768,21 +1741,19 @@ namespace DbEx.DataService
         /// <returns><see cref="SelectValues{MsSqlDb, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the object to select.</typeparam>
         public SelectObjects<MsSqlDb, T> SelectMany<T>(ObjectElement<T> element)
-            where T : class
+            where T : class?
             => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<MsSqlDb, T>(Configuration, element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/>? values.
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/> values.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableObjectElement{T}" />?
+        /// <param name="element">An expression of type <see cref="AliasedElement{T}" />    
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, T}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        /// <typeparam name="T">The type of the object to select.</typeparam>
-        public SelectObjects<MsSqlDb, T?> SelectMany<T>(NullableObjectElement<T> element)
-            where T : class?
+        /// <returns><see cref="SelectValues{MsSqlDb, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<MsSqlDb, T> SelectMany<T>(AliasedElement<T> element)
             => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<MsSqlDb, T>(Configuration, element);
 
         /// <summary>
@@ -2110,19 +2081,6 @@ namespace DbEx.DataService
             => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<MsSqlDb>(Configuration, element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a list of <see cref="string" />? values.
-        /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
-        /// </para>
-        /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
-        ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
-        /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDb, string?> SelectMany(SelectExpression<string?> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<MsSqlDb>(Configuration, element);
-
-        /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" /> values.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
@@ -2283,6 +2241,14 @@ namespace DbEx.DataService
         public ISqlConnection GetConnection()
             => new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
         #endregion
+
+        protected virtual Table<TEntity> GetTable<TEntity>()
+            where TEntity : class, IDbEntity
+        {
+            if (!_entityTypeToTableMap.ContainsKey(typeof(TEntity)))
+                throw new DbExpressionException($"Entity type {typeof(TEntity)} is not known.");
+            return _entityTypeToTableMap[typeof(TEntity)] as Table<TEntity> ?? throw new DbExpressionException($"Map contains an invalid reference for type {typeof(TEntity)}.");
+        }
         #endregion
 
         #region sp
@@ -4915,7 +4881,7 @@ namespace DbEx.dboDataService
         #endregion
 
         #region description field expression
-        public partial class DescriptionField : NullableObjectFieldExpression<Product,HatTrick.DbEx.MsSql.Test.ProductDescription>
+        public partial class DescriptionField : ObjectFieldExpression<Product,HatTrick.DbEx.MsSql.Test.ProductDescription?>
         {
             #region constructors
             public DescriptionField(string identifier, string name, Table entity) : base(identifier, name, entity)

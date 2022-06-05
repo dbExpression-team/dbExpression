@@ -30,35 +30,35 @@ namespace HatTrick.DbEx.Sql.Pipeline
     public interface ISelectSetQueryExpressionExecutionPipeline
     {
         #region entity list
-        IList<T> ExecuteSelectEntityList<T>(SelectSetQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand)
-            where T : class, IDbEntity, new();
+        IList<TEntity> ExecuteSelectEntityList<TEntity>(SelectSetQueryExpression expression, Table<TEntity> table, ISqlConnection connection, Action<IDbCommand>? configureCommand)
+            where TEntity : class, IDbEntity, new();
 
-        IList<T> ExecuteSelectEntityList<T>(SelectSetQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, T?> map)
-            where T : class, IDbEntity, new();
+        IList<TEntity> ExecuteSelectEntityList<TEntity>(SelectSetQueryExpression expression, Table<TEntity> table, ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, TEntity?> map)
+            where TEntity : class, IDbEntity, new();
 
-        void ExecuteSelectEntityList<T>(SelectSetQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> read)
-            where T : class, IDbEntity;
+        void ExecuteSelectEntityList<TEntity>(SelectSetQueryExpression expression, Table<TEntity> table, ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> read)
+            where TEntity : class, IDbEntity;
 
-        IList<T> ExecuteSelectEntityList<T>(SelectSetQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader, T> map)
-            where T : class, IDbEntity, new();
+        IList<TEntity> ExecuteSelectEntityList<TEntity>(SelectSetQueryExpression expression, Table<TEntity> table, ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader, TEntity> map)
+            where TEntity : class, IDbEntity, new();
 
-        Task<IList<T>> ExecuteSelectEntityListAsync<T>(SelectSetQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
-            where T : class, IDbEntity, new();
+        Task<IList<TEntity>> ExecuteSelectEntityListAsync<TEntity>(SelectSetQueryExpression expression, Table<TEntity> table, ISqlConnection connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
+            where TEntity : class, IDbEntity, new();
 
-        Task ExecuteSelectEntityListAsync<T>(SelectSetQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> read, CancellationToken ct)
-            where T : class, IDbEntity;
+        Task ExecuteSelectEntityListAsync<TEntity>(SelectSetQueryExpression expression, Table<TEntity> table, ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> read, CancellationToken ct)
+            where TEntity : class, IDbEntity;
 
-        Task<IList<T>> ExecuteSelectEntityListAsync<T>(SelectSetQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader, T> map, CancellationToken ct)
-            where T : class, IDbEntity, new();
+        Task<IList<TEntity>> ExecuteSelectEntityListAsync<TEntity>(SelectSetQueryExpression expression, Table<TEntity> table, ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader, TEntity> map, CancellationToken ct)
+            where TEntity : class, IDbEntity, new();
 
-        Task<IList<T>> ExecuteSelectEntityListAsync<T>(SelectSetQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, T?> map, CancellationToken ct)
-            where T : class, IDbEntity, new();
+        Task<IList<TEntity>> ExecuteSelectEntityListAsync<TEntity>(SelectSetQueryExpression expression, Table<TEntity> table, ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, TEntity?> map, CancellationToken ct)
+            where TEntity : class, IDbEntity, new();
 
-        Task ExecuteSelectEntityListAsync<T>(SelectSetQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, Task> read, CancellationToken ct)
-            where T : class, IDbEntity;
+        Task ExecuteSelectEntityListAsync<TEntity>(SelectSetQueryExpression expression, Table<TEntity> table, ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, Task> read, CancellationToken ct)
+            where TEntity : class, IDbEntity;
 
-        Task<IList<T>> ExecuteSelectEntityListAsync<T>(SelectSetQueryExpression expression, ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, T, Task> map, CancellationToken ct)
-            where T : class, IDbEntity, new();
+        Task<IList<TEntity>> ExecuteSelectEntityListAsync<TEntity>(SelectSetQueryExpression expression, Table<TEntity> table, ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, TEntity, Task> map, CancellationToken ct)
+            where TEntity : class, IDbEntity, new();
         #endregion
 
         #region value list

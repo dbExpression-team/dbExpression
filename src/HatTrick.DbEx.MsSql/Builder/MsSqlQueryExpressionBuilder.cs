@@ -16,25 +16,28 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql;
+using HatTrick.DbEx.MsSql.Configuration;
+using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Builder;
-using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
-using HatTrick.DbEx.MsSql.Configuration;
 
 namespace HatTrick.DbEx.MsSql.Builder
 {
     public class MsSqlQueryExpressionBuilder
     {
         #region select one
-        public virtual SelectEntity<TDatabase, TEntity> CreateSelectEntityBuilder<TDatabase, TEntity>(MsSqlSqlDatabaseRuntimeConfiguration configuration)
+        public virtual SelectEntity<TDatabase, TEntity> CreateSelectEntityBuilder<TDatabase, TEntity>(MsSqlSqlDatabaseRuntimeConfiguration configuration, Table<TEntity> table)
             where TDatabase : class, ISqlDatabaseRuntime
             where TEntity : class, IDbEntity, new()
-            => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne<TEntity>();
+            => (new EntitySelectSetQueryExpressionBuilder<TDatabase, TEntity>(
+                    (configuration.QueryExpressionFactory ?? throw new DbExpressionConfigurationException("Could not resolve a query expression factory, please ensure a query expression factory has been properly registered."))
+                        .CreateQueryExpression<SelectSetQueryExpression>() ?? throw new DbExpressionException($"Expected query expression factory to return an expression for type {nameof(SelectSetQueryExpression)}"),
+                    configuration,
+                    table
+                ) as SelectOneInitiation<TDatabase>)!.SelectOne<TEntity>();
 
         public virtual SelectDynamic<TDatabase> CreateSelectDynamicBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement element1, AnyElement element2, params AnyElement[] elements)
             where TDatabase : class, ISqlDatabaseRuntime
@@ -64,12 +67,11 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         public virtual SelectObject<TDatabase, T> CreateSelectValueBuilder<TDatabase, T>(MsSqlSqlDatabaseRuntimeConfiguration configuration, ObjectElement<T> element)
             where TDatabase : class, ISqlDatabaseRuntime
-            where T : class
+            where T : class?
             => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne(element);
 
-        public virtual SelectObject<TDatabase, T?> CreateSelectValueBuilder<TDatabase, T>(MsSqlSqlDatabaseRuntimeConfiguration configuration, NullableObjectElement<T> element)
+        public virtual SelectValue<TDatabase, T> CreateSelectValueBuilder<TDatabase, T>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AliasedElement<T> element)
             where TDatabase : class, ISqlDatabaseRuntime
-            where T : class?
             => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne(element);
 
         public virtual SelectValue<TDatabase, bool> CreateSelectValueBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<bool> element)
@@ -172,10 +174,6 @@ namespace HatTrick.DbEx.MsSql.Builder
             where TDatabase : class, ISqlDatabaseRuntime
             => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne(element);
 
-        public virtual SelectValue<TDatabase, string?> CreateSelectValueBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, SelectExpression<string?> element)
-            where TDatabase : class, ISqlDatabaseRuntime
-            => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne(element);
-
         public virtual SelectValue<TDatabase, TimeSpan> CreateSelectValueBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<TimeSpan> element)
             where TDatabase : class, ISqlDatabaseRuntime
             => CreateSelectBuilder<TDatabase, SelectOneInitiation<TDatabase>>(configuration).SelectOne(element);
@@ -186,10 +184,15 @@ namespace HatTrick.DbEx.MsSql.Builder
         #endregion
 
         #region select many
-        public virtual SelectEntities<TDatabase, TEntity> CreateSelectEntitiesBuilder<TDatabase, TEntity>(MsSqlSqlDatabaseRuntimeConfiguration configuration)
+        public virtual SelectEntities<TDatabase, TEntity> CreateSelectEntitiesBuilder<TDatabase, TEntity>(MsSqlSqlDatabaseRuntimeConfiguration configuration, Table<TEntity> table)
             where TDatabase : class, ISqlDatabaseRuntime
             where TEntity : class, IDbEntity, new()
-            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany<TEntity>();
+            => (new EntitySelectSetQueryExpressionBuilder<TDatabase, TEntity>(
+                    (configuration.QueryExpressionFactory ?? throw new DbExpressionConfigurationException("Could not resolve a query expression factory, please ensure a query expression factory has been properly registered."))
+                        .CreateQueryExpression<SelectSetQueryExpression>() ?? throw new DbExpressionException($"Expected query expression factory to return an expression for type {nameof(SelectSetQueryExpression)}"),
+                    configuration,
+                    table
+                ) as SelectManyInitiation<TDatabase>)!.SelectMany<TEntity>();
 
         public virtual SelectDynamics<TDatabase> CreateSelectDynamicsBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement element1, AnyElement element2, params AnyElement[] elements)
             where TDatabase : class, ISqlDatabaseRuntime
@@ -219,14 +222,13 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         public virtual SelectObjects<TDatabase, T> CreateSelectValuesBuilder<TDatabase, T>(MsSqlSqlDatabaseRuntimeConfiguration configuration, ObjectElement<T> element)
             where TDatabase : class, ISqlDatabaseRuntime
-            where T : class
-            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany(element);
+            where T : class?
+            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany<T>(element);
 
-        public virtual SelectObjects<TDatabase, T?> CreateSelectValuesBuilder<TDatabase, T>(MsSqlSqlDatabaseRuntimeConfiguration configuration, NullableObjectElement<T> element)
+        public virtual SelectValues<TDatabase, T> CreateSelectValuesBuilder<TDatabase, T>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AliasedElement<T> element)
             where TDatabase : class, ISqlDatabaseRuntime
-            where T: class?
-            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany(element);
-
+            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany<T>(element);
+        
         public virtual SelectValues<TDatabase, bool> CreateSelectValuesBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<bool> element)
             where TDatabase : class, ISqlDatabaseRuntime
             => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany(element);
@@ -327,10 +329,6 @@ namespace HatTrick.DbEx.MsSql.Builder
             where TDatabase : class, ISqlDatabaseRuntime
             => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany(element);
 
-        public virtual SelectValues<TDatabase, string?> CreateSelectValuesBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, SelectExpression<string?> element)
-            where TDatabase : class, ISqlDatabaseRuntime
-            => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany(element);
-
         public virtual SelectValues<TDatabase, TimeSpan> CreateSelectValuesBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, AnyElement<TimeSpan> element)
             where TDatabase : class, ISqlDatabaseRuntime
             => CreateSelectBuilder<TDatabase, SelectManyInitiation<TDatabase>>(configuration).SelectMany(element);
@@ -343,7 +341,8 @@ namespace HatTrick.DbEx.MsSql.Builder
             where TDatabase : class, ISqlDatabaseRuntime
             where TReturn : class
             => (new SelectSetQueryExpressionBuilder<TDatabase>(
-                    (configuration.QueryExpressionFactory ?? throw new DbExpressionConfigurationException("Could not resolve a query expression factory, please ensure a query expression factory has been properly registered.")).CreateQueryExpression<SelectSetQueryExpression>() ?? throw new DbExpressionException($"Expected query expression factory to return an expression for type {nameof(SelectSetQueryExpression)}"),
+                    (configuration.QueryExpressionFactory ?? throw new DbExpressionConfigurationException("Could not resolve a query expression factory, please ensure a query expression factory has been properly registered."))
+                        .CreateQueryExpression<SelectSetQueryExpression>() ?? throw new DbExpressionException($"Expected query expression factory to return an expression for type {nameof(SelectSetQueryExpression)}"),
                     configuration
                 ) as TReturn) ?? throw new DbExpressionException($"Expected query builder to implement interface {typeof(TReturn)}, but it does not.");
         #endregion
@@ -414,7 +413,8 @@ namespace HatTrick.DbEx.MsSql.Builder
         public virtual StoredProcedureContinuation<TDatabase> CreateStoredProcedureBuilder<TDatabase>(MsSqlSqlDatabaseRuntimeConfiguration configuration, StoredProcedureExpression entity)
             where TDatabase : class, ISqlDatabaseRuntime
             => new StoredProcedureQueryExpressionBuilder<TDatabase>(
-                (configuration.QueryExpressionFactory ?? throw new DbExpressionConfigurationException("Could not resolve a query expression factory, please ensure a query expression factory has been properly registered.")).CreateQueryExpression<StoredProcedureQueryExpression>() ?? throw new DbExpressionException($"Expected query expression factory to return an expression for type {nameof(StoredProcedureQueryExpression)}"),
+                (configuration.QueryExpressionFactory ?? throw new DbExpressionConfigurationException("Could not resolve a query expression factory, please ensure a query expression factory has been properly registered."))
+                        .CreateQueryExpression<StoredProcedureQueryExpression>() ?? throw new DbExpressionException($"Expected query expression factory to return an expression for type {nameof(StoredProcedureQueryExpression)}"),
                 configuration, 
                 entity
             );

@@ -16,7 +16,6 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-
 namespace HatTrick.DbEx.Sql
 {
 #pragma warning disable IDE1006 // Naming Styles
@@ -52,5 +51,14 @@ namespace HatTrick.DbEx.Sql
         /// <returns><see cref="SelectDynamicsContinuation{TDatabase}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="dynamic"/> values.</returns>
         SelectDynamicsContinuation<TDatabase> From<TEntity>(Table<TEntity> entity)
             where TEntity : class, IDbEntity;
+
+        /// <summary>
+        /// Construct the FROM clause of a sql SELECT query expression for a list of <typeparamref name="dynamic"/> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/from-transact-sql">Microsoft docs on FROM</see>
+        /// </para>
+        /// </summary>
+        /// <returns><see cref="WithAlias{SelectDynamicsContinuation{TDatabase}}"/>, a fluent continuation for providing an alias for the subquery.</returns>
+        WithAlias<SelectDynamicsContinuation<TDatabase>> From(AnySelectSubquery query);
     }
 }

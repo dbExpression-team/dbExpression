@@ -25,9 +25,9 @@ using System.Text;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class FilterExpressionSet :
-        AnyWhereClause,
-        AnyJoinOnClause,
-        AnyHavingClause,
+        AnyWhereExpression,
+        AnyJoinOnExpression,
+        AnyHavingExpression,
         IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>,
         IEquatable<FilterExpressionSet>
     {
@@ -78,7 +78,7 @@ namespace HatTrick.DbEx.Sql.Expression
             var sb = new StringBuilder();
             if (elements.Negate)
                 sb.Append("NOT (");
-            for (var i = 0; i < elements.Args.Count(); i++)
+            for (var i = 0; i < elements.Args.Count; i++)
             {
                 sb.Append(elements.Args.ElementAt(i).ToString());
                 if (i < elements.Args.Count - 1)
@@ -155,7 +155,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
             if (a is not null)
             {
-                if (a.elements.Args.Count() == 1) //single filter wrapped in a set
+                if (a.elements.Args.Count == 1) //single filter wrapped in a set
                 {
                     a.elements.Args.Add(b);
                     a.elements.ConditionalOperator = expressionOperator;

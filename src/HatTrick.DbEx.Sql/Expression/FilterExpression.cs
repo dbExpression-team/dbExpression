@@ -25,9 +25,9 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class FilterExpression :
         IFilterExpressionElement,
-        AnyWhereClause,
-        AnyJoinOnClause,
-        AnyHavingClause,
+        AnyWhereExpression,
+        AnyJoinOnExpression,
+        AnyHavingExpression,
         IEquatable<FilterExpression>
     {
         #region internals

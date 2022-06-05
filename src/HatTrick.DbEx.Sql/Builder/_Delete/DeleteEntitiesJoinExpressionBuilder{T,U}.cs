@@ -23,7 +23,7 @@ namespace HatTrick.DbEx.Sql.Builder
 {
     public class DeleteEntitiesJoinExpressionBuilder<TDatabase, TEntity> : DeleteJoinExpressionBuilder<TDatabase, DeleteEntitiesContinuation<TDatabase, TEntity>>,
         JoinOn<DeleteEntitiesContinuation<TDatabase, TEntity>>,
-        JoinOnWithAlias<DeleteEntitiesContinuation<TDatabase, TEntity>>
+        WithAlias<JoinOn<DeleteEntitiesContinuation<TDatabase, TEntity>>>
         where TDatabase : class, ISqlDatabaseRuntime
         where TEntity : class, IDbEntity
     {
@@ -41,14 +41,14 @@ namespace HatTrick.DbEx.Sql.Builder
 
         #region methods
         /// <inheritdoc />
-        JoinOn<DeleteEntitiesContinuation<TDatabase, TEntity>> JoinOnWithAlias<DeleteEntitiesContinuation<TDatabase, TEntity>>.As(string alias)
+        JoinOn<DeleteEntitiesContinuation<TDatabase, TEntity>> WithAlias<JoinOn<DeleteEntitiesContinuation<TDatabase, TEntity>>>.As(string alias)
         {
             As(alias);
             return this;
         }
 
         /// <inheritdoc />
-        DeleteEntitiesContinuation<TDatabase, TEntity> JoinOn<DeleteEntitiesContinuation<TDatabase, TEntity>>.On(AnyJoinOnClause joinOn)
+        DeleteEntitiesContinuation<TDatabase, TEntity> JoinOn<DeleteEntitiesContinuation<TDatabase, TEntity>>.On(AnyJoinOnExpression joinOn)
         {
             On(joinOn);
             return caller;

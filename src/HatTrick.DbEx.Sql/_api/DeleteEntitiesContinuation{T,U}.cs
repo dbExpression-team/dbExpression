@@ -32,9 +32,9 @@ namespace HatTrick.DbEx.Sql
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/search-condition-transact-sql">Microsoft docs on search condition for DELETE</see>
         /// </para>
         /// </summary>
-        /// <param name="where">Any filter predicate of type <see cref="AnyWhereClause"/>.</param>
+        /// <param name="where">Any filter predicate of type <see cref="AnyWhereExpression"/>.</param>
         /// <returns><see cref="DeleteEntitiesContinuation{TDatabase, TEntity}"/>, a fluent continuation for the construction of a sql DELETE query expression for deleting <typeparamref name="TEntity"/> entities.</returns>
-        DeleteEntitiesContinuation<TDatabase, TEntity> Where(AnyWhereClause where);
+        DeleteEntitiesContinuation<TDatabase, TEntity> Where(AnyWhereExpression where);
 
         /// <summary>
         /// Construct an INNER JOIN clause of a sql DELETE query expression for deleting <typeparamref name="TEntity"/> entities.
@@ -53,8 +53,8 @@ namespace HatTrick.DbEx.Sql
         /// </para>
         /// </summary>
         /// <param name="subquery">Any expression of type <see cref="AnySelectSubquery"/> specifying a SELECT query expression to join to.</param>
-        /// <returns><see cref="JoinOnWithAlias{DeleteEntitiesContinuation{TDatabase, TEntity}}"/>, a fluent continuation for the construction of a sql JOIN expression for deleting <typeparamref name="TEntity"/> entities.</returns>
-        JoinOnWithAlias<DeleteEntitiesContinuation<TDatabase, TEntity>> InnerJoin(AnySelectSubquery subquery);
+        /// <returns><see cref="WithAlias{JoinOn{DeleteEntitiesContinuation{TDatabase, TEntity}}}"/>, a fluent continuation for the construction of a sql JOIN expression for deleting <typeparamref name="TEntity"/> entities.</returns>
+        WithAlias<JoinOn<DeleteEntitiesContinuation<TDatabase, TEntity>>> InnerJoin(AnySelectSubquery subquery);
 
         /// <summary>
         /// Construct an LEFT JOIN clause of a sql DELETE query expression for deleting <typeparamref name="TEntity"/> entities.
@@ -73,8 +73,8 @@ namespace HatTrick.DbEx.Sql
         /// </para>
         /// </summary>
         /// <param name="subquery">Any expression of type <see cref="AnySelectSubquery"/> specifying a SELECT query expression to join to.</param>
-        /// <returns><see cref="JoinOnWithAlias{DeleteEntitiesContinuation{TDatabase, TEntity}}"/>, a fluent continuation for the construction of a sql JOIN expression for deleting <typeparamref name="TEntity"/> entities.</returns>
-        JoinOnWithAlias<DeleteEntitiesContinuation<TDatabase, TEntity>> LeftJoin(AnySelectSubquery subquery);
+        /// <returns><see cref="WithAlias{JoinOn{DeleteEntitiesContinuation{TDatabase, TEntity}}}"/>, a fluent continuation for the construction of a sql JOIN expression for deleting <typeparamref name="TEntity"/> entities.</returns>
+        WithAlias<JoinOn<DeleteEntitiesContinuation<TDatabase, TEntity>>> LeftJoin(AnySelectSubquery subquery);
 
         /// <summary>
         /// Construct an RIGHT JOIN clause of a sql DELETE query expression for deleting <typeparamref name="TEntity"/> entities.
@@ -93,8 +93,8 @@ namespace HatTrick.DbEx.Sql
         /// </para>
         /// </summary>
         /// <param name="subquery">Any expression of type <see cref="AnySelectSubquery"/> specifying a SELECT query expression to join to.</param>
-        /// <returns><see cref="JoinOnWithAlias{DeleteEntitiesContinuation{TDatabase, TEntity}}"/>, a fluent continuation for the construction of a sql JOIN expression for deleting <typeparamref name="TEntity"/> entities.</returns>
-        JoinOnWithAlias<DeleteEntitiesContinuation<TDatabase, TEntity>> RightJoin(AnySelectSubquery subquery);
+        /// <returns><see cref="WithAlias{JoinOn{DeleteEntitiesContinuation{TDatabase, TEntity}}}"/>, a fluent continuation for the construction of a sql JOIN expression for deleting <typeparamref name="TEntity"/> entities.</returns>
+        WithAlias<JoinOn<DeleteEntitiesContinuation<TDatabase, TEntity>>> RightJoin(AnySelectSubquery subquery);
 
         /// <summary>
         /// Construct an FULL JOIN clause of a sql DELETE query expression for a list of <typeparamref name="TEntity"/> entities.
@@ -113,8 +113,8 @@ namespace HatTrick.DbEx.Sql
         /// </para>
         /// </summary>
         /// <param name="subquery">Any expression of type <see cref="AnySelectSubquery"/> specifying a SELECT query expression to join to.</param>
-        /// <returns><see cref="JoinOnWithAlias{DeleteEntitiesContinuation{TDatabase, TEntity}}"/>, a fluent continuation for the construction of a sql JOIN expression for deleting <typeparamref name="TEntity"/> entities.</returns>
-        JoinOnWithAlias<DeleteEntitiesContinuation<TDatabase, TEntity>> FullJoin(AnySelectSubquery subquery);
+        /// <returns><see cref="WithAlias{JoinOn{DeleteEntitiesContinuation{TDatabase, TEntity}}}"/>, a fluent continuation for the construction of a sql JOIN expression for deleting <typeparamref name="TEntity"/> entities.</returns>
+        WithAlias<JoinOn<DeleteEntitiesContinuation<TDatabase, TEntity>>> FullJoin(AnySelectSubquery subquery);
 
         /// <summary>
         /// Construct an CROSS JOIN clause of a sql DELETE query expression for deleting <typeparamref name="TEntity"/> entities.

@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,23 +16,22 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Expression;
+using HatTrick.DbEx.Sql.Expression;
 using System;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
-    public class UpdateEntitiesJoinBuilder<TDatabase, TEntity> : UpdateJoinExpressionBuilder<TDatabase, UpdateEntitiesContinuation<TDatabase, TEntity>>,
-        JoinOn<UpdateEntitiesContinuation<TDatabase, TEntity>>,
-        JoinOnWithAlias<UpdateEntitiesContinuation<TDatabase, TEntity>>
+    public class SelectDynamicsJoinExpressionBuilder<TDatabase> : SelectJoinExpressionBuilder<TDatabase, SelectDynamicsContinuation<TDatabase>>,
+        JoinOn<SelectDynamicsContinuation<TDatabase>>,
+        WithAlias<JoinOn<SelectDynamicsContinuation<TDatabase>>>
         where TDatabase : class, ISqlDatabaseRuntime
-        where TEntity : class, IDbEntity
     {
         #region internals
-        private readonly UpdateEntitiesContinuation<TDatabase, TEntity> caller;
+        private readonly SelectDynamicsContinuation<TDatabase> caller;
         #endregion
 
         #region constructors
-        public UpdateEntitiesJoinBuilder(UpdateQueryExpression expression, IExpressionElement joinTo, JoinOperationExpressionOperator joinType, UpdateEntitiesContinuation<TDatabase, TEntity> caller)
+        public SelectDynamicsJoinExpressionBuilder(SelectQueryExpression expression, IExpressionElement joinTo, JoinOperationExpressionOperator joinType, SelectDynamicsContinuation<TDatabase> caller)
             : base(expression, joinTo, joinType)
         {
             this.caller = caller ?? throw new ArgumentNullException(nameof(caller));
@@ -41,14 +40,14 @@ namespace HatTrick.DbEx.Sql.Builder
 
         #region methods
         /// <inheritdoc />
-        JoinOn<UpdateEntitiesContinuation<TDatabase, TEntity>> JoinOnWithAlias<UpdateEntitiesContinuation<TDatabase, TEntity>>.As(string alias)
+        JoinOn<SelectDynamicsContinuation<TDatabase>> WithAlias<JoinOn<SelectDynamicsContinuation<TDatabase>>>.As(string alias)
         {
             As(alias);
             return this;
         }
 
         /// <inheritdoc />
-        UpdateEntitiesContinuation<TDatabase, TEntity> JoinOn<UpdateEntitiesContinuation<TDatabase, TEntity>>.On(AnyJoinOnClause joinOn)
+        SelectDynamicsContinuation<TDatabase> JoinOn<SelectDynamicsContinuation<TDatabase>>.On(AnyJoinOnExpression joinOn)
         {
             On(joinOn);
             return caller;

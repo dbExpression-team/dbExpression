@@ -20,14 +20,14 @@
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public abstract partial class AliasExpression :
-        AnyElement,
+    public partial class AliasExpression :
+        AliasedElement,
         IExpressionProvider<AliasExpression.AliasExpressionElements>,
         IExpressionTypeProvider,
         IEquatable<AliasExpression>
     {
         #region internals
-        private readonly AliasExpressionElements alias;
+        protected readonly AliasExpressionElements alias;
         private readonly Type declaredType;
         #endregion
 
@@ -37,9 +37,18 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
+        public AliasExpression(string singleAlias, Type declaredType)
+        {
+            alias = new AliasExpressionElements()
+            {
+                FieldAlias = singleAlias
+            };
+            this.declaredType = declaredType ?? throw new ArgumentNullException(nameof(declaredType));
+        }
+
         protected AliasExpression((string TableName, string FieldName) aliased, Type declaredType)
         {
-            if (aliased == default((string,string)))
+            if (aliased == default((string, string)))
                 throw new ArgumentException($"{nameof(aliased)} is required.");
             if (string.IsNullOrWhiteSpace(aliased.TableName))
                 throw new ArgumentException($"{nameof(aliased.TableName)} is required.");
@@ -61,7 +70,11 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region to string
         public override string? ToString()
-            => $"{alias.TableAlias}.{alias.FieldAlias}";
+        {
+            if (string.IsNullOrWhiteSpace(alias.TableAlias))
+                return $"\"{alias.FieldAlias}\"";
+            return $"\"{alias.TableAlias}\".\"{alias.FieldAlias}\"";
+        }
         #endregion
 
         #region equals
@@ -96,14 +109,10 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region implicit operators
-        public static implicit operator (string, string)(AliasExpression a) => new(a.alias.TableAlias, a.alias.FieldAlias);
-        #endregion
-
         #region classes
         public class AliasExpressionElements : IExpression
         {
-            public string TableAlias { get; set; } = string.Empty;
+            public string? TableAlias { get; set; }
             public string FieldAlias { get; set; } = string.Empty;
         }
         #endregion

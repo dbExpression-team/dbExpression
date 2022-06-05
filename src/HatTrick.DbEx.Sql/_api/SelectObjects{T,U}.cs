@@ -52,5 +52,14 @@ namespace HatTrick.DbEx.Sql
         /// <returns><see cref="SelectEntitiesContinuation{TDatabase, TValue}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="TObject"/> values.</returns>
         SelectObjectsContinuation<TDatabase, TObject> From<TEntity>(Table<TEntity> entity)
             where TEntity : class, IDbEntity;
+
+        /// <summary>
+        /// Construct the FROM clause of a sql SELECT query expression for a list of <typeparamref name="dynamic"/> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/from-transact-sql">Microsoft docs on FROM</see>
+        /// </para>
+        /// </summary>
+        /// <returns><see cref="WithAlias{SelectObjectsContinuation{TDatabase, TObject}}"/>, a fluent continuation for providing an alias for the subquery.</returns>
+        WithAlias<SelectObjectsContinuation<TDatabase, TObject>> From(AnySelectSubquery query);
     }
 }

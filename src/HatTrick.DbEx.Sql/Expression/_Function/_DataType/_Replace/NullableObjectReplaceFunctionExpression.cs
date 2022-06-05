@@ -23,7 +23,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableObjectReplaceFunctionExpression :
         ReplaceFunctionExpression<object?>,
-        NullableObjectElement<object?>,
+        NullableObjectElement,
         IEquatable<NullableObjectReplaceFunctionExpression>
     {
         #region constructors
@@ -39,8 +39,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public NullableObjectElement<object?> As(string alias)
-            => new NullableObjectSelectExpression<object?>(this).As(alias);
+        public NullableObjectElement As(string alias)
+            => new NullableObjectSelectExpression(this).As(alias);
         #endregion
 
         #region equals

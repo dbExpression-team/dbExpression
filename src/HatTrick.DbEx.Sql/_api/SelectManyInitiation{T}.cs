@@ -100,23 +100,22 @@ namespace HatTrick.DbEx.Sql
         /// <returns><see cref="SelectValues{TDatabase, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the object to select.</typeparam>
         SelectObjects<TDatabase, T> SelectMany<T>(ObjectElement<T> element)
-            where T : class;
-
-        /// <summary>
-        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/>? values.
-        /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
-        /// </para>
-        /// </summary>
-        /// <param name="element">An expression of type <see cref="NullableObjectElement{T}" />?
-        /// </param>
-        /// <returns><see cref="SelectObjects{TDatabase, T}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        /// <typeparam name="T">The type of the object to select.</typeparam>
-        SelectObjects<TDatabase, T?> SelectMany<T>(NullableObjectElement<T> element)
             where T : class?;
         #endregion
 
         #region data type
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AliasedElement{T}" />
+        /// </param>
+        /// <returns><see cref="SelectValues{TDatabase, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <typeparam name="T">The type of the object to select.</typeparam>
+        SelectValues<TDatabase, T> SelectMany<T>(AliasedElement<T> element);
+        
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="bool" /> values.
         /// <para>
@@ -393,17 +392,6 @@ namespace HatTrick.DbEx.Sql
         /// </param>
         /// <returns><see cref="SelectValues{TDatabase, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         SelectValues<TDatabase, string?> SelectMany(NullableStringElement element);
-
-        /// <summary>
-        /// Start constructing a sql SELECT query expression for a list of <see cref="string" />? values.
-        /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
-        /// </para>
-        /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
-        /// </param>
-        /// <returns><see cref="SelectValues{TDatabase, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        SelectValues<TDatabase, string?> SelectMany(SelectExpression<string?> element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" /> values.

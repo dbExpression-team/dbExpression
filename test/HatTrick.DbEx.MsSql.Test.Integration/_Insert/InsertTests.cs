@@ -41,15 +41,14 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             //then
             var t1 = dbo.Address.As("a");
-            var last_insert = dbex.Alias<int>("last_insert", "identity");
             var address = db.SelectOne<Address>()
-                .From(t1)
+                .From(dbo.Address)
                 .InnerJoin(
                     db.SelectMany(
-                        db.fx.Max(dbo.Address.Id).As("identity")
+                        db.fx.Max(t1.Id).As("identity")
                     )
-                    .From(dbo.Address)
-                ).As("last_insert").On(t1.Id == last_insert)
+                    .From(t1)
+                ).As("last_insert").On(dbo.Address.Id == ("last_insert", "identity"))
                 .Execute();
 
             address.Should().NotBeNull();
@@ -207,13 +206,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //then
             var t1 = dbo.Product.As("p");
             var product = db.SelectOne<Product>()
-                .From(t1)
+                .From(dbo.Product)
                 .InnerJoin(
                     db.SelectMany(
-                        db.fx.Max(dbo.Product.Id).As("identity")
+                        db.fx.Max(t1.Id).As("identity")
                     )
-                    .From(dbo.Product)
-                ).As("last_insert").On(t1.Id == ("last_insert","identity"))
+                    .From(t1)
+                ).As("last_insert").On(dbo.Product.Id == ("last_insert", "identity"))
                 .Execute();
 
             product.Should().NotBeNull();
