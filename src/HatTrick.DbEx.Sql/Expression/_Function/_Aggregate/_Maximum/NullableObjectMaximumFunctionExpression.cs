@@ -23,7 +23,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableObjectMaximumFunctionExpression :
         MaximumFunctionExpression<object?>,
-        NullableObjectElement<object?>,
+        NullableObjectElement,
         IEquatable<NullableObjectMaximumFunctionExpression>
     {
         #region constructors
@@ -34,8 +34,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public new NullableObjectElement<object?> As(string alias)
-            => new NullableObjectSelectExpression<object?>(this).As(alias);
+        public new NullableObjectElement As(string alias)
+            => new NullableObjectSelectExpression(this).As(alias);
         #endregion
 
         #region distinct

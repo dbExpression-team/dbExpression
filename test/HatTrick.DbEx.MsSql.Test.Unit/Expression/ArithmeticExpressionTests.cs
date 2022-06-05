@@ -4,7 +4,7 @@ using HatTrick.DbEx.Sql.Expression;
 using System.Linq;
 using Xunit;
 
-namespace HatTrick.DbEx.MsSql.Test.Expression
+namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
 {
     [Trait("Statement", "SELECT")]
     [Trait("Clause", "WHERE")]

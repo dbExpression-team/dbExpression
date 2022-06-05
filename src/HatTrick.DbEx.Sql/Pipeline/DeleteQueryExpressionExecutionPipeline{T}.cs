@@ -81,7 +81,6 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 statement,
                 connection,
                 cmd => {
-                    cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
                     beforeExecution?.Invoke(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(database, expression, cmd, statement))); 
                     configureCommand?.Invoke(cmd); 
                 },
@@ -128,7 +127,6 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 connection,
                 async cmd =>
                 {
-                    cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
                     if (beforeExecution is not null)
                     {
                         await beforeExecution.InvokeAsync(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(database, expression, cmd, statement)), ct).ConfigureAwait(false);

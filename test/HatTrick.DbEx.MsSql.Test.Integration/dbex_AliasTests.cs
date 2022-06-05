@@ -250,7 +250,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                     dbo.Purchase.PersonId
                 )
             ).As("vips").On(dbo.Person.Id == ("vips", "PersonId"))
-            .Where(dbex.Alias<int>("vips", "PurchaseCount") == expected)
+            .Where(dbex.Alias("vips", "PurchaseCount") == expected)
             .Execute();
 
             //then

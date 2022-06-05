@@ -49,6 +49,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         IUpdateQueryExpressionExecutionPipeline CreateQueryExecutionPipeline(SqlDatabaseRuntimeConfiguration database, UpdateQueryExpression expression);
         IDeleteQueryExpressionExecutionPipeline CreateQueryExecutionPipeline(SqlDatabaseRuntimeConfiguration database, DeleteQueryExpression expression);
         ISelectQueryExpressionExecutionPipeline CreateQueryExecutionPipeline(SqlDatabaseRuntimeConfiguration database, SelectQueryExpression expression);
+        ISelectSetQueryExpressionExecutionPipeline CreateQueryExecutionPipeline(SqlDatabaseRuntimeConfiguration database, SelectSetQueryExpression expression);
         IStoredProcedureQueryExpressionExecutionPipeline CreateQueryExecutionPipeline(SqlDatabaseRuntimeConfiguration database, StoredProcedureQueryExpression expression);
     }
 }

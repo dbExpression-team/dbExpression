@@ -30,14 +30,17 @@ namespace HatTrick.DbEx.Sql.Assembler
                 builder.Appender.Write(".");
             }
 
-            if (context.FieldExpressionAppendStyle == FieldExpressionAppendStyle.Alias)
+            if (context.FieldExpressionAppendStyle == FieldExpressionAppendStyle.Alias
+                && expression is IExpressionAliasProvider isAlias 
+                && !string.IsNullOrWhiteSpace(isAlias.Alias))
             {
                 return;
             }
 
-            builder.Appender.Write(context.Configuration.IdentifierDelimiter.Begin);
-            builder.Appender.Write((builder.FindMetadata(expression) ?? throw new DbExpressionException($"Expected to find metadata for {expression}, but metadata is actually null.")).Name);
-            builder.Appender.Write(context.Configuration.IdentifierDelimiter.End);
+            builder.Appender
+                .Write(context.IdentifierDelimiter.Begin)
+                .Write((builder.FindMetadata(expression) ?? throw new DbExpressionException($"Expected to find metadata for {expression}, but metadata is actually null.")).Name)
+                .Write(context.IdentifierDelimiter.End);
         }
     }
 }

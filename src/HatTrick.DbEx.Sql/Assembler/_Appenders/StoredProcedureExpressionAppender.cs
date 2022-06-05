@@ -24,14 +24,16 @@ namespace HatTrick.DbEx.Sql.Assembler
     {
         public override void AppendElement(StoredProcedureExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            if (context.Configuration.IncludeSchemaName)
+            if (context.IncludeSchemaName)
             {
                 builder.AppendElement((expression as StoredProcedure).Schema, context);
                 builder.Appender.Write(".");
             }
-            builder.Appender.Write(context.Configuration.IdentifierDelimiter.Begin);
-            builder.Appender.Write((expression as IExpressionNameProvider).Name);
-            builder.Appender.Write(context.Configuration.IdentifierDelimiter.End);
+
+            builder.Appender
+                .Write(context.IdentifierDelimiter.Begin)
+                .Write((expression as IExpressionNameProvider).Name)
+                .Write(context.IdentifierDelimiter.End);
 
             var parameters = (expression as StoredProcedure).Parameters;
 

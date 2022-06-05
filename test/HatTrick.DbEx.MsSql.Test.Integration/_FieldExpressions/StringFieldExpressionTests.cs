@@ -206,5 +206,24 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //then
             result.Should().NotBeNull();
         }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_selecting_one_address_line1_where_not_null_reversed_filter_order_succeed(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectOne(
+                    dbo.Address.Line1.As("foo")
+                ).From(dbo.Address)
+                .Where(DBNull.Value != dbo.Address.Line1);
+
+            //when               
+            string? result = exp.Execute();
+
+            //then
+            result.Should().NotBeNull();
+        }
     }
 }

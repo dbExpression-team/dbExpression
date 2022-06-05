@@ -21,7 +21,7 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class OrderByExpression :
-        AnyOrderByClause,
+        AnyOrderByExpression,
         IEquatable<OrderByExpression>
     {
         #region interface

@@ -24,6 +24,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
     public class MsSqlStatementAssemblerFactory : SqlStatementAssemblerFactory
     {
         private static readonly MsSqlSelectSqlStatementAssembler selectSqlStatementAssembler = new();
+        private static readonly SelectSetSqlStatementAssembler selectSetSqlStatementAssembler = new(new MsSqlSelectSqlStatementAssembler());
         private static readonly MsSqlInsertSqlStatementAssembler insertManySqlStatementAssembler = new();
         private static readonly MsSqlDeleteSqlStatementAssembler deleteSqlStatementAssembler = new();
         private static readonly MsSqlUpdateSqlStatementAssembler updateSqlStatementAssembler = new();
@@ -33,6 +34,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
         public MsSqlStatementAssemblerFactory()
         {
             RegisterStatementAssembler<SelectQueryExpression, MsSqlSelectSqlStatementAssembler>(selectSqlStatementAssembler);
+            RegisterStatementAssembler<SelectSetQueryExpression, SelectSetSqlStatementAssembler>(selectSetSqlStatementAssembler);
             RegisterStatementAssembler<InsertQueryExpression, MsSqlInsertSqlStatementAssembler>(insertManySqlStatementAssembler);
             RegisterStatementAssembler<DeleteQueryExpression, MsSqlDeleteSqlStatementAssembler>(deleteSqlStatementAssembler);
             RegisterStatementAssembler<UpdateQueryExpression, MsSqlUpdateSqlStatementAssembler>(updateSqlStatementAssembler);

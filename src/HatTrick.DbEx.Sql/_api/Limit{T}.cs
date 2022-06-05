@@ -38,8 +38,8 @@ namespace HatTrick.DbEx.Sql
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-having-transact-sql">Microsoft docs on HAVING</see>
         /// </para>
         /// </summary>
-        /// <param name="having">A list of expressions of type <see cref="AnyHavingClause"/> specifying conditions on the grouping or aggregation of selected results.</param>
+        /// <param name="having">A list of expressions of type <see cref="AnyHavingExpression"/> specifying conditions on the grouping or aggregation of selected results.</param>
         /// <returns><see cref="{TCaller}"/>, a fluent continuation for the construction of a sql SELECT query expression.</returns>
-        TCaller Having(AnyHavingClause? having);
+        TCaller Having(AnyHavingExpression? having);
     }
 }

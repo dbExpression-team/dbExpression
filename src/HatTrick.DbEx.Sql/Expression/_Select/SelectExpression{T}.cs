@@ -22,7 +22,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public class SelectExpression<TValue> : 
         SelectExpression,
-        AnyElement<TValue>,
+        AliasedElement<TValue>,
         IEquatable<SelectExpression<TValue>>
     {
         #region constructors

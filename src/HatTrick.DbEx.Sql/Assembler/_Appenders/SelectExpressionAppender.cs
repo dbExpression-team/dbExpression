@@ -35,9 +35,9 @@ namespace HatTrick.DbEx.Sql.Assembler
                 return;
 
             builder.Appender.Write(" AS ")
-                .Write(context.Configuration.IdentifierDelimiter.Begin)
+                .Write(context.IdentifierDelimiter.Begin)
                 .Write(aliasable.Alias!)
-                .Write(context.Configuration.IdentifierDelimiter.End);
+                .Write(context.IdentifierDelimiter.End);
         }
         #endregion
     }

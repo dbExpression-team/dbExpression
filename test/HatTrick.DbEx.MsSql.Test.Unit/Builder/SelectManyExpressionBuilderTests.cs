@@ -2,11 +2,11 @@
 using DbEx.secData;
 using DbEx.secDataService;
 using FluentAssertions;
-using HatTrick.DbEx.Sql.Builder;
+using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Expression;
 using Xunit;
 
-namespace HatTrick.DbEx.MsSql.Test.Builder
+namespace HatTrick.DbEx.MsSql.Test.Unit.Builder
 {
     [Trait("Statement", "SELECT")]
     public class SelectManyExpressionBuilderTests : TestBase
@@ -18,19 +18,20 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             //given
             ConfigureForMsSqlVersion(version);
 
-            ITerminationExpressionBuilder exp;
+            SelectValuesContinuation<MsSqlDb,int> builder;
             SelectQueryExpression expressionSet;
+
             //when
-            exp = db.SelectMany(sec.Person.Id)
+            builder = db.SelectMany(sec.Person.Id)
                .From(sec.Person);
 
-            expressionSet = ((exp as IQueryExpressionProvider)!.Expression as SelectQueryExpression)!;
+            expressionSet = ((builder as IQueryExpressionProvider)!.Expression as SelectQueryExpression)!;
 
             //then
             expressionSet.Select.Expressions.Should().ContainSingle(x => x.Expression.Equals(sec.Person.Id))
                 .Which.Expression.Should().BeOfType<PersonEntity.IdField>();
 
-            expressionSet.BaseEntity.Should().NotBeNull()
+            expressionSet.From!.Expression.Should().NotBeNull()
                 .And.BeOfType<PersonEntity>();
         }
 
@@ -41,14 +42,14 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             //given
             ConfigureForMsSqlVersion(version);
 
-            ITerminationExpressionBuilder exp;
+            SelectDynamicsContinuation<MsSqlDb> builder;
             SelectQueryExpression expressionSet;
 
             //when
-            exp = db.SelectMany(sec.Person.Id, sec.Person.DateCreated)
+            builder = db.SelectMany(sec.Person.Id, sec.Person.DateCreated)
                .From(sec.Person);
 
-            expressionSet = ((exp as IQueryExpressionProvider)!.Expression as SelectQueryExpression)!;
+            expressionSet = ((builder as IQueryExpressionProvider)!.Expression as SelectQueryExpression)!;
 
             //then
             expressionSet.Select.Expressions.Should().HaveCount(2);
@@ -59,7 +60,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             expressionSet.Select.Expressions.Should().ContainSingle(x => x.Expression.Equals(sec.Person.DateCreated))
                 .Which.Expression.Should().BeOfType<PersonEntity.DateCreatedField>();
 
-            expressionSet.BaseEntity.Should().NotBeNull()
+            expressionSet.From!.Expression.Should().NotBeNull()
                 .And.BeOfType<PersonEntity>();
         }
     }

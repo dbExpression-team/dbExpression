@@ -90,6 +90,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CodeCoverageFiles", "CodeCo
 		build\HatTrick\CodeCoverageFiles\CodeCoverageFiles.psm1 = build\HatTrick\CodeCoverageFiles\CodeCoverageFiles.psm1
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8785F265-BB0C-43EF-86C3-501A01304683}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

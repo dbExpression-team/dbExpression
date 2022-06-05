@@ -7,7 +7,7 @@ using Xunit;
 using dboPersonEntity = DbEx.dboDataService.PersonEntity;
 using secPersonEntity = DbEx.secDataService.PersonEntity;
 
-namespace HatTrick.DbEx.MsSql.Test.Expression
+namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
 {
     [Trait("Statement", "SELECT")]
     [Trait("Clause", "WHERE")]

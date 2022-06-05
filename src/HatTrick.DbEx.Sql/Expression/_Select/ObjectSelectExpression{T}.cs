@@ -20,6 +20,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public class ObjectSelectExpression<T> : SelectExpression<T>,
         ObjectElement<T>
+        where T : class?
     {
         #region constructors
         public ObjectSelectExpression(ObjectElement<T> expression)

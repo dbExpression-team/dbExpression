@@ -3,7 +3,7 @@ using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Types;
 using HatTrick.DbEx.Sql;
-using HatTrick.DbEx.Sql.Assembler;
+using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Data;
@@ -20,7 +20,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
         {
             //given
             var database = ConfigureForMsSqlVersion(version);
-            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var context =database.AssemblerConfiguration.ToAssemblyContext();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var parameter = parameterBuilder.CreateInputParameter(1, typeof(long), context);
             parameterBuilder.Parameters.Add(parameter);
@@ -39,7 +39,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
         {
             //given
             var database = ConfigureForMsSqlVersion(version);
-            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var context =database.AssemblerConfiguration.ToAssemblyContext();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var parameter = parameterBuilder.CreateInputParameter(1, typeof(long), context);
 
@@ -56,7 +56,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
         {
             //given
             var database = ConfigureForMsSqlVersion(version);
-            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var context =database.AssemblerConfiguration.ToAssemblyContext();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var parameter = parameterBuilder.CreateInputParameter(1, typeof(long), context);
 
@@ -73,7 +73,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
         {
             //given
             var database = ConfigureForMsSqlVersion(version);
-            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var context =database.AssemblerConfiguration.ToAssemblyContext();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var parameter = parameterBuilder.CreateInputParameter(1, typeof(long), context);
 
@@ -90,7 +90,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
         {
             //given
             var database = ConfigureForMsSqlVersion(version);
-            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var context =database.AssemblerConfiguration.ToAssemblyContext();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var parameter = parameterBuilder.CreateInputParameter(1, context);
             parameterBuilder.AddParameter(parameter);
@@ -109,7 +109,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
         {
             //given
             var database = ConfigureForMsSqlVersion(version);
-            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var context =database.AssemblerConfiguration.ToAssemblyContext();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var parameter = parameterBuilder.CreateInputParameter(1, context);
 
@@ -126,7 +126,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
         {
             //given
             var database = ConfigureForMsSqlVersion(version);
-            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var context =database.AssemblerConfiguration.ToAssemblyContext();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var parameter = parameterBuilder.CreateInputParameter(1, typeof(long), context);
 
@@ -143,7 +143,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
         {
             //given
             var database = ConfigureForMsSqlVersion(version);
-            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var context =database.AssemblerConfiguration.ToAssemblyContext();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var parameter = parameterBuilder.CreateInputParameter(1, typeof(long), context);
 
@@ -160,7 +160,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
         {
             //given
             var database = ConfigureForMsSqlVersion(version);
-            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var context =database.AssemblerConfiguration.ToAssemblyContext();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var parameter = parameterBuilder.CreateInputParameter(1, typeof(long), context);
             parameterBuilder.AddParameter(parameter);
@@ -179,7 +179,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
         {
             //given
             var database = ConfigureForMsSqlVersion(version);
-            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var context =database.AssemblerConfiguration.ToAssemblyContext();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var parameter = parameterBuilder.CreateInputParameter("HelloWorld", typeof(string), context);
             parameterBuilder.AddParameter(parameter);
@@ -200,7 +200,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
         {
             //given
             var database = ConfigureForMsSqlVersion(version);
-            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var context =database.AssemblerConfiguration.ToAssemblyContext();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var parameter = parameterBuilder.CreateInputParameter("HelloWorld", typeof(string), context);
 
@@ -219,7 +219,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
         {
             //given
             var database = ConfigureForMsSqlVersion(version);
-            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var context =database.AssemblerConfiguration.ToAssemblyContext();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var parameter = parameterBuilder.CreateInputParameter("HelloWorld", context);
             parameterBuilder.AddParameter(parameter);
@@ -240,7 +240,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
         {
             //given
             var database = ConfigureForMsSqlVersion(version);
-            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var context =database.AssemblerConfiguration.ToAssemblyContext();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var parameter = parameterBuilder.CreateInputParameter("HelloWorld", context);
 
@@ -259,7 +259,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
         {
             //given
             var database = ConfigureForMsSqlVersion(version);
-            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var context =database.AssemblerConfiguration.ToAssemblyContext();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var parameter = parameterBuilder.CreateInputParameter("HelloWorld", typeof(string), context);
 
@@ -278,7 +278,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
         {
             //given
             var database = ConfigureForMsSqlVersion(version);
-            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var context =database.AssemblerConfiguration.ToAssemblyContext();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var parameter = parameterBuilder.CreateInputParameter("HelloWorld", typeof(string), context);
             parameterBuilder.AddParameter(parameter);
@@ -300,7 +300,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             //given
             var now = DateTime.UtcNow;
             var database = ConfigureForMsSqlVersion(version);
-            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var context =database.AssemblerConfiguration.ToAssemblyContext();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var parameter = parameterBuilder.CreateInputParameter(now, typeof(DateTime), context);
             parameterBuilder.AddParameter(parameter);
@@ -320,7 +320,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             //given
             var now = DateTime.UtcNow;
             var database = ConfigureForMsSqlVersion(version);
-            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var context =database.AssemblerConfiguration.ToAssemblyContext();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var parameter = parameterBuilder.CreateInputParameter(now, typeof(DateTime), context);
             parameterBuilder.AddParameter(parameter);
@@ -339,7 +339,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             //given
             var now = DateTime.UtcNow;
             var database = ConfigureForMsSqlVersion(version);
-            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var context =database.AssemblerConfiguration.ToAssemblyContext();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var parameter = parameterBuilder.CreateInputParameter(now, context);
             parameterBuilder.AddParameter(parameter);
@@ -359,7 +359,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             //given
             var now = DateTime.UtcNow;
             var database = ConfigureForMsSqlVersion(version);
-            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var context =database.AssemblerConfiguration.ToAssemblyContext();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var parameter = parameterBuilder.CreateInputParameter(now, context);
 
@@ -377,7 +377,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             //given
             var now = DateTime.UtcNow;
             var database = ConfigureForMsSqlVersion(version);
-            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var context =database.AssemblerConfiguration.ToAssemblyContext();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var parameter = parameterBuilder.CreateInputParameter(now, typeof(DateTime), context);
 
@@ -395,7 +395,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             //given
             var now = DateTime.UtcNow;
             var database = ConfigureForMsSqlVersion(version);
-            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var context =database.AssemblerConfiguration.ToAssemblyContext();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var parameter = parameterBuilder.CreateInputParameter(now, typeof(DateTime), context);
             parameterBuilder.AddParameter(parameter);
@@ -415,7 +415,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             //given
             var value = new byte[] { 1, 2, 3 };
             var database = ConfigureForMsSqlVersion(version);
-            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var context =database.AssemblerConfiguration.ToAssemblyContext();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var parameter = parameterBuilder.CreateInputParameter(value, typeof(byte[]), context);
             parameterBuilder.AddParameter(parameter);
@@ -436,7 +436,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             var value = new byte[] { 1, 2, 3 };
             var newValue = new byte[] { 1, 2, 3, 4 };
             var database = ConfigureForMsSqlVersion(version);
-            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var context =database.AssemblerConfiguration.ToAssemblyContext();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var parameter = parameterBuilder.CreateInputParameter(value, typeof(byte[]), context);
 
@@ -454,7 +454,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             //given
             var value = new byte[] { 1, 2, 3 };
             var database = ConfigureForMsSqlVersion(version);
-            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var context =database.AssemblerConfiguration.ToAssemblyContext();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var parameter = parameterBuilder.CreateInputParameter(value, context);
             parameterBuilder.AddParameter(parameter);
@@ -475,7 +475,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             var value = new byte[] { 1, 2, 3 };
             var newValue = new byte[] { 1, 2, 3, 4 };
             var database = ConfigureForMsSqlVersion(version);
-            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var context =database.AssemblerConfiguration.ToAssemblyContext();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var parameter = parameterBuilder.CreateInputParameter(value, context);
 
@@ -494,7 +494,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             var value = new byte[] { 1, 2, 3 };
             var newValue = new byte[] { 1, 2, 3, 4 };
             var database = ConfigureForMsSqlVersion(version);
-            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var context =database.AssemblerConfiguration.ToAssemblyContext();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var parameter = parameterBuilder.CreateInputParameter(value, typeof(byte[]), context);
 
@@ -512,7 +512,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             //given
             var value = new byte[] { 1, 2, 3 };
             var database = ConfigureForMsSqlVersion(version);
-            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var context =database.AssemblerConfiguration.ToAssemblyContext();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             parameterBuilder.CreateInputParameter(value, typeof(byte[]), context);
 
@@ -535,7 +535,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             //given
             var value = new byte[] { 1, 2, 3 };
             var database = ConfigureForMsSqlVersion(version, builder => builder.SchemaMetadata.Use(new SqlDatabaseMetadataProvider(new MsSqlDbSqlDatabaseMetadata("MsSqlDb", "MsSqlDbExTest"))));
-            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var context =database.AssemblerConfiguration.ToAssemblyContext();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var parameter = parameterBuilder.CreateInputParameter(value, typeof(byte[]), context);
             parameterBuilder.AddParameter(parameter);
@@ -555,7 +555,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             //given
             var database = ConfigureForMsSqlVersion(version, builder => builder.SchemaMetadata.Use(new SqlDatabaseMetadataProvider(new MsSqlDbSqlDatabaseMetadata("MsSqlDb", "MsSqlDbExTest"))));
             var builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, database.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>());
-            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var context =database.AssemblerConfiguration.ToAssemblyContext();
             string productName = "1234";
 
             var predicate = dbo.Product.Name == productName;
@@ -581,7 +581,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             //given
             var database = ConfigureForMsSqlVersion(version, builder => builder.SchemaMetadata.Use(new SqlDatabaseMetadataProvider(new MsSqlDbSqlDatabaseMetadata("MsSqlDb", "MsSqlDbExTest"))));
             var builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, database.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>());
-            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var context =database.AssemblerConfiguration.ToAssemblyContext();
             string firstName = "xxx";
 
             var predicate = dbo.Person.FirstName == firstName;
@@ -607,7 +607,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             //given
             var database = ConfigureForMsSqlVersion(version, builder => builder.SchemaMetadata.Use(new SqlDatabaseMetadataProvider(new MsSqlDbSqlDatabaseMetadata("MsSqlDb", "MsSqlDbExTest"))));
             var builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, database.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>());
-            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var context =database.AssemblerConfiguration.ToAssemblyContext();
             double productPrice = 12.99;
 
             var predicate = dbo.Product.Price == productPrice;
@@ -632,7 +632,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             //given
             var database = ConfigureForMsSqlVersion(version, builder => builder.SchemaMetadata.Use(new SqlDatabaseMetadataProvider(new MsSqlDbSqlDatabaseMetadata("MsSqlDb", "MsSqlDbExTest"))));
             var builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, database.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>());
-            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var context =database.AssemblerConfiguration.ToAssemblyContext();
             byte[] image = new byte[] { 1, 2, 3 };
 
             var predicate = dbo.Product.Image == image;
@@ -657,7 +657,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             //given
             var value = 11.11m;
             var database = ConfigureForMsSqlVersion(version);
-            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var context =database.AssemblerConfiguration.ToAssemblyContext();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var parameter = parameterBuilder.CreateInputParameter(value, typeof(decimal), context);
             parameterBuilder.AddParameter(parameter);
@@ -679,7 +679,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             //given
             var value = 11.11m;
             var database = ConfigureForMsSqlVersion(version);
-            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var context =database.AssemblerConfiguration.ToAssemblyContext();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var parameter = parameterBuilder.CreateInputParameter(value, typeof(decimal), context);
             parameterBuilder.AddParameter(parameter);
@@ -700,7 +700,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             //given
             var value = 11.11m;
             var database = ConfigureForMsSqlVersion(version);
-            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var context =database.AssemblerConfiguration.ToAssemblyContext();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var parameter = parameterBuilder.CreateInputParameter(value, context);
             parameterBuilder.AddParameter(parameter);
@@ -722,7 +722,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             //given
             var value = 11.11m;
             var database = ConfigureForMsSqlVersion(version);
-            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var context =database.AssemblerConfiguration.ToAssemblyContext();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var parameter = parameterBuilder.CreateInputParameter(value, context);
 
@@ -742,7 +742,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             //given
             var value = 11.11m;
             var database = ConfigureForMsSqlVersion(version);
-            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var context =database.AssemblerConfiguration.ToAssemblyContext();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var parameter = parameterBuilder.CreateInputParameter(value, typeof(decimal), context);
 
@@ -762,7 +762,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             //given
             var value = 11.11m;
             var database = ConfigureForMsSqlVersion(version);
-            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var context =database.AssemblerConfiguration.ToAssemblyContext();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var parameter = parameterBuilder.CreateInputParameter(value, typeof(decimal), context);
             parameterBuilder.AddParameter(parameter);
@@ -784,7 +784,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             //given
             var value = string.Empty;
             var database = ConfigureForMsSqlVersion(version);
-            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var context =database.AssemblerConfiguration.ToAssemblyContext();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var databaseMetadata = new MsSqlDbSqlDatabaseMetadata(nameof(MsSqlDb), nameof(MsSqlDb));
             var fieldMetadata = new MsSqlFieldMetadata(databaseMetadata.Schemas[nameof(dbo)].Entities[$"{nameof(dbo)}.{nameof(dbo.Person)}"], $"{nameof(dbo)}.{nameof(dbo.Person)}.{nameof(dbo.Person.FirstName)}", $"{nameof(dbo)}.{nameof(dbo.Person)}.{nameof(dbo.Person.FirstName)}", SqlDbType.Char, 0);
@@ -804,7 +804,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             //given
             var value = Array.Empty<byte>();
             var database = ConfigureForMsSqlVersion(version);
-            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var context =database.AssemblerConfiguration.ToAssemblyContext();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var databaseMetadata = new MsSqlDbSqlDatabaseMetadata(nameof(MsSqlDb), nameof(MsSqlDb));
             var fieldMetadata = new MsSqlFieldMetadata(databaseMetadata.Schemas[nameof(dbo)].Entities[$"{nameof(dbo)}.{nameof(dbo.Product)}"], $"{nameof(dbo)}.{nameof(dbo.Product)}.{nameof(dbo.Product.Image)}", $"{nameof(dbo)}.{nameof(dbo.Product)}.{nameof(dbo.Product.Image)}", SqlDbType.Binary, 0);

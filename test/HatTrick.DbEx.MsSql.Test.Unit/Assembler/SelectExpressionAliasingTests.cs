@@ -19,14 +19,14 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             //given
             var database = ConfigureForMsSqlVersion(version);
 
-            ITerminationExpressionBuilder exp =
+            ITerminationExpressionBuilder<MsSqlDb> exp =
 
                 db.SelectOne(dbo.Person.FirstName.As(alias))
                     .From(dbo.Person);
 
             SelectQueryExpression queryExpression = ((exp as IQueryExpressionProvider)!.Expression as SelectQueryExpression)!;
             ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, queryExpression);
-            var context = new AssemblyContext(new SqlStatementAssemblerConfiguration());
+            var context = new AssemblyContext();
             context.PushFieldAppendStyle(FieldExpressionAppendStyle.Declaration);
 
             //when
@@ -34,7 +34,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             var select = builder.Appender.ToString();
 
             //then
-            select.Should().EndWith($"AS [{alias}]{System.Environment.NewLine}");
+            select.Should().EndWith($"AS [{alias}]");
         }
 
         [Theory]
@@ -44,14 +44,14 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             //given
             var database = ConfigureForMsSqlVersion(version);
 
-            ITerminationExpressionBuilder exp =
+            ITerminationExpressionBuilder<MsSqlDb> exp =
 
                 db.SelectOne((dbo.Person.FirstName + " " + dbo.Person.LastName).As(alias))
                     .From(dbo.Person);
 
             SelectQueryExpression queryExpression = ((exp as IQueryExpressionProvider)!.Expression as SelectQueryExpression)!;
             ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, queryExpression);
-            var context = new AssemblyContext(new SqlStatementAssemblerConfiguration());
+            var context = new AssemblyContext();
             context.PushFieldAppendStyle(FieldExpressionAppendStyle.Declaration);
 
             //when
@@ -59,7 +59,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             var select = builder.Appender.ToString();
 
             //then
-            select.Should().EndWith($"AS [{alias}]{System.Environment.NewLine}");
+            select.Should().EndWith($"AS [{alias}]");
         }
 
         [Theory]
@@ -70,7 +70,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             var database = ConfigureForMsSqlVersion(version);
             var table = dbo.Person.As("dboPerson");
 
-            ITerminationExpressionBuilder exp =
+            ITerminationExpressionBuilder<MsSqlDb> exp =
 
                 db.SelectOne(db.fx.Count(table.FirstName).As(alias))
                     .From(table)
@@ -78,7 +78,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
 
             SelectQueryExpression queryExpression = ((exp as IQueryExpressionProvider)!.Expression as SelectQueryExpression)!;
             ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, queryExpression)!;
-            var context = new AssemblyContext(new SqlStatementAssemblerConfiguration());
+            var context = new AssemblyContext();
             context.PushFieldAppendStyle(FieldExpressionAppendStyle.Declaration);
 
             //when

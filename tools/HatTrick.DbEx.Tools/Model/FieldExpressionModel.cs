@@ -157,7 +157,7 @@ namespace HatTrick.DbEx.Tools.Model
         {
             var name = "";
             if (Type.IsUserDefinedType && !Type.IsEnum)
-                return $"{(Type.IsNullable ? "Nullable" : "")}ObjectFieldExpression<{EntityExpression.Name},{Type.TypeName}>";
+                return $"ObjectFieldExpression<{EntityExpression.Name},{Type.TypeName}{(Type.IsNullable ? "?" : "")}>";
 
             if (Type.IsNullable)
                 name += "Nullable";

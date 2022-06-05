@@ -1,6 +1,6 @@
 ﻿using DbEx.dboDataService;
 using FluentAssertions;
-using HatTrick.DbEx.Sql.Assembler;
+using HatTrick.DbEx.Sql.Configuration;
 using System;
 using Xunit;
 
@@ -14,7 +14,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
         {
             //given
             var database = ConfigureForMsSqlVersion(version);
-            var assemblyContext = new AssemblyContext(database.AssemblerConfiguration);
+            var assemblyContext = database.AssemblerConfiguration.ToAssemblyContext();
 
             //when
             Action setState = () => assemblyContext.SetState(new TestState());
@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
         {
             //given
             var database = ConfigureForMsSqlVersion(version);
-            var assemblyContext = new AssemblyContext(database.AssemblerConfiguration);
+            var assemblyContext = database.AssemblerConfiguration.ToAssemblyContext();
             assemblyContext.SetState(new TestState());
 
             //when
@@ -45,7 +45,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
         {
             //given
             var database = ConfigureForMsSqlVersion(version);
-            var assemblyContext = new AssemblyContext(database.AssemblerConfiguration);
+            var assemblyContext = database.AssemblerConfiguration.ToAssemblyContext();
             assemblyContext.SetState(new TestState());
 
             //when
