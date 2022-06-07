@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             var exp = db.SelectMany(dbo.Purchase.ShipDate)
                 .From(dbo.Purchase)
-                .Where(dbo.Purchase.ShipDate == DBNull.Value);
+                .Where(dbo.Purchase.ShipDate == dbex.Null);
 
             //when               
             var shipDates = exp.Execute();
@@ -43,7 +43,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             var exp = db.SelectMany(dbo.Purchase.ShipDate)
                 .From(dbo.Purchase)
-                .Where(dbo.Purchase.ShipDate != DBNull.Value);
+                .Where(dbo.Purchase.ShipDate != dbex.Null);
 
             //when               
             var shipDates = exp.Execute();
@@ -62,7 +62,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             var exp = db.SelectOne(dbo.Purchase.ShipDate)
                 .From(dbo.Purchase)
-                .Where(dbo.Purchase.ShipDate == DBNull.Value);
+                .Where(dbo.Purchase.ShipDate == dbex.Null);
 
             //when               
             var shipDate = exp.Execute();
@@ -81,13 +81,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             var exp = db.Update(dbo.Purchase.ShipDate.Set(db.fx.GetDate()))
                 .From(dbo.Purchase)
-                .Where(dbo.Purchase.ShipDate == DBNull.Value);
+                .Where(dbo.Purchase.ShipDate == dbex.Null);
 
             //when               
             exp.Execute();
 
             //then
-            db.SelectOne(db.fx.Count()).From(dbo.Purchase).Where(dbo.Purchase.ShipDate != DBNull.Value).Execute().Should().Be(expected);
+            db.SelectOne(db.fx.Count()).From(dbo.Purchase).Where(dbo.Purchase.ShipDate != dbex.Null).Execute().Should().Be(expected);
         }
 
         [Theory]
@@ -100,13 +100,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             var exp = db.Update(dbo.Purchase.ShipDate.Set(DateTime.Now))
                 .From(dbo.Purchase)
-                .Where(dbo.Purchase.ShipDate == DBNull.Value);
+                .Where(dbo.Purchase.ShipDate == dbex.Null);
 
             //when               
             exp.Execute();
 
             //then
-            db.SelectOne(db.fx.Count()).From(dbo.Purchase).Where(dbo.Purchase.ShipDate != DBNull.Value).Execute().Should().Be(expected);
+            db.SelectOne(db.fx.Count()).From(dbo.Purchase).Where(dbo.Purchase.ShipDate != dbex.Null).Execute().Should().Be(expected);
         }
 
         [Theory]

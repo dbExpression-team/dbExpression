@@ -22,16 +22,19 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     internal static class ExpressionElementExtensions
     {
-        internal static bool IsDBNull(this IExpressionElement expression)
+        internal static bool IsNull(this IExpressionElement expression)
         {
+            if (expression is NullElement)
+                return true;
+
             if (expression is LiteralExpression literal)
-                return literal.Expression is DBNull;
+                return literal.Expression is NullElement;
 
             if (expression is SelectExpression select)
-                return IsDBNull(select.Expression);
+                return IsNull(select.Expression);
 
             if (expression is ExpressionMediator mediator)
-                return IsDBNull(mediator.Expression);
+                return IsNull(mediator.Expression);
 
             return false;
         }

@@ -171,10 +171,10 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         {
             //given
             ConfigureForMsSqlVersion(version);
-            var address = db.SelectOne<Address>().From(dbo.Address).Where(dbo.Address.Line2 != DBNull.Value).Execute()!;
+            var address = db.SelectOne<Address>().From(dbo.Address).Where(dbo.Address.Line2 != dbex.Null).Execute()!;
 
             //when
-            db.Update(dbo.Address.Line2.Set(DBNull.Value))
+            db.Update(dbo.Address.Line2.Set(dbex.Null))
                .From(dbo.Address)
                .Where(dbo.Address.Id == address.Id)
                .Execute();
@@ -194,7 +194,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             ConfigureForMsSqlVersion(version);
 
             //when
-            db.Update(dbo.Product.Image.Set(DBNull.Value))
+            db.Update(dbo.Product.Image.Set(dbex.Null))
                .From(dbo.Product)
                .Where(dbo.Product.Id == 1)
                .Execute();

@@ -63,7 +63,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_set_field_value_by_name_to_dbnull_before_update_assembly_event_when_override_is_true(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeUpdateSqlStatementAssembly(context => context.SetFieldValue(nameof(dbo.Person.BirthDate), DBNull.Value, true)));
+            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeUpdateSqlStatementAssembly(context => context.SetFieldValue(nameof(dbo.Person.BirthDate), dbex.Null, true)));
 
             //when
             await db.Update(dbo.Person.BirthDate.Set(DateTime.Now)).From(dbo.Person).Where(dbo.Person.Id == 1).ExecuteAsync();
@@ -78,7 +78,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_set_field_value_by_name_to_dbnull_before_update_assembly_event_when_override_is_false_have_no_affect(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeUpdateSqlStatementAssembly(context => context.SetFieldValue(nameof(dbo.Person.BirthDate), DBNull.Value)));
+            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeUpdateSqlStatementAssembly(context => context.SetFieldValue(nameof(dbo.Person.BirthDate), dbex.Null)));
 
             //when
             await db.Update(dbo.Person.BirthDate.Set(DateTime.Now)).From(dbo.Person).Where(dbo.Person.Id == 1).ExecuteAsync();
@@ -187,7 +187,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_set_nullable_enum_field_value_to_dbnull_before_update_assembly_event_when_override_is_true(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeUpdateSqlStatementAssembly(context => context.SetFieldValue(dbo.Address.AddressType, DBNull.Value, true)));
+            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeUpdateSqlStatementAssembly(context => context.SetFieldValue(dbo.Address.AddressType, dbex.Null, true)));
 
             //when
             await db.Update(dbo.Address.AddressType.Set(AddressType.Billing)).From(dbo.Address).Where(dbo.Address.Id == 1).ExecuteAsync();
@@ -202,7 +202,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_set_nullable_enum_field_value_to_dbnull_before_update_assembly_event_when_override_is_false_have_no_affect(int version, AddressType expected = AddressType.Billing)
         {
             //given
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeUpdateSqlStatementAssembly(context => context.SetFieldValue(dbo.Address.AddressType, DBNull.Value)));
+            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeUpdateSqlStatementAssembly(context => context.SetFieldValue(dbo.Address.AddressType, dbex.Null)));
 
             //when
             await db.Update(dbo.Address.AddressType.Set(expected)).From(dbo.Address).Where(dbo.Address.Id == 1).ExecuteAsync();

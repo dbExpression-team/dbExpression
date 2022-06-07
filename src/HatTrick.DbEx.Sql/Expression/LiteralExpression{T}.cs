@@ -40,12 +40,12 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
 
-        public LiteralExpression(DBNull value) : base(value)
+        public LiteralExpression(NullElement value) : base(value)
         {
 
         }
 
-        public LiteralExpression(DBNull value, Field field) : base(value, field)
+        public LiteralExpression(NullElement value, Field field) : base(value, field)
         {
 
         }

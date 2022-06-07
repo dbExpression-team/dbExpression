@@ -3355,11 +3355,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region filter operators
-        #region DBNull
-        public static FilterExpression operator ==(NullableDecimalExpressionMediator a, DBNull b) => new FilterExpression<bool?>(a, a.Expression is FieldExpression field ? new LiteralExpression<decimal?>(b, field) : new LiteralExpression<decimal?>(b), FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullableDecimalExpressionMediator a, DBNull b) => new FilterExpression<bool?>(a, a.Expression is FieldExpression field ? new LiteralExpression<decimal?>(b, field) : new LiteralExpression<decimal?>(b), FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator ==(DBNull a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<decimal?>(a), b.Expression is FieldExpression field ? new LiteralExpression<decimal?>(a, field) : new LiteralExpression<decimal?>(a), FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(DBNull a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<decimal?>(a), b.Expression is FieldExpression field ? new LiteralExpression<decimal?>(a, field) : new LiteralExpression<decimal?>(a), FilterExpressionOperator.NotEqual);
+        #region null
+        public static FilterExpression operator ==(NullableDecimalExpressionMediator a, NullElement b) => new FilterExpression<bool?>(a, a.Expression is FieldExpression field ? new LiteralExpression<decimal?>(b, field) : b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(NullableDecimalExpressionMediator a, NullElement b) => new FilterExpression<bool?>(a, a.Expression is FieldExpression field ? new LiteralExpression<decimal?>(b, field) : b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression operator ==(NullElement a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<decimal?>(a), b.Expression is FieldExpression field ? new LiteralExpression<decimal?>(a, field) : a, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(NullElement a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<decimal?>(a), b.Expression is FieldExpression field ? new LiteralExpression<decimal?>(a, field) : a, FilterExpressionOperator.NotEqual);
         #endregion
 
         #region data type

@@ -140,7 +140,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectOne(
                     db.fx.Substring(unit_test.ExpressionElementType.String, unit_test.ExpressionElementType.NullableInt32, unit_test.ExpressionElementType.NullableInt32)
                 ).From(unit_test.ExpressionElementType)
-                .Where(unit_test.ExpressionElementType.NullableInt32 == DBNull.Value);
+                .Where(unit_test.ExpressionElementType.NullableInt32 == dbex.Null);
 
             //when               
             string? result = exp.Execute();
@@ -159,7 +159,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectOne(
                     db.fx.Substring(unit_test.ExpressionElementType.String, unit_test.ExpressionElementType.NullableInt32, unit_test.ExpressionElementType.NullableInt64)
                 ).From(unit_test.ExpressionElementType)
-                .Where(unit_test.ExpressionElementType.NullableInt32 == DBNull.Value);
+                .Where(unit_test.ExpressionElementType.NullableInt32 == dbex.Null);
 
             //when               
             string? result = exp.Execute();
@@ -178,7 +178,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectOne(
                     db.fx.Substring(unit_test.ExpressionElementType.String, unit_test.ExpressionElementType.NullableInt64, unit_test.ExpressionElementType.NullableInt64)
                 ).From(unit_test.ExpressionElementType)
-                .Where(unit_test.ExpressionElementType.NullableInt32 == DBNull.Value);
+                .Where(unit_test.ExpressionElementType.NullableInt32 == dbex.Null);
 
             //when               
             string? result = exp.Execute();

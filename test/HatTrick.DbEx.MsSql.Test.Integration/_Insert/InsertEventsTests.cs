@@ -68,7 +68,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_set_field_value_by_name_to_dbnull_before_insert_assembly_event(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(nameof(dbo.Person.BirthDate), DBNull.Value)));
+            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(nameof(dbo.Person.BirthDate), dbex.Null)));
             var person = new Person { FirstName = "...", LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow, BirthDate = DateTime.UtcNow };
 
             //when
@@ -134,7 +134,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_set_nullable_enum_field_value_to_dbnull_before_insert_assembly_event(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(dbo.Address.AddressType, DBNull.Value)));
+            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(dbo.Address.AddressType, dbex.Null)));
             var address = new Address { AddressType = AddressType.Mailing, Line1 = "...", City = "YYY", State = "TX", Zip = "55555" };
 
             //when
@@ -233,7 +233,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_set_field_values_by_name_to_dbnull_before_insert_assembly_event_when_inserting_many(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(nameof(dbo.Person.BirthDate), DBNull.Value)));
+            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(nameof(dbo.Person.BirthDate), dbex.Null)));
             var person1 = new Person { FirstName = "...", LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow, BirthDate = DateTime.UtcNow };
             var person2 = new Person { FirstName = "...", LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow, BirthDate = DateTime.UtcNow };
             var person3 = new Person { FirstName = "..", LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow, BirthDate = DateTime.UtcNow };
@@ -307,7 +307,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_set_nullable_enum_field_values_to_dbnull_before_insert_assembly_event_when_inserting_many(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(dbo.Address.AddressType, DBNull.Value)));
+            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(dbo.Address.AddressType, dbex.Null)));
             var address1 = new Address { AddressType = AddressType.Mailing, Line1 = "...", City = "YYY", State = "TX", Zip = "55555" };
             var address2 = new Address { AddressType = AddressType.Mailing, Line1 = "...", City = "YYY", State = "TX", Zip = "55555" };
             var address3 = new Address { AddressType = AddressType.Mailing, Line1 = "...", City = "YYY", State = "TX", Zip = "55555" };

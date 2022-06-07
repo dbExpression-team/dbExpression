@@ -77,6 +77,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         private static readonly ParameterExpressionAppender parameterAppender = new();
         private static readonly UnionExpressionAppender unionAppender = new();
         private static readonly UnionAllExpressionAppender unionAllAppender = new();
+        private static readonly NullExpressionAppender nullAppender = new();
 
         private readonly ConcurrentDictionary<Type, Func<IExpressionElementAppender>> elementAppenders = new();
         #endregion
@@ -136,6 +137,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             RegisterElementAppender(parameterAppender);
             RegisterElementAppender(unionAppender);
             RegisterElementAppender(unionAllAppender);
+            RegisterElementAppender(nullAppender);
         }
         #endregion
 

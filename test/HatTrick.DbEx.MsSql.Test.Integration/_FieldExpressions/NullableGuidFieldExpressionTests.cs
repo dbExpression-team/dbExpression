@@ -23,7 +23,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             var exp = db.SelectMany(dbo.Purchase.TrackingIdentifier)
                 .From(dbo.Purchase)
-                .Where(dbo.Purchase.TrackingIdentifier == DBNull.Value);
+                .Where(dbo.Purchase.TrackingIdentifier == dbex.Null);
 
             //when               
             var purchases = exp.Execute();
@@ -42,7 +42,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             var exp = db.SelectOne(dbo.Purchase.TrackingIdentifier)
                 .From(dbo.Purchase)
-                .Where(dbo.Purchase.TrackingIdentifier == DBNull.Value);
+                .Where(dbo.Purchase.TrackingIdentifier == dbex.Null);
 
             //when               
             var purchase = exp.Execute();
@@ -61,13 +61,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             var exp = db.Update(dbo.Purchase.TrackingIdentifier.Set(db.fx.NewId()))
                 .From(dbo.Purchase)
-                .Where(dbo.Purchase.TrackingIdentifier == DBNull.Value);
+                .Where(dbo.Purchase.TrackingIdentifier == dbex.Null);
 
             //when               
             exp.Execute();
 
             //then
-            db.SelectOne(db.fx.Count()).From(dbo.Purchase).Where(dbo.Purchase.TrackingIdentifier != DBNull.Value).Execute().Should().Be(expected);
+            db.SelectOne(db.fx.Count()).From(dbo.Purchase).Where(dbo.Purchase.TrackingIdentifier != dbex.Null).Execute().Should().Be(expected);
         }
 
         [Theory]
@@ -80,13 +80,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             var exp = db.Update(dbo.Purchase.TrackingIdentifier.Set(Guid.NewGuid()))
                 .From(dbo.Purchase)
-                .Where(dbo.Purchase.TrackingIdentifier == DBNull.Value);
+                .Where(dbo.Purchase.TrackingIdentifier == dbex.Null);
 
             //when               
             exp.Execute();
 
             //then
-            db.SelectOne(db.fx.Count()).From(dbo.Purchase).Where(dbo.Purchase.TrackingIdentifier != DBNull.Value).Execute().Should().Be(expected);
+            db.SelectOne(db.fx.Count()).From(dbo.Purchase).Where(dbo.Purchase.TrackingIdentifier != dbex.Null).Execute().Should().Be(expected);
         }
 
         [Theory]

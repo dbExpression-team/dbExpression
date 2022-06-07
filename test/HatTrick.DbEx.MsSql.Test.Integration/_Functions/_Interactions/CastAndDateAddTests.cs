@@ -60,7 +60,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectOne(
                     db.fx.DateAdd(DateParts.Year, 1, db.fx.Cast(dbo.Person.CreditLimit).AsDateTime())
                 ).From(dbo.Person)
-                .Where(dbo.Person.CreditLimit == DBNull.Value);
+                .Where(dbo.Person.CreditLimit == dbex.Null);
 
             //when               
             DateTime? result = exp.Execute();

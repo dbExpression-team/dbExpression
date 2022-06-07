@@ -28,6 +28,11 @@ namespace HatTrick.DbEx.Sql
 #pragma warning disable IDE1006 // Naming Styles
     public static class dbex
     {
+        private static NullElement _null = new NullExpression();
+
+        public static NullElement Null => _null;
+
+
         /// <summary>
         /// Create an alias of a table and field for use with SELECT statements or in composition with other functions where the data type of the aliased expression is required.
         /// </summary>

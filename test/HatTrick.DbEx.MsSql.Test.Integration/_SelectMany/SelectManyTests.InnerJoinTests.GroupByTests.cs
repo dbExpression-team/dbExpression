@@ -156,7 +156,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                         )
                         .From(dbo.Purchase)
                         .InnerJoin(dbo.Person).On(dbo.Purchase.PersonId == dbo.Person.Id)
-                        .Where(dbo.Purchase.ShipDate != DBNull.Value)
+                        .Where(dbo.Purchase.ShipDate != dbex.Null)
                         .GroupBy(
                             dbo.Person.Id,
                             db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate)

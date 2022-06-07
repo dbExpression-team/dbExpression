@@ -33,7 +33,7 @@ namespace HatTrick.DbEx.Sql
             if (!context.TrySetFieldValue(fieldName, value))
                 throw new DbExpressionException($"Could not set field {fieldName} value on entity {context.Expression.Into?.Name ?? "[UNKNOWN]"}.");
         }
-        public static void SetFieldValue<T>(this BeforeInsertAssemblyPipelineExecutionContext context, string fieldName, DBNull value)
+        public static void SetFieldValue<T>(this BeforeInsertAssemblyPipelineExecutionContext context, string fieldName, NullElement value)
         {
             if (!context.TrySetFieldValue(fieldName, value))
                 throw new DbExpressionException($"Could not set field {fieldName} value on entity {context.Expression.Into?.Name ?? "[UNKNOWN]"}.");
@@ -56,7 +56,7 @@ namespace HatTrick.DbEx.Sql
             if (!DoTrySetFieldValue(context, fieldExpression, value))
                 throw new DbExpressionException($"Could not set field {(fieldExpression as IExpressionNameProvider).Name} value on entity {context.Expression.Into?.Name ?? "[UNKNOWN]"}.");
         }
-        public static void SetFieldValue<T>(this BeforeInsertAssemblyPipelineExecutionContext context, NullableEnumFieldExpression<T> fieldExpression, DBNull value)
+        public static void SetFieldValue<T>(this BeforeInsertAssemblyPipelineExecutionContext context, NullableEnumFieldExpression<T> fieldExpression, NullElement value)
             where T : struct, Enum, IComparable
         {
             if (fieldExpression is null)
@@ -109,7 +109,7 @@ namespace HatTrick.DbEx.Sql
             return DoTrySetFieldValue(context, fieldExpression, value);
         }
 
-        public static bool TrySetFieldValue<T>(this BeforeInsertAssemblyPipelineExecutionContext context, NullableEnumFieldExpression<T> fieldExpression, DBNull value)
+        public static bool TrySetFieldValue<T>(this BeforeInsertAssemblyPipelineExecutionContext context, NullableEnumFieldExpression<T> fieldExpression, NullElement value)
             where T : struct, Enum, IComparable
         {
             return DoTrySetFieldValue(context, fieldExpression, value);

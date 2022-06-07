@@ -118,7 +118,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //when
             IList<PaymentSourceType> sources = db.SelectMany(db.fx.Coalesce(dbo.Purchase.PaymentSourceType, PaymentSourceType.Web))
                 .From(dbo.Purchase)
-                .Where(dbo.Purchase.PaymentSourceType == DBNull.Value)
+                .Where(dbo.Purchase.PaymentSourceType == dbex.Null)
                 .Execute();
 
             //then
@@ -136,7 +136,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //when
             IList<PaymentSourceType> sources = db.SelectMany(db.fx.Coalesce(dbo.Purchase.PaymentSourceType, PaymentSourceType.Web))
                 .From(dbo.Purchase)
-                .Where(dbo.Purchase.PaymentSourceType == DBNull.Value | dbo.Purchase.PaymentSourceType.In(PaymentSourceType.Web))
+                .Where(dbo.Purchase.PaymentSourceType == dbex.Null | dbo.Purchase.PaymentSourceType.In(PaymentSourceType.Web))
                 .Execute();
 
             //then
@@ -154,7 +154,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //when
             IList<PaymentSourceType> sources = db.SelectMany(db.fx.IsNull(dbo.Purchase.PaymentSourceType, PaymentSourceType.Web))
                 .From(dbo.Purchase)
-                .Where(dbo.Purchase.PaymentSourceType == DBNull.Value)
+                .Where(dbo.Purchase.PaymentSourceType == dbex.Null)
                 .Execute();
 
             //then

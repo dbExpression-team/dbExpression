@@ -152,7 +152,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
 
         protected virtual (Type ConvertedType, object? ConvertedValue) ConvertDbParameterValue(Type type, object? value, IValueConverter converter)
         {
-            var converted = value is DBNull || !(value is not null) ? converter.ConvertToDatabase(null) : converter.ConvertToDatabase(value);
+            var converted = value is NullExpression || !(value is not null) ? converter.ConvertToDatabase(null) : converter.ConvertToDatabase(value);
             if (converted.ConvertedValue is null)
                 converted.ConvertedValue = DBNull.Value;
             return (converted.ConvertedValue.GetType(), converted.ConvertedValue);

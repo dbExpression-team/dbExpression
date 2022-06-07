@@ -253,7 +253,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectOne(
                    db.fx.Coalesce(dbo.Purchase.ShipDate, dbo.Purchase.ExpectedDeliveryDate).As("alias")
                 ).From(dbo.Purchase)
-                .Where(dbo.Purchase.ShipDate == DBNull.Value & dbo.Purchase.ExpectedDeliveryDate == DBNull.Value);
+                .Where(dbo.Purchase.ShipDate == dbex.Null & dbo.Purchase.ExpectedDeliveryDate == dbex.Null);
 
             //when               
             object? result = exp.Execute();
@@ -366,7 +366,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectMany(
                     db.fx.Coalesce(dbo.Product.ValidStartTimeOfDayForPurchase, dbo.Product.ValidEndTimeOfDayForPurchase, TimeSpan.FromHours(expected)).As("relevant_date")
                 ).From(dbo.Product)
-                .Where(dbo.Product.ValidStartTimeOfDayForPurchase == DBNull.Value & dbo.Product.ValidEndTimeOfDayForPurchase == DBNull.Value);
+                .Where(dbo.Product.ValidStartTimeOfDayForPurchase == dbex.Null & dbo.Product.ValidEndTimeOfDayForPurchase == dbex.Null);
 
             //when               
             IList<object?> dates = exp.Execute();
@@ -385,7 +385,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectMany(
                     db.fx.Coalesce(dbo.Product.ValidStartTimeOfDayForPurchase, dbo.Product.ValidEndTimeOfDayForPurchase, (TimeSpan?)null!).As("relevant_date")
                 ).From(dbo.Product)
-                .Where(dbo.Product.ValidStartTimeOfDayForPurchase == DBNull.Value & dbo.Product.ValidEndTimeOfDayForPurchase == DBNull.Value);
+                .Where(dbo.Product.ValidStartTimeOfDayForPurchase == dbex.Null & dbo.Product.ValidEndTimeOfDayForPurchase == dbex.Null);
 
             //when               
             IList<object?> dates = exp.Execute();
@@ -404,7 +404,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectMany(
                     db.fx.Coalesce(dbo.Product.ProductCategoryType, dbo.Product.ProductCategoryType, (ProductCategoryType?)null!).As("relevant")
                 ).From(dbo.Product)
-                .Where(dbo.Product.ProductCategoryType == DBNull.Value);
+                .Where(dbo.Product.ProductCategoryType == dbex.Null);
 
             //when               
             IList<ProductCategoryType?> types = exp.Execute();
@@ -423,7 +423,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectMany(
                     db.fx.Coalesce(dbo.Product.ProductCategoryType, dbo.Product.ProductCategoryType, ProductCategoryType.Books).As("relevant")
                 ).From(dbo.Product)
-                .Where(dbo.Product.ProductCategoryType == DBNull.Value);
+                .Where(dbo.Product.ProductCategoryType == dbex.Null);
 
             //when               
             IList<ProductCategoryType> types = exp.Execute();
@@ -442,7 +442,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectMany(
                     db.fx.Coalesce(dbo.Product.ProductCategoryType, dbo.Product.ProductCategoryType, dbo.Product.ProductCategoryType).As("relevant")
                 ).From(dbo.Product)
-                .Where(dbo.Product.ProductCategoryType == DBNull.Value);
+                .Where(dbo.Product.ProductCategoryType == dbex.Null);
 
             //when               
             IList<ProductCategoryType?> types = exp.Execute();

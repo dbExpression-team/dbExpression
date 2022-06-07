@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 dbo.Product.ProductCategoryType
             )
             .From(dbo.Product)
-            .Where(dbo.Product.ProductCategoryType != DBNull.Value)
+            .Where(dbo.Product.ProductCategoryType != dbex.Null)
             .Execute();
 
             //then
@@ -49,7 +49,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 dbo.Product.ProductCategoryType
             )
             .From(dbo.Product)
-            .Where(dbo.Product.ProductCategoryType == DBNull.Value)
+            .Where(dbo.Product.ProductCategoryType == dbex.Null)
             .Execute();
 
             //then
@@ -70,7 +70,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 db.fx.IsNull(dbo.Product.ProductCategoryType, ProductCategoryType.Books).As("ProductCategoryType")
             )
             .From(dbo.Product)
-            .Where(dbo.Product.ProductCategoryType == DBNull.Value)
+            .Where(dbo.Product.ProductCategoryType == dbex.Null)
             .Execute();
 
             //then
@@ -110,7 +110,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 dbo.Product.ProductCategoryType
             )
             .From(dbo.Product)
-            .Where(dbo.Product.ProductCategoryType != DBNull.Value)
+            .Where(dbo.Product.ProductCategoryType != dbex.Null)
             .Execute();
 
             //then
@@ -130,7 +130,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 dbo.Product.ProductCategoryType
             )
             .From(dbo.Product)
-            .Where(dbo.Product.ProductCategoryType == DBNull.Value)
+            .Where(dbo.Product.ProductCategoryType == dbex.Null)
             .Execute();
 
             //then
@@ -169,7 +169,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 dbo.Product.ProductCategoryType
             )
             .From(dbo.Product)
-            .Where(dbo.Product.ProductCategoryType != DBNull.Value)
+            .Where(dbo.Product.ProductCategoryType != dbex.Null)
             .Execute(p => {
                 dynamic d = new ExpandoObject();
                 d.Id = p.ReadField()!.GetValue<int>();
@@ -194,7 +194,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 dbo.Product.ProductCategoryType
             )
             .From(dbo.Product)
-            .Where(dbo.Product.ProductCategoryType == DBNull.Value)
+            .Where(dbo.Product.ProductCategoryType == dbex.Null)
             .Execute(p => {
                 dynamic d = new ExpandoObject();
                 d.Id = p.ReadField()!.GetValue<int>();
@@ -244,7 +244,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 dbo.Product.ProductCategoryType
             )
             .From(dbo.Product)
-            .Where(dbo.Product.ProductCategoryType != DBNull.Value)
+            .Where(dbo.Product.ProductCategoryType != dbex.Null)
             .Execute(p => {
                 dynamic d = new ExpandoObject();
                 d.Id = p.ReadField()!.GetValue<int>();
@@ -269,7 +269,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 dbo.Product.ProductCategoryType
             )
             .From(dbo.Product)
-            .Where(dbo.Product.ProductCategoryType == DBNull.Value)
+            .Where(dbo.Product.ProductCategoryType == dbex.Null)
             .Execute(p => {
                 dynamic d = new ExpandoObject();
                 d.Id = p.ReadField()!.GetValue<int>();

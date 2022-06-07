@@ -40,11 +40,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region filter operators
-        #region DBNull
-        public static FilterExpression operator ==(NullableObjectExpressionMediator a, DBNull b) => new FilterExpression<bool?>(a, a.Expression is FieldExpression field ? new LiteralExpression<object?>(b, field) : new LiteralExpression<object?>(b), FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullableObjectExpressionMediator a, DBNull b) => new FilterExpression<bool?>(a, a.Expression is FieldExpression field ? new LiteralExpression<object?>(b, field) : new LiteralExpression<object?>(b), FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator ==(DBNull a, NullableObjectExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<object?>(a), b.Expression is FieldExpression field ? new LiteralExpression<object?>(a, field) : new LiteralExpression<object?>(a), FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(DBNull a, NullableObjectExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<object?>(a), b.Expression is FieldExpression field ? new LiteralExpression<object?>(a, field) : new LiteralExpression<object?>(a), FilterExpressionOperator.NotEqual);
+        #region null
+        public static FilterExpression operator ==(NullableObjectExpressionMediator a, NullElement b) => new FilterExpression<bool?>(a, a.Expression is FieldExpression field ? new LiteralExpression<object?>(b, field) : b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(NullableObjectExpressionMediator a, NullElement b) => new FilterExpression<bool?>(a, a.Expression is FieldExpression field ? new LiteralExpression<object?>(b, field) : b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression operator ==(NullElement a, NullableObjectExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<object?>(a), b.Expression is FieldExpression field ? new LiteralExpression<object?>(a, field) : a, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(NullElement a, NullableObjectExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<object?>(a), b.Expression is FieldExpression field ? new LiteralExpression<object?>(a, field) : a, FilterExpressionOperator.NotEqual);
         #endregion
 
         #region data type

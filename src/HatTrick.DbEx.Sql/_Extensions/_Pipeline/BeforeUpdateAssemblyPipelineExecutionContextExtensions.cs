@@ -34,7 +34,7 @@ namespace HatTrick.DbEx.Sql
                 throw new DbExpressionException($"A field with name {fieldName} is not a field on entity {context.Expression.From?.Name ?? "[UNKNOWN]"}.");
         }
 
-        public static void SetFieldValue<T>(this BeforeUpdateAssemblyPipelineExecutionContext context, string fieldName, DBNull value, bool overrideExistingAssignment = false)
+        public static void SetFieldValue<T>(this BeforeUpdateAssemblyPipelineExecutionContext context, string fieldName, NullElement value, bool overrideExistingAssignment = false)
         {
             if (string.IsNullOrWhiteSpace(fieldName))
                 throw new ArgumentException($"{nameof(fieldName)} parameter is required.");
@@ -63,7 +63,7 @@ namespace HatTrick.DbEx.Sql
                 throw new DbExpressionException($"A field with name {(fieldExpression as IExpressionNameProvider).Name} is not a field on entity {context.Expression.From?.Name ?? "[UNKNOWN]"}.");
         }
 
-        public static void SetFieldValue<T>(this BeforeUpdateAssemblyPipelineExecutionContext context, NullableEnumFieldExpression<T> fieldExpression, DBNull value, bool overrideExistingAssignment = false)
+        public static void SetFieldValue<T>(this BeforeUpdateAssemblyPipelineExecutionContext context, NullableEnumFieldExpression<T> fieldExpression, NullElement value, bool overrideExistingAssignment = false)
             where T : struct, Enum, IComparable
         {
             if (fieldExpression is null)
@@ -119,7 +119,7 @@ namespace HatTrick.DbEx.Sql
             return DoTrySetFieldValue(context, fieldExpression, value, overrideExistingAssignment);
         }
 
-        public static bool TrySetFieldValue<T>(this BeforeUpdateAssemblyPipelineExecutionContext context, NullableEnumFieldExpression<T> fieldExpression, DBNull value, bool overrideExistingAssignment = false)
+        public static bool TrySetFieldValue<T>(this BeforeUpdateAssemblyPipelineExecutionContext context, NullableEnumFieldExpression<T> fieldExpression, NullElement value, bool overrideExistingAssignment = false)
             where T : struct, Enum, IComparable
         {
             return DoTrySetFieldValue(context, fieldExpression, value, overrideExistingAssignment);
