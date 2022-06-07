@@ -43,7 +43,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectOne(
                     db.fx.Trim(" " + dbo.Address.Line2 + " ")
                 ).From(dbo.Address)
-                .Where(dbo.Address.Line2 == DBNull.Value);
+                .Where(dbo.Address.Line2 == dbex.Null);
 
             //when               
             var result = exp.Execute();

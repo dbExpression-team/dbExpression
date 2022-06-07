@@ -98,7 +98,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             var exp = db.SelectMany(dbo.Purchase.Id)
                 .From(dbo.Purchase)
-                .Where(dbo.Purchase.ShipDate == DBNull.Value);
+                .Where(dbo.Purchase.ShipDate == dbex.Null);
 
             //when               
             IList<int> purchases = exp.Execute();
@@ -116,7 +116,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             var exp = db.SelectMany(dbo.Purchase.Id)
                 .From(dbo.Purchase)
-                .Where(dbo.Purchase.ShipDate != DBNull.Value);
+                .Where(dbo.Purchase.ShipDate != dbex.Null);
 
             //when               
             IList<int> purchases = exp.Execute();
@@ -134,7 +134,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             var exp = db.SelectMany(dbo.Purchase.Id)
                 .From(dbo.Purchase)
-                .Where(!(dbo.Purchase.ShipDate == DBNull.Value));
+                .Where(!(dbo.Purchase.ShipDate == dbex.Null));
 
             //when               
             IList<int> purchases = exp.Execute();
@@ -152,7 +152,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             var exp = db.SelectMany(dbo.Purchase.Id)
                 .From(dbo.Purchase)
-                .Where(!(dbo.Purchase.ShipDate != DBNull.Value));
+                .Where(!(dbo.Purchase.ShipDate != dbex.Null));
 
             //when               
             IList<int> purchases = exp.Execute();
@@ -170,7 +170,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             var exp = db.SelectMany(dbo.Purchase.Id)
                 .From(dbo.Purchase)
-                .Where(dbo.Purchase.ShipDate == DBNull.Value | dbo.Purchase.TotalPurchaseAmount > 55);
+                .Where(dbo.Purchase.ShipDate == dbex.Null | dbo.Purchase.TotalPurchaseAmount > 55);
 
             //when               
             IList<int> purchases = exp.Execute();
@@ -188,7 +188,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             var exp = db.SelectMany(dbo.Purchase.Id)
                 .From(dbo.Purchase)
-                .Where(dbo.Purchase.ShipDate != DBNull.Value & dbo.Purchase.TotalPurchaseAmount > 55);
+                .Where(dbo.Purchase.ShipDate != dbex.Null & dbo.Purchase.TotalPurchaseAmount > 55);
 
             //when               
             IList<int> purchases = exp.Execute();
@@ -206,7 +206,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             var exp = db.SelectMany(dbo.Purchase.Id)
                 .From(dbo.Purchase)
-                .Where(!(dbo.Purchase.ShipDate == DBNull.Value) & dbo.Purchase.TotalPurchaseAmount > 55);
+                .Where(!(dbo.Purchase.ShipDate == dbex.Null) & dbo.Purchase.TotalPurchaseAmount > 55);
 
             //when               
             IList<int> purchases = exp.Execute();
@@ -224,7 +224,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             var exp = db.SelectMany(dbo.Purchase.Id)
                 .From(dbo.Purchase)
-                .Where(!(dbo.Purchase.ShipDate == DBNull.Value) & (dbo.Purchase.TotalPurchaseAmount > 55 | dbo.Purchase.TotalPurchaseAmount < 10));
+                .Where(!(dbo.Purchase.ShipDate == dbex.Null) & (dbo.Purchase.TotalPurchaseAmount > 55 | dbo.Purchase.TotalPurchaseAmount < 10));
 
             //when               
             IList<int> purchases = exp.Execute();
@@ -242,7 +242,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             var exp = db.SelectMany(dbo.Purchase.Id)
                 .From(dbo.Purchase)
-                .Where(dbo.Purchase.ShipDate != DBNull.Value & !(dbo.Purchase.TotalPurchaseAmount > 55 | dbo.Purchase.TotalPurchaseAmount < 10));
+                .Where(dbo.Purchase.ShipDate != dbex.Null & !(dbo.Purchase.TotalPurchaseAmount > 55 | dbo.Purchase.TotalPurchaseAmount < 10));
 
             //when               
             IList<int> purchases = exp.Execute();
@@ -260,7 +260,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             var exp = db.SelectMany(dbo.Purchase.Id)
                 .From(dbo.Purchase)
-                .Where(!(dbo.Purchase.ShipDate == DBNull.Value) & !(dbo.Purchase.TotalPurchaseAmount > 55 | dbo.Purchase.TotalPurchaseAmount < 10));
+                .Where(!(dbo.Purchase.ShipDate == dbex.Null) & !(dbo.Purchase.TotalPurchaseAmount > 55 | dbo.Purchase.TotalPurchaseAmount < 10));
 
             //when               
             IList<int> purchases = exp.Execute();
@@ -296,7 +296,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             var exp = db.SelectMany(dbo.Address.Id)
                 .From(dbo.Address)
-                .Where(dbo.Address.Line2 == DBNull.Value);
+                .Where(dbo.Address.Line2 == dbex.Null);
 
             //when               
             IList<int> purchases = exp.Execute();
@@ -316,7 +316,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             IList<int> personsWithNoAddresses = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person)
                 .LeftJoin(dbo.PersonAddress).On(dbo.Person.Id == dbo.PersonAddress.PersonId)
-                .Where(dbo.PersonAddress.AddressId == DBNull.Value)
+                .Where(dbo.PersonAddress.AddressId == dbex.Null)
                 .Execute();
 
             //then
@@ -334,7 +334,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectMany(dbo.Purchase.Id)
                 .From(dbo.Purchase)
                 .Where(
-                    !(dbo.Purchase.ShipDate == DBNull.Value) 
+                    !(dbo.Purchase.ShipDate == dbex.Null) 
                     & 
                     (
                         dbo.Purchase.TotalPurchaseAmount > 55 
@@ -365,7 +365,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .From(dbo.Purchase)
                 .Where(
                     !(
-                        dbo.Purchase.ShipDate == DBNull.Value
+                        dbo.Purchase.ShipDate == dbex.Null
                         |
                         dbo.Purchase.DateCreated >= DateTime.Now
                     )
@@ -400,7 +400,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where(
                     (
                         (
-                            dbo.Purchase.ShipDate == DBNull.Value
+                            dbo.Purchase.ShipDate == dbex.Null
                             |
                             dbo.Purchase.DateCreated >= DateTime.Now  
                         )
@@ -437,7 +437,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .From(dbo.Purchase)
                 .Where(
                     (
-                        dbo.Purchase.ShipDate == DBNull.Value
+                        dbo.Purchase.ShipDate == dbex.Null
                         |
                         dbo.Purchase.DateCreated >= DateTime.Now
                     )
@@ -478,7 +478,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .From(dbo.Purchase)
                 .Where(
                     (
-                        dbo.Purchase.ShipDate == DBNull.Value
+                        dbo.Purchase.ShipDate == dbex.Null
                         |
                         dbo.Purchase.DateCreated >= DateTime.Now
                     )
@@ -519,7 +519,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             Action execute = () => db.SelectMany(dbo.PersonAddress.Id)
                 .From(dbo.Person)
                 .LeftJoin(dbo.PersonAddress).On(dbo.Person.Id == dbo.PersonAddress.PersonId)
-                .Where(dbo.PersonAddress.AddressId == DBNull.Value)
+                .Where(dbo.PersonAddress.AddressId == dbex.Null)
                 .Execute();
 
                 //when & then
@@ -537,7 +537,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //when
             IList<int> productId = db.SelectMany(dbo.Product.Id)
                 .From(dbo.Product)
-                .Where(dbo.Product.Image != DBNull.Value)
+                .Where(dbo.Product.Image != dbex.Null)
                 .Execute();
 
             //then
@@ -557,7 +557,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                     dbo.Product.Description
                 )
                 .From(dbo.Product)
-                .Where(dbo.Product.Description != DBNull.Value)
+                .Where(dbo.Product.Description != dbex.Null)
                 .ExecuteAsync();
 
             //then
@@ -576,7 +576,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                     dbo.Product.Description.As("foo")
                 )
                 .From(dbo.Product)
-                .Where(dbo.Product.Description != DBNull.Value)
+                .Where(dbo.Product.Description != dbex.Null)
                 .ExecuteAsync();
 
             //then
@@ -596,7 +596,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                     dbo.Product.Description
                 )
                 .From(dbo.Product)
-                .Where(dbo.Product.Description != DBNull.Value)
+                .Where(dbo.Product.Description != dbex.Null)
                 .ExecuteAsync();
 
             //then
@@ -616,7 +616,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                     dbo.Product.Description.As("foo")
                 )
                 .From(dbo.Product)
-                .Where(dbo.Product.Description != DBNull.Value)
+                .Where(dbo.Product.Description != dbex.Null)
                 .ExecuteAsync();
 
             //then

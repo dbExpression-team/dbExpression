@@ -48,7 +48,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectOne(
                     db.fx.Left(dbo.Address.Line2, leftLength)
                 ).From(dbo.Address)
-                .Where(dbo.Address.Line2 != DBNull.Value);
+                .Where(dbo.Address.Line2 != dbex.Null);
 
             //when               
             string? left = exp.Execute();

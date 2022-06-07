@@ -169,7 +169,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                     dbo.Product.Description
                 )
                 .From(dbo.Product)
-                .Where(dbo.Product.Description != DBNull.Value)
+                .Where(dbo.Product.Description != dbex.Null)
                 .ExecuteAsync();
 
             //then
@@ -188,7 +188,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                     dbo.Product.Description.As("foo")
                 )
                 .From(dbo.Product)
-                .Where(dbo.Product.Description != DBNull.Value)
+                .Where(dbo.Product.Description != dbex.Null)
                 .ExecuteAsync();
 
             //then
@@ -208,7 +208,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                     dbo.Product.Description
                 )
                 .From(dbo.Product)
-                .Where(dbo.Product.Description != DBNull.Value)
+                .Where(dbo.Product.Description != dbex.Null)
                 .ExecuteAsync();
 
             //then
@@ -228,7 +228,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                     dbo.Product.Description.As("foo")
                 )
                 .From(dbo.Product)
-                .Where(dbo.Product.Description != DBNull.Value)
+                .Where(dbo.Product.Description != dbex.Null)
                 .ExecuteAsync();
 
             //then
@@ -246,7 +246,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //when
             int value = await db.SelectOne(db.fx.Count())
                 .From(dbo.Product)
-                .Where(dbo.Product.Image != DBNull.Value)
+                .Where(dbo.Product.Image != dbex.Null)
                 .ExecuteAsync();
 
             //then
@@ -267,7 +267,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                     dbo.Product.Image.As("foo")
                 )
                 .From(dbo.Product)
-                .Where(dbo.Product.Image != DBNull.Value)
+                .Where(dbo.Product.Image != dbex.Null)
                 .ExecuteAsync();
 
             //then

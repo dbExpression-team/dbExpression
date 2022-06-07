@@ -122,7 +122,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectMany(
                     dbo.Address.Line2
                 ).From(dbo.Address)
-                .Where(dbo.Address.Line2 == DBNull.Value);
+                .Where(dbo.Address.Line2 == dbex.Null);
 
             //when               
             IList<string?> results = exp.Execute();
@@ -141,7 +141,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectMany(
                     dbo.Address.Line2
                 ).From(dbo.Address)
-                .Where(DBNull.Value == dbo.Address.Line2);
+                .Where(dbex.Null == dbo.Address.Line2);
 
             //when               
             IList<string?> results = exp.Execute();
@@ -160,7 +160,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectMany(
                     dbo.Address.Line2
                 ).From(dbo.Address)
-                .Where(dbo.Address.Line2 != DBNull.Value);
+                .Where(dbo.Address.Line2 != dbex.Null);
 
             //when               
             IList<string?> results = exp.Execute();
@@ -179,7 +179,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectMany(
                     dbo.Address.Line2
                 ).From(dbo.Address)
-                .Where(DBNull.Value != dbo.Address.Line2);
+                .Where(dbex.Null != dbo.Address.Line2);
 
             //when               
             IList<string?> results = exp.Execute();
@@ -198,7 +198,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectOne(
                     dbo.Address.Line2
                 ).From(dbo.Address)
-                .Where(DBNull.Value != dbo.Address.Line2);
+                .Where(dbex.Null != dbo.Address.Line2);
 
             //when               
             string? result = exp.Execute();
@@ -217,7 +217,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectOne(
                     dbo.Address.Line1.As("foo")
                 ).From(dbo.Address)
-                .Where(DBNull.Value != dbo.Address.Line1);
+                .Where(dbex.Null != dbo.Address.Line1);
 
             //when               
             string? result = exp.Execute();

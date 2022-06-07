@@ -81,7 +81,7 @@ namespace HatTrick.DbEx.Tools.Model
             parameters.Add(new("(string TableName, string FieldName)", $"new AliasExpression<{Type.NullableAlias}>(value)"));
             if (Type.IsNullable)
             {
-                parameters.Add(new("DBNull", $"new LiteralExpression<{Type.NullableAlias}>(value, this)"));
+                parameters.Add(new("NullElement", $"new LiteralExpression<{Type.NullableAlias}>(value, this)"));
             }
 
             if (Type.IsEnum)

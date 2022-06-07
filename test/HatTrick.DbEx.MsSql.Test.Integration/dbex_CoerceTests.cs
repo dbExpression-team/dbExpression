@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             )
             .From(dbo.Person)
             .LeftJoin(dbo.Purchase).On(dbo.Person.Id == dbo.Purchase.PersonId)
-            .Where(dbo.Purchase.Id == DBNull.Value)
+            .Where(dbo.Purchase.Id == dbex.Null)
             .Execute();
 
             //then

@@ -183,7 +183,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectOne(
                     db.fx.Cast(dbo.Product.ValidEndTimeOfDayForPurchase).AsDateTime()
                 ).From(dbo.Product)
-                .Where(dbo.Product.ValidEndTimeOfDayForPurchase != DBNull.Value);
+                .Where(dbo.Product.ValidEndTimeOfDayForPurchase != dbex.Null);
 
             //when               
             DateTime? result = exp.Execute();

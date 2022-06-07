@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectOne(
                     db.fx.DateAdd(DateParts.Year, 1, dbo.Purchase.ShipDate)
                 ).From(dbo.Purchase)
-                .Where(dbo.Purchase.ShipDate != DBNull.Value);
+                .Where(dbo.Purchase.ShipDate != dbex.Null);
 
             //when               
             DateTime? result = exp.Execute();
@@ -46,7 +46,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectOne(
                     db.fx.DateAdd(DateParts.Year, 1, dbo.Purchase.ShipDate)
                 ).From(dbo.Purchase)
-                .Where(dbo.Purchase.ShipDate == DBNull.Value);
+                .Where(dbo.Purchase.ShipDate == dbex.Null);
 
             //when               
             DateTime? result = exp.Execute();

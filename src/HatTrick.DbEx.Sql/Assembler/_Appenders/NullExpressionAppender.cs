@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,23 +16,16 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
+using HatTrick.DbEx.Sql.Expression;
 using System;
 
-namespace HatTrick.DbEx.Sql.Expression
+namespace HatTrick.DbEx.Sql.Assembler
 {
-    public class InsertExpression<T> :
-        InsertExpression
+    public class NullExpressionAppender : ExpressionElementAppender<NullExpression>
     {
-        #region constructors
-        public InsertExpression(T assignment, FieldExpression field)
-            : base(new LiteralExpression<T>(assignment, field), field)
+        public override void AppendElement(NullExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
+            builder.Appender.Write("NULL");
         }
-
-        public InsertExpression(NullElement assignment, FieldExpression field)
-            : base(new LiteralExpression<T>(assignment, field), field)
-        {
-        }
-        #endregion
     }
 }

@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectOne(
                     db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated) + db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate)
                 ).From(dbo.Purchase)
-                .Where(dbo.Purchase.ShipDate != DBNull.Value);
+                .Where(dbo.Purchase.ShipDate != dbex.Null);
 
             //when               
             int result = exp.Execute();
@@ -43,7 +43,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate) + db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
                 ).From(dbo.Purchase)
-                .Where(dbo.Purchase.ShipDate != DBNull.Value);
+                .Where(dbo.Purchase.ShipDate != dbex.Null);
 
             //when               
             int? result = exp.Execute();
@@ -63,7 +63,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate) + db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)
                 ).From(dbo.Purchase)
-                .Where(dbo.Purchase.ShipDate != DBNull.Value);
+                .Where(dbo.Purchase.ShipDate != dbex.Null);
 
             //when               
             int? result = exp.Execute();
@@ -83,7 +83,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate) + db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)
                 ).From(dbo.Purchase)
-                .Where(dbo.Purchase.ShipDate != DBNull.Value);
+                .Where(dbo.Purchase.ShipDate != dbex.Null);
 
             //when               
             int result = exp.Execute();
@@ -102,7 +102,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectOne(
                     db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated) - db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate)
                 ).From(dbo.Purchase)
-                .Where(dbo.Purchase.ShipDate != DBNull.Value);
+                .Where(dbo.Purchase.ShipDate != dbex.Null);
 
             //when               
             int result = exp.Execute();
@@ -121,7 +121,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate) - db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
                 ).From(dbo.Purchase)
-                .Where(dbo.Purchase.ShipDate != DBNull.Value);
+                .Where(dbo.Purchase.ShipDate != dbex.Null);
 
             //when               
             int? result = exp.Execute();
@@ -141,7 +141,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate) - db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)
                 ).From(dbo.Purchase)
-                .Where(dbo.Purchase.ShipDate != DBNull.Value);
+                .Where(dbo.Purchase.ShipDate != dbex.Null);
 
             //when               
             int? result = exp.Execute();
@@ -161,7 +161,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate) - db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)
                 ).From(dbo.Purchase)
-                .Where(dbo.Purchase.ShipDate != DBNull.Value);
+                .Where(dbo.Purchase.ShipDate != dbex.Null);
 
             //when               
             int result = exp.Execute();
@@ -180,7 +180,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectOne(
                     db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated) * db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate)
                 ).From(dbo.Purchase)
-                .Where(dbo.Purchase.ShipDate != DBNull.Value);
+                .Where(dbo.Purchase.ShipDate != dbex.Null);
 
             //when               
             int result = exp.Execute();
@@ -199,7 +199,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate) * db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
                 ).From(dbo.Purchase)
-                .Where(dbo.Purchase.ShipDate != DBNull.Value);
+                .Where(dbo.Purchase.ShipDate != dbex.Null);
 
             //when               
             int? result = exp.Execute();
@@ -219,7 +219,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate) * db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)
                 ).From(dbo.Purchase)
-                .Where(dbo.Purchase.ShipDate != DBNull.Value);
+                .Where(dbo.Purchase.ShipDate != dbex.Null);
 
             //when               
             int? result = exp.Execute();
@@ -239,7 +239,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate) * db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)
                 ).From(dbo.Purchase)
-                .Where(dbo.Purchase.ShipDate != DBNull.Value);
+                .Where(dbo.Purchase.ShipDate != dbex.Null);
 
             //when               
             int result = exp.Execute();
@@ -258,7 +258,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectOne(
                     db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated) / db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate)
                 ).From(dbo.Purchase)
-                .Where(dbo.Purchase.ShipDate != DBNull.Value);
+                .Where(dbo.Purchase.ShipDate != dbex.Null);
 
             //when               
             int result = exp.Execute();
@@ -277,7 +277,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             Action execute = () => db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate) / db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
                 ).From(dbo.Purchase)
-                .Where(dbo.Purchase.ShipDate != DBNull.Value)
+                .Where(dbo.Purchase.ShipDate != dbex.Null)
                 .Execute();
 
             //when & then
@@ -294,7 +294,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             Action execute = () => db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate) / db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)
                 ).From(dbo.Purchase)
-                .Where(dbo.Purchase.ShipDate != DBNull.Value)
+                .Where(dbo.Purchase.ShipDate != dbex.Null)
                 .Execute();
 
             //when & then
@@ -311,7 +311,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             Action execute = () => db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate) / db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)
                 ).From(dbo.Purchase)
-                .Where(dbo.Purchase.ShipDate != DBNull.Value)
+                .Where(dbo.Purchase.ShipDate != dbex.Null)
                 .Execute();
 
             //when & then
@@ -328,7 +328,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectOne(
                     db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated) % db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate)
                 ).From(dbo.Purchase)
-                .Where(dbo.Purchase.ShipDate != DBNull.Value);
+                .Where(dbo.Purchase.ShipDate != dbex.Null);
 
             //when               
             int result = exp.Execute();
@@ -347,7 +347,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             Action execute = () => db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate) % db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
                 ).From(dbo.Purchase)
-                .Where(dbo.Purchase.ShipDate != DBNull.Value)
+                .Where(dbo.Purchase.ShipDate != dbex.Null)
                 .Execute();
 
             //when & then
@@ -364,7 +364,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             Action execute = () => db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate) % db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)
                 ).From(dbo.Purchase)
-                .Where(dbo.Purchase.ShipDate != DBNull.Value)
+                .Where(dbo.Purchase.ShipDate != dbex.Null)
                 .Execute();
 
             //when & then
@@ -381,7 +381,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             Action execute = () => db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate) % db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)
                 ).From(dbo.Purchase)
-                .Where(dbo.Purchase.ShipDate != DBNull.Value)
+                .Where(dbo.Purchase.ShipDate != dbex.Null)
                 .Execute();
 
             //when & then

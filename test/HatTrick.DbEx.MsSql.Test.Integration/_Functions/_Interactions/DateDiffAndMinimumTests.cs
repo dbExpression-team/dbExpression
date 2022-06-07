@@ -63,7 +63,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Purchase)
                 .InnerJoin(dbo.PurchaseLine).On(dbo.Purchase.Id == dbo.PurchaseLine.PurchaseId)
                 .GroupBy(db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate))
-                .Where(dbo.Purchase.ShipDate != DBNull.Value);
+                .Where(dbo.Purchase.ShipDate != dbex.Null);
 
             //when               
             int? result = exp.Execute();
@@ -86,7 +86,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Purchase)
                 .InnerJoin(dbo.Person).On(dbo.Purchase.PersonId == dbo.Person.Id)
                 .GroupBy(db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate))
-                .Where(dbo.Purchase.ShipDate != DBNull.Value);
+                .Where(dbo.Purchase.ShipDate != dbex.Null);
 
             //when               
             int? result = exp.Execute();
@@ -109,7 +109,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Purchase)
                 .InnerJoin(dbo.Person).On(dbo.Purchase.PersonId == dbo.Person.Id)
                 .GroupBy(db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated))
-                .Where(dbo.Purchase.ShipDate != DBNull.Value);
+                .Where(dbo.Purchase.ShipDate != dbex.Null);
 
             //when               
             int? result = exp.Execute();
@@ -132,7 +132,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Purchase)
                 .InnerJoin(dbo.PurchaseLine).On(dbo.Purchase.Id == dbo.PurchaseLine.PurchaseId)
                 .GroupBy(db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated))
-                .Where(dbo.Purchase.ShipDate != DBNull.Value);
+                .Where(dbo.Purchase.ShipDate != dbex.Null);
 
             //when               
             int? result = exp.Execute();
@@ -155,7 +155,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Purchase)
                 .InnerJoin(dbo.PurchaseLine).On(dbo.Purchase.Id == dbo.PurchaseLine.PurchaseId)
                 .GroupBy(db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate))
-                .Where(dbo.Purchase.ShipDate != DBNull.Value);
+                .Where(dbo.Purchase.ShipDate != dbex.Null);
 
             //when               
             int? result = exp.Execute();
@@ -178,7 +178,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Purchase)
                 .InnerJoin(dbo.Person).On(dbo.Purchase.PersonId == dbo.Person.Id)
                 .GroupBy(db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate))
-                .Where(dbo.Purchase.ShipDate != DBNull.Value);
+                .Where(dbo.Purchase.ShipDate != dbex.Null);
 
             //when               
             int? result = exp.Execute();
@@ -201,7 +201,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Purchase)
                 .InnerJoin(dbo.Person).On(dbo.Purchase.PersonId == dbo.Person.Id)
                 .GroupBy(db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated))
-                .Where(dbo.Purchase.ShipDate != DBNull.Value);
+                .Where(dbo.Purchase.ShipDate != dbex.Null);
 
             //when               
             int? result = exp.Execute();
@@ -224,7 +224,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Purchase)
                 .InnerJoin(dbo.PurchaseLine).On(dbo.Purchase.Id == dbo.PurchaseLine.PurchaseId)
                 .GroupBy(db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated))
-                .Where(dbo.Purchase.ShipDate != DBNull.Value);
+                .Where(dbo.Purchase.ShipDate != dbex.Null);
 
             //when               
             int? result = exp.Execute();
@@ -247,7 +247,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Purchase)
                 .InnerJoin(dbo.PurchaseLine).On(dbo.Purchase.Id == dbo.PurchaseLine.PurchaseId)
                 .GroupBy(db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate))
-                .Where(dbo.Purchase.ShipDate != DBNull.Value);
+                .Where(dbo.Purchase.ShipDate != dbex.Null);
 
             //when               
             int? result = exp.Execute();
@@ -270,7 +270,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Purchase)
                 .InnerJoin(dbo.Person).On(dbo.Purchase.PersonId == dbo.Person.Id)
                 .GroupBy(db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate))
-                .Where(dbo.Purchase.ShipDate != DBNull.Value);
+                .Where(dbo.Purchase.ShipDate != dbex.Null);
 
             //when               
             int? result = exp.Execute();
@@ -293,7 +293,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Purchase)
                 .InnerJoin(dbo.Person).On(dbo.Purchase.PersonId == dbo.Person.Id)
                 .GroupBy(db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated))
-                .Where(dbo.Purchase.ShipDate != DBNull.Value);
+                .Where(dbo.Purchase.ShipDate != dbex.Null);
 
             //when               
             int? result = exp.Execute();
@@ -316,7 +316,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Purchase)
                 .InnerJoin(dbo.PurchaseLine).On(dbo.Purchase.Id == dbo.PurchaseLine.PurchaseId)
                 .GroupBy(db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated))
-                .Where(dbo.Purchase.ShipDate != DBNull.Value);
+                .Where(dbo.Purchase.ShipDate != dbex.Null);
 
             //when               
             int? result = exp.Execute();
@@ -339,7 +339,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Purchase)
                 .InnerJoin(dbo.PurchaseLine).On(dbo.Purchase.Id == dbo.PurchaseLine.PurchaseId)
                 .GroupBy(db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate))
-                .Where(dbo.Purchase.ShipDate != DBNull.Value)
+                .Where(dbo.Purchase.ShipDate != dbex.Null)
                 .Execute();
 
             //when & then
@@ -359,7 +359,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Purchase)
                 .InnerJoin(dbo.Person).On(dbo.Purchase.PersonId == dbo.Person.Id)
                 .GroupBy(db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate))
-                .Where(dbo.Purchase.ShipDate != DBNull.Value)
+                .Where(dbo.Purchase.ShipDate != dbex.Null)
                 .Execute();
 
             //when & then
@@ -379,7 +379,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Purchase)
                 .InnerJoin(dbo.Person).On(dbo.Purchase.PersonId == dbo.Person.Id)
                 .GroupBy(db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated))
-                .Where(dbo.Purchase.ShipDate != DBNull.Value)
+                .Where(dbo.Purchase.ShipDate != dbex.Null)
                 .Execute();
 
             //when & then
@@ -399,7 +399,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Purchase)
                 .InnerJoin(dbo.PurchaseLine).On(dbo.Purchase.Id == dbo.PurchaseLine.PurchaseId)
                 .GroupBy(db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated))
-                .Where(dbo.Purchase.ShipDate != DBNull.Value)
+                .Where(dbo.Purchase.ShipDate != dbex.Null)
                 .Execute();
 
             //when & then
@@ -419,7 +419,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Purchase)
                 .InnerJoin(dbo.PurchaseLine).On(dbo.Purchase.Id == dbo.PurchaseLine.PurchaseId)
                 .GroupBy(db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate))
-                .Where(dbo.Purchase.ShipDate != DBNull.Value)
+                .Where(dbo.Purchase.ShipDate != dbex.Null)
                 .Execute();
 
             //when & then
@@ -439,7 +439,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Purchase)
                 .InnerJoin(dbo.Person).On(dbo.Purchase.PersonId == dbo.Person.Id)
                 .GroupBy(db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate))
-                .Where(dbo.Purchase.ShipDate != DBNull.Value)
+                .Where(dbo.Purchase.ShipDate != dbex.Null)
                 .Execute();
 
             //when & then
@@ -459,7 +459,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Purchase)
                 .InnerJoin(dbo.Person).On(dbo.Purchase.PersonId == dbo.Person.Id)
                 .GroupBy(db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated))
-                .Where(dbo.Purchase.ShipDate != DBNull.Value)
+                .Where(dbo.Purchase.ShipDate != dbex.Null)
                 .Execute();
 
             //when & then
@@ -479,7 +479,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Purchase)
                 .InnerJoin(dbo.PurchaseLine).On(dbo.Purchase.Id == dbo.PurchaseLine.PurchaseId)
                 .GroupBy(db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated))
-                .Where(dbo.Purchase.ShipDate != DBNull.Value)
+                .Where(dbo.Purchase.ShipDate != dbex.Null)
                 .Execute();
 
             //when & then

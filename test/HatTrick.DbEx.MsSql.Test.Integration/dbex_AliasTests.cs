@@ -473,7 +473,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             .From(dbo.Person)
             .InnerJoin(dbo.PersonAddress).On(dbo.Person.Id == dbo.PersonAddress.PersonId)
             .InnerJoin(dbo.Address.As("MyAddress")).On(dbo.PersonAddress.AddressId == ("MyAddress", nameof(dbo.Address.Id)))
-            .Where(dbex.Alias<AddressType>("MyAddress", nameof(dbo.Address.AddressType)) != DBNull.Value)
+            .Where(dbex.Alias<AddressType>("MyAddress", nameof(dbo.Address.AddressType)) != dbex.Null)
             .Execute(row =>
             {
                 dynamic o = new ExpandoObject();
@@ -501,7 +501,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             .From(dbo.Person)
             .InnerJoin(dbo.PersonAddress).On(dbo.Person.Id == dbo.PersonAddress.PersonId)
             .InnerJoin(dbo.Address.As("MyAddress")).On(dbo.PersonAddress.AddressId == ("MyAddress", nameof(dbo.Address.Id)))
-            .Where(dbex.Alias<AddressType>("MyAddress", nameof(dbo.Address.AddressType)) != DBNull.Value)
+            .Where(dbex.Alias<AddressType>("MyAddress", nameof(dbo.Address.AddressType)) != dbex.Null)
             .Execute();
 
             //then
@@ -521,7 +521,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             )
             .From(dbo.Person)
             .InnerJoin(dbo.Person.As("samePerson")).On(dbo.Person.Id == ("samePerson", nameof(dbo.Person.Id)))
-            .Where(dbo.Person.CreditLimit == DBNull.Value)
+            .Where(dbo.Person.CreditLimit == dbex.Null)
             .Execute();
 
             //then
@@ -541,7 +541,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             )
             .From(dbo.Person)
             .InnerJoin(dbo.Person.As("samePerson")).On(dbo.Person.Id == ("samePerson", nameof(dbo.Person.Id)))
-            .Where(dbo.Person.CreditLimit != DBNull.Value)
+            .Where(dbo.Person.CreditLimit != dbex.Null)
             .Execute();
 
             //then

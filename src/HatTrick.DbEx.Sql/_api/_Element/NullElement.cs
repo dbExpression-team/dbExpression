@@ -16,23 +16,12 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using System;
-
-namespace HatTrick.DbEx.Sql.Expression
+namespace HatTrick.DbEx.Sql
 {
-    public class InsertExpression<T> :
-        InsertExpression
+#pragma warning disable IDE1006 // Naming Styles
+    public interface NullElement : AnyElement
+#pragma warning restore IDE1006 // Naming Styles
     {
-        #region constructors
-        public InsertExpression(T assignment, FieldExpression field)
-            : base(new LiteralExpression<T>(assignment, field), field)
-        {
-        }
 
-        public InsertExpression(NullElement assignment, FieldExpression field)
-            : base(new LiteralExpression<T>(assignment, field), field)
-        {
-        }
-        #endregion
     }
 }

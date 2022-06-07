@@ -54,11 +54,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region filter operators
-        #region DBNull
-        public static FilterExpression operator ==(NullableEnumFieldExpression<TEntity, TEnum> a, DBNull b) => new FilterExpression<TEnum>(a, new LiteralExpression<TEnum?>(b, a), FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullableEnumFieldExpression<TEntity, TEnum> a, DBNull b) => new FilterExpression<TEnum>(a, new LiteralExpression<TEnum?>(b, a), FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator ==(DBNull a, NullableEnumFieldExpression<TEntity, TEnum> b) => new FilterExpression<TEnum>(new LiteralExpression<TEnum?>(a, b), b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(DBNull a, NullableEnumFieldExpression<TEntity, TEnum> b) => new FilterExpression<TEnum>(new LiteralExpression<TEnum?>(a, b), b, FilterExpressionOperator.NotEqual);
+        #region null
+        public static FilterExpression operator ==(NullableEnumFieldExpression<TEntity, TEnum> a, NullElement b) => new FilterExpression<TEnum>(a, new LiteralExpression<TEnum?>(b, a), FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(NullableEnumFieldExpression<TEntity, TEnum> a, NullElement b) => new FilterExpression<TEnum>(a, new LiteralExpression<TEnum?>(b, a), FilterExpressionOperator.NotEqual);
+        public static FilterExpression operator ==(NullElement a, NullableEnumFieldExpression<TEntity, TEnum> b) => new FilterExpression<TEnum>(new LiteralExpression<TEnum?>(a, b), b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(NullElement a, NullableEnumFieldExpression<TEntity, TEnum> b) => new FilterExpression<TEnum>(new LiteralExpression<TEnum?>(a, b), b, FilterExpressionOperator.NotEqual);
         #endregion
 
         #region TEnum

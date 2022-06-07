@@ -530,7 +530,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 )
             );
 
-            db.Update(dbo.Person.BirthDate.Set(DBNull.Value)).From(dbo.Person).Where(dbo.Person.Id == 1).Execute();
+            db.Update(dbo.Person.BirthDate.Set(dbex.Null)).From(dbo.Person).Where(dbo.Person.Id == 1).Execute();
 
             //when
             var birthDate = db.SelectOne(dbo.Person.BirthDate)
@@ -850,7 +850,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 )
             );
 
-            db.Update(dbo.Person.BirthDate.Set(DBNull.Value)).From(dbo.Person).Where(dbo.Person.Id == 1).Execute();
+            db.Update(dbo.Person.BirthDate.Set(dbex.Null)).From(dbo.Person).Where(dbo.Person.Id == 1).Execute();
 
             //when
             var person = db.SelectOne(

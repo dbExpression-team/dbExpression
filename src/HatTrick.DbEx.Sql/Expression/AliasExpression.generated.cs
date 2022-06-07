@@ -1239,11 +1239,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region filter operators
-        #region DBNull
-        public static FilterExpression operator ==(AliasExpression<T> a, DBNull b) => new FilterExpression<bool?>(a, new LiteralExpression<object>(DBNull.Value), FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(AliasExpression<T> a, DBNull b) => new FilterExpression<bool?>(a, new LiteralExpression<object>(DBNull.Value), FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator ==(DBNull a, AliasExpression<T> b) => new FilterExpression<bool?>(new LiteralExpression<object>(DBNull.Value), b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(DBNull a, AliasExpression<T> b) => new FilterExpression<bool?>(new LiteralExpression<object>(DBNull.Value), b, FilterExpressionOperator.NotEqual);
+        #region null
+        public static FilterExpression operator ==(AliasExpression<T> a, NullElement b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(AliasExpression<T> a, NullElement b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression operator ==(NullElement a, AliasExpression<T> b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(NullElement a, AliasExpression<T> b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
         #endregion
 
         #region data types

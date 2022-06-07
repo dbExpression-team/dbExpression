@@ -326,7 +326,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .GroupBy(
                     dbo.Person.LastName
                 ).Having(
-                    db.fx.Avg(dbo.Person.CreditLimit) == DBNull.Value
+                    db.fx.Avg(dbo.Person.CreditLimit) == dbex.Null
                 )
                 .Execute();
 

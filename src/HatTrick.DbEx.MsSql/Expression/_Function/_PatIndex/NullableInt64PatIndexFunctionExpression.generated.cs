@@ -17,6 +17,7 @@
 #endregion
 
 using System;
+using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Expression;
 
 #nullable enable
@@ -1056,11 +1057,11 @@ namespace HatTrick.DbEx.MsSql.Expression
         #endregion
 
         #region filter operators
-        #region DBNull
-        public static FilterExpression operator ==(NullableInt64PatIndexFunctionExpression a, DBNull b) => new FilterExpression<bool?>(a, new LiteralExpression<long?>(b), FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullableInt64PatIndexFunctionExpression a, DBNull b) => new FilterExpression<bool?>(a, new LiteralExpression<long?>(b), FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator ==(DBNull a, NullableInt64PatIndexFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<long?>(a), b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(DBNull a, NullableInt64PatIndexFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<long?>(a), b, FilterExpressionOperator.NotEqual);
+        #region null
+        public static FilterExpression operator ==(NullableInt64PatIndexFunctionExpression a, NullElement b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(NullableInt64PatIndexFunctionExpression a, NullElement b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression operator ==(NullElement a, NullableInt64PatIndexFunctionExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(NullElement a, NullableInt64PatIndexFunctionExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
         #endregion
 
         #region data type

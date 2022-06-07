@@ -17,6 +17,7 @@
 #endregion
 
 using System;
+using HatTrick.DbEx.Sql;
 
 #nullable enable
 
@@ -1055,11 +1056,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region filter operators
-        #region DBNull
-        public static FilterExpression operator ==(NullableDoubleAverageFunctionExpression a, DBNull b) => new FilterExpression<bool?>(a, new LiteralExpression<double?>(b), FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullableDoubleAverageFunctionExpression a, DBNull b) => new FilterExpression<bool?>(a, new LiteralExpression<double?>(b), FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator ==(DBNull a, NullableDoubleAverageFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<double?>(a), b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(DBNull a, NullableDoubleAverageFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<double?>(a), b, FilterExpressionOperator.NotEqual);
+        #region null
+        public static FilterExpression operator ==(NullableDoubleAverageFunctionExpression a, NullElement b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(NullableDoubleAverageFunctionExpression a, NullElement b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression operator ==(NullElement a, NullableDoubleAverageFunctionExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(NullElement a, NullableDoubleAverageFunctionExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
         #endregion
 
         #region data type

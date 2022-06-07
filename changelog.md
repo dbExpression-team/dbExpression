@@ -6,6 +6,7 @@
 - Benchmark reports
 - Code coverage reports
 - AliasedElement to abstract AliasExpression
+- NullExpression and NullElement interface for handling of null values (instead of DBNull.Value)
 
 ### Changed
 - FilterExpressions- The implementation of filters was not correct. When an element is composed as a filter (i.e. "element1 < element2"), the result should be a FilterExpression, not a FilterExpressionSet.
@@ -57,6 +58,7 @@ to LeftArg and RightArg. This work was to correct these mis-alignments:
 - #304: type overrides were not applied in generated code if supplied in dbex.config.json
 
 ### Breaking Changes
+- Deprecated use of "DBNull.Value".  All code should be migrated to use the new expression from use of "dbex.Null"
 
 ## [0.9.0] - 2022-04-01
 

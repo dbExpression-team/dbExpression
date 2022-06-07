@@ -1216,11 +1216,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region filter operators
-        #region DBNull
-        public static FilterExpression operator ==(DecimalFieldExpression a, DBNull b) => new FilterExpression<bool?>(a, new LiteralExpression<decimal?>(b, a), FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(DecimalFieldExpression a, DBNull b) => new FilterExpression<bool?>(a, new LiteralExpression<decimal?>(b, a), FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator ==(DBNull a, DecimalFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<decimal?>(a, b), b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(DBNull a, DecimalFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<decimal?>(a, b), b, FilterExpressionOperator.NotEqual);
+        #region null
+        public static FilterExpression operator ==(DecimalFieldExpression a, NullElement b) => new FilterExpression<bool?>(a, new LiteralExpression<decimal?>(b, a), FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(DecimalFieldExpression a, NullElement b) => new FilterExpression<bool?>(a, new LiteralExpression<decimal?>(b, a), FilterExpressionOperator.NotEqual);
+        public static FilterExpression operator ==(NullElement a, DecimalFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<decimal?>(a, b), b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(NullElement a, DecimalFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<decimal?>(a, b), b, FilterExpressionOperator.NotEqual);
         #endregion
 
         #region data types

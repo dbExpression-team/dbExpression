@@ -66,7 +66,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectOne(
                     db.fx.IsNull(dbo.Purchase.ShipDate, db.fx.Min(dbo.Purchase.ExpectedDeliveryDate))
                 ).From(dbo.Purchase)
-                .Where(dbo.Purchase.ShipDate != DBNull.Value)
+                .Where(dbo.Purchase.ShipDate != dbex.Null)
                 .GroupBy(dbo.Purchase.ShipDate);
 
             //when               

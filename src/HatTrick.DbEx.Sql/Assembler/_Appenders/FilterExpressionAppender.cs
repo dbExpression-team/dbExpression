@@ -46,7 +46,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             context.PushAppendStyles(entityAppendStyle, fieldAppendStyle);
             try
             {
-                AppendFilterExpressionThatMayContainDBNull(expression, builder, context);
+                AppendFilterExpressionThatMayContainNull(expression, builder, context);
             }
             finally
             {
@@ -54,36 +54,35 @@ namespace HatTrick.DbEx.Sql.Assembler
             }
         }
 
-        private void AppendFilterExpressionThatMayContainDBNull(FilterExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
+        private void AppendFilterExpressionThatMayContainNull(FilterExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            //if either side of the filter expression is DBNull.Value, construct the side with an expression and append appropriate "IS NULL"
-            if (expression.LeftArg.IsDBNull() || (expression.RightArg is not null && expression.RightArg.IsDBNull()))
+            //if either side of the filter expression is equivalent to null, construct the side with an expression and append appropriate "IS NULL"
+            if (expression.LeftArg.IsNull() || (expression.RightArg is not null && expression.RightArg.IsNull()))
             {
-                AppendFilterExpressionWithLeftOrRightEqualToDBNull(expression, builder, context);
+                AppendFilterExpressionWithLeftOrRightEqualToNull(expression, builder, context);
             }
             else
             {
-                //neither side of filter expression is DBNull.Value
-                AppendFilterExpressionWithoutDBNull(expression, builder, context);
+                //neither side of filter expression is equivalent to null
+                AppendFilterExpressionWithoutNull(expression, builder, context);
             }
         }
 
-        private void AppendFilterExpressionWithLeftOrRightEqualToDBNull(FilterExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
+        private void AppendFilterExpressionWithLeftOrRightEqualToNull(FilterExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            if (expression.LeftArg.IsDBNull())
+            if (expression.LeftArg.IsNull())
             {
-                AppendFilterExpressionWithDBNull(expression, expression.RightArg, builder, context);
+                AppendFilterExpressionWithNull(expression, expression.RightArg, expression.LeftArg, builder, context);
             }
             else
             {
-                AppendFilterExpressionWithDBNull(expression, expression.LeftArg, builder, context);
+                AppendFilterExpressionWithNull(expression, expression.LeftArg, expression.RightArg, builder, context);
             }
         }
 
-        private void AppendFilterExpressionWithDBNull(FilterExpression expression, IExpressionElement? nonDBNull, ISqlStatementBuilder builder, AssemblyContext context)
+        private void AppendFilterExpressionWithNull(FilterExpression expression, IExpressionElement nonNullElement, IExpressionElement nullElement, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            if (nonDBNull is not null)
-                builder.AppendElement(nonDBNull, context);
+            builder.AppendElement(nonNullElement, context);
 
             switch (expression.ExpressionOperator)
             {
@@ -98,7 +97,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             }
         }
 
-        private void AppendFilterExpressionWithoutDBNull(FilterExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
+        private void AppendFilterExpressionWithoutNull(FilterExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             if (expression.Negate)
             {

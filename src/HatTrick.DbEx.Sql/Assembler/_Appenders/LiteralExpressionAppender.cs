@@ -23,24 +23,38 @@ namespace HatTrick.DbEx.Sql.Assembler
 {
     public class LiteralExpressionAppender : ExpressionElementAppender<LiteralExpression>
     {
+        private static readonly NullExpression _null = new();
+
         public override void AppendElement(LiteralExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             if (expression.Field is not null)
             {
+                //build a parameter to perform any value conversion
                 var param = builder.Parameters.CreateInputParameter(
                     expression.Expression,
                     expression.Field.DeclaredType,
                     builder.FindMetadata(expression.Field) ?? throw new DbExpressionException($"Expected to find metadata for {expression.Field}, but metadata is actually null."),
                     context
                 );
-                builder.Parameters.AddParameter(param);
-                builder.Appender.Write(param.Parameter.ParameterName);
+                if (param.Parameter.Value is null || param.Parameter.Value == DBNull.Value)
+                {
+                    builder.AppendElement(expression.Expression as NullElement ?? _null, context);
+                }
+                else
+                {
+                    builder.Parameters.AddParameter(param);
+                    builder.Appender.Write(param.Parameter.ParameterName);
+                }
             }
             else
             {
-                if (expression.Expression is null || expression.Expression is DBNull)
+                if (expression.Expression is null)
                 {
-                    builder.Appender.Write("NULL");
+                    builder.AppendElement(new NullExpression(), context);
+                }
+                else if (expression.Expression is NullElement ne)
+                {
+                    builder.AppendElement(ne, context);
                 }
                 else
                 {

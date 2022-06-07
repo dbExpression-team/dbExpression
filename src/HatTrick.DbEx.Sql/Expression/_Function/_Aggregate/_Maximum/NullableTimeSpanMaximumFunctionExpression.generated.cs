@@ -17,6 +17,7 @@
 #endregion
 
 using System;
+using HatTrick.DbEx.Sql;
 
 #nullable enable
 
@@ -135,11 +136,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region filter operators
-        #region DBNull
-        public static FilterExpression operator ==(NullableTimeSpanMaximumFunctionExpression a, DBNull b) => new FilterExpression<bool?>(a, new LiteralExpression<TimeSpan?>(b), FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullableTimeSpanMaximumFunctionExpression a, DBNull b) => new FilterExpression<bool?>(a, new LiteralExpression<TimeSpan?>(b), FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator ==(DBNull a, NullableTimeSpanMaximumFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<TimeSpan?>(a), b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(DBNull a, NullableTimeSpanMaximumFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<TimeSpan?>(a), b, FilterExpressionOperator.NotEqual);
+        #region null
+        public static FilterExpression operator ==(NullableTimeSpanMaximumFunctionExpression a, NullElement b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(NullableTimeSpanMaximumFunctionExpression a, NullElement b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression operator ==(NullElement a, NullableTimeSpanMaximumFunctionExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(NullElement a, NullableTimeSpanMaximumFunctionExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
         #endregion
 
         #region data type

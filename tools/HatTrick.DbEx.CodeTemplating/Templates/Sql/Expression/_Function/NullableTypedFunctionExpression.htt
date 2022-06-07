@@ -19,6 +19,7 @@
 {?var:functionName = FunctionName-}
 {?var:dataType = Type-}
 using System;
+using HatTrick.DbEx.Sql;
 {#each Usings-}
 using {$};
 {/each-}
@@ -136,11 +137,11 @@ namespace {Namespace}
         #endregion
 
         #region filter operators
-        #region DBNull
-        public static FilterExpression operator ==(Nullable{:dataType.Name}{:functionName}FunctionExpression a, DBNull b) => new FilterExpression<bool?>(a, new LiteralExpression<{:dataType.NullableAlias}>(b), FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(Nullable{:dataType.Name}{:functionName}FunctionExpression a, DBNull b) => new FilterExpression<bool?>(a, new LiteralExpression<{:dataType.NullableAlias}>(b), FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator ==(DBNull a, Nullable{:dataType.Name}{:functionName}FunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<{:dataType.NullableAlias}>(a), b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(DBNull a, Nullable{:dataType.Name}{:functionName}FunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<{:dataType.NullableAlias}>(a), b, FilterExpressionOperator.NotEqual);
+        #region null
+        public static FilterExpression operator ==(Nullable{:dataType.Name}{:functionName}FunctionExpression a, NullElement b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(Nullable{:dataType.Name}{:functionName}FunctionExpression a, NullElement b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression operator ==(NullElement a, Nullable{:dataType.Name}{:functionName}FunctionExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(NullElement a, Nullable{:dataType.Name}{:functionName}FunctionExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
         #endregion
 
         #region data type

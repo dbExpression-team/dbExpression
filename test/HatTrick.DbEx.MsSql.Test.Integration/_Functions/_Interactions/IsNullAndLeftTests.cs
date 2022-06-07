@@ -22,7 +22,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectOne(
                     db.fx.Left(db.fx.IsNull(dbo.Address.Line2, expected), characterCount)
                 ).From(dbo.Address)
-                .Where(dbo.Address.Line2 == DBNull.Value);
+                .Where(dbo.Address.Line2 == dbex.Null);
 
             //when               
             string? result = exp.Execute();
@@ -41,7 +41,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectOne(
                     db.fx.IsNull(dbo.Address.Line2, db.fx.Left(dbo.Address.Line1, characterCount))
                 ).From(dbo.Address)
-                .Where(dbo.Address.Line2 == DBNull.Value);
+                .Where(dbo.Address.Line2 == dbex.Null);
 
             //when               
             string? result = exp.Execute();
@@ -60,7 +60,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectOne(
                     db.fx.Left(db.fx.IsNull(dbo.Address.Line1, expected), characterCount)
                 ).From(dbo.Address)
-                .Where(dbo.Address.Line1 != DBNull.Value);
+                .Where(dbo.Address.Line1 != dbex.Null);
 
             //when               
             string? result = exp.Execute();
