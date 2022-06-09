@@ -644,7 +644,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void xCan_pivot_select_statements_using_union_all_and_aggregation_execute_successfully(int version, int expected = 16)
+        public void Can_pivot_select_statements_using_union_all_and_aggregation_execute_successfully(int version, int expected = 16)
         {
             //given
             ConfigureForMsSqlVersion(version);

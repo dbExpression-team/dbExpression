@@ -8,7 +8,9 @@ using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Integration
 {
+#pragma warning disable IDE1006 // Naming Styles
     public class dbex_CoerceTests : ExecutorTestBase
+#pragma warning restore IDE1006 // Naming Styles
     {
         [Theory]
         [Trait("Pattern", "LEFT JOIN NULL PATTERN")]
