@@ -104,7 +104,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
             }
 
             var parameter = CreateDbParameter(name, convertedValue, typeMap.PlatformType, null, null, null, direction);
-            return new ParameterizedExpression(convertedType, parameter);
+            return new(convertedType, parameter);
         }
 
         protected virtual ParameterizedExpression CreateParameter(string name, object value, Type valueType, AssemblyContext context, ParameterDirection direction)
@@ -121,7 +121,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
             }
 
             var parameter = CreateDbParameter(name, convertedValue, typeMap.PlatformType, null, null, null, direction);
-            return new ParameterizedExpression(convertedType, parameter);
+            return new(convertedType, parameter);
         }
 
         protected virtual ParameterizedExpression CreateParameter<T>(string name, T value, Type declaredType, SqlDbType sqlDbType, ISqlMetadata meta, int? size, byte? precision, byte? scale, AssemblyContext context, ParameterDirection direction)
@@ -138,11 +138,11 @@ namespace HatTrick.DbEx.MsSql.Assembler
             }
 
             var parameter = CreateDbParameter(name, convertedValue, typeMap.PlatformType, size, precision, scale, direction);
-            return new ParameterizedExpression(typeMap.ClrType, parameter, meta);
+            return new(typeMap.ClrType, parameter, meta);
         }
 
         protected virtual ParameterizedExpression CreateParameter(string name, Type valueType, SqlDbType sqlDbType, int? size, byte? precision, byte? scale, ParameterDirection direction)
-            => new ParameterizedExpression(valueType, CreateDbParameter(name, sqlDbType, size, precision, scale, ParameterDirection.Output));
+            => new(valueType, CreateDbParameter(name, sqlDbType, size, precision, scale, ParameterDirection.Output));
 
         protected virtual (Type ConvertedType, object? ConvertedValue) ConvertDbParameterValue<T>(Type type, T? value)
             => ConvertDbParameterValue(type, value, valueConverterFactory.CreateConverter(type));
@@ -152,7 +152,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
 
         protected virtual (Type ConvertedType, object? ConvertedValue) ConvertDbParameterValue(Type type, object? value, IValueConverter converter)
         {
-            var converted = value is NullExpression || !(value is not null) ? converter.ConvertToDatabase(null) : converter.ConvertToDatabase(value);
+            var converted = value is NullElement || value is null ? converter.ConvertToDatabase(null) : converter.ConvertToDatabase(value);
             if (converted.ConvertedValue is null)
                 converted.ConvertedValue = DBNull.Value;
             return (converted.ConvertedValue.GetType(), converted.ConvertedValue);

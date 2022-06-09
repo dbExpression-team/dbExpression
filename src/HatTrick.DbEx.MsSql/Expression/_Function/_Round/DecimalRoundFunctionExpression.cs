@@ -39,11 +39,6 @@ namespace HatTrick.DbEx.MsSql.Expression
         }
         #endregion
 
-        #region as
-        public AnyElement<decimal> As(string alias)
-            => new SelectExpression<decimal>(this).As(alias);
-        #endregion
-
         #region equals
         public bool Equals(DecimalRoundFunctionExpression? obj)
             => obj is not null && base.Equals(obj);

@@ -197,11 +197,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_field_style_of_Alias_and_entity_append_style_of_Declaration_append_correctly(int version, string fieldAlias = "fieldAlias", string entityAlias = "entityAlias", string expected = "[dbo].[Person].[Id] AS [fieldAlias]")
+        public void Does_field_style_of_Alias_and_entity_append_style_of_Declaration_append_correctly(int version, string fieldAlias = "fieldAlias", string expected = "[dbo].[Person].[Id] AS [fieldAlias]")
         {
             //given
             var database = ConfigureForMsSqlVersion(version);
-            var field = dbo.Person.Id.As(entityAlias).As(fieldAlias);
+            var field = dbo.Person.Id.As(fieldAlias);
             QueryExpression queryExpression = db.SelectOne(field).From(dbo.Person).Expression;
             ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, queryExpression);
             IExpressionElementAppender appender = database.ExpressionElementAppenderFactory.CreateElementAppender(field)!;

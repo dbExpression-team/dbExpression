@@ -57,7 +57,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         private void AppendFilterExpressionThatMayContainNull(FilterExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             //if either side of the filter expression is equivalent to null, construct the side with an expression and append appropriate "IS NULL"
-            if (expression.LeftArg.IsNull() || (expression.RightArg is not null && expression.RightArg.IsNull()))
+            if (expression.LeftArg.IsNull() || expression.RightArg.IsNull())
             {
                 AppendFilterExpressionWithLeftOrRightEqualToNull(expression, builder, context);
             }

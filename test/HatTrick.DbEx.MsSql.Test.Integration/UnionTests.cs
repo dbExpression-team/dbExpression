@@ -5,6 +5,7 @@ using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
+using HatTrick.DbEx.Sql.Builder.Alias;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -639,6 +640,58 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //then
             results.Should().HaveCount(expected);
             results.Should().BeInAscendingOrder();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void xCan_pivot_select_statements_using_union_all_and_aggregation_execute_successfully(int version, int expected = 16)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp =
+
+                db.SelectMany(
+                    dbex.Alias<string>("Pivot", "State"),
+                    db.fx.Sum(("Pivot", "ShippingCount")).As("Shipping"),
+                    db.fx.Sum(("Pivot", "MailingCount")).As("Mailing"),
+                    db.fx.Sum(("Pivot", "BillingCount")).As("Billing")
+                ).From(
+                    db.SelectMany(
+                        dbo.Address.State,
+                        db.fx.Count().As("ShippingCount"),
+                        dbex.Null.As("MailingCount"),
+                        dbex.Null.As("BillingCount")
+                    ).From(dbo.Address)
+                    .Where(dbo.Address.AddressType == AddressType.Shipping)
+                    .GroupBy(dbo.Address.State)
+                    .UnionAll()
+                    .SelectMany(
+                        dbo.Address.State,
+                        dbex.Null,
+                        db.fx.Count(),
+                        dbex.Null
+                    ).From(dbo.Address)
+                    .Where(dbo.Address.AddressType == AddressType.Mailing)
+                    .GroupBy(dbo.Address.State)
+                    .UnionAll()
+                    .SelectMany(
+                        dbo.Address.State,
+                        dbex.Null,                        
+                        dbex.Null,
+                        db.fx.Count()
+                    ).From(dbo.Address)
+                    .Where(dbo.Address.AddressType == AddressType.Billing)
+                    .GroupBy(dbo.Address.State)
+                ).As("Pivot")
+                .GroupBy(dbex.Alias("Pivot", "State"))
+                .OrderBy(dbex.Alias("Pivot", "State"));
+
+            //when               
+            IList<dynamic> results = exp.Execute();
+
+            //then
+            results.Should().HaveCount(expected);
         }
     }
 }

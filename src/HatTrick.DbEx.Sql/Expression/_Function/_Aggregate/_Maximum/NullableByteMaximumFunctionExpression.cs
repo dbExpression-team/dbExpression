@@ -33,11 +33,6 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public AnyElement<byte?> As(string alias)
-            => new SelectExpression<byte?>(this).As(alias);
-        #endregion
-
         #region distinct
         public new NullableByteMaximumFunctionExpression Distinct()
         {

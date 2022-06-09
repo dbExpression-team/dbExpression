@@ -27,6 +27,12 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
 
+        public NullableStringSelectExpression(NullableStringElement expression, string alias)
+            : base(expression)
+        {
+            Alias = alias;
+        }
+
         public NullableStringSelectExpression(ExpressionMediator<string?> expression)
             : base(expression)
         {

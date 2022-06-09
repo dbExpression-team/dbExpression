@@ -41,7 +41,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public new AnyElement<byte[]?> As(string alias)
+        public new AliasedElement<byte[]?> As(string alias)
             => new SelectExpression<byte[]?>(this, alias);
         #endregion
 

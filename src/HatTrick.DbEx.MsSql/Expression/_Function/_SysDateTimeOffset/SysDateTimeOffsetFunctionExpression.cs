@@ -35,8 +35,8 @@ namespace HatTrick.DbEx.MsSql.Expression
         #endregion
 
         #region as
-        public AnyElement<DateTimeOffset> As(string alias)
-            => new SelectExpression<DateTimeOffset>(this).As(alias);
+        public AliasedElement<DateTimeOffset> As(string alias)
+            => new SelectExpression<DateTimeOffset>(this, alias);
         #endregion
 
         #region to string

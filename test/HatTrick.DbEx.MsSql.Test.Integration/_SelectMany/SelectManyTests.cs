@@ -556,5 +556,23 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //then
             persons.Should().HaveCount(50);
         }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_select_person_by_left_join_of_casted_null(int version, int expected = 44)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //when
+            IList<Person> persons = await db.SelectMany<Person>()
+                .From(dbo.Person)
+                .LeftJoin(dbo.Purchase).On(dbo.Purchase.PersonId == dbo.Person.Id)
+                .Where(dbo.Purchase.Id == (int?)null)
+                .ExecuteAsync();
+
+            //then
+            persons.Should().HaveCount(expected);
+        }
     }
 }

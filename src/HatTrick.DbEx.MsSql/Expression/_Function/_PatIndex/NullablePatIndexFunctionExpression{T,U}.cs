@@ -33,5 +33,10 @@ namespace HatTrick.DbEx.MsSql.Expression
 
         }
         #endregion
+
+        #region as
+        public AliasedElement<TNullableValue> As(string alias)
+            => new SelectExpression<TNullableValue>(this, alias);
+        #endregion
     }
 }

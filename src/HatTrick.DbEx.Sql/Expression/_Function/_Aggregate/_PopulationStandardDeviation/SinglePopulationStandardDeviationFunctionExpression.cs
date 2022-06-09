@@ -60,11 +60,6 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public AnyElement<float> As(string alias)
-            => new SelectExpression<float>(this).As(alias);
-        #endregion
-
         #region distinct
         public new SinglePopulationStandardDeviationFunctionExpression Distinct()
         {

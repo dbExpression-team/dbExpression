@@ -22,6 +22,6 @@ namespace HatTrick.DbEx.Sql
     public interface NullElement : AnyElement
 #pragma warning restore IDE1006 // Naming Styles
     {
-
+        AliasedElement As(string alias);
     }
 }

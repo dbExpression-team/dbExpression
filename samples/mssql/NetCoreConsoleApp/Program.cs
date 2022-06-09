@@ -54,7 +54,7 @@ namespace NetCoreConsoleApp
             dbExpression.Configure(
                 dbex => {
 
-                    dbex.AddMsSql2019Database<SimpleConsoleDb>(
+                    dbex.AddMsSql2014Database<SimpleConsoleDb>(
                         database => {
                             database.ConnectionString.Use(config.GetConnectionString("dbex_mssql_test"));
                             database.SqlStatements.Assembly.ConfigureOutputSettings(x => x.PrependCommaOnSelectClause = false);

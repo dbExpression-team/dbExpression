@@ -33,11 +33,6 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public AnyElement<DateTime?> As(string alias)
-            => new SelectExpression<DateTime?>(this).As(alias);
-        #endregion
-
         #region distinct
         public new NullableDateTimeMinimumFunctionExpression Distinct()
         {

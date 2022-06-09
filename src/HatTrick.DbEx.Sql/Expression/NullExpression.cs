@@ -27,6 +27,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region methods
+        #region as
+        public AliasedElement As(string alias)
+            => new SelectExpression(this, alias);
+        #endregion
+
         #region to string
         public override string? ToString() => "NULL";
         #endregion

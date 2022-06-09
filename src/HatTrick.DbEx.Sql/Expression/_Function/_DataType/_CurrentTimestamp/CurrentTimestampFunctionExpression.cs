@@ -35,8 +35,8 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region methods
         #region as
-        public AnyElement<DateTime> As(string alias)
-            => new SelectExpression<DateTime>(this).As(alias);
+        public AliasedElement<DateTime> As(string alias)
+            => new SelectExpression<DateTime>(this, alias);
         #endregion
 
         #region to string
