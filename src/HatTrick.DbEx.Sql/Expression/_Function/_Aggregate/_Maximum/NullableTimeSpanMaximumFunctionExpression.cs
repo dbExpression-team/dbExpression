@@ -33,11 +33,6 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public AnyElement<TimeSpan?> As(string alias)
-            => new SelectExpression<TimeSpan?>(this).As(alias);
-        #endregion
-
         #region distinct
         public new NullableTimeSpanMaximumFunctionExpression Distinct()
         {

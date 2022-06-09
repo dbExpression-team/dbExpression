@@ -35,11 +35,6 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public AnyElement<Guid> As(string alias)
-            => new SelectExpression<Guid>(this).As(alias);
-        #endregion
-
         #region equals
         public bool Equals(GuidExpressionMediator? obj)
             => obj is not null && base.Equals(obj);

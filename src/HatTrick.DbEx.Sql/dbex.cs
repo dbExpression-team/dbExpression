@@ -30,8 +30,11 @@ namespace HatTrick.DbEx.Sql
     {
         private static NullElement _null = new NullExpression();
 
+        /// <summary>
+        /// Create an expression representing a database NULL.
+        /// </summary>
+        /// <returns><see cref="NullElement"/> for use with any operation accepting a <see cref="AnyElement"/>.</returns>
         public static NullElement Null => _null;
-
 
         /// <summary>
         /// Create an alias of a table and field for use with SELECT statements or in composition with other functions where the data type of the aliased expression is required.

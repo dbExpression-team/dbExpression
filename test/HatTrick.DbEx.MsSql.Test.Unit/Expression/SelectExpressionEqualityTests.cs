@@ -43,8 +43,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp1 = new SelectExpression<int?>(dbo.Person.CreditLimit).As("this");
-            var exp2 = new SelectExpression<int?>(dbo.Person.CreditLimit).As("this");
+            var exp1 = new SelectExpression<int?>(dbo.Person.CreditLimit, "this");
+            var exp2 = new SelectExpression<int?>(dbo.Person.CreditLimit, "this");
 
             //then
             Assert.True(exp1.Equals(exp2));
@@ -57,7 +57,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp1 = new SelectExpression<int?>(dbo.Person.CreditLimit).As("this");
+            var exp1 = new SelectExpression<int?>(dbo.Person.CreditLimit, "this");
             var exp2 = new SelectExpression<int?>(dbo.Person.CreditLimit);
 
             //then
@@ -107,7 +107,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp1 = new SelectExpression<int?>(dbo.Person.CreditLimit).As("this");
+            var exp1 = new SelectExpression<int?>(dbo.Person.CreditLimit, "this");
             var exp2 = new SelectExpression<int?>(dbo.Person.CreditLimit);
 
             //when
@@ -125,8 +125,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp1 = new SelectExpression<int?>(dbo.Person.CreditLimit).As("this");
-            var exp2 = new SelectExpression<int?>(dbo.Person.CreditLimit).As("this");
+            var exp1 = new SelectExpression<int?>(dbo.Person.CreditLimit, "this");
+            var exp2 = new SelectExpression<int?>(dbo.Person.CreditLimit, "this");
 
             //when
             var hc1 = exp1.GetHashCode();

@@ -45,11 +45,6 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public AnyElement<DateTime?> As(string alias)
-            => new SelectExpression<DateTime?>(this).As(alias);
-        #endregion
-
         #region equals
         public bool Equals(NullableDateTimeDateAddFunctionExpression? obj)
             => obj is not null && base.Equals(obj);

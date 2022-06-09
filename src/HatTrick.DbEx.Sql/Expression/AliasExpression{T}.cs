@@ -54,8 +54,8 @@ namespace HatTrick.DbEx.Sql.Expression
         public AliasedElement<T> As(string alias)
             => new SelectExpression<T>(this, alias);
 
-        AnyElement<T> AnyElement<T>.As(string alias)
-            => new SelectExpression<T>(this).As(alias);
+        AliasedElement<T> AnyElement<T>.As(string alias)
+            => new SelectExpression<T>(this, alias);
         #endregion
 
         #region equals

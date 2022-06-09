@@ -36,11 +36,6 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public AnyElement<TEnum> As(string alias)
-            => new SelectExpression<TEnum>(this).As(alias);
-        #endregion
-
         #region equals
         public bool Equals(EnumExpressionMediator<TEnum>? obj)
             => obj is not null && base.Equals(obj);

@@ -77,6 +77,6 @@ namespace ServerSideBlazorApp.Pages
             => await db.SelectOne(db.fx.Count()).From(dbo.Customer).ExecuteAsync() > 0;
 
         private async Task<bool> EvaluateHasAnImage()
-            => await db.SelectOne(db.fx.Count()).From(dbo.Product).Where(dbo.Product.Image != DBNull.Value).ExecuteAsync() > 0;
+            => await db.SelectOne(db.fx.Count()).From(dbo.Product).Where(dbo.Product.Image != dbex.Null).ExecuteAsync() > 0;
     }
 }

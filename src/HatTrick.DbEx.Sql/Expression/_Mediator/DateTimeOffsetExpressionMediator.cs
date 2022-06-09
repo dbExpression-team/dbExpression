@@ -35,11 +35,6 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public AnyElement<DateTimeOffset> As(string alias)
-            => new SelectExpression<DateTimeOffset>(this).As(alias);
-        #endregion
-
         #region equals
         public bool Equals(DateTimeOffsetExpressionMediator? obj)
             => obj is not null && base.Equals(obj);

@@ -34,8 +34,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public NullableStringElement As(string alias)
-            => new NullableStringSelectExpression(this).As(alias);
+        public new NullableStringElement As(string alias)
+            => new NullableStringSelectExpression(this, alias);
         #endregion
 
         #region like

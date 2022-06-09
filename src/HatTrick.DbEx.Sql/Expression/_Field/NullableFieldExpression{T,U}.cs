@@ -33,8 +33,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public AnyElement<TNullableValue> As(string alias)
-            => new SelectExpression<TNullableValue>(this).As(alias);
+        public AliasedElement<TNullableValue> As(string alias)
+            => new SelectExpression<TNullableValue>(this, alias);
         #endregion
 
         #region in value set

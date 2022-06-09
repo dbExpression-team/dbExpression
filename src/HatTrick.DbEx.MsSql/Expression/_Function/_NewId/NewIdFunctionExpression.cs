@@ -35,8 +35,8 @@ namespace HatTrick.DbEx.MsSql.Expression
         #endregion
 
         #region as
-        public AnyElement<Guid> As(string alias)
-            => new SelectExpression<Guid>(this).As(alias);
+        public AliasedElement<Guid> As(string alias)
+            => new SelectExpression<Guid>(this, alias);
         #endregion
 
         #region to string

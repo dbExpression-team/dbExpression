@@ -34,6 +34,12 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
+
+        public ObjectSelectExpression(ObjectElement expression, string alias)
+            : base(expression, alias)
+        {
+
+        }
         #endregion
 
         #region as

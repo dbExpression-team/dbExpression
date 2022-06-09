@@ -34,11 +34,6 @@ namespace HatTrick.DbEx.MsSql.Expression
         }
         #endregion
 
-        #region as
-        public AnyElement<long> As(string alias)
-            => new SelectExpression<long>(this).As(alias);
-        #endregion
-
         #region equals
         public bool Equals(Int64PatIndexFunctionExpression? obj)
             => obj is not null && base.Equals(obj);
