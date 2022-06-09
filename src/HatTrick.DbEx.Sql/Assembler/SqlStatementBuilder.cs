@@ -17,6 +17,7 @@
 #endregion
 
 ﻿using HatTrick.DbEx.Sql.Configuration;
+using HatTrick.DbEx.Sql.Converter;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 
@@ -33,6 +34,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         private readonly IExpressionElementAppenderFactory elementAppenderFactory;
         private readonly IAppenderFactory appenderFactory;
         private readonly ISqlParameterBuilderFactory parameterBuilderFactory;
+        private readonly IValueConverterFactory valueConverterFactory;
         private int _currentAliasCounter;
         private SqlStatement? _sqlStatement;
         private IAppender? _appender;
@@ -49,7 +51,8 @@ namespace HatTrick.DbEx.Sql.Assembler
             SqlStatementAssemblerConfiguration assemblerConfiguration,
             IExpressionElementAppenderFactory elementAppenderFactory,
             IAppenderFactory appenderFactory,
-            ISqlParameterBuilderFactory parameterBuilderFactory
+            ISqlParameterBuilderFactory parameterBuilderFactory,
+            IValueConverterFactory valueConverterFactory
         )
         {
             this.query = query ?? throw new ArgumentNullException(nameof(query));
@@ -59,6 +62,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             this.elementAppenderFactory = elementAppenderFactory ?? throw new ArgumentNullException(nameof(elementAppenderFactory));
             this.appenderFactory = appenderFactory ?? throw new ArgumentNullException(nameof(appenderFactory));
             this.parameterBuilderFactory = parameterBuilderFactory ?? throw new ArgumentNullException(nameof(parameterBuilderFactory));
+            this.valueConverterFactory = valueConverterFactory ?? throw new ArgumentNullException(nameof(valueConverterFactory));
         }
 
         public SqlStatement CreateSqlStatement()
@@ -109,5 +113,20 @@ namespace HatTrick.DbEx.Sql.Assembler
         public ISqlEntityMetadata? FindMetadata(Table entity) => databaseMetadata.FindEntityMetadata(entity.Identifier);
         public ISqlFieldMetadata? FindMetadata(Field field) => databaseMetadata.FindFieldMetadata(field.Identifier);
         public ISqlParameterMetadata? FindMetadata(QueryParameter parameter) => databaseMetadata.FindParameterMetadata(parameter.Identifier);
+
+        public (Type, object?) ConvertValue(object? value, Field? field)
+        {
+            if (value is NullElement)
+                value = null;
+
+            var type = field is null ? value?.GetType() : field.DeclaredType;
+            if (type is null)
+                type = typeof(object);
+
+            var converter = valueConverterFactory.CreateConverter(type)
+                ?? throw new DbExpressionConfigurationException($"Could not resolve a value converter for '{type}', please ensure an value converter has been registered during startup initialization of DbExpression.");
+
+            return converter.ConvertToDatabase(value);
+        }
     }
 }
