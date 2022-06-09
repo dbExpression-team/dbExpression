@@ -27,46 +27,33 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public override void AppendElement(LiteralExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
+            var (convertedType, convertedValue) = builder.ConvertValue(expression.Expression, expression.Field);
+            if (convertedValue is null)
+            {
+                builder.AppendElement(_null, context);
+                return;
+            }
+
+            ParameterizedExpression param;
             if (expression.Field is not null)
             {
-                //build a parameter to perform any value conversion
-                var param = builder.Parameters.CreateInputParameter(
-                    expression.Expression,
-                    expression.Field.DeclaredType,
-                    builder.FindMetadata(expression.Field) ?? throw new DbExpressionException($"Expected to find metadata for {expression.Field}, but metadata is actually null."),
-                    context
-                );
-                if (param.Parameter.Value is null || param.Parameter.Value == DBNull.Value)
-                {
-                    builder.AppendElement(expression.Expression as NullElement ?? _null, context);
-                }
-                else
-                {
-                    builder.Parameters.AddParameter(param);
-                    builder.Appender.Write(param.Parameter.ParameterName);
-                }
+                param = builder.Parameters.CreateInputParameter(
+                        convertedValue,
+                        convertedType,
+                        builder.FindMetadata(expression.Field) ?? throw new DbExpressionException($"Expected to find metadata for {expression.Field}, but metadata is actually null."),
+                        context
+                    );
             }
             else
             {
-                if (expression.Expression is null)
-                {
-                    builder.AppendElement(new NullExpression(), context);
-                }
-                else if (expression.Expression is NullElement ne)
-                {
-                    builder.AppendElement(ne, context);
-                }
-                else
-                {
-                    var param = builder.Parameters.CreateInputParameter(
-                            expression.Expression,
-                            expression.Expression.GetType(),
-                            context
-                        );
-                    builder.Parameters.AddParameter(param);
-                    builder.Appender.Write(param.Parameter.ParameterName);
-                }
+                param = builder.Parameters.CreateInputParameter(
+                        convertedValue,
+                        convertedType,
+                        context
+                    );
             }
+            builder.Parameters.AddParameter(param);
+            builder.Appender.Write(param.Parameter.ParameterName);
         }
     }
 }
