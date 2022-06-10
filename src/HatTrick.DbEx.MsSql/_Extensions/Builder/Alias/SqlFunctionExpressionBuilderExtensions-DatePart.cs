@@ -16,12 +16,12 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using HatTrick.DbEx.MsSql.Builder;
+using HatTrick.DbEx.MsSql.Expression;
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 
-namespace HatTrick.DbEx.MsSql.Expression.Alias
+namespace HatTrick.DbEx.MsSql.Builder.Alias
 {
     public static partial class SqlFunctionExpressionBuilderExtensions
     {

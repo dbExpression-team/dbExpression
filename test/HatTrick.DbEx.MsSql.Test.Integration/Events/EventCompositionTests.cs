@@ -3,6 +3,7 @@ using DbEx.dboData;
 using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.Sql;
+using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -83,6 +84,29 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
                         .OnBeforeSqlStatementExecution(_ => execution += "2")
                         .OnAfterSqlStatementExecution(_ => execution += "1")
                         .OnAfterSelectQueryExecution(_ => execution += "0")
+                    );
+
+            //when
+            db.SelectOne(dbo.Person.Id).From(dbo.Person).Where(dbo.Person.Id == 1).Execute();
+
+            //then
+            execution.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Do_all_pipeline_events_fire_when_selecting_and_predicate_is_met(int version, int expected = 6)
+        {
+            //given
+            var execution = 0;
+            var config = ConfigureForMsSqlVersion(version,
+                    c => c.Events
+                        .OnBeforeSqlStatementAssembly(_ => execution++, c => c.Expression.IsSelectQueryExpression())
+                        .OnAfterSqlStatementAssembly(_ => execution++, c => c.Expression.IsSelectQueryExpression())
+                        .OnBeforeSelectQueryExecution(_ => execution++, c => c.Expression.IsSelectQueryExpression())
+                        .OnBeforeSqlStatementExecution(_ => execution++, c => c.Expression.IsSelectQueryExpression())
+                        .OnAfterSqlStatementExecution(_ => execution++, c => c.Expression.IsSelectQueryExpression())
+                        .OnAfterSelectQueryExecution(_ => execution++, c => c.Expression.IsSelectQueryExpression())
                     );
 
             //when
@@ -248,6 +272,29 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
                         .OnBeforeSqlStatementExecution(_ => execution += "2")
                         .OnAfterSqlStatementExecution(_ => execution += "1")
                         .OnAfterInsertQueryExecution(_ => execution += "0")
+                    );
+
+            //when
+            db.Insert(new Address { Line1 = "123 Main St", City = "Nowhere", State = "XX", Zip = "00000" }).Into(dbo.Address).Execute();
+
+            //then
+            execution.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Do_all_pipeline_events_fire_when_inserting_and_predicate_is_met(int version, int expected = 6)
+        {
+            //given
+            var execution = 0;
+            var config = ConfigureForMsSqlVersion(version,
+                    c => c.Events
+                        .OnBeforeSqlStatementAssembly(_ => execution++, c => c.Expression.IsInsertQueryExpression())
+                        .OnAfterSqlStatementAssembly(_ => execution++, c => c.Expression.IsInsertQueryExpression())
+                        .OnBeforeInsertQueryExecution(_ => execution++, c => c.Expression.IsInsertQueryExpression())
+                        .OnBeforeSqlStatementExecution(_ => execution++, c => c.Expression.IsInsertQueryExpression())
+                        .OnAfterSqlStatementExecution(_ => execution++, c => c.Expression.IsInsertQueryExpression())
+                        .OnAfterInsertQueryExecution(_ => execution++, c => c.Expression.IsInsertQueryExpression())
                     );
 
             //when
@@ -429,6 +476,29 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
 
         [Theory]
         [MsSqlVersions.AllVersions]
+        public void Do_all_pipeline_events_fire_when_updating_and_predicate_is_met(int version, int expected = 6)
+        {
+            //given
+            var execution = 0;
+            var config = ConfigureForMsSqlVersion(version,
+                    c => c.Events
+                        .OnBeforeSqlStatementAssembly(_ => execution++, c => c.Expression.IsUpdateQueryExpression())
+                        .OnAfterSqlStatementAssembly(_ => execution++, c => c.Expression.IsUpdateQueryExpression())
+                        .OnBeforeUpdateQueryExecution(_ => execution++, c => c.Expression.IsUpdateQueryExpression())
+                        .OnBeforeSqlStatementExecution(_ => execution++, c => c.Expression.IsUpdateQueryExpression())
+                        .OnAfterSqlStatementExecution(_ => execution++, c => c.Expression.IsUpdateQueryExpression())
+                        .OnAfterUpdateQueryExecution(_ => execution++, c => c.Expression.IsUpdateQueryExpression())
+                    );
+
+            //when
+            db.Update(dbo.Person.FirstName.Set("foo")).Top(1).From(dbo.Person).Execute();
+
+            //then
+            execution.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
         public async Task Do_all_pipeline_events_fire_when_updating_async(int version, int expected = 7)
         {
             //given
@@ -583,6 +653,29 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
                         .OnBeforeSqlStatementExecution(_ => execution += "2")
                         .OnAfterSqlStatementExecution(_ => execution += "1")
                         .OnAfterDeleteQueryExecution(_ => execution += "0")
+                    );
+
+            //when
+            db.Delete().Top(1).From(dbo.PersonAddress).Execute();
+
+            //then
+            execution.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Do_all_pipeline_events_fire_when_deleting_and_predicate_is_met(int version, int expected = 6)
+        {
+            //given
+            var execution = 0;
+            var config = ConfigureForMsSqlVersion(version,
+                    c => c.Events
+                        .OnBeforeSqlStatementAssembly(_ => execution++, c => c.Expression.IsDeleteQueryExpression())
+                        .OnAfterSqlStatementAssembly(_ => execution++, c => c.Expression.IsDeleteQueryExpression())
+                        .OnBeforeDeleteQueryExecution(_ => execution++, c => c.Expression.IsDeleteQueryExpression())
+                        .OnBeforeSqlStatementExecution(_ => execution++, c => c.Expression.IsDeleteQueryExpression())
+                        .OnAfterSqlStatementExecution(_ => execution++, c => c.Expression.IsDeleteQueryExpression())
+                        .OnAfterDeleteQueryExecution(_ => execution++, c => c.Expression.IsDeleteQueryExpression())
                     );
 
             //when

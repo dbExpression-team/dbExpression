@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IExpressionElement<TValue>
     {
         #region internals
-        private static readonly LiteralExpression<string> STAR = new LiteralExpression<string>("*");
+        private static readonly LiteralExpression<char> STAR = new('*');
         #endregion
 
         #region constructors

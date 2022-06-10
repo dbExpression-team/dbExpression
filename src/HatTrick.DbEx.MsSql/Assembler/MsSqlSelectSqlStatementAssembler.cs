@@ -158,7 +158,6 @@ namespace HatTrick.DbEx.MsSql.Assembler
             for (var i = 0; i < select_list.Count; i++)
             {
                 var select = select_list[i];
-                var isAliased = !string.IsNullOrWhiteSpace((select as IExpressionAliasProvider).Alias);
                 context.PushEntityAppendStyle(EntityExpressionAppendStyle.None);
                 try
                 {
@@ -269,7 +268,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
 
         }
 
-        private void AppendNonAliasedSelectClause(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context, EntityExpressionAppendStyle entityAppendStyle, bool? isDistinct, int? top)
+        private static void AppendNonAliasedSelectClause(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context, EntityExpressionAppendStyle entityAppendStyle, bool? isDistinct, int? top)
         {
             builder.Appender
                 .Indent().Write("SELECT");
