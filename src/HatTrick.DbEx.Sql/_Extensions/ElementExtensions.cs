@@ -16,28 +16,13 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 
 namespace HatTrick.DbEx.Sql
 {
-    internal static class ExpressionElementExtensions
+    internal static class ElementExtensions
     {
-        internal static FieldExpression? ToFieldExpression(this IExpressionElement expression)
-        {
-            if (expression is FieldExpression field)
-                return field;
-
-            if (expression is SelectExpression select)
-                return ToFieldExpression(select.Expression);
-
-            if (expression is ExpressionMediator mediator)
-                return ToFieldExpression(mediator.Expression);
-
-            return null;
-        }
-
         internal static SelectExpression ToSelectExpression(this AnyElement expression, ISqlDatabaseMetadataProvider metadata)
         {
             if (expression is null)
@@ -46,7 +31,7 @@ namespace HatTrick.DbEx.Sql
             if (expression is SelectExpression select)
                 return select;
 
-            var field = expression.ToFieldExpression();
+            var field = expression.AsFieldExpression();
 
             if (field is null)
                 return new SelectExpression(expression);

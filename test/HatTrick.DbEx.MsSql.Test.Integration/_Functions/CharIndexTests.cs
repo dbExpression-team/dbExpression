@@ -5,7 +5,7 @@ using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
 using Xunit;
-using HatTrick.DbEx.MsSql.Expression.Alias;
+using HatTrick.DbEx.MsSql.Builder.Alias;
 
 namespace HatTrick.DbEx.MsSql.Test.Integration
 {
