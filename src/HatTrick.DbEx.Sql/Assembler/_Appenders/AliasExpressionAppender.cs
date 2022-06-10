@@ -24,13 +24,27 @@ namespace HatTrick.DbEx.Sql.Assembler
     {
         public override void AppendElement(AliasExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            builder.Appender.Write(context.Configuration.IdentifierDelimiter.Begin)
-                .Write((expression as IExpressionProvider<AliasExpression.AliasExpressionElements>).Expression.TableAlias)
-                .Write(context.Configuration.IdentifierDelimiter.End)
-                .Write(".")
-                .Write(context.Configuration.IdentifierDelimiter.Begin)
-                .Write((expression as IExpressionProvider<AliasExpression.AliasExpressionElements>).Expression.FieldAlias)
-                .Write(context.Configuration.IdentifierDelimiter.End);
+            var alias = (expression as IExpressionProvider<AliasExpression.AliasExpressionElements>).Expression;
+            if (!string.IsNullOrWhiteSpace(alias.TableAlias))
+            {
+                builder.Appender
+                    .Write(context.IdentifierDelimiter.Begin)
+                    .Write(alias.TableAlias!)
+                    .Write(context.IdentifierDelimiter.End);
+            }
+
+            if (!string.IsNullOrWhiteSpace(alias.TableAlias) && !string.IsNullOrWhiteSpace(alias.FieldAlias))
+            {
+                builder.Appender.Write(".");
+            }
+
+            if (!string.IsNullOrWhiteSpace(alias.FieldAlias))
+            {
+                builder.Appender
+                  .Write(context.IdentifierDelimiter.Begin)
+                  .Write(alias.FieldAlias)
+                  .Write(context.IdentifierDelimiter.End);
+            }
         }
     }
 }

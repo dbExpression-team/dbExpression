@@ -21,7 +21,7 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class HavingExpression :
-        AnyHavingClause,
+        AnyHavingExpression,
         IExpressionProvider<FilterExpressionSet>,
         IFilterExpressionElement,
         IEquatable<HavingExpression>
@@ -38,6 +38,11 @@ namespace HatTrick.DbEx.Sql.Expression
         public HavingExpression(FilterExpressionSet havingCondition)
         {
             expression = havingCondition ?? throw new ArgumentNullException(nameof(havingCondition));
+        }
+
+        public HavingExpression(FilterExpression havingCondition)
+        {
+            expression = new(havingCondition ?? throw new ArgumentNullException(nameof(havingCondition)));
         }
         #endregion
 

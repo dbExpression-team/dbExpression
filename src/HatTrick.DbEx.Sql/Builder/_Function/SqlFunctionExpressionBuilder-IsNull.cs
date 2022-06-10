@@ -582,11 +582,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <param name="value">The returned <see cref="String"/> value if <paramref name="element"/> evaluates to a (database) NULL.</param>
         /// <returns><see cref="StringIsNullFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
         public StringIsNullFunctionExpression IsNull(NullableStringElement element, string value)
-        {
-            if (string.IsNullOrWhiteSpace(value))
-                throw new ArgumentException($"{nameof(value)} cannot be null or empty.", nameof(value));
-            return new(element, new StringExpressionMediator(new LiteralExpression<string>(value)));
-        }
+            => new(element, new StringExpressionMediator(new LiteralExpression<string>(value)));
         #endregion
 
         #region TimeSpan

@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IExpressionElement<TValue>
     {
         #region internals
-        private static readonly LiteralExpression<string> STAR = new LiteralExpression<string>("*");
+        private static readonly LiteralExpression<char> STAR = new('*');
         #endregion
 
         #region constructors
@@ -37,6 +37,11 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
+        #endregion
+
+        #region as
+        public AliasedElement<TValue> As(string alias)
+            => new SelectExpression<TValue>(this, alias);
         #endregion
     }
 }

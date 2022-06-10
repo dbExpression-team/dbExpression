@@ -202,7 +202,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
                     .StatementBuilder.UseDefaultFactory()
                     .StatementAppender.UseDefaultFactory()
                     .ElementAppender.Use<MsSqlExpressionElementAppenderFactory>()
-                    .ParameterBuilder.Use(new MsSqlParameterBuilderFactory(new MsSqlTypeMapFactory(), config.ValueConverterFactory))
+                    .ParameterBuilder.Use(new MsSqlParameterBuilderFactory(new MsSqlTypeMapFactory()))
                 .QueryExecution
                     .Executor.UseDefaultFactory()
                     .Pipeline.UseDefaultFactory()

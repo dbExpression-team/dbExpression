@@ -32,11 +32,6 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public AnyElement<long> As(string alias)
-            => new SelectExpression<long>(this).As(alias);
-        #endregion
-
         #region equals
         public bool Equals(Int64CeilingFunctionExpression? obj)
             => obj is not null && base.Equals(obj);

@@ -29,10 +29,11 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (expression?.Expressions is null || !expression.Expressions.Any())
                 return;
 
-            foreach (var join in expression.Expressions)
+            for (var i = 0; i < expression.Expressions.Count(); i++)
             {
-                builder.AppendElement(join, context);
-                builder.Appender.LineBreak();
+                builder.AppendElement(expression.Expressions.ElementAt(i), context);
+                if (i < expression.Expressions.Count() - 1)
+                    builder.Appender.LineBreak();
             }
         }
     }

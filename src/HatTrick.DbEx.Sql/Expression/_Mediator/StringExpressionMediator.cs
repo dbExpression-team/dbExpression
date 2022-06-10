@@ -36,13 +36,13 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public StringElement As(string alias)
-            => new StringSelectExpression(this).As(alias);
+        public new StringElement As(string alias)
+            => new StringSelectExpression(this, alias);
         #endregion
 
         #region like
-        public FilterExpressionSet Like(string phrase)
-            => new(new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
+        public FilterExpression Like(string phrase)
+            => new FilterExpression<bool>(this, new LikeExpression(phrase), FilterExpressionOperator.None);
         #endregion
 
         #region equals
@@ -57,7 +57,26 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region arithmetic operators
-        public static StringExpressionMediator operator +(StringExpressionMediator a, StringExpressionMediator b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static StringExpressionMediator operator +(StringExpressionMediator a, StringExpressionMediator b)
+        {
+            if (a.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> ae)
+            {
+                if (ae.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+                {
+                    ae.Expression.Args.Add(b);
+                    return a;
+                }
+            }
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be)
+            {
+                if (be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+                {
+                    be.Expression.Args.Insert(0, a);
+                    return b;
+                }
+            }
+            return new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        }
         #endregion
     }
 }

@@ -34,12 +34,12 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public new StringElement As(string alias)
-            => new StringSelectExpression(this).As(alias);
+            => new StringSelectExpression(this, alias);
         #endregion
 
         #region like
-        public FilterExpressionSet Like(string phrase)
-            => new (new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
+        public FilterExpression Like(string phrase)
+            => new FilterExpression<bool>(this, new LikeExpression(phrase), FilterExpressionOperator.None);
         #endregion
 
         #region equals

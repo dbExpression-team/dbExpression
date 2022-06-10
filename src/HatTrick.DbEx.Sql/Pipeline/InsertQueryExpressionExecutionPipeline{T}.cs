@@ -95,14 +95,13 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 connection,
                 new SqlStatementValueConverterProvider(database.ValueConverterFactory, fields),
                 cmd => {
-                    cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
                     beforeExecution?.Invoke(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(database, expression, cmd, statement)));
                     configureCommand?.Invoke(cmd);
                 },
                 cmd => afterExecution?.Invoke(new Lazy<AfterExecutionPipelineExecutionContext>(() => new AfterExecutionPipelineExecutionContext(database, expression, cmd)))
             );
 
-            var mapper = database.MapperFactory.CreateEntityMapper(expression.BaseEntity as Table<TEntity> ?? throw new InvalidOperationException($"Expected base entity to be type {typeof(Table<TEntity>)}."));
+            var mapper = database.MapperFactory.CreateEntityMapper(expression.Into as Table<TEntity> ?? throw new InvalidOperationException($"Expected base entity to be type {typeof(Table<TEntity>)}."));
 
             ISqlFieldReader? row;
             while ((row = reader.ReadRow()) is not null)
@@ -174,7 +173,6 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 new SqlStatementValueConverterProvider(database.ValueConverterFactory, new List<FieldExpression?> { null }.Concat(expression.Outputs).ToList()),
                 async cmd =>
                 {
-                    cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
                     if (beforeExecution is not null)
                     {
                         await beforeExecution.InvokeAsync(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(database, expression, cmd, statementBuilder.CreateSqlStatement())), ct).ConfigureAwait(false);
@@ -193,7 +191,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             ct.ThrowIfCancellationRequested();
 
-            var mapper = database.MapperFactory.CreateEntityMapper(expression.BaseEntity as Table<TEntity> ?? throw new InvalidOperationException($"Expected base entity to be type {typeof(Table<TEntity>)}.")) 
+            var mapper = database.MapperFactory.CreateEntityMapper(expression.Into as Table<TEntity> ?? throw new InvalidOperationException($"Expected base entity to be type {typeof(Table<TEntity>)}.")) 
                 ?? throw new DbExpressionException("The mapper is null, cannot execute an insert query without a mapper to map return values to entity instances.");
 
             ISqlFieldReader? row;

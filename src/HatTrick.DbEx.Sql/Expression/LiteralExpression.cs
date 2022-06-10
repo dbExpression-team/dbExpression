@@ -26,19 +26,19 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<LiteralExpression>
     {
         #region interface
-        public object Expression { get; private set; }
+        public object? Expression { get; private set; }
         public Field? Field { get; private set; }
         #endregion
 
         #region constructors
         protected LiteralExpression(object? expression)
         {
-            Expression = expression is not null ? expression : DBNull.Value;
+            Expression = expression;
         }
 
         protected LiteralExpression(object? expression, Field field)
         {
-            Expression = expression is not null ? expression : DBNull.Value;
+            Expression = expression;
             Field = field ?? throw new ArgumentNullException(nameof(field));
         }
         #endregion
@@ -49,8 +49,8 @@ namespace HatTrick.DbEx.Sql.Expression
             if (Expression is null)
                 return "null";
 
-            if (Expression is DBNull)
-                return "DBNull";
+            if (Expression is NullElement)
+                return "NULL";
 
             if (Expression is string exp)
             {

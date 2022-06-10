@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.Sql.Expression
         FieldExpression<T>,
         ObjectElement<T>,
         IEquatable<ObjectFieldExpression<T>>
-        where T: class
+        where T: class?
     {
         #region constructors
         protected ObjectFieldExpression(string identifier, string name, Table entity) : base(identifier, name, typeof(T), entity)
@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public new ObjectElement<T> As(string alias)
-            => new ObjectSelectExpression<T>(this).As(alias);
+            => new ObjectSelectExpression<T>(this, alias);
         #endregion
 
         #region equals
@@ -55,38 +55,38 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region filter operators
-        #region DBNull
-        public static FilterExpressionSet operator ==(ObjectFieldExpression<T> a, DBNull b) => new(new FilterExpression<bool?>(a, new LiteralExpression<object?>(b, a), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(ObjectFieldExpression<T> a, DBNull b) => new(new FilterExpression<bool?>(a, new LiteralExpression<object?>(b, a), FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator ==(DBNull a, ObjectFieldExpression<T> b) => new(new FilterExpression<bool?>(new LiteralExpression<object?>(a, b), b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(DBNull a, ObjectFieldExpression<T> b) => new(new FilterExpression<bool?>(new LiteralExpression<object?>(a, b), b, FilterExpressionOperator.NotEqual));
+        #region null
+        public static FilterExpression operator ==(ObjectFieldExpression<T> a, NullElement b) => new FilterExpression<bool?>(a, new LiteralExpression<object?>(b, a), FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(ObjectFieldExpression<T> a, NullElement b) => new FilterExpression<bool?>(a, new LiteralExpression<object?>(b, a), FilterExpressionOperator.NotEqual);
+        public static FilterExpression operator ==(NullElement a, ObjectFieldExpression<T> b) => new FilterExpression<bool?>(new LiteralExpression<object?>(a, b), b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(NullElement a, ObjectFieldExpression<T> b) => new FilterExpression<bool?>(new LiteralExpression<object?>(a, b), b, FilterExpressionOperator.NotEqual);
         #endregion
 
         #region data types
         #region object?
-        public static FilterExpressionSet operator ==(ObjectFieldExpression<T> a, T b) => new(new FilterExpression<bool?>(a, new LiteralExpression<object?>(b, a), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(ObjectFieldExpression<T> a, T b) => new(new FilterExpression<bool?>(a, new LiteralExpression<object?>(b, a), FilterExpressionOperator.NotEqual));
+        public static FilterExpression operator ==(ObjectFieldExpression<T> a, T b) => new FilterExpression<bool?>(a, new LiteralExpression<object?>(b, a), FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(ObjectFieldExpression<T> a, T b) => new FilterExpression<bool?>(a, new LiteralExpression<object?>(b, a), FilterExpressionOperator.NotEqual);
 
-        public static FilterExpressionSet operator ==(T a, ObjectFieldExpression<T> b) => new(new FilterExpression<bool?>(new LiteralExpression<object?>(a, b), b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(T a, ObjectFieldExpression<T> b) => new(new FilterExpression<bool?>(new LiteralExpression<object?>(a, b), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpression operator ==(T a, ObjectFieldExpression<T> b) => new FilterExpression<bool?>(new LiteralExpression<object?>(a, b), b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(T a, ObjectFieldExpression<T> b) => new FilterExpression<bool?>(new LiteralExpression<object?>(a, b), b, FilterExpressionOperator.NotEqual);
         #endregion
         #endregion
 
         #region fields
-        public static FilterExpressionSet operator ==(ObjectFieldExpression<T> a, ObjectFieldExpression<T> b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(ObjectFieldExpression<T> a, ObjectFieldExpression<T> b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual));
+        public static FilterExpression operator ==(ObjectFieldExpression<T> a, ObjectFieldExpression<T> b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(ObjectFieldExpression<T> a, ObjectFieldExpression<T> b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
         #endregion
 
         #region mediators
-        public static FilterExpressionSet operator ==(ObjectFieldExpression<T> a, ObjectExpressionMediator b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(ObjectFieldExpression<T> a, ObjectExpressionMediator b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual));
+        public static FilterExpression operator ==(ObjectFieldExpression<T> a, ObjectExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(ObjectFieldExpression<T> a, ObjectExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
         #endregion
 
         #region alias
-        public static FilterExpressionSet operator ==(ObjectFieldExpression<T> a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(ObjectFieldExpression<T> a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator ==(ObjectFieldExpression<T> a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression<object>(b), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(ObjectFieldExpression<T> a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression<object>(b), FilterExpressionOperator.NotEqual));
+        public static FilterExpression operator ==(ObjectFieldExpression<T> a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(ObjectFieldExpression<T> a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression operator ==(ObjectFieldExpression<T> a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<object>(b), FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(ObjectFieldExpression<T> a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<object>(b), FilterExpressionOperator.NotEqual);
         #endregion
         #endregion
     }

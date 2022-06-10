@@ -21,15 +21,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HatTrick.DbEx.CodeTemplatin
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HatTrick.DbEx.MsSql.Test", "test\HatTrick.DbEx.MsSql.Test\HatTrick.DbEx.MsSql.Test.csproj", "{4030B26B-E3CF-41E1-B3AB-D914A34D8BB6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HatTrick.DbEx.MsSql.Test.Database", "test\HatTrick.DbEx.MsSql.Test.Database\HatTrick.DbEx.MsSql.Test.Database.csproj", "{85EBBD1D-8B5B-41F5-8A15-D9F66529B95E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HatTrick.DbEx.MsSql.Test.Integration", "test\HatTrick.DbEx.MsSql.Test.Integration\HatTrick.DbEx.MsSql.Test.Integration.csproj", "{85EBBD1D-8B5B-41F5-8A15-D9F66529B95E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HatTrick.DbEx.MsSql.Test.Code", "test\HatTrick.DbEx.MsSql.Test.Code\HatTrick.DbEx.MsSql.Test.Code.csproj", "{9DB2D9D2-B927-47FE-9377-F28C14978144}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HatTrick.DbEx.MsSql.Test.Unit", "test\HatTrick.DbEx.MsSql.Test.Unit\HatTrick.DbEx.MsSql.Test.Unit.csproj", "{9DB2D9D2-B927-47FE-9377-F28C14978144}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HatTrick.DbEx.Sql.Test", "test\HatTrick.DbEx.Sql.Test\HatTrick.DbEx.Sql.Test.csproj", "{1073990F-F866-43D2-BF65-8B811885A4C7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{F642B40A-E26D-4E67-94EB-8E9DA192E642}"
 	ProjectSection(SolutionItems) = preProject
 		build\dockerfile-dotnetcore = build\dockerfile-dotnetcore
+		build\fix-code-coverage-files.ps1 = build\fix-code-coverage-files.ps1
 		build\htl-nuget-logo.png = build\htl-nuget-logo.png
 	EndProjectSection
 EndProject
@@ -83,6 +84,16 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "benchmark", "benchmark", "{DF45604D-A21C-47BD-8F21-A1C70E10F130}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HatTrick.DbEx.MsSql.Benchmark", "benchmark\HatTrick.DbEx.MsSql.Benchmark\HatTrick.DbEx.MsSql.Benchmark.csproj", "{DDD3D7B2-64B3-4565-B4CF-26D42A35EA03}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CodeCoverageFiles", "CodeCoverageFiles", "{4B165F4C-D9C7-438E-8B18-7DD313179747}"
+	ProjectSection(SolutionItems) = preProject
+		build\HatTrick\CodeCoverageFiles\CodeCoverageFiles.psm1 = build\HatTrick\CodeCoverageFiles\CodeCoverageFiles.psm1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8785F265-BB0C-43EF-86C3-501A01304683}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -167,6 +178,7 @@ Global
 		{0DA28E36-0FC2-4B12-94F3-D0F5BCFAEB15} = {E009B64D-3137-4D5C-B6F2-1E7F5F846FF5}
 		{A579BCCB-F91B-4CBC-8406-385C764FAE8A} = {E797F978-C42D-491C-B5A4-4DEADB7342A3}
 		{DDD3D7B2-64B3-4565-B4CF-26D42A35EA03} = {DF45604D-A21C-47BD-8F21-A1C70E10F130}
+		{4B165F4C-D9C7-438E-8B18-7DD313179747} = {E009B64D-3137-4D5C-B6F2-1E7F5F846FF5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5A7FA65E-C2BD-41FE-A832-2A7D3B71256E}

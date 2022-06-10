@@ -34,8 +34,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public AnyElement<TValue> As(string alias)
-            => new SelectExpression<TValue>(this).As(alias);
+        public AliasedElement<TValue> As(string alias)
+            => new SelectExpression<TValue>(this, alias);
         #endregion
 
         #region equals
@@ -50,8 +50,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region in value set
-        public abstract FilterExpressionSet In(params TValue[] value);
-        public abstract FilterExpressionSet In(IEnumerable<TValue> value);
+        public abstract FilterExpression In(params TValue[] value);
+        public abstract FilterExpression In(IEnumerable<TValue> value);
         #endregion
     }
 }

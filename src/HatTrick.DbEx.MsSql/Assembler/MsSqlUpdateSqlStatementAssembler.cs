@@ -26,7 +26,8 @@ namespace HatTrick.DbEx.MsSql.Assembler
         public override void AssembleStatement(QueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             base.AssembleStatement(expression, builder, context);
-            builder.Appender.LineBreak().Write("; SELECT @@ROWCOUNT");
+            builder.Appender.Write(';');
+            builder.Appender.LineBreak().Indent().Write("SELECT @@ROWCOUNT");
         }
     }
 }

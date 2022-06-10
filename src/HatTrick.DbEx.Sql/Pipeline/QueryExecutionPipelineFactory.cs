@@ -137,6 +137,19 @@ namespace HatTrick.DbEx.Sql.Pipeline
             );
         }
 
+        public virtual ISelectSetQueryExpressionExecutionPipeline CreateQueryExecutionPipeline(SqlDatabaseRuntimeConfiguration database, SelectSetQueryExpression expression)
+        {
+            return new SelectQueryExpressionExecutionPipeline(
+                database,
+                BeforeAssemblyPipelineEventHook,
+                AfterAssemblyPipelineEventHook,
+                BeforeExecutionPipelineEventHook,
+                AfterExecutionPipelineEventHook,
+                BeforeSelectPipelineEventHook,
+                AfterSelectPipelineEventHook
+            );
+        }
+
         public IStoredProcedureQueryExpressionExecutionPipeline CreateQueryExecutionPipeline(SqlDatabaseRuntimeConfiguration database, StoredProcedureQueryExpression expression)
         {
             return new StoredProcedureQueryExpressionExecutionPipeline(

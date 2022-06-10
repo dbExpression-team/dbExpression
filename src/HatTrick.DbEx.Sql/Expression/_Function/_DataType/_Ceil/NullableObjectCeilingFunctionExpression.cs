@@ -17,13 +17,12 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableObjectCeilingFunctionExpression :
         CeilingFunctionExpression<object?>,
-        NullableObjectElement<object?>,
+        NullableObjectElement,
         IEquatable<NullableObjectCeilingFunctionExpression>
     {
         #region constructors
@@ -34,8 +33,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public NullableObjectElement<object?> As(string alias)
-            => new NullableObjectSelectExpression<object?>(this).As(alias);
+        public new NullableObjectElement As(string alias)
+            => new NullableObjectSelectExpression(this, alias);
         #endregion
 
         #region equals

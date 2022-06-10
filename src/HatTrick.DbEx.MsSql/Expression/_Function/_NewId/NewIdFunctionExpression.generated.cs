@@ -23,6 +23,7 @@ using HatTrick.DbEx.Sql.Expression;
 
 namespace HatTrick.DbEx.MsSql.Expression
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public partial class NewIdFunctionExpression
     {
         #region implicit operators
@@ -43,33 +44,33 @@ namespace HatTrick.DbEx.MsSql.Expression
         #region filter operators
         #region data types
         #region Guid
-        public static FilterExpressionSet operator ==(NewIdFunctionExpression a, Guid b) => new(new FilterExpression<bool>(a, new LiteralExpression<Guid>(b), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NewIdFunctionExpression a, Guid b) => new(new FilterExpression<bool>(a, new LiteralExpression<Guid>(b), FilterExpressionOperator.NotEqual));
+        public static FilterExpression operator ==(NewIdFunctionExpression a, Guid b) => new FilterExpression<bool>(a, new LiteralExpression<Guid>(b), FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(NewIdFunctionExpression a, Guid b) => new FilterExpression<bool>(a, new LiteralExpression<Guid>(b), FilterExpressionOperator.NotEqual);
 
-        public static FilterExpressionSet operator ==(Guid a, NewIdFunctionExpression b) => new(new FilterExpression<bool>(new LiteralExpression<Guid>(a), b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(Guid a, NewIdFunctionExpression b) => new(new FilterExpression<bool>(new LiteralExpression<Guid>(a), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpression operator ==(Guid a, NewIdFunctionExpression b) => new FilterExpression<bool>(new LiteralExpression<Guid>(a), b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(Guid a, NewIdFunctionExpression b) => new FilterExpression<bool>(new LiteralExpression<Guid>(a), b, FilterExpressionOperator.NotEqual);
 
-        public static FilterExpressionSet operator ==(NewIdFunctionExpression a, Guid? b) => new(new FilterExpression<bool>(a, new LiteralExpression<Guid?>(b), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NewIdFunctionExpression a, Guid? b) => new(new FilterExpression<bool>(a, new LiteralExpression<Guid?>(b), FilterExpressionOperator.NotEqual));
+        public static FilterExpression operator ==(NewIdFunctionExpression a, Guid? b) => new FilterExpression<bool>(a, new LiteralExpression<Guid?>(b), FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(NewIdFunctionExpression a, Guid? b) => new FilterExpression<bool>(a, new LiteralExpression<Guid?>(b), FilterExpressionOperator.NotEqual);
 
-        public static FilterExpressionSet operator ==(Guid? a, NewIdFunctionExpression b) => new(new FilterExpression<bool>(new LiteralExpression<Guid?>(a), b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(Guid? a, NewIdFunctionExpression b) => new(new FilterExpression<bool>(new LiteralExpression<Guid?>(a), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpression operator ==(Guid? a, NewIdFunctionExpression b) => new FilterExpression<bool>(new LiteralExpression<Guid?>(a), b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(Guid? a, NewIdFunctionExpression b) => new FilterExpression<bool>(new LiteralExpression<Guid?>(a), b, FilterExpressionOperator.NotEqual);
         #endregion
         #endregion
 
         #region mediators
-        public static FilterExpressionSet operator ==(NewIdFunctionExpression a, GuidExpressionMediator b) => new(new FilterExpression<bool>(a, b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NewIdFunctionExpression a, GuidExpressionMediator b) => new(new FilterExpression<bool>(a, b, FilterExpressionOperator.NotEqual));
+        public static FilterExpression operator ==(NewIdFunctionExpression a, GuidExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(NewIdFunctionExpression a, GuidExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.NotEqual);
 
-        public static FilterExpressionSet operator ==(NewIdFunctionExpression a, NullableGuidExpressionMediator b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NewIdFunctionExpression a, NullableGuidExpressionMediator b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual));
+        public static FilterExpression operator ==(NewIdFunctionExpression a, NullableGuidExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(NewIdFunctionExpression a, NullableGuidExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
         #endregion
 
         #region alias
-        public static FilterExpressionSet operator ==(NewIdFunctionExpression a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NewIdFunctionExpression a, AliasExpression b) => new(new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator ==(NewIdFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression<object>(b), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NewIdFunctionExpression a, (string TableName, string FieldName) b) => new(new FilterExpression<bool?>(a, new AliasExpression<object>(b), FilterExpressionOperator.NotEqual));
+        public static FilterExpression operator ==(NewIdFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(NewIdFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression operator ==(NewIdFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<object>(b), FilterExpressionOperator.Equal);
+        public static FilterExpression operator !=(NewIdFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<object>(b), FilterExpressionOperator.NotEqual);
         #endregion
         #endregion
     }

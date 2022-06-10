@@ -33,11 +33,6 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public AnyElement<decimal?> As(string alias)
-            => new SelectExpression<decimal?>(this).As(alias);
-        #endregion
-
         #region distinct
         public new NullableDecimalMaximumFunctionExpression Distinct()
         {

@@ -23,36 +23,37 @@ namespace HatTrick.DbEx.Sql.Assembler
 {
     public class LiteralExpressionAppender : ExpressionElementAppender<LiteralExpression>
     {
+        private static readonly NullExpression _null = new();
+
         public override void AppendElement(LiteralExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
+            var (convertedType, convertedValue) = builder.ConvertValue(expression.Expression, expression.Field);
+            if (convertedValue is null)
+            {
+                builder.AppendElement(_null, context);
+                return;
+            }
+
+            ParameterizedExpression param;
             if (expression.Field is not null)
             {
-                var param = builder.Parameters.CreateInputParameter(
-                    expression.Expression,
-                    (expression.Field as IExpressionTypeProvider).DeclaredType,
-                    builder.FindMetadata(expression.Field) ?? throw new DbExpressionException($"Expected to find metadata for {expression.Field}, but metadata is actually null."),
-                    context
-                );
-                builder.Parameters.AddParameter(param);
-                builder.Appender.Write(param.Parameter.ParameterName);
+                param = builder.Parameters.CreateInputParameter(
+                        convertedValue,
+                        convertedType,
+                        builder.FindMetadata(expression.Field) ?? throw new DbExpressionException($"Expected to find metadata for {expression.Field}, but metadata is actually null."),
+                        context
+                    );
             }
             else
             {
-                if (expression.Expression is null || expression.Expression is DBNull)
-                {
-                    builder.Appender.Write("NULL");
-                }
-                else
-                {
-                    var param = builder.Parameters.CreateInputParameter(
-                            expression.Expression,
-                            expression.Expression.GetType(),
-                            context
-                        );
-                    builder.Parameters.AddParameter(param);
-                    builder.Appender.Write(param.Parameter.ParameterName);
-                }
+                param = builder.Parameters.CreateInputParameter(
+                        convertedValue,
+                        convertedType,
+                        context
+                    );
             }
+            builder.Parameters.AddParameter(param);
+            builder.Appender.Write(param.Parameter.ParameterName);
         }
     }
 }

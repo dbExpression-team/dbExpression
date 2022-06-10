@@ -85,7 +85,7 @@
 		},
 		{
 			"apply": {
-				"clrType": "ServerSideBlazorApp.Data.ProductDescription",
+				"clrType": "ServerSideBlazorApp.Data.ProductDescription?",
 				"to": {
 					"path": "dbo.Product.Description"
 				}

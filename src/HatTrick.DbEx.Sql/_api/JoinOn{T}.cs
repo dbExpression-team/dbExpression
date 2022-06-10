@@ -30,8 +30,8 @@ namespace HatTrick.DbEx.Sql
         /// <see href="https://docs.microsoft.com/en-us/sql/relational-databases/performance/joins">Microsoft docs on JOINS</see>
         /// </para>
         /// </summary>
-        /// <param name="joinOn">Any expression of type <see cref="AnyJoinOnClause"/> specifying the JOIN condition.</param>
+        /// <param name="joinOn">Any expression of type <see cref="AnyJoinOnExpression"/> specifying the JOIN condition.</param>
         /// <returns><typeparamref name="TCaller"/>, a fluent continuation for the construction of a sql query expression.</returns>
-        TCaller On(AnyJoinOnClause joinOn);
+        TCaller On(AnyJoinOnExpression joinOn);
     }
 }

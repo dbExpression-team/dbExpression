@@ -35,11 +35,6 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region as
-        public AnyElement<byte[]?> As(string alias)
-            => new SelectExpression<byte[]?>(this).As(alias);
-        #endregion
-
         #region equals
         public bool Equals(NullableByteArrayExpressionMediator? obj)
             => obj is not null && base.Equals(obj);

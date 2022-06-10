@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.MsSql.Expression
 {
     public partial class NullableObjectRoundFunctionExpression :
         RoundFunctionExpression<object?>,
-        NullableObjectElement<object?>,
+        NullableObjectElement,
         IEquatable<NullableObjectRoundFunctionExpression>
     {
         #region constructors
@@ -60,8 +60,8 @@ namespace HatTrick.DbEx.MsSql.Expression
         #endregion
 
         #region as
-        public NullableObjectElement<object?> As(string alias)
-            => new NullableObjectSelectExpression<object?>(this).As(alias);
+        public new NullableObjectElement As(string alias)
+            => new NullableObjectSelectExpression(this, alias);
         #endregion
 
         #region equals

@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public InsertExpression(DBNull assignment, FieldExpression field)
+        public InsertExpression(NullElement assignment, FieldExpression field)
             : base(new LiteralExpression<T>(assignment, field), field)
         {
         }

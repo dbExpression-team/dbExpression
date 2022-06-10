@@ -29,13 +29,16 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
 
         #region interace
+        public new UpdateQueryExpression Expression { get; private set; }
         public ISqlParameterBuilder ParameterBuilder { get; private set; }
+        public virtual Type EntityType => Expression.From!.EntityType;
         #endregion
 
         #region constructors
         public BeforeUpdateAssemblyPipelineExecutionContext(SqlDatabaseRuntimeConfiguration database, UpdateQueryExpression expression, ISqlParameterBuilder parameterBuilder)
             : base(database, expression)
         {
+            Expression = expression ?? throw new ArgumentNullException(nameof(expression));
             ParameterBuilder = parameterBuilder ?? throw new ArgumentNullException(nameof(parameterBuilder));
         }
         #endregion

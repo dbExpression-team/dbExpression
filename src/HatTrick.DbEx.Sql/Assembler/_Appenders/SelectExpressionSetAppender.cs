@@ -33,19 +33,16 @@ namespace HatTrick.DbEx.Sql.Assembler
             for (var i = 0; i < selects.Count; i++)
             {
                 builder.Appender.Indent();
-                if (context.Configuration.PrependCommaOnSelectClause && i > 0)
-                {
+                if (context.PrependCommaOnSelectClause && i > 0)
                     builder.Appender.Write(",");
-                }
 
                 builder.AppendElement(selects[i], context);
 
-                if (!context.Configuration.PrependCommaOnSelectClause && i < selects.Count - 1)
-                {
+                if (!context.PrependCommaOnSelectClause && i < selects.Count - 1)
                     builder.Appender.Write(",");
-                }
 
-                builder.Appender.LineBreak();
+                if (i < expression.Expressions.Count() - 1)
+                    builder.Appender.LineBreak();
             }
         }
     }

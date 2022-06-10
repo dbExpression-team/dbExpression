@@ -19,8 +19,11 @@
 namespace HatTrick.DbEx.Sql
 {
 #pragma warning disable IDE1006 // Naming Styles
-    public interface AnyObjectElement : AnyElement, AnyOrderByClause, AnyGroupByClause
+    public interface AnyObjectElement : 
 #pragma warning restore IDE1006 // Naming Styles
+        AnyElement, 
+        AnyOrderByExpression, 
+        AnyGroupByExpression    
     {
 
     }

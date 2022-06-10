@@ -20,33 +20,39 @@ using System;
 
 namespace HatTrick.DbEx.Tools.Model
 {
-    public class TypeModel
+    public abstract class TypeModel
     {
-        private readonly TypeSpecialCase? _specialCase;
+        protected readonly bool IsNullableFeatureEnabled;
 
-        public string TypeName { get; private set; }
-        public string Alias { get; private set; }
-        public string NullableAlias { get; private set; }
-        public bool IsNullable { get; private set; }
-        public bool IsArray { get; private set; }
-        public string? Initializer { get; private set; }
-        public bool IsSystemType => _specialCase is null || IsString;
-        public bool IsEnum => _specialCase == TypeSpecialCase.Enum;
-        public bool IsString => _specialCase == TypeSpecialCase.String;
-        public bool IsUserDefinedType => _specialCase == TypeSpecialCase.UserDefinedType;
+        public virtual string TypeName { get; private set; }
+        public virtual string Alias { get; private set; }
+        public virtual string NullableAlias => IsNullable ? $"{Alias}?" : Alias;
+        public virtual bool IsNullable { get; private set; }
+        public virtual bool IsArray { get; private set; }
+        public virtual bool IsSystemType => true;
+        public virtual bool IsEnum => false;
+        public virtual bool IsString => false;
+        public virtual bool IsUserDefinedType => false;
+        public virtual string? Initializer
+        {
+            get
+            {
+                if (IsArray)
+                    throw new ArgumentException($"dbExpression does not support using type '{TypeName}' in arrays.");
+                return IsNullable && IsNullableFeatureEnabled ? "null" : null;
+            }
+        }
 
-        public TypeModel(string typeName, string alias, string nullableAlias, string? initializer, bool isNullable, TypeSpecialCase? specialCase, bool isArray = false)
+        protected TypeModel(string typeName, string alias, bool isNullable, bool isNullableFeatureEnabled, bool isArray)
         {
             if (string.IsNullOrWhiteSpace(typeName))
                 throw new ArgumentException($"{nameof(typeName)} is required.");
             if (string.IsNullOrWhiteSpace(alias))
                 throw new ArgumentException($"{nameof(alias)} is required.");
-            _specialCase = specialCase;
             TypeName = typeName;
             Alias = alias;
-            Initializer = initializer;
-            NullableAlias = nullableAlias;
             IsNullable = isNullable;
+            IsNullableFeatureEnabled = isNullableFeatureEnabled;
             IsArray = isArray;
         }
     }

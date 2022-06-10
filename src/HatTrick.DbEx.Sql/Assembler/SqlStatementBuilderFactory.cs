@@ -32,8 +32,9 @@ namespace HatTrick.DbEx.Sql.Assembler
                 database.AssemblerConfiguration ?? throw new DbExpressionConfigurationException($"Could not resolve assembler configuration, please ensure assembler configuration has been registered during startup initialization of dbExpression."),
                 database.ExpressionElementAppenderFactory ?? throw new DbExpressionConfigurationException($"Could not resolve an expression element appender, please ensure an expression element appender has been registered during startup initialization of dbExpression."),
                 database.AppenderFactory ?? throw new DbExpressionConfigurationException($"Could not resolve an appender, please ensure a an appender has been registered during startup initialization of dbExpression."),
-                database.ParameterBuilderFactory ?? throw new DbExpressionConfigurationException($"Could not resolve a parameter builder factory, please ensure a parameter builder factory has been registered during startup initialization of dbExpression.")
-            );
+                database.ParameterBuilderFactory ?? throw new DbExpressionConfigurationException($"Could not resolve a parameter builder factory, please ensure a parameter builder factory has been registered during startup initialization of dbExpression."),
+                database.ValueConverterFactory ?? throw new DbExpressionConfigurationException($"Could not resolve a value converter factory, please ensure a value converter factory has been registered during startup initialization of dbExpression.")
+           );
         #endregion
     }
 }

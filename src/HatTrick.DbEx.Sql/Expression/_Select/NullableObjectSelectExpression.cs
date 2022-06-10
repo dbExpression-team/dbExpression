@@ -27,6 +27,12 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
 
+        public NullableObjectSelectExpression(AnyElement expression, string alias)
+            : base(expression)
+        {
+            Alias = alias;
+        }
+
         #region as
         public new NullableObjectElement As(string alias)
         {

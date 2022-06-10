@@ -27,6 +27,7 @@ namespace HatTrick.DbEx.Sql.Converter
         #region internals
         private static readonly IValueConverter boolConverter = new ValueConverter(typeof(bool));
         private static readonly IValueConverter byteConverter = new ValueConverter(typeof(byte));
+        private static readonly IValueConverter charConverter = new ValueConverter(typeof(char));
         private static readonly IValueConverter dateTimeConverter = new ValueConverter(typeof(DateTime));
         private static readonly IValueConverter dateTimeOffsetConverter = new ValueConverter(typeof(DateTimeOffset));
         private static readonly IValueConverter decimalConverter = new ValueConverter(typeof(decimal));
@@ -40,6 +41,7 @@ namespace HatTrick.DbEx.Sql.Converter
 
         private static readonly IValueConverter nullableBoolConverter = new NullableValueConverter(typeof(bool?));
         private static readonly IValueConverter nullableByteConverter = new NullableValueConverter(typeof(byte?));
+        private static readonly IValueConverter nullableCharConverter = new NullableValueConverter(typeof(char?));
         private static readonly IValueConverter nullableDateTimeConverter = new NullableValueConverter(typeof(DateTime?));
         private static readonly IValueConverter nullableDateTimeOffsetConverter = new NullableValueConverter(typeof(DateTimeOffset?));
         private static readonly IValueConverter nullableDecimalConverter = new NullableValueConverter(typeof(decimal?));
@@ -66,6 +68,8 @@ namespace HatTrick.DbEx.Sql.Converter
             RegisterConverter<bool?>(nullableBoolConverter);
             RegisterConverter<byte>(byteConverter);
             RegisterConverter<byte?>(nullableByteConverter);
+            RegisterConverter<char>(charConverter);
+            RegisterConverter<char?>(nullableCharConverter);
             RegisterConverter<short>(shortConverter);
             RegisterConverter<short?>(nullableShortConverter);
             RegisterConverter<int>(intConverter);

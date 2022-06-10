@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<JoinExpression>
     {
         #region interface
-        public AnyJoinOnClause? JoinOnExpression { get; private set; }
+        public AnyJoinOnExpression? JoinOnExpression { get; private set; }
         public IExpressionElement JoinToo { get; private set; }
         public JoinOperationExpressionOperator JoinType { get; private set; }
         private string? alias;
@@ -35,13 +35,13 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        public JoinExpression(IExpressionElement joinToo, JoinOperationExpressionOperator joinType, AnyJoinOnClause? onCondition)
+        public JoinExpression(IExpressionElement joinToo, JoinOperationExpressionOperator joinType, AnyJoinOnExpression? onCondition)
             : this(joinToo, joinType, onCondition, null)
         {
 
         }
 
-        protected JoinExpression(IExpressionElement joinToo, JoinOperationExpressionOperator joinType, AnyJoinOnClause? onCondition, string? alias)
+        protected JoinExpression(IExpressionElement joinToo, JoinOperationExpressionOperator joinType, AnyJoinOnExpression? onCondition, string? alias)
         {
             JoinToo = joinToo ?? throw new ArgumentNullException(nameof(joinToo));
             JoinType = joinType;
@@ -58,7 +58,15 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region to string
-        public override string? ToString() => JoinType == JoinOperationExpressionOperator.CROSS ? $"{JoinType} JOIN {JoinToo}" : $"{JoinType} JOIN {JoinToo} ON {JoinOnExpression}";
+        public override string? ToString()
+        {
+            var joinToo = JoinToo.ToString();
+            if (JoinToo is QueryExpression)
+                joinToo = $"({joinToo})";
+            if (JoinType == JoinOperationExpressionOperator.CROSS)
+                return $"{JoinType} JOIN {joinToo}";
+            return $"{JoinType} JOIN {joinToo} ON {JoinOnExpression}";
+        }
         #endregion
 
         #region equals

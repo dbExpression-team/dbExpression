@@ -23,12 +23,12 @@ using System.Linq;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class OrderByExpressionSet :
-        AnyOrderByClause,
-        IExpressionListProvider<AnyOrderByClause>,
+        AnyOrderByExpression,
+        IExpressionListProvider<AnyOrderByExpression>,
         IEquatable<OrderByExpressionSet>
     {
         #region interface
-        public IEnumerable<AnyOrderByClause> Expressions { get; private set; }  = new List<AnyOrderByClause>();
+        public IEnumerable<AnyOrderByExpression> Expressions { get; private set; }  = new List<AnyOrderByExpression>();
         #endregion
 
         #region constructors
@@ -37,21 +37,21 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
 
-        public OrderByExpressionSet(AnyOrderByClause orderBy)
+        public OrderByExpressionSet(AnyOrderByExpression orderBy)
         {
-            Expressions = Expressions.Concat(new AnyOrderByClause[1] { (orderBy ?? throw new ArgumentNullException(nameof(orderBy))) is OrderByExpression ? orderBy : new OrderByExpression(orderBy, OrderExpressionDirection.ASC) });
+            Expressions = Expressions.Concat(new AnyOrderByExpression[1] { (orderBy ?? throw new ArgumentNullException(nameof(orderBy))) is OrderByExpression ? orderBy : new OrderByExpression(orderBy, OrderExpressionDirection.ASC) });
         }
 
         public OrderByExpressionSet(OrderByExpression aOrderBy, OrderByExpression bOrderBy)
         {
-            Expressions = new List<AnyOrderByClause>
+            Expressions = new List<AnyOrderByExpression>
             {
                 aOrderBy ?? throw new ArgumentNullException(nameof(aOrderBy)),
                 bOrderBy ?? throw new ArgumentNullException(nameof(bOrderBy))
             };
         }
 
-        public OrderByExpressionSet(IEnumerable<AnyOrderByClause> orderBys)
+        public OrderByExpressionSet(IEnumerable<AnyOrderByExpression> orderBys)
         {
             Expressions = (orderBys ?? throw new ArgumentNullException(nameof(orderBys))).Select(x => x is OrderByExpression ? x : new OrderByExpression(x, OrderExpressionDirection.ASC));
         }
@@ -102,7 +102,7 @@ namespace HatTrick.DbEx.Sql.Expression
             }
             else if (b is not null)
             {
-                a.Expressions = a.Expressions.Concat(new AnyOrderByClause[1] { b });
+                a.Expressions = a.Expressions.Concat(new AnyOrderByExpression[1] { b });
             }
             return a;
 

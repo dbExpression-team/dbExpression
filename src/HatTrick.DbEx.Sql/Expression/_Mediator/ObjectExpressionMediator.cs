@@ -36,8 +36,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public ObjectElement<object> As(string alias)
-            => new ObjectSelectExpression<object>(this).As(alias);
+        public new ObjectElement<object> As(string alias)
+            => new ObjectSelectExpression<object>(this, alias);
         #endregion
 
         #region equals

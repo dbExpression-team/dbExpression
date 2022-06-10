@@ -59,7 +59,7 @@
 
             {#each $.Columns}
             aliased = {:aliasArgName}(nameof({$.FieldExpression.Name}));
-            set &= aliased != nameof({$.FieldExpression.Name}) ? new {$.FieldExpression.SelectExpressionTypeName}({$.FieldExpression.Name}).As(aliased) as {$.FieldExpression.SelectExpressionTypeName} : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider){:nullableAnnotation}.Name == nameof({$.FieldExpression.Name}));
+            set &= aliased != nameof({$.FieldExpression.Name}) ? new {$.FieldExpression.SelectExpressionTypeName}({$.FieldExpression.Name}, aliased) as {$.FieldExpression.SelectExpressionTypeName} : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider){:nullableAnnotation}.Name == nameof({$.FieldExpression.Name}));
 
             {/each}
             return set;

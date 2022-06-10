@@ -69,7 +69,7 @@ namespace HatTrick.DbEx.Tools.Model
             EntityExpression = entity ?? throw new ArgumentNullException(nameof(entity));
             LanguageFeatures = features ?? throw new ArgumentNullException(nameof(features));
             Name = name;
-            Type = TypeModelBuilder.CreateTypeModel(features, column.SqlType, clrTypeOverride, column.IsNullable, isEnum ? TypeSpecialCase.Enum : null);
+            Type = TypeModelBuilder.CreateTypeModel(features, column.SqlType, clrTypeOverride, column.IsNullable, isEnum);
             AllowInsert = allowInsert;
             AllowUpdate = allowUpdate;
         }
@@ -81,7 +81,7 @@ namespace HatTrick.DbEx.Tools.Model
             parameters.Add(new("(string TableName, string FieldName)", $"new AliasExpression<{Type.NullableAlias}>(value)"));
             if (Type.IsNullable)
             {
-                parameters.Add(new("DBNull", $"new LiteralExpression<{Type.NullableAlias}>(value, this)"));
+                parameters.Add(new("NullElement", $"new LiteralExpression<{Type.NullableAlias}>(value, this)"));
             }
 
             if (Type.IsEnum)
@@ -157,12 +157,12 @@ namespace HatTrick.DbEx.Tools.Model
         {
             var name = "";
             if (Type.IsUserDefinedType && !Type.IsEnum)
-                return $"{(Type.IsNullable ? "Nullable" : "")}ObjectFieldExpression<{EntityExpression.Name},{Type.TypeName}>";
+                return $"ObjectFieldExpression<{EntityExpression.Name},{Type.TypeName}{(Type.IsNullable ? "?" : "")}>";
 
             if (Type.IsNullable)
                 name += "Nullable";
 
-            name += Type.IsEnum ? "Enum" : Type.TypeName;
+            name += Type.IsEnum ? "Enum" : Type.IsArray ? "ByteArray" : Type.TypeName;
             name += "FieldExpression<";
             name += EntityExpression.Name;
 

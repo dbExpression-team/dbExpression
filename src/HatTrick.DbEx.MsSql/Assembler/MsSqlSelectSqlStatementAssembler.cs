@@ -77,16 +77,18 @@ namespace HatTrick.DbEx.MsSql.Assembler
             }
 
             //add windowing function
-            if (context.Configuration.PrependCommaOnSelectClause)
-                builder.Appender.Write(", ");
-            builder.Appender.Indentation++.Indent().Write("ROW_NUMBER() OVER (");
+            builder.Appender.Indentation++.Indent();
+            if (context.PrependCommaOnSelectClause)
+                builder.Appender.LineBreak().Indent().Write(',');
+            builder.Appender.Write("ROW_NUMBER() OVER (");
 
             var orderBys = expression.OrderBy?.Expressions?.ToList();
             if (orderBys is not null)
             {
+                builder.Appender.Write("ORDER BY ");
                 for (var i = 0; i < orderBys.Count; i++)
                 {
-                    builder.Appender.Indent();
+                    //builder.Appender.Indent();
 
                     context.PushEntityAppendStyle(EntityExpressionAppendStyle.None);
                     try
@@ -99,7 +101,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
                     }
 
                     if (i < orderBys.Count - 1)
-                        builder.Appender.Write(", ");
+                        builder.Appender.Write(',');
                 }
             }
             builder.Appender.Write(") AS [__index]").LineBreak();
@@ -113,16 +115,20 @@ namespace HatTrick.DbEx.MsSql.Assembler
             //end CTE
             var offsetParam = builder.Parameters.CreateInputParameter((expression.Offset ?? 0) + 1, context);
             builder.Parameters.AddParameter(offsetParam);
-            var limitParam = builder.Parameters.CreateInputParameter((expression.Offset ?? 0 + expression.Limit ?? expression.Offset ?? -1) + 1, context);
+            var limitParam = builder.Parameters.CreateInputParameter((expression.Offset ?? 0) + (expression.Limit ?? expression.Offset), context);
+
             builder.Parameters.AddParameter(limitParam);
 
-            builder.Appender.Indent().Write("AS ")
-                    .Write(context.Configuration.IdentifierDelimiter.Begin)
-                    .Write(expression.BaseEntity!.Identifier)
-                    .Write(context.Configuration.IdentifierDelimiter.End)
+            builder.Appender.Indent().Indentation--.Indent()
+                    .Write(')').LineBreak()
+                    .Write("AS ")
+                    .Write(context.IdentifierDelimiter.Begin)
+                    .Write((expression.From!.Expression as Table)!.Identifier)
+                    .Write(context.IdentifierDelimiter.End)
                     .LineBreak()
                 .Indentation--.Indent().Write("WHERE").LineBreak()
                 .Indentation++
+                    .Indent()
                     .Write("[__index] BETWEEN ")
                     .Write(offsetParam.Parameter.ParameterName)
                     .Write(" AND ")
@@ -152,14 +158,13 @@ namespace HatTrick.DbEx.MsSql.Assembler
             for (var i = 0; i < select_list.Count; i++)
             {
                 var select = select_list[i];
-                var isAliased = !string.IsNullOrWhiteSpace((select as IExpressionAliasProvider).Alias);
                 context.PushEntityAppendStyle(EntityExpressionAppendStyle.None);
                 try
                 {
                     builder.Appender.Indent();
-                    if (context.Configuration.PrependCommaOnSelectClause && i > 0)
+                    if (context.PrependCommaOnSelectClause && i > 0)
                         builder.Appender.Write(",");
-                    builder.Appender.Write(context.Configuration.IdentifierDelimiter.Begin).Write(outerTableAlias).Write(context.Configuration.IdentifierDelimiter.End).Write(".");
+                    builder.Appender.Write(context.IdentifierDelimiter.Begin).Write(outerTableAlias).Write(context.IdentifierDelimiter.End).Write(".");
                     try
                     {
                         context.PushFieldAppendStyle(FieldExpressionAppendStyle.Declaration);
@@ -169,7 +174,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
                     {
                         context.PopFieldAppendStyle();
                     }
-                    if (!context.Configuration.PrependCommaOnSelectClause && i < select_list.Count - 1)
+                    if (!context.PrependCommaOnSelectClause && i < select_list.Count - 1)
                         builder.Appender.Write(",");
                     builder.Appender.LineBreak();
                 }
@@ -203,11 +208,11 @@ namespace HatTrick.DbEx.MsSql.Assembler
                     try
                     {
                         builder.Appender.Indent();
-                        if (context.Configuration.PrependCommaOnSelectClause && i > 0)
+                        if (context.PrependCommaOnSelectClause && i > 0)
                             builder.Appender.Write(",");
-                        builder.Appender.Write(context.Configuration.IdentifierDelimiter.Begin).Write(innerTableAlias).Write(context.Configuration.IdentifierDelimiter.End).Write(".");
+                        builder.Appender.Write(context.IdentifierDelimiter.Begin).Write(innerTableAlias).Write(context.IdentifierDelimiter.End).Write(".");
                         builder.AppendElement(order_by, context);
-                        if (!context.Configuration.PrependCommaOnSelectClause && i < order_by_list.Count - 1)
+                        if (!context.PrependCommaOnSelectClause && i < order_by_list.Count - 1)
                             builder.Appender.Write(",");
                         builder.Appender.LineBreak();
                     }
@@ -219,7 +224,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
             }
 
             builder.Appender
-                .Indentation--.Indent().Write(") AS ").Write(context.Configuration.IdentifierDelimiter.Begin).Write("_index").Write(context.Configuration.IdentifierDelimiter.End).LineBreak()
+                .Indentation--.Indent().Write(") AS ").Write(context.IdentifierDelimiter.Begin).Write("_index").Write(context.IdentifierDelimiter.End).LineBreak()
                 .Indentation--.Indent().Write("FROM (").LineBreak();
 
             builder.Appender
@@ -235,17 +240,17 @@ namespace HatTrick.DbEx.MsSql.Assembler
 
             builder.Appender
                 .Indentation--
-                .Indent().Write(") AS ").Write(context.Configuration.IdentifierDelimiter.Begin).Write(innerTableAlias).Write(context.Configuration.IdentifierDelimiter.End).LineBreak();
+                .Indent().Write(") AS ").Write(context.IdentifierDelimiter.Begin).Write(innerTableAlias).Write(context.IdentifierDelimiter.End).LineBreak();
 
             builder.Appender.Indentation--;
 
             var offsetParam = builder.Parameters.CreateInputParameter((expression.Offset ?? 0) + 1, context);
             builder.Parameters.AddParameter(offsetParam);
             builder.Appender
-                .Indentation--.Indent().Write(") AS ").Write(context.Configuration.IdentifierDelimiter.Begin).Write(outerTableAlias).Write(context.Configuration.IdentifierDelimiter.End).LineBreak()
+                .Indentation--.Indent().Write(") AS ").Write(context.IdentifierDelimiter.Begin).Write(outerTableAlias).Write(context.IdentifierDelimiter.End).LineBreak()
                 .Indentation--.Indent().Write("WHERE").LineBreak()
-                .Indentation++.Indent().Write(context.Configuration.IdentifierDelimiter.Begin).Write(outerTableAlias).Write(context.Configuration.IdentifierDelimiter.End)
-                    .Write(".").Write(context.Configuration.IdentifierDelimiter.Begin).Write("_index").Write(context.Configuration.IdentifierDelimiter.End).Write(" BETWEEN ")
+                .Indentation++.Indent().Write(context.IdentifierDelimiter.Begin).Write(outerTableAlias).Write(context.IdentifierDelimiter.End)
+                    .Write(".").Write(context.IdentifierDelimiter.Begin).Write("_index").Write(context.IdentifierDelimiter.End).Write(" BETWEEN ")
                     .Write(offsetParam.Parameter.ParameterName);
 
             if (expression.Limit.HasValue)
@@ -259,11 +264,11 @@ namespace HatTrick.DbEx.MsSql.Assembler
             }
             builder.Appender
                 .Indentation--.Indent().Write("ORDER BY").LineBreak()
-                .Indentation++.Indent().Write(context.Configuration.IdentifierDelimiter.Begin).Write(outerTableAlias).Write(context.Configuration.IdentifierDelimiter.End).Write(".").Write(context.Configuration.IdentifierDelimiter.Begin).Write("_index").Write(context.Configuration.IdentifierDelimiter.End).LineBreak();
+                .Indentation++.Indent().Write(context.IdentifierDelimiter.Begin).Write(outerTableAlias).Write(context.IdentifierDelimiter.End).Write(".").Write(context.IdentifierDelimiter.Begin).Write("_index").Write(context.IdentifierDelimiter.End).LineBreak();
 
         }
 
-        private void AppendNonAliasedSelectClause(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context, EntityExpressionAppendStyle entityAppendStyle, bool? isDistinct, int? top)
+        private static void AppendNonAliasedSelectClause(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context, EntityExpressionAppendStyle entityAppendStyle, bool? isDistinct, int? top)
         {
             builder.Appender
                 .Indent().Write("SELECT");
@@ -289,7 +294,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
                 try
                 {
                     builder.Appender.Indent();
-                    if (context.Configuration.PrependCommaOnSelectClause && i > 0)
+                    if (context.PrependCommaOnSelectClause && i > 0)
                         builder.Appender.Write(",");
                     try
                     {
@@ -300,7 +305,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
                     {
                         context.PopFieldAppendStyle();
                     }
-                    if (!context.Configuration.PrependCommaOnSelectClause && i < select_list.Count - 1)
+                    if (!context.PrependCommaOnSelectClause && i < select_list.Count - 1)
                         builder.Appender.Write(",");
                     builder.Appender.LineBreak();
                 }

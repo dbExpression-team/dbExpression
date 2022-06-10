@@ -16,7 +16,8 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using System.Text;
+using System.Linq;
+using System.Text;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -24,6 +25,7 @@ namespace HatTrick.DbEx.Sql.Expression
     {
         #region interface
         public AssignmentExpressionSet Assign { get; set; } = new AssignmentExpressionSet();
+        public Table? From { get; set; }
         public int? Top { get; set; }
         public FilterExpressionSet? Where { get; set; }
         public JoinExpressionSet? Joins { get; set; }
@@ -40,11 +42,12 @@ namespace HatTrick.DbEx.Sql.Expression
             }
             sb.Append(Assign);
             sb.Append("FROM ");
-            sb.Append(BaseEntity);
+            sb.Append(From);
             sb.Append(' ');
             sb.Append(Joins);
             sb.Append(' ');
-            if (!(Where as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>)?.Expression?.IsEmpty is not null)
+            var where = (Where as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>)?.Expression;
+            if (where is not null && where.Args.Any())
             {
                 sb.Append("WHERE ");
                 sb.Append(Where);
@@ -88,10 +91,10 @@ namespace HatTrick.DbEx.Sql.Expression
         public static UpdateQueryExpression operator &(UpdateQueryExpression query, FilterExpression filter)
         {
             if (query is null)
-                return new() { Where = filter };
+                return new() { Where = new FilterExpressionSet(filter) };
 
-            if (query.Joins is null) { query.Where = filter; }
-            else if (query.Where is null) { query.Where = filter; }
+            if (query.Joins is null) { query.Where = new FilterExpressionSet(filter); }
+            else if (query.Where is null) { query.Where = new FilterExpressionSet(filter); }
             else { query.Where &= filter; }
             return query;
         }

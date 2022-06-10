@@ -38,10 +38,10 @@ namespace HatTrick.DbEx.Sql.Assembler
                 builder.AppendElement(joinExpression, context);
 
                 //append the subquery alias
-                builder.Appender.Indentation--.Indent().Write(") AS ")
-                    .Write(context.Configuration.IdentifierDelimiter.Begin)
+                builder.Appender.Indentation--.LineBreak().Indent().Write(") AS ")
+                    .Write(context.IdentifierDelimiter.Begin)
                     .Write((expression as IExpressionAliasProvider).Alias!)
-                    .Write(context.Configuration.IdentifierDelimiter.End)
+                    .Write(context.IdentifierDelimiter.End)
                     .Write(" ON ");
 
                 builder.AppendElement(expression.JoinOnExpression!, context);

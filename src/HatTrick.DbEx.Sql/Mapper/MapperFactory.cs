@@ -16,8 +16,7 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Executor;
-using HatTrick.DbEx.Sql.Expression;
+using HatTrick.DbEx.Sql.Executor;
 using System;
 using System.Collections.Concurrent;
 

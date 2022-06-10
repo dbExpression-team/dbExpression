@@ -21,7 +21,7 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class SelectExpression : 
-        AnyElement,
+        AliasedElement,
         IExpressionTypeProvider,
         IExpressionAliasProvider
     {
@@ -37,12 +37,12 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        public SelectExpression(AnyElement expression) : this(expression, null)
+        public SelectExpression(AnyElement expression)
         {
-
+            Expression = expression ?? throw new ArgumentNullException(nameof(expression));
         }
 
-        public SelectExpression(AnyElement expression, string? alias)
+        public SelectExpression(AnyElement expression, string alias)
         {
             Expression = expression ?? throw new ArgumentNullException(nameof(expression));
             this.Alias = alias;
@@ -86,7 +86,6 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public override bool Equals(object? obj)
             => obj is SelectExpression exp && Equals(exp);
-
 
         public override int GetHashCode()
         {

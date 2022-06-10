@@ -17,16 +17,16 @@ namespace NetCoreConsoleApp
 			//page through all Person records 10 at a time
 			int pageNum = 0;
 			int pageSize = 10;
-			IList<Person> page = null;
-			do
+            IList<Person> page;
+            do
 			{
-				page = this.GetPeople(pageSize, pageNum++, dbo.Person.Id.Desc);
+				page = GetPeople(pageSize, pageNum++, dbo.Person.Id.Desc);
 			} while (page.Count > 0);
 		}
 		#endregion
 
 		#region get people
-		public IList<Person> GetPeople(int pageSize, int pageNum, AnyOrderByClause orderBy)
+		public static IList<Person> GetPeople(int pageSize, int pageNum, AnyOrderByExpression orderBy)
 		{
 			//select
 			//*

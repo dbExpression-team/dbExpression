@@ -16,13 +16,15 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using System.Text;
+using System.Linq;
+using System.Text;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class DeleteQueryExpression : QueryExpression
     {
         #region interface
+        public Table? From { get; set; }
         public int? Top { get; set; }
         public FilterExpressionSet? Where { get; set; }
         public JoinExpressionSet? Joins { get; set; }
@@ -38,11 +40,12 @@ namespace HatTrick.DbEx.Sql.Expression
                 sb.Append(Top);
             }
             sb.Append("FROM ");
-            sb.Append(BaseEntity);
+            sb.Append(From);
             sb.Append(' ');
             sb.Append(Joins);
             sb.Append(' ');
-            if (!(Where as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>)?.Expression?.IsEmpty is not null)
+            var where = (Where as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>)?.Expression;
+            if (where is not null && where.Args.Any())
             {
                 sb.Append("WHERE ");
                 sb.Append(Where);

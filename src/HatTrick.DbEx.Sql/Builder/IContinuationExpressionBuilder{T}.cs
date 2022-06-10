@@ -18,7 +18,8 @@
 
 ﻿namespace HatTrick.DbEx.Sql.Builder
 {
-    public interface IContinuationExpressionBuilder<T> :
-        IExpressionBuilder<T>
+    public interface IContinuationExpressionBuilder<TDatabase> : 
+        IExpressionBuilder<TDatabase>
+        where TDatabase : class, ISqlDatabaseRuntime
     { }
 }

@@ -17,6 +17,7 @@
 #endregion
 
 using HatTrick.DbEx.Sql.Expression;
+using System;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
@@ -36,6 +37,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         ISqlEntityMetadata? FindMetadata(Table entity);
         ISqlFieldMetadata? FindMetadata(Field field);
         ISqlParameterMetadata? FindMetadata(QueryParameter parameter);
+        (Type ConvertedType, object? ConvertedValue) ConvertValue(object? value, Field? field);
         #endregion
     }
 }

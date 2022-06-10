@@ -26,7 +26,6 @@ namespace HatTrick.DbEx.Sql.Pipeline
     {
         public SqlDatabaseRuntimeConfiguration Database { get; private set; }
         public QueryExpression Expression { get; private set; }
-        public virtual Type EntityType => Expression.BaseEntity!.EntityType;
 
         protected PipelineExecutionContext(SqlDatabaseRuntimeConfiguration database, QueryExpression expression)
         {

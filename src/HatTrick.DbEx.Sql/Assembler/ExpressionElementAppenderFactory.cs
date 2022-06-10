@@ -32,12 +32,11 @@ namespace HatTrick.DbEx.Sql.Assembler
         private static readonly AssignmentExpressionSetAppender assignmentSetAppender = new();
         private static readonly SelectExpressionAppender selectAppender = new();
         private static readonly SelectExpressionSetAppender selectSetAppender = new();
+        private static readonly FromExpressionAppender fromAppender = new();
         private static readonly FilterExpressionAppender filterAppender = new();
         private static readonly FilterExpressionSetAppender filterSetAppender = new();
         private static readonly JoinExpressionAppender joinAppender = new();
         private static readonly JoinExpressionSetAppender joinSetAppender = new();
-        private static readonly JoinOnExpressionSetAppender joinOnSetAppender = new();
-        private static readonly JoinOnExpressionAppender joinOnClauseAppender = new();
         private static readonly GroupByExpressionAppender groupByAppender = new();
         private static readonly GroupByExpressionSetAppender groupBySetAppender = new();
         private static readonly HavingExpressionAppender havingClauseAppender = new();
@@ -70,13 +69,15 @@ namespace HatTrick.DbEx.Sql.Assembler
         private static readonly SubstringFunctionExpressionAppender substringFunctionAppender = new();
         private static readonly ReplaceFunctionExpressionAppender replaceFunctionAppender = new();
         private static readonly LiteralExpressionAppender literalAppender = new();
-        private static readonly RawExpressionAppender rawAppender = new();
         private static readonly AliasExpressionAppender aliasAppender = new();
         private static readonly InExpressionAppender inAppender = new();
         private static readonly LikeExpressionAppender likeAppender = new();
         private static readonly DbTypeExpressionAppender dbTypeAppender = new();
         private static readonly StoredProcedureExpressionAppender storedProcedureAppender = new();
         private static readonly ParameterExpressionAppender parameterAppender = new();
+        private static readonly UnionExpressionAppender unionAppender = new();
+        private static readonly UnionAllExpressionAppender unionAllAppender = new();
+        private static readonly NullExpressionAppender nullAppender = new();
 
         private readonly ConcurrentDictionary<Type, Func<IExpressionElementAppender>> elementAppenders = new();
         #endregion
@@ -91,12 +92,11 @@ namespace HatTrick.DbEx.Sql.Assembler
             RegisterElementAppender(assignmentSetAppender);
             RegisterElementAppender(selectAppender);
             RegisterElementAppender(selectSetAppender);
-            RegisterElementAppender(filterAppender);
+            RegisterElementAppender(fromAppender);
+            RegisterElementAppender(filterAppender); 
             RegisterElementAppender(filterSetAppender);
             RegisterElementAppender(joinAppender);
             RegisterElementAppender(joinSetAppender);
-            RegisterElementAppender(joinOnSetAppender);
-            RegisterElementAppender(joinOnClauseAppender);
             RegisterElementAppender(groupByAppender);
             RegisterElementAppender(groupBySetAppender);
             RegisterElementAppender(havingClauseAppender);
@@ -129,13 +129,15 @@ namespace HatTrick.DbEx.Sql.Assembler
             RegisterElementAppender(substringFunctionAppender);
             RegisterElementAppender(replaceFunctionAppender);
             RegisterElementAppender(literalAppender);
-            RegisterElementAppender(rawAppender);
             RegisterElementAppender(aliasAppender);
             RegisterElementAppender(inAppender);
             RegisterElementAppender(likeAppender);
             RegisterElementAppender(dbTypeAppender);
             RegisterElementAppender(storedProcedureAppender);
             RegisterElementAppender(parameterAppender);
+            RegisterElementAppender(unionAppender);
+            RegisterElementAppender(unionAllAppender);
+            RegisterElementAppender(nullAppender);
         }
         #endregion
 

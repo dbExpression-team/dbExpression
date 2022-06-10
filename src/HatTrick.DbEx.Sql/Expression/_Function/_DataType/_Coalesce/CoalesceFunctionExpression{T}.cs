@@ -32,7 +32,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public AnyElement<TValue> As(string alias)
+        public AliasedElement<TValue> As(string alias)
             => new SelectExpression<TValue>(this, alias);
         #endregion
     }

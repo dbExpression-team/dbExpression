@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.Sql.Expression
         ObjectFieldExpression<TType>,
         IEquatable<ObjectFieldExpression<TEntity,TType>>
         where TEntity : class, IDbEntity
-        where TType : class
+        where TType : class?
     {
         #region constructors
         public ObjectFieldExpression(string identifier, string name, Table entity) : base(identifier, name, entity)
@@ -46,8 +46,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region in
-        public override FilterExpressionSet In(params TType[] value) => new(new FilterExpression<bool>(this, new InExpression<TType>(this, value), FilterExpressionOperator.None));
-        public override FilterExpressionSet In(IEnumerable<TType> value) => new(new FilterExpression<bool>(this, new InExpression<TType>(this, value), FilterExpressionOperator.None));
+        public override FilterExpression In(params TType[] value) => new FilterExpression<bool>(this, new InExpression<TType>(this, value), FilterExpressionOperator.None);
+        public override FilterExpression In(IEnumerable<TType> value) => new FilterExpression<bool>(this, new InExpression<TType>(this, value), FilterExpressionOperator.None);
         #endregion
     }
 }

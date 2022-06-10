@@ -16,18 +16,23 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using System;
+using HatTrick.DbEx.Sql.Attribute;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class FilterExpressionSet :
-        AnyWhereClause,
-        AnyJoinOnClause,
-        AnyHavingClause,
+        AnyWhereExpression,
+        AnyJoinOnExpression,
+        AnyHavingExpression,
         IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>,
         IEquatable<FilterExpressionSet>
     {
         #region internals
+        private static readonly Lazy<Dictionary<ConditionalExpressionOperator, string>> conditionalOperatorMap = new(() => typeof(ConditionalExpressionOperator).GetValuesAndConditionalOperators().ToDictionary(k => k.Key, v => v.Value!));
         private readonly FilterExpressionSetElements elements;
         #endregion
 
@@ -46,7 +51,7 @@ namespace HatTrick.DbEx.Sql.Expression
             elements = new FilterExpressionSetElements(singleArg, null, default, false);
         }
 
-        public FilterExpressionSet(FilterExpression leftArg, FilterExpression rightArg, ConditionalExpressionOperator conditionalOperator)
+        public FilterExpressionSet(FilterExpression leftArg, FilterExpression? rightArg, ConditionalExpressionOperator conditionalOperator)
         {
             elements = new FilterExpressionSetElements(leftArg, rightArg, conditionalOperator, false);
         }
@@ -55,10 +60,38 @@ namespace HatTrick.DbEx.Sql.Expression
         {
             elements = new FilterExpressionSetElements(leftArg, rightArg, conditionalOperator, false);
         }
+
+        public FilterExpressionSet(FilterExpression leftArg, FilterExpressionSet? rightArg, ConditionalExpressionOperator conditionalOperator)
+        {
+            elements = new FilterExpressionSetElements(leftArg, rightArg, conditionalOperator, false);
+        }
+
+        private FilterExpressionSet(FilterExpressionSet leftArg, FilterExpression? rightArg, ConditionalExpressionOperator conditionalOperator)
+        {
+            elements = new FilterExpressionSetElements(leftArg, rightArg, conditionalOperator, false);
+        }
         #endregion
 
         #region to string
-        public override string? ToString() => (elements.Negate) ? $"NOT ({elements.LeftArg}{(elements.RightArg is not null ? $"{elements.ConditionalOperator} {elements.RightArg}" : string.Empty)})" : $"{elements.LeftArg}{(elements.RightArg is not null ? $"{elements.ConditionalOperator} {elements.RightArg}" : string.Empty)}";
+        public override string? ToString()
+        {
+            var sb = new StringBuilder();
+            if (elements.Negate)
+                sb.Append("NOT (");
+            for (var i = 0; i < elements.Args.Count; i++)
+            {
+                sb.Append(elements.Args.ElementAt(i).ToString());
+                if (i < elements.Args.Count - 1)
+                {
+                    sb.Append(' ');
+                    sb.Append(conditionalOperatorMap.Value[elements.ConditionalOperator]);
+                    sb.Append(' ');
+                }
+            }
+            if (elements.Negate)
+                sb.Append(')');
+            return sb.ToString();
+        }
         #endregion
 
         #region equals
@@ -107,19 +140,12 @@ namespace HatTrick.DbEx.Sql.Expression
             if (a is null && b is null) throw new ArgumentNullException(nameof(a));
             if (b is null) return a!;
 
-            var nonNull = a ?? b;
-            var mayBeNull = b ?? a;
-
-            if (nonNull.elements.IsSingleArg && nonNull.elements.LeftArg is FilterExpression aFilter)
+            if (a!.elements.ConditionalOperator == expressionOperator)
             {
-                aFilter.Negate = nonNull.elements.Negate;
-                nonNull.elements.Negate = false;
-                nonNull.elements.RightArg = mayBeNull;
-                nonNull.elements.ConditionalOperator = expressionOperator;
-                return nonNull;
+                a.elements.Args.Add(b);
+                return a;
             }
-
-            return new FilterExpressionSet(a ?? b!, b ?? a, ConditionalExpressionOperator.And);
+            return new FilterExpressionSet(a, b, expressionOperator);
         }
 
         private static FilterExpressionSet Operator(FilterExpressionSet? a, FilterExpressionSet? b, ConditionalExpressionOperator expressionOperator)
@@ -127,34 +153,23 @@ namespace HatTrick.DbEx.Sql.Expression
             if (a is null && b is null) throw new ArgumentNullException(nameof(a));
             if (b is null) return a!;
 
-            var nonNull = a ?? b;
-            var mayBeNull = (b ?? a)!;
-
-            if (nonNull.elements.IsSingleArg && nonNull.elements.LeftArg is FilterExpression aFilter)
+            if (a is not null)
             {
-                aFilter.Negate = nonNull.elements.Negate;
-                nonNull.elements.Negate = false;
-                if (mayBeNull.elements.IsSingleArg && mayBeNull.elements.LeftArg is FilterExpression inner_bFilter)
+                if (a.elements.Args.Count == 1) //single filter wrapped in a set
                 {
-                    inner_bFilter.Negate = mayBeNull.elements.Negate;
-                    nonNull.elements.RightArg = inner_bFilter;
+                    a.elements.Args.Add(b);
+                    a.elements.ConditionalOperator = expressionOperator;
+                    return a;
                 }
-                else
+                if (a.elements.ConditionalOperator == expressionOperator)
                 {
-                    nonNull.elements.RightArg = mayBeNull;
+                    a.elements.Args.Add(b);
+                    return a;
                 }
-                nonNull.elements.ConditionalOperator = expressionOperator;
-                return nonNull;
+                return new FilterExpressionSet(a, b, expressionOperator);
             }
-
-            return new FilterExpressionSet(a ?? b!, b ?? a, expressionOperator);
+            return b;
         }
-
-        public static implicit operator JoinOnExpressionSet(FilterExpressionSet filter)
-            => filter.ConvertToJoinOnExpressionSet();
-
-        public static implicit operator HavingExpression(FilterExpressionSet a) 
-            => new(a);
 
         public static FilterExpressionSet operator !(FilterExpressionSet filter)
         {
@@ -169,19 +184,18 @@ namespace HatTrick.DbEx.Sql.Expression
             #region interface
             public ConditionalExpressionOperator ConditionalOperator { get; set; }
             public bool Negate { get; set; }
-            public IFilterExpressionElement LeftArg { get; set; }
-            public IFilterExpressionElement? RightArg { get; set; }
-            public bool IsSingleArg => RightArg is null;
-            public bool IsEmpty => LeftArg is null && RightArg is null;
+            public IList<IFilterExpressionElement> Args { get; } = new List<IFilterExpressionElement>();
             #endregion
 
             #region constructors
             public FilterExpressionSetElements(IFilterExpressionElement leftArg, IFilterExpressionElement? rightArg, ConditionalExpressionOperator conditionalOperator, bool negate)
             {
-                LeftArg = leftArg ?? throw new ArgumentNullException(nameof(leftArg));
-                RightArg = rightArg;
                 ConditionalOperator = conditionalOperator;
                 Negate = negate;
+
+                Args.Add(leftArg);
+                if (rightArg is not null)
+                    Args.Add(rightArg);
             }
             #endregion
 
@@ -191,16 +205,8 @@ namespace HatTrick.DbEx.Sql.Expression
                 if (obj is null) return false;
                 if (ReferenceEquals(this, obj)) return true;
 
-                if (LeftArg is null && obj.LeftArg is not null) return false;
-                if (LeftArg is not null && obj.LeftArg is null) return false;
-                if (LeftArg is not null && !LeftArg.Equals(obj.LeftArg)) return false;
-
-                if (RightArg is null && obj.RightArg is not null) return false;
-                if (RightArg is not null && obj.RightArg is null) return false;
-                if (RightArg is not null && !RightArg.Equals(obj.RightArg)) return false;
-
+                if (!Args.SequenceEqual(obj.Args)) return false;
                 if (Negate != obj.Negate) return false;
-
                 if (ConditionalOperator != obj.ConditionalOperator) return false;
 
                 return true;
@@ -217,8 +223,8 @@ namespace HatTrick.DbEx.Sql.Expression
                     const int multiplier = 16777619;
 
                     int hash = @base;
-                    hash = (hash * multiplier) ^ (LeftArg is not null ? LeftArg.GetHashCode() : 0);
-                    hash = (hash * multiplier) ^ (RightArg is not null ? RightArg.GetHashCode() : 0);
+                    foreach (var exp in Args)
+                        hash = (hash * multiplier) ^ (exp is not null ? exp.GetHashCode() : 0);
                     hash = (hash * multiplier) ^ Negate.GetHashCode();
                     hash = (hash * multiplier) ^ ConditionalOperator.GetHashCode();
                     return hash;

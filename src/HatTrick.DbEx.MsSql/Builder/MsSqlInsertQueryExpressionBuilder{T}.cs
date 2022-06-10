@@ -24,11 +24,12 @@ using System.Collections.Generic;
 
 namespace HatTrick.DbEx.MsSql.Builder
 {
-    public class MsSqlInsertQueryExpressionBuilder<T> : InsertQueryExpressionBuilder<T>
-        where T : class, IDbEntity
+    public class MsSqlInsertQueryExpressionBuilder<TDatabase, TEntity> : InsertQueryExpressionBuilder<TDatabase, TEntity>
+        where TDatabase : class, ISqlDatabaseRuntime
+        where TEntity : class, IDbEntity
     {
-        public MsSqlInsertQueryExpressionBuilder(SqlDatabaseRuntimeConfiguration configuration, InsertQueryExpression expression, IEnumerable<T> instances) 
-            : base(configuration, instances, expression)
+        public MsSqlInsertQueryExpressionBuilder(InsertQueryExpression expression, SqlDatabaseRuntimeConfiguration configuration, IEnumerable<TEntity> instances) 
+            : base(expression, configuration, instances)
         {
         }
     }

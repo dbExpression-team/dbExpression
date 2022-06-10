@@ -28,15 +28,12 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (expression?.Expressions is null || !expression.Expressions.Any())
                 return;
 
-            var inserts = expression.Expressions.ToList();
-            for (var i = 0; i < inserts.Count; i++)
+            for (var i = 0; i < expression.Expressions.Count(); i++)
             {
                 builder.Appender.Indent();
-                builder.AppendElement(inserts[i], context);
-                if (i < inserts.Count - 1)
-                {
+                builder.AppendElement(expression.Expressions.ElementAt(i), context);
+                if (i < expression.Expressions.Count() - 1)
                     builder.Appender.Write(",").LineBreak();
-                }
             }
         }
     }
