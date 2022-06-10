@@ -201,7 +201,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                         from =>
                         {
                             fromFired = true;
-                            return from is object ? ((DateTime)from).AddYears(-5) : (DateTime?)null;
+                            return from is not null ? ((DateTime)from).AddYears(-5) : (DateTime?)null;
                         }
                     )
                 )
@@ -249,7 +249,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                         from =>
                         {
                             fromFired = true;
-                            return from is object ? ((DateTimeOffset)from).AddYears(-5) : (DateTimeOffset?)null;
+                            return from is not null ? ((DateTimeOffset)from).AddYears(-5) : (DateTimeOffset?)null;
                         }
                     )
                 )
@@ -484,7 +484,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                         from =>
                         {
                             fromFired = true;
-                            return from is object ? ((DateTime?)from).Value.AddYears(-5) : (DateTime?)null;
+                            return from is not null ? ((DateTime?)from).Value.AddYears(-5) : (DateTime?)null;
                         }
                     )
                 )
@@ -524,7 +524,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                         from =>
                         {
                             fromFired = true;
-                            return from is object ? ((DateTime)from).AddYears(-5) : (DateTime?)null;
+                            return from is not null ? ((DateTime)from).AddYears(-5) : (DateTime?)null;
                         }
                     )
                 )
@@ -559,7 +559,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                         from =>
                         {
                             fromFired = true;
-                            return from is object ? ((DateTimeOffset)from).AddYears(-10) : (DateTimeOffset?)null;
+                            return from is not null ? ((DateTimeOffset)from).AddYears(-10) : (DateTimeOffset?)null;
                         }
                     )
                 )
@@ -598,7 +598,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                         from =>
                         {
                             fromFired = true;
-                            return from is object ? ((DateTime)from).AddYears(-5) : (DateTime?)null;
+                            return from is not null ? ((DateTime)from).AddYears(-5) : (DateTime?)null;
                         }
                     )
                 )
@@ -638,7 +638,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                         from =>
                         {
                             fromFired = true;
-                            return from is object ? ((DateTimeOffset)from).AddYears(-5) : (DateTimeOffset?)null;
+                            return from is not null ? ((DateTimeOffset)from).AddYears(-5) : (DateTimeOffset?)null;
                         }
                     )
                 )
@@ -678,7 +678,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                         from =>
                         {
                             fromFired = true;
-                            return from is object ? ((DateTime?)from).Value.AddYears(-5) : (DateTime?)null;
+                            return from is not null ? ((DateTime?)from).Value.AddYears(-5) : (DateTime?)null;
                         }
                     )
                 )
@@ -716,7 +716,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                         from =>
                         {
                             fromFired = true;
-                            return from is object ? ((DateTimeOffset)from).AddYears(-10) : (DateTimeOffset?)null;
+                            return from is not null ? ((DateTimeOffset)from).AddYears(-10) : (DateTimeOffset?)null;
                         }
                     )
                 )
@@ -758,7 +758,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                         from =>
                         {
                             fromFired = true;
-                            return from is object ? ((DateTime)from).AddYears(-5) : (DateTime?)null;
+                            return from is not null ? ((DateTime)from).AddYears(-5) : (DateTime?)null;
                         }
                     )
                 )
@@ -801,7 +801,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                         from =>
                         {
                             fromFired = true;
-                            return from is object ? ((DateTimeOffset)from).AddYears(-5) : (DateTimeOffset?)null;
+                            return from is not null ? ((DateTimeOffset)from).AddYears(-5) : (DateTimeOffset?)null;
                         }
                     )
                 )
@@ -844,7 +844,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                         from =>
                         {
                             fromFired = true;
-                            return from is object ? ((DateTime)from).AddYears(-5) : (DateTime?)from;
+                            return from is not null ? ((DateTime)from).AddYears(-5) : (DateTime?)from;
                         }
                     )
                 )
@@ -887,7 +887,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                         from =>
                         {
                             fromFired = true;
-                            return from is object ? ((DateTime?)from).Value.AddYears(-5) : (DateTime?)null;
+                            return from is not null ? ((DateTime?)from).Value.AddYears(-5) : (DateTime?)null;
                         }
                     )
                 )
@@ -922,7 +922,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                         from =>
                         {
                             fromFired = true;
-                            return from is object ? ((DateTimeOffset)from).AddYears(-10) : (DateTimeOffset?)null;
+                            return from is not null ? ((DateTimeOffset)from).AddYears(-10) : (DateTimeOffset?)null;
                         }
                     )
                 )
@@ -961,7 +961,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                         from =>
                         {
                             fromFired = true;
-                            return from is object ? ((DateTime)from).AddYears(-5) : (DateTime?)null;
+                            return from is not null ? ((DateTime)from).AddYears(-5) : (DateTime?)null;
                         }
                     )
                 )
@@ -1001,7 +1001,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                         from =>
                         {
                             fromFired = true;
-                            return from is object ? ((DateTimeOffset)from).AddYears(-5) : (DateTimeOffset?)null;
+                            return from is not null ? ((DateTimeOffset)from).AddYears(-5) : (DateTimeOffset?)null;
                         }
                     )
                 )
