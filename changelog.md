@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.9.1] - 2022-06-06
+## [0.9.1] - 2022-06-10
 
 ### Added
 - Benchmark reports
