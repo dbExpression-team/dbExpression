@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,8 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using System;
+using HatTrick.DbEx.Sql;
+using System;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -39,8 +40,11 @@ namespace HatTrick.DbEx.Sql.Expression
             return false;
         }
 
-        internal static FieldExpression? AsFieldExpression(this IExpressionElement expression)
+        internal static FieldExpression? AsFieldExpression(this IExpressionElement? expression)
         {
+            if (expression is NullElement || expression is null)
+                return null;
+
             if (expression is FieldExpression field)
                 return field;
 
@@ -51,6 +55,6 @@ namespace HatTrick.DbEx.Sql.Expression
                 return AsFieldExpression(mediator.Expression);
 
             return null;
-        }
+        } 
     }
 }

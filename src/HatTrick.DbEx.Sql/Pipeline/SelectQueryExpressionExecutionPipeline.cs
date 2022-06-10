@@ -491,8 +491,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
 #pragma warning disable IDE0079 // Remove unnecessary suppression
 #pragma warning disable IDE0060 // Remove unused parameter
         private void ExecuteSelectEntityList<TEntity>(QueryExpression expression, Table<TEntity> table, IValueConverterProvider converterProvider, ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> map)
-#pragma warning restore IDE0079 // Remove unnecessary suppression
 #pragma warning restore IDE0060 // Remove unused parameter
+#pragma warning restore IDE0079 // Remove unnecessary suppression
             where TEntity : class, IDbEntity
         {
             ExecuteSelectQuery(

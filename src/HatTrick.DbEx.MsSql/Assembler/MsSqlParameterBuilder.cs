@@ -32,14 +32,12 @@ namespace HatTrick.DbEx.MsSql.Assembler
     {
         #region internals
         private readonly IDbTypeMapFactory<SqlDbType> typeMaps;
-        private readonly IValueConverterFactory valueConverterFactory;
         #endregion
 
         #region constructors
-        public MsSqlParameterBuilder(IDbTypeMapFactory<SqlDbType> typeMaps, IValueConverterFactory valueConverterFactory)
+        public MsSqlParameterBuilder(IDbTypeMapFactory<SqlDbType> typeMaps)
         {
             this.typeMaps = typeMaps ?? throw new ArgumentNullException(nameof(typeMaps));
-            this.valueConverterFactory = valueConverterFactory ?? throw new ArgumentNullException(nameof(valueConverterFactory));
         }
         #endregion
 

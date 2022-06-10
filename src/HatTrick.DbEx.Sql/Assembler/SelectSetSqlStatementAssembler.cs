@@ -23,7 +23,7 @@ namespace HatTrick.DbEx.Sql.Assembler
 {
     public class SelectSetSqlStatementAssembler : SqlStatementAssembler
     {
-        private SelectSqlStatementAssembler expressionAssembler;
+        private readonly SelectSqlStatementAssembler expressionAssembler;
 
         public SelectSetSqlStatementAssembler(SelectSqlStatementAssembler expressionAssembler)
         {

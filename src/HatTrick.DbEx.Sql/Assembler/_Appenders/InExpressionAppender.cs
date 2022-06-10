@@ -31,7 +31,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             builder.Appender.Write(")");
         }
 
-        private void AddParametersFromList(InExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
+        private static void AddParametersFromList(InExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             var hasElements = false;
             var enumerator = expression.Expression.GetEnumerator();

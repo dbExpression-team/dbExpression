@@ -53,6 +53,7 @@ to LeftArg and RightArg. This work was to correct these mis-alignments:
 	- AnyHavingClause -> AnyHavingExpression
 	- AnyWhereClause -> AnyWhereExpression
 	- AnyJoinOnClause -> AnyJoinOnExpression
+- Decoupled value conversion from sql parameter building.  Previously, to convert a value before being sent to the database, it could only be done through building a sql parameter - even if the parameter itself wasn't needed.
 
 ### Fixed
 - #304: type overrides were not applied in generated code if supplied in dbex.config.json

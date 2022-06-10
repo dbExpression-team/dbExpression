@@ -28,7 +28,7 @@ namespace HatTrick.DbEx.Sql
 #pragma warning disable IDE1006 // Naming Styles
     public static class dbex
     {
-        private static NullElement _null = new NullExpression();
+        private static readonly NullElement _null = new NullExpression();
 
         /// <summary>
         /// Create an expression representing a database NULL.

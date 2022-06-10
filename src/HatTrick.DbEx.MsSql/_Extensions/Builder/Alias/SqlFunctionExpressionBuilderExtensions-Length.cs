@@ -21,7 +21,7 @@ using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 
-namespace HatTrick.DbEx.MsSql.Expression.Alias
+namespace HatTrick.DbEx.MsSql.Builder.Alias
 {
     public static partial class SqlFunctionExpressionBuilderExtensions
     {
