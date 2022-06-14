@@ -5,7 +5,9 @@ Param
 		[Parameter(Mandatory,ValueFromPipelineByPropertyName)]
         [string]$BUILD_CONFIGURATION,		
 		[Parameter(Mandatory,ValueFromPipelineByPropertyName)]
-        [string]$TARGET_FRAMEWORK_MONIKER
+        [string]$TARGET_FRAMEWORK_MONIKER,		
+		[Parameter(Mandatory,ValueFromPipelineByPropertyName)]
+        [string]$ROOT_PATH
     )
 
 Write-Host "Command Line Parameters:"
@@ -13,6 +15,7 @@ Write-Host "-------------------------------"
 Write-Host "MSSQL_VERSION: " $MSSQL_VERSION
 Write-Host "BUILD_CONFIGURATION: " $BUILD_CONFIGURATION
 Write-Host "TARGET_FRAMEWORK_MONIKER: " $TARGET_FRAMEWORK_MONIKER
+Write-Host "ROOT_PATH: " $ROOT_PATH
 
 $destination = Split-Path (Split-Path -Path (Get-Location).Path -Parent) -Parent
 $destinationFile = $destination + "/.env"
@@ -27,9 +30,9 @@ if (Test-Path $destinationFile) {
 }
 
 $values = @(
-			("MSSQL_VERSION", "BUILD_CONFIGURATION", "TARGET_FRAMEWORK_MONIKER", "PORT", "MSSQL_PWD"),
-			($MSSQL_VERSION, $BUILD_CONFIGURATION, $TARGET_FRAMEWORK_MONIKER, $PORT, $MSSQL_PWD),
-			($null, $null, $null, $null, $null)
+			("MSSQL_VERSION", "BUILD_CONFIGURATION", "TARGET_FRAMEWORK_MONIKER", "PORT", "MSSQL_PWD", "ROOT_PATH"),
+			($MSSQL_VERSION, $BUILD_CONFIGURATION, $TARGET_FRAMEWORK_MONIKER, $PORT, $MSSQL_PWD, $ROOT_PATH),
+			($null, $null, $null, $null, $null, $null, $null)
 		)
 
 if ([System.IO.File]::Exists($envFile) -eq $true)

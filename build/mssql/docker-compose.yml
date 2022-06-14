@@ -26,7 +26,6 @@ services:
       MSSQL_VERSION: ${MSSQL_VERSION}
       BUILD_CONFIGURATION: ${BUILD_CONFIGURATION}
     volumes:
-      - ./results:/results
-      - ./:/db-ex
+      - ${ROOT_PATH}:/db-ex
     depends_on:
       - mssql
