@@ -63,12 +63,12 @@ stages:
         inputs:
           command: test
           projects: $(Pipeline.Workspace)\$(stageLocationName)\test\HatTrick.DbEx.MsSql.Test.Unit\*.csproj
-          arguments: '--configuration $(buildConfiguration) --logger "trx;LogFileName=$(Pipeline.Workspace)\$(stageLocationName)\tmp\mssql-core.tests.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Include="[HatTrick.DbEx.*Sql*]*" /p:Exclude="[*Test]*"'
+          arguments: '--configuration $(buildConfiguration) --logger "trx;LogFileName=mssql-core.tests.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Include="[HatTrick.DbEx.*Sql*]*" /p:Exclude="[*Test]*"'
       - task: PublishTestResults@2
         displayName: 'Publish Test Results to Temp'
         inputs:
           testResultsFormat: xUnit
-          testResultsFiles: $(Pipeline.Workspace)\$(stageLocationName)\tmp\mssql-*.tests.trx
+          testResultsFiles: $(Pipeline.Workspace)\$(stageLocationName)\TestResults\mssql-core.tests.trx
           testRunTitle: 'MSSQL (Core)'
           mergeTestResults: true
           failTaskOnFailedTests: true
@@ -114,12 +114,12 @@ stages:
         inputs:
           command: test
           projects: $(Pipeline.Workspace)\$(stageLocationName)\test\HatTrick.DbEx.MsSql.Extensions.DependencyInjection.Test\*.csproj
-          arguments: '--configuration $(buildConfiguration) --logger "trx;LogFileName=$(Pipeline.Workspace)\$(stageLocationName)\tmp\mssql-dependency-injection.tests.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Include="[HatTrick.DbEx.*Sql.*]*" /p:Exclude="[*Test]*"'
+          arguments: '--configuration $(buildConfiguration) --logger "trx;LogFileName=mssql-dependency-injection.tests.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Include="[HatTrick.DbEx.*Sql.*]*" /p:Exclude="[*Test]*"'
       - task: PublishTestResults@2
         displayName: 'Publish Test Results to Temp'
         inputs:
           testResultsFormat: xUnit
-          testResultsFiles: $(Pipeline.Workspace)\$(stageLocationName)\tmp\mssql-*.tests.trx
+          testResultsFiles: $(Pipeline.Workspace)\$(stageLocationName)\TestResults\mssql-dependency-injection.tests.trx
           testRunTitle: 'MSSQL (Dependency Injection)'
           mergeTestResults: true
           failTaskOnFailedTests: true
@@ -151,7 +151,7 @@ stages:
         displayName: 'Correct Source Paths in Coverage Files'
         inputs:
           filePath: $(Pipeline.Workspace)\$(stageLocationName)\build\fix-code-coverage-files.ps1
-          arguments: '-CodeCoverageFilePaths "$(Pipeline.Workspace)\mssql-core-results\coverage.net6.0.cobertura.xml;$(Pipeline.Workspace)\mssql-core-results\coverage.net6.0.cobertura.xml;$(Pipeline.Workspace)\mssql-2017-results\coverage.net6.0.cobertura.xml;$(Pipeline.Workspace)\mssql-2019-results\coverage.net6.0.cobertura.xml;$(Pipeline.Workspace)\mssql-dependency-injection-results\coverage.net6.0.cobertura.xml" -PathToSourceFiles "$(Pipeline.Workspace)\$(stageLocationName)\src\"'
+          arguments: '-CodeCoverageFilePaths "$(Pipeline.Workspace)\mssql-core-results\coverage.net6.0.cobertura.xml;$(Pipeline.Workspace)\mssql-2017-results\coverage.net6.0.cobertura.xml;$(Pipeline.Workspace)\mssql-2019-results\coverage.net6.0.cobertura.xml;$(Pipeline.Workspace)\mssql-dependency-injection-results\coverage.net6.0.cobertura.xml" -PathToSourceFiles "$(Pipeline.Workspace)\$(stageLocationName)\src\"'
           workingDirectory: $(Pipeline.Workspace)\$(stageLocationName)\build
           pwsh: true
       - task: reportgenerator@5
