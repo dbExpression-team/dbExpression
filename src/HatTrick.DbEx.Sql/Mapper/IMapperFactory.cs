@@ -16,14 +16,16 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using HatTrick.DbEx.Sql.Expression;
+using System;
 
 namespace HatTrick.DbEx.Sql.Mapper
 {
-    public interface IMapperFactory
+    public interface IMapperFactory<TDatabase>
+        where TDatabase : class, ISqlDatabaseRuntime
     {
         IEntityMapper<TEntity> CreateEntityMapper<TEntity>(Table<TEntity> entity)
             where TEntity : class, IDbEntity;
+
         IExpandoObjectMapper CreateExpandoObjectMapper();
     }
 }

@@ -20,11 +20,11 @@ using System;
 
 namespace HatTrick.DbEx.Sql.Converter
 {
-    public class DelegateValueConverter<T> : IValueConverter
+    public class DelegateValueConverter<T> : IValueConverter<T>
     {
         #region internals
-        private readonly Func<object?, object?> convertToDatabase;
-        private readonly Func<object?, object?> convertFromDatabase;
+        private readonly Func<T?, object?> convertToDatabase;
+        private readonly Func<object?, T?> convertFromDatabase;
         #endregion
 
         #region constructors
@@ -36,20 +36,20 @@ namespace HatTrick.DbEx.Sql.Converter
             if (convertFromDatabase is null)
                 throw new ArgumentNullException(nameof(convertFromDatabase));
 
-            this.convertToDatabase = o => convertToDatabase((T?)o);
-            this.convertFromDatabase = o => convertFromDatabase(o);
+            this.convertToDatabase = convertToDatabase;
+            this.convertFromDatabase = convertFromDatabase;
         }
         #endregion
 
         #region methods
         public (Type Type, object? ConvertedValue) ConvertToDatabase(object? value)
-            => (typeof(T), convertToDatabase(value));
+            => (typeof(T), convertToDatabase((T?)value));
 
-        public object? ConvertFromDatabase(object? value)
+        object? IValueConverter.ConvertFromDatabase(object? value)
             => value is null ? null : convertFromDatabase(value);
 
-        public U? ConvertFromDatabase<U>(object? value)
-            => (U?)convertFromDatabase(value);
+        public T? ConvertFromDatabase(object? value)
+            => convertFromDatabase(value);
         #endregion
     }
 }

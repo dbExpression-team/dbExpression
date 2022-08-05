@@ -16,7 +16,6 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Connection;
 using System;
 using System.Collections.Generic;
@@ -27,12 +26,14 @@ namespace HatTrick.DbEx.Sql.Builder
     public class BatchBuilder<TDatabase> : IBatchContinuationBuilder<TDatabase>
         where TDatabase : class, ISqlDatabaseRuntime
     {
-        private readonly SqlDatabaseRuntimeConfiguration configuration;
+        private readonly IConnectionStringFactory<TDatabase> connectionStringFactory;
+        private readonly ISqlConnectionFactory<TDatabase> connectionFactory;
         private readonly List<INonQueryTerminationExpressionBuilder<TDatabase>> batch = new();
 
-        public BatchBuilder(SqlDatabaseRuntimeConfiguration configuration)
+        public BatchBuilder(IConnectionStringFactory<TDatabase> connectionStringFactory, ISqlConnectionFactory<TDatabase> connectionFactory)
         {
-            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            this.connectionStringFactory = connectionStringFactory ?? throw new ArgumentNullException(nameof(connectionStringFactory));
+            this.connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
         }
 
         IBatchContinuationBuilder<TDatabase> IBatchBuilder<TDatabase>.Add(params INonQueryTerminationExpressionBuilder<TDatabase>[] expressions)
@@ -58,7 +59,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (batch.Count == 0)
                 return results;
 
-            using var connection = new SqlConnector(configuration.ConnectionStringFactory, configuration.ConnectionFactory);
+            using var connection = new SqlConnector<TDatabase>(connectionStringFactory, connectionFactory);
             try
             {
                 connection.EnsureOpen();
@@ -98,7 +99,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (batch.Count == 0)
                 return results;
 
-            using (var connection = new SqlConnector(configuration.ConnectionStringFactory, configuration.ConnectionFactory))
+            using (var connection = new SqlConnector<TDatabase>(connectionStringFactory, connectionFactory))
             {
                 try
                 {

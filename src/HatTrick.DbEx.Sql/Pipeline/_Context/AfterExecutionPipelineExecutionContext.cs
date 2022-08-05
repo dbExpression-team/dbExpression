@@ -16,11 +16,9 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Data;
-using System.Data.Common;
 
 namespace HatTrick.DbEx.Sql.Pipeline
 {
@@ -28,8 +26,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
     {
         public IDbCommand DbCommand { get; private set; }
 
-        public AfterExecutionPipelineExecutionContext(SqlDatabaseRuntimeConfiguration database, QueryExpression expression, IDbCommand command)
-            : base(database, expression)
+        public AfterExecutionPipelineExecutionContext(QueryExpression expression, IDbCommand command)
+            : base(expression)
         {
             DbCommand = command ?? throw new ArgumentNullException(nameof(command));
         }

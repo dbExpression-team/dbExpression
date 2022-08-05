@@ -51,16 +51,5 @@ namespace HatTrick.DbEx.Sql.Converter
 
             return Convert.ChangeType(value, type);
         }
-
-        public virtual T ConvertFromDatabase<T>(object? value)
-        {
-            if (value is null)
-                throw new DbExpressionException("Expected a non-null value from the database, but received a null value.");
-
-            if (typeof(T) == value.GetType())
-                return (T)value;
-            
-            return (T)Convert.ChangeType(value, typeof(T));
-        }
     }
 }

@@ -95,7 +95,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         {
             //given
             int commandTimeout = 0;
-            var config = ConfigureForMsSqlVersion(version, c => c.Events.OnAfterSqlStatementExecution(context => commandTimeout = context.DbCommand.CommandTimeout));
+            ConfigureForMsSqlVersion(version, c => c.Events.OnAfterSqlStatementExecution(context => commandTimeout = context.DbCommand.CommandTimeout));
 
             //when               
             var persons = db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues(row => new Person { Id = row.ReadField()!.GetValue<int>() }).Execute(expectedCommandTimeout);
@@ -110,10 +110,10 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_execute_stored_procedure_with_input_parameter_and_provided_connection_and_return_list_of_person(int version, int id = 0, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
+            ConfigureForMsSqlVersion(version);
 
             //when               
-            using var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            using var connection = db.GetConnection();
             var persons = db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues(row => new Person { Id = row.ReadField()!.GetValue<int>() }).Execute(connection);
 
             //then
@@ -126,10 +126,10 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         {
             //given
             int commandTimeout = 0;
-            var config = ConfigureForMsSqlVersion(version, c => c.Events.OnAfterSqlStatementExecution(context => commandTimeout = context.DbCommand.CommandTimeout));
+            ConfigureForMsSqlVersion(version, c => c.Events.OnAfterSqlStatementExecution(context => commandTimeout = context.DbCommand.CommandTimeout));
 
             //when               
-            using var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            using var connection = db.GetConnection();
             var persons = db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues(row => new Person { Id = row.ReadField()!.GetValue<int>() }).Execute(connection, expectedCommandTimeout);
 
             //then
@@ -158,7 +158,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         {
             //given
             int commandTimeout = 0;
-            var config = ConfigureForMsSqlVersion(version, c => c.Events.OnAfterSqlStatementExecution(context => commandTimeout = context.DbCommand.CommandTimeout));
+            ConfigureForMsSqlVersion(version, c => c.Events.OnAfterSqlStatementExecution(context => commandTimeout = context.DbCommand.CommandTimeout));
 
             //when               
             var person = db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue(row => new Person { Id = row.ReadField()!.GetValue<int>() }).Execute(expectedCommandTimeout);
@@ -174,10 +174,10 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_execute_stored_procedure_with_input_parameter_and_provided_connection_and_return_a_person(int version, int id = 1)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
+            ConfigureForMsSqlVersion(version);
 
             //when               
-            using var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            using var connection = db.GetConnection();
             var person = db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue(row => new Person { Id = row.ReadField()!.GetValue<int>() }).Execute(connection);
 
             //then
@@ -191,10 +191,10 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         {
             //given
             int commandTimeout = 0;
-            var config = ConfigureForMsSqlVersion(version, c => c.Events.OnAfterSqlStatementExecution(context => commandTimeout = context.DbCommand.CommandTimeout));
+            ConfigureForMsSqlVersion(version, c => c.Events.OnAfterSqlStatementExecution(context => commandTimeout = context.DbCommand.CommandTimeout));
 
             //when               
-            using var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            using var connection = db.GetConnection();
             var person = db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue(row => new Person { Id = row.ReadField()!.GetValue<int>() }).Execute(connection, expectedCommandTimeout);
 
             //then
@@ -481,7 +481,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         {
             //given
             int commandTimeout = 0;
-            var config = ConfigureForMsSqlVersion(version, c => c.Events.OnAfterSqlStatementExecution(context => commandTimeout = context.DbCommand.CommandTimeout));
+            ConfigureForMsSqlVersion(version, c => c.Events.OnAfterSqlStatementExecution(context => commandTimeout = context.DbCommand.CommandTimeout));
 
             //when               
             var persons = await db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues(row => new Person { Id = row.ReadField()!.GetValue<int>() }).ExecuteAsync(expectedCommandTimeout);
@@ -496,10 +496,10 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_execute_async_stored_procedure_with_input_parameter_and_provided_connection_and_return_list_of_person(int version, int id = 0, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
+            ConfigureForMsSqlVersion(version);
 
             //when               
-            using var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            using var connection = db.GetConnection();
             var persons = await db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues(row => new Person { Id = row.ReadField()!.GetValue<int>() }).ExecuteAsync(connection);
 
             //then
@@ -512,10 +512,10 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         {
             //given
             int commandTimeout = 0;
-            var config = ConfigureForMsSqlVersion(version, c => c.Events.OnAfterSqlStatementExecution(context => commandTimeout = context.DbCommand.CommandTimeout));
+            ConfigureForMsSqlVersion(version, c => c.Events.OnAfterSqlStatementExecution(context => commandTimeout = context.DbCommand.CommandTimeout));
 
             //when               
-            using var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            using var connection = db.GetConnection();
             var persons = await db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues(row => new Person { Id = row.ReadField()!.GetValue<int>() }).ExecuteAsync(connection, expectedCommandTimeout);
 
             //then
@@ -710,7 +710,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         {
             //given
             int commandTimeout = 0;
-            var config = ConfigureForMsSqlVersion(version, c => c.Events.OnAfterSqlStatementExecution(context => commandTimeout = context.DbCommand.CommandTimeout));
+            ConfigureForMsSqlVersion(version, c => c.Events.OnAfterSqlStatementExecution(context => commandTimeout = context.DbCommand.CommandTimeout));
 
             //when               
             var person = await db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue(row => new Person { Id = row.ReadField()!.GetValue<int>() }).ExecuteAsync(expectedCommandTimeout);
@@ -726,10 +726,10 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_execute_async_stored_procedure_with_input_parameter_and_provided_connection_and_return_a_person(int version, int id = 1)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
+            ConfigureForMsSqlVersion(version);
 
             //when               
-            using var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            using var connection = db.GetConnection();
             var person = await db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue(row => new Person { Id = row.ReadField()!.GetValue<int>() }).ExecuteAsync(connection);
 
             //then
@@ -743,10 +743,10 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         {
             //given
             int commandTimeout = 0;
-            var config = ConfigureForMsSqlVersion(version, c => c.Events.OnAfterSqlStatementExecution(context => commandTimeout = context.DbCommand.CommandTimeout));
+            ConfigureForMsSqlVersion(version, c => c.Events.OnAfterSqlStatementExecution(context => commandTimeout = context.DbCommand.CommandTimeout));
 
             //when               
-            using var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            using var connection = db.GetConnection();
             var person = await db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue(row => new Person { Id = row.ReadField()!.GetValue<int>() }).ExecuteAsync(connection, expectedCommandTimeout);
 
             //then

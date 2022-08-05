@@ -16,8 +16,9 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Configuration;
+using HatTrick.DbEx.Sql.Connection;
 using HatTrick.DbEx.Sql.Expression;
+using HatTrick.DbEx.Sql.Pipeline;
 using System;
 using System.Linq;
 
@@ -29,15 +30,20 @@ namespace HatTrick.DbEx.Sql.Builder
     {
         #region internals
         private readonly UpdateQueryExpression _expression;
+        protected Func<IUpdateQueryExecutionPipeline<TDatabase>> ExecutionPipelineFactory { get; private set; }
         protected override QueryExpression Expression => UpdateQueryExpression;
         public UpdateQueryExpression UpdateQueryExpression => _expression;
         #endregion
 
         #region constructors
-        public UpdateQueryExpressionBuilder(UpdateQueryExpression expression, SqlDatabaseRuntimeConfiguration config)
-            : base(config)
+        public UpdateQueryExpressionBuilder(
+            ISqlDatabaseRuntime database,
+            UpdateQueryExpression expression,
+            Func<IUpdateQueryExecutionPipeline<TDatabase>> executionPipelineFactory
+        ) : base(database)
         {
             _expression = expression ?? throw new ArgumentNullException(nameof(expression));
+            ExecutionPipelineFactory = executionPipelineFactory ?? throw new ArgumentNullException(nameof(executionPipelineFactory));
         }
         #endregion
 
@@ -45,7 +51,10 @@ namespace HatTrick.DbEx.Sql.Builder
         #region UpdateEntities<TDatabase>
         /// <inheritdoc />
         UpdateEntitiesContinuation<TDatabase, TEntity> UpdateEntities<TDatabase>.From<TEntity>(Table<TEntity> entity)
-            => CreateTypedBuilder(UpdateQueryExpression, Configuration, entity);
+        {
+            UpdateQueryExpression.From = entity ?? throw new ArgumentNullException(nameof(entity));
+            return new UpdateEntitiesUpdateQueryExpressionBuilder<TDatabase, TEntity>(Database, UpdateQueryExpression, ExecutionPipelineFactory);
+        }
 
         /// <inheritdoc />
         UpdateEntities<TDatabase> UpdateEntities<TDatabase>.Top(int value)
@@ -54,13 +63,6 @@ namespace HatTrick.DbEx.Sql.Builder
             return this;
         }
         #endregion
-
-        protected static UpdateEntitiesContinuation<TDatabase, TEntity> CreateTypedBuilder<TEntity>(UpdateQueryExpression expression, SqlDatabaseRuntimeConfiguration configuration, Table<TEntity> entity)
-            where TEntity : class, IDbEntity
-        {
-            (expression ?? throw new ArgumentNullException(nameof(expression))).From = entity ?? throw new ArgumentNullException(nameof(entity));
-            return new UpdateEntitiesUpdateQueryExpressionBuilder<TDatabase, TEntity>(expression, configuration);
-        }
 
         protected void Where(AnyWhereExpression expression)
         {

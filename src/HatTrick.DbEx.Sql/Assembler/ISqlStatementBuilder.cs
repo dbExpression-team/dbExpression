@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,7 +29,6 @@ namespace HatTrick.DbEx.Sql.Assembler
         #endregion
 
         #region methods
-        SqlStatement CreateSqlStatement();
         void AppendElement<T>(T element, AssemblyContext context)
             where T : class, IExpressionElement;
         string GenerateAlias();

@@ -16,9 +16,9 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Connection;
 using HatTrick.DbEx.Sql.Expression;
+using HatTrick.DbEx.Sql.Pipeline;
 using System;
 using System.Data;
 using System.Threading;
@@ -32,8 +32,11 @@ namespace HatTrick.DbEx.Sql.Builder
         where TDatabase : class, ISqlDatabaseRuntime
     {
         #region constructors
-        public SelectValueStoredProcedureQueryExpressionBuilder(StoredProcedureQueryExpression expression, SqlDatabaseRuntimeConfiguration config)
-            : base(expression, config)
+        public SelectValueStoredProcedureQueryExpressionBuilder(
+            ISqlDatabaseRuntime database,
+            StoredProcedureQueryExpression expression,
+            Func<IStoredProcedureExecutionPipeline<TDatabase>> executionPipelineFactory
+        ) : base(database, expression, executionPipelineFactory)
         {
 
         }
@@ -44,7 +47,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         TValue? SelectValueStoredProcedureTermination<TDatabase, TValue>.Execute()
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return ExecuteValuePipeline(
                 connection,
                 null
@@ -63,7 +66,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
 		TValue? SelectValueStoredProcedureTermination<TDatabase, TValue>.Execute(int commandTimeout)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return ExecuteValuePipeline(
                 connection,
                 command => command.CommandTimeout = commandTimeout
@@ -82,7 +85,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
 		async Task<TValue?> SelectValueStoredProcedureTermination<TDatabase, TValue>.ExecuteAsync(CancellationToken cancellationToken)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return await ExecuteValuePipelineAsync(
                 connection,
                 null,
@@ -103,7 +106,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
 		async Task<TValue?> SelectValueStoredProcedureTermination<TDatabase, TValue>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return await ExecuteValuePipelineAsync(
                 connection,
                 command => command.CommandTimeout = commandTimeout,
@@ -122,10 +125,10 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         protected virtual TValue? ExecuteValuePipeline(ISqlConnection connection, Action<IDbCommand>? configureCommand)
-            => CreateStoredProcedureExecutionPipeline().ExecuteSelectValue<TValue>(StoredProcedureQueryExpression, connection, configureCommand);
+            => ExecutionPipelineFactory().ExecuteSelectValue<TValue>(StoredProcedureQueryExpression, connection, configureCommand);
 
         protected virtual async Task<TValue?> ExecuteValuePipelineAsync(ISqlConnection connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
-            => await CreateStoredProcedureExecutionPipeline().ExecuteSelectValueAsync<TValue>(StoredProcedureQueryExpression, connection, configureCommand, ct).ConfigureAwait(false);
+            => await ExecutionPipelineFactory().ExecuteSelectValueAsync<TValue>(StoredProcedureQueryExpression, connection, configureCommand, ct).ConfigureAwait(false);
 
         #endregion
         #endregion

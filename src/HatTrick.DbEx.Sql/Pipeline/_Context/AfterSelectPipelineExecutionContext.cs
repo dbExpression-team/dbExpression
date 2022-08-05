@@ -16,16 +16,14 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
-using System;
 
 namespace HatTrick.DbEx.Sql.Pipeline
 {
     public class AfterSelectPipelineExecutionContext : PipelineExecutionContext, IPipelineExecutionContext
     {
-        public AfterSelectPipelineExecutionContext(SqlDatabaseRuntimeConfiguration database, QueryExpression expression)
-            : base(database, expression)
+        public AfterSelectPipelineExecutionContext(QueryExpression expression)
+            : base(expression)
         {
 
         }

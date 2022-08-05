@@ -16,12 +16,13 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using System;
+using System;
 using System.Data;
 
 namespace HatTrick.DbEx.Sql.Connection
 {
-    public class DelegateSqlConnectionFactory : ISqlConnectionFactory
+    public class DelegateSqlConnectionFactory<TDatabase> : ISqlConnectionFactory<TDatabase>
+        where TDatabase : class, ISqlDatabaseRuntime
     {
         #region internals
         private readonly Func<string, IDbConnection> factory;

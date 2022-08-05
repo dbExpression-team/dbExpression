@@ -16,14 +16,14 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using HatTrick.DbEx.Sql.Configuration;
-using HatTrick.DbEx.Sql.Connection;
+using HatTrick.DbEx.Sql.Pipeline;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
+using HatTrick.DbEx.Sql.Connection;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
@@ -38,9 +38,10 @@ namespace HatTrick.DbEx.Sql.Builder
     {
         #region constructors
         public SelectValuesSelectQueryExpressionBuilder(
-            SqlDatabaseRuntimeConfiguration config,
-            SelectSetQueryExpressionBuilder<TDatabase> controller
-        ) : base(config, controller)
+            ISqlDatabaseRuntime database,
+            Func<ISelectQueryExecutionPipeline<TDatabase>> executionPipelineFactory,
+            SelectSetQueryExpressionBuilder<TDatabase> controller //name the type something better
+        ) : base(database, executionPipelineFactory, controller)
         {
 
         }
@@ -66,7 +67,7 @@ namespace HatTrick.DbEx.Sql.Builder
         SelectValues<TDatabase, TValue> UnionSelectValuesContinuation<TDatabase, TValue>.SelectOne(AnyElement<TValue> element)
         {
             var exp = Controller.StartNew();
-            exp.Select = new(element?.ToSelectExpression(Configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(element)));
+            exp.Select = new(element?.ToSelectExpression(Database.MetadataProvider) ?? throw new ArgumentNullException(nameof(element)));
             exp.Top = 1;
             return this;
         }
@@ -75,7 +76,7 @@ namespace HatTrick.DbEx.Sql.Builder
         SelectValues<TDatabase, TValue> UnionSelectValuesContinuation<TDatabase, TValue>.SelectOne(StringElement element)
         {
             var exp = Controller.StartNew();
-            exp.Select = new(element?.ToSelectExpression(Configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(element)));
+            exp.Select = new(element?.ToSelectExpression(Database.MetadataProvider) ?? throw new ArgumentNullException(nameof(element)));
             exp.Top = 1;
             return this;
         }
@@ -84,7 +85,7 @@ namespace HatTrick.DbEx.Sql.Builder
         SelectValues<TDatabase, TValue> UnionSelectValuesContinuation<TDatabase, TValue>.SelectOne(NullableStringElement element)
         {
             var exp = Controller.StartNew();
-            exp.Select = new(element?.ToSelectExpression(Configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(element)));
+            exp.Select = new(element?.ToSelectExpression(Database.MetadataProvider) ?? throw new ArgumentNullException(nameof(element)));
             exp.Top = 1;
             return this;
         }
@@ -92,21 +93,21 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc>
         SelectValues<TDatabase, TValue> UnionSelectValuesContinuation<TDatabase, TValue>.SelectMany(AnyElement<TValue> element)
         {
-            Controller.StartNew().Select = new(element?.ToSelectExpression(Configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(element)));
+            Controller.StartNew().Select = new(element?.ToSelectExpression(Database.MetadataProvider) ?? throw new ArgumentNullException(nameof(element)));
             return this;
         }
 
         /// <inheritdoc>
         SelectValues<TDatabase, TValue> UnionSelectValuesContinuation<TDatabase, TValue>.SelectMany(StringElement element)
         {
-            Controller.StartNew().Select = new(element?.ToSelectExpression(Configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(element)));
+            Controller.StartNew().Select = new(element?.ToSelectExpression(Database.MetadataProvider) ?? throw new ArgumentNullException(nameof(element)));
             return this;
         }
 
         /// <inheritdoc>
         SelectValues<TDatabase, TValue> UnionSelectValuesContinuation<TDatabase, TValue>.SelectMany(NullableStringElement element)
         {
-            Controller.StartNew().Select = new(element?.ToSelectExpression(Configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(element)));
+            Controller.StartNew().Select = new(element?.ToSelectExpression(Database.MetadataProvider) ?? throw new ArgumentNullException(nameof(element)));
             return this;
         }
         #endregion
@@ -281,7 +282,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         IList<TValue> SelectValuesTermination<TDatabase, TValue>.Execute()
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return ExecutePipeline(
                 connection,
                 null
@@ -294,7 +295,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return ExecutePipeline(
                 connection,
                 command => command.CommandTimeout = commandTimeout
@@ -325,7 +326,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         void SelectValuesTermination<TDatabase, TValue>.Execute(Action<TValue?> handleValue)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             ExecutePipeline(
                 connection,
                 null,
@@ -339,7 +340,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             ExecutePipeline(
                 connection,
                 command => command.CommandTimeout = commandTimeout,
@@ -373,7 +374,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         async Task<IList<TValue>> SelectValuesTermination<TDatabase, TValue>.ExecuteAsync(CancellationToken cancellationToken)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return await ExecutePipelineAsync(
                 connection,
                 null,
@@ -387,7 +388,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return await ExecutePipelineAsync(
                 connection,
                 command => command.CommandTimeout = commandTimeout,
@@ -421,7 +422,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         async Task SelectValuesTermination<TDatabase, TValue>.ExecuteAsync(Action<TValue?> read, CancellationToken cancellationToken)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             await ExecutePipelineAsync(
                 connection,
                 null,
@@ -436,7 +437,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             await ExecutePipelineAsync(
                 connection,
                 command => command.CommandTimeout = commandTimeout,
@@ -473,7 +474,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         async Task SelectValuesTermination<TDatabase, TValue>.ExecuteAsync(Func<TValue?, Task> read, CancellationToken cancellationToken)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             await ExecutePipelineAsync(
                 connection,
                 null,
@@ -488,7 +489,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             await ExecutePipelineAsync(
                 connection,
                 command => command.CommandTimeout = commandTimeout,

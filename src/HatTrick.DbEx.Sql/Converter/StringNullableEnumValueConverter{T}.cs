@@ -20,11 +20,15 @@ using System;
 
 namespace HatTrick.DbEx.Sql.Converter
 {
-    public class StringNullableEnumValueConverter<T> : StringNullableEnumValueConverter
+    public class StringNullableEnumValueConverter<TEnum> : StringNullableEnumValueConverter, IValueConverter<TEnum?>
+        where TEnum : struct, Enum, IComparable
     {
-        public StringNullableEnumValueConverter() : base(typeof(T))
+        public StringNullableEnumValueConverter() : base(typeof(TEnum))
         {
 
         }
+
+        public new virtual TEnum? ConvertFromDatabase(object? value)
+            => (TEnum)Enum.Parse(typeof(TEnum), value as string ?? throw new DbExpressionException("Expected a string value for conversion from the database."));
     }
 }

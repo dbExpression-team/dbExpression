@@ -16,7 +16,6 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Connection;
 using HatTrick.DbEx.Sql.Expression;
 using HatTrick.DbEx.Sql.Pipeline;
@@ -40,18 +39,24 @@ namespace HatTrick.DbEx.Sql.Builder
         where TEntity : class, IDbEntity
     {
         #region internals
-         private readonly InsertQueryExpression _expression;
-       private readonly IEnumerable<TEntity> _instances;
+        private readonly InsertQueryExpression _expression;
+        private readonly IEnumerable<TEntity> _instances;
+        protected Func<IInsertQueryExecutionPipeline<TDatabase>> ExecutionPipelineFactory { get; private set; }
         protected override QueryExpression Expression => InsertQueryExpression;
         public InsertQueryExpression InsertQueryExpression => _expression;
         #endregion
 
         #region constructors
-        public InsertQueryExpressionBuilder(InsertQueryExpression expression, SqlDatabaseRuntimeConfiguration configuration, IEnumerable<TEntity> instances) 
-            : base(configuration)
+        public InsertQueryExpressionBuilder(
+            ISqlDatabaseRuntime database,
+            InsertQueryExpression expression,
+            IEnumerable<TEntity> instances,
+            Func<IInsertQueryExecutionPipeline<TDatabase>> executionPipelineFactory
+        ) : base(database)
         {
             _expression = expression ?? throw new ArgumentNullException(nameof(expression));
             _instances = instances ?? throw new ArgumentNullException(nameof(instances));
+            ExecutionPipelineFactory = executionPipelineFactory ?? throw new ArgumentNullException(nameof(executionPipelineFactory));
         }
         #endregion
 
@@ -87,7 +92,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (!InsertQueryExpression.Inserts.Any())
                 return;
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             ExecutePipeline(
                 connection,
                 null
@@ -103,7 +108,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (!InsertQueryExpression.Inserts.Any())
                 return;
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             ExecutePipeline(
                 connection,
                 command => command.CommandTimeout = commandTimeout
@@ -143,7 +148,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (!InsertQueryExpression.Inserts.Any())
                 return;
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             await ExecutePipelineAsync(
                 connection,
                 null,
@@ -173,7 +178,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (!InsertQueryExpression.Inserts.Any())
                 return;
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             await ExecutePipelineAsync(
                 connection,
                 command => command.CommandTimeout = commandTimeout,
@@ -205,7 +210,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (!InsertQueryExpression.Inserts.Any())
                 return;
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             ExecutePipeline(
                 connection,
                 null
@@ -221,7 +226,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (!InsertQueryExpression.Inserts.Any())
                 return;
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             ExecutePipeline(
                 connection,
                 command => command.CommandTimeout = commandTimeout
@@ -261,7 +266,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (!InsertQueryExpression.Inserts.Any())
                 return;
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             await ExecutePipelineAsync(
                 connection,
                 null,
@@ -291,7 +296,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (!InsertQueryExpression.Inserts.Any())
                 return;
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             await ExecutePipelineAsync(
                 connection,
                 command => command.CommandTimeout = commandTimeout,
@@ -317,15 +322,10 @@ namespace HatTrick.DbEx.Sql.Builder
 
         #endregion
         protected virtual void ExecutePipeline(ISqlConnection connection, Action<IDbCommand>? configureCommand)
-            => CreateInsertExecutionPipeline().ExecuteInsert(InsertQueryExpression, connection, configureCommand);
+            => ExecutionPipelineFactory().ExecuteInsert<TEntity>(InsertQueryExpression, connection, configureCommand);
 
         protected virtual async Task ExecutePipelineAsync(ISqlConnection connection, Action<IDbCommand>? configureCommand, CancellationToken cancellationToken)
-            => await CreateInsertExecutionPipeline().ExecuteInsertAsync(InsertQueryExpression, connection, configureCommand, cancellationToken).ConfigureAwait(false);
-
-        protected virtual IInsertQueryExpressionExecutionPipeline CreateInsertExecutionPipeline()
-        {
-            return Configuration.ExecutionPipelineFactory.CreateQueryExecutionPipeline<TEntity>(Configuration, InsertQueryExpression);
-        }
+            => await ExecutionPipelineFactory().ExecuteInsertAsync<TEntity>(InsertQueryExpression, connection, configureCommand, cancellationToken).ConfigureAwait(false);
         #endregion
     }
 }

@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,7 +20,8 @@ using HatTrick.DbEx.Sql.Expression;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
-    public interface ISqlStatementAssembler
+    public interface ISqlStatementAssembler<TDatabase>
+        where TDatabase : class, ISqlDatabaseRuntime
     {
         void AssembleStatement(QueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context);
     }

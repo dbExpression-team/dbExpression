@@ -1,5 +1,6 @@
 using DbEx.DataService;
 using FluentAssertions;
+using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Expression;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,13 +11,12 @@ namespace HatTrick.DbEx.MsSql.Extensions.DependencyInjection.Tests
 {
     public class ServiceRegistrationTests
     {
-        [Theory]
-        [InlineData(ServiceLifetime.Transient)]
-        public void Does_registering_a_database_transient_service_succeed_when_lifetime_of_db_is_less_than_or_equal_to_transient(ServiceLifetime dbLifetime)
+        [Fact]
+        public void Can_a_query_expression_factory_be_registered_and_resolved()
         {
             //given
             var services = new ServiceCollection();
-            var queryFactory = Substitute.For<IQueryExpressionFactory>();
+            var queryFactory = Substitute.For<IQueryExpressionFactory<MsSqlDb>>();
             DbExpressionConfigurationException? exception = null;
 
             //when
@@ -27,9 +27,7 @@ namespace HatTrick.DbEx.MsSql.Extensions.DependencyInjection.Tests
                     {
 
                         dbex.AddMsSql2019Database<MsSqlDb>(
-                            (serviceProvider, database) => { },
-                            lifetime: dbLifetime,
-                            databaseServiceCollection: services => services.AddTransient(sp => queryFactory)
+                            c => c.QueryExpressions.Use(queryFactory)
                         );
                     }
                 );
@@ -43,14 +41,12 @@ namespace HatTrick.DbEx.MsSql.Extensions.DependencyInjection.Tests
             exception.Should().BeNull();
         }
 
-        [Theory]
-        [InlineData(ServiceLifetime.Transient)]
-        [InlineData(ServiceLifetime.Scoped)]
-        public void Does_registering_a_database_scoped_service_succeed_when_lifetime_of_db_is_less_than_or_equal_to_scoped(ServiceLifetime dbLifetime)
+        [Fact]
+        public void Can_a_select_query_expression_be_registered_and_resolved()
         {
             //given
             var services = new ServiceCollection();
-            var queryFactory = Substitute.For<IQueryExpressionFactory>();
+            var queryFactory = Substitute.For<IQueryExpressionFactory<MsSqlDb>>();
             DbExpressionConfigurationException? exception = null;
 
             //when
@@ -61,9 +57,7 @@ namespace HatTrick.DbEx.MsSql.Extensions.DependencyInjection.Tests
                     {
 
                         dbex.AddMsSql2019Database<MsSqlDb>(
-                            (serviceProvider, database) => { },
-                            lifetime: dbLifetime,
-                            databaseServiceCollection: services => services.AddScoped(sp => queryFactory)
+                            c => c.QueryExpressions.Use((sp, t) => queryFactory.CreateQueryExpression(t))
                         );
                     }
                 );
@@ -77,15 +71,12 @@ namespace HatTrick.DbEx.MsSql.Extensions.DependencyInjection.Tests
             exception.Should().BeNull();
         }
 
-        [Theory]
-        [InlineData(ServiceLifetime.Transient)]
-        [InlineData(ServiceLifetime.Scoped)]
-        [InlineData(ServiceLifetime.Singleton)]
-        public void Does_registering_a_database_singleton_service_succeed_when_lifetime_of_db_is_less_than_or_equal_to_singleton(ServiceLifetime dbLifetime)
+        [Fact]
+        public void Can_a_no_op_config_register_with_no_exception()
         {
             //given
             var services = new ServiceCollection();
-            var queryFactory = Substitute.For<IQueryExpressionFactory>();
+            var queryFactory = Substitute.For<IQueryExpressionFactory<MsSqlDb>>();
             DbExpressionConfigurationException? exception = null;
 
             //when
@@ -96,9 +87,7 @@ namespace HatTrick.DbEx.MsSql.Extensions.DependencyInjection.Tests
                     {
 
                         dbex.AddMsSql2019Database<MsSqlDb>(
-                            (serviceProvider, database) => { },
-                            lifetime: dbLifetime,
-                            databaseServiceCollection: services => services.AddSingleton(sp => queryFactory)
+                            c => { }
                         );
                     }
                 );
@@ -110,73 +99,6 @@ namespace HatTrick.DbEx.MsSql.Extensions.DependencyInjection.Tests
 
             //then
             exception.Should().BeNull();
-        }
-
-        [Theory]
-        [InlineData(ServiceLifetime.Scoped)]
-        [InlineData(ServiceLifetime.Singleton)]
-        public void Does_registering_a_database_transient_service_fail_when_lifetime_of_db_is_greater_than_transient(ServiceLifetime dbLifetime)
-        {
-            //given
-            var services = new ServiceCollection();
-            var queryFactory = Substitute.For<IQueryExpressionFactory>();
-            DbExpressionConfigurationException? exception = null;
-
-            //when
-            try
-            {
-                services.AddDbExpression(
-                    dbex =>
-                    {
-
-                        dbex.AddMsSql2019Database<MsSqlDb>(
-                            (serviceProvider, database) => { },
-                            lifetime: dbLifetime,
-                            databaseServiceCollection: services => services.AddTransient(sp => queryFactory)
-                        );
-                    }
-                );
-            }
-            catch (DbExpressionConfigurationException ex)
-            {
-                exception = ex;
-            }
-
-            //then
-            exception.Should().NotBeNull();
-        }
-
-        [Theory]
-        [InlineData(ServiceLifetime.Singleton)]
-        public void Does_registering_a_database_transient_service_fail_when_lifetime_of_db_is_greater_than_scoped(ServiceLifetime dbLifetime)
-        {
-            //given
-            var services = new ServiceCollection();
-            var queryFactory = Substitute.For<IQueryExpressionFactory>();
-            DbExpressionConfigurationException? exception = null;
-
-            //when
-            try
-            {
-                services.AddDbExpression(
-                    dbex =>
-                    {
-
-                        dbex.AddMsSql2019Database<MsSqlDb>(
-                            (serviceProvider, database) => { },
-                            lifetime: dbLifetime,
-                            databaseServiceCollection: services => services.AddScoped(sp => queryFactory)
-                        );
-                    }
-                );
-            }
-            catch (DbExpressionConfigurationException ex)
-            {
-                exception = ex;
-            }
-
-            //then
-            exception.Should().NotBeNull();
         }
     }
 }

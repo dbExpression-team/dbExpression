@@ -17,7 +17,6 @@
 #endregion
 
 ﻿using HatTrick.DbEx.Sql.Assembler;
-using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 
@@ -31,8 +30,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
 
         #region constructors
-        public BeforeDeletePipelineExecutionContext(SqlDatabaseRuntimeConfiguration database, DeleteQueryExpression expression, ISqlParameterBuilder parameterBuilder, SqlStatement statement)
-            : base(database, expression)
+        public BeforeDeletePipelineExecutionContext(DeleteQueryExpression expression, ISqlParameterBuilder parameterBuilder, SqlStatement statement)
+            : base(expression)
         {
             ParameterBuilder = parameterBuilder ?? throw new ArgumentNullException(nameof(parameterBuilder));
             SqlStatement = statement ?? throw new ArgumentNullException(nameof(statement));

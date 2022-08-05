@@ -17,7 +17,6 @@
 #endregion
 
 using HatTrick.DbEx.Sql.Assembler;
-using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 
@@ -28,8 +27,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
         public ISqlParameterBuilder ParameterBuilder { get; private set; }
         public SqlStatement SqlStatement { get; private set; }
 
-        public BeforeStoredProcedurePipelineExecutionContext(SqlDatabaseRuntimeConfiguration database, StoredProcedureQueryExpression expression, SqlStatement statement, ISqlParameterBuilder parameterBuilder)
-            : base(database, expression)
+        public BeforeStoredProcedurePipelineExecutionContext(StoredProcedureQueryExpression expression, SqlStatement statement, ISqlParameterBuilder parameterBuilder)
+            : base(expression)
         {
             SqlStatement = statement ?? throw new ArgumentNullException(nameof(statement));
             ParameterBuilder = parameterBuilder ?? throw new ArgumentNullException(nameof(parameterBuilder));

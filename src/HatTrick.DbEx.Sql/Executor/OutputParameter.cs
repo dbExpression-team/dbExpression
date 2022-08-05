@@ -47,7 +47,7 @@ namespace HatTrick.DbEx.Sql.Executor
 
         #region methods
         public T? GetValue<T>()
-            => FindValueConverter(this, typeof(T)).ConvertFromDatabase<T>(RawValue is DBNull ? default : RawValue);
+            => (T?)FindValueConverter(this, typeof(T)).ConvertFromDatabase(RawValue is DBNull ? default : RawValue);
 
         public object? GetValue()
             => FindValueConverter(this, typeof(object)).ConvertFromDatabase(RawValue is DBNull ? default : RawValue);

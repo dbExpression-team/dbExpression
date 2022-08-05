@@ -16,13 +16,21 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
+using System;
+
 namespace HatTrick.DbEx.Sql.Converter
 {
-    public class StringEnumValueConverter<TEnum> : StringEnumValueConverter
+    public class StringEnumValueConverter<TEnum> : StringEnumValueConverter, IValueConverter<TEnum>
+        where TEnum : struct, Enum, IComparable
     {
         public StringEnumValueConverter() : base(typeof(TEnum))
         {
 
         }
+
+        public new virtual TEnum ConvertFromDatabase(object? value)
+            => (TEnum)Enum.Parse(typeof(TEnum), value as string 
+                    ?? throw new DbExpressionException("Expected a string value for conversion from the database."));
+
     }
 }

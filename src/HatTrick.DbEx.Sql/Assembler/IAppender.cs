@@ -35,6 +35,6 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         IAppender IfNotEmpty(string test, params Action<Appender>[] values);
 
-        string ToString();
+        string? ToString();
     }
 }

@@ -16,9 +16,9 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Connection;
 using HatTrick.DbEx.Sql.Expression;
+using HatTrick.DbEx.Sql.Pipeline;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -33,8 +33,11 @@ namespace HatTrick.DbEx.Sql.Builder
         where TDatabase : class, ISqlDatabaseRuntime
     {
         #region constructors
-        public SelectValuesStoredProcedureQueryExpressionBuilder(StoredProcedureQueryExpression expression, SqlDatabaseRuntimeConfiguration config)
-            : base(expression, config)
+        public SelectValuesStoredProcedureQueryExpressionBuilder(
+            ISqlDatabaseRuntime database,
+            StoredProcedureQueryExpression expression,
+            Func<IStoredProcedureExecutionPipeline<TDatabase>> executionPipelineFactory
+        ) : base(database, expression, executionPipelineFactory)
         {
 
         }
@@ -45,7 +48,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         IList<TValue> SelectValuesStoredProcedureTermination<TDatabase, TValue>.Execute()
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return ExecuteValueListPipeline(
                 connection,
                 null
@@ -64,7 +67,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
 		IList<TValue> SelectValuesStoredProcedureTermination<TDatabase, TValue>.Execute(int commandTimeout)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return ExecuteValueListPipeline(
                 connection,
                 command => command.CommandTimeout = commandTimeout
@@ -83,7 +86,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
 		async Task<IList<TValue>> SelectValuesStoredProcedureTermination<TDatabase, TValue>.ExecuteAsync(CancellationToken cancellationToken)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return await ExecuteValueListPipelineAsync(
                 connection,
                 null,
@@ -104,7 +107,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
 		async Task<IList<TValue>> SelectValuesStoredProcedureTermination<TDatabase, TValue>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return await ExecuteValueListPipelineAsync(
                 connection,
                 command => command.CommandTimeout = commandTimeout,
@@ -123,10 +126,10 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         protected virtual IList<TValue> ExecuteValueListPipeline(ISqlConnection connection, Action<IDbCommand>? configureCommand)
-            => CreateStoredProcedureExecutionPipeline().ExecuteSelectValueList<TValue>(StoredProcedureQueryExpression, connection, configureCommand);
+            => ExecutionPipelineFactory().ExecuteSelectValueList<TValue>(StoredProcedureQueryExpression, connection, configureCommand);
 
         protected virtual async Task<IList<TValue>> ExecuteValueListPipelineAsync(ISqlConnection connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
-            => await CreateStoredProcedureExecutionPipeline().ExecuteSelectValueListAsync<TValue>(StoredProcedureQueryExpression, connection, configureCommand, ct).ConfigureAwait(false);
+            => await ExecutionPipelineFactory().ExecuteSelectValueListAsync<TValue>(StoredProcedureQueryExpression, connection, configureCommand, ct).ConfigureAwait(false);
 
         #endregion
         #endregion

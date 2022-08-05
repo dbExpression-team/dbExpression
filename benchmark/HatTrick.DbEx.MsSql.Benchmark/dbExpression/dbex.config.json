@@ -19,6 +19,12 @@
 	"overrides": [
 		{
 			"apply": {
+				"name": "BenchmarkDatabase",
+				"to": { "path": "." }
+			}
+		},
+		{
+			"apply": {
 				"ignore": true,
 				"to": { "path": "unit_test" }
 			}
@@ -34,14 +40,6 @@
 				"ignore": true,
 				"to": { "path": "sec.sysdiagrams" }
 
-			}
-		},
-		{
-			"apply": {
-				"name": "MsSqlDb",
-				"to": {
-					"path": "."
-				}
 			}
 		},
 		{

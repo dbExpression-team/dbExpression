@@ -4,6 +4,7 @@ using HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService;
 using HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboData;
 using HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService;
 using HatTrick.DbEx.MsSql.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace HatTrick.DbEx.MsSql.Benchmark
 {
@@ -16,7 +17,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark
 
         [GlobalSetup]
         public void ConfigureDbExpression()
-            => Sql.Configuration.dbExpression.Configure(dbex => dbex.AddMsSql2019Database<MsSqlDb>(database => database.ConnectionString.Use(connectionString)));
+            => Sql.Configuration.dbExpression.Configure(dbex => dbex.AddMsSql2019Database<BenchmarkDatabase>(db => db.ConnectionString.Use(connectionString)));
 
         [Benchmark]
         public void CreateSelectQueryExpression()

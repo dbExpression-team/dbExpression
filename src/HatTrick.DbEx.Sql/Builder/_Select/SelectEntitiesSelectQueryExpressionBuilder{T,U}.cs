@@ -16,10 +16,10 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Connection;
 using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
+using HatTrick.DbEx.Sql.Pipeline;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -44,10 +44,11 @@ namespace HatTrick.DbEx.Sql.Builder
 
         #region constructors
         public SelectEntitiesSelectQueryExpressionBuilder(
-            SqlDatabaseRuntimeConfiguration config,
+            ISqlDatabaseRuntime database,
+            Func<ISelectQueryExecutionPipeline<TDatabase>> executionPipelineFactory,
             SelectSetQueryExpressionBuilder<TDatabase> controller,
             Table<TEntity> table
-        ) : base(config, controller)
+        ) : base(database, executionPipelineFactory, controller)
         {
             this.table = table ?? throw new ArgumentNullException(nameof(table));
         }
@@ -252,7 +253,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         IList<TEntity> SelectEntitiesTermination<TDatabase, TEntity>.Execute()
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return ExecutePipeline(
                 connection,
                 null
@@ -265,7 +266,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return ExecutePipeline(
                 connection,
                 command => command.CommandTimeout = commandTimeout
@@ -296,7 +297,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         IList<TEntity> SelectEntitiesTermination<TDatabase, TEntity>.Execute(Func<ISqlFieldReader, TEntity> map)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return ExecutePipeline(
                 connection,
                 null,
@@ -310,7 +311,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return ExecutePipeline(
                 connection,
                 command => command.CommandTimeout = commandTimeout,
@@ -344,7 +345,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         void SelectEntitiesTermination<TDatabase, TEntity>.Execute(Action<ISqlFieldReader> map)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             ExecutePipeline(
                 connection,
                 null,
@@ -358,7 +359,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             ExecutePipeline(
                 connection,
                 command => command.CommandTimeout = commandTimeout,
@@ -392,7 +393,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         IList<TEntity> SelectEntitiesTermination<TDatabase, TEntity>.Execute(Action<ISqlFieldReader, TEntity> map)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return ExecutePipeline(
                 connection,
                 null,
@@ -406,7 +407,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return ExecutePipeline(
                 connection,
                 command => command.CommandTimeout = commandTimeout,
@@ -440,7 +441,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         async Task<IList<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(CancellationToken cancellationToken)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return await ExecutePipelineAsync(
                 connection,
                 null,
@@ -454,7 +455,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return await ExecutePipelineAsync(
                 connection,
                 command => command.CommandTimeout = commandTimeout,
@@ -488,7 +489,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         async Task SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(Action<ISqlFieldReader> read, CancellationToken cancellationToken)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             await ExecutePipelineAsync(
                 connection,
                 null,
@@ -503,7 +504,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             await ExecutePipelineAsync(
                 connection,
                 command => command.CommandTimeout = commandTimeout,
@@ -540,7 +541,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         async Task<IList<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(Action<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return await ExecutePipelineAsync(
                 connection,
                 null,
@@ -555,7 +556,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return await ExecutePipelineAsync(
                 connection,
                 command => command.CommandTimeout = commandTimeout,
@@ -592,7 +593,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         async Task<IList<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(Func<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return await ExecutePipelineAsync(
                 connection,
                 null,
@@ -607,7 +608,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return await ExecutePipelineAsync(
                 connection,
                 command => command.CommandTimeout = commandTimeout,
@@ -644,7 +645,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         async Task SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(Func<ISqlFieldReader, Task> read, CancellationToken cancellationToken)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             await ExecutePipelineAsync(
                 connection,
                 null,
@@ -659,7 +660,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             await ExecutePipelineAsync(
                 connection,
                 command => command.CommandTimeout = commandTimeout,
@@ -696,7 +697,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         async Task<IList<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(Func<ISqlFieldReader, TEntity, Task> map, CancellationToken cancellationToken)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return await ExecutePipelineAsync(
                 connection,
                 null,
@@ -711,7 +712,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return await ExecutePipelineAsync(
                 connection,
                 command => command.CommandTimeout = commandTimeout,

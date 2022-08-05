@@ -1,7 +1,9 @@
-﻿using HatTrick.DbEx.Sql;
-using HatTrick.DbEx.Sql.Configuration;
+﻿using HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService;
+using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Connection;
+using HatTrick.DbEx.Sql.Converter;
 using HatTrick.DbEx.Sql.Executor;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Data;
 using System.Threading;
@@ -11,16 +13,16 @@ namespace HatTrick.DbEx.MsSql.Benchmark
 {
     public class BenchmarkSqlStatementExecutor : ISqlStatementExecutor
     {
-        private readonly SqlDatabaseRuntimeConfiguration config;
+        private readonly IServiceProvider provider;
         private static ISqlRowReader _reader;
         private static IAsyncSqlRowReader _asyncReader;
 
-        private IAsyncSqlRowReader asyncReader => _asyncReader ?? (_asyncReader = new PersonRowReader(new SqlStatementValueConverterProvider(config.ValueConverterFactory)));
-        private ISqlRowReader reader => _reader ?? (_reader = new PersonRowReader(new SqlStatementValueConverterProvider(config.ValueConverterFactory)));
+        private IAsyncSqlRowReader asyncReader => _asyncReader ?? (_asyncReader = new PersonRowReader(new SqlStatementValueConverterProvider(provider.GetRequiredService<IValueConverterFactory<BenchmarkDatabase>>())));
+        private ISqlRowReader reader => _reader ?? (_reader = new PersonRowReader(new SqlStatementValueConverterProvider(provider.GetRequiredService<IValueConverterFactory<BenchmarkDatabase>>())));
 
-        public BenchmarkSqlStatementExecutor(SqlDatabaseRuntimeConfiguration config)
+        public BenchmarkSqlStatementExecutor(IServiceProvider provider)
         {
-            this.config = config;
+            this.provider = provider;
         }
 
         public int ExecuteNonQuery(SqlStatement statement, ISqlConnection connection, Action<IDbCommand> beforeExecution, Action<IDbCommand> afterExecution)

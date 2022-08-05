@@ -17,7 +17,6 @@
 #endregion
 
 ﻿using HatTrick.DbEx.Sql.Assembler;
-using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 
@@ -37,8 +36,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
 
         #region constructors
-        public BeforeInsertPipelineExecutionContext(SqlDatabaseRuntimeConfiguration database, InsertQueryExpression expression, IDbEntity entity, ISqlParameterBuilder parameterBuilder, SqlStatement statement)
-            : base(database, expression)
+        public BeforeInsertPipelineExecutionContext(InsertQueryExpression expression, IDbEntity entity, ISqlParameterBuilder parameterBuilder, SqlStatement statement)
+            : base(expression)
         {
             Expression = expression ?? throw new ArgumentNullException(nameof(expression));
             ParameterBuilder = parameterBuilder ?? throw new ArgumentNullException(nameof(parameterBuilder));

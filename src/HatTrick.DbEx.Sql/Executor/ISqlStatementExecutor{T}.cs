@@ -16,14 +16,11 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Connection;
-using System.Collections.Generic;
-using System.Data.Common;
-
 namespace HatTrick.DbEx.Sql.Executor
 {
-    public interface ISqlStatmentExecutor<T> : ISqlStatementExecutor
+    public interface ISqlStatementExecutor<TDatabase> : ISqlStatementExecutor
+        where TDatabase : class, ISqlDatabaseRuntime
     {
-        T Execute(ISqlConnection connection, SqlStatement statement, int? commandTimeout = null);
+
     }
 }

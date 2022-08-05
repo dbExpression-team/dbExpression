@@ -18,15 +18,17 @@
 
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace HatTrick.DbEx.MsSql.Configuration
 {
-    public class MsSqlSqlDatabaseRuntimeConfigurationBuilder<TConfig> : SqlDatabaseRuntimeConfigurationBuilder<TConfig>
-        where TConfig : MsSqlSqlDatabaseRuntimeConfiguration
+    public class MsSqlSqlDatabaseRuntimeConfigurationBuilder<TDatabase> : SqlDatabaseRuntimeConfigurationBuilder<TDatabase>
+        where TDatabase : class, ISqlDatabaseRuntime
     {
         #region constructors
-        public MsSqlSqlDatabaseRuntimeConfigurationBuilder(TConfig config)
-            : base(config)
+        public MsSqlSqlDatabaseRuntimeConfigurationBuilder(IServiceCollection services)
+            : base(services)
         {
 
         }

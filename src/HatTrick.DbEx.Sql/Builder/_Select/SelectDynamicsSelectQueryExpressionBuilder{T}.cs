@@ -16,16 +16,16 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Connection;
 using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
+using HatTrick.DbEx.Sql.Pipeline;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
@@ -40,9 +40,10 @@ namespace HatTrick.DbEx.Sql.Builder
     {
         #region constructors
         public SelectDynamicsSelectQueryExpressionBuilder(
-            SqlDatabaseRuntimeConfiguration config,
+            ISqlDatabaseRuntime database,
+            Func<ISelectQueryExecutionPipeline<TDatabase>> executionPipelineFactory,
             SelectSetQueryExpressionBuilder<TDatabase> controller
-        ) : base(config, controller)
+        ) : base(database, executionPipelineFactory, controller)
         {
 
         }
@@ -68,7 +69,7 @@ namespace HatTrick.DbEx.Sql.Builder
         SelectDynamics<TDatabase> UnionSelectDynamicsContinuation<TDatabase>.SelectOne(IEnumerable<AnyElement> elements)
         {
             var exp = Controller.StartNew();
-            exp.Select = new(new List<SelectExpression>(elements.Select(element => element.ToSelectExpression(Configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(element)))));
+            exp.Select = new(new List<SelectExpression>(elements.Select(element => element.ToSelectExpression(Database.MetadataProvider) ?? throw new ArgumentNullException(nameof(element)))));
             exp.Top = 1;
             return this;
         }
@@ -79,9 +80,9 @@ namespace HatTrick.DbEx.Sql.Builder
             var exp = Controller.StartNew();
             exp.Select = new(new List<SelectExpression>(elements.Length + 2)
             {
-                element1?.ToSelectExpression(Configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(element1)),
-                element2?.ToSelectExpression(Configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(element2))
-            }.Concat(elements.Select(x => x.ToSelectExpression(Configuration.MetadataProvider))));
+                element1?.ToSelectExpression(Database.MetadataProvider) ?? throw new ArgumentNullException(nameof(element1)),
+                element2?.ToSelectExpression(Database.MetadataProvider) ?? throw new ArgumentNullException(nameof(element2))
+            }.Concat(elements.Select(x => x.ToSelectExpression(Database.MetadataProvider))));
             exp.Top = 1;
             return this;
         }
@@ -90,7 +91,7 @@ namespace HatTrick.DbEx.Sql.Builder
         SelectDynamics<TDatabase> UnionSelectDynamicsContinuation<TDatabase>.SelectOne(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
         {
             var exp = Controller.StartNew();
-            exp.Select = new(elements.Concat(additionalElements).Select(element => element.ToSelectExpression(Configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(element))));
+            exp.Select = new(elements.Concat(additionalElements).Select(element => element.ToSelectExpression(Database.MetadataProvider) ?? throw new ArgumentNullException(nameof(element))));
             exp.Top = 1;
             return this;
         }
@@ -98,7 +99,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc>
         SelectDynamics<TDatabase> UnionSelectDynamicsContinuation<TDatabase>.SelectMany(IEnumerable<AnyElement> elements)
         {
-            Controller.StartNew().Select = new(new List<SelectExpression>(elements.Select(element => element.ToSelectExpression(Configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(element)))));
+            Controller.StartNew().Select = new(new List<SelectExpression>(elements.Select(element => element.ToSelectExpression(Database.MetadataProvider) ?? throw new ArgumentNullException(nameof(element)))));
             return this;
         }
 
@@ -107,16 +108,16 @@ namespace HatTrick.DbEx.Sql.Builder
         {
             Controller.StartNew().Select = new(new List<SelectExpression>(elements.Length + 2)
             {
-                element1?.ToSelectExpression(Configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(element1)),
-                element2?.ToSelectExpression(Configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(element2))
-            }.Concat(elements.Select(x => x.ToSelectExpression(Configuration.MetadataProvider))));
+                element1?.ToSelectExpression(Database.MetadataProvider) ?? throw new ArgumentNullException(nameof(element1)),
+                element2?.ToSelectExpression(Database.MetadataProvider) ?? throw new ArgumentNullException(nameof(element2))
+            }.Concat(elements.Select(x => x.ToSelectExpression(Database.MetadataProvider))));
             return this;
         }
 
         /// <inheritdoc>
         SelectDynamics<TDatabase> UnionSelectDynamicsContinuation<TDatabase>.SelectMany(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
         {
-            Controller.StartNew().Select = new(elements.Concat(additionalElements).Select(element => element.ToSelectExpression(Configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(element))));
+            Controller.StartNew().Select = new(elements.Concat(additionalElements).Select(element => element.ToSelectExpression(Database.MetadataProvider) ?? throw new ArgumentNullException(nameof(element))));
             return this;
         }
         #endregion
@@ -291,7 +292,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         IList<dynamic> SelectDynamicsTermination<TDatabase>.Execute()
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return ExecutePipeline(
                 connection,
                 null
@@ -304,7 +305,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return ExecutePipeline(
                 connection,
                 command => command.CommandTimeout = commandTimeout
@@ -335,7 +336,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         async Task<IList<dynamic>> SelectDynamicsTermination<TDatabase>.ExecuteAsync(CancellationToken cancellationToken)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return await ExecutePipelineAsync(
                 connection,
                 null,
@@ -349,7 +350,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return await ExecutePipelineAsync(
                 connection,
                 command => command.CommandTimeout = commandTimeout,
@@ -383,7 +384,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         IList<T> SelectDynamicsTermination<TDatabase>.Execute<T>(Func<ISqlFieldReader, T> map)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return ExecutePipeline<T>(
                 connection,
                 null,
@@ -397,7 +398,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return ExecutePipeline(
                 connection,
                 command => command.CommandTimeout = commandTimeout,
@@ -431,7 +432,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         void SelectDynamicsTermination<TDatabase>.Execute(Action<ISqlFieldReader> map)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             ExecutePipeline(
                 connection,
                 null,
@@ -445,7 +446,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             ExecutePipeline(
                 connection,
                 command => command.CommandTimeout = commandTimeout,
@@ -479,7 +480,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         async Task<IList<T>> SelectDynamicsTermination<TDatabase>.ExecuteAsync<T>(Func<ISqlFieldReader, T> map, CancellationToken cancellationToken)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return await ExecutePipelineAsync(
                 connection,
                 null,
@@ -494,7 +495,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return await ExecutePipelineAsync(
                 connection,
                 command => command.CommandTimeout = commandTimeout,
@@ -531,7 +532,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         async Task SelectDynamicsTermination<TDatabase>.ExecuteAsync(Action<ISqlFieldReader> read, CancellationToken cancellationToken)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             await ExecutePipelineAsync(
                 connection,
                 null,
@@ -546,7 +547,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             await ExecutePipelineAsync(
                 connection,
                 command => command.CommandTimeout = commandTimeout,
@@ -583,7 +584,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         async Task SelectDynamicsTermination<TDatabase>.ExecuteAsync(Func<ISqlFieldReader, Task> read, CancellationToken cancellationToken)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             await ExecutePipelineAsync(
                 connection,
                 null,
@@ -598,7 +599,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             await ExecutePipelineAsync(
                 connection,
                 command => command.CommandTimeout = commandTimeout,

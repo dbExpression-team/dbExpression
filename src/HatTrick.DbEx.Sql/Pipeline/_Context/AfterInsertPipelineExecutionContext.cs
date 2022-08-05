@@ -16,7 +16,6 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 
@@ -33,8 +32,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
 
         #region constructors
-        public AfterInsertPipelineExecutionContext(SqlDatabaseRuntimeConfiguration database, InsertQueryExpression expression, IDbEntity entity)
-            : base(database, expression)
+        public AfterInsertPipelineExecutionContext(InsertQueryExpression expression, IDbEntity entity)
+            : base(expression)
         {
             this.entity = entity ?? throw new ArgumentNullException(nameof(entity));
         }

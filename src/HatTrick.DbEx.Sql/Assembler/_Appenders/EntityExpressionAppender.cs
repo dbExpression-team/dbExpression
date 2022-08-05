@@ -40,7 +40,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (context.IncludeSchemaName)
             {
                 builder.AppendElement((expression as Table).Schema, context);
-                builder.Appender.Write(".");
+                builder.Appender.Write('.');
             }
 
             builder.Appender

@@ -16,7 +16,6 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 
@@ -30,7 +29,7 @@ namespace HatTrick.DbEx.Sql.Builder
     {
         #region internals
         private string? _alias;
-        protected SqlDatabaseRuntimeConfiguration Configuration { get; private set; }
+        protected ISqlDatabaseRuntime Database { get; private set; }
         protected abstract QueryExpression Expression { get; }
         #endregion
 
@@ -40,13 +39,13 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
 
         #region constructors
-        protected QueryExpressionBuilder(SqlDatabaseRuntimeConfiguration configuration)
+        protected QueryExpressionBuilder(ISqlDatabaseRuntime database)
         {
-            this.Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            Database = database ?? throw new ArgumentNullException(nameof(database));
         }
         #endregion
 
-        #region methods
+        #region methods        
         protected void ApplyAlias(string alias)
             => _alias = alias;
 

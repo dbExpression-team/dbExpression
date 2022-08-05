@@ -20,19 +20,20 @@ using System;
 
 namespace HatTrick.DbEx.Sql.Executor
 {
-    public class DelegateSqlStatementExecutorFactory : ISqlStatementExecutorFactory
+    public class DelegateSqlStatementExecutorFactory<TDatabase> : ISqlStatementExecutorFactory<TDatabase>
+        where TDatabase : class, ISqlDatabaseRuntime
     {
         #region internals
-        private readonly Func<ISqlStatementExecutor> factory;
+        private readonly Func<ISqlStatementExecutor<TDatabase>> factory;
         #endregion
 
         #region constructors
-        public DelegateSqlStatementExecutorFactory(Func<ISqlStatementExecutor> factory)
+        public DelegateSqlStatementExecutorFactory(Func<ISqlStatementExecutor<TDatabase>> factory)
         {
             this.factory = factory ?? throw new ArgumentNullException(nameof(factory));
         }
 
-        public DelegateSqlStatementExecutorFactory(Func<ISqlStatementExecutorFactory> factory)
+        public DelegateSqlStatementExecutorFactory(Func<ISqlStatementExecutorFactory<TDatabase>> factory)
         {
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
@@ -42,7 +43,7 @@ namespace HatTrick.DbEx.Sql.Executor
         #endregion
 
         #region methods
-        public ISqlStatementExecutor CreateSqlStatementExecutor()
+        public ISqlStatementExecutor<TDatabase> CreateSqlStatementExecutor()
             => factory();
         #endregion
     }

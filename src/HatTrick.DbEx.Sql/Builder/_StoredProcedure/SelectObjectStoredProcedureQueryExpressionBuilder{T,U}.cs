@@ -16,12 +16,11 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Connection;
 using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
+using HatTrick.DbEx.Sql.Pipeline;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
@@ -36,8 +35,12 @@ namespace HatTrick.DbEx.Sql.Builder
         private readonly Func<ISqlFieldReader, T> map;
         Func<ISqlFieldReader, T> SelectObjectStoredProcedureTermination<TDatabase, T>.Map => map;
 
-        public SelectObjectStoredProcedureQueryExpressionBuilder(StoredProcedureQueryExpression expression, SqlDatabaseRuntimeConfiguration config, Func<ISqlFieldReader, T> map)
-            : base(expression, config)
+        public SelectObjectStoredProcedureQueryExpressionBuilder(
+            ISqlDatabaseRuntime database,
+            StoredProcedureQueryExpression expression,
+            Func<IStoredProcedureExecutionPipeline<TDatabase>> executionPipelineFactory,
+            Func<ISqlFieldReader, T> map
+        ) : base(database, expression, executionPipelineFactory)
         {
             this.map = map ?? throw new ArgumentNullException(nameof(map));
         }
@@ -47,7 +50,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         T? SelectObjectStoredProcedureTermination<TDatabase, T>.Execute()
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return ExecuteObjectPipeline(
                 connection,
                 null
@@ -66,7 +69,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
 		T? SelectObjectStoredProcedureTermination<TDatabase, T>.Execute(int commandTimeout)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return ExecuteObjectPipeline(
                 connection,
                 command => command.CommandTimeout = commandTimeout
@@ -85,7 +88,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         async Task<T?> SelectObjectStoredProcedureTermination<TDatabase, T>.ExecuteAsync(CancellationToken cancellationToken)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return await ExecuteObjectPipelineAsync(
                 connection,
                 null,
@@ -106,7 +109,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
 		async Task<T?> SelectObjectStoredProcedureTermination<TDatabase, T>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return await ExecuteObjectPipelineAsync(
                 connection,
                 command => command.CommandTimeout = commandTimeout,
@@ -125,10 +128,10 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         protected virtual T? ExecuteObjectPipeline(ISqlConnection connection, Action<IDbCommand>? configureCommand)
-            => CreateStoredProcedureExecutionPipeline().ExecuteSelectObject(StoredProcedureQueryExpression, map, connection, configureCommand);
+            => ExecutionPipelineFactory().ExecuteSelectObject(StoredProcedureQueryExpression, map, connection, configureCommand);
 
         protected virtual async Task<T?> ExecuteObjectPipelineAsync(ISqlConnection connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
-            => await CreateStoredProcedureExecutionPipeline().ExecuteSelectObjectAsync(StoredProcedureQueryExpression, map, connection, configureCommand, ct).ConfigureAwait(false);
+            => await ExecutionPipelineFactory().ExecuteSelectObjectAsync(StoredProcedureQueryExpression, map, connection, configureCommand, ct).ConfigureAwait(false);
         #endregion
         #endregion
     }

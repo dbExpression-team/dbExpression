@@ -1,6 +1,8 @@
 ﻿using DbEx.Data;
+using DbEx.DataService;
 using FluentAssertions;
 using HatTrick.DbEx.Sql.Converter;
+using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Unit.Converter
@@ -12,11 +14,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Converter
         public void Does_int_converter_return_expected_value(int version, int expected = -1)
         {
             //given
-            var database = ConfigureForMsSqlVersion(version);
-            var converter = database.ValueConverterFactory.CreateConverter<int>();
+            var provider = ConfigureForMsSqlVersion(version);
+            var converter = provider.GetRequiredService<IValueConverterFactory<MsSqlDb>>().CreateConverter<int>();
 
             //when
-            var converted = converter.ConvertFromDatabase<int>(expected);
+            var converted = converter.ConvertFromDatabase(expected);
 
             //then
             converted.Should().Be(expected);
@@ -24,14 +26,14 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Converter
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_converter_for_nullable_int_returns_expected_value_when_value_is_int(int version, int? expected = -1)
+        public void Does_converter_for_nullable_int_return_expected_value_when_value_is_int(int version, int? expected = -1)
         {
             //given
-            var database = ConfigureForMsSqlVersion(version);
-            var converter = database.ValueConverterFactory.CreateConverter<int?>();
+            var provider = ConfigureForMsSqlVersion(version);
+            var converter = provider.GetRequiredService<IValueConverterFactory<MsSqlDb>>().CreateConverter<int?>();
 
             //when
-            var converted = converter.ConvertFromDatabase<int?>(expected);
+            var converted = converter.ConvertFromDatabase(expected);
 
             //then
             converted.Should().Be(expected);
@@ -39,16 +41,14 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Converter
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_converter_for_nullable_int_returns_expected_value_when_value_is_null(int version, int? expected = null)
+        public void Does_converter_for_nullable_int_return_expected_value_when_value_is_null(int version, int? expected = null)
         {
             //given
-            var database = ConfigureForMsSqlVersion(version);
-            (database.ValueConverterFactory as ValueConverterFactory)!.RegisterConverter<int?>(new NullableValueConverter(typeof(int?)));
-
-            var converter = database.ValueConverterFactory.CreateConverter<int?>();
+            var provider = ConfigureForMsSqlVersion(version);
+            var converter = provider.GetRequiredService<IValueConverterFactory<MsSqlDb>>().CreateConverter<int?>();
 
             //when
-            var converted = converter.ConvertFromDatabase<int?>(expected);
+            var converted = converter.ConvertFromDatabase(expected);
 
             //then
             converted.Should().Be(expected);
@@ -59,11 +59,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Converter
         public void Does_enum_converter_return_expected_value(int version, AddressType expected = AddressType.Mailing)
         {
             //given
-            var database = ConfigureForMsSqlVersion(version);
-            var converter = database.ValueConverterFactory.CreateConverter<AddressType>();
+            var provider = ConfigureForMsSqlVersion(version);
+            var converter = provider.GetRequiredService<IValueConverterFactory<MsSqlDb>>().CreateConverter<AddressType>();
 
             //when
-            var converted = converter.ConvertFromDatabase<AddressType>(expected);
+            var converted = converter.ConvertFromDatabase(expected);
 
             //then
             converted.Should().Be(expected);
@@ -74,12 +74,12 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Converter
         public void Does_converter_for_nullable_enum_returns_expected_value_when_value_is_int(int version) //, AddressType? expected = null) :: have to initialize in method, can't convert to "actual" type when method param (framework)
         {
             //given
-            var database = ConfigureForMsSqlVersion(version);
-            var converter = database.ValueConverterFactory.CreateConverter<AddressType?>();
+            var provider = ConfigureForMsSqlVersion(version);
+            var converter = provider.GetRequiredService<IValueConverterFactory<MsSqlDb>>().CreateConverter<AddressType>();
             AddressType? expected = AddressType.Mailing; //set the expected value
 
             //when
-            var converted = converter.ConvertFromDatabase<AddressType?>(expected);
+            var converted = converter.ConvertFromDatabase(expected);
 
             //then
             converted.Should().Be(expected);
@@ -90,13 +90,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Converter
         public void Does_converter_for_nullable_enum_returns_expected_value_when_value_is_null(int version, AddressType? expected = null)
         {
             //given
-            var database = ConfigureForMsSqlVersion(version);
-            (database.ValueConverterFactory as ValueConverterFactory)!.RegisterConverter<AddressType?>(new NullableEnumValueConverter(typeof(AddressType)));
-
-            var converter = database.ValueConverterFactory.CreateConverter<AddressType?>();
+            var provider = ConfigureForMsSqlVersion(version);
+            var converter = provider.GetRequiredService<IValueConverterFactory<MsSqlDb>>().CreateConverter<AddressType?>();
 
             //when
-            var converted = converter.ConvertFromDatabase<AddressType?>(expected);
+            var converted = converter.ConvertFromDatabase(expected);
 
             //then
             converted.Should().Be(expected);

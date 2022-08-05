@@ -16,10 +16,10 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Connection;
 using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
+using HatTrick.DbEx.Sql.Pipeline;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -37,9 +37,10 @@ namespace HatTrick.DbEx.Sql.Builder
     {
         #region constructors
         public SelectDynamicSelectQueryExpressionBuilder(
-            SqlDatabaseRuntimeConfiguration config,
+            ISqlDatabaseRuntime database,
+            Func<ISelectQueryExecutionPipeline<TDatabase>> executionPipelineFactory,
             SelectSetQueryExpressionBuilder<TDatabase> controller
-        ) : base(config, controller)
+        ) : base(database, executionPipelineFactory, controller)
         {
 
         }
@@ -51,7 +52,8 @@ namespace HatTrick.DbEx.Sql.Builder
         {
             Controller.ApplyUnion();
             return new SelectDynamicsSelectQueryExpressionBuilder<TDatabase>(
-                Configuration,
+                Database,
+                ExecutionPipelineFactory,
                 Controller
             );
         }
@@ -60,7 +62,8 @@ namespace HatTrick.DbEx.Sql.Builder
         {
             Controller.ApplyUnionAll();
             return new SelectDynamicsSelectQueryExpressionBuilder<TDatabase>(
-                Configuration,
+                Database,
+                ExecutionPipelineFactory,
                 Controller
             );
         }
@@ -176,7 +179,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         dynamic? SelectDynamicTermination<TDatabase>.Execute()
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return ExecutePipeline(
                 connection,
                 null
@@ -189,7 +192,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return ExecutePipeline(
                 connection,
                 command => command.CommandTimeout = commandTimeout
@@ -220,7 +223,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         dynamic? SelectDynamicTermination<TDatabase>.Execute(Func<ISqlFieldReader, dynamic> map)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return ExecutePipeline(
                 connection,
                 null,
@@ -244,7 +247,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return ExecutePipeline(
                 connection,
                 command => command.CommandTimeout = commandTimeout,
@@ -268,7 +271,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         async Task<dynamic?> SelectDynamicTermination<TDatabase>.ExecuteAsync(CancellationToken cancellationToken)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return await ExecutePipelineAsync(
                 connection,
                 null,
@@ -282,7 +285,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return await ExecutePipelineAsync(
                 connection,
                 command => command.CommandTimeout = commandTimeout,
@@ -316,7 +319,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         void SelectDynamicTermination<TDatabase>.Execute(Action<ISqlFieldReader> read)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             ExecutePipeline(
                 connection,
                 null,
@@ -330,7 +333,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             ExecutePipeline(
                 connection,
                 command => command.CommandTimeout = commandTimeout,
@@ -364,7 +367,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         async Task SelectDynamicTermination<TDatabase>.ExecuteAsync(Action<ISqlFieldReader> map, CancellationToken cancellationToken)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             await ExecutePipelineAsync(
                 connection,
                 null,
@@ -379,7 +382,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             await ExecutePipelineAsync(
                 connection,
                 command => command.CommandTimeout = commandTimeout,
@@ -416,7 +419,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         async Task<dynamic?> SelectDynamicTermination<TDatabase>.ExecuteAsync(Func<ISqlFieldReader, dynamic> map, CancellationToken cancellationToken)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return await ExecutePipelineAsync(
                 connection,
                 null,
@@ -453,7 +456,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         async Task SelectDynamicTermination<TDatabase>.ExecuteAsync(Func<ISqlFieldReader, Task> read, CancellationToken cancellationToken)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             await ExecutePipelineAsync(
                 connection,
                 null,
@@ -468,7 +471,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             await ExecutePipelineAsync(
                 connection,
                 command => command.CommandTimeout = commandTimeout,
@@ -508,7 +511,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return await ExecutePipelineAsync(
                 connection,
                 command => command.CommandTimeout = commandTimeout,
@@ -518,60 +521,28 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         protected virtual dynamic? ExecutePipeline(ISqlConnection connection, Action<IDbCommand>? configureCommand)
-        {
-            var expression = Controller.Current;
-            var pipeline = Configuration.ExecutionPipelineFactory?.CreateQueryExecutionPipeline(Configuration, expression) ?? throw new DbExpressionConfigurationException($"Could not resolve/create an execution pipeline for type '{expression.GetType()}'.");
-            return pipeline.ExecuteSelectDynamic(expression, connection, configureCommand);
-        }
+            => ExecutionPipelineFactory().ExecuteSelectDynamic(Controller.Current, connection, configureCommand);
 
         protected virtual dynamic? ExecutePipeline(ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, dynamic> map)
-        {
-            var expression = Controller.Current;
-            var pipeline = Configuration.ExecutionPipelineFactory?.CreateQueryExecutionPipeline(Configuration, expression) ?? throw new DbExpressionConfigurationException($"Could not resolve/create an execution pipeline for type '{expression.GetType()}'.");
-            return pipeline.ExecuteSelectObject(expression, connection, configureCommand, map);
-        }
+            => ExecutionPipelineFactory().ExecuteSelectObject(Controller.Current, connection, configureCommand, map);
 
         protected virtual void ExecutePipeline(ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> read)
-        {
-            var expression = Controller.Current;
-            var pipeline = Configuration.ExecutionPipelineFactory?.CreateQueryExecutionPipeline(Configuration, expression) ?? throw new DbExpressionConfigurationException($"Could not resolve/create an execution pipeline for type '{expression.GetType()}'.");
-            pipeline.ExecuteSelectDynamic(expression, connection, configureCommand, read);
-        }
+            => ExecutionPipelineFactory().ExecuteSelectDynamic(Controller.Current, connection, configureCommand, read);
 
         protected virtual T? ExecutPipeline<T>(ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, T> map)
-        {
-            var expression = Controller.Current;
-            var pipeline = Configuration.ExecutionPipelineFactory?.CreateQueryExecutionPipeline(Configuration, expression) ?? throw new DbExpressionConfigurationException($"Could not resolve/create an execution pipeline for type '{expression.GetType()}'.");
-            return pipeline.ExecuteSelectObject(expression, connection, configureCommand, map);
-        }
+            => ExecutionPipelineFactory().ExecuteSelectObject(Controller.Current, connection, configureCommand, map);
 
         protected virtual async Task<dynamic?> ExecutePipelineAsync(ISqlConnection connection, Action<IDbCommand>? configureCommand, CancellationToken cancellationToken)
-        {
-            var expression = Controller.Current;
-            var pipeline = Configuration.ExecutionPipelineFactory?.CreateQueryExecutionPipeline(Configuration, expression) ?? throw new DbExpressionConfigurationException($"Could not resolve/create an execution pipeline for type '{expression.GetType()}'.");
-            return await pipeline.ExecuteSelectDynamicAsync(expression, connection, configureCommand, cancellationToken).ConfigureAwait(false);
-        }
+            => await ExecutionPipelineFactory().ExecuteSelectDynamicAsync(Controller.Current, connection, configureCommand, cancellationToken).ConfigureAwait(false);
 
         protected virtual async Task ExecutePipelineAsync(ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> read, CancellationToken cancellationToken)
-        {
-            var expression = Controller.Current;
-            var pipeline = Configuration.ExecutionPipelineFactory?.CreateQueryExecutionPipeline(Configuration, expression) ?? throw new DbExpressionConfigurationException($"Could not resolve/create an execution pipeline for type '{expression.GetType()}'.");
-            await pipeline.ExecuteSelectDynamicAsync(expression, connection, configureCommand, read, cancellationToken).ConfigureAwait(false);
-        }
+            => await ExecutionPipelineFactory().ExecuteSelectDynamicAsync(Controller.Current, connection, configureCommand, read, cancellationToken).ConfigureAwait(false);
 
         protected virtual async Task ExecutePipelineAsync(ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, Task> read, CancellationToken cancellationToken)
-        {
-            var expression = Controller.Current;
-            var pipeline = Configuration.ExecutionPipelineFactory?.CreateQueryExecutionPipeline(Configuration, expression) ?? throw new DbExpressionConfigurationException($"Could not resolve/create an execution pipeline for type '{expression.GetType()}'.");
-            await pipeline.ExecuteSelectDynamicAsync(expression, connection, configureCommand, read, cancellationToken).ConfigureAwait(false);
-        }
+            => await ExecutionPipelineFactory().ExecuteSelectDynamicAsync(Controller.Current, connection, configureCommand, read, cancellationToken).ConfigureAwait(false);
 
         protected virtual async Task<dynamic?> ExecutePipelineAsync(ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, dynamic> map, CancellationToken cancellationToken)
-        {
-            var expression = Controller.Current;
-            var pipeline = Configuration.ExecutionPipelineFactory?.CreateQueryExecutionPipeline(Configuration, expression) ?? throw new DbExpressionConfigurationException($"Could not resolve/create an execution pipeline for type '{expression.GetType()}'.");
-            return await pipeline.ExecuteSelectObjectAsync(expression, connection, configureCommand, map, cancellationToken).ConfigureAwait(false);
-        }
+            => await ExecutionPipelineFactory().ExecuteSelectObjectAsync(Controller.Current, connection, configureCommand, map, cancellationToken).ConfigureAwait(false);
         #endregion
         #endregion
     }

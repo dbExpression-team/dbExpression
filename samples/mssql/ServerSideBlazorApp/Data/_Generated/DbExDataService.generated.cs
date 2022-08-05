@@ -1,7 +1,6 @@
 using HatTrick.DbEx.MsSql.Builder;
-using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.Sql;
-using HatTrick.DbEx.Sql.Configuration;
+using HatTrick.DbEx.Sql.Builder;
 using HatTrick.DbEx.Sql.Connection;
 using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
@@ -1092,17 +1091,19 @@ namespace ServerSideBlazorApp.DataService
         InsertEntitiesInitiation<CRMDatabase>
     {
         #region internals
-        private static readonly List<SchemaExpression> _schemas = new List<SchemaExpression>();
         private static readonly SqlDatabaseMetadataProvider _metadata = new SqlDatabaseMetadataProvider(new CRMDatabaseSqlDatabaseMetadata("CRMDatabase", "MsSqlDbExTest"));
+        private static readonly MsSqlFunctionExpressionBuilder _fx = new MsSqlFunctionExpressionBuilder();
+        private static readonly List<SchemaExpression> _schemas = new List<SchemaExpression>();
         private static readonly Dictionary<Type, Table> _entityTypeToTableMap = new Dictionary<Type, Table>();
-
+        private readonly IQueryExpressionBuilderFactory<CRMDatabase> _queryExpressionBuilderFactory;
+        private readonly IConnectionStringFactory<CRMDatabase> _connectionStringFactory;
+        private readonly ISqlConnectionFactory<CRMDatabase> _connectionFactory;
         private CRMDatabaseStoredProcedures? _sp;
-
-        private MsSqlSqlDatabaseRuntimeConfiguration Configuration { get; }
         #endregion
 
         #region interface
-        public MsSqlFunctionExpressionBuilder fx => Configuration.FunctionExpressionBuilder;
+        ISqlDatabaseMetadataProvider ISqlDatabaseRuntime.MetadataProvider => _metadata;
+        public MsSqlFunctionExpressionBuilder fx => _fx;
         public CRMDatabaseStoredProcedures sp => _sp ?? (_sp = new CRMDatabaseStoredProcedures(this, _schemas));
         #endregion
 
@@ -1127,19 +1128,24 @@ namespace ServerSideBlazorApp.DataService
 
         }
 
-        public CRMDatabase(MsSqlSqlDatabaseRuntimeConfiguration configuration)
+        public CRMDatabase(
+            IQueryExpressionBuilderFactory<CRMDatabase> queryExpressionBuilderFactory,
+            IConnectionStringFactory<CRMDatabase> connectionStringFactory, 
+            ISqlConnectionFactory<CRMDatabase> connectionFactory        
+        )
         {
-            Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            if (Configuration.MetadataProvider is null)
-                Configuration.MetadataProvider = _metadata;
-
-            Configuration.Validate();
+            _queryExpressionBuilderFactory = queryExpressionBuilderFactory ?? throw new ArgumentNullException(nameof(queryExpressionBuilderFactory));
+            _connectionStringFactory = connectionStringFactory ?? throw new ArgumentNullException(nameof(connectionStringFactory));
+            _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
         }
         #endregion
 
         #region methods
         void ISqlDatabaseRuntime.InitializeStaticRuntime()
             => db.UseDatabase(this);
+
+        protected IQueryExpressionBuilder<CRMDatabase> GetBuilder()
+            => _queryExpressionBuilderFactory.CreateQueryExpressionBuilder(this);
 
         #region select one
         /// <summary>
@@ -1155,7 +1161,7 @@ namespace ServerSideBlazorApp.DataService
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
         public SelectEntity<CRMDatabase, TEntity> SelectOne<TEntity>()
             where TEntity : class, IDbEntity, new()
-            => Configuration.QueryExpressionBuilder.CreateSelectEntityBuilder<CRMDatabase, TEntity>(Configuration, GetTable<TEntity>());
+            => GetBuilder().CreateSelectEntityBuilder<TEntity>(GetTable<TEntity>());
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="TEnum"/> value.
@@ -1170,7 +1176,7 @@ namespace ServerSideBlazorApp.DataService
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
         public SelectValue<CRMDatabase, TEnum> SelectOne<TEnum>(AnyElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
-            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<CRMDatabase, TEnum>(Configuration, element);
+            => GetBuilder().CreateSelectValueBuilder<TEnum>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="TEnum"/>? value.  
@@ -1185,7 +1191,7 @@ namespace ServerSideBlazorApp.DataService
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
         public SelectValue<CRMDatabase, TEnum?> SelectOne<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable
-            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<CRMDatabase, TEnum>(Configuration, element);
+            => GetBuilder().CreateSelectValueBuilder<TEnum>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/> value.
@@ -1197,7 +1203,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, object>? SelectOne(ObjectElement element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/>? value.
@@ -1209,7 +1215,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, object?> SelectOne(NullableObjectElement element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/> value.
@@ -1223,7 +1229,7 @@ namespace ServerSideBlazorApp.DataService
         /// <typeparam name="T">The type of the object to select.</typeparam>
         public SelectObject<CRMDatabase, T> SelectOne<T>(ObjectElement<T> element)
             where T : class?
-            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<CRMDatabase, T>(Configuration, element);
+            => GetBuilder().CreateSelectValueBuilder<T>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/> value.
@@ -1235,7 +1241,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, T> SelectOne<T>(AliasedElement<T> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<CRMDatabase, T>(Configuration, element);
+            => GetBuilder().CreateSelectValueBuilder<T>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="bool" /> value.
@@ -1247,7 +1253,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, bool> SelectOne(AnyElement<bool> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="bool" />? value.
@@ -1259,7 +1265,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, bool?> SelectOne(AnyElement<bool?> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" /> value.
@@ -1271,7 +1277,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, byte> SelectOne(AnyElement<byte> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" />? value.
@@ -1283,7 +1289,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, byte?> SelectOne(AnyElement<byte?> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[] value.
@@ -1295,7 +1301,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, byte[]> SelectOne(AnyElement<byte[]> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTime" /> value.
@@ -1308,7 +1314,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, DateTime> SelectOne(AnyElement<DateTime> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTime" />? value.
@@ -1321,7 +1327,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, DateTime?> SelectOne(AnyElement<DateTime?> field)
-            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<CRMDatabase>(Configuration, field);
+            => GetBuilder().CreateSelectValueBuilder(field);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTimeOffset" /> value.
@@ -1334,7 +1340,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, DateTimeOffset> SelectOne(AnyElement<DateTimeOffset> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTimeOffset" />? value.
@@ -1347,7 +1353,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, DateTimeOffset?> SelectOne(AnyElement<DateTimeOffset?> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="decimal" /> value.
@@ -1360,7 +1366,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, decimal> SelectOne(AnyElement<decimal> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="decimal" />? value.
@@ -1373,7 +1379,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, decimal?> SelectOne(AnyElement<decimal?> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="double" /> value.
@@ -1386,7 +1392,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, double> SelectOne(AnyElement<double> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="double" />? value.
@@ -1399,7 +1405,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, double?> SelectOne(AnyElement<double?> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="Guid" /> value.
@@ -1411,7 +1417,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, Guid> SelectOne(AnyElement<Guid> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="Guid" />? value.
@@ -1424,7 +1430,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, Guid?> SelectOne(AnyElement<Guid?> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="short" /> value.
@@ -1436,7 +1442,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, short> SelectOne(AnyElement<short> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="short" />? value.
@@ -1448,7 +1454,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, short?> SelectOne(AnyElement<short?> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="int" /> value.
@@ -1461,7 +1467,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, int> SelectOne(AnyElement<int> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="int" />? value.
@@ -1474,7 +1480,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, int?> SelectOne(AnyElement<int?> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="long" /> value.
@@ -1486,7 +1492,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, long> SelectOne(AnyElement<long> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="long" />? value.
@@ -1498,7 +1504,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, long?> SelectOne(AnyElement<long?> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="float" /> value.
@@ -1510,7 +1516,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, float> SelectOne(AnyElement<float> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="float" />? value.
@@ -1522,7 +1528,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, float?> SelectOne(AnyElement<float?> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="string" />? value.
@@ -1535,7 +1541,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, string> SelectOne(StringElement element) 
-            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="string" />? value.
@@ -1548,7 +1554,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, string?> SelectOne(NullableStringElement element) 
-            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" /> value.
@@ -1560,7 +1566,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, TimeSpan> SelectOne(AnyElement<TimeSpan> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" />? value.
@@ -1573,7 +1579,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, TimeSpan?> SelectOne(AnyElement<TimeSpan?> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValueBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
@@ -1586,7 +1592,7 @@ namespace ServerSideBlazorApp.DataService
         /// <param name="elements">Any expression</param>
         /// <returns><see cref="SelectDynamic{ CRMDatabase }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectDynamic<CRMDatabase> SelectOne(AnyElement element1, AnyElement element2, params AnyElement[] elements)
-            => Configuration.QueryExpressionBuilder.CreateSelectDynamicBuilder<CRMDatabase>(Configuration, element1, element2, elements);
+            => GetBuilder().CreateSelectDynamicBuilder(element1, element2, elements);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
@@ -1598,7 +1604,7 @@ namespace ServerSideBlazorApp.DataService
         /// <param name="elements">A list of any expression</param>
         /// <returns><see cref="SelectDynamic{ CRMDatabase }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectDynamic<CRMDatabase> SelectOne(IEnumerable<AnyElement> elements)
-            => Configuration.QueryExpressionBuilder.CreateSelectDynamicBuilder<CRMDatabase>(Configuration, elements);
+            => GetBuilder().CreateSelectDynamicBuilder(elements);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
@@ -1610,7 +1616,7 @@ namespace ServerSideBlazorApp.DataService
         /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
         /// <returns><see cref="SelectDynamic{ CRMDatabase }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectDynamic<CRMDatabase> SelectOne(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
-            => Configuration.QueryExpressionBuilder.CreateSelectDynamicBuilder<CRMDatabase>(Configuration, (elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
+            => GetBuilder().CreateSelectDynamicBuilder((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
         #endregion
 
         #region select many
@@ -1627,7 +1633,7 @@ namespace ServerSideBlazorApp.DataService
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
         public SelectEntities<CRMDatabase, TEntity> SelectMany<TEntity>()
            where TEntity : class, IDbEntity, new()
-           => Configuration.QueryExpressionBuilder.CreateSelectEntitiesBuilder<CRMDatabase, TEntity>(Configuration, GetTable<TEntity>());
+           => GetBuilder().CreateSelectEntitiesBuilder<TEntity>(GetTable<TEntity>());
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="TEnum"/> values.
@@ -1641,7 +1647,7 @@ namespace ServerSideBlazorApp.DataService
         /// <returns><see cref="SelectValues{CRMDatabase, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
         public SelectValues<CRMDatabase, TEnum> SelectMany<TEnum>(AnyElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
-            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<CRMDatabase, TEnum>(Configuration, element);
+            => GetBuilder().CreateSelectValuesBuilder<TEnum>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="TEnum"/>? values.
@@ -1655,7 +1661,7 @@ namespace ServerSideBlazorApp.DataService
         /// <returns><see cref="SelectValues{CRMDatabase, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, TEnum?> SelectMany<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable
-            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<CRMDatabase, TEnum>(Configuration, element);
+            => GetBuilder().CreateSelectValuesBuilder<TEnum>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/> values.
@@ -1667,7 +1673,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, object>? SelectMany(ObjectElement element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/>? values.
@@ -1679,7 +1685,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, object?> SelectMany(NullableObjectElement element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/> values.
@@ -1693,7 +1699,7 @@ namespace ServerSideBlazorApp.DataService
         /// <typeparam name="T">The type of the object to select.</typeparam>
         public SelectObjects<CRMDatabase, T> SelectMany<T>(ObjectElement<T> element)
             where T : class?
-            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<CRMDatabase, T>(Configuration, element);
+            => GetBuilder().CreateSelectValuesBuilder<T>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/> values.
@@ -1705,7 +1711,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, T> SelectMany<T>(AliasedElement<T> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<CRMDatabase, T>(Configuration, element);
+            => GetBuilder().CreateSelectValuesBuilder<T>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="bool" /> values.
@@ -1717,7 +1723,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, bool> SelectMany(AnyElement<bool> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="bool" />? values.
@@ -1729,7 +1735,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, bool?> SelectMany(AnyElement<bool?> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" /> values.
@@ -1741,7 +1747,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, byte> SelectMany(AnyElement<byte> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />? values.
@@ -1753,7 +1759,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, byte?> SelectMany(AnyElement<byte?> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[] values.
@@ -1765,7 +1771,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, byte[]> SelectMany(AnyElement<byte[]> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTime" /> values.
@@ -1778,7 +1784,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, DateTime> SelectMany(AnyElement<DateTime> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTime" />? values.
@@ -1791,7 +1797,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, DateTime?> SelectMany(AnyElement<DateTime?> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTimeOffset" /> values.
@@ -1804,7 +1810,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, DateTimeOffset> SelectMany(AnyElement<DateTimeOffset> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTimeOffset" />? values.
@@ -1817,7 +1823,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, DateTimeOffset?> SelectMany(AnyElement<DateTimeOffset?> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="decimal" /> values.
@@ -1830,7 +1836,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, decimal> SelectMany(AnyElement<decimal> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="decimal" />? values.
@@ -1843,7 +1849,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, decimal?> SelectMany(AnyElement<decimal?> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="double" /> values.
@@ -1856,7 +1862,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, double> SelectMany(AnyElement<double> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="double" />? values.
@@ -1869,7 +1875,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, double?> SelectMany(AnyElement<double?> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="Guid" /> values.
@@ -1881,7 +1887,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, Guid> SelectMany(AnyElement<Guid> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="Guid" />? values.
@@ -1894,7 +1900,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, Guid?> SelectMany(AnyElement<Guid?> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="short" /> values.
@@ -1906,7 +1912,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, short> SelectMany(AnyElement<short> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="short" />? values.
@@ -1918,7 +1924,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, short?> SelectMany(AnyElement<short?> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="int" /> values.
@@ -1931,7 +1937,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, int> SelectMany(AnyElement<int> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="int" />? values.
@@ -1944,7 +1950,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, int?> SelectMany(AnyElement<int?> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="long" /> values.
@@ -1956,7 +1962,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, long> SelectMany(AnyElement<long> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="long" />? values.
@@ -1968,7 +1974,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, long?> SelectMany(AnyElement<long?> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="float" /> values.
@@ -1980,7 +1986,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, float> SelectMany(AnyElement<float> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="float" />? values.
@@ -1992,7 +1998,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, float?> SelectMany(AnyElement<float?> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="string" />? values.
@@ -2005,7 +2011,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, string> SelectMany(StringElement element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="string" />? values.
@@ -2018,7 +2024,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, string?> SelectMany(NullableStringElement element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" /> values.
@@ -2030,7 +2036,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, TimeSpan> SelectMany(AnyElement<TimeSpan> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" />? values.
@@ -2043,7 +2049,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, TimeSpan?> SelectMany(AnyElement<TimeSpan?> element)
-            => Configuration.QueryExpressionBuilder.CreateSelectValuesBuilder<CRMDatabase>(Configuration, element);
+            => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
@@ -2056,7 +2062,7 @@ namespace ServerSideBlazorApp.DataService
         /// <param name="elements">Any expression</param>
         /// <returns><see cref="SelectDynamics{ CRMDatabase }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectDynamics<CRMDatabase> SelectMany(AnyElement element1, AnyElement element2, params AnyElement[] elements)
-            => Configuration.QueryExpressionBuilder.CreateSelectDynamicsBuilder<CRMDatabase>(Configuration, element1, element2, elements);
+            => GetBuilder().CreateSelectDynamicsBuilder(element1, element2, elements);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
@@ -2067,7 +2073,7 @@ namespace ServerSideBlazorApp.DataService
         /// <param name="elements">A list of any expression</param>
         /// <returns><see cref="SelectDynamics{ CRMDatabase }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectDynamics<CRMDatabase> SelectMany(IEnumerable<AnyElement> elements)
-            => Configuration.QueryExpressionBuilder.CreateSelectDynamicsBuilder<CRMDatabase>(Configuration, elements);
+            => GetBuilder().CreateSelectDynamicsBuilder(elements);
 
             /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
@@ -2079,7 +2085,7 @@ namespace ServerSideBlazorApp.DataService
         /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
         /// <returns><see cref="SelectDynamics{ CRMDatabase }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectDynamics<CRMDatabase> SelectMany(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
-            => Configuration.QueryExpressionBuilder.CreateSelectDynamicsBuilder<CRMDatabase>(Configuration, (elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
+            => GetBuilder().CreateSelectDynamicsBuilder((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
         #endregion
 
         #region update
@@ -2096,7 +2102,7 @@ namespace ServerSideBlazorApp.DataService
         /// <param name="assignments">An additional list of <see cref="EntityFieldAssignment" />(s) assigning database fields/columns new values.  </param>
         /// <returns><see cref="UpdateEntities{ CRMDatabase }"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
         public UpdateEntities<CRMDatabase> Update(EntityFieldAssignment assignment, params EntityFieldAssignment[] assignments)
-            => Configuration.QueryExpressionBuilder.CreateUpdateExpressionBuilder<CRMDatabase>(Configuration, assignment, assignments);
+            => GetBuilder().CreateUpdateExpressionBuilder(assignment, assignments);
 
         /// <summary>
         /// Start constructing a sql UPDATE query expression to update records.
@@ -2110,7 +2116,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="UpdateEntities{ CRMDatabase }"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
         public UpdateEntities<CRMDatabase> Update(IEnumerable<EntityFieldAssignment> assignments)
-            => Configuration.QueryExpressionBuilder.CreateUpdateExpressionBuilder<CRMDatabase>(Configuration, assignments);   
+            => GetBuilder().CreateUpdateExpressionBuilder(assignments);   
         #endregion
 
         #region delete
@@ -2122,7 +2128,7 @@ namespace ServerSideBlazorApp.DataService
         /// </summary>
         /// <returns><see cref="DeleteEntities{ CRMDatabase }"/>, a fluent builder for constructing a sql DELETE statement.</returns>
         public DeleteEntities<CRMDatabase> Delete()
-            => Configuration.QueryExpressionBuilder.CreateDeleteExpressionBuilder<CRMDatabase>(Configuration);
+            => GetBuilder().CreateDeleteExpressionBuilder();
         #endregion
 
         #region insert
@@ -2138,7 +2144,7 @@ namespace ServerSideBlazorApp.DataService
         /// <typeparam name="TEntity">The entity type of the entity to insert.</typeparam>
         public InsertEntity<CRMDatabase, TEntity> Insert<TEntity>(TEntity entity)
             where TEntity : class, IDbEntity
-            => Configuration.QueryExpressionBuilder.CreateInsertExpressionBuilder<CRMDatabase, TEntity>(Configuration, entity);
+            => GetBuilder().CreateInsertExpressionBuilder<TEntity>(entity);
 
         /// <summary>
         /// Start constructing a sql INSERT query expression to insert one or more record.  The property values from each <paramref name="entities"/> entity instance are used to create the new record values for the INSERT statement.
@@ -2152,7 +2158,7 @@ namespace ServerSideBlazorApp.DataService
         /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
         public InsertEntities<CRMDatabase, TEntity> InsertMany<TEntity>(TEntity entity, params TEntity[] entities)
             where TEntity : class, IDbEntity
-            => Configuration.QueryExpressionBuilder.CreateInsertExpressionBuilder<CRMDatabase, TEntity>(Configuration, entity, entities);
+            => GetBuilder().CreateInsertExpressionBuilder<TEntity>(entity, entities);
 
         /// <summary>
         /// Start constructing a sql INSERT query expression to insert one or more record.  The property values from each <paramref name="entities"/> entity instance are used to create the new record values for the INSERT statement.
@@ -2166,19 +2172,19 @@ namespace ServerSideBlazorApp.DataService
         /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
         public InsertEntities<CRMDatabase, TEntity> InsertMany<TEntity>(IEnumerable<TEntity> entities)
             where TEntity : class, IDbEntity
-            => Configuration.QueryExpressionBuilder.CreateInsertExpressionBuilder<CRMDatabase, TEntity>(Configuration, entities);
+            => GetBuilder().CreateInsertExpressionBuilder<TEntity>(entities);
         #endregion
 
         #region get connection
         /// <summary>
         /// Creates a connection to the database.
         /// <para>
-        /// The connection has not been opened, use <see cref="System.Data.IDbConnection.Open"/> or <see cref="Connection.ISqlConnection.EnsureOpen"/> to ensure an open connection to the database prior to operations like <see cref="System.Data.IDbConnection.BeginTransaction"/>.
+        /// The connection has not been opened, use <see cref="System.Data.IDbConnection.Open"/> or <see cref="ISqlConnection.EnsureOpen"/> to ensure an open connection to the database prior to operations like <see cref="System.Data.IDbConnection.BeginTransaction"/>.
         /// </para>
         /// </summary>
         /// <returns><see cref="ISqlConnection"/>, a connection to the database.</returns>
         public ISqlConnection GetConnection()
-            => new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            => new SqlConnector<CRMDatabase>(_connectionStringFactory, _connectionFactory);
         #endregion
 
         protected virtual Table<TEntity> GetTable<TEntity>()
@@ -2242,336 +2248,336 @@ namespace ServerSideBlazorApp.DataService
             #endregion
 
             #region methods
-                /// <summary>
-                /// Method to start constructing a stored procedure query expression for the SelectPerson_As_Dynamic_With_Input stored procedure.
-                /// </summary>
-                /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
-                /// <para>Database Properties:
-                /// <list type="table">
-                /// <item>
-                /// <term>name</term><description>@P1</description>
-                /// </item>
-                /// <item>
-                /// <term>sql type</term><description>int</description>
-                /// </item>
-                /// <item>
-                /// <term>allow null</term><description>yes</description>
-                /// </item>
-                /// </list>
-                /// </para>
-                /// </param>
-                /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
+            /// <summary>
+            /// Method to start constructing a stored procedure query expression for the SelectPerson_As_Dynamic_With_Input stored procedure.
+            /// </summary>
+            /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
+            /// <para>Database Properties:
+            /// <list type="table">
+            /// <item>
+            /// <term>name</term><description>@P1</description>
+            /// </item>
+            /// <item>
+            /// <term>sql type</term><description>int</description>
+            /// </item>
+            /// <item>
+            /// <term>allow null</term><description>yes</description>
+            /// </item>
+            /// </list>
+            /// </para>
+            /// </param>
+            /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
             public StoredProcedureContinuation<CRMDatabase> SelectPerson_As_Dynamic_With_Input(int? P1)
-                => _database.Configuration.QueryExpressionBuilder.CreateStoredProcedureBuilder<CRMDatabase>(_database.Configuration, new SelectPerson_As_Dynamic_With_InputStoredProcedure("dbo", _dbo, P1));
+                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPerson_As_Dynamic_With_InputStoredProcedure("dbo", _dbo, P1));
 
-                /// <summary>
-                /// Method to start constructing a stored procedure query expression for the SelectPerson_As_Dynamic_With_Input_And_InputOutput stored procedure.
-                /// </summary>
-                /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
-                /// <para>Database Properties:
-                /// <list type="table">
-                /// <item>
-                /// <term>name</term><description>@P1</description>
-                /// </item>
-                /// <item>
-                /// <term>sql type</term><description>int</description>
-                /// </item>
-                /// <item>
-                /// <term>allow null</term><description>yes</description>
-                /// </item>
-                /// </list>
-                /// </para>
-                /// </param>
-                /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
-                /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
+            /// <summary>
+            /// Method to start constructing a stored procedure query expression for the SelectPerson_As_Dynamic_With_Input_And_InputOutput stored procedure.
+            /// </summary>
+            /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
+            /// <para>Database Properties:
+            /// <list type="table">
+            /// <item>
+            /// <term>name</term><description>@P1</description>
+            /// </item>
+            /// <item>
+            /// <term>sql type</term><description>int</description>
+            /// </item>
+            /// <item>
+            /// <term>allow null</term><description>yes</description>
+            /// </item>
+            /// </list>
+            /// </para>
+            /// </param>
+            /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
+            /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
             public StoredProcedureContinuation<CRMDatabase> SelectPerson_As_Dynamic_With_Input_And_InputOutput(int? P1, Action<ISqlOutputParameterList> outputParameters)
-                => _database.Configuration.QueryExpressionBuilder.CreateStoredProcedureBuilder<CRMDatabase>(_database.Configuration, new SelectPerson_As_Dynamic_With_Input_And_InputOutputStoredProcedure("dbo", _dbo, P1, outputParameters));
+                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPerson_As_Dynamic_With_Input_And_InputOutputStoredProcedure("dbo", _dbo, P1, outputParameters));
 
-                /// <summary>
-                /// Method to start constructing a stored procedure query expression for the SelectPerson_As_Dynamic_With_Input_And_Output stored procedure.
-                /// </summary>
-                /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
-                /// <para>Database Properties:
-                /// <list type="table">
-                /// <item>
-                /// <term>name</term><description>@P1</description>
-                /// </item>
-                /// <item>
-                /// <term>sql type</term><description>int</description>
-                /// </item>
-                /// <item>
-                /// <term>allow null</term><description>yes</description>
-                /// </item>
-                /// </list>
-                /// </para>
-                /// </param>
-                /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
-                /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
+            /// <summary>
+            /// Method to start constructing a stored procedure query expression for the SelectPerson_As_Dynamic_With_Input_And_Output stored procedure.
+            /// </summary>
+            /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
+            /// <para>Database Properties:
+            /// <list type="table">
+            /// <item>
+            /// <term>name</term><description>@P1</description>
+            /// </item>
+            /// <item>
+            /// <term>sql type</term><description>int</description>
+            /// </item>
+            /// <item>
+            /// <term>allow null</term><description>yes</description>
+            /// </item>
+            /// </list>
+            /// </para>
+            /// </param>
+            /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
+            /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
             public StoredProcedureContinuation<CRMDatabase> SelectPerson_As_Dynamic_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
-                => _database.Configuration.QueryExpressionBuilder.CreateStoredProcedureBuilder<CRMDatabase>(_database.Configuration, new SelectPerson_As_Dynamic_With_Input_And_OutputStoredProcedure("dbo", _dbo, P1, outputParameters));
+                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPerson_As_Dynamic_With_Input_And_OutputStoredProcedure("dbo", _dbo, P1, outputParameters));
 
-                /// <summary>
-                /// Method to start constructing a stored procedure query expression for the SelectPerson_As_DynamicList_With_Input stored procedure.
-                /// </summary>
-                /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
-                /// <para>Database Properties:
-                /// <list type="table">
-                /// <item>
-                /// <term>name</term><description>@P1</description>
-                /// </item>
-                /// <item>
-                /// <term>sql type</term><description>int</description>
-                /// </item>
-                /// <item>
-                /// <term>allow null</term><description>yes</description>
-                /// </item>
-                /// </list>
-                /// </para>
-                /// </param>
-                /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
+            /// <summary>
+            /// Method to start constructing a stored procedure query expression for the SelectPerson_As_DynamicList_With_Input stored procedure.
+            /// </summary>
+            /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
+            /// <para>Database Properties:
+            /// <list type="table">
+            /// <item>
+            /// <term>name</term><description>@P1</description>
+            /// </item>
+            /// <item>
+            /// <term>sql type</term><description>int</description>
+            /// </item>
+            /// <item>
+            /// <term>allow null</term><description>yes</description>
+            /// </item>
+            /// </list>
+            /// </para>
+            /// </param>
+            /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
             public StoredProcedureContinuation<CRMDatabase> SelectPerson_As_DynamicList_With_Input(int? P1)
-                => _database.Configuration.QueryExpressionBuilder.CreateStoredProcedureBuilder<CRMDatabase>(_database.Configuration, new SelectPerson_As_DynamicList_With_InputStoredProcedure("dbo", _dbo, P1));
+                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPerson_As_DynamicList_With_InputStoredProcedure("dbo", _dbo, P1));
 
-                /// <summary>
-                /// Method to start constructing a stored procedure query expression for the SelectPerson_As_DynamicList_With_Input_And_InputOutput stored procedure.
-                /// </summary>
-                /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
-                /// <para>Database Properties:
-                /// <list type="table">
-                /// <item>
-                /// <term>name</term><description>@P1</description>
-                /// </item>
-                /// <item>
-                /// <term>sql type</term><description>int</description>
-                /// </item>
-                /// <item>
-                /// <term>allow null</term><description>yes</description>
-                /// </item>
-                /// </list>
-                /// </para>
-                /// </param>
-                /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
-                /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
+            /// <summary>
+            /// Method to start constructing a stored procedure query expression for the SelectPerson_As_DynamicList_With_Input_And_InputOutput stored procedure.
+            /// </summary>
+            /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
+            /// <para>Database Properties:
+            /// <list type="table">
+            /// <item>
+            /// <term>name</term><description>@P1</description>
+            /// </item>
+            /// <item>
+            /// <term>sql type</term><description>int</description>
+            /// </item>
+            /// <item>
+            /// <term>allow null</term><description>yes</description>
+            /// </item>
+            /// </list>
+            /// </para>
+            /// </param>
+            /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
+            /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
             public StoredProcedureContinuation<CRMDatabase> SelectPerson_As_DynamicList_With_Input_And_InputOutput(int? P1, Action<ISqlOutputParameterList> outputParameters)
-                => _database.Configuration.QueryExpressionBuilder.CreateStoredProcedureBuilder<CRMDatabase>(_database.Configuration, new SelectPerson_As_DynamicList_With_Input_And_InputOutputStoredProcedure("dbo", _dbo, P1, outputParameters));
+                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPerson_As_DynamicList_With_Input_And_InputOutputStoredProcedure("dbo", _dbo, P1, outputParameters));
 
-                /// <summary>
-                /// Method to start constructing a stored procedure query expression for the SelectPerson_As_DynamicList_With_Input_And_Output stored procedure.
-                /// </summary>
-                /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
-                /// <para>Database Properties:
-                /// <list type="table">
-                /// <item>
-                /// <term>name</term><description>@P1</description>
-                /// </item>
-                /// <item>
-                /// <term>sql type</term><description>int</description>
-                /// </item>
-                /// <item>
-                /// <term>allow null</term><description>yes</description>
-                /// </item>
-                /// </list>
-                /// </para>
-                /// </param>
-                /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
-                /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
+            /// <summary>
+            /// Method to start constructing a stored procedure query expression for the SelectPerson_As_DynamicList_With_Input_And_Output stored procedure.
+            /// </summary>
+            /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
+            /// <para>Database Properties:
+            /// <list type="table">
+            /// <item>
+            /// <term>name</term><description>@P1</description>
+            /// </item>
+            /// <item>
+            /// <term>sql type</term><description>int</description>
+            /// </item>
+            /// <item>
+            /// <term>allow null</term><description>yes</description>
+            /// </item>
+            /// </list>
+            /// </para>
+            /// </param>
+            /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
+            /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
             public StoredProcedureContinuation<CRMDatabase> SelectPerson_As_DynamicList_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
-                => _database.Configuration.QueryExpressionBuilder.CreateStoredProcedureBuilder<CRMDatabase>(_database.Configuration, new SelectPerson_As_DynamicList_With_Input_And_OutputStoredProcedure("dbo", _dbo, P1, outputParameters));
+                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPerson_As_DynamicList_With_Input_And_OutputStoredProcedure("dbo", _dbo, P1, outputParameters));
 
-                /// <summary>
-                /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValue_With_Input stored procedure.
-                /// </summary>
-                /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
-                /// <para>Database Properties:
-                /// <list type="table">
-                /// <item>
-                /// <term>name</term><description>@P1</description>
-                /// </item>
-                /// <item>
-                /// <term>sql type</term><description>int</description>
-                /// </item>
-                /// <item>
-                /// <term>allow null</term><description>yes</description>
-                /// </item>
-                /// </list>
-                /// </para>
-                /// </param>
-                /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
+            /// <summary>
+            /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValue_With_Input stored procedure.
+            /// </summary>
+            /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
+            /// <para>Database Properties:
+            /// <list type="table">
+            /// <item>
+            /// <term>name</term><description>@P1</description>
+            /// </item>
+            /// <item>
+            /// <term>sql type</term><description>int</description>
+            /// </item>
+            /// <item>
+            /// <term>allow null</term><description>yes</description>
+            /// </item>
+            /// </list>
+            /// </para>
+            /// </param>
+            /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
             public StoredProcedureContinuation<CRMDatabase> SelectPersonId_As_ScalarValue_With_Input(int? P1)
-                => _database.Configuration.QueryExpressionBuilder.CreateStoredProcedureBuilder<CRMDatabase>(_database.Configuration, new SelectPersonId_As_ScalarValue_With_InputStoredProcedure("dbo", _dbo, P1));
+                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValue_With_InputStoredProcedure("dbo", _dbo, P1));
 
-                /// <summary>
-                /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValue_With_Input_And_Default_Value stored procedure.
-                /// </summary>
-                /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
-                /// <para>Database Properties:
-                /// <list type="table">
-                /// <item>
-                /// <term>name</term><description>@P1</description>
-                /// </item>
-                /// <item>
-                /// <term>sql type</term><description>int</description>
-                /// </item>
-                /// <item>
-                /// <term>allow null</term><description>yes</description>
-                /// </item>
-                /// </list>
-                /// </para>
-                /// </param>
-                /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
+            /// <summary>
+            /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValue_With_Input_And_Default_Value stored procedure.
+            /// </summary>
+            /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
+            /// <para>Database Properties:
+            /// <list type="table">
+            /// <item>
+            /// <term>name</term><description>@P1</description>
+            /// </item>
+            /// <item>
+            /// <term>sql type</term><description>int</description>
+            /// </item>
+            /// <item>
+            /// <term>allow null</term><description>yes</description>
+            /// </item>
+            /// </list>
+            /// </para>
+            /// </param>
+            /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
             public StoredProcedureContinuation<CRMDatabase> SelectPersonId_As_ScalarValue_With_Input_And_Default_Value(int? P1)
-                => _database.Configuration.QueryExpressionBuilder.CreateStoredProcedureBuilder<CRMDatabase>(_database.Configuration, new SelectPersonId_As_ScalarValue_With_Input_And_Default_ValueStoredProcedure("dbo", _dbo, P1));
+                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValue_With_Input_And_Default_ValueStoredProcedure("dbo", _dbo, P1));
 
-                /// <summary>
-                /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValue_With_Input_And_InputOutput stored procedure.
-                /// </summary>
-                /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
-                /// <para>Database Properties:
-                /// <list type="table">
-                /// <item>
-                /// <term>name</term><description>@P1</description>
-                /// </item>
-                /// <item>
-                /// <term>sql type</term><description>int</description>
-                /// </item>
-                /// <item>
-                /// <term>allow null</term><description>yes</description>
-                /// </item>
-                /// </list>
-                /// </para>
-                /// </param>
-                /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
-                /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
+            /// <summary>
+            /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValue_With_Input_And_InputOutput stored procedure.
+            /// </summary>
+            /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
+            /// <para>Database Properties:
+            /// <list type="table">
+            /// <item>
+            /// <term>name</term><description>@P1</description>
+            /// </item>
+            /// <item>
+            /// <term>sql type</term><description>int</description>
+            /// </item>
+            /// <item>
+            /// <term>allow null</term><description>yes</description>
+            /// </item>
+            /// </list>
+            /// </para>
+            /// </param>
+            /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
+            /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
             public StoredProcedureContinuation<CRMDatabase> SelectPersonId_As_ScalarValue_With_Input_And_InputOutput(int? P1, Action<ISqlOutputParameterList> outputParameters)
-                => _database.Configuration.QueryExpressionBuilder.CreateStoredProcedureBuilder<CRMDatabase>(_database.Configuration, new SelectPersonId_As_ScalarValue_With_Input_And_InputOutputStoredProcedure("dbo", _dbo, P1, outputParameters));
+                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValue_With_Input_And_InputOutputStoredProcedure("dbo", _dbo, P1, outputParameters));
 
-                /// <summary>
-                /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValue_With_Input_And_Output stored procedure.
-                /// </summary>
-                /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
-                /// <para>Database Properties:
-                /// <list type="table">
-                /// <item>
-                /// <term>name</term><description>@P1</description>
-                /// </item>
-                /// <item>
-                /// <term>sql type</term><description>int</description>
-                /// </item>
-                /// <item>
-                /// <term>allow null</term><description>yes</description>
-                /// </item>
-                /// </list>
-                /// </para>
-                /// </param>
-                /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
-                /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
+            /// <summary>
+            /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValue_With_Input_And_Output stored procedure.
+            /// </summary>
+            /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
+            /// <para>Database Properties:
+            /// <list type="table">
+            /// <item>
+            /// <term>name</term><description>@P1</description>
+            /// </item>
+            /// <item>
+            /// <term>sql type</term><description>int</description>
+            /// </item>
+            /// <item>
+            /// <term>allow null</term><description>yes</description>
+            /// </item>
+            /// </list>
+            /// </para>
+            /// </param>
+            /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
+            /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
             public StoredProcedureContinuation<CRMDatabase> SelectPersonId_As_ScalarValue_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
-                => _database.Configuration.QueryExpressionBuilder.CreateStoredProcedureBuilder<CRMDatabase>(_database.Configuration, new SelectPersonId_As_ScalarValue_With_Input_And_OutputStoredProcedure("dbo", _dbo, P1, outputParameters));
+                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValue_With_Input_And_OutputStoredProcedure("dbo", _dbo, P1, outputParameters));
 
-                /// <summary>
-                /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValueList_With_Input stored procedure.
-                /// </summary>
-                /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
-                /// <para>Database Properties:
-                /// <list type="table">
-                /// <item>
-                /// <term>name</term><description>@P1</description>
-                /// </item>
-                /// <item>
-                /// <term>sql type</term><description>int</description>
-                /// </item>
-                /// <item>
-                /// <term>allow null</term><description>yes</description>
-                /// </item>
-                /// </list>
-                /// </para>
-                /// </param>
-                /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
+            /// <summary>
+            /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValueList_With_Input stored procedure.
+            /// </summary>
+            /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
+            /// <para>Database Properties:
+            /// <list type="table">
+            /// <item>
+            /// <term>name</term><description>@P1</description>
+            /// </item>
+            /// <item>
+            /// <term>sql type</term><description>int</description>
+            /// </item>
+            /// <item>
+            /// <term>allow null</term><description>yes</description>
+            /// </item>
+            /// </list>
+            /// </para>
+            /// </param>
+            /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
             public StoredProcedureContinuation<CRMDatabase> SelectPersonId_As_ScalarValueList_With_Input(int? P1)
-                => _database.Configuration.QueryExpressionBuilder.CreateStoredProcedureBuilder<CRMDatabase>(_database.Configuration, new SelectPersonId_As_ScalarValueList_With_InputStoredProcedure("dbo", _dbo, P1));
+                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValueList_With_InputStoredProcedure("dbo", _dbo, P1));
 
-                /// <summary>
-                /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput stored procedure.
-                /// </summary>
-                /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
-                /// <para>Database Properties:
-                /// <list type="table">
-                /// <item>
-                /// <term>name</term><description>@P1</description>
-                /// </item>
-                /// <item>
-                /// <term>sql type</term><description>int</description>
-                /// </item>
-                /// <item>
-                /// <term>allow null</term><description>yes</description>
-                /// </item>
-                /// </list>
-                /// </para>
-                /// </param>
-                /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
-                /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
+            /// <summary>
+            /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput stored procedure.
+            /// </summary>
+            /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
+            /// <para>Database Properties:
+            /// <list type="table">
+            /// <item>
+            /// <term>name</term><description>@P1</description>
+            /// </item>
+            /// <item>
+            /// <term>sql type</term><description>int</description>
+            /// </item>
+            /// <item>
+            /// <term>allow null</term><description>yes</description>
+            /// </item>
+            /// </list>
+            /// </para>
+            /// </param>
+            /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
+            /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
             public StoredProcedureContinuation<CRMDatabase> SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput(int? P1, Action<ISqlOutputParameterList> outputParameters)
-                => _database.Configuration.QueryExpressionBuilder.CreateStoredProcedureBuilder<CRMDatabase>(_database.Configuration, new SelectPersonId_As_ScalarValueList_With_Input_And_InputOutputStoredProcedure("dbo", _dbo, P1, outputParameters));
+                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValueList_With_Input_And_InputOutputStoredProcedure("dbo", _dbo, P1, outputParameters));
 
-                /// <summary>
-                /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValueList_With_Input_And_Output stored procedure.
-                /// </summary>
-                /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
-                /// <para>Database Properties:
-                /// <list type="table">
-                /// <item>
-                /// <term>name</term><description>@P1</description>
-                /// </item>
-                /// <item>
-                /// <term>sql type</term><description>int</description>
-                /// </item>
-                /// <item>
-                /// <term>allow null</term><description>yes</description>
-                /// </item>
-                /// </list>
-                /// </para>
-                /// </param>
-                /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
-                /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
+            /// <summary>
+            /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValueList_With_Input_And_Output stored procedure.
+            /// </summary>
+            /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
+            /// <para>Database Properties:
+            /// <list type="table">
+            /// <item>
+            /// <term>name</term><description>@P1</description>
+            /// </item>
+            /// <item>
+            /// <term>sql type</term><description>int</description>
+            /// </item>
+            /// <item>
+            /// <term>allow null</term><description>yes</description>
+            /// </item>
+            /// </list>
+            /// </para>
+            /// </param>
+            /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
+            /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
             public StoredProcedureContinuation<CRMDatabase> SelectPersonId_As_ScalarValueList_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
-                => _database.Configuration.QueryExpressionBuilder.CreateStoredProcedureBuilder<CRMDatabase>(_database.Configuration, new SelectPersonId_As_ScalarValueList_With_Input_And_OutputStoredProcedure("dbo", _dbo, P1, outputParameters));
+                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValueList_With_Input_And_OutputStoredProcedure("dbo", _dbo, P1, outputParameters));
 
-                /// <summary>
-                /// Method to start constructing a stored procedure query expression for the UpdatePersonCreditLimit_With_Inputs stored procedure.
-                /// </summary>
-                /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
-                /// <para>Database Properties:
-                /// <list type="table">
-                /// <item>
-                /// <term>name</term><description>@P1</description>
-                /// </item>
-                /// <item>
-                /// <term>sql type</term><description>int</description>
-                /// </item>
-                /// <item>
-                /// <term>allow null</term><description>yes</description>
-                /// </item>
-                /// </list>
-                /// </para>
-                /// </param>
-                /// <param name="CreditLimit">The value to use for creating the stored procedure parameter @CreditLimit.
-                /// <para>Database Properties:
-                /// <list type="table">
-                /// <item>
-                /// <term>name</term><description>@CreditLimit</description>
-                /// </item>
-                /// <item>
-                /// <term>sql type</term><description>int</description>
-                /// </item>
-                /// <item>
-                /// <term>allow null</term><description>yes</description>
-                /// </item>
-                /// </list>
-                /// </para>
-                /// </param>
-                /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
+            /// <summary>
+            /// Method to start constructing a stored procedure query expression for the UpdatePersonCreditLimit_With_Inputs stored procedure.
+            /// </summary>
+            /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
+            /// <para>Database Properties:
+            /// <list type="table">
+            /// <item>
+            /// <term>name</term><description>@P1</description>
+            /// </item>
+            /// <item>
+            /// <term>sql type</term><description>int</description>
+            /// </item>
+            /// <item>
+            /// <term>allow null</term><description>yes</description>
+            /// </item>
+            /// </list>
+            /// </para>
+            /// </param>
+            /// <param name="CreditLimit">The value to use for creating the stored procedure parameter @CreditLimit.
+            /// <para>Database Properties:
+            /// <list type="table">
+            /// <item>
+            /// <term>name</term><description>@CreditLimit</description>
+            /// </item>
+            /// <item>
+            /// <term>sql type</term><description>int</description>
+            /// </item>
+            /// <item>
+            /// <term>allow null</term><description>yes</description>
+            /// </item>
+            /// </list>
+            /// </para>
+            /// </param>
+            /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
             public StoredProcedureContinuation<CRMDatabase> UpdatePersonCreditLimit_With_Inputs(int? P1,int? CreditLimit)
-                => _database.Configuration.QueryExpressionBuilder.CreateStoredProcedureBuilder<CRMDatabase>(_database.Configuration, new UpdatePersonCreditLimit_With_InputsStoredProcedure("dbo", _dbo, P1, CreditLimit));
+                => _database.GetBuilder().CreateStoredProcedureBuilder(new UpdatePersonCreditLimit_With_InputsStoredProcedure("dbo", _dbo, P1, CreditLimit));
 
             #endregion
         }
