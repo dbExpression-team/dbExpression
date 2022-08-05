@@ -27,12 +27,10 @@ namespace HatTrick.DbEx.Sql.Assembler
     {
         #region internals
         private readonly TDatabase database;
-        private readonly ISqlStatementAssemblerFactory<TDatabase> assemblerFactory;
         private readonly AssemblyContext assemblyContext;
         private readonly IExpressionElementAppenderFactory<TDatabase> elementAppenderFactory;
         private readonly IValueConverterFactory<TDatabase> valueConverterFactory;
         private int _currentAliasCounter;
-        private SqlStatement? _sqlStatement;
         #endregion
 
         public IAppender Appender { get; private set; }
@@ -40,7 +38,6 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public SqlStatementBuilder(
             TDatabase database,
-            ISqlStatementAssemblerFactory<TDatabase> assemblerFactory,
             AssemblyContext assemblyContext,
             IExpressionElementAppenderFactory<TDatabase> elementAppenderFactory,
             IAppender appender,
@@ -49,7 +46,6 @@ namespace HatTrick.DbEx.Sql.Assembler
         )
         {
             this.database = database ?? throw new ArgumentNullException(nameof(database));
-            this.assemblerFactory = assemblerFactory ?? throw new ArgumentNullException(nameof(assemblerFactory));
             this.assemblyContext = assemblyContext ?? throw new ArgumentNullException(nameof(assemblyContext));
             this.elementAppenderFactory = elementAppenderFactory ?? throw new ArgumentNullException(nameof(elementAppenderFactory));
             Appender = appender ?? throw new ArgumentNullException(nameof(appender));
@@ -63,16 +59,11 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (expression is null)
                 throw new ArgumentNullException(nameof(expression));
 
-            if (_sqlStatement is not null)
-                return _sqlStatement;
+            AppendElement(expression, assemblyContext);
 
-            var assembler = assemblerFactory.CreateSqlStatementAssembler(expression.GetType())
-                ?? throw new DbExpressionConfigurationException($"Could not resolve an assembler for query type '{expression.GetType()}', please ensure an assembler has been registered during startup initialization of DbExpression.");
-
-            assembler.AssembleStatement(expression, this, assemblyContext);
             Appender.Write(assemblyContext.StatementTerminator);
 
-            return _sqlStatement = new SqlStatement(Appender, Parameters.Parameters);
+            return new SqlStatement(Appender, Parameters.Parameters);
         }
 
         public void AppendElement<T>(T element, AssemblyContext context)
@@ -84,24 +75,9 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (context is null)
                 throw new ArgumentNullException(nameof(context));
 
-            if (element is QueryExpression query)
-            {
-                AssembleStatement(query, context);
-                return;
-            }
-
             var appender = elementAppenderFactory.CreateElementAppender(element.GetType());
+
             appender.AppendElement(element, this, context);
-        }
-
-        public void AssembleStatement(QueryExpression expression, AssemblyContext context)
-        {
-            if (expression is null)
-                throw new ArgumentNullException(nameof(expression));
-
-            var assembler = assemblerFactory.CreateSqlStatementAssembler(expression.GetType())
-                ?? throw new DbExpressionConfigurationException($"Could not resolve an assembler for query type '{expression.GetType()}', please ensure an assembler has been registered during startup initialization of DbExpression.");
-            assembler.AssembleStatement(expression, this, context);
         }
 
         public string GenerateAlias() => $"_t{++_currentAliasCounter}";

@@ -23,11 +23,10 @@ using System.Linq;
 
 namespace HatTrick.DbEx.MsSql.Assembler.v2005
 {
-    public class MsSqlInsertSqlStatementAssembler<TDatabase> : InsertSqlStatementAssembler<TDatabase>
-        where TDatabase : class, ISqlDatabaseRuntime
+    public class MsSqlInsertQueryExpressionAppender : ExpressionElementAppender<InsertQueryExpression>
     {
         #region methods
-        public override void AssembleStatement(InsertQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
+        public override void AppendElement(InsertQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             if (expression.Inserts.Count > 1)
                 throw new DbExpressionException("MsSql version 2005 does not support inserting multiple records in a single statement.");

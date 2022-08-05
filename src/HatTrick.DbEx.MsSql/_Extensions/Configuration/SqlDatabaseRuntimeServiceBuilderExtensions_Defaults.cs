@@ -26,23 +26,17 @@ namespace HatTrick.DbEx.MsSql.Configuration
 {
     public static partial class SqlDatabaseRuntimeServiceBuilderExtensions
     {
-        public static void WithDefaults<TDatabase>(this ISqlStatementAssemblerFactoryContinuationConfigurationBuilder<TDatabase> builder)
-            where TDatabase : class, ISqlDatabaseRuntime
-        {
-            builder
-                .ForQueryType<StoredProcedureQueryExpression>().Use<MsSqlStoredProcedureSqlStatementAssembler<TDatabase>>()
-                .ForSelect().Use<MsSqlSelectSqlStatementAssembler<TDatabase>>()
-                .ForInsert().Use<MsSqlInsertSqlStatementAssembler<TDatabase>>()
-                .ForUpdate().Use<MsSqlUpdateSqlStatementAssembler<TDatabase>>()
-                .ForDelete().Use<MsSqlDeleteSqlStatementAssembler<TDatabase>>();
-
-            Sql.Configuration.SqlDatabaseRuntimeServiceBuilderExtensions.WithDefaults(builder);
-        }
-
         public static void WithDefaults<TDatabase>(IExpressionElementAppenderFactoryContinuationConfigurationBuilder<TDatabase> builder)
             where TDatabase : class, ISqlDatabaseRuntime
         {
             builder
+                .ForElementType<SelectQueryExpression>().Use<MsSqlSelectQueryExpressionAppender>()
+                .ForElementType<InsertQueryExpression>().Use<MsSqlInsertQueryExpressionAppender>()
+                .ForElementType<UpdateQueryExpression>().Use<MsSqlUpdateQueryExpressionAppender>()
+                .ForElementType<DeleteQueryExpression>().Use<MsSqlDeleteQueryExpressionAppender>()
+                .ForElementType<StoredProcedureQueryExpression>().Use<MsSqlStoredProcedureQueryExpressionAppender>()
+
+                //functions
                 .ForElementType<DateAddFunctionExpression>().Use<DateAddFunctionExpressionAppender>()
                 .ForElementType<DateDiffFunctionExpression>().Use<DateDiffFunctionExpressionAppender>()
                 .ForElementType<DatePartFunctionExpression>().Use<DatePartFunctionExpressionAppender>()

@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,13 +16,11 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using HatTrick.DbEx.Sql;
-using HatTrick.DbEx.Sql.Assembler;
+﻿using HatTrick.DbEx.Sql.Expression;
 
-namespace HatTrick.DbEx.MsSql.Assembler
+namespace HatTrick.DbEx.Sql.Assembler
 {
-    public class MsSqlStoredProcedureSqlStatementAssembler<TDatabase> : StoredProcedureSqlStatementAssembler<TDatabase>
-        where TDatabase : class, ISqlDatabaseRuntime
+    public abstract class InsertQueryExpressionAppender : ExpressionElementAppender<InsertQueryExpression>
     {
 
     }

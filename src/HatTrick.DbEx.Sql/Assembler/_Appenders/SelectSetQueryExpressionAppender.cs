@@ -21,10 +21,9 @@ using System;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
-    public class SelectSetSqlStatementAssembler<TDatabase> : SqlStatementAssembler<TDatabase, SelectSetQueryExpression>
-        where TDatabase : class, ISqlDatabaseRuntime
+    public class SelectSetQueryExpressionAppender : ExpressionElementAppender<SelectSetQueryExpression>
     {
-        public override void AssembleStatement(SelectSetQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
+        public override void AppendElement(SelectSetQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             bool pushedStyle = false;
             try

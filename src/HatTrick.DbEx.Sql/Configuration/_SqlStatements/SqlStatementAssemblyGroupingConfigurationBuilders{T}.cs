@@ -32,7 +32,6 @@ namespace HatTrick.DbEx.Sql.Configuration
         private IAppenderFactoryConfigurationBuilder<TDatabase>? _appender;
         private ISqlParameterBuilderFactoryConfigurationBuilder<TDatabase>? _parameter;
         private ISqlStatementBuilderFactoryConfigurationBuilder<TDatabase>? _statement;
-        private ISqlStatementAssemblerFactoryConfigurationBuilder<TDatabase>? _assembler;
         private readonly SqlStatementAssemblerConfiguration assemblerConfiguration = new();
         #endregion
 
@@ -45,8 +44,6 @@ namespace HatTrick.DbEx.Sql.Configuration
         public ISqlParameterBuilderFactoryConfigurationBuilder<TDatabase> ParameterBuilder => _parameter ??= new SqlParameterBuilderFactoryConfigurationBuilder<TDatabase>(this, services);
         /// <inheritdoc />
         public ISqlStatementBuilderFactoryConfigurationBuilder<TDatabase> StatementBuilder => _statement ??= new SqlStatementBuilderFactoryConfigurationBuilder<TDatabase>(this, services);
-        /// <inheritdoc />
-        public ISqlStatementAssemblerFactoryConfigurationBuilder<TDatabase> StatementAssembler => _assembler ??= new SqlStatementAssemblerFactoryConfigurationBuilder<TDatabase>(this, services);
         /// <inheritdoc />
         public ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> QueryExecution => caller.QueryExecution;
         #endregion

@@ -22,10 +22,9 @@ using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
-    public class SelectSqlStatementAssembler<TDatabase> : SqlStatementAssembler<TDatabase, SelectQueryExpression>
-        where TDatabase : class, ISqlDatabaseRuntime
+    public class SelectQueryExpressionAppender : ExpressionElementAppender<SelectQueryExpression>
     {
-        public override void AssembleStatement(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
+        public override void AppendElement(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             AppendSelectClause(expression, builder, context);
             AppendFromClause(expression, builder, context);

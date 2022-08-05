@@ -16,21 +16,19 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Expression;
 
-namespace HatTrick.DbEx.MsSql.Assembler.v2005
+namespace HatTrick.DbEx.MsSql.Assembler.v2008
 {
-    public class MsSqlSelectSqlStatementAssembler<TDatabase> : HatTrick.DbEx.MsSql.Assembler.MsSqlSelectSqlStatementAssembler<TDatabase>
-        where TDatabase : class, ISqlDatabaseRuntime
+    public class MsSqlSelectQueryExpressionAppender : HatTrick.DbEx.MsSql.Assembler.MsSqlSelectQueryExpressionAppender
     {
-        public override void AssembleStatement(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
+        public override void AppendElement(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             if (!expression.Offset.HasValue && !expression.Limit.HasValue)
             {
                 //no paging, so no special handling required
-                base.AssembleStatement(expression, builder, context);
+                base.AppendElement(expression, builder, context);
             }
             else if (expression.Distinct == true)
             {

@@ -23,12 +23,11 @@ using System.Linq;
 
 namespace HatTrick.DbEx.MsSql.Assembler
 {
-    public class MsSqlSelectSqlStatementAssembler<TDatabase> : SelectSqlStatementAssembler<TDatabase>
-        where TDatabase : class, ISqlDatabaseRuntime
+    public class MsSqlSelectQueryExpressionAppender : SelectQueryExpressionAppender
     {
-        public override void AssembleStatement(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
+        public override void AppendElement(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            base.AssembleStatement(expression, builder, context);
+            base.AppendElement(expression, builder, context);
             if (expression.Offset.HasValue)
             {
                 var param = builder.Parameters.CreateInputParameter(expression.Offset.Value, context);

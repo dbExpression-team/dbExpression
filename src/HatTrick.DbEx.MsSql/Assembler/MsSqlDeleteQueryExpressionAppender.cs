@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,16 +16,18 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
+using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Expression;
-using System;
 
-namespace HatTrick.DbEx.Sql.Assembler
+namespace HatTrick.DbEx.MsSql.Assembler
 {
-    public interface ISqlStatementAssemblerFactory<TDatabase>
-        where TDatabase : class, ISqlDatabaseRuntime
+    public class MsSqlDeleteQueryExpressionAppender : DeleteQueryExpressionAppender
     {
-        ISqlStatementAssembler<TDatabase> CreateSqlStatementAssembler(Type assemblerType);
-        ISqlStatementAssembler<TDatabase, TQuery> CreateSqlStatementAssembler<TQuery>()
-            where TQuery : QueryExpression;
+        public override void AppendElement(DeleteQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
+        {
+            base.AppendElement(expression, builder, context);
+            builder.Appender.Write(context.StatementTerminator);
+            builder.Appender.LineBreak().Indent().Write("SELECT @@ROWCOUNT");
+        }
     }
 }
