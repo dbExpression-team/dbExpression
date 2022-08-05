@@ -1,5 +1,39 @@
 # Changelog
 
+## [0.9.2]
+
+### Added
+- Runtime configuration builders now support the ability to provide a func/delegate that receives the service provider.
+
+### Changed
+- Runtime configuration changed from using a static service locator pattern to using dependency injection for internal services.
+- Folded sql statement assemblers into element appenders as they were identical in processing, the only difference being a method name.
+ 
+### Fixed
+
+### Breaking Changes
+Configuration has significant changes with the implementation of dependency injection for internal operations of dbExpression, and to additionally improve the API.  Specifically:
+- Value converter configuration
+	- .UseDefaultFactoryFor -> .ForTypes
+	- .OverrideForEnumType -> .ForEnumType
+	- .OverrideForValueType -> .ForValueType
+	- .OverrideForReferenceType -> .ForReferenceType
+- Entity configuration
+	- .UseDefaultFactoryFor -> .ForEntityTypes
+	- .OverrideForEntity -> .ForEntityType
+- Expression element configuration
+	- .UseDefaultFactoryFor -> .ForElementTypesgit 
+	- .ForElement -> .ForElementType
+- Query expression configuration
+	- .UseDefaultFactoryFor -> .ForQueryTypes
+- Execution pipeline configuration
+	- .UseDefaultFactoryFor -> .ForPipelineTypes
+	
+- Any configuration/customization related to query expression assemblers.  All classes and configuration related to query expressionassembly has been removed.
+	
+Dependency injection integration with Microsoft (HatTrick.DbEx.MsSql.Extensions.DependencyInjection) no longer supports registration of services specific to a database.  This has been mitigated
+by generically typing most services used by dbExpression.  Service resolution is therefore inherently scoped to the database specific services.
+
 ## [0.9.1] - 2022-06-14
 
 ### Added
