@@ -20,12 +20,10 @@ using HatTrick.DbEx.Sql.Expression;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
-    public abstract class StoredProcedureSqlStatementAssembler<TDatabase> : SqlStatementAssembler<TDatabase, StoredProcedureQueryExpression>
-        where TDatabase : class, ISqlDatabaseRuntime
+    public abstract class StoredProcedureQueryExpressionAppender : ExpressionElementAppender<StoredProcedureQueryExpression>
     {
-        public override void AssembleStatement(StoredProcedureQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
+        public override void AppendElement(StoredProcedureQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            context.StatementTerminator = '\0';
             builder.AppendElement(expression.BaseEntity ?? throw new DbExpressionException("Expected base entity to not be null"), context);
         }
     }

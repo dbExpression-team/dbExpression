@@ -26,16 +26,6 @@ namespace HatTrick.DbEx.Sql.Configuration
 {
     public static class SqlDatabaseRuntimeServiceBuilderExtensions
     {
-        public static void WithDefaults<TDatabase>(this ISqlStatementAssemblerFactoryContinuationConfigurationBuilder<TDatabase> builder)
-            where TDatabase : class, ISqlDatabaseRuntime
-        {
-            builder
-                .ForQueryType<SelectSetQueryExpression>().Use<SelectSetSqlStatementAssembler<TDatabase>>()
-                .ForSelect().Use<SelectSqlStatementAssembler<TDatabase>>()
-                .ForUpdate().Use<UpdateSqlStatementAssembler<TDatabase>>()
-                .ForDelete().Use<DeleteSqlStatementAssembler<TDatabase>>();
-        }
-
         public static void WithDefaults<TDatabase>(this IQueryExpressionContinuationConfigurationBuilder<TDatabase> builder)
             where TDatabase : class, ISqlDatabaseRuntime
         {
@@ -103,6 +93,10 @@ namespace HatTrick.DbEx.Sql.Configuration
             where TDatabase : class, ISqlDatabaseRuntime
         {
             builder
+                .ForElementType<SelectSetQueryExpression>().Use<SelectSetQueryExpressionAppender>()
+                .ForElementType<SelectQueryExpression>().Use<SelectQueryExpressionAppender>()
+                .ForElementType<UpdateQueryExpression>().Use<UpdateQueryExpressionAppender>()
+                .ForElementType<DeleteQueryExpression>().Use<DeleteQueryExpressionAppender>()
                 .ForElementType<SchemaExpression>().Use<SchemaExpressionAppender>()
                 .ForElementType<EntityExpression>().Use<EntityExpressionAppender>()
                 .ForElementType<FieldExpression>().Use<FieldExpressionAppender>()

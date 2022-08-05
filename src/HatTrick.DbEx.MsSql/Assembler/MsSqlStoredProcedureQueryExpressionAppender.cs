@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,15 +16,17 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
+using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Expression;
 
-namespace HatTrick.DbEx.Sql.Assembler
+namespace HatTrick.DbEx.MsSql.Assembler
 {
-
-    public interface ISqlStatementAssembler<TDatabase, TQuery> : ISqlStatementAssembler<TDatabase>
-        where TDatabase : class, ISqlDatabaseRuntime
-        where TQuery : QueryExpression
+    public class MsSqlStoredProcedureQueryExpressionAppender : StoredProcedureQueryExpressionAppender
     {
-        void AssembleStatement(TQuery expression, ISqlStatementBuilder builder, AssemblyContext context);
+        public override void AppendElement(StoredProcedureQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
+        {
+            context.StatementTerminator = '\0';
+            base.AppendElement(expression, builder, context);
+        }
     }
 }

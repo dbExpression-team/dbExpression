@@ -21,36 +21,60 @@ using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
-    public class DeleteSqlStatementAssembler<TDatabase> : SqlStatementAssembler<TDatabase, DeleteQueryExpression>
-        where TDatabase : class, ISqlDatabaseRuntime
+    public class UpdateQueryExpressionAppender : ExpressionElementAppender<UpdateQueryExpression>
     {
         #region methods
-        public override void AssembleStatement(DeleteQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
+        public override void AppendElement(UpdateQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            builder.Appender.Indent().Write("DELETE");
+            builder.Appender
+                .Indent().Write("UPDATE");
 
             if (expression.Top.HasValue)
             {
                 builder.Appender.Write(" TOP(").Write(expression.Top.Value.ToString()).Write(")");
             }
+
             builder.Appender.LineBreak()
                 .Indentation++.Indent();
 
-            builder.AppendElement(expression.From ?? throw new DbExpressionException("Expected base entity to not be null"), context);
+            context.PushEntityAppendStyle(EntityExpressionAppendStyle.None);
+            try
+            {
+                builder.AppendElement(expression.From ?? throw new DbExpressionException("Expected base entity to not be null"), context);
+            }
+            finally
+            {
+                context.PopEntityAppendStyle();
+            }
+
+            builder.Appender
+                .Indentation--.LineBreak()
+                .Indent().Write("SET").LineBreak()
+                .Indentation++;
+
+            builder.AppendElement(expression.Assign, context);
 
             builder.Appender.LineBreak()
                 .Indentation--.Indent().Write("FROM").LineBreak()
                 .Indentation++.Indent();
 
-            builder.AppendElement(expression.From, context);
+            context.PushEntityAppendStyle(EntityExpressionAppendStyle.Declaration);
+            try
+            {
+                builder.AppendElement(expression.From, context);
+            }
+            finally
+            {
+                context.PopEntityAppendStyle();
+            }
 
             builder.Appender.Indentation--;
-
+            
             AppendJoinClause(expression, builder, context);
             AppendWhereClause(expression, builder, context);
         }
 
-        protected virtual void AppendJoinClause(DeleteQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
+        protected virtual void AppendJoinClause(UpdateQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             if (expression.Joins?.Expressions is null || !expression.Joins.Expressions.Any())
                 return;
@@ -62,7 +86,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             builder.Appender.Indentation--;
         }
 
-        protected virtual void AppendWhereClause(DeleteQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
+        protected virtual void AppendWhereClause(UpdateQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             if (expression.Where is null)
                 return;
@@ -72,9 +96,11 @@ namespace HatTrick.DbEx.Sql.Assembler
                 return;
 
             builder.Appender.LineBreak()
-                .Indent().Write("WHERE").Indentation++;
+                .Indent().Write("WHERE")
+                .Indentation++;
 
             builder.Appender.LineBreak().Indent();
+
             builder.AppendElement(expression.Where, context);
 
             builder.Appender.Indentation--;

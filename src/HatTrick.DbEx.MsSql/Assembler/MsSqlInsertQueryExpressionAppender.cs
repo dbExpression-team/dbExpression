@@ -23,11 +23,10 @@ using System.Linq;
 
 namespace HatTrick.DbEx.MsSql.Assembler
 {
-    public class MsSqlInsertSqlStatementAssembler<TDatabase> : InsertSqlStatementAssembler<TDatabase>
-        where TDatabase : class, ISqlDatabaseRuntime
+    public class MsSqlInsertQueryExpressionAppender : InsertQueryExpressionAppender
     {
         #region methods
-        public override void AssembleStatement(InsertQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
+        public override void AppendElement(InsertQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             const string ordinalColumnName = "__ordinal";
             const string insertValuesName = "__values";
