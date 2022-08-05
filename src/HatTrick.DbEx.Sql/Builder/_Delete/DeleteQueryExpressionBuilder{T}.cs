@@ -16,8 +16,8 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
+using HatTrick.DbEx.Sql.Pipeline;
 using System;
 using System.Linq;
 
@@ -29,40 +29,38 @@ namespace HatTrick.DbEx.Sql.Builder
     {
         #region internals
         private readonly DeleteQueryExpression _expression;
+        protected Func<IDeleteQueryExecutionPipeline<TDatabase>> ExecutionPipelineFactory { get; private set; }
         protected override QueryExpression Expression => DeleteQueryExpression;
         public DeleteQueryExpression DeleteQueryExpression => _expression;
         #endregion
 
         #region constructors
-        public DeleteQueryExpressionBuilder(DeleteQueryExpression expression, SqlDatabaseRuntimeConfiguration config)
-            : base(config)
+        public DeleteQueryExpressionBuilder(
+            ISqlDatabaseRuntime database,
+            DeleteQueryExpression expression,
+            Func<IDeleteQueryExecutionPipeline<TDatabase>> executionPipelineFactory
+        ) : base(database)
         {
             _expression = expression ?? throw new ArgumentNullException(nameof(expression));
-        }
-
-        protected DeleteQueryExpressionBuilder(DeleteQueryExpression expression, SqlDatabaseRuntimeConfiguration config, Table entity)
-            : base(config)
-        {
-            _expression = expression ?? throw new ArgumentNullException(nameof(expression));
-            _expression.From = entity ?? throw new ArgumentNullException(nameof(entity));
+            ExecutionPipelineFactory = executionPipelineFactory ?? throw new ArgumentNullException(nameof(executionPipelineFactory));
         }
         #endregion
 
         #region methods
         /// <inheritdoc />
         DeleteEntitiesContinuation<TDatabase, TEntity> DeleteEntities<TDatabase>.From<TEntity>(Table<TEntity> entity)
-            => CreateTypedBuilder(DeleteQueryExpression, Configuration, entity ?? throw new ArgumentNullException(nameof(entity)));
-
+            => new DeleteEntitiesDeleteQueryExpressionBuilder<TDatabase, TEntity>(
+                Database,
+                DeleteQueryExpression,
+                ExecutionPipelineFactory,
+                entity
+            );
         /// <inheritdoc />
         DeleteEntities<TDatabase> DeleteEntities<TDatabase>.Top(int value)
         {
             DeleteQueryExpression.Top = value;
             return this;
         }
-
-        protected virtual DeleteEntitiesContinuation<TDatabase, TEntity> CreateTypedBuilder<TEntity>(DeleteQueryExpression expression, SqlDatabaseRuntimeConfiguration configuration, Table<TEntity> entity)
-            where TEntity : class, IDbEntity
-            => new DeleteEntitiesDeleteQueryExpressionBuilder<TDatabase, TEntity>(expression, configuration, entity);
 
         protected virtual void ApplyWhere(AnyWhereExpression expression)
         {

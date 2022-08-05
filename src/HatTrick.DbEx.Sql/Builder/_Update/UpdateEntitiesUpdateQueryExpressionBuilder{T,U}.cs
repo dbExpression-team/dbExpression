@@ -16,7 +16,6 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Connection;
 using HatTrick.DbEx.Sql.Expression;
 using HatTrick.DbEx.Sql.Pipeline;
@@ -35,7 +34,11 @@ namespace HatTrick.DbEx.Sql.Builder
         where TEntity : class, IDbEntity
     {
         #region constructors
-        public UpdateEntitiesUpdateQueryExpressionBuilder(UpdateQueryExpression expression, SqlDatabaseRuntimeConfiguration config) : base(expression, config)
+        public UpdateEntitiesUpdateQueryExpressionBuilder(
+            ISqlDatabaseRuntime database,
+            UpdateQueryExpression expression,
+            Func<IUpdateQueryExecutionPipeline<TDatabase>> executionPipelineFactory
+        ) : base(database, expression, executionPipelineFactory)
         {
 
         }
@@ -97,13 +100,13 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <inheritdoc />
         UpdateEntitiesContinuation<TDatabase, TEntity> UpdateEntities<TDatabase, TEntity>.From(Table<TEntity> entity)
-            => CreateTypedBuilder(UpdateQueryExpression, Configuration, entity ?? throw new ArgumentNullException(nameof(entity)));
+            => new UpdateEntitiesUpdateQueryExpressionBuilder<TDatabase, TEntity>(Database, UpdateQueryExpression, ExecutionPipelineFactory);
 
         #region UpdateEntitiesTermination
         /// <inheritdoc />
         int UpdateEntitiesTermination<TDatabase>.Execute()
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return ExecutePipeline(
                 connection,
                 null
@@ -116,7 +119,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return ExecutePipeline(
                 connection,
                 command => command.CommandTimeout = commandTimeout
@@ -147,7 +150,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         async Task<int> UpdateEntitiesTermination<TDatabase>.ExecuteAsync(CancellationToken cancellationToken)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return await ExecutePipelineAsync(
                 connection,
                 null,
@@ -171,7 +174,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return await ExecutePipelineAsync(
                 connection,
                 command => command.CommandTimeout = commandTimeout,
@@ -193,15 +196,10 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         protected virtual int ExecutePipeline(ISqlConnection connection, Action<IDbCommand>? configureCommand)
-            => CreateUpdateExecutionPipeline().ExecuteUpdate(UpdateQueryExpression, connection, configureCommand);
+            => ExecutionPipelineFactory().ExecuteUpdate(UpdateQueryExpression, connection, configureCommand);
 
         protected virtual async Task<int> ExecutePipelineAsync(ISqlConnection connection, Action<IDbCommand>? configureCommand, CancellationToken cancellationToken)
-            => await CreateUpdateExecutionPipeline().ExecuteUpdateAsync(UpdateQueryExpression, connection, configureCommand, cancellationToken).ConfigureAwait(false);
-
-        protected virtual IUpdateQueryExpressionExecutionPipeline CreateUpdateExecutionPipeline()
-        {
-            return Configuration.ExecutionPipelineFactory.CreateQueryExecutionPipeline(Configuration, UpdateQueryExpression);
-        }
+            => await ExecutionPipelineFactory().ExecuteUpdateAsync(UpdateQueryExpression, connection, configureCommand, cancellationToken).ConfigureAwait(false);
         #endregion
         #endregion
     }

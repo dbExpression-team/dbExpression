@@ -16,9 +16,9 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Connection;
 using HatTrick.DbEx.Sql.Expression;
+using HatTrick.DbEx.Sql.Pipeline;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -36,9 +36,10 @@ namespace HatTrick.DbEx.Sql.Builder
     {
         #region constructors
         public SelectValueSelectQueryExpressionBuilder(
-            SqlDatabaseRuntimeConfiguration config,
+            ISqlDatabaseRuntime database,
+            Func<ISelectQueryExecutionPipeline<TDatabase>> executionPipelineFactory,
             SelectSetQueryExpressionBuilder<TDatabase> controller
-        ) : base(config, controller)
+        ) : base(database, executionPipelineFactory, controller)
         {
 
         }
@@ -50,7 +51,8 @@ namespace HatTrick.DbEx.Sql.Builder
         {
             Controller.ApplyUnion();
             return new SelectValuesSelectQueryExpressionBuilder<TDatabase, TValue>(
-                Configuration,
+                Database,
+                ExecutionPipelineFactory,
                 Controller
             );
         }
@@ -59,7 +61,8 @@ namespace HatTrick.DbEx.Sql.Builder
         {
             Controller.ApplyUnionAll();
             return new SelectValuesSelectQueryExpressionBuilder<TDatabase, TValue>(
-                Configuration,
+                Database,
+                ExecutionPipelineFactory,
                 Controller
             );
         }
@@ -175,7 +178,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         TValue? SelectValueTermination<TDatabase, TValue>.Execute()
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return ExecutePipeline(
                 connection,
                 null
@@ -188,7 +191,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return ExecutePipeline(
                 connection,
                 command => command.CommandTimeout = commandTimeout
@@ -219,7 +222,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         async Task<TValue?> SelectValueTermination<TDatabase, TValue>.ExecuteAsync(CancellationToken cancellationToken)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return await ExecutePipelineAsync(
                 connection,
                 null,
@@ -233,7 +236,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             return await ExecutePipelineAsync(
                 connection,
                 command => command.CommandTimeout = commandTimeout,
@@ -265,18 +268,10 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         protected virtual TValue? ExecutePipeline(ISqlConnection connection, Action<IDbCommand>? configureCommand)
-        {
-            var expression = Controller.Current;
-            var pipeline = Configuration.ExecutionPipelineFactory?.CreateQueryExecutionPipeline(Configuration, expression) ?? throw new DbExpressionConfigurationException($"Could not resolve/create an execution pipeline for type '{expression.GetType()}'.");
-            return pipeline.ExecuteSelectValue<TValue>(expression, connection, configureCommand);
-        }
+            => ExecutionPipelineFactory().ExecuteSelectValue<TValue>(Controller.Current, connection, configureCommand);
 
         protected virtual async Task<TValue?> ExecutePipelineAsync(ISqlConnection connection, Action<IDbCommand>? configureCommand, CancellationToken cancellationToken)
-        {
-            var expression = Controller.Current;
-            var pipeline = Configuration.ExecutionPipelineFactory?.CreateQueryExecutionPipeline(Configuration, expression) ?? throw new DbExpressionConfigurationException($"Could not resolve/create an execution pipeline for type '{expression.GetType()}'.");
-            return await pipeline.ExecuteSelectValueAsync<TValue>(expression, connection, configureCommand, cancellationToken).ConfigureAwait(false);
-        }
+            => await ExecutionPipelineFactory().ExecuteSelectValueAsync<TValue>(Controller.Current, connection, configureCommand, cancellationToken).ConfigureAwait(false);
         #endregion
         #endregion
     }

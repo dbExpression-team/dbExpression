@@ -20,7 +20,8 @@ using System;
 
 namespace HatTrick.DbEx.Sql.Converter
 {
-    public class DelegateValueConverterFactory : IValueConverterFactory
+    public class DelegateValueConverterFactory<TDatabase> : IValueConverterFactory<TDatabase>
+        where TDatabase : class, ISqlDatabaseRuntime
     {
         #region internals
         private readonly Func<Type, IValueConverter> factory;
@@ -34,8 +35,8 @@ namespace HatTrick.DbEx.Sql.Converter
         #endregion
 
         #region methods
-        public IValueConverter CreateConverter<T>()
-            => factory(typeof(T)) ?? throw new DbExpressionConfigurationException($"Could not resolve a converter for type '{typeof(T)}', please ensure a converter has been registered.");
+        public IValueConverter<T> CreateConverter<T>()
+            => factory(typeof(T)) as IValueConverter<T> ?? throw new DbExpressionConfigurationException($"Could not resolve a converter for type '{typeof(T)}', please ensure a converter has been registered.");
 
         public IValueConverter CreateConverter(Type type)
             => factory(type) ?? throw new DbExpressionConfigurationException($"Could not resolve a converter for type '{type}', please ensure a converter has been registered.");

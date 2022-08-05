@@ -16,8 +16,8 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
+using HatTrick.DbEx.Sql.Pipeline;
 using System;
 
 namespace HatTrick.DbEx.Sql.Builder
@@ -31,8 +31,13 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
 
         #region constructors
-        public EntitySelectSetQueryExpressionBuilder(SelectSetQueryExpression expression, SqlDatabaseRuntimeConfiguration config, Table<TEntity> table)
-            : base(expression, config)
+        public EntitySelectSetQueryExpressionBuilder(
+            ISqlDatabaseRuntime database,
+            Func<SelectQueryExpression> queryExpressionFactory,
+            Func<ISelectSetQueryExecutionPipeline<TDatabase>> selectSetExecutionPipelineFactory,
+            Func<ISelectQueryExecutionPipeline<TDatabase>> selectExecutionPipelineFactory,
+            Table<TEntity> table
+        ) : base(database, queryExpressionFactory, selectSetExecutionPipelineFactory, selectExecutionPipelineFactory)
         {
             this.table = table ?? throw new ArgumentNullException(nameof(table));
         }
@@ -48,7 +53,8 @@ namespace HatTrick.DbEx.Sql.Builder
             exp.Select = table.BuildInclusiveSelectExpression() ?? throw new DbExpressionException($"Select expressions for entity {typeof(TEntity)} were not provided.");
 
             return (new SelectEntitiesSelectQueryExpressionBuilder<TDatabase, TEntity>(
-                Configuration,
+                Database,
+                SelectQueryExpressionExecutionPipelineFactory,
                 this,
                 table
             ) as SelectEntities<TDatabase, T>)!;
@@ -64,7 +70,8 @@ namespace HatTrick.DbEx.Sql.Builder
             exp.Top = 1;
 
             return (new SelectEntitySelectQueryExpressionBuilder<TDatabase, TEntity>(
-                Configuration,
+                Database,
+                SelectQueryExpressionExecutionPipelineFactory,
                 this,
                 table
             ) as SelectEntity<TDatabase, T>)!;

@@ -119,7 +119,7 @@ namespace ServerSideBlazorApp.Service
                     model.Depth = reader.ReadField()!.GetValue<decimal?>();
                     model.Weight = reader.ReadField()!.GetValue<decimal?>();
                     model.ShippingWeight = reader.ReadField()!.GetValue<decimal>();
-                    model.Image = Convert.ToBase64String(reader.ReadField()!.GetValue<byte[]>() ?? Array.Empty<byte>());
+                    model.Image = Convert.ToBase64String(reader.ReadField()!.GetValue<byte[]?>() ?? Array.Empty<byte>());
                     return model;
                 });
         }

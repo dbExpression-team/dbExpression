@@ -16,10 +16,10 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Connection;
 using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
+using HatTrick.DbEx.Sql.Pipeline;
 using System;
 using System.Data;
 using System.Threading;
@@ -41,14 +41,21 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
 
         #region constructors
-        public MapValuesStoredProcedureQueryExpressionBuilder(StoredProcedureQueryExpression expression, SqlDatabaseRuntimeConfiguration config)
-            : base(expression, config)
+        public MapValuesStoredProcedureQueryExpressionBuilder(
+            ISqlDatabaseRuntime database,
+            StoredProcedureQueryExpression expression,
+            Func<IStoredProcedureExecutionPipeline<TDatabase>> executionPipelineFactory
+        ) : base(database, expression, executionPipelineFactory)
         {
             this.map = _ => { };
         }
 
-        public MapValuesStoredProcedureQueryExpressionBuilder(StoredProcedureQueryExpression expression, SqlDatabaseRuntimeConfiguration config, Action<ISqlFieldReader> map)
-            : base(expression, config)
+        public MapValuesStoredProcedureQueryExpressionBuilder(
+            ISqlDatabaseRuntime database,
+            StoredProcedureQueryExpression expression,
+            Func<IStoredProcedureExecutionPipeline<TDatabase>> executionPipelineFactory,
+            Action<ISqlFieldReader> map
+        ) : base(database, expression, executionPipelineFactory)
         {
             this.map = map ?? throw new ArgumentNullException(nameof(map));
         }
@@ -59,7 +66,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         void MapValuesStoredProcedureTermination<TDatabase>.Execute()
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             ExecutePipeline(
                 connection,
                 null
@@ -78,7 +85,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         void MapValuesStoredProcedureTermination<TDatabase>.Execute(int commandTimeout)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             ExecutePipeline(
                 connection,
                 command => command.CommandTimeout = commandTimeout
@@ -97,7 +104,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         async Task MapValuesStoredProcedureTermination<TDatabase>.ExecuteAsync(CancellationToken cancellationToken)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             await ExecutePipelineAsync(
                 connection,
                 null,
@@ -118,7 +125,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         async Task MapValuesStoredProcedureTermination<TDatabase>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
+            using var connection = Database.GetConnection();
             await ExecutePipelineAsync(
                 connection,
                 command => command.CommandTimeout = commandTimeout,
@@ -137,10 +144,10 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         protected override void ExecutePipeline(ISqlConnection connection, Action<IDbCommand>? configureCommand)
-            => CreateStoredProcedureExecutionPipeline().Execute(StoredProcedureQueryExpression, map, connection, configureCommand);
+            => ExecutionPipelineFactory().Execute(StoredProcedureQueryExpression, map, connection, configureCommand);
 
         protected override async Task ExecutePipelineAsync(ISqlConnection connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
-            => await CreateStoredProcedureExecutionPipeline().ExecuteAsync(StoredProcedureQueryExpression, map, connection, configureCommand, ct).ConfigureAwait(false);
+            => await ExecutionPipelineFactory().ExecuteAsync(StoredProcedureQueryExpression, map, connection, configureCommand, ct).ConfigureAwait(false);
         #endregion
         #endregion
     }

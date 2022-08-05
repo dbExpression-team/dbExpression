@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using HatTrick.DbEx.Sql.Expression;
+using System.Web;
 
 namespace ServerSideBlazorApp.Pages
 {
@@ -25,9 +26,9 @@ namespace ServerSideBlazorApp.Pages
                     if (Top5VIPCustomers.Any() || RecentOrders.Any())
                         StateHasChanged();
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    NavigationManager.NavigateTo("/startup", true);
+                    NavigationManager.NavigateTo($"/startup?message={HttpUtility.UrlEncode(e.Message)}", true);
                 }
             }
         }
@@ -46,9 +47,9 @@ namespace ServerSideBlazorApp.Pages
                     }
                 );           
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                NavigationManager.NavigateTo("/startup", true);
+                NavigationManager.NavigateTo($"/startup?message={HttpUtility.UrlEncode(e.Message)}", true);
             }
             return Enumerable.Empty<SingleMetricDatasetModel>();
         }
@@ -70,9 +71,9 @@ namespace ServerSideBlazorApp.Pages
                     }
                 );
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                NavigationManager.NavigateTo("/startup", true);
+                NavigationManager.NavigateTo($"/startup?message={HttpUtility.UrlEncode(e.Message)}", true);
             }
             return Enumerable.Empty<SingleMetricDatasetModel>();
         }

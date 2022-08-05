@@ -8,7 +8,7 @@ using HatTrick.DbEx.MsSql.Benchmark.dbExpression.secDataService;
 namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
 {
     #region db meta
-    public class MsSqlDbSqlDatabaseMetadata : ISqlDatabaseMetadata
+    public class BenchmarkDatabaseSqlDatabaseMetadata : ISqlDatabaseMetadata
     {
         #region interface
         public string Identifier { get; private set; }
@@ -17,7 +17,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         #endregion
 
         #region constructors
-        public MsSqlDbSqlDatabaseMetadata(string identifier, string name)
+        public BenchmarkDatabaseSqlDatabaseMetadata(string identifier, string name)
         {
             Identifier = identifier;
             Name = name;

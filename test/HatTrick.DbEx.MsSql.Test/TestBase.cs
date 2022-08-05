@@ -1,46 +1,39 @@
 ﻿using DbEx.Data;
 using DbEx.DataService;
-using DbEx.dboDataService;
 using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.Sql.Configuration;
-using HatTrick.DbEx.Sql.Converter;
-using HatTrick.DbEx.Sql.Expression;
 using System;
 
 namespace HatTrick.DbEx.MsSql.Test
 {
     public abstract class TestBase
     {
-        public virtual SqlDatabaseRuntimeConfiguration ConfigureForMsSqlVersion(int version, Action<ISqlDatabaseRuntimeConfigurationBuilder>? postConfigure = null)
-            => ConfigureForMsSqlVersion(version, ConfigurationProvider.ConnectionString, postConfigure);
+        public virtual IServiceProvider ConfigureForMsSqlVersion(int version, Action<ISqlDatabaseRuntimeConfigurationBuilder<MsSqlDb>>? configure = null)
+            => ConfigureForMsSqlVersion(version, ConfigurationProvider.ConnectionString, configure);
 
-        public virtual SqlDatabaseRuntimeConfiguration ConfigureForMsSqlVersion(int version, string connectionString)
+        public virtual IServiceProvider ConfigureForMsSqlVersion(int version, string connectionString)
             => ConfigureForMsSqlVersion(version, connectionString, null);
 
-        public virtual SqlDatabaseRuntimeConfiguration ConfigureForMsSqlVersion(int version, string connectionString, Action<ISqlDatabaseRuntimeConfigurationBuilder>? postConfigure = null)
+        public virtual IServiceProvider ConfigureForMsSqlVersion(int version, string connectionString, Action<ISqlDatabaseRuntimeConfigurationBuilder<MsSqlDb>>? configure = null)
         {
-            SqlDatabaseRuntimeConfiguration? config = default;
-            void configureRuntime(ISqlDatabaseRuntimeConfigurationBuilder database)
+            void configureRuntime(ISqlDatabaseRuntimeConfigurationBuilder<MsSqlDb> database)
             {
-                config = (database as ISqlDatabaseRuntimeConfigurationProvider<MsSqlSqlDatabaseRuntimeConfiguration>)!.Configuration;
+                configure?.Invoke(database);
+
                 database.ConnectionString.Use(connectionString);
 
                 database.SqlStatements.Assembly.ConfigureOutputSettings(
                     x => x.PrependCommaOnSelectClause = true
                 );
 
-                database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForEnumType<PaymentMethodType>().PersistAsString()
-                        .OverrideForEnumType<PaymentSourceType>().PersistAsString()
-                );
-
-                database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForReferenceType<ProductDescription>().Use(
+                database.Conversions.ForTypes(x => x
+                    .ForEnumType<PaymentMethodType>().PersistAsString()
+                    .ForEnumType<PaymentSourceType>().PersistAsString()
+                    .ForReferenceType<ProductDescription>().Use(
                         pd => pd is null ? null : System.Text.Json.JsonSerializer.Serialize(pd),
-                        o => string.IsNullOrWhiteSpace(o as string) ? default : System.Text.Json.JsonSerializer.Deserialize<ProductDescription>((o as string)!))
-                    );
-
-                postConfigure?.Invoke(database);
+                        o => string.IsNullOrWhiteSpace(o as string) ? default : System.Text.Json.JsonSerializer.Deserialize<ProductDescription>((o as string)!)
+                    )
+                );
             }
 
             switch (version)
@@ -82,7 +75,8 @@ namespace HatTrick.DbEx.MsSql.Test
                     }
                 default: throw new NotImplementedException($"MsSql version {version} has not been implemented");
             }
-            return config!;
+
+            return dbExpression.BuildServiceProvider();
         }
     }
 }

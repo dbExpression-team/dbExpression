@@ -16,8 +16,9 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Configuration;
+using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Connection;
+using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Data;
@@ -26,39 +27,25 @@ using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql.Pipeline
 {
-    public class UpdateQueryExpressionExecutionPipeline : IUpdateQueryExpressionExecutionPipeline
+    public class UpdateQueryExpressionExecutionPipeline<TDatabase> : IUpdateQueryExecutionPipeline<TDatabase>
+        where TDatabase : class, ISqlDatabaseRuntime
     {
         #region internals
-        private readonly SqlDatabaseRuntimeConfiguration database;
-        private readonly PipelineEventHook<BeforeAssemblyPipelineExecutionContext> beforeAssembly;
-        private readonly PipelineEventHook<BeforeUpdateAssemblyPipelineExecutionContext> beforeUpdateAssembly;
-        private readonly PipelineEventHook<AfterAssemblyPipelineExecutionContext> afterAssembly;
-        private readonly PipelineEventHook<BeforeExecutionPipelineExecutionContext> beforeExecution;
-        private readonly PipelineEventHook<AfterExecutionPipelineExecutionContext> afterExecution;
-        private readonly PipelineEventHook<BeforeUpdatePipelineExecutionContext> beforeUpdate;
-        private readonly PipelineEventHook<AfterUpdatePipelineExecutionContext> afterUpdate;
+        private readonly ISqlStatementExecutor<TDatabase> statementExecutor;
+        private readonly ISqlStatementBuilder<TDatabase> statementBuilder;
+        private readonly PipelineEventHooks<TDatabase> events;
         #endregion
 
         #region constructors
         public UpdateQueryExpressionExecutionPipeline(
-            SqlDatabaseRuntimeConfiguration database,
-            PipelineEventHook<BeforeAssemblyPipelineExecutionContext> beforeAssembly,
-            PipelineEventHook<BeforeUpdateAssemblyPipelineExecutionContext> beforeUpdateAssembly,
-            PipelineEventHook<AfterAssemblyPipelineExecutionContext> afterAssembly,
-            PipelineEventHook<BeforeExecutionPipelineExecutionContext> beforeExecution,
-            PipelineEventHook<AfterExecutionPipelineExecutionContext> afterExecution,
-            PipelineEventHook<BeforeUpdatePipelineExecutionContext> beforeUpdate,
-            PipelineEventHook<AfterUpdatePipelineExecutionContext> afterUpdate
+            ISqlStatementExecutor<TDatabase> statementExecutor,
+            ISqlStatementBuilder<TDatabase> statementBuilder,
+            PipelineEventHooks<TDatabase> events
         )
         {
-            this.database = database;
-            this.beforeAssembly = beforeAssembly;
-            this.beforeUpdateAssembly = beforeUpdateAssembly;
-            this.afterAssembly = afterAssembly;
-            this.beforeExecution = beforeExecution;
-            this.afterExecution = afterExecution;
-            this.beforeUpdate = beforeUpdate;
-            this.afterUpdate = afterUpdate;
+            this.statementExecutor = statementExecutor ?? throw new ArgumentNullException(nameof(statementExecutor));
+            this.statementBuilder = statementBuilder ?? throw new ArgumentNullException(nameof(statementBuilder));
+            this.events = events ?? throw new ArgumentNullException(nameof(events));
         }
         #endregion
 
@@ -71,27 +58,24 @@ namespace HatTrick.DbEx.Sql.Pipeline
             if (connection is null)
                 throw new ArgumentNullException(nameof(connection));
 
-            var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, expression) ?? throw new DbExpressionException("The sql statement builder is null, cannot execute an update query without a statement builder to construct the sql statement.");
+            events.BeforeAssembly?.Invoke(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(expression, statementBuilder.Parameters)));
+            events.BeforeUpdateAssembly?.Invoke(new Lazy<BeforeUpdateAssemblyPipelineExecutionContext>(() => new BeforeUpdateAssemblyPipelineExecutionContext(expression, statementBuilder.Parameters)));
+            var statement = statementBuilder.CreateSqlStatement(expression) ?? throw new DbExpressionException("The sql statement builder returned a null value, cannot execute an update query without a sql statement.");
+            events.AfterAssembly?.Invoke(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(expression, statementBuilder.Parameters, statement)));
 
-            beforeAssembly?.Invoke(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(database, expression, statementBuilder.Parameters)));
-            beforeUpdateAssembly?.Invoke(new Lazy<BeforeUpdateAssemblyPipelineExecutionContext>(() => new BeforeUpdateAssemblyPipelineExecutionContext(database, expression, statementBuilder.Parameters)));
-            var statement = statementBuilder.CreateSqlStatement() ?? throw new DbExpressionException("The sql statement builder returned a null value, cannot execute an update query without a sql statement.");
-            afterAssembly?.Invoke(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(database, expression, statementBuilder.Parameters, statement)));
+            events.BeforeUpdate?.Invoke(new Lazy<BeforeUpdatePipelineExecutionContext>(() => new BeforeUpdatePipelineExecutionContext(expression, statement, statementBuilder.Parameters)));
 
-            beforeUpdate?.Invoke(new Lazy<BeforeUpdatePipelineExecutionContext>(() => new BeforeUpdatePipelineExecutionContext(database, expression, statement, statementBuilder.Parameters)));
-
-            var executor = database.StatementExecutorFactory.CreateSqlStatementExecutor() ?? throw new DbExpressionException("The sql statement executor is null, cannot execute an update query without a statement executor to execute the sql statement.");
-            var rowsAffected = executor.ExecuteScalar<int>(
+            var rowsAffected = statementExecutor.ExecuteScalar<int>(
                 statement,
                 connection,
                 cmd => {
-                    beforeExecution?.Invoke(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(database, expression, cmd, statement))); 
+                    events.BeforeExecution?.Invoke(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(expression, cmd, statement))); 
                     configureCommand?.Invoke(cmd); 
                 },
-                cmd => afterExecution?.Invoke(new Lazy<AfterExecutionPipelineExecutionContext>(() => new AfterExecutionPipelineExecutionContext(database, expression, cmd)))
+                cmd => events.AfterExecution?.Invoke(new Lazy<AfterExecutionPipelineExecutionContext>(() => new AfterExecutionPipelineExecutionContext(expression, cmd)))
             );
 
-            afterUpdate?.Invoke(new Lazy<AfterUpdatePipelineExecutionContext>(() => new AfterUpdatePipelineExecutionContext(database, expression, statement)));
+            events.AfterUpdate?.Invoke(new Lazy<AfterUpdatePipelineExecutionContext>(() => new AfterUpdatePipelineExecutionContext(expression, statement)));
 
             return rowsAffected;
         }
@@ -104,47 +88,44 @@ namespace HatTrick.DbEx.Sql.Pipeline
             if (connection is null)
                 throw new ArgumentNullException(nameof(connection));
 
-            var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, expression) ?? throw new DbExpressionException("The sql statement builder is null, cannot execute an update query without a statement builder to construct the sql statement.");
-
-            if (beforeAssembly is not null)
+            if (events.BeforeAssembly is not null)
             {
-                await beforeAssembly.InvokeAsync(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(database, expression, statementBuilder.Parameters)), ct).ConfigureAwait(false);
+                await events.BeforeAssembly.InvokeAsync(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(expression, statementBuilder.Parameters)), ct).ConfigureAwait(false);
                 ct.ThrowIfCancellationRequested();
             }
-            if (beforeUpdateAssembly is not null)
+            if (events.BeforeUpdateAssembly is not null)
             {
-                await beforeUpdateAssembly.InvokeAsync(new Lazy<BeforeUpdateAssemblyPipelineExecutionContext>(() => new BeforeUpdateAssemblyPipelineExecutionContext(database, expression, statementBuilder.Parameters)), ct).ConfigureAwait(false);
+                await events.BeforeUpdateAssembly.InvokeAsync(new Lazy<BeforeUpdateAssemblyPipelineExecutionContext>(() => new BeforeUpdateAssemblyPipelineExecutionContext(expression, statementBuilder.Parameters)), ct).ConfigureAwait(false);
                 ct.ThrowIfCancellationRequested();
             }
-            var statement = statementBuilder.CreateSqlStatement() ?? throw new DbExpressionException("The sql statement builder returned a null value, cannot execute an update query without a sql statement.");
-            if (afterAssembly is not null)
+            var statement = statementBuilder.CreateSqlStatement(expression) ?? throw new DbExpressionException("The sql statement builder returned a null value, cannot execute an update query without a sql statement.");
+            if (events.AfterAssembly is not null)
             {
-                await afterAssembly.InvokeAsync(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(database, expression, statementBuilder.Parameters, statement)), ct).ConfigureAwait(false);
-                ct.ThrowIfCancellationRequested();
-            }
-
-            if (beforeUpdate is not null)
-            {
-                await beforeUpdate.InvokeAsync(new Lazy<BeforeUpdatePipelineExecutionContext>(() => new BeforeUpdatePipelineExecutionContext(database, expression, statement, statementBuilder.Parameters)), ct).ConfigureAwait(false);
+                await events.AfterAssembly.InvokeAsync(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(expression, statementBuilder.Parameters, statement)), ct).ConfigureAwait(false);
                 ct.ThrowIfCancellationRequested();
             }
 
-            var executor = database.StatementExecutorFactory.CreateSqlStatementExecutor() ?? throw new DbExpressionException("The sql statement executor is null, cannot execute an update query without a statement executor to execute the sql statement.");
-            var rowsAffected = await executor.ExecuteScalarAsync<int>(
+            if (events.BeforeUpdate is not null)
+            {
+                await events.BeforeUpdate.InvokeAsync(new Lazy<BeforeUpdatePipelineExecutionContext>(() => new BeforeUpdatePipelineExecutionContext(expression, statement, statementBuilder.Parameters)), ct).ConfigureAwait(false);
+                ct.ThrowIfCancellationRequested();
+            }
+
+            var rowsAffected = await statementExecutor.ExecuteScalarAsync<int>(
                 statement,
                 connection,
                 async cmd => {
-                    if (beforeExecution is not null)
+                    if (events.BeforeExecution is not null)
                     {
-                        await beforeExecution.InvokeAsync(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(database, expression, cmd, statement)), ct).ConfigureAwait(false);
+                        await events.BeforeExecution.InvokeAsync(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(expression, cmd, statement)), ct).ConfigureAwait(false);
                     }
                     configureCommand?.Invoke(cmd);
                 },
                 async cmd =>
                 {
-                    if (afterExecution is not null)
+                    if (events.AfterExecution is not null)
                     {
-                        await afterExecution.InvokeAsync(new Lazy<AfterExecutionPipelineExecutionContext>(() => new AfterExecutionPipelineExecutionContext(database, expression, cmd)), ct).ConfigureAwait(false);
+                        await events.AfterExecution.InvokeAsync(new Lazy<AfterExecutionPipelineExecutionContext>(() => new AfterExecutionPipelineExecutionContext(expression, cmd)), ct).ConfigureAwait(false);
                     }
                 },
                 ct
@@ -152,9 +133,9 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             ct.ThrowIfCancellationRequested();
 
-            if (afterUpdate is not null)
+            if (events.AfterUpdate is not null)
             {
-                await afterUpdate.InvokeAsync(new Lazy<AfterUpdatePipelineExecutionContext>(() => new AfterUpdatePipelineExecutionContext(database, expression, statement)), ct).ConfigureAwait(false);
+                await events.AfterUpdate.InvokeAsync(new Lazy<AfterUpdatePipelineExecutionContext>(() => new AfterUpdatePipelineExecutionContext(expression, statement)), ct).ConfigureAwait(false);
                 ct.ThrowIfCancellationRequested();
             }
 

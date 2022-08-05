@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFrameworks Condition="Exists('$(TARGET_NET_FRAMEWORK)')">net6.0;net461</TargetFrameworks>
@@ -56,7 +56,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Expression\_Function\" />
+	  <Folder Include="Expression\_Function\" />
 	</ItemGroup>
 
 </Project>

@@ -58,20 +58,5 @@ namespace HatTrick.DbEx.Sql.Converter
                 
             return Convert.ChangeType(value, underlyingType);
         }
-
-        public virtual T? ConvertFromDatabase<T>(object? value)
-        {
-            if (value is null)
-                 return default;
-
-            if (typeof(T) == value.GetType())
-                return (T)value;
-
-            var underlying = Nullable.GetUnderlyingType(typeof(T));
-            if (underlying == value.GetType())
-                return (T)value;
-
-            return (T)Convert.ChangeType(value, underlying ?? typeof(T));
-        }
     }
 }

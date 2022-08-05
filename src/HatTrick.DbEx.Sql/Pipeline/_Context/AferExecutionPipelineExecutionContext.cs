@@ -16,7 +16,6 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Data.Common;
@@ -28,8 +27,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
         public SqlStatement Statement { get; private set; }
         public DbCommand DbCommand { get; private set; }
 
-        public AferExecutionPipelineExecutionContext(SqlDatabaseRuntimeConfiguration database, QueryExpression expression, SqlStatement statement, DbCommand command)
-            : base(database, expression)
+        public AferExecutionPipelineExecutionContext(QueryExpression expression, SqlStatement statement, DbCommand command)
+            : base(expression)
         {
             Statement = statement ?? throw new ArgumentNullException(nameof(statement));
             DbCommand = command ?? throw new ArgumentNullException(nameof(command));

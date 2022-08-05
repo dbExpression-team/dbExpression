@@ -21,8 +21,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             bool toFired = false;
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForEnumType<PaymentSourceType>().Use(
+            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+                    x.ForEnumType<PaymentSourceType>().Use(
                         to =>
                         {
                             toFired = true;
@@ -74,8 +74,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //given
             bool toFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForEnumType<PaymentSourceType>().Use(
+            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+                    x.ForEnumType<PaymentSourceType>().Use(
                         to =>
                         {
                             toFired = true;
@@ -106,8 +106,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             bool toFired = false;
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForEnumType<PaymentMethodType>().Use(
+            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+                    x.ForEnumType<PaymentMethodType>().Use(
                         to =>
                         {
                             toFired = true;
@@ -160,8 +160,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //given
             bool toFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForEnumType<PaymentMethodType>().Use(
+            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+                    x.ForEnumType<PaymentMethodType>().Use(
                         to =>
                         {
                             toFired = true;
@@ -191,8 +191,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             bool toFired = false;
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForValueType<DateTime>().Use(
+            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+                    x.ForValueType<DateTime?>().Use(
                         to =>
                         {
                             toFired = true;
@@ -239,17 +239,17 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             bool toFired = false;
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForValueType<DateTimeOffset>().Use(
+            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+                    x.ForValueType<DateTimeOffset>().Use(
                         to =>
                         {
                             toFired = true;
-                            return to.HasValue ? to.Value.AddYears(10) : (DateTimeOffset?)null;
+                            return to.AddYears(10);
                         },
                         from =>
                         {
                             fromFired = true;
-                            return from is not null ? ((DateTimeOffset)from).AddYears(-5) : (DateTimeOffset?)null;
+                            return ((DateTimeOffset)from!).AddYears(-5);
                         }
                     )
                 )
@@ -285,12 +285,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             DateTime expected = DateTime.UtcNow;
             bool toFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForValueType<DateTimeOffset>().Use(
+            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+                    x.ForValueType<DateTimeOffset>().Use(
                         to =>
                         {
                             toFired = true;
-                            return to.HasValue ? to : (DateTimeOffset?)null;
+                            return to;
                         },
                         from => throw new NotImplementedException()
                     )
@@ -314,8 +314,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //given
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForEnumType<PaymentMethodType>().Use(
+            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+                    x.ForEnumType<PaymentMethodType>().Use(
                         to => throw new NotImplementedException(),
                         from =>
                         {
@@ -350,8 +350,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             bool toFired = false;
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForEnumType<PaymentMethodType>().Use(
+            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+                    x.ForEnumType<PaymentMethodType>().Use(
                         to =>
                         {
                             toFired = true;
@@ -393,8 +393,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //given
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForEnumType<PaymentSourceType>().Use(
+            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+                    x.ForEnumType<PaymentSourceType>().Use(
                         to => throw new NotImplementedException(),
                         from =>
                         {
@@ -429,8 +429,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             bool toFired = false;
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForEnumType<PaymentSourceType>().Use(
+            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+                    x.ForEnumType<PaymentSourceType>().Use(
                         to =>
                         {
                             toFired = true;
@@ -474,8 +474,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             bool toFired = false;
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForValueType<DateTime>().Use(
+            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+                    x.ForValueType<DateTime?>().Use(
                         to =>
                         {
                             toFired = true;
@@ -514,8 +514,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             bool toFired = false;
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForValueType<DateTime>().Use(
+            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+                    x.ForValueType<DateTime?>().Use(
                         to =>
                         {
                             toFired = true;
@@ -553,13 +553,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             DateTimeOffset expected = DateTimeOffset.UtcNow;
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForValueType<DateTimeOffset>().Use(
+            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+                    x.ForValueType<DateTimeOffset>().Use(
                         to => throw new NotImplementedException(),
                         from =>
                         {
                             fromFired = true;
-                            return from is not null ? ((DateTimeOffset)from).AddYears(-10) : (DateTimeOffset?)null;
+                            return ((DateTimeOffset)from!).AddYears(-10);
                         }
                     )
                 )
@@ -588,8 +588,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             bool toFired = false;
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForValueType<DateTime>().Use(
+            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+                    x.ForValueType<DateTime?>().Use(
                         to =>
                         {
                             toFired = true;
@@ -628,17 +628,17 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             bool toFired = false;
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForValueType<DateTimeOffset>().Use(
+            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+                    x.ForValueType<DateTimeOffset>().Use(
                         to =>
                         {
                             toFired = true;
-                            return to.HasValue ? to.Value.AddYears(10) : (DateTimeOffset?)null;
+                            return to.AddYears(10);
                         },
                         from =>
                         {
                             fromFired = true;
-                            return from is not null ? ((DateTimeOffset)from).AddYears(-5) : (DateTimeOffset?)null;
+                            return ((DateTimeOffset)from!).AddYears(-5);
                         }
                     )
                 )
@@ -668,8 +668,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             bool toFired = false;
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForValueType<DateTime>().Use(
+            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+                    x.ForValueType<DateTime?>().Use(
                         to =>
                         {
                             toFired = true;
@@ -710,13 +710,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             DateTimeOffset expected = DateTimeOffset.UtcNow;
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForValueType<DateTimeOffset>().Use(
+            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+                    x.ForValueType<DateTimeOffset>().Use(
                         to => throw new NotImplementedException(),
                         from =>
                         {
                             fromFired = true;
-                            return from is not null ? ((DateTimeOffset)from).AddYears(-10) : (DateTimeOffset?)null;
+                            return ((DateTimeOffset)from!).AddYears(-10);
                         }
                     )
                 )
@@ -748,8 +748,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             bool toFired = false;
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForValueType<DateTime>().Use(
+            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+                    x.ForValueType<DateTime?>().Use(
                         to =>
                         {
                             toFired = true;
@@ -791,17 +791,17 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             bool toFired = false;
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForValueType<DateTimeOffset>().Use(
+            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+                    x.ForValueType<DateTimeOffset>().Use(
                         to =>
                         {
                             toFired = true;
-                            return to.HasValue ? to.Value.AddYears(10) : (DateTimeOffset?)null;
+                            return to.AddYears(10);
                         },
                         from =>
                         {
                             fromFired = true;
-                            return from is not null ? ((DateTimeOffset)from).AddYears(-5) : (DateTimeOffset?)null;
+                            return ((DateTimeOffset)from!).AddYears(-5);
                         }
                     )
                 )
@@ -834,8 +834,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             bool toFired = false;
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForValueType<DateTime>().Use(
+            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+                    x.ForValueType<DateTime?>().Use(
                         to =>
                         {
                             toFired = true;
@@ -877,8 +877,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             bool toFired = false;
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForValueType<DateTime>().Use(
+            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+                    x.ForValueType<DateTime?>().Use(
                         to =>
                         {
                             toFired = true;
@@ -916,13 +916,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             DateTimeOffset expected = DateTimeOffset.UtcNow;
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForValueType<DateTimeOffset>().Use(
+            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+                    x.ForValueType<DateTimeOffset>().Use(
                         to => throw new NotImplementedException(),
                         from =>
                         {
                             fromFired = true;
-                            return from is not null ? ((DateTimeOffset)from).AddYears(-10) : (DateTimeOffset?)null;
+                            return ((DateTimeOffset)from!).AddYears(-10);
                         }
                     )
                 )
@@ -951,8 +951,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             bool toFired = false;
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForValueType<DateTime>().Use(
+            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+                    x.ForValueType<DateTime?>().Use(
                         to =>
                         {
                             toFired = true;
@@ -991,17 +991,17 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             bool toFired = false;
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForValueType<DateTimeOffset>().Use(
+            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+                    x.ForValueType<DateTimeOffset>().Use(
                         to =>
                         {
                             toFired = true;
-                            return to.HasValue ? to.Value.AddYears(10) : (DateTimeOffset?)null;
+                            return to.AddYears(10);
                         },
                         from =>
                         {
                             fromFired = true;
-                            return from is not null ? ((DateTimeOffset)from).AddYears(-5) : (DateTimeOffset?)null;
+                            return ((DateTimeOffset)from!).AddYears(-5);
                         }
                     )
                 )
@@ -1027,8 +1027,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_select_purchases_using_in_clause_of_list_of_enums_mapped_to_strings_result_in_correct_output(int version, int expectedCount = 9)
         {
             //given
-            ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForEnumType<PaymentMethodType>().PersistAsString()
+            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+                    x.ForEnumType<PaymentMethodType>().PersistAsString()
                 )
             );
 
@@ -1051,8 +1051,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //given
             bool toFired = false;
             bool fromFired = false;
-            ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForEnumType<PaymentMethodType>().Use(
+            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+                    x.ForEnumType<PaymentMethodType>().Use(
                         to => {
                             toFired = true;
                             if (to == PaymentMethodType.PayPal)

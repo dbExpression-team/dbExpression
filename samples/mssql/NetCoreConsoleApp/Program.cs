@@ -1,15 +1,14 @@
-﻿using System;
-using System.Diagnostics;
-using HatTrick.DbEx.MsSql.Configuration;
+﻿using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.Sql.Configuration;
 using Microsoft.Extensions.Configuration;
 using SimpleConsole.Data;
 using SimpleConsole.DataService;
-using SimpleConsole.dboData;
+using System;
+using System.Diagnostics;
 
 namespace NetCoreConsoleApp
 {
-	class Program
+    class Program
 	{
 		#region main
 		static void Main(string[] args)
@@ -58,9 +57,9 @@ namespace NetCoreConsoleApp
                         database => {
                             database.ConnectionString.Use(config.GetConnectionString("dbex_mssql_test"));
                             database.SqlStatements.Assembly.ConfigureOutputSettings(x => x.PrependCommaOnSelectClause = false);
-                            database.Conversions.UseDefaultFactory(x =>
-                                x.OverrideForEnumType<PaymentMethodType>().PersistAsString()
-                                 .OverrideForEnumType<PaymentSourceType>().PersistAsString()
+                            database.Conversions.ForTypes(x =>
+                                x.ForEnumType<PaymentMethodType>().PersistAsString()
+                                 .ForEnumType<PaymentSourceType>().PersistAsString()
                             );
                         }
                     );

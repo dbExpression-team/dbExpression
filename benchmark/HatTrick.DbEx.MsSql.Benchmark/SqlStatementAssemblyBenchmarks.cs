@@ -4,8 +4,10 @@ using HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService;
 using HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboData;
 using HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService;
 using HatTrick.DbEx.MsSql.Configuration;
-using HatTrick.DbEx.Sql.Configuration;
+using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Expression;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace HatTrick.DbEx.MsSql.Benchmark
 {
@@ -15,7 +17,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark
     public class SqlStatementAssemblyBenchmarks
     {
         private const string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=MsSqlDbExTest;Integrated Security=true;";
-        private SqlDatabaseRuntimeConfiguration config = default;
+        private IServiceProvider provider = default;
 
         private static readonly QueryExpression selectQueryExpression = (db.SelectMany<Person>().From(dbo.Person) as IQueryExpressionProvider).Expression;
 
@@ -55,48 +57,53 @@ namespace HatTrick.DbEx.MsSql.Benchmark
 
         [GlobalSetup]
         public void ConfigureDbExpression()
-            => Sql.Configuration.dbExpression.Configure(dbex => dbex.AddMsSql2019Database<MsSqlDb>(database => { database.ConnectionString.Use(connectionString); config = (database as ISqlDatabaseRuntimeConfigurationProvider<MsSqlSqlDatabaseRuntimeConfiguration>).Configuration; }));
+        {
+            Sql.Configuration.dbExpression.Configure(
+                dbex => dbex.AddMsSql2019Database<BenchmarkDatabase>(db => db.ConnectionString.Use(connectionString))
+            );
+            provider = Sql.Configuration.dbExpression.BuildServiceProvider();
+        }
 
         [Benchmark]
         public void CreateSelectSqlStatement()
         {
-            config.StatementBuilderFactory.CreateSqlStatementBuilder(config, selectQueryExpression).CreateSqlStatement();
+            provider.GetRequiredService<ISqlStatementBuilder<BenchmarkDatabase>>().CreateSqlStatement(selectQueryExpression);
         }
 
         [Benchmark]
         public void CreateSelectSqlStatementWithFieldAlias()
         {
-            config.StatementBuilderFactory.CreateSqlStatementBuilder(config, selectWithFieldAliasQueryExpression).CreateSqlStatement();
+            provider.GetRequiredService<ISqlStatementBuilder<BenchmarkDatabase>>().CreateSqlStatement(selectWithFieldAliasQueryExpression);
         }
 
         [Benchmark]
         public void CreateSelectSqlStatementWithJoinClause()
         {
-            config.StatementBuilderFactory.CreateSqlStatementBuilder(config, selectWithJoinClauseQueryExpression).CreateSqlStatement();
+            provider.GetRequiredService<ISqlStatementBuilder<BenchmarkDatabase>>().CreateSqlStatement(selectWithJoinClauseQueryExpression);
         }
 
         [Benchmark]
         public void CreateSelectSqlStatementWithWhereClause()
         {
-            config.StatementBuilderFactory.CreateSqlStatementBuilder(config, selectWithWhereClauseQueryExpression).CreateSqlStatement();
+            provider.GetRequiredService<ISqlStatementBuilder<BenchmarkDatabase>>().CreateSqlStatement(selectWithWhereClauseQueryExpression);
         }
 
         [Benchmark]
         public void CreateSelectSqlStatementWithOrderByClause()
         {
-            config.StatementBuilderFactory.CreateSqlStatementBuilder(config, selectWithOrderByClauseQueryExpression).CreateSqlStatement();
+            provider.GetRequiredService<ISqlStatementBuilder<BenchmarkDatabase>>().CreateSqlStatement(selectWithOrderByClauseQueryExpression);
         }
 
         [Benchmark]
         public void CreateSelectSqlStatementWithCountFunctionAndGroupByClause()
         {
-            config.StatementBuilderFactory.CreateSqlStatementBuilder(config, selectWithCountFunctionAndGroupByClauseQueryExpression).CreateSqlStatement();
+            provider.GetRequiredService<ISqlStatementBuilder<BenchmarkDatabase>>().CreateSqlStatement(selectWithCountFunctionAndGroupByClauseQueryExpression);
         }
 
         [Benchmark]
         public void CreateSelectSqlStatementWithCountFunctionAndGroupByClauseAndHavingClause()
         {
-            config.StatementBuilderFactory.CreateSqlStatementBuilder(config, selectWithCountFunctionAndHavingClauseQueryExpression).CreateSqlStatement();
+            provider.GetRequiredService<ISqlStatementBuilder<BenchmarkDatabase>>().CreateSqlStatement(selectWithCountFunctionAndHavingClauseQueryExpression);
         }
     }
 }

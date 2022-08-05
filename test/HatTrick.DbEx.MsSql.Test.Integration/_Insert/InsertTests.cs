@@ -1,14 +1,13 @@
 using DbEx.Data;
-using DbEx.dboDataService;
 using DbEx.DataService;
+using DbEx.dboData;
+using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
-using HatTrick.DbEx.Sql;
 using System;
-using Xunit;
-using DbEx.dboData;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
+using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Integration
 {

@@ -2,7 +2,6 @@ using DbEx.DataService;
 using DbEx.dboData;
 using DbEx.dboDataService;
 using FluentAssertions;
-using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Threading;

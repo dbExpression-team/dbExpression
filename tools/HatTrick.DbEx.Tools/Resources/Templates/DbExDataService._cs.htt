@@ -1,7 +1,6 @@
 using HatTrick.DbEx.{$.Platform}.Builder;
-using HatTrick.DbEx.{$.Platform}.Configuration;
 using HatTrick.DbEx.Sql;
-using HatTrick.DbEx.Sql.Configuration;
+using HatTrick.DbEx.Sql.Builder;
 using HatTrick.DbEx.Sql.Connection;
 using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;

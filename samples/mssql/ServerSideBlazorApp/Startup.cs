@@ -1,10 +1,9 @@
 using Blazorise;
 using Blazorise.Icons.Material;
 using Blazorise.Material;
-using HatTrick.DbEx.Sql.Expression;
+using HatTrick.DbEx.MsSql.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -38,23 +37,21 @@ namespace ServerSideBlazorApp
                 dbex => {
 
                     dbex.AddMsSql2019Database<CRMDatabase>(
-                        (serviceProvider, database) =>
+                        database =>
                             {
                                 database.ConnectionString.Use(Configuration.GetConnectionString("Default"));
 
-                                database.Conversions.UseDefaultFactory(x =>
-                                    x.OverrideForEnumType<PaymentMethodType>().PersistAsString()
-                                        .OverrideForEnumType<PaymentSourceType>().PersistAsString()
-                                );
+                                database.Conversions.ForTypes(x =>
+                                    x.ForEnumType<PaymentMethodType>().PersistAsString()
+                                        .ForEnumType<PaymentSourceType>().PersistAsString()
 
-                                //description for a product is stored as serialized json.  Note the clrType override in dbex.config.json that generates a property type of 'ServerSideBlazorApp.Data.ProductDescription'
-                                database.Conversions.UseDefaultFactory(x =>
-                                    x.OverrideForReferenceType<ProductDescription>().Use(
-                                        productDescription => productDescription is null ? null : JsonSerializer.Serialize(productDescription), //serialize to json as it goes in to the database
-                                        dbValue => string.IsNullOrWhiteSpace(dbValue as string) ? default : JsonSerializer.Deserialize<ProductDescription>((dbValue as string)!)) //deserialize to ProductDescription as it comes from the database
-                                    );
-                            },
-                            lifetime: ServiceLifetime.Scoped //could easily be ommitted and the default of "Singleton" would be applied; including as an example of creating a lifetime for the database as "Scoped"
+                                        //description for a product is stored as serialized json.  Note the clrType override in dbex.config.json that generates a property type of 'ServerSideBlazorApp.Data.ProductDescription'
+
+                                        .ForReferenceType<ProductDescription>().Use(
+                                            productDescription => productDescription is null ? null : JsonSerializer.Serialize(productDescription), //serialize to json as it goes in to the database
+                                            dbValue => string.IsNullOrWhiteSpace(dbValue as string) ? default : JsonSerializer.Deserialize<ProductDescription>((dbValue as string)!)) //deserialize to ProductDescription as it comes from the database
+                                        );
+                            }
                         );
                     }
                 );
@@ -96,6 +93,10 @@ namespace ServerSideBlazorApp
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });
+
+            //allow the application to use the static db accessor outside of dependency injection
+            //omit this if your rules/patterns require an instance of CRMDatabase provided as a dependency to use dbExpression
+            app.UseStaticRuntimeFor<CRMDatabase>();
         }
     }
 }
