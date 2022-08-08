@@ -1,5 +1,6 @@
 using HatTrick.DbEx.MsSql;
 using HatTrick.DbEx.Sql;
+using System;
 using System.Collections.Generic;
 using System.Data;
 {#each $.Schemas}
@@ -8,21 +9,55 @@ using {$.SchemaExpression.NamespaceRoot}DataService;
 {$.LanguageFeatures.Nullable.Directive}
 namespace {$.DatabaseExpression.NamespaceRoot}DataService
 {{
-{+>("DbMetadata") => GetTemplatePartial+}
+    {?var:databaseName = $.DatabaseExpression.Name}
+    public class {:databaseName}SqlDatabaseMetadata : ISqlDatabaseMetadata
+    {{
+        private static readonly Dictionary<string, ISqlMetadata> _metadata = new();
+
+        #region interface
+        public string Name {{ get; private set; }} = "{$.Database.Name}";
+        public IDictionary<string, ISqlMetadata> Metadata => _metadata;
+        #endregion
+
+        #region constructors
+        static {$.DatabaseExpression.Name}SqlDatabaseMetadata()
+        {{
+            {#each $.Schemas}
+            {?var:schemaName = $.SchemaExpression.Name}
+            #region {:schemaName} schema
+            _metadata.Add("{:schemaName}", new SqlSchemaMetadata("{:schemaName}"));
+            
+            #region {:schemaName} entities
+            {#each $.Entities}
+            {?var:entityName = $.EntityExpression.Name}
+            #region {:schemaName}.{:entityName}
+            _metadata.Add("{:schemaName}.{:entityName}", new SqlTableMetadata("{$.Entity.Name}"));
+            {#each $.Columns}
+            _metadata.Add("{:schemaName}.{:entityName}.{$.FieldExpression.Name}", new MsSqlColumnMetadata("{$.Column.Name}", SqlDbType.{$.Column.SqlType}{#if $.Column.Size}, {$.Column.Size}{/if}{#if $.Column.Precision}, {$.Column.Precision}{/if}{#if $.Column.Scale}, {$.Column.Scale}{/if}){#if $.Column.IsIdentity+} {{ IsIdentity = true }}{/if});
+            {/each}
+            #endregion
+
+            {/each}
+            #endregion
+
+            #region {:schemaName} stored procedures
+            {#each $.StoredProcedures}
+            {?var:storedProcedureName = $.StoredProcedureExpression.Name}
+            _metadata.Add("{:schemaName}.{:storedProcedureName}", new StoredProcedureMetadata("{$.StoredProcedure.Name}"));
+            {#each $.Parameters}
+            _metadata.Add($"{:schemaName}.{:storedProcedureName}.{$.ParameterExpression.Name}", new MsSqlParameterMetadata("{$.Parameter.Name}", SqlDbType.{$.Parameter.SqlType}{#if $.Parameter.Size}, {$.Parameter.Size}{/if}{#if $.Parameter.Precision}, {$.Parameter.Precision}{/if}{#if $.Parameter.Scale}, {$.Parameter.Scale}{/if}));
+            {/each}
+            {/each}
+            #endregion
+            #endregion
+
+		    {/each}
+        }}
+
+        public {$.DatabaseExpression.Name}SqlDatabaseMetadata(string name)
+        {{
+            Name = name ?? throw new ArgumentNullException(nameof(name));
+        }}
+        #endregion
+    }}
 }}
-
-{#each $.Schemas}
-namespace {$.SchemaExpression.NamespaceRoot}DataService
-{{
-{+>("SchemaMetadata") => GetTemplatePartial+}
-
-	{#each $.Entities}
-{+>("EntityMetadata") => GetTemplatePartial+}
-
-	{/each}
-		{#each $.StoredProcedures}
-{+>("StoredProcedureMetadata") => GetTemplatePartial+}
-
-	{/each}
-}}
-{/each}

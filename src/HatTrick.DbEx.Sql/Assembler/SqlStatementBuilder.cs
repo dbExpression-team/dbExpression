@@ -82,10 +82,10 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public string GenerateAlias() => $"_t{++_currentAliasCounter}";
 
-        public ISqlSchemaMetadata? FindMetadata(Schema schema) => database.MetadataProvider.FindSchemaMetadata(schema.Identifier);
-        public ISqlEntityMetadata? FindMetadata(Table entity) => database.MetadataProvider.FindEntityMetadata(entity.Identifier);
-        public ISqlFieldMetadata? FindMetadata(Field field) => database.MetadataProvider.FindFieldMetadata(field.Identifier);
-        public ISqlParameterMetadata? FindMetadata(QueryParameter parameter) => database.MetadataProvider.FindParameterMetadata(parameter.Identifier);
+        public ISqlMetadata? FindMetadata(Schema schema) => database.MetadataProvider.GetMetadata<ISqlMetadata>(schema.Identifier);
+        public ISqlMetadata? FindMetadata(Table entity) => database.MetadataProvider.GetMetadata<ISqlMetadata>(entity.Identifier);
+        public ISqlColumnMetadata? FindMetadata(Field field) => database.MetadataProvider.GetMetadata<ISqlColumnMetadata>(field.Identifier);
+        public ISqlParameterMetadata? FindMetadata(QueryParameter parameter) => database.MetadataProvider.GetMetadata<ISqlParameterMetadata>(parameter.Identifier);
 
         public (Type, object?) ConvertValue(object? value, Field? field)
         {

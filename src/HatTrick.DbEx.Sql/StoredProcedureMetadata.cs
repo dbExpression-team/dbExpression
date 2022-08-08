@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,27 +16,16 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql;
-using System.Data;
 
-namespace HatTrick.DbEx.MsSql
+namespace HatTrick.DbEx.Sql
 {
-    public class MsSqlFieldMetadata : SqlFieldMetadata
+    public class StoredProcedureMetadata : ISqlMetadata
     {
+        public string Name { get; set; } = string.Empty;
 
-        public MsSqlFieldMetadata(ISqlEntityMetadata parent, string identifier, string name, SqlDbType dbType)
-            : base(parent, identifier, name, dbType)
+        public StoredProcedureMetadata(string name)
         {
-        }
-
-        public MsSqlFieldMetadata(ISqlEntityMetadata parent, string identifier, string name, SqlDbType dbType, int size)
-            : base(parent, identifier, name, dbType, size)
-        {
-        }
-
-        public MsSqlFieldMetadata(ISqlEntityMetadata parent, string identifier, string name, SqlDbType dbType, byte precision, byte scale)
-            : base(parent, identifier, name, dbType, precision, scale)
-        {
+            Name = name;
         }
     }
 }

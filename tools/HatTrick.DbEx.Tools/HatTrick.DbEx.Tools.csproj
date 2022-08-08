@@ -30,17 +30,14 @@
         <None Remove="Resources\Templates\Partials\DbMetadata.htt" />
         <None Remove="Resources\Templates\Partials\EntityExpression.Documentation.htt" />
         <None Remove="Resources\Templates\Partials\EntityExpression.htt" />
-        <None Remove="Resources\Templates\Partials\EntityMetadata.htt" />
         <None Remove="Resources\Templates\Partials\FieldExpression.Documentation.htt" />
         <None Remove="Resources\Templates\Partials\FieldExpression.htt" />
         <None Remove="Resources\Templates\Partials\RuntimeDb.htt" />
         <None Remove="Resources\Templates\Partials\Schema.htt" />
         <None Remove="Resources\Templates\Partials\SchemaExpression.htt" />
-        <None Remove="Resources\Templates\Partials\SchemaMetadata.htt" />
         <None Remove="Resources\Templates\Partials\StoredProcedure.htt" />
         <None Remove="Resources\Templates\Partials\StoredProcedureExpression.Documentation.htt" />
         <None Remove="Resources\Templates\Partials\StoredProcedureExpression.htt" />
-        <None Remove="Resources\Templates\Partials\StoredProcedureMetadata.htt" />
     </ItemGroup>
 
     <ItemGroup>
@@ -53,17 +50,14 @@
         <EmbeddedResource Include="Resources\Templates\Partials\DbMetadata.htt" />
         <EmbeddedResource Include="Resources\Templates\Partials\EntityExpression.htt" />
         <EmbeddedResource Include="Resources\Templates\Partials\EntityExpression.Documentation.htt" />
-        <EmbeddedResource Include="Resources\Templates\Partials\EntityMetadata.htt" />
         <EmbeddedResource Include="Resources\Templates\Partials\FieldExpression.htt" />
         <EmbeddedResource Include="Resources\Templates\Partials\FieldExpression.Documentation.htt" />
         <EmbeddedResource Include="Resources\Templates\Partials\StoredProcedureExpression.htt" />
         <EmbeddedResource Include="Resources\Templates\Partials\RuntimeDb.htt" />
         <EmbeddedResource Include="Resources\Templates\Partials\Schema.htt" />
         <EmbeddedResource Include="Resources\Templates\Partials\SchemaExpression.htt" />
-        <EmbeddedResource Include="Resources\Templates\Partials\SchemaMetadata.htt" />
         <EmbeddedResource Include="Resources\Templates\Partials\StoredProcedure.htt" />
         <EmbeddedResource Include="Resources\Templates\Partials\StoredProcedureExpression.Documentation.htt" />
-        <EmbeddedResource Include="Resources\Templates\Partials\StoredProcedureMetadata.htt" />
     </ItemGroup>
 
     <ItemGroup>

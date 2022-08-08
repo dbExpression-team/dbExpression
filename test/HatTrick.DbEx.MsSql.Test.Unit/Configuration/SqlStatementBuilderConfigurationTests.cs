@@ -165,17 +165,17 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
                 throw new NotImplementedException();
             }
 
-            public ISqlSchemaMetadata? FindMetadata(Schema schema)
+            public ISqlMetadata? FindMetadata(Schema schema)
             {
                 throw new NotImplementedException();
             }
 
-            public ISqlEntityMetadata? FindMetadata(Table entity)
+            public ISqlMetadata? FindMetadata(Table entity)
             {
                 throw new NotImplementedException();
             }
 
-            public ISqlFieldMetadata? FindMetadata(Field field)
+            public ISqlColumnMetadata? FindMetadata(Field field)
             {
                 throw new NotImplementedException();
             }

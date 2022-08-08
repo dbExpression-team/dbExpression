@@ -1,5 +1,6 @@
 using HatTrick.DbEx.MsSql;
 using HatTrick.DbEx.Sql;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using ServerSideBlazorApp.dboDataService;
@@ -7,622 +8,181 @@ using ServerSideBlazorApp.secDataService;
 #nullable enable
 namespace ServerSideBlazorApp.DataService
 {
-    #region db meta
     public class CRMDatabaseSqlDatabaseMetadata : ISqlDatabaseMetadata
     {
+        private static readonly Dictionary<string, ISqlMetadata> _metadata = new();
+
         #region interface
-        public string Identifier { get; private set; }
-        public string Name { get; private set; }
-        public IDictionary<string, ISqlSchemaMetadata> Schemas { get; } = new Dictionary<string, ISqlSchemaMetadata>();
+        public string Name { get; private set; } = "MsSqlDbExTest";
+        public IDictionary<string, ISqlMetadata> Metadata => _metadata;
         #endregion
 
         #region constructors
-        public CRMDatabaseSqlDatabaseMetadata(string identifier, string name)
+        static CRMDatabaseSqlDatabaseMetadata()
         {
-            Identifier = identifier;
-            Name = name;
-            Schemas.Add("dbo", new dboSchemaMetadata(this, "dbo", "dbo"));
-            Schemas.Add("sec", new secSchemaMetadata(this, "sec", "sec"));
+            #region dbo schema
+            _metadata.Add("dbo", new SqlSchemaMetadata("dbo"));
+            
+            #region dbo entities
+            #region dbo.Address
+            _metadata.Add("dbo.Address", new SqlTableMetadata("Address"));
+            _metadata.Add("dbo.Address.Id", new MsSqlColumnMetadata("Id", SqlDbType.Int) { IsIdentity = true });
+            _metadata.Add("dbo.Address.AddressType", new MsSqlColumnMetadata("AddressType", SqlDbType.Int));
+            _metadata.Add("dbo.Address.Line1", new MsSqlColumnMetadata("Line1", SqlDbType.VarChar, 50));
+            _metadata.Add("dbo.Address.Line2", new MsSqlColumnMetadata("Line2", SqlDbType.VarChar, 50));
+            _metadata.Add("dbo.Address.City", new MsSqlColumnMetadata("City", SqlDbType.VarChar, 60));
+            _metadata.Add("dbo.Address.State", new MsSqlColumnMetadata("State", SqlDbType.Char, 2));
+            _metadata.Add("dbo.Address.Zip", new MsSqlColumnMetadata("Zip", SqlDbType.VarChar, 10));
+            _metadata.Add("dbo.Address.DateCreated", new MsSqlColumnMetadata("DateCreated", SqlDbType.DateTime));
+            _metadata.Add("dbo.Address.DateUpdated", new MsSqlColumnMetadata("DateUpdated", SqlDbType.DateTime));
+            #endregion
+
+            #region dbo.Customer
+            _metadata.Add("dbo.Customer", new SqlTableMetadata("Person"));
+            _metadata.Add("dbo.Customer.Id", new MsSqlColumnMetadata("Id", SqlDbType.Int) { IsIdentity = true });
+            _metadata.Add("dbo.Customer.FirstName", new MsSqlColumnMetadata("FirstName", SqlDbType.VarChar, 20));
+            _metadata.Add("dbo.Customer.LastName", new MsSqlColumnMetadata("LastName", SqlDbType.VarChar, 20));
+            _metadata.Add("dbo.Customer.BirthDate", new MsSqlColumnMetadata("BirthDate", SqlDbType.Date));
+            _metadata.Add("dbo.Customer.GenderType", new MsSqlColumnMetadata("GenderType", SqlDbType.Int));
+            _metadata.Add("dbo.Customer.CreditLimit", new MsSqlColumnMetadata("CreditLimit", SqlDbType.Int));
+            _metadata.Add("dbo.Customer.YearOfLastCreditLimitReview", new MsSqlColumnMetadata("YearOfLastCreditLimitReview", SqlDbType.Int));
+            _metadata.Add("dbo.Customer.RegistrationDate", new MsSqlColumnMetadata("RegistrationDate", SqlDbType.DateTimeOffset, 10));
+            _metadata.Add("dbo.Customer.LastLoginDate", new MsSqlColumnMetadata("LastLoginDate", SqlDbType.DateTimeOffset, 10));
+            _metadata.Add("dbo.Customer.DateCreated", new MsSqlColumnMetadata("DateCreated", SqlDbType.DateTime));
+            _metadata.Add("dbo.Customer.DateUpdated", new MsSqlColumnMetadata("DateUpdated", SqlDbType.DateTime));
+            #endregion
+
+            #region dbo.CustomerAddress
+            _metadata.Add("dbo.CustomerAddress", new SqlTableMetadata("Person_Address"));
+            _metadata.Add("dbo.CustomerAddress.Id", new MsSqlColumnMetadata("Id", SqlDbType.Int) { IsIdentity = true });
+            _metadata.Add("dbo.CustomerAddress.CustomerId", new MsSqlColumnMetadata("PersonId", SqlDbType.Int));
+            _metadata.Add("dbo.CustomerAddress.AddressId", new MsSqlColumnMetadata("AddressId", SqlDbType.Int));
+            _metadata.Add("dbo.CustomerAddress.DateCreated", new MsSqlColumnMetadata("DateCreated", SqlDbType.DateTime));
+            #endregion
+
+            #region dbo.Product
+            _metadata.Add("dbo.Product", new SqlTableMetadata("Product"));
+            _metadata.Add("dbo.Product.Id", new MsSqlColumnMetadata("Id", SqlDbType.Int) { IsIdentity = true });
+            _metadata.Add("dbo.Product.ProductCategoryType", new MsSqlColumnMetadata("ProductCategoryType", SqlDbType.Int));
+            _metadata.Add("dbo.Product.Name", new MsSqlColumnMetadata("Name", SqlDbType.VarChar, 80));
+            _metadata.Add("dbo.Product.Description", new MsSqlColumnMetadata("Description", SqlDbType.NVarChar, 4000));
+            _metadata.Add("dbo.Product.ListPrice", new MsSqlColumnMetadata("ListPrice", SqlDbType.Money));
+            _metadata.Add("dbo.Product.Price", new MsSqlColumnMetadata("Price", SqlDbType.Money));
+            _metadata.Add("dbo.Product.Quantity", new MsSqlColumnMetadata("Quantity", SqlDbType.Int));
+            _metadata.Add("dbo.Product.Image", new MsSqlColumnMetadata("Image", SqlDbType.VarBinary, -1));
+            _metadata.Add("dbo.Product.Height", new MsSqlColumnMetadata("Height", SqlDbType.Decimal, 4, 1));
+            _metadata.Add("dbo.Product.Width", new MsSqlColumnMetadata("Width", SqlDbType.Decimal, 4, 1));
+            _metadata.Add("dbo.Product.Depth", new MsSqlColumnMetadata("Depth", SqlDbType.Decimal, 4, 1));
+            _metadata.Add("dbo.Product.Weight", new MsSqlColumnMetadata("Weight", SqlDbType.Decimal, 4, 1));
+            _metadata.Add("dbo.Product.ShippingWeight", new MsSqlColumnMetadata("ShippingWeight", SqlDbType.Decimal, 4, 1));
+            _metadata.Add("dbo.Product.ValidStartTimeOfDayForPurchase", new MsSqlColumnMetadata("ValidStartTimeOfDayForPurchase", SqlDbType.Time, 5));
+            _metadata.Add("dbo.Product.ValidEndTimeOfDayForPurchase", new MsSqlColumnMetadata("ValidEndTimeOfDayForPurchase", SqlDbType.Time, 5));
+            _metadata.Add("dbo.Product.DateCreated", new MsSqlColumnMetadata("DateCreated", SqlDbType.DateTime));
+            _metadata.Add("dbo.Product.DateUpdated", new MsSqlColumnMetadata("DateUpdated", SqlDbType.DateTime));
+            #endregion
+
+            #region dbo.Purchase
+            _metadata.Add("dbo.Purchase", new SqlTableMetadata("Purchase"));
+            _metadata.Add("dbo.Purchase.Id", new MsSqlColumnMetadata("Id", SqlDbType.Int) { IsIdentity = true });
+            _metadata.Add("dbo.Purchase.CustomerId", new MsSqlColumnMetadata("PersonId", SqlDbType.Int));
+            _metadata.Add("dbo.Purchase.OrderNumber", new MsSqlColumnMetadata("OrderNumber", SqlDbType.VarChar, 20));
+            _metadata.Add("dbo.Purchase.TotalPurchaseQuantity", new MsSqlColumnMetadata("TotalPurchaseQuantity", SqlDbType.Int));
+            _metadata.Add("dbo.Purchase.TotalPurchaseAmount", new MsSqlColumnMetadata("TotalPurchaseAmount", SqlDbType.Money));
+            _metadata.Add("dbo.Purchase.PurchaseDate", new MsSqlColumnMetadata("PurchaseDate", SqlDbType.DateTime));
+            _metadata.Add("dbo.Purchase.ShipDate", new MsSqlColumnMetadata("ShipDate", SqlDbType.DateTime));
+            _metadata.Add("dbo.Purchase.ExpectedDeliveryDate", new MsSqlColumnMetadata("ExpectedDeliveryDate", SqlDbType.DateTime));
+            _metadata.Add("dbo.Purchase.TrackingIdentifier", new MsSqlColumnMetadata("TrackingIdentifier", SqlDbType.UniqueIdentifier));
+            _metadata.Add("dbo.Purchase.PaymentMethodType", new MsSqlColumnMetadata("PaymentMethodType", SqlDbType.VarChar, 20));
+            _metadata.Add("dbo.Purchase.PaymentSourceType", new MsSqlColumnMetadata("PaymentSourceType", SqlDbType.VarChar, 20));
+            _metadata.Add("dbo.Purchase.DateCreated", new MsSqlColumnMetadata("DateCreated", SqlDbType.DateTime));
+            _metadata.Add("dbo.Purchase.DateUpdated", new MsSqlColumnMetadata("DateUpdated", SqlDbType.DateTime));
+            #endregion
+
+            #region dbo.PurchaseLine
+            _metadata.Add("dbo.PurchaseLine", new SqlTableMetadata("PurchaseLine"));
+            _metadata.Add("dbo.PurchaseLine.Id", new MsSqlColumnMetadata("Id", SqlDbType.Int) { IsIdentity = true });
+            _metadata.Add("dbo.PurchaseLine.PurchaseId", new MsSqlColumnMetadata("PurchaseId", SqlDbType.Int));
+            _metadata.Add("dbo.PurchaseLine.ProductId", new MsSqlColumnMetadata("ProductId", SqlDbType.Int));
+            _metadata.Add("dbo.PurchaseLine.PurchasePrice", new MsSqlColumnMetadata("PurchasePrice", SqlDbType.Decimal, 12, 2));
+            _metadata.Add("dbo.PurchaseLine.Quantity", new MsSqlColumnMetadata("Quantity", SqlDbType.Int));
+            _metadata.Add("dbo.PurchaseLine.DateCreated", new MsSqlColumnMetadata("DateCreated", SqlDbType.DateTime));
+            _metadata.Add("dbo.PurchaseLine.DateUpdated", new MsSqlColumnMetadata("DateUpdated", SqlDbType.DateTime));
+            #endregion
+
+            #region dbo.PersonTotalPurchasesView
+            _metadata.Add("dbo.PersonTotalPurchasesView", new SqlTableMetadata("PersonTotalPurchasesView"));
+            _metadata.Add("dbo.PersonTotalPurchasesView.Id", new MsSqlColumnMetadata("Id", SqlDbType.Int));
+            _metadata.Add("dbo.PersonTotalPurchasesView.TotalAmount", new MsSqlColumnMetadata("TotalAmount", SqlDbType.Money));
+            _metadata.Add("dbo.PersonTotalPurchasesView.TotalCount", new MsSqlColumnMetadata("TotalCount", SqlDbType.Int));
+            #endregion
+
+            #endregion
+
+            #region dbo stored procedures
+            _metadata.Add("dbo.SelectPerson_As_Dynamic_With_Input", new StoredProcedureMetadata("SelectPerson_As_Dynamic_With_Input"));
+            _metadata.Add($"dbo.SelectPerson_As_Dynamic_With_Input.@P1", new MsSqlParameterMetadata("@P1", SqlDbType.Int));
+            _metadata.Add("dbo.SelectPerson_As_Dynamic_With_Input_And_InputOutput", new StoredProcedureMetadata("SelectPerson_As_Dynamic_With_Input_And_InputOutput"));
+            _metadata.Add($"dbo.SelectPerson_As_Dynamic_With_Input_And_InputOutput.@P1", new MsSqlParameterMetadata("@P1", SqlDbType.Int));
+            _metadata.Add($"dbo.SelectPerson_As_Dynamic_With_Input_And_InputOutput.@CreditLimit", new MsSqlParameterMetadata("@CreditLimit", SqlDbType.Int));
+            _metadata.Add("dbo.SelectPerson_As_Dynamic_With_Input_And_Output", new StoredProcedureMetadata("SelectPerson_As_Dynamic_With_Input_And_Output"));
+            _metadata.Add($"dbo.SelectPerson_As_Dynamic_With_Input_And_Output.@P1", new MsSqlParameterMetadata("@P1", SqlDbType.Int));
+            _metadata.Add($"dbo.SelectPerson_As_Dynamic_With_Input_And_Output.@Count", new MsSqlParameterMetadata("@Count", SqlDbType.Int));
+            _metadata.Add("dbo.SelectPerson_As_DynamicList_With_Input", new StoredProcedureMetadata("SelectPerson_As_DynamicList_With_Input"));
+            _metadata.Add($"dbo.SelectPerson_As_DynamicList_With_Input.@P1", new MsSqlParameterMetadata("@P1", SqlDbType.Int));
+            _metadata.Add("dbo.SelectPerson_As_DynamicList_With_Input_And_InputOutput", new StoredProcedureMetadata("SelectPerson_As_DynamicList_With_Input_And_InputOutput"));
+            _metadata.Add($"dbo.SelectPerson_As_DynamicList_With_Input_And_InputOutput.@P1", new MsSqlParameterMetadata("@P1", SqlDbType.Int));
+            _metadata.Add($"dbo.SelectPerson_As_DynamicList_With_Input_And_InputOutput.@CreditLimit", new MsSqlParameterMetadata("@CreditLimit", SqlDbType.Int));
+            _metadata.Add("dbo.SelectPerson_As_DynamicList_With_Input_And_Output", new StoredProcedureMetadata("SelectPerson_As_DynamicList_With_Input_And_Output"));
+            _metadata.Add($"dbo.SelectPerson_As_DynamicList_With_Input_And_Output.@P1", new MsSqlParameterMetadata("@P1", SqlDbType.Int));
+            _metadata.Add($"dbo.SelectPerson_As_DynamicList_With_Input_And_Output.@Count", new MsSqlParameterMetadata("@Count", SqlDbType.Int));
+            _metadata.Add("dbo.SelectPersonId_As_ScalarValue_With_Input", new StoredProcedureMetadata("SelectPersonId_As_ScalarValue_With_Input"));
+            _metadata.Add($"dbo.SelectPersonId_As_ScalarValue_With_Input.@P1", new MsSqlParameterMetadata("@P1", SqlDbType.Int));
+            _metadata.Add("dbo.SelectPersonId_As_ScalarValue_With_Input_And_Default_Value", new StoredProcedureMetadata("SelectPersonId_As_ScalarValue_With_Input_And_Default_Value"));
+            _metadata.Add($"dbo.SelectPersonId_As_ScalarValue_With_Input_And_Default_Value.@P1", new MsSqlParameterMetadata("@P1", SqlDbType.Int));
+            _metadata.Add("dbo.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput", new StoredProcedureMetadata("SelectPersonId_As_ScalarValue_With_Input_And_InputOutput"));
+            _metadata.Add($"dbo.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput.@P1", new MsSqlParameterMetadata("@P1", SqlDbType.Int));
+            _metadata.Add($"dbo.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput.@CreditLimit", new MsSqlParameterMetadata("@CreditLimit", SqlDbType.Int));
+            _metadata.Add("dbo.SelectPersonId_As_ScalarValue_With_Input_And_Output", new StoredProcedureMetadata("SelectPersonId_As_ScalarValue_With_Input_And_Output"));
+            _metadata.Add($"dbo.SelectPersonId_As_ScalarValue_With_Input_And_Output.@P1", new MsSqlParameterMetadata("@P1", SqlDbType.Int));
+            _metadata.Add($"dbo.SelectPersonId_As_ScalarValue_With_Input_And_Output.@Count", new MsSqlParameterMetadata("@Count", SqlDbType.Int));
+            _metadata.Add("dbo.SelectPersonId_As_ScalarValueList_With_Input", new StoredProcedureMetadata("SelectPersonId_As_ScalarValueList_With_Input"));
+            _metadata.Add($"dbo.SelectPersonId_As_ScalarValueList_With_Input.@P1", new MsSqlParameterMetadata("@P1", SqlDbType.Int));
+            _metadata.Add("dbo.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput", new StoredProcedureMetadata("SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput"));
+            _metadata.Add($"dbo.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput.@P1", new MsSqlParameterMetadata("@P1", SqlDbType.Int));
+            _metadata.Add($"dbo.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput.@CreditLimit", new MsSqlParameterMetadata("@CreditLimit", SqlDbType.Int));
+            _metadata.Add("dbo.SelectPersonId_As_ScalarValueList_With_Input_And_Output", new StoredProcedureMetadata("SelectPersonId_As_ScalarValueList_With_Input_And_Output"));
+            _metadata.Add($"dbo.SelectPersonId_As_ScalarValueList_With_Input_And_Output.@P1", new MsSqlParameterMetadata("@P1", SqlDbType.Int));
+            _metadata.Add($"dbo.SelectPersonId_As_ScalarValueList_With_Input_And_Output.@Count", new MsSqlParameterMetadata("@Count", SqlDbType.Int));
+            _metadata.Add("dbo.UpdatePersonCreditLimit_With_Inputs", new StoredProcedureMetadata("UpdatePersonCreditLimit_With_Inputs"));
+            _metadata.Add($"dbo.UpdatePersonCreditLimit_With_Inputs.@P1", new MsSqlParameterMetadata("@P1", SqlDbType.Int));
+            _metadata.Add($"dbo.UpdatePersonCreditLimit_With_Inputs.@CreditLimit", new MsSqlParameterMetadata("@CreditLimit", SqlDbType.Int));
+            #endregion
+            #endregion
+
+            #region sec schema
+            _metadata.Add("sec", new SqlSchemaMetadata("sec"));
+            
+            #region sec entities
+            #region sec.Person
+            _metadata.Add("sec.Person", new SqlTableMetadata("Person"));
+            _metadata.Add("sec.Person.Id", new MsSqlColumnMetadata("Id", SqlDbType.Int));
+            _metadata.Add("sec.Person.SSN", new MsSqlColumnMetadata("SSN", SqlDbType.Char, 11));
+            _metadata.Add("sec.Person.DateCreated", new MsSqlColumnMetadata("DateCreated", SqlDbType.DateTime));
+            _metadata.Add("sec.Person.DateUpdated", new MsSqlColumnMetadata("DateUpdated", SqlDbType.DateTime));
+            #endregion
+
+            #endregion
+
+            #region sec stored procedures
+            #endregion
+            #endregion
+
+        }
+
+        public CRMDatabaseSqlDatabaseMetadata(string name)
+        {
+            Name = name ?? throw new ArgumentNullException(nameof(name));
         }
         #endregion
     }
-    #endregion
-}
-
-namespace ServerSideBlazorApp.dboDataService
-{
-    #region dbo
-	public class dboSchemaMetadata : ISqlSchemaMetadata
-    {
-		#region interface
-        public ISqlDatabaseMetadata Database { get; }
-        public string Identifier { get; }
-        public string Name { get; }
-        public IDictionary<string, ISqlEntityMetadata> Entities { get; } = new Dictionary<string, ISqlEntityMetadata>();
-        public IDictionary<string, ISqlStoredProcedureMetadata> StoredProcedures { get; } = new Dictionary<string, ISqlStoredProcedureMetadata>();
-        #endregion
-
-        #region constructors
-        public dboSchemaMetadata(ISqlDatabaseMetadata database, string identifier, string name)
-        {
-            Database = database;
-            Identifier = identifier;
-            Name = name;
-            Entities.Add($"{identifier}.Address", new AddressEntityMetadata(this, $"{identifier}.Address", "Address"));
-            Entities.Add($"{identifier}.Person", new CustomerEntityMetadata(this, $"{identifier}.Person", "Person"));
-            Entities.Add($"{identifier}.Person_Address", new CustomerAddressEntityMetadata(this, $"{identifier}.Person_Address", "Person_Address"));
-            Entities.Add($"{identifier}.Product", new ProductEntityMetadata(this, $"{identifier}.Product", "Product"));
-            Entities.Add($"{identifier}.Purchase", new PurchaseEntityMetadata(this, $"{identifier}.Purchase", "Purchase"));
-            Entities.Add($"{identifier}.PurchaseLine", new PurchaseLineEntityMetadata(this, $"{identifier}.PurchaseLine", "PurchaseLine"));
-            Entities.Add($"{identifier}.PersonTotalPurchasesView", new PersonTotalPurchasesViewEntityMetadata(this, $"{identifier}.PersonTotalPurchasesView", "PersonTotalPurchasesView"));
-            StoredProcedures.Add($"{identifier}.SelectPerson_As_Dynamic_With_Input", new SelectPerson_As_Dynamic_With_InputStoredProcedureMetadata(this, $"{identifier}.SelectPerson_As_Dynamic_With_Input", "SelectPerson_As_Dynamic_With_Input"));
-            StoredProcedures.Add($"{identifier}.SelectPerson_As_Dynamic_With_Input_And_InputOutput", new SelectPerson_As_Dynamic_With_Input_And_InputOutputStoredProcedureMetadata(this, $"{identifier}.SelectPerson_As_Dynamic_With_Input_And_InputOutput", "SelectPerson_As_Dynamic_With_Input_And_InputOutput"));
-            StoredProcedures.Add($"{identifier}.SelectPerson_As_Dynamic_With_Input_And_Output", new SelectPerson_As_Dynamic_With_Input_And_OutputStoredProcedureMetadata(this, $"{identifier}.SelectPerson_As_Dynamic_With_Input_And_Output", "SelectPerson_As_Dynamic_With_Input_And_Output"));
-            StoredProcedures.Add($"{identifier}.SelectPerson_As_DynamicList_With_Input", new SelectPerson_As_DynamicList_With_InputStoredProcedureMetadata(this, $"{identifier}.SelectPerson_As_DynamicList_With_Input", "SelectPerson_As_DynamicList_With_Input"));
-            StoredProcedures.Add($"{identifier}.SelectPerson_As_DynamicList_With_Input_And_InputOutput", new SelectPerson_As_DynamicList_With_Input_And_InputOutputStoredProcedureMetadata(this, $"{identifier}.SelectPerson_As_DynamicList_With_Input_And_InputOutput", "SelectPerson_As_DynamicList_With_Input_And_InputOutput"));
-            StoredProcedures.Add($"{identifier}.SelectPerson_As_DynamicList_With_Input_And_Output", new SelectPerson_As_DynamicList_With_Input_And_OutputStoredProcedureMetadata(this, $"{identifier}.SelectPerson_As_DynamicList_With_Input_And_Output", "SelectPerson_As_DynamicList_With_Input_And_Output"));
-            StoredProcedures.Add($"{identifier}.SelectPersonId_As_ScalarValue_With_Input", new SelectPersonId_As_ScalarValue_With_InputStoredProcedureMetadata(this, $"{identifier}.SelectPersonId_As_ScalarValue_With_Input", "SelectPersonId_As_ScalarValue_With_Input"));
-            StoredProcedures.Add($"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_Default_Value", new SelectPersonId_As_ScalarValue_With_Input_And_Default_ValueStoredProcedureMetadata(this, $"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_Default_Value", "SelectPersonId_As_ScalarValue_With_Input_And_Default_Value"));
-            StoredProcedures.Add($"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput", new SelectPersonId_As_ScalarValue_With_Input_And_InputOutputStoredProcedureMetadata(this, $"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput", "SelectPersonId_As_ScalarValue_With_Input_And_InputOutput"));
-            StoredProcedures.Add($"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_Output", new SelectPersonId_As_ScalarValue_With_Input_And_OutputStoredProcedureMetadata(this, $"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_Output", "SelectPersonId_As_ScalarValue_With_Input_And_Output"));
-            StoredProcedures.Add($"{identifier}.SelectPersonId_As_ScalarValueList_With_Input", new SelectPersonId_As_ScalarValueList_With_InputStoredProcedureMetadata(this, $"{identifier}.SelectPersonId_As_ScalarValueList_With_Input", "SelectPersonId_As_ScalarValueList_With_Input"));
-            StoredProcedures.Add($"{identifier}.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput", new SelectPersonId_As_ScalarValueList_With_Input_And_InputOutputStoredProcedureMetadata(this, $"{identifier}.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput", "SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput"));
-            StoredProcedures.Add($"{identifier}.SelectPersonId_As_ScalarValueList_With_Input_And_Output", new SelectPersonId_As_ScalarValueList_With_Input_And_OutputStoredProcedureMetadata(this, $"{identifier}.SelectPersonId_As_ScalarValueList_With_Input_And_Output", "SelectPersonId_As_ScalarValueList_With_Input_And_Output"));
-            StoredProcedures.Add($"{identifier}.UpdatePersonCreditLimit_With_Inputs", new UpdatePersonCreditLimit_With_InputsStoredProcedureMetadata(this, $"{identifier}.UpdatePersonCreditLimit_With_Inputs", "UpdatePersonCreditLimit_With_Inputs"));
-        }
-        #endregion
-    }
-    #endregion
-
-    #region address
-	public class AddressEntityMetadata : ISqlEntityMetadata
-	{
-        #region interface
-        public ISqlSchemaMetadata Schema { get; }
-        public string Identifier { get; }
-        public string Name { get; }
-        public IDictionary<string, ISqlFieldMetadata> Fields { get; } = new Dictionary<string, ISqlFieldMetadata>();
-        #endregion
-		
-        #region constructors
-        public AddressEntityMetadata(ISqlSchemaMetadata schema, string identifier, string name)
-        {
-            Schema = schema;
-            Identifier = identifier;
-            Name = name;
-            Fields.Add($"{identifier}.Id", new MsSqlFieldMetadata(this, $"{identifier}.Id", "Id", SqlDbType.Int) { IsIdentity = true });
-            Fields.Add($"{identifier}.AddressType", new MsSqlFieldMetadata(this, $"{identifier}.AddressType", "AddressType", SqlDbType.Int));
-            Fields.Add($"{identifier}.Line1", new MsSqlFieldMetadata(this, $"{identifier}.Line1", "Line1", SqlDbType.VarChar, 50));
-            Fields.Add($"{identifier}.Line2", new MsSqlFieldMetadata(this, $"{identifier}.Line2", "Line2", SqlDbType.VarChar, 50));
-            Fields.Add($"{identifier}.City", new MsSqlFieldMetadata(this, $"{identifier}.City", "City", SqlDbType.VarChar, 60));
-            Fields.Add($"{identifier}.State", new MsSqlFieldMetadata(this, $"{identifier}.State", "State", SqlDbType.Char, 2));
-            Fields.Add($"{identifier}.Zip", new MsSqlFieldMetadata(this, $"{identifier}.Zip", "Zip", SqlDbType.VarChar, 10));
-            Fields.Add($"{identifier}.DateCreated", new MsSqlFieldMetadata(this, $"{identifier}.DateCreated", "DateCreated", SqlDbType.DateTime));
-            Fields.Add($"{identifier}.DateUpdated", new MsSqlFieldMetadata(this, $"{identifier}.DateUpdated", "DateUpdated", SqlDbType.DateTime));
-        }
-        #endregion
-    }
-    #endregion
-
-    #region customer
-	public class CustomerEntityMetadata : ISqlEntityMetadata
-	{
-        #region interface
-        public ISqlSchemaMetadata Schema { get; }
-        public string Identifier { get; }
-        public string Name { get; }
-        public IDictionary<string, ISqlFieldMetadata> Fields { get; } = new Dictionary<string, ISqlFieldMetadata>();
-        #endregion
-		
-        #region constructors
-        public CustomerEntityMetadata(ISqlSchemaMetadata schema, string identifier, string name)
-        {
-            Schema = schema;
-            Identifier = identifier;
-            Name = name;
-            Fields.Add($"{identifier}.Id", new MsSqlFieldMetadata(this, $"{identifier}.Id", "Id", SqlDbType.Int) { IsIdentity = true });
-            Fields.Add($"{identifier}.FirstName", new MsSqlFieldMetadata(this, $"{identifier}.FirstName", "FirstName", SqlDbType.VarChar, 20));
-            Fields.Add($"{identifier}.LastName", new MsSqlFieldMetadata(this, $"{identifier}.LastName", "LastName", SqlDbType.VarChar, 20));
-            Fields.Add($"{identifier}.BirthDate", new MsSqlFieldMetadata(this, $"{identifier}.BirthDate", "BirthDate", SqlDbType.Date));
-            Fields.Add($"{identifier}.GenderType", new MsSqlFieldMetadata(this, $"{identifier}.GenderType", "GenderType", SqlDbType.Int));
-            Fields.Add($"{identifier}.CreditLimit", new MsSqlFieldMetadata(this, $"{identifier}.CreditLimit", "CreditLimit", SqlDbType.Int));
-            Fields.Add($"{identifier}.YearOfLastCreditLimitReview", new MsSqlFieldMetadata(this, $"{identifier}.YearOfLastCreditLimitReview", "YearOfLastCreditLimitReview", SqlDbType.Int));
-            Fields.Add($"{identifier}.RegistrationDate", new MsSqlFieldMetadata(this, $"{identifier}.RegistrationDate", "RegistrationDate", SqlDbType.DateTimeOffset, 10));
-            Fields.Add($"{identifier}.LastLoginDate", new MsSqlFieldMetadata(this, $"{identifier}.LastLoginDate", "LastLoginDate", SqlDbType.DateTimeOffset, 10));
-            Fields.Add($"{identifier}.DateCreated", new MsSqlFieldMetadata(this, $"{identifier}.DateCreated", "DateCreated", SqlDbType.DateTime));
-            Fields.Add($"{identifier}.DateUpdated", new MsSqlFieldMetadata(this, $"{identifier}.DateUpdated", "DateUpdated", SqlDbType.DateTime));
-        }
-        #endregion
-    }
-    #endregion
-
-    #region customer address
-	public class CustomerAddressEntityMetadata : ISqlEntityMetadata
-	{
-        #region interface
-        public ISqlSchemaMetadata Schema { get; }
-        public string Identifier { get; }
-        public string Name { get; }
-        public IDictionary<string, ISqlFieldMetadata> Fields { get; } = new Dictionary<string, ISqlFieldMetadata>();
-        #endregion
-		
-        #region constructors
-        public CustomerAddressEntityMetadata(ISqlSchemaMetadata schema, string identifier, string name)
-        {
-            Schema = schema;
-            Identifier = identifier;
-            Name = name;
-            Fields.Add($"{identifier}.Id", new MsSqlFieldMetadata(this, $"{identifier}.Id", "Id", SqlDbType.Int) { IsIdentity = true });
-            Fields.Add($"{identifier}.PersonId", new MsSqlFieldMetadata(this, $"{identifier}.PersonId", "PersonId", SqlDbType.Int));
-            Fields.Add($"{identifier}.AddressId", new MsSqlFieldMetadata(this, $"{identifier}.AddressId", "AddressId", SqlDbType.Int));
-            Fields.Add($"{identifier}.DateCreated", new MsSqlFieldMetadata(this, $"{identifier}.DateCreated", "DateCreated", SqlDbType.DateTime));
-        }
-        #endregion
-    }
-    #endregion
-
-    #region product
-	public class ProductEntityMetadata : ISqlEntityMetadata
-	{
-        #region interface
-        public ISqlSchemaMetadata Schema { get; }
-        public string Identifier { get; }
-        public string Name { get; }
-        public IDictionary<string, ISqlFieldMetadata> Fields { get; } = new Dictionary<string, ISqlFieldMetadata>();
-        #endregion
-		
-        #region constructors
-        public ProductEntityMetadata(ISqlSchemaMetadata schema, string identifier, string name)
-        {
-            Schema = schema;
-            Identifier = identifier;
-            Name = name;
-            Fields.Add($"{identifier}.Id", new MsSqlFieldMetadata(this, $"{identifier}.Id", "Id", SqlDbType.Int) { IsIdentity = true });
-            Fields.Add($"{identifier}.ProductCategoryType", new MsSqlFieldMetadata(this, $"{identifier}.ProductCategoryType", "ProductCategoryType", SqlDbType.Int));
-            Fields.Add($"{identifier}.Name", new MsSqlFieldMetadata(this, $"{identifier}.Name", "Name", SqlDbType.VarChar, 80));
-            Fields.Add($"{identifier}.Description", new MsSqlFieldMetadata(this, $"{identifier}.Description", "Description", SqlDbType.NVarChar, 4000));
-            Fields.Add($"{identifier}.ListPrice", new MsSqlFieldMetadata(this, $"{identifier}.ListPrice", "ListPrice", SqlDbType.Money));
-            Fields.Add($"{identifier}.Price", new MsSqlFieldMetadata(this, $"{identifier}.Price", "Price", SqlDbType.Money));
-            Fields.Add($"{identifier}.Quantity", new MsSqlFieldMetadata(this, $"{identifier}.Quantity", "Quantity", SqlDbType.Int));
-            Fields.Add($"{identifier}.Image", new MsSqlFieldMetadata(this, $"{identifier}.Image", "Image", SqlDbType.VarBinary, -1));
-            Fields.Add($"{identifier}.Height", new MsSqlFieldMetadata(this, $"{identifier}.Height", "Height", SqlDbType.Decimal, 4, 1));
-            Fields.Add($"{identifier}.Width", new MsSqlFieldMetadata(this, $"{identifier}.Width", "Width", SqlDbType.Decimal, 4, 1));
-            Fields.Add($"{identifier}.Depth", new MsSqlFieldMetadata(this, $"{identifier}.Depth", "Depth", SqlDbType.Decimal, 4, 1));
-            Fields.Add($"{identifier}.Weight", new MsSqlFieldMetadata(this, $"{identifier}.Weight", "Weight", SqlDbType.Decimal, 4, 1));
-            Fields.Add($"{identifier}.ShippingWeight", new MsSqlFieldMetadata(this, $"{identifier}.ShippingWeight", "ShippingWeight", SqlDbType.Decimal, 4, 1));
-            Fields.Add($"{identifier}.ValidStartTimeOfDayForPurchase", new MsSqlFieldMetadata(this, $"{identifier}.ValidStartTimeOfDayForPurchase", "ValidStartTimeOfDayForPurchase", SqlDbType.Time, 5));
-            Fields.Add($"{identifier}.ValidEndTimeOfDayForPurchase", new MsSqlFieldMetadata(this, $"{identifier}.ValidEndTimeOfDayForPurchase", "ValidEndTimeOfDayForPurchase", SqlDbType.Time, 5));
-            Fields.Add($"{identifier}.DateCreated", new MsSqlFieldMetadata(this, $"{identifier}.DateCreated", "DateCreated", SqlDbType.DateTime));
-            Fields.Add($"{identifier}.DateUpdated", new MsSqlFieldMetadata(this, $"{identifier}.DateUpdated", "DateUpdated", SqlDbType.DateTime));
-        }
-        #endregion
-    }
-    #endregion
-
-    #region purchase
-	public class PurchaseEntityMetadata : ISqlEntityMetadata
-	{
-        #region interface
-        public ISqlSchemaMetadata Schema { get; }
-        public string Identifier { get; }
-        public string Name { get; }
-        public IDictionary<string, ISqlFieldMetadata> Fields { get; } = new Dictionary<string, ISqlFieldMetadata>();
-        #endregion
-		
-        #region constructors
-        public PurchaseEntityMetadata(ISqlSchemaMetadata schema, string identifier, string name)
-        {
-            Schema = schema;
-            Identifier = identifier;
-            Name = name;
-            Fields.Add($"{identifier}.Id", new MsSqlFieldMetadata(this, $"{identifier}.Id", "Id", SqlDbType.Int) { IsIdentity = true });
-            Fields.Add($"{identifier}.PersonId", new MsSqlFieldMetadata(this, $"{identifier}.PersonId", "PersonId", SqlDbType.Int));
-            Fields.Add($"{identifier}.OrderNumber", new MsSqlFieldMetadata(this, $"{identifier}.OrderNumber", "OrderNumber", SqlDbType.VarChar, 20));
-            Fields.Add($"{identifier}.TotalPurchaseQuantity", new MsSqlFieldMetadata(this, $"{identifier}.TotalPurchaseQuantity", "TotalPurchaseQuantity", SqlDbType.Int));
-            Fields.Add($"{identifier}.TotalPurchaseAmount", new MsSqlFieldMetadata(this, $"{identifier}.TotalPurchaseAmount", "TotalPurchaseAmount", SqlDbType.Money));
-            Fields.Add($"{identifier}.PurchaseDate", new MsSqlFieldMetadata(this, $"{identifier}.PurchaseDate", "PurchaseDate", SqlDbType.DateTime));
-            Fields.Add($"{identifier}.ShipDate", new MsSqlFieldMetadata(this, $"{identifier}.ShipDate", "ShipDate", SqlDbType.DateTime));
-            Fields.Add($"{identifier}.ExpectedDeliveryDate", new MsSqlFieldMetadata(this, $"{identifier}.ExpectedDeliveryDate", "ExpectedDeliveryDate", SqlDbType.DateTime));
-            Fields.Add($"{identifier}.TrackingIdentifier", new MsSqlFieldMetadata(this, $"{identifier}.TrackingIdentifier", "TrackingIdentifier", SqlDbType.UniqueIdentifier));
-            Fields.Add($"{identifier}.PaymentMethodType", new MsSqlFieldMetadata(this, $"{identifier}.PaymentMethodType", "PaymentMethodType", SqlDbType.VarChar, 20));
-            Fields.Add($"{identifier}.PaymentSourceType", new MsSqlFieldMetadata(this, $"{identifier}.PaymentSourceType", "PaymentSourceType", SqlDbType.VarChar, 20));
-            Fields.Add($"{identifier}.DateCreated", new MsSqlFieldMetadata(this, $"{identifier}.DateCreated", "DateCreated", SqlDbType.DateTime));
-            Fields.Add($"{identifier}.DateUpdated", new MsSqlFieldMetadata(this, $"{identifier}.DateUpdated", "DateUpdated", SqlDbType.DateTime));
-        }
-        #endregion
-    }
-    #endregion
-
-    #region purchase line
-	public class PurchaseLineEntityMetadata : ISqlEntityMetadata
-	{
-        #region interface
-        public ISqlSchemaMetadata Schema { get; }
-        public string Identifier { get; }
-        public string Name { get; }
-        public IDictionary<string, ISqlFieldMetadata> Fields { get; } = new Dictionary<string, ISqlFieldMetadata>();
-        #endregion
-		
-        #region constructors
-        public PurchaseLineEntityMetadata(ISqlSchemaMetadata schema, string identifier, string name)
-        {
-            Schema = schema;
-            Identifier = identifier;
-            Name = name;
-            Fields.Add($"{identifier}.Id", new MsSqlFieldMetadata(this, $"{identifier}.Id", "Id", SqlDbType.Int) { IsIdentity = true });
-            Fields.Add($"{identifier}.PurchaseId", new MsSqlFieldMetadata(this, $"{identifier}.PurchaseId", "PurchaseId", SqlDbType.Int));
-            Fields.Add($"{identifier}.ProductId", new MsSqlFieldMetadata(this, $"{identifier}.ProductId", "ProductId", SqlDbType.Int));
-            Fields.Add($"{identifier}.PurchasePrice", new MsSqlFieldMetadata(this, $"{identifier}.PurchasePrice", "PurchasePrice", SqlDbType.Decimal, 12, 2));
-            Fields.Add($"{identifier}.Quantity", new MsSqlFieldMetadata(this, $"{identifier}.Quantity", "Quantity", SqlDbType.Int));
-            Fields.Add($"{identifier}.DateCreated", new MsSqlFieldMetadata(this, $"{identifier}.DateCreated", "DateCreated", SqlDbType.DateTime));
-            Fields.Add($"{identifier}.DateUpdated", new MsSqlFieldMetadata(this, $"{identifier}.DateUpdated", "DateUpdated", SqlDbType.DateTime));
-        }
-        #endregion
-    }
-    #endregion
-
-    #region person total purchases view
-	public class PersonTotalPurchasesViewEntityMetadata : ISqlEntityMetadata
-	{
-        #region interface
-        public ISqlSchemaMetadata Schema { get; }
-        public string Identifier { get; }
-        public string Name { get; }
-        public IDictionary<string, ISqlFieldMetadata> Fields { get; } = new Dictionary<string, ISqlFieldMetadata>();
-        #endregion
-		
-        #region constructors
-        public PersonTotalPurchasesViewEntityMetadata(ISqlSchemaMetadata schema, string identifier, string name)
-        {
-            Schema = schema;
-            Identifier = identifier;
-            Name = name;
-            Fields.Add($"{identifier}.Id", new MsSqlFieldMetadata(this, $"{identifier}.Id", "Id", SqlDbType.Int));
-            Fields.Add($"{identifier}.TotalAmount", new MsSqlFieldMetadata(this, $"{identifier}.TotalAmount", "TotalAmount", SqlDbType.Money));
-            Fields.Add($"{identifier}.TotalCount", new MsSqlFieldMetadata(this, $"{identifier}.TotalCount", "TotalCount", SqlDbType.Int));
-        }
-        #endregion
-    }
-    #endregion
-
-    public class SelectPerson_As_Dynamic_With_InputStoredProcedureMetadata : ISqlStoredProcedureMetadata
-    {
-        #region interface
-        public ISqlSchemaMetadata Schema { get; }
-        public string Identifier { get; }
-        public string Name { get; }
-        public IDictionary<string, ISqlParameterMetadata> Parameters { get; } = new Dictionary<string, ISqlParameterMetadata>();
-        #endregion
-
-        #region constructors
-        public SelectPerson_As_Dynamic_With_InputStoredProcedureMetadata(ISqlSchemaMetadata schema, string identifier, string name)
-        {
-            Schema = schema;
-            Identifier = identifier;
-            Name = name;
-            Parameters.Add($"{identifier}.@P1", new MsSqlParameterMetadata(this, $"{identifier}.@P1", "@P1", SqlDbType.Int));
-        }
-        #endregion
-    }
-
-    public class SelectPerson_As_Dynamic_With_Input_And_InputOutputStoredProcedureMetadata : ISqlStoredProcedureMetadata
-    {
-        #region interface
-        public ISqlSchemaMetadata Schema { get; }
-        public string Identifier { get; }
-        public string Name { get; }
-        public IDictionary<string, ISqlParameterMetadata> Parameters { get; } = new Dictionary<string, ISqlParameterMetadata>();
-        #endregion
-
-        #region constructors
-        public SelectPerson_As_Dynamic_With_Input_And_InputOutputStoredProcedureMetadata(ISqlSchemaMetadata schema, string identifier, string name)
-        {
-            Schema = schema;
-            Identifier = identifier;
-            Name = name;
-            Parameters.Add($"{identifier}.@P1", new MsSqlParameterMetadata(this, $"{identifier}.@P1", "@P1", SqlDbType.Int));
-            Parameters.Add($"{identifier}.@CreditLimit", new MsSqlParameterMetadata(this, $"{identifier}.@CreditLimit", "@CreditLimit", SqlDbType.Int));
-        }
-        #endregion
-    }
-
-    public class SelectPerson_As_Dynamic_With_Input_And_OutputStoredProcedureMetadata : ISqlStoredProcedureMetadata
-    {
-        #region interface
-        public ISqlSchemaMetadata Schema { get; }
-        public string Identifier { get; }
-        public string Name { get; }
-        public IDictionary<string, ISqlParameterMetadata> Parameters { get; } = new Dictionary<string, ISqlParameterMetadata>();
-        #endregion
-
-        #region constructors
-        public SelectPerson_As_Dynamic_With_Input_And_OutputStoredProcedureMetadata(ISqlSchemaMetadata schema, string identifier, string name)
-        {
-            Schema = schema;
-            Identifier = identifier;
-            Name = name;
-            Parameters.Add($"{identifier}.@P1", new MsSqlParameterMetadata(this, $"{identifier}.@P1", "@P1", SqlDbType.Int));
-            Parameters.Add($"{identifier}.@Count", new MsSqlParameterMetadata(this, $"{identifier}.@Count", "@Count", SqlDbType.Int));
-        }
-        #endregion
-    }
-
-    public class SelectPerson_As_DynamicList_With_InputStoredProcedureMetadata : ISqlStoredProcedureMetadata
-    {
-        #region interface
-        public ISqlSchemaMetadata Schema { get; }
-        public string Identifier { get; }
-        public string Name { get; }
-        public IDictionary<string, ISqlParameterMetadata> Parameters { get; } = new Dictionary<string, ISqlParameterMetadata>();
-        #endregion
-
-        #region constructors
-        public SelectPerson_As_DynamicList_With_InputStoredProcedureMetadata(ISqlSchemaMetadata schema, string identifier, string name)
-        {
-            Schema = schema;
-            Identifier = identifier;
-            Name = name;
-            Parameters.Add($"{identifier}.@P1", new MsSqlParameterMetadata(this, $"{identifier}.@P1", "@P1", SqlDbType.Int));
-        }
-        #endregion
-    }
-
-    public class SelectPerson_As_DynamicList_With_Input_And_InputOutputStoredProcedureMetadata : ISqlStoredProcedureMetadata
-    {
-        #region interface
-        public ISqlSchemaMetadata Schema { get; }
-        public string Identifier { get; }
-        public string Name { get; }
-        public IDictionary<string, ISqlParameterMetadata> Parameters { get; } = new Dictionary<string, ISqlParameterMetadata>();
-        #endregion
-
-        #region constructors
-        public SelectPerson_As_DynamicList_With_Input_And_InputOutputStoredProcedureMetadata(ISqlSchemaMetadata schema, string identifier, string name)
-        {
-            Schema = schema;
-            Identifier = identifier;
-            Name = name;
-            Parameters.Add($"{identifier}.@P1", new MsSqlParameterMetadata(this, $"{identifier}.@P1", "@P1", SqlDbType.Int));
-            Parameters.Add($"{identifier}.@CreditLimit", new MsSqlParameterMetadata(this, $"{identifier}.@CreditLimit", "@CreditLimit", SqlDbType.Int));
-        }
-        #endregion
-    }
-
-    public class SelectPerson_As_DynamicList_With_Input_And_OutputStoredProcedureMetadata : ISqlStoredProcedureMetadata
-    {
-        #region interface
-        public ISqlSchemaMetadata Schema { get; }
-        public string Identifier { get; }
-        public string Name { get; }
-        public IDictionary<string, ISqlParameterMetadata> Parameters { get; } = new Dictionary<string, ISqlParameterMetadata>();
-        #endregion
-
-        #region constructors
-        public SelectPerson_As_DynamicList_With_Input_And_OutputStoredProcedureMetadata(ISqlSchemaMetadata schema, string identifier, string name)
-        {
-            Schema = schema;
-            Identifier = identifier;
-            Name = name;
-            Parameters.Add($"{identifier}.@P1", new MsSqlParameterMetadata(this, $"{identifier}.@P1", "@P1", SqlDbType.Int));
-            Parameters.Add($"{identifier}.@Count", new MsSqlParameterMetadata(this, $"{identifier}.@Count", "@Count", SqlDbType.Int));
-        }
-        #endregion
-    }
-
-    public class SelectPersonId_As_ScalarValue_With_InputStoredProcedureMetadata : ISqlStoredProcedureMetadata
-    {
-        #region interface
-        public ISqlSchemaMetadata Schema { get; }
-        public string Identifier { get; }
-        public string Name { get; }
-        public IDictionary<string, ISqlParameterMetadata> Parameters { get; } = new Dictionary<string, ISqlParameterMetadata>();
-        #endregion
-
-        #region constructors
-        public SelectPersonId_As_ScalarValue_With_InputStoredProcedureMetadata(ISqlSchemaMetadata schema, string identifier, string name)
-        {
-            Schema = schema;
-            Identifier = identifier;
-            Name = name;
-            Parameters.Add($"{identifier}.@P1", new MsSqlParameterMetadata(this, $"{identifier}.@P1", "@P1", SqlDbType.Int));
-        }
-        #endregion
-    }
-
-    public class SelectPersonId_As_ScalarValue_With_Input_And_Default_ValueStoredProcedureMetadata : ISqlStoredProcedureMetadata
-    {
-        #region interface
-        public ISqlSchemaMetadata Schema { get; }
-        public string Identifier { get; }
-        public string Name { get; }
-        public IDictionary<string, ISqlParameterMetadata> Parameters { get; } = new Dictionary<string, ISqlParameterMetadata>();
-        #endregion
-
-        #region constructors
-        public SelectPersonId_As_ScalarValue_With_Input_And_Default_ValueStoredProcedureMetadata(ISqlSchemaMetadata schema, string identifier, string name)
-        {
-            Schema = schema;
-            Identifier = identifier;
-            Name = name;
-            Parameters.Add($"{identifier}.@P1", new MsSqlParameterMetadata(this, $"{identifier}.@P1", "@P1", SqlDbType.Int));
-        }
-        #endregion
-    }
-
-    public class SelectPersonId_As_ScalarValue_With_Input_And_InputOutputStoredProcedureMetadata : ISqlStoredProcedureMetadata
-    {
-        #region interface
-        public ISqlSchemaMetadata Schema { get; }
-        public string Identifier { get; }
-        public string Name { get; }
-        public IDictionary<string, ISqlParameterMetadata> Parameters { get; } = new Dictionary<string, ISqlParameterMetadata>();
-        #endregion
-
-        #region constructors
-        public SelectPersonId_As_ScalarValue_With_Input_And_InputOutputStoredProcedureMetadata(ISqlSchemaMetadata schema, string identifier, string name)
-        {
-            Schema = schema;
-            Identifier = identifier;
-            Name = name;
-            Parameters.Add($"{identifier}.@P1", new MsSqlParameterMetadata(this, $"{identifier}.@P1", "@P1", SqlDbType.Int));
-            Parameters.Add($"{identifier}.@CreditLimit", new MsSqlParameterMetadata(this, $"{identifier}.@CreditLimit", "@CreditLimit", SqlDbType.Int));
-        }
-        #endregion
-    }
-
-    public class SelectPersonId_As_ScalarValue_With_Input_And_OutputStoredProcedureMetadata : ISqlStoredProcedureMetadata
-    {
-        #region interface
-        public ISqlSchemaMetadata Schema { get; }
-        public string Identifier { get; }
-        public string Name { get; }
-        public IDictionary<string, ISqlParameterMetadata> Parameters { get; } = new Dictionary<string, ISqlParameterMetadata>();
-        #endregion
-
-        #region constructors
-        public SelectPersonId_As_ScalarValue_With_Input_And_OutputStoredProcedureMetadata(ISqlSchemaMetadata schema, string identifier, string name)
-        {
-            Schema = schema;
-            Identifier = identifier;
-            Name = name;
-            Parameters.Add($"{identifier}.@P1", new MsSqlParameterMetadata(this, $"{identifier}.@P1", "@P1", SqlDbType.Int));
-            Parameters.Add($"{identifier}.@Count", new MsSqlParameterMetadata(this, $"{identifier}.@Count", "@Count", SqlDbType.Int));
-        }
-        #endregion
-    }
-
-    public class SelectPersonId_As_ScalarValueList_With_InputStoredProcedureMetadata : ISqlStoredProcedureMetadata
-    {
-        #region interface
-        public ISqlSchemaMetadata Schema { get; }
-        public string Identifier { get; }
-        public string Name { get; }
-        public IDictionary<string, ISqlParameterMetadata> Parameters { get; } = new Dictionary<string, ISqlParameterMetadata>();
-        #endregion
-
-        #region constructors
-        public SelectPersonId_As_ScalarValueList_With_InputStoredProcedureMetadata(ISqlSchemaMetadata schema, string identifier, string name)
-        {
-            Schema = schema;
-            Identifier = identifier;
-            Name = name;
-            Parameters.Add($"{identifier}.@P1", new MsSqlParameterMetadata(this, $"{identifier}.@P1", "@P1", SqlDbType.Int));
-        }
-        #endregion
-    }
-
-    public class SelectPersonId_As_ScalarValueList_With_Input_And_InputOutputStoredProcedureMetadata : ISqlStoredProcedureMetadata
-    {
-        #region interface
-        public ISqlSchemaMetadata Schema { get; }
-        public string Identifier { get; }
-        public string Name { get; }
-        public IDictionary<string, ISqlParameterMetadata> Parameters { get; } = new Dictionary<string, ISqlParameterMetadata>();
-        #endregion
-
-        #region constructors
-        public SelectPersonId_As_ScalarValueList_With_Input_And_InputOutputStoredProcedureMetadata(ISqlSchemaMetadata schema, string identifier, string name)
-        {
-            Schema = schema;
-            Identifier = identifier;
-            Name = name;
-            Parameters.Add($"{identifier}.@P1", new MsSqlParameterMetadata(this, $"{identifier}.@P1", "@P1", SqlDbType.Int));
-            Parameters.Add($"{identifier}.@CreditLimit", new MsSqlParameterMetadata(this, $"{identifier}.@CreditLimit", "@CreditLimit", SqlDbType.Int));
-        }
-        #endregion
-    }
-
-    public class SelectPersonId_As_ScalarValueList_With_Input_And_OutputStoredProcedureMetadata : ISqlStoredProcedureMetadata
-    {
-        #region interface
-        public ISqlSchemaMetadata Schema { get; }
-        public string Identifier { get; }
-        public string Name { get; }
-        public IDictionary<string, ISqlParameterMetadata> Parameters { get; } = new Dictionary<string, ISqlParameterMetadata>();
-        #endregion
-
-        #region constructors
-        public SelectPersonId_As_ScalarValueList_With_Input_And_OutputStoredProcedureMetadata(ISqlSchemaMetadata schema, string identifier, string name)
-        {
-            Schema = schema;
-            Identifier = identifier;
-            Name = name;
-            Parameters.Add($"{identifier}.@P1", new MsSqlParameterMetadata(this, $"{identifier}.@P1", "@P1", SqlDbType.Int));
-            Parameters.Add($"{identifier}.@Count", new MsSqlParameterMetadata(this, $"{identifier}.@Count", "@Count", SqlDbType.Int));
-        }
-        #endregion
-    }
-
-    public class UpdatePersonCreditLimit_With_InputsStoredProcedureMetadata : ISqlStoredProcedureMetadata
-    {
-        #region interface
-        public ISqlSchemaMetadata Schema { get; }
-        public string Identifier { get; }
-        public string Name { get; }
-        public IDictionary<string, ISqlParameterMetadata> Parameters { get; } = new Dictionary<string, ISqlParameterMetadata>();
-        #endregion
-
-        #region constructors
-        public UpdatePersonCreditLimit_With_InputsStoredProcedureMetadata(ISqlSchemaMetadata schema, string identifier, string name)
-        {
-            Schema = schema;
-            Identifier = identifier;
-            Name = name;
-            Parameters.Add($"{identifier}.@P1", new MsSqlParameterMetadata(this, $"{identifier}.@P1", "@P1", SqlDbType.Int));
-            Parameters.Add($"{identifier}.@CreditLimit", new MsSqlParameterMetadata(this, $"{identifier}.@CreditLimit", "@CreditLimit", SqlDbType.Int));
-        }
-        #endregion
-    }
-
-}
-namespace ServerSideBlazorApp.secDataService
-{
-    #region sec
-	public class secSchemaMetadata : ISqlSchemaMetadata
-    {
-		#region interface
-        public ISqlDatabaseMetadata Database { get; }
-        public string Identifier { get; }
-        public string Name { get; }
-        public IDictionary<string, ISqlEntityMetadata> Entities { get; } = new Dictionary<string, ISqlEntityMetadata>();
-        public IDictionary<string, ISqlStoredProcedureMetadata> StoredProcedures { get; } = new Dictionary<string, ISqlStoredProcedureMetadata>();
-        #endregion
-
-        #region constructors
-        public secSchemaMetadata(ISqlDatabaseMetadata database, string identifier, string name)
-        {
-            Database = database;
-            Identifier = identifier;
-            Name = name;
-            Entities.Add($"{identifier}.Person", new PersonEntityMetadata(this, $"{identifier}.Person", "Person"));
-        }
-        #endregion
-    }
-    #endregion
-
-    #region person
-	public class PersonEntityMetadata : ISqlEntityMetadata
-	{
-        #region interface
-        public ISqlSchemaMetadata Schema { get; }
-        public string Identifier { get; }
-        public string Name { get; }
-        public IDictionary<string, ISqlFieldMetadata> Fields { get; } = new Dictionary<string, ISqlFieldMetadata>();
-        #endregion
-		
-        #region constructors
-        public PersonEntityMetadata(ISqlSchemaMetadata schema, string identifier, string name)
-        {
-            Schema = schema;
-            Identifier = identifier;
-            Name = name;
-            Fields.Add($"{identifier}.Id", new MsSqlFieldMetadata(this, $"{identifier}.Id", "Id", SqlDbType.Int));
-            Fields.Add($"{identifier}.SSN", new MsSqlFieldMetadata(this, $"{identifier}.SSN", "SSN", SqlDbType.Char, 11));
-            Fields.Add($"{identifier}.DateCreated", new MsSqlFieldMetadata(this, $"{identifier}.DateCreated", "DateCreated", SqlDbType.DateTime));
-            Fields.Add($"{identifier}.DateUpdated", new MsSqlFieldMetadata(this, $"{identifier}.DateUpdated", "DateUpdated", SqlDbType.DateTime));
-        }
-        #endregion
-    }
-    #endregion
-
 }

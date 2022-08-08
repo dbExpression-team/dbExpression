@@ -20,12 +20,10 @@ using System;
 
 namespace HatTrick.DbEx.Sql
 {
-    public class SqlFieldMetadata : 
-        ISqlFieldMetadata,
-        IEquatable<SqlFieldMetadata>
+    public class SqlColumnMetadata : 
+        ISqlColumnMetadata,
+        IEquatable<SqlColumnMetadata>
     {
-        public ISqlEntityMetadata Entity { get; private set; }
-        public string Identifier { get; private set; }
         public string Name { get; private set; }
         public object DbType { get; private set; }
         public int? Size { get; private set; }
@@ -33,27 +31,21 @@ namespace HatTrick.DbEx.Sql
         public byte? Scale { get; private set; }
         public bool IsIdentity { get; set; }
 
-        public SqlFieldMetadata(ISqlEntityMetadata parent, string identifier, string name, object dbType)
+        public SqlColumnMetadata(string name, object dbType)
         {
-            Entity = parent;
-            Identifier = identifier;
             Name = name;
             DbType = dbType;
         }
 
-        public SqlFieldMetadata(ISqlEntityMetadata parent, string identifier, string name, object dbType, int size)
+        public SqlColumnMetadata(string name, object dbType, int size)
         {
-            Entity = parent;
-            Identifier = identifier;
             Name = name;
             DbType = dbType;
             Size = size;
         }
 
-        public SqlFieldMetadata(ISqlEntityMetadata parent, string identifier, string name, object dbType, byte precision, byte scale)
+        public SqlColumnMetadata(string name, object dbType, byte precision, byte scale)
         {
-            Entity = parent;
-            Identifier = identifier;
             Name = name;
             DbType = dbType;
             Precision = precision;
@@ -61,16 +53,10 @@ namespace HatTrick.DbEx.Sql
         }
 
         #region equals
-        public bool Equals(SqlFieldMetadata? obj)
+        public bool Equals(SqlColumnMetadata? obj)
         {
             if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
-
-            if (Entity is null && obj.Entity is not null) return false;
-            if (Entity is not null && obj.Entity is null) return false;
-            if (Entity is not null && !Entity.Equals(obj.Entity)) return false;
-
-            if (!StringComparer.Ordinal.Equals(Identifier, obj.Identifier)) return false;
 
             if (!StringComparer.Ordinal.Equals(Name, obj.Name)) return false;
 
@@ -96,7 +82,7 @@ namespace HatTrick.DbEx.Sql
         }
 
         public override bool Equals(object? obj)
-            => obj is SqlFieldMetadata exp && Equals(exp);
+            => obj is SqlColumnMetadata exp && Equals(exp);
 
         public override int GetHashCode()
         {
@@ -106,8 +92,6 @@ namespace HatTrick.DbEx.Sql
                 const int multiplier = 16777619;
 
                 int hash = @base;
-                hash = (hash * multiplier) ^ (Entity is not null ? Entity.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ (Identifier is not null ? Identifier.GetHashCode() : 0);
                 hash = (hash * multiplier) ^ (Name is not null ? Name.GetHashCode() : 0);
                 hash = (hash * multiplier) ^ (DbType is not null ? DbType.GetHashCode() : 0);
                 hash = (hash * multiplier) ^ (Size is not null ? Size.GetHashCode() : 0);

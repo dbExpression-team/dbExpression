@@ -40,7 +40,7 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentNullException(nameof(metadata));
 
             //ensure the actual column name in the database is used in the sql statement.  if the column name was "overriden" in configuration, supply that name as an alias
-            var dbName = metadata.FindFieldMetadata((field as ISqlMetadataIdentifierProvider).Identifier)?.Name ?? throw new DbExpressionException($"Cannot resolve metadata for {expression}.");
+            var dbName = metadata.GetMetadata<ISqlMetadata>((field as ISqlMetadataIdentifierProvider).Identifier)?.Name ?? throw new DbExpressionException($"Cannot resolve metadata for {expression}.");
             var sourceName = (field as IExpressionNameProvider).Name;
 
             return dbName == sourceName ? new SelectExpression(expression) : new SelectExpression(expression, sourceName);

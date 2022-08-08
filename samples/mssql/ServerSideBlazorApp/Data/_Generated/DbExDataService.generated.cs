@@ -1091,7 +1091,7 @@ namespace ServerSideBlazorApp.DataService
         InsertEntitiesInitiation<CRMDatabase>
     {
         #region internals
-        private static readonly SqlDatabaseMetadataProvider _metadata = new SqlDatabaseMetadataProvider(new CRMDatabaseSqlDatabaseMetadata("CRMDatabase", "MsSqlDbExTest"));
+        private static readonly SqlDatabaseMetadataProvider _metadata = new SqlDatabaseMetadataProvider(new CRMDatabaseSqlDatabaseMetadata("CRMDatabase"));
         private static readonly MsSqlFunctionExpressionBuilder _fx = new MsSqlFunctionExpressionBuilder();
         private static readonly List<SchemaExpression> _schemas = new List<SchemaExpression>();
         private static readonly Dictionary<Type, Table> _entityTypeToTableMap = new Dictionary<Type, Table>();
@@ -2633,8 +2633,8 @@ namespace ServerSideBlazorApp.dboDataService
         public dboSchemaExpression(string identifier) : base(identifier)
         {
             Attributes.Entities.Add($"{identifier}.Address", Address = new AddressEntity($"{identifier}.Address", "Address", this));
-            Attributes.Entities.Add($"{identifier}.Person", Customer = new CustomerEntity($"{identifier}.Person", "Person", this));
-            Attributes.Entities.Add($"{identifier}.Person_Address", CustomerAddress = new CustomerAddressEntity($"{identifier}.Person_Address", "Person_Address", this));
+            Attributes.Entities.Add($"{identifier}.Customer", Customer = new CustomerEntity($"{identifier}.Customer", "Customer", this));
+            Attributes.Entities.Add($"{identifier}.CustomerAddress", CustomerAddress = new CustomerAddressEntity($"{identifier}.CustomerAddress", "CustomerAddress", this));
             Attributes.Entities.Add($"{identifier}.Product", Product = new ProductEntity($"{identifier}.Product", "Product", this));
             Attributes.Entities.Add($"{identifier}.Purchase", Purchase = new PurchaseEntity($"{identifier}.Purchase", "Purchase", this));
             Attributes.Entities.Add($"{identifier}.PurchaseLine", PurchaseLine = new PurchaseLineEntity($"{identifier}.PurchaseLine", "PurchaseLine", this));
@@ -3821,7 +3821,7 @@ namespace ServerSideBlazorApp.dboDataService
         private CustomerAddressEntity(string identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
         {
             Attributes.Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", "Id", this));
-            Attributes.Fields.Add($"{identifier}.PersonId", CustomerId = new CustomerIdField($"{identifier}.PersonId", "CustomerId", this));
+            Attributes.Fields.Add($"{identifier}.CustomerId", CustomerId = new CustomerIdField($"{identifier}.CustomerId", "CustomerId", this));
             Attributes.Fields.Add($"{identifier}.AddressId", AddressId = new AddressIdField($"{identifier}.AddressId", "AddressId", this));
             Attributes.Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", "DateCreated", this));
         }
@@ -5126,7 +5126,7 @@ namespace ServerSideBlazorApp.dboDataService
         private PurchaseEntity(string identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
         {
             Attributes.Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", "Id", this));
-            Attributes.Fields.Add($"{identifier}.PersonId", CustomerId = new CustomerIdField($"{identifier}.PersonId", "CustomerId", this));
+            Attributes.Fields.Add($"{identifier}.CustomerId", CustomerId = new CustomerIdField($"{identifier}.CustomerId", "CustomerId", this));
             Attributes.Fields.Add($"{identifier}.OrderNumber", OrderNumber = new OrderNumberField($"{identifier}.OrderNumber", "OrderNumber", this));
             Attributes.Fields.Add($"{identifier}.TotalPurchaseQuantity", TotalPurchaseQuantity = new TotalPurchaseQuantityField($"{identifier}.TotalPurchaseQuantity", "TotalPurchaseQuantity", this));
             Attributes.Fields.Add($"{identifier}.TotalPurchaseAmount", TotalPurchaseAmount = new TotalPurchaseAmountField($"{identifier}.TotalPurchaseAmount", "TotalPurchaseAmount", this));

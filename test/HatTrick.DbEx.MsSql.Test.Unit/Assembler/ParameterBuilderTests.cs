@@ -564,7 +564,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             //when
             appender.AppendElement(predicate, builder, context);
             var parameter = builder.Parameters.Parameters.Single();
-            var meta = (parameter.Metadata as ISqlFieldMetadata)!;
+            var meta = (parameter.Metadata as ISqlColumnMetadata)!;
 
             //then
             meta.DbType.Should().Be(SqlDbType.VarChar);
@@ -590,7 +590,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             //when
             appender.AppendElement(predicate, builder, context);
             var parameter = builder.Parameters.Parameters.Single();
-            var meta = (parameter.Metadata as ISqlFieldMetadata)!;
+            var meta = (parameter.Metadata as ISqlColumnMetadata)!;
 
             //then
             meta.DbType.Should().Be(SqlDbType.VarChar);
@@ -616,7 +616,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             //when
             appender.AppendElement(predicate, builder, context);
             var parameter = builder.Parameters.Parameters.Single();
-            var meta = (parameter.Metadata as ISqlFieldMetadata)!;
+            var meta = (parameter.Metadata as ISqlColumnMetadata)!;
 
             //then
             meta.DbType.Should().Be(SqlDbType.Money);
@@ -641,7 +641,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             //when
             appender.AppendElement(predicate, builder, context);
             var parameter = builder.Parameters.Parameters.Single();
-            var meta = (parameter.Metadata as ISqlFieldMetadata)!;
+            var meta = (parameter.Metadata as ISqlColumnMetadata)!;
 
             //then
             meta.DbType.Should().Be(SqlDbType.VarBinary);
@@ -785,8 +785,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             var provider = ConfigureForMsSqlVersion(version);
             var context = provider.GetRequiredService<AssemblyContext>();
             var parameterBuilder = provider.GetRequiredService<ISqlParameterBuilder<MsSqlDb>>();
-            var databaseMetadata = new MsSqlDbSqlDatabaseMetadata(nameof(MsSqlDb), nameof(MsSqlDb));
-            var fieldMetadata = new MsSqlFieldMetadata(databaseMetadata.Schemas[nameof(dbo)].Entities[$"{nameof(dbo)}.{nameof(dbo.Person)}"], $"{nameof(dbo)}.{nameof(dbo.Person)}.{nameof(dbo.Person.FirstName)}", $"{nameof(dbo)}.{nameof(dbo.Person)}.{nameof(dbo.Person.FirstName)}", SqlDbType.Char, 0);
+            var databaseMetadata = new MsSqlDbSqlDatabaseMetadata(nameof(MsSqlDb));
+            var fieldMetadata = new MsSqlColumnMetadata($"{nameof(dbo)}.{nameof(dbo.Person)}.{nameof(dbo.Person.FirstName)}", SqlDbType.Char, 0);
 
             //when
             var parameter = parameterBuilder.CreateInputParameter(value, typeof(string), fieldMetadata, context);
@@ -805,8 +805,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             var provider = ConfigureForMsSqlVersion(version);
             var context = provider.GetRequiredService<AssemblyContext>();
             var parameterBuilder = provider.GetRequiredService<ISqlParameterBuilder<MsSqlDb>>();
-            var databaseMetadata = new MsSqlDbSqlDatabaseMetadata(nameof(MsSqlDb), nameof(MsSqlDb));
-            var fieldMetadata = new MsSqlFieldMetadata(databaseMetadata.Schemas[nameof(dbo)].Entities[$"{nameof(dbo)}.{nameof(dbo.Product)}"], $"{nameof(dbo)}.{nameof(dbo.Product)}.{nameof(dbo.Product.Image)}", $"{nameof(dbo)}.{nameof(dbo.Product)}.{nameof(dbo.Product.Image)}", SqlDbType.Binary, 0);
+            var databaseMetadata = new MsSqlDbSqlDatabaseMetadata(nameof(MsSqlDb));
+            var fieldMetadata = new MsSqlColumnMetadata($"{nameof(dbo)}.{nameof(dbo.Product)}.{nameof(dbo.Product.Image)}", SqlDbType.Binary, 0);
 
             //when
             var parameter = parameterBuilder.CreateInputParameter(value, typeof(byte[]), fieldMetadata, context);
