@@ -246,8 +246,9 @@ namespace HatTrick.DbEx.MsSql.Configuration
             builder.SqlStatements
                 .UseDelegateExpressionElementAppenderFactoryWithDefaults()
                 .UseDelegateQueryExecutionPipelineFactoryWithDefaults()
-                .Assembly.StatementBuilder.Use<SqlStatementBuilder<TDatabase>>()
-                .StatementAppender.Use<Appender>()
+                .Assembly
+                    .StatementBuilder.Use<SqlStatementBuilder<TDatabase>>()
+                    .StatementAppender.Use<Appender>()
                 .ParameterBuilder.Use<MsSqlParameterBuilder<TDatabase>>()
                 .QueryExecution
                     .Executor.Use<SqlStatementExecutor<TDatabase>>()

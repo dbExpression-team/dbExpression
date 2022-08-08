@@ -13,12 +13,13 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         [MsSqlVersions.AllVersions]
         public void Does_configuration_for_appender_factory_using_instance_method_with_null_instance_resolve_to_null(int version)
         {
-            //given & when & then
+            //given
             var provider = ConfigureForMsSqlVersion(version, builder => builder.SqlStatements.Assembly.StatementAppender.Use(sp => (IAppender)null!));
             
             //when
             var resolved = provider.GetService<IAppender>();
 
+            //then
             resolved.Should().BeNull();
         }
 

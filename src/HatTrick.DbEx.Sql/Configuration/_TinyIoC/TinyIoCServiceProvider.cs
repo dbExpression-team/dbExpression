@@ -21,7 +21,7 @@ using TinyIoC;
 
 namespace HatTrick.DbEx.Sql.Configuration
 {
-    public class TinyIoCServiceProvider : IServiceProvider
+    internal class TinyIoCServiceProvider : IServiceProvider
     {
         private readonly TinyIoCContainer _container;
 

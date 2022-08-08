@@ -20,6 +20,7 @@ using HatTrick.DbEx.Sql.Pipeline;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -43,25 +44,45 @@ namespace HatTrick.DbEx.Sql.Configuration
         #region methods
         public void Build()
         {
-            var hooks = new PipelineEventHooks<TDatabase>()
-            {
-                BeforeAssembly = new PipelineEventHook<BeforeAssemblyPipelineExecutionContext>(events.BeforeAssembly.SyncActions, events.BeforeAssembly.AsyncActions),
-                BeforeUpdateAssembly = new PipelineEventHook<BeforeUpdateAssemblyPipelineExecutionContext>(events.BeforeUpdateAssembly.SyncActions, events.BeforeUpdateAssembly.AsyncActions),
-                BeforeInsertAssembly = new PipelineEventHook<BeforeInsertAssemblyPipelineExecutionContext>(events.BeforeInsertAssembly.SyncActions, events.BeforeInsertAssembly.AsyncActions),
-                AfterAssembly = new PipelineEventHook<AfterAssemblyPipelineExecutionContext>(events.AfterAssembly.SyncActions, events.AfterAssembly.AsyncActions),
-                BeforeExecution = new PipelineEventHook<BeforeExecutionPipelineExecutionContext>(events.BeforeExecution.SyncActions, events.BeforeExecution.AsyncActions),
-                AfterExecution = new PipelineEventHook<AfterExecutionPipelineExecutionContext>(events.AfterExecution.SyncActions, events.AfterExecution.AsyncActions),
-                BeforeInsert = new PipelineEventHook<BeforeInsertPipelineExecutionContext>(events.BeforeInsert.SyncActions, events.BeforeInsert.AsyncActions),
-                AfterInsert = new PipelineEventHook<AfterInsertPipelineExecutionContext>(events.AfterInsert.SyncActions, events.AfterInsert.AsyncActions),
-                BeforeDelete = new PipelineEventHook<BeforeDeletePipelineExecutionContext>(events.BeforeDelete.SyncActions, events.BeforeDelete.AsyncActions),
-                AfterDelete = new PipelineEventHook<AfterDeletePipelineExecutionContext>(events.AfterDelete.SyncActions, events.AfterDelete.AsyncActions),
-                BeforeUpdate = new PipelineEventHook<BeforeUpdatePipelineExecutionContext>(events.BeforeUpdate.SyncActions, events.BeforeUpdate.AsyncActions),
-                AfterUpdate = new PipelineEventHook<AfterUpdatePipelineExecutionContext>(events.AfterUpdate.SyncActions, events.AfterUpdate.AsyncActions),
-                BeforeSelect = new PipelineEventHook<BeforeSelectPipelineExecutionContext>(events.BeforeSelect.SyncActions, events.BeforeSelect.AsyncActions),
-                AfterSelect = new PipelineEventHook<AfterSelectPipelineExecutionContext>(events.AfterSelect.SyncActions, events.AfterSelect.AsyncActions),
-                BeforeStoredProcedure = new PipelineEventHook<BeforeStoredProcedurePipelineExecutionContext>(events.BeforeStoredProcedure.SyncActions, events.BeforeStoredProcedure.AsyncActions),
-                AfterStoredProcedure = new PipelineEventHook<AfterStoredProcedurePipelineExecutionContext>(events.AfterStoredProcedure.SyncActions, events.AfterStoredProcedure.AsyncActions)
-            };
+            //var hooks = new PipelineEventHooks<TDatabase>()
+            //{
+            //    BeforeAssembly = new PipelineEventHook<BeforeAssemblyPipelineExecutionContext>(events.BeforeAssembly.SyncActions, events.BeforeAssembly.AsyncActions),
+            //    BeforeUpdateAssembly = new PipelineEventHook<BeforeUpdateAssemblyPipelineExecutionContext>(events.BeforeUpdateAssembly.SyncActions, events.BeforeUpdateAssembly.AsyncActions),
+            //    BeforeInsertAssembly = new PipelineEventHook<BeforeInsertAssemblyPipelineExecutionContext>(events.BeforeInsertAssembly.SyncActions, events.BeforeInsertAssembly.AsyncActions),
+            //    AfterAssembly = new PipelineEventHook<AfterAssemblyPipelineExecutionContext>(events.AfterAssembly.SyncActions, events.AfterAssembly.AsyncActions),
+            //    BeforeExecution = new PipelineEventHook<BeforeExecutionPipelineExecutionContext>(events.BeforeExecution.SyncActions, events.BeforeExecution.AsyncActions),
+            //    AfterExecution = new PipelineEventHook<AfterExecutionPipelineExecutionContext>(events.AfterExecution.SyncActions, events.AfterExecution.AsyncActions),
+            //    BeforeInsert = new PipelineEventHook<BeforeInsertPipelineExecutionContext>(events.BeforeInsert.SyncActions, events.BeforeInsert.AsyncActions),
+            //    AfterInsert = new PipelineEventHook<AfterInsertPipelineExecutionContext>(events.AfterInsert.SyncActions, events.AfterInsert.AsyncActions),
+            //    BeforeDelete = new PipelineEventHook<BeforeDeletePipelineExecutionContext>(events.BeforeDelete.SyncActions, events.BeforeDelete.AsyncActions),
+            //    AfterDelete = new PipelineEventHook<AfterDeletePipelineExecutionContext>(events.AfterDelete.SyncActions, events.AfterDelete.AsyncActions),
+            //    BeforeUpdate = new PipelineEventHook<BeforeUpdatePipelineExecutionContext>(events.BeforeUpdate.SyncActions, events.BeforeUpdate.AsyncActions),
+            //    AfterUpdate = new PipelineEventHook<AfterUpdatePipelineExecutionContext>(events.AfterUpdate.SyncActions, events.AfterUpdate.AsyncActions),
+            //    BeforeSelect = new PipelineEventHook<BeforeSelectPipelineExecutionContext>(events.BeforeSelect.SyncActions, events.BeforeSelect.AsyncActions),
+            //    AfterSelect = new PipelineEventHook<AfterSelectPipelineExecutionContext>(events.AfterSelect.SyncActions, events.AfterSelect.AsyncActions),
+            //    BeforeStoredProcedure = new PipelineEventHook<BeforeStoredProcedurePipelineExecutionContext>(events.BeforeStoredProcedure.SyncActions, events.BeforeStoredProcedure.AsyncActions),
+            //    AfterStoredProcedure = new PipelineEventHook<AfterStoredProcedurePipelineExecutionContext>(events.AfterStoredProcedure.SyncActions, events.AfterStoredProcedure.AsyncActions)
+            //};
+
+            var hooks = new PipelineEventHooks<TDatabase>();
+            
+            if (events.BeforeAssembly.SyncActions.Any() || events.BeforeAssembly.AsyncActions.Any()) hooks.BeforeAssembly = new PipelineEventHook<BeforeAssemblyPipelineExecutionContext>(events.BeforeAssembly.SyncActions, events.BeforeAssembly.AsyncActions);
+            if (events.BeforeUpdateAssembly.SyncActions.Any() || events.BeforeUpdateAssembly.AsyncActions.Any()) hooks.BeforeUpdateAssembly = new PipelineEventHook<BeforeUpdateAssemblyPipelineExecutionContext>(events.BeforeUpdateAssembly.SyncActions, events.BeforeUpdateAssembly.AsyncActions);
+            if (events.BeforeInsertAssembly.SyncActions.Any() || events.BeforeInsertAssembly.AsyncActions.Any()) hooks.BeforeInsertAssembly = new PipelineEventHook<BeforeInsertAssemblyPipelineExecutionContext>(events.BeforeInsertAssembly.SyncActions, events.BeforeInsertAssembly.AsyncActions);
+            if (events.AfterAssembly.SyncActions.Any() || events.AfterAssembly.AsyncActions.Any()) hooks.AfterAssembly = new PipelineEventHook<AfterAssemblyPipelineExecutionContext>(events.AfterAssembly.SyncActions, events.AfterAssembly.AsyncActions);
+            if (events.BeforeExecution.SyncActions.Any() || events.BeforeExecution.AsyncActions.Any()) hooks.BeforeExecution = new PipelineEventHook<BeforeExecutionPipelineExecutionContext>(events.BeforeExecution.SyncActions, events.BeforeExecution.AsyncActions);
+            if (events.AfterExecution.SyncActions.Any() || events.AfterExecution.AsyncActions.Any()) hooks.AfterExecution = new PipelineEventHook<AfterExecutionPipelineExecutionContext>(events.AfterExecution.SyncActions, events.AfterExecution.AsyncActions);
+            if (events.BeforeInsert.SyncActions.Any() || events.BeforeInsert.AsyncActions.Any()) hooks.BeforeInsert = new PipelineEventHook<BeforeInsertPipelineExecutionContext>(events.BeforeInsert.SyncActions, events.BeforeInsert.AsyncActions);
+            if (events.AfterInsert.SyncActions.Any() || events.AfterInsert.AsyncActions.Any()) hooks.AfterInsert = new PipelineEventHook<AfterInsertPipelineExecutionContext>(events.AfterInsert.SyncActions, events.AfterInsert.AsyncActions);
+            if (events.BeforeDelete.SyncActions.Any() || events.BeforeDelete.AsyncActions.Any()) hooks.BeforeDelete = new PipelineEventHook<BeforeDeletePipelineExecutionContext>(events.BeforeDelete.SyncActions, events.BeforeDelete.AsyncActions);
+            if (events.AfterDelete.SyncActions.Any() || events.AfterDelete.AsyncActions.Any()) hooks.AfterDelete = new PipelineEventHook<AfterDeletePipelineExecutionContext>(events.AfterDelete.SyncActions, events.AfterDelete.AsyncActions);
+            if (events.BeforeUpdate.SyncActions.Any() || events.BeforeUpdate.AsyncActions.Any()) hooks.BeforeUpdate = new PipelineEventHook<BeforeUpdatePipelineExecutionContext>(events.BeforeUpdate.SyncActions, events.BeforeUpdate.AsyncActions);
+            if (events.AfterUpdate.SyncActions.Any() || events.AfterUpdate.AsyncActions.Any()) hooks.AfterUpdate = new PipelineEventHook<AfterUpdatePipelineExecutionContext>(events.AfterUpdate.SyncActions, events.AfterUpdate.AsyncActions);
+            if (events.BeforeSelect.SyncActions.Any() || events.BeforeSelect.AsyncActions.Any()) hooks.BeforeSelect = new PipelineEventHook<BeforeSelectPipelineExecutionContext>(events.BeforeSelect.SyncActions, events.BeforeSelect.AsyncActions);
+            if (events.AfterSelect.SyncActions.Any() || events.AfterSelect.AsyncActions.Any()) hooks.AfterSelect = new PipelineEventHook<AfterSelectPipelineExecutionContext>(events.AfterSelect.SyncActions, events.AfterSelect.AsyncActions);
+            if (events.BeforeStoredProcedure.SyncActions.Any() || events.BeforeStoredProcedure.AsyncActions.Any()) hooks.BeforeStoredProcedure = new PipelineEventHook<BeforeStoredProcedurePipelineExecutionContext>(events.BeforeStoredProcedure.SyncActions, events.BeforeStoredProcedure.AsyncActions);
+            if (events.AfterStoredProcedure.SyncActions.Any() || events.AfterStoredProcedure.AsyncActions.Any()) hooks.AfterStoredProcedure = new PipelineEventHook<AfterStoredProcedurePipelineExecutionContext>(events.AfterStoredProcedure.SyncActions, events.AfterStoredProcedure.AsyncActions);
+            
             services.TryAddSingleton<PipelineEventHooks<TDatabase>>(hooks);
         }
 

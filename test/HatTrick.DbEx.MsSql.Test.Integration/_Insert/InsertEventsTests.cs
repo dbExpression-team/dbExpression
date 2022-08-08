@@ -85,7 +85,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         {
             //given
             ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(dbo.Person.GenderType, expected)));
-            var person = new Person { FirstName = "...", LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow, BirthDate = DateTime.UtcNow };
+            var person = new Person { FirstName = "...", LastName = "FIND_ME", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow, BirthDate = DateTime.UtcNow };
 
             //when
             await db.Insert(person).Into(dbo.Person).ExecuteAsync();
