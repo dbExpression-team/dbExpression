@@ -83,7 +83,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HatTrick.DbEx.MsSql.Extensi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "benchmark", "benchmark", "{DF45604D-A21C-47BD-8F21-A1C70E10F130}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HatTrick.DbEx.MsSql.Benchmark", "benchmark\HatTrick.DbEx.MsSql.Benchmark\HatTrick.DbEx.MsSql.Benchmark.csproj", "{DDD3D7B2-64B3-4565-B4CF-26D42A35EA03}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Benchmark.MsSql", "benchmark\Benchmark.MsSql\Benchmark.MsSql.csproj", "{DDD3D7B2-64B3-4565-B4CF-26D42A35EA03}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CodeCoverageFiles", "CodeCoverageFiles", "{4B165F4C-D9C7-438E-8B18-7DD313179747}"
 	ProjectSection(SolutionItems) = preProject
