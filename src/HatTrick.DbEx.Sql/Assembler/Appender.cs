@@ -24,19 +24,6 @@ namespace HatTrick.DbEx.Sql.Assembler
     public class Appender : IAppender
     {
         #region internals
-        private const string t1 = "\t";
-        private const string t2 = "\t\t";
-        private const string t3 = "\t\t\t";
-        private const string t4 = "\t\t\t\t";
-        private const string t5 = "\t\t\t\t\t";
-        private const string t6 = "\t\t\t\t\t\t";
-        private const string t7 = "\t\t\t\t\t\t\t";
-        private const string t8 = "\t\t\t\t\t\t\t\t";
-        private const string t9 = "\t\t\t\t\t\t\t\t\t";
-        private const string t10 = "\t\t\t\t\t\t\t\t\t\t";
-
-        private static readonly string[] tabs = new string[10] { t1, t2, t3, t4, t5, t6, t7, t8, t9, t10 };
-
         private readonly StringBuilder builder = new(512);
         #endregion
 
@@ -80,23 +67,8 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public IAppender Indent()
         {
-            if (Indentation.CurrentLevel == 0)
-                return this;
-
-            if (Indentation.CurrentLevel < tabs.Length)
-            {
-                builder.Append(tabs[Indentation.CurrentLevel - 1]);
-            }
-            else
-            {
-#pragma warning disable IDE0079
-#pragma warning disable IDE0056 // Use index operator: [supporting netstandard2.0, indexing not supported]
-                builder.Append(tabs[tabs.Length - 1]);
-#pragma warning restore IDE0056 // Use index operator
-#pragma warning restore IDE0079
-                for (var i = tabs.Length; i < Indentation.CurrentLevel; i++)
-                    builder.Append('\t');
-            }
+            for (byte i = 0; i < Indentation.CurrentLevel; i++)
+                builder.Append('\t');
 
             return this;
         }
