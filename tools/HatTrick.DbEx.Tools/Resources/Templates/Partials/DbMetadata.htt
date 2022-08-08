@@ -1,6 +1,9 @@
 ﻿    #region db meta
+    {?var:databaseName = $.DatabaseExpression.Name}
     public class {$.DatabaseExpression.Name}SqlDatabaseMetadata : ISqlDatabaseMetadata
     {{
+        private readonly Dictionary<string, ISqlMetadata> _metadata = new();
+
         #region interface
         public string Identifier {{ get; private set; }}
         public string Name {{ get; private set; }}
@@ -14,6 +17,28 @@
             Name = name;
 		    {#each $.Schemas}
             Schemas.Add("{$.Schema.Name}", new {$.SchemaExpression.Name}SchemaMetadata(this, "{$.Schema.Name}", "{$.Schema.Name}"));
+		    {/each}
+
+            {#each $.Schemas}
+            {?var:schemaName = $.SchemaExpression.Name}
+            _metadata.Add("{:databaseName}.{:schemaName}", new SqlSchemaMetadata("{:schemaName}"));
+            {#each $.Entities}
+            {?var:entityName = $.EntityExpression.Name}
+            _metadata.Add("{:schemaName}.{:entityName}", new SqlTableMetadata("{$.Entity.Name}"));
+            {#each $.Columns}
+            _metadata.Add("{:schemaName}.{:entityName}.{$.FieldExpression.Name}", new MsSqlColumnMetadata("{$.Column.Name}", SqlDbType.{$.Column.SqlType}{#if $.Column.Size}, {$.Column.Size}{/if}{#if $.Column.Precision}, {$.Column.Precision}{/if}{#if $.Column.Scale}, {$.Column.Scale}{/if}){#if $.Column.IsIdentity+} {{ IsIdentity = true }}{/if});
+            {/each}
+            {/each}
+            {#each $.StoredProcedures}
+            {?var:storedProcedureName = $.StoredProcedureExpression.Name}
+            _metadata.Add("{:schemaName}.{:storedProcedureName}", new StoredProcedureMetadata("{$.StoredProcedure.Name}"));
+            {#each $.Parameters}
+            _metadata.Add($"{:schemaName}.{:storedProcedureName}.{$.ParameterExpression.Name}", new MsSqlParameterMetadata("{$.Parameter.Name}", SqlDbType.{$.Parameter.SqlType}{#if $.Parameter.Size}, {$.Parameter.Size}{/if}{#if $.Parameter.Precision}, {$.Parameter.Precision}{/if}{#if $.Parameter.Scale}, {$.Parameter.Scale}{/if}));
+            {/each}
+
+
+            {/each}
+
 		    {/each}
         }}
         #endregion

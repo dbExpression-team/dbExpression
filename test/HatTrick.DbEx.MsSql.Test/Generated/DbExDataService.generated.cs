@@ -1117,7 +1117,7 @@ namespace DbEx.DataService
         InsertEntitiesInitiation<MsSqlDb>
     {
         #region internals
-        private static readonly SqlDatabaseMetadataProvider _metadata = new SqlDatabaseMetadataProvider(new MsSqlDbSqlDatabaseMetadata("MsSqlDb", "MsSqlDbExTest"));
+        private static readonly SqlDatabaseMetadataProvider _metadata = new SqlDatabaseMetadataProvider(new MsSqlDbSqlDatabaseMetadata("MsSqlDb"));
         private static readonly MsSqlFunctionExpressionBuilder _fx = new MsSqlFunctionExpressionBuilder();
         private static readonly List<SchemaExpression> _schemas = new List<SchemaExpression>();
         private static readonly Dictionary<Type, Table> _entityTypeToTableMap = new Dictionary<Type, Table>();
@@ -2707,7 +2707,7 @@ namespace DbEx.dboDataService
             Attributes.Entities.Add($"{identifier}.AccessAuditLog", AccessAuditLog = new AccessAuditLogEntity($"{identifier}.AccessAuditLog", "AccessAuditLog", this));
             Attributes.Entities.Add($"{identifier}.Address", Address = new AddressEntity($"{identifier}.Address", "Address", this));
             Attributes.Entities.Add($"{identifier}.Person", Person = new PersonEntity($"{identifier}.Person", "Person", this));
-            Attributes.Entities.Add($"{identifier}.Person_Address", PersonAddress = new PersonAddressEntity($"{identifier}.Person_Address", "Person_Address", this));
+            Attributes.Entities.Add($"{identifier}.PersonAddress", PersonAddress = new PersonAddressEntity($"{identifier}.PersonAddress", "PersonAddress", this));
             Attributes.Entities.Add($"{identifier}.Product", Product = new ProductEntity($"{identifier}.Product", "Product", this));
             Attributes.Entities.Add($"{identifier}.Purchase", Purchase = new PurchaseEntity($"{identifier}.Purchase", "Purchase", this));
             Attributes.Entities.Add($"{identifier}.PurchaseLine", PurchaseLine = new PurchaseLineEntity($"{identifier}.PurchaseLine", "PurchaseLine", this));
@@ -12159,7 +12159,7 @@ namespace DbEx.secDataService
         private PersonEntity(string identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
         {
             Attributes.Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", "Id", this));
-            Attributes.Fields.Add($"{identifier}.SSN", SocialSecurityNumber = new SocialSecurityNumberField($"{identifier}.SSN", "SocialSecurityNumber", this));
+            Attributes.Fields.Add($"{identifier}.SocialSecurityNumber", SocialSecurityNumber = new SocialSecurityNumberField($"{identifier}.SocialSecurityNumber", "SocialSecurityNumber", this));
             Attributes.Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", "DateCreated", this));
             Attributes.Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateUpdatedField($"{identifier}.DateUpdated", "DateUpdated", this));
         }

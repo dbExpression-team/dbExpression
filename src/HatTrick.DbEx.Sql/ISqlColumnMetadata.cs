@@ -18,9 +18,8 @@
 
 namespace HatTrick.DbEx.Sql
 {
-    public interface ISqlFieldMetadata : ISqlMetadata
+    public interface ISqlColumnMetadata : ISqlMetadata
     {
-        ISqlEntityMetadata Entity { get; }
         bool IsIdentity { get; }
         int? Size { get; }
         byte? Precision { get; }

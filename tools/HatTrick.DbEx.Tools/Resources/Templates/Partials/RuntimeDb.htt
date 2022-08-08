@@ -9,7 +9,7 @@
         InsertEntitiesInitiation<{:databaseExpressionName}>
     {{
         #region internals
-        private static readonly SqlDatabaseMetadataProvider _metadata = new SqlDatabaseMetadataProvider(new {:databaseExpressionName}SqlDatabaseMetadata("{:databaseExpressionName}", "{$.Database.Name}"));
+        private static readonly SqlDatabaseMetadataProvider _metadata = new SqlDatabaseMetadataProvider(new {:databaseExpressionName}SqlDatabaseMetadata("{:databaseExpressionName}"));
         private static readonly {$.Platform}FunctionExpressionBuilder _fx = new {$.Platform}FunctionExpressionBuilder();
         private static readonly List<SchemaExpression> _schemas = new List<SchemaExpression>();
         private static readonly Dictionary<Type, Table> _entityTypeToTableMap = new Dictionary<Type, Table>();

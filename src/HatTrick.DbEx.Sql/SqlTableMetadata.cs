@@ -16,16 +16,15 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace HatTrick.DbEx.Sql
 {
-    public interface ISqlSchemaMetadata : ISqlMetadata
-    {
-        ISqlDatabaseMetadata Database { get; }
-        IDictionary<string, ISqlEntityMetadata> Entities { get; }
-        IDictionary<string, ISqlStoredProcedureMetadata> StoredProcedures { get; }
+    public class SqlTableMetadata : ISqlMetadata
+    { 
+        public string Name { get; set; } = string.Empty;
+
+        public SqlTableMetadata(string name)
+        {
+            Name = name;
+        }
     }
 }

@@ -181,7 +181,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
                 throw new NotImplementedException();
             }
 
-            public ParameterizedExpression CreateInputOutputParameter<T>(T value, Type declaredType, ISqlFieldMetadata meta, AssemblyContext context)
+            public ParameterizedExpression CreateInputOutputParameter<T>(T value, Type declaredType, ISqlColumnMetadata meta, AssemblyContext context)
             {
                 throw new NotImplementedException();
             }
@@ -201,7 +201,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
                 throw new NotImplementedException();
             }
 
-            public ParameterizedExpression CreateInputParameter<T>(T value, Type declaredType, ISqlFieldMetadata meta, AssemblyContext context)
+            public ParameterizedExpression CreateInputParameter<T>(T value, Type declaredType, ISqlColumnMetadata meta, AssemblyContext context)
             {
                 throw new NotImplementedException();
             }
@@ -211,7 +211,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
                 throw new NotImplementedException();
             }
 
-            public ParameterizedExpression CreateOutputParameter(Type valueType, ISqlFieldMetadata meta, AssemblyContext context)
+            public ParameterizedExpression CreateOutputParameter(Type valueType, ISqlColumnMetadata meta, AssemblyContext context)
             {
                 throw new NotImplementedException();
             }
