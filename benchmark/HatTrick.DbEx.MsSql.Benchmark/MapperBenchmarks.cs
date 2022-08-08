@@ -28,7 +28,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark
         [GlobalSetup]
         public void ConfigureDbExpression()
         {
-            Sql.Configuration.dbExpression.Configure(
+            IServiceProvider sp = Sql.Configuration.dbExpression.Configure(
                 dbex =>
                 {
 
@@ -37,7 +37,6 @@ namespace HatTrick.DbEx.MsSql.Benchmark
                     );
 
                 });
-            IServiceProvider sp = Sql.Configuration.dbExpression.BuildServiceProvider();
             valueConverterProvider = new SqlStatementValueConverterProvider(sp.GetRequiredService<IValueConverterFactory<BenchmarkDatabase>>());
             personMapper = sp.GetRequiredService<IMapperFactory<BenchmarkDatabase>>().CreateEntityMapper(dbo.Person);
             personObjectMapper = sp.GetRequiredService<IMapperFactory<BenchmarkDatabase>>().CreateExpandoObjectMapper();

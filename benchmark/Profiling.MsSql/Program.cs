@@ -14,8 +14,7 @@ string connectionString = configuration.GetConnectionString("hattrick_dbex_mssql
 
 using IProfileTarget sut = new SelectOneQueryExpressionProfileTarget();
 
-dbExpression.Configure(dbex => dbex.AddMsSql2019Database<ProfilingDatabase>(db => { db.ConnectionString.Use(connectionString); sut.Configure(db); }));
-IServiceProvider provider = dbExpression.BuildServiceProvider();
+IServiceProvider provider = dbExpression.Configure(dbex => dbex.AddMsSql2019Database<ProfilingDatabase>(db => { db.ConnectionString.Use(connectionString); sut.Configure(db); }));
 
 MemoryProfiler.CollectAllocations(true);
 MeasureProfiler.StartCollectingData();

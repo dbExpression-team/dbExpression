@@ -23,9 +23,9 @@ using TinyIoC;
 
 namespace HatTrick.DbEx.Sql.Configuration
 {
-    public class TinyIoCServiceCollection : List<ServiceDescriptor>, IServiceCollection
+    internal class TinyIoCServiceCollection : List<ServiceDescriptor>, IServiceCollection
     {
-        private readonly TinyIoCContainer _container;
+        private readonly TinyIoCContainer? _container;
 
         public TinyIoCServiceCollection(TinyIoCContainer container)
         {
@@ -34,10 +34,10 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         public IServiceProvider BuildServiceProvider()
         {
-            var adapter = new TinyIoCServiceCollectionAdapter(this, _container);
+            var adapter = new TinyIoCServiceCollectionAdapter(this, _container!);
             adapter.AdaptServiceDescriptors();
-            var provider = new TinyIoCServiceProvider(_container);
-            _container.Register<IServiceProvider>(provider);
+            var provider = new TinyIoCServiceProvider(_container!);
+            _container!.Register<IServiceProvider>(provider);
             return provider;
         }
     }
