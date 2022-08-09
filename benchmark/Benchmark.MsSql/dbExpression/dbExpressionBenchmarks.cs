@@ -20,7 +20,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark
         [GlobalSetup]
         public void ConfigureDbExpression()
         {
-            Sql.Configuration.dbExpression.Configure(dbex => dbex.AddMsSql2019Database<BenchmarkDatabase>(db => db.ConnectionString.Use(Constants.ConnectionString)));
+            Sql.Configuration.dbExpression.Initialize(dbex => dbex.AddMsSql2019Database<BenchmarkDatabase>(db => db.ConnectionString.Use(Constants.ConnectionString)));
             connection = db.GetConnection();
             connection.EnsureOpen();
         }

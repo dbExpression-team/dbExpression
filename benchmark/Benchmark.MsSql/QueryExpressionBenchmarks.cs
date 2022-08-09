@@ -17,7 +17,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark
 
         [GlobalSetup]
         public void ConfigureDbExpression()
-            => Sql.Configuration.dbExpression.Configure(dbex => dbex.AddMsSql2019Database<BenchmarkDatabase>(db => db.ConnectionString.Use(connectionString)));
+            => Sql.Configuration.dbExpression.Initialize(dbex => dbex.AddMsSql2019Database<BenchmarkDatabase>(db => db.ConnectionString.Use(connectionString)));
 
         [Benchmark]
         public void CreateSelectQueryExpression()

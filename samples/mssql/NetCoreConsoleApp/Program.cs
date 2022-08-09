@@ -50,7 +50,7 @@ namespace NetCoreConsoleApp
                         .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
                         .Build();
 
-            dbExpression.Configure(
+            dbExpression.Initialize(
                 dbex => {
 
                     dbex.AddMsSql2019Database<SimpleConsoleDb>(

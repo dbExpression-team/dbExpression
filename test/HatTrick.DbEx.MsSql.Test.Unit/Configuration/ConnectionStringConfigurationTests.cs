@@ -1,7 +1,9 @@
 ﻿using DbEx.DataService;
 using DbEx.dboDataService;
 using FluentAssertions;
+using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.Sql;
+using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Connection;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -13,6 +15,23 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
 {
     public class ConnectionStringConfigurationTests : TestBase
     {
+        [Theory(Skip="Test fails when run with the collection and succeeds when run in isolation.")]
+        [MsSqlVersions.AllVersions]
+        public void Does_a_missing_connection_string_in_configuration_cause_expected_exception(int version)
+        {
+            //given & when & then
+            Assert.Throws<DbExpressionConfigurationException>(() =>
+                dbExpression.Initialize(
+                    dbex =>
+                    {
+
+                        dbex.AddMsSql2019Database<MsSqlDb>(c => { });
+
+                    }
+                )
+            );
+        }
+
         [Theory]
         [MsSqlVersions.AllVersions]
         public void Does_setting_connection_string_to_null_throw_correct_exception_when_resolved(int version)

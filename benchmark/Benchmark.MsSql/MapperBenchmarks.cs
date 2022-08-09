@@ -28,7 +28,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark
         [GlobalSetup]
         public void ConfigureDbExpression()
         {
-            IServiceProvider sp = Sql.Configuration.dbExpression.Configure(
+            IServiceProvider sp = Sql.Configuration.dbExpression.Initialize(
                 dbex =>
                 {
 
