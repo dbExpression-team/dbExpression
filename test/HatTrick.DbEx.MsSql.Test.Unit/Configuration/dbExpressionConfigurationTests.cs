@@ -1,5 +1,6 @@
-﻿using FluentAssertions;
-using HatTrick.DbEx.Sql.Assembler;
+﻿using DbEx.DataService;
+using FluentAssertions;
+using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,18 +12,26 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
 {
     public class dbExpressionConfigurationTests : TestBase
     {
+
         [Fact]
         public void Does_singleton_registration_resolve_correctly()
         {
             //given
-            var services = dbExpression.CreateServiceCollection();
-            services.AddSingleton<SelectQueryExpression>();
-            var provider = dbExpression.BuildServiceProvider();
-            
-            //when
-            var resolved = provider.GetService<SelectQueryExpression>();
+            var provider = dbExpression.Initialize(
+                services => services.AddSingleton<SelectQueryExpression>(),
+                dbex => {
 
-            resolved.Should().NotBeNull();
+                    dbex.AddMsSql2019Database<MsSqlDb>(c => c.ConnectionString.Use("foo"));
+
+                }
+            );
+
+            //when
+            var a1 = provider.GetService<SelectQueryExpression>();
+            var a2 = provider.GetService<SelectQueryExpression>();
+
+            //then
+            a1.Should().Be(a2);
         }
 
         [Fact]
@@ -30,14 +39,23 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         {
             //given
             var exp = Substitute.For<SelectQueryExpression>();
-            var services = dbExpression.CreateServiceCollection();
-            services.AddSingleton<SelectQueryExpression>();
-            services.AddSingleton<SelectQueryExpression>(exp);
-            var provider = dbExpression.BuildServiceProvider();
+            var provider = dbExpression.Initialize(
+                services =>
+                {
+                    services.AddSingleton<SelectQueryExpression>();
+                    services.AddSingleton<SelectQueryExpression>(exp);
+                },
+                dbex => {
+
+                    dbex.AddMsSql2019Database<MsSqlDb>(c => c.ConnectionString.Use("foo"));
+
+                }
+            );
 
             //when
             var resolved = provider.GetService<SelectQueryExpression>();
 
+            //then
             resolved.Should().Be(exp);
         }
 
@@ -46,14 +64,23 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         {
             //given
             var exp = Substitute.For<SelectQueryExpression>();
-            var services = dbExpression.CreateServiceCollection();
-            services.AddSingleton<SelectQueryExpression>();
-            services.TryAddSingleton<SelectQueryExpression>(exp);
-            var provider = dbExpression.BuildServiceProvider();
+            var provider = dbExpression.Initialize(
+                services =>
+                {
+                    services.AddSingleton<SelectQueryExpression>();
+                    services.TryAddSingleton<SelectQueryExpression>(exp);
+                },
+                dbex => {
+
+                    dbex.AddMsSql2019Database<MsSqlDb>(c => c.ConnectionString.Use("foo"));
+
+                }
+            );
 
             //when
             var resolved = provider.GetService<SelectQueryExpression>();
 
+            //then
             resolved.Should().NotBe(exp).And.NotBeNull().And.BeOfType<SelectQueryExpression>();
         }
 
@@ -61,14 +88,21 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_transient_registration_resolve_correctly()
         {
             //given
-            var services = dbExpression.CreateServiceCollection();
-            services.AddTransient<SelectQueryExpression>();
-            var provider = dbExpression.BuildServiceProvider();
+            var provider = dbExpression.Initialize(
+                services => services.AddTransient<SelectQueryExpression>(),
+                dbex => {
+
+                    dbex.AddMsSql2019Database<MsSqlDb>(c => c.ConnectionString.Use("foo"));
+
+                }
+            );
 
             //when
-            var resolved = provider.GetService<SelectQueryExpression>();
+            var a1 = provider.GetService<SelectQueryExpression>();
+            var a2 = provider.GetService<SelectQueryExpression>();
 
-            resolved.Should().NotBeNull();
+            //then
+            a1.Should().NotBe(a2);
         }
 
         [Fact]
@@ -76,14 +110,22 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         {
             //given
             var exp = Substitute.For<SelectQueryExpression>();
-            var services = dbExpression.CreateServiceCollection();
-            services.AddTransient<SelectQueryExpression>();
-            services.AddTransient<SelectQueryExpression>(sp => exp);
-            var provider = dbExpression.BuildServiceProvider();
+            var provider = dbExpression.Initialize(
+                services => {
+                    services.AddTransient<SelectQueryExpression>();
+                    services.AddTransient<SelectQueryExpression>(sp => exp);
+                },
+                dbex => {
+
+                    dbex.AddMsSql2019Database<MsSqlDb>(c => c.ConnectionString.Use("foo"));
+
+                }
+            );
 
             //when
             var resolved = provider.GetService<SelectQueryExpression>();
 
+            //then
             resolved.Should().Be(exp);
         }
 
@@ -92,14 +134,22 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         {
             //given
             var exp = Substitute.For<SelectQueryExpression>();
-            var services = dbExpression.CreateServiceCollection();
-            services.AddTransient<SelectQueryExpression>();
-            services.TryAddTransient<SelectQueryExpression>(sp => exp);
-            var provider = dbExpression.BuildServiceProvider();
+            var provider = dbExpression.Initialize(
+                services => {
+                    services.AddTransient<SelectQueryExpression>();
+                    services.TryAddTransient<SelectQueryExpression>(sp => exp);
+                },
+                dbex => {
+
+                    dbex.AddMsSql2019Database<MsSqlDb>(c => c.ConnectionString.Use("foo"));
+
+                }
+            );
 
             //when
             var resolved = provider.GetService<SelectQueryExpression>();
 
+            //then
             resolved.Should().NotBe(exp).And.NotBeNull().And.BeOfType<SelectQueryExpression>();
         }
     }

@@ -48,14 +48,7 @@ namespace HatTrick.DbEx.Sql
                 if (_singleton is not null)
                     return _singleton;
 
-                try
-                {
-                    _singleton = _factory.Invoke();
-                }
-                catch (Exception ex)
-                {
-                    throw new DbExpressionException($"Initialization of runtime database '{_databaseType}' failed.", ex);
-                }
+                _singleton = _factory.Invoke();            
             }
 
             return _singleton;

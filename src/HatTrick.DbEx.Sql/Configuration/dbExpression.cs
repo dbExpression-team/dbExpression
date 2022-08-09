@@ -31,10 +31,6 @@ namespace HatTrick.DbEx.Sql.Configuration
         private static readonly object _lock = new();
         #endregion
 
-        #region interface
-        public IServiceCollection Services => _services;
-        #endregion
-
         #region constructors
         private dbExpression()
         {
@@ -52,10 +48,36 @@ namespace HatTrick.DbEx.Sql.Configuration
         /// Internally, this creates a default services collection, registers database services for each database configured via <paramref name="databases"/>,
         /// and builds the default service provider used with the dbExpression runtime.
         /// </remarks>
-        public static IServiceProvider Configure(params Action<ISqlDatabaseRuntimeServicesBuilder>[] databases)
+        public static IServiceProvider Initialize(params Action<ISqlDatabaseRuntimeServicesBuilder>[] databases)
         {
+            if (databases is null)
+                throw new ArgumentNullException(nameof(databases));
+
             var dbex = new dbExpression();
-            dbex.Services.AddDbExpression(databases);
+            dbex._services.AddDbExpression(databases);
+            return dbex.BuildServiceProvider();
+        }
+
+        /// <summary>
+        /// A shorthand method to configure and use dbExpression.  Use this when there is no need to configure or customize any services external to <paramref name="databases"/>.
+        /// </summary>
+        /// <param name="registerServices">Provide service collection registrations to the service collection BEFORE any service registrations provided in <paramref name="databases"/>.</param>
+        /// <param name="databases">Configure one or more databases for runtime use with dbExpression.</param>
+        /// <remarks>
+        /// Internally, this creates a default services collection, registers database services for each database configured via <paramref name="databases"/>,
+        /// and builds the default service provider used with the dbExpression runtime.
+        /// </remarks>
+        public static IServiceProvider Initialize(Action<IServiceCollection> registerServices, params Action<ISqlDatabaseRuntimeServicesBuilder>[] databases)
+        {
+            if (registerServices is null)
+                throw new ArgumentNullException(nameof(registerServices));
+
+            if (databases is null)
+                throw new ArgumentNullException(nameof(databases));
+
+            var dbex = new dbExpression();
+            registerServices.Invoke(dbex._services);
+            dbex._services.AddDbExpression(databases);
             return dbex.BuildServiceProvider();
         }
 

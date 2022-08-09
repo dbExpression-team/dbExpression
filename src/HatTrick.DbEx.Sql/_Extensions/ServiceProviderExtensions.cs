@@ -17,6 +17,7 @@
 #endregion
 
 using HatTrick.DbEx.Sql.Configuration;
+using HatTrick.DbEx.Sql.Connection;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
@@ -49,7 +50,30 @@ namespace HatTrick.DbEx.Sql
         {
             var factoryType = typeof(SingletonSqlDatabaseRuntimeFactory<>).MakeGenericType(new[] { database });
             var factory = provider.GetService(factoryType) as SingletonSqlDatabaseRuntimeFactory;
-            factory!.GetInstance().InitializeStaticRuntime();
+
+            ISqlDatabaseRuntime? runtime = factory!.GetInstance();
+            if (runtime is not null)
+            {
+                try
+                {
+                    runtime.InitializeStaticRuntime();
+                    return;
+                }
+                catch (Exception e)
+                {
+                    throw new DbExpressionException($"The database {database} could not be initialized, see inner exception for details.", e);
+                }
+            }
+
+            //There are defaults for all configuration except connection strings.  Likely with this exception there is no connection string factory.
+            //As this is in startup, and an exception will be thrown either way, try and resolve a connection string to see if a better error message
+            //can be returned/thrown.
+            var connectionStringFactoryType = typeof(IConnectionStringFactory<>).MakeGenericType(database);
+            if (provider.GetService(connectionStringFactoryType) is null)
+            throw new DbExpressionConfigurationException($"Initialization of runtime database {database} failed.  " +
+                $"A connection string factory has not been properly registered.  Please ensure a connection string, or a delegate providing a connection string, has been provided in configuration.");
+
+            throw new DbExpressionConfigurationException($"Initialization of runtime database {database} failed as one or more dependencies could not be resolved.");
         }
     }
 }

@@ -328,22 +328,24 @@ namespace TinyIoC
     internal class TinyIoCResolutionException : Exception
     {
         private const string ERROR_TEXT = "Unable to resolve type: {0}";
+        public Type AttemptedType { get; private set; }
 
         public TinyIoCResolutionException(Type type)
             : base(String.Format(ERROR_TEXT, type.FullName))
         {
+            AttemptedType = type;
         }
 
         public TinyIoCResolutionException(Type type, Exception innerException)
             : base(String.Format(ERROR_TEXT, type.FullName), innerException)
         {
+            AttemptedType = type;
         }
 
         protected TinyIoCResolutionException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }
-
     }
 
     [Serializable]

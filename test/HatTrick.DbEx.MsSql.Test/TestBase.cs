@@ -38,13 +38,13 @@ namespace HatTrick.DbEx.MsSql.Test
 
             return version switch
             {
-                2005 => dbExpression.Configure(c => c.AddMsSql2005Database<MsSqlDb>(configureRuntime)),
-                2008 => dbExpression.Configure(c => c.AddMsSql2008Database<MsSqlDb>(configureRuntime)),
-                2012 => dbExpression.Configure(c => c.AddMsSql2012Database<MsSqlDb>(configureRuntime)),
-                2014 => dbExpression.Configure(c => c.AddMsSql2014Database<MsSqlDb>(configureRuntime)),
-                2016 => dbExpression.Configure(c => c.AddMsSql2016Database<MsSqlDb>(configureRuntime)),
-                2017 => dbExpression.Configure(c => c.AddMsSql2017Database<MsSqlDb>(configureRuntime)),
-                2019 => dbExpression.Configure(c => c.AddMsSql2019Database<MsSqlDb>(configureRuntime)),
+                2005 => dbExpression.Initialize(c => c.AddMsSql2005Database<MsSqlDb>(configureRuntime)),
+                2008 => dbExpression.Initialize(c => c.AddMsSql2008Database<MsSqlDb>(configureRuntime)),
+                2012 => dbExpression.Initialize(c => c.AddMsSql2012Database<MsSqlDb>(configureRuntime)),
+                2014 => dbExpression.Initialize(c => c.AddMsSql2014Database<MsSqlDb>(configureRuntime)),
+                2016 => dbExpression.Initialize(c => c.AddMsSql2016Database<MsSqlDb>(configureRuntime)),
+                2017 => dbExpression.Initialize(c => c.AddMsSql2017Database<MsSqlDb>(configureRuntime)),
+                2019 => dbExpression.Initialize(c => c.AddMsSql2019Database<MsSqlDb>(configureRuntime)),
                 _ => throw new NotImplementedException($"MsSql version {version} has not been implemented")
             };
         }
