@@ -46,7 +46,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
         #region constructors
         public InsertQueryExecutionPipeline(
-            ILoggerFactory loggerFactory,
+            ILogger<InsertQueryExecutionPipeline<TDatabase>> logger,
             ISqlStatementExecutor<TDatabase> statementExecutor,
             IValueConverterFactory<TDatabase> valueConverterFactory,
             IMapperFactory<TDatabase> mapperFactory,
@@ -54,7 +54,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             PipelineEventHooks<TDatabase> events
         )
         {
-            this.logger = (loggerFactory ?? throw new ArgumentNullException(nameof(logger))).CreateLogger<InsertQueryExecutionPipeline<TDatabase>>();
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.statementExecutor = statementExecutor ?? throw new ArgumentNullException(nameof(statementExecutor));
             this.valueConverterFactory = valueConverterFactory ?? throw new ArgumentNullException(nameof(valueConverterFactory));
             this.mapperFactory = mapperFactory ?? throw new ArgumentNullException(nameof(mapperFactory));

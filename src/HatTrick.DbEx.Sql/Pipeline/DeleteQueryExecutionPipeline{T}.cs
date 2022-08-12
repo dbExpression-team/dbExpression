@@ -40,13 +40,13 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
         #region constructors
         public DeleteQueryExecutionPipeline(
-            ILoggerFactory loggerFactory,
+            ILogger<DeleteQueryExecutionPipeline<TDatabase>> logger,
             ISqlStatementExecutor<TDatabase> statementExecutor,
             ISqlStatementBuilder<TDatabase> statementBuilder,
             PipelineEventHooks<TDatabase> events
         )
         {
-            this.logger = (loggerFactory ?? throw new ArgumentNullException(nameof(logger))).CreateLogger<DeleteQueryExecutionPipeline<TDatabase>>();
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.statementExecutor = statementExecutor ?? throw new ArgumentNullException(nameof(statementExecutor));
             this.statementBuilder = statementBuilder ?? throw new ArgumentNullException(nameof(statementBuilder));
             this.events = events ?? throw new ArgumentNullException(nameof(events));

@@ -35,9 +35,9 @@ namespace HatTrick.DbEx.Sql.Executor
         private readonly ILogger<SqlStatementExecutor> logger;
         private readonly LoggingOptions loggingOptions;
 
-        protected SqlStatementExecutor(ILoggerFactory loggerFactory, LoggingOptions loggingOptions)
+        protected SqlStatementExecutor(ILogger<SqlStatementExecutor> logger, LoggingOptions loggingOptions)
         {
-            this.logger = (loggerFactory ?? throw new ArgumentNullException(nameof(logger))).CreateLogger<SqlStatementExecutor>();
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.loggingOptions = loggingOptions ?? throw new ArgumentNullException(nameof(loggingOptions));
         }
 
