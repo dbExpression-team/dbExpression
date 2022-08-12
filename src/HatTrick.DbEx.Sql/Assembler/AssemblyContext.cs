@@ -35,7 +35,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         #region interface
         public bool IncludeSchemaName { get; set; } = true;
         public bool PrependCommaOnSelectClause { get; set; } = false;
-        public SqlStatementAssemblerConfiguration.Delimeters IdentifierDelimiter { get; set; } = new SqlStatementAssemblerConfiguration.Delimeters('[', ']');
+        public SqlStatementAssemblyOptions.Delimeters IdentifierDelimiter { get; set; } = new SqlStatementAssemblyOptions.Delimeters('[', ']');
         public char StatementTerminator { get; set; } = ';';
         public FieldExpressionAppendStyle FieldExpressionAppendStyle => fieldStyles.FirstOrDefault();
         public EntityExpressionAppendStyle EntityExpressionAppendStyle => entityStyles.FirstOrDefault();

@@ -17,7 +17,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_replace_of_person_first_name_with_static_string_value_for_pattern_and_static_string_value_for_replacement_succeed(int version, string firstName = "Kenny", string pattern = "nn", string replacement = "xx", string expected = "Kexxy")
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Replace(dbo.Person.FirstName, pattern, replacement)
@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_replace_of_person_first_name_with_expression_for_pattern_and_static_string_value_for_replacement_succeed(int version, string firstName = "Kenny", string replacement = "xx", string expected = "xx")
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Replace(dbo.Person.FirstName, dbo.Person.FirstName, replacement)
@@ -55,7 +55,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_replace_of_person_first_name_with_expression_for_pattern_and_expression_for_replacement_succeed(int version, string firstName = "Kenny", string expected = "Kenny")
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Replace(dbo.Person.FirstName, dbo.Person.FirstName, dbo.Person.FirstName)
@@ -74,7 +74,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_replace_of_person_first_name_with_static_value_for_pattern_and_expression_for_replacement_succeed(int version, string firstName = "Kenny", string pattern = "nn", string expected = "KeKennyy")
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Replace(dbo.Person.FirstName, pattern, dbo.Person.FirstName)
@@ -94,7 +94,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_replace_of_aliased_field_succeed(int version, string pattern = "100", string replacement = "999", string expected = "999 1st St")
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Replace(("_address", "Line1"), pattern, replacement).As("address_line1")  //100 1st St

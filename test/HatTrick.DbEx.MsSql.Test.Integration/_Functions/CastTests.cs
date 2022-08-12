@@ -21,7 +21,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_cast_of_ship_date_to_varchar_succeed(int version, int expected = 15)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     db.fx.Cast(dbo.Purchase.ShipDate).AsVarChar(50)
@@ -39,7 +39,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_multiple_fields_and_casting_ship_date_to_varchar_succeed(int version, int expected = 15)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     dbo.Purchase.Id,
@@ -59,7 +59,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_order_by_cast_of_purchase_date_to_varchar_ascending_succeed(int version, string expected = "Nov  1 2019")
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Cast(dbo.Purchase.PurchaseDate).AsVarChar(50)
@@ -79,7 +79,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_order_by_cast_of_purchase_date_to_varchar_descending_succeed(int version, string expected = "Nov  5 2019")
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Cast(dbo.Purchase.PurchaseDate).AsVarChar(50)
@@ -99,7 +99,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_order_by_cast_of_purchase_date_to_varchar_ascending_and_aliasing_succeed(int version, string expected = "Nov  1 2019")
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Cast(dbo.Purchase.PurchaseDate).AsVarChar(50).As("alias")
@@ -119,7 +119,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_order_by_cast_of_purchase_date_to_varchar_descending_and_aliasing_succeed(int version, string expected = "Nov  5 2019")
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Cast(dbo.Purchase.PurchaseDate).AsVarChar(50).As("alias")
@@ -139,7 +139,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_group_by_cast_of_purchase_date_to_varchar_ascending_succeed(int version, string expected = "Nov  1 2019")
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Cast(dbo.Purchase.PurchaseDate).AsVarChar(50)
@@ -159,7 +159,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_group_by_cast_of_purchase_date_to_varchar_ascending_and_aliasing_succeed(int version, string expected = "Nov  1 2019")
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Cast(dbo.Purchase.PurchaseDate).AsVarChar(50).As("alias")
@@ -178,7 +178,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_cast_product_valid_end_time_of_day_for_purchase_to_datetime_succeed(int version, int expected = 23)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Cast(dbo.Product.ValidEndTimeOfDayForPurchase).AsDateTime()
@@ -198,7 +198,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_cast_product_category_type_to_varchar(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Cast(dbo.Product.ProductCategoryType).AsVarChar(2)
@@ -219,7 +219,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_cast_of_aliased_field_succeed(int version, string expected = "30.00")
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Cast(("lines", "PurchasePrice")).AsVarChar(50).As("alias")

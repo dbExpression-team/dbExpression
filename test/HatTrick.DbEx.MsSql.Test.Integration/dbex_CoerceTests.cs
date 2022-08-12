@@ -19,7 +19,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_left_joining_a_non_null_value_making_it_null_succeed_with_coerce(int version, int count = 44)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             //when
             var values = db.SelectMany(

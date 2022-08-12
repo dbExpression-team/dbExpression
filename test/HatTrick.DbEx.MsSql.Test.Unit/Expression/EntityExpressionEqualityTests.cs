@@ -12,7 +12,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Entity_expressions_of_same_entity_should_be_equal(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp1 = dbo.Person;
             var exp2 = dbo.Person;
@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Entity_expressions_of_different_entities_should_not_be_equal(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp1 = dbo.Person;
             var exp2 = dbo.Address;
@@ -40,7 +40,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Entity_expressions_of_same_entity_with_one_aliased_should_not_be_equal(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp1 = dbo.Person;
             var exp2 = dbo.Person.As("alias");
@@ -54,7 +54,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Entity_expressions_of_same_entities_should_have_same_hash_codes(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp1 = dbo.Person;
             var exp2 = dbo.Person;
@@ -72,7 +72,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Entity_expressions_of_different_entities_should_have_different_hash_codes(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp1 = dbo.Person;
             var exp2 = dbo.Address;
@@ -90,7 +90,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Entity_expressions_of_same_entities_with_one_aliased_should_have_different_hash_codes(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp1 = dbo.Person;
             var exp2 = dbo.Person.As("alias");

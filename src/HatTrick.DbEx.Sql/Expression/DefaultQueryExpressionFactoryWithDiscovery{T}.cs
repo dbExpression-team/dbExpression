@@ -16,6 +16,7 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Concurrent;
 
@@ -25,13 +26,15 @@ namespace HatTrick.DbEx.Sql.Expression
         where TDatabase : class, ISqlDatabaseRuntime
     {
         #region internals
+        private readonly ILogger<DefaultQueryExpressionFactoryWithDiscovery<TDatabase>> logger;
         private readonly Func<Type, QueryExpression?> overrides;
         private readonly ConcurrentDictionary<Type, Func<Type, QueryExpression?>> factories = new();
         #endregion
 
         #region constructors
-        public DefaultQueryExpressionFactoryWithDiscovery(Func<Type, QueryExpression?> overrides)
+        public DefaultQueryExpressionFactoryWithDiscovery(ILogger<DefaultQueryExpressionFactoryWithDiscovery<TDatabase>> logger, Func<Type, QueryExpression?> overrides)
         {
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.overrides = overrides ?? throw new ArgumentNullException(nameof(overrides));
         }
         #endregion
@@ -43,6 +46,9 @@ namespace HatTrick.DbEx.Sql.Expression
             var expression = CreateQueryExpression(typeof(TQuery));
             if (expression is not null)
                 return (expression as TQuery)!;
+
+            if (logger.IsEnabled(LogLevel.Trace))
+                logger.LogTrace("Query expression factory not found in internal cache or in provided overrides, creating a factory for {query} using public parameterless constructor.", typeof(TQuery));
 
             factories.TryAdd(typeof(TQuery), t => new TQuery());
             return (factories[typeof(TQuery)](typeof(TQuery)) as TQuery)!;
@@ -83,6 +89,9 @@ namespace HatTrick.DbEx.Sql.Expression
                     factories.TryAdd(requestedType, factory);
                 return factory;
             }
+            
+            if (logger.IsEnabled(LogLevel.Trace))
+                logger.LogTrace("Query expression factory for {currentType} not found in internal cache.", currentType);
 
             var @override = overrides(currentType);
             if (@override is not null)
@@ -91,8 +100,14 @@ namespace HatTrick.DbEx.Sql.Expression
                 return factories[requestedType];
             }
 
+            if (logger.IsEnabled(LogLevel.Trace))
+                logger.LogTrace("Query expression factory for {currentType} was not resolved via provided overrides.", currentType);
+
             if (currentType.BaseType is null)
                 return null;
+
+            if (logger.IsEnabled(LogLevel.Trace))
+                logger.LogTrace("Try and resolve query expression factory for base type of {currentType}, which is {baseType}.", currentType, currentType.BaseType);
 
             return ResolveQueryExpressionFactory(currentType.BaseType, requestedType);
         }

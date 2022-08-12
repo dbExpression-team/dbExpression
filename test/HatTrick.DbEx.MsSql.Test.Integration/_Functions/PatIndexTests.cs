@@ -20,7 +20,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_patindex_of_person_first_name_with_static_value_pattern_succeed(int version, string pattern = "K%", string firstName = "Kenny", long expected = 1)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.PatIndex(pattern, dbo.Person.FirstName)
@@ -39,7 +39,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_patindex_of_address_line2_with_static_value_pattern_succeed(int version, string pattern = "A%", string line2 = "Apt. 42", long expected = 1)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.PatIndex(pattern, dbo.Address.Line2)
@@ -58,7 +58,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_patindex_of_null_address_line2_with_static_value_pattern_and_no_match_succeed(int version, string pattern = "Z%")
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.PatIndex(pattern, dbo.Address.Line2)
@@ -77,7 +77,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_patindex_of_person_first_name_with_null_value_pattern_throw_exception(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             //when & then      
             Assert.Throws<ArgumentException>(() => 
@@ -92,7 +92,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_where_clause_with_patindex_of_person_first_name_with_static_value_pattern_succeed(int version, string pattern = "K%", int expected = 3)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person)
@@ -111,7 +111,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_patindex_of_aliased_field_succeed(int version, int expected = 0)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.PatIndex("P", ("_address", "Line1")).As("address_line1")

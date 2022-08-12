@@ -22,6 +22,7 @@ using HatTrick.DbEx.Sql.Converter;
 using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
 using HatTrick.DbEx.Sql.Mapper;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -37,6 +38,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         where TDatabase : class, ISqlDatabaseRuntime
     {
         #region internals
+        private readonly ILogger<StoredProcedureQueryExpressionExecutionPipeline<TDatabase>> logger;
         private readonly ISqlStatementExecutor<TDatabase> statementExecutor;
         private readonly IValueConverterFactory<TDatabase> valueConverterFactory;
         private readonly IMapperFactory<TDatabase> mapperFactory;
@@ -46,6 +48,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
         #region constructors
         public StoredProcedureQueryExpressionExecutionPipeline(
+            ILoggerFactory loggerFactory,
             ISqlStatementExecutor<TDatabase> statementExecutor,
             IValueConverterFactory<TDatabase> valueConverterFactory,
             IMapperFactory<TDatabase> mapperFactory,
@@ -53,6 +56,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             PipelineEventHooks<TDatabase> events
         )
         {
+            this.logger = (loggerFactory ?? throw new ArgumentNullException(nameof(logger))).CreateLogger<StoredProcedureQueryExpressionExecutionPipeline<TDatabase>>();
             this.statementExecutor = statementExecutor ?? throw new ArgumentNullException(nameof(statementExecutor));
             this.valueConverterFactory = valueConverterFactory ?? throw new ArgumentNullException(nameof(valueConverterFactory));
             this.mapperFactory = mapperFactory ?? throw new ArgumentNullException(nameof(mapperFactory));
@@ -474,11 +478,30 @@ namespace HatTrick.DbEx.Sql.Pipeline
             if (connection is null)
                 throw new ArgumentNullException(nameof(connection));
 
-            events.BeforeAssembly?.Invoke(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(expression, statementBuilder.Parameters)));
-            var statement = statementBuilder.CreateSqlStatement(expression) ?? throw new DbExpressionException("The sql statement builder returned a null value, cannot execute a stored procedure without a sql statement.");
-            events.AfterAssembly?.Invoke(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(expression, statementBuilder.Parameters, statement)));
+            if (events.BeforeAssembly is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking before assembly events for stored procedure.");
+                events.BeforeAssembly?.Invoke(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(expression, statementBuilder.Parameters)));
+            }
 
-            events.BeforeStoredProcedure?.Invoke(new Lazy<BeforeStoredProcedurePipelineExecutionContext>(() => new BeforeStoredProcedurePipelineExecutionContext(expression, statement, statementBuilder.Parameters)));
+            if (logger.IsEnabled(LogLevel.Trace))
+                logger.LogTrace("Creating sql statement for stored procedure.");
+            var statement = statementBuilder.CreateSqlStatement(expression) ?? throw new DbExpressionException("The sql statement builder returned a null value, cannot execute a stored procedure without a sql statement.");
+
+            if (events.AfterAssembly is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking after assembly events for stored procedure.");
+                events.AfterAssembly?.Invoke(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(expression, statementBuilder.Parameters, statement)));
+            }
+
+            if (events.BeforeStoredProcedure is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking before update events for stored procedure.");
+                events.BeforeStoredProcedure?.Invoke(new Lazy<BeforeStoredProcedurePipelineExecutionContext>(() => new BeforeStoredProcedurePipelineExecutionContext(expression, statement, statementBuilder.Parameters)));
+            }
 
             var converters = new SqlStatementValueConverterProvider(valueConverterFactory);
 
@@ -493,6 +516,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     {
                         command = cmd;
                         cmd.CommandType = CommandType.StoredProcedure;
+                        if (logger.IsEnabled(LogLevel.Trace))
+                            logger.LogTrace("Invoking before execution events for stored procedure.");
                         events.BeforeExecution?.Invoke(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(expression, cmd, statement)));
                         configureCommand?.Invoke(cmd);
                     },
@@ -502,8 +527,16 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 if (reader is not null)
                     transform(reader);
 
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Mapping output parameters for stored procedure.");
                 MapOutputParameters(expression, command!.Parameters, statement.Parameters, valueConverterFactory);
-                events.AfterExecution?.Invoke(new Lazy<AfterExecutionPipelineExecutionContext>(() => new AfterExecutionPipelineExecutionContext(expression, command)));
+                
+                if (events.AfterExecution is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking after execution events for stored procedure.");
+                    events.AfterExecution?.Invoke(new Lazy<AfterExecutionPipelineExecutionContext>(() => new AfterExecutionPipelineExecutionContext(expression, command)));
+                }
             }
             else
             {
@@ -513,18 +546,33 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     cmd =>
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
+                        if (logger.IsEnabled(LogLevel.Trace))
+                            logger.LogTrace("Invoking before execution events for stored procedure.");
                         events.BeforeExecution?.Invoke(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(expression, cmd, statement)));
                         configureCommand?.Invoke(cmd);
                     },
                     cmd =>
                     {
+                        if (logger.IsEnabled(LogLevel.Trace))
+                            logger.LogTrace("Mapping output parameters for stored procedure.");
                         MapOutputParameters(expression, cmd.Parameters, statement.Parameters, valueConverterFactory);
-                        events.AfterExecution?.Invoke(new Lazy<AfterExecutionPipelineExecutionContext>(() => new AfterExecutionPipelineExecutionContext(expression, cmd)));
+                        
+                        if (events.AfterExecution is not null)
+                        {
+                            if (logger.IsEnabled(LogLevel.Trace))
+                                logger.LogTrace("Invoking after execution events for stored procedure.");
+                            events.AfterExecution?.Invoke(new Lazy<AfterExecutionPipelineExecutionContext>(() => new AfterExecutionPipelineExecutionContext(expression, cmd)));
+                        }
                     }
                 );
             }
 
-            events.AfterStoredProcedure?.Invoke(new Lazy<AfterStoredProcedurePipelineExecutionContext>(() => new AfterStoredProcedurePipelineExecutionContext(expression)));
+            if (events.AfterStoredProcedure is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking after update events for stored procedure.");
+                events.AfterStoredProcedure?.Invoke(new Lazy<AfterStoredProcedurePipelineExecutionContext>(() => new AfterStoredProcedurePipelineExecutionContext(expression)));
+            }
         }
 
         private async Task ExecuteStoredProcedureAsync(
@@ -543,19 +591,28 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             if (events.BeforeAssembly is not null)
             {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking before assembly events for stored procedure.");
                 await events.BeforeAssembly.InvokeAsync(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(expression, statementBuilder.Parameters)), ct).ConfigureAwait(false);
                 ct.ThrowIfCancellationRequested();
             }
 
+            if (logger.IsEnabled(LogLevel.Trace))
+                logger.LogTrace("Creating sql statement for stored procedure.");
             var statement = statementBuilder.CreateSqlStatement(expression) ?? throw new DbExpressionException("The sql statement builder returned a null value, cannot execute a stored procedure without a sql statement.");
+            
             if (events.AfterAssembly is not null)
             {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking after assembly events for stored procedure.");
                 await events.AfterAssembly.InvokeAsync(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(expression, statementBuilder.Parameters, statement)), ct).ConfigureAwait(false);
                 ct.ThrowIfCancellationRequested();
             }
 
             if (events.BeforeStoredProcedure is not null)
             {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking before update events for stored procedure.");
                 await events.BeforeStoredProcedure.InvokeAsync(new Lazy<BeforeStoredProcedurePipelineExecutionContext>(() => new BeforeStoredProcedurePipelineExecutionContext(expression, statement, statementBuilder.Parameters)), ct).ConfigureAwait(false);
                 ct.ThrowIfCancellationRequested();
             }
@@ -575,6 +632,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         cmd.CommandType = CommandType.StoredProcedure;
                         if (events.BeforeExecution is not null)
                         {
+                            if (logger.IsEnabled(LogLevel.Trace))
+                                logger.LogTrace("Invoking before execution events for stored procedure.");
                             await events.BeforeExecution.InvokeAsync(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(expression, cmd, statement)), ct).ConfigureAwait(false);
                         }
                         configureCommand?.Invoke(cmd);
@@ -588,9 +647,13 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 if (reader is not null)
                     await transform(reader).ConfigureAwait(false);
 
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Mapping output parameters for stored procedure.");
                 MapOutputParameters(expression, command!.Parameters, statement.Parameters, valueConverterFactory);
                 if (events.AfterExecution is not null)
                 {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking after execution events for stored procedure.");
                     await events.AfterExecution.InvokeAsync(new Lazy<AfterExecutionPipelineExecutionContext>(() => new AfterExecutionPipelineExecutionContext(expression, command)), ct).ConfigureAwait(false);
                 }
             }
@@ -602,13 +665,23 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     cmd =>
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
+                        if (logger.IsEnabled(LogLevel.Trace))
+                            logger.LogTrace("Invoking before execution events for stored procedure.");
                         events.BeforeExecution?.Invoke(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(expression, cmd, statement)));
                         configureCommand?.Invoke(cmd);
                     },
                     cmd =>
                     {
+                        if (logger.IsEnabled(LogLevel.Trace))
+                            logger.LogTrace("Mapping output parameters for stored procedure.");
                         MapOutputParameters(expression, cmd.Parameters, statement.Parameters, valueConverterFactory);
-                        events.AfterExecution?.Invoke(new Lazy<AfterExecutionPipelineExecutionContext>(() => new AfterExecutionPipelineExecutionContext(expression, cmd)));
+                        
+                        if (events.AfterExecution is not null)
+                        {
+                            if (logger.IsEnabled(LogLevel.Trace))
+                                logger.LogTrace("Invoking after execution events for stored procedure.");
+                            events.AfterExecution?.Invoke(new Lazy<AfterExecutionPipelineExecutionContext>(() => new AfterExecutionPipelineExecutionContext(expression, cmd)));
+                        }
                     },
                     ct
                 ).ConfigureAwait(false);
@@ -616,6 +689,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             if (events.AfterStoredProcedure is not null)
             {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking after update events for stored procedure.");
                 await events.AfterStoredProcedure.InvokeAsync(new Lazy<AfterStoredProcedurePipelineExecutionContext>(() => new AfterStoredProcedurePipelineExecutionContext(expression)), ct).ConfigureAwait(false);
                 ct.ThrowIfCancellationRequested();
             }

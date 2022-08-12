@@ -20,8 +20,9 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_a_missing_connection_string_in_configuration_cause_expected_exception(int version)
         {
             //given & when & then
+            var services = new ServiceCollection();
             Assert.Throws<DbExpressionConfigurationException>(() =>
-                dbExpression.Initialize(
+                services.AddDbExpression(
                     dbex =>
                     {
 
@@ -53,10 +54,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_using_delegate_returning_null_throw_expected_exception(int version)
         {
             //given
-            var provider = ConfigureForMsSqlVersion(version, builder => builder.ConnectionString.Use<NoOpConnectionStringFactory>());
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, builder => builder.ConnectionString.Use<NoOpConnectionStringFactory>());
 
             //when & then
-            Assert.Throws<NotImplementedException>(() => provider.GetRequiredService<IConnectionStringFactory<MsSqlDb>>().GetConnectionString());
+            Assert.Throws<NotImplementedException>(() => serviceProvider.GetRequiredService<IConnectionStringFactory<MsSqlDb>>().GetConnectionString());
         }
 
         [Theory]
@@ -64,10 +65,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_of_a_connection_string_factory_using_generic_rsolve_correctly(int version)
         {
             //given
-            var provider = ConfigureForMsSqlVersion(version, builder => builder.ConnectionString.Use<NoOpConnectionStringFactory>());
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, builder => builder.ConnectionString.Use<NoOpConnectionStringFactory>());
 
             //when
-            var resolved = provider.GetRequiredService<IConnectionStringFactory<MsSqlDb>>();
+            var resolved = serviceProvider.GetRequiredService<IConnectionStringFactory<MsSqlDb>>();
 
             //then
             resolved.Should().BeOfType<NoOpConnectionStringFactory>();
@@ -78,10 +79,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_of_a_connection_string_factory_using_instance_resolve_correctly(int version)
         {
             //given
-            var provider = ConfigureForMsSqlVersion(version, builder => builder.ConnectionString.Use("abc"));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, builder => builder.ConnectionString.Use("abc"));
 
             //when
-            var resolved = provider.GetRequiredService<IConnectionStringFactory<MsSqlDb>>().GetConnectionString();
+            var resolved = serviceProvider.GetRequiredService<IConnectionStringFactory<MsSqlDb>>().GetConnectionString();
 
             //then
             resolved.Should().Be("abc");
@@ -94,8 +95,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
             //given
             var values = Enumerable.Range(0, 5);
             var factory = new ConnectionStringFactory(values.ToList());
-            var provider = ConfigureForMsSqlVersion(version, builder => builder.ConnectionString.Use(sp => factory));
-            var resolvedFactory = provider.GetRequiredService<IConnectionStringFactory<MsSqlDb>>();
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, builder => builder.ConnectionString.Use(sp => factory));
+            var resolvedFactory = serviceProvider.GetRequiredService<IConnectionStringFactory<MsSqlDb>>();
 
             //when
             var resolved = new List<string>();

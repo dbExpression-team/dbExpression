@@ -4,6 +4,7 @@ using HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService;
 using HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboData;
 using HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService;
 using HatTrick.DbEx.MsSql.Configuration;
+using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Connection;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
@@ -20,7 +21,14 @@ namespace HatTrick.DbEx.MsSql.Benchmark
         [GlobalSetup]
         public void ConfigureDbExpression()
         {
-            Sql.Configuration.dbExpression.Initialize(dbex => dbex.AddMsSql2019Database<BenchmarkDatabase>(db => db.ConnectionString.Use(Constants.ConnectionString)));
+            var services = new ServiceCollection();
+            services.AddDbExpression(dbex =>
+            {
+                dbex.AddMsSql2019Database<BenchmarkDatabase>(database => database.ConnectionString.Use(Constants.ConnectionString));
+            });
+            var provider = services.BuildServiceProvider();
+            provider.UseStaticRuntimeFor<BenchmarkDatabase>(); 
+            
             connection = db.GetConnection();
             connection.EnsureOpen();
         }

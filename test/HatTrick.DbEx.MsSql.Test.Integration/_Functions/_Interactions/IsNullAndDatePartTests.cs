@@ -18,7 +18,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_isnull_of_year_datepart_of_ship_date_and_purchase_date_succeed(int version, int expected = 15)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     db.fx.IsNull(db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate), db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate))
@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_day_datepart_of_isnull_of_ship_date_and_purchase_date_succeed(int version, int expected = 15)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     db.fx.DatePart(DateParts.Day, db.fx.IsNull(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate))
@@ -54,7 +54,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_isnull_of_year_datepart_of_ship_date_and_expected_delivery_date_succeed(int version, int expected = 15)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     db.fx.IsNull(db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate), db.fx.DatePart(DateParts.Year, dbo.Purchase.ExpectedDeliveryDate))
@@ -72,7 +72,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_day_datepart_of_isnull_of_ship_date_and_expected_delivery_date_succeed(int version, int expected = 15)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     db.fx.DatePart(DateParts.Day, db.fx.IsNull(dbo.Purchase.ShipDate, dbo.Purchase.ExpectedDeliveryDate))

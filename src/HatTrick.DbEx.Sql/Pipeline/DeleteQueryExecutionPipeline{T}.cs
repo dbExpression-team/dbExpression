@@ -20,6 +20,7 @@ using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Connection;
 using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Data;
 using System.Threading;
@@ -31,6 +32,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         where TDatabase : class, ISqlDatabaseRuntime
     {
         #region internals
+        private readonly ILogger<DeleteQueryExecutionPipeline<TDatabase>> logger;
         private readonly ISqlStatementExecutor<TDatabase> statementExecutor;
         private readonly ISqlStatementBuilder<TDatabase> statementBuilder;
         private readonly PipelineEventHooks<TDatabase> events;
@@ -38,11 +40,13 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
         #region constructors
         public DeleteQueryExecutionPipeline(
+            ILoggerFactory loggerFactory,
             ISqlStatementExecutor<TDatabase> statementExecutor,
             ISqlStatementBuilder<TDatabase> statementBuilder,
             PipelineEventHooks<TDatabase> events
         )
         {
+            this.logger = (loggerFactory ?? throw new ArgumentNullException(nameof(logger))).CreateLogger<DeleteQueryExecutionPipeline<TDatabase>>();
             this.statementExecutor = statementExecutor ?? throw new ArgumentNullException(nameof(statementExecutor));
             this.statementBuilder = statementBuilder ?? throw new ArgumentNullException(nameof(statementBuilder));
             this.events = events ?? throw new ArgumentNullException(nameof(events));
@@ -58,23 +62,57 @@ namespace HatTrick.DbEx.Sql.Pipeline
             if (connection is null)
                 throw new ArgumentNullException(nameof(connection));
 
-            events.BeforeAssembly?.Invoke(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(expression, statementBuilder.Parameters)));
-            var statement = statementBuilder.CreateSqlStatement(expression) ?? throw new DbExpressionException("The sql statement builder returned a null value, cannot execute a delete query without a sql statement.");
-            events.AfterAssembly?.Invoke(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(expression, statementBuilder.Parameters, statement)));
+            if (events.BeforeAssembly is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking before assembly events for delete query.");
+                events.BeforeAssembly?.Invoke(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(expression, statementBuilder.Parameters)));
+            }
 
-            events.BeforeDelete?.Invoke(new Lazy<BeforeDeletePipelineExecutionContext>(() => new BeforeDeletePipelineExecutionContext(expression, statementBuilder.Parameters, statement)));
+            if (logger.IsEnabled(LogLevel.Trace))
+                logger.LogTrace("Creating sql statement for delete query.");
+            var statement = statementBuilder.CreateSqlStatement(expression) ?? throw new DbExpressionException("The sql statement builder returned a null value, cannot execute a delete query without a sql statement.");
+
+            if (events.AfterAssembly is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking after assembly events for delete query.");
+                events.AfterAssembly?.Invoke(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(expression, statementBuilder.Parameters, statement)));
+            }
+
+            if (events.BeforeDelete is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking before delete events for delete query.");
+                events.BeforeDelete?.Invoke(new Lazy<BeforeDeletePipelineExecutionContext>(() => new BeforeDeletePipelineExecutionContext(expression, statementBuilder.Parameters, statement)));
+            }
 
             var rowsAffected = statementExecutor.ExecuteScalar<int>(
                 statement,
                 connection,
                 cmd => {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking before execution events for delete query.");
                     events.BeforeExecution?.Invoke(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(expression, cmd, statement))); 
                     configureCommand?.Invoke(cmd); 
                 },
-                cmd => events.AfterExecution?.Invoke(new Lazy<AfterExecutionPipelineExecutionContext>(() => new AfterExecutionPipelineExecutionContext(expression, cmd)))
+                cmd =>
+                {
+                    if (events.AfterExecution is not null)
+                    {
+                        if (logger.IsEnabled(LogLevel.Trace))
+                            logger.LogTrace("Invoking after execution events for delete query.");
+                        events.AfterExecution?.Invoke(new Lazy<AfterExecutionPipelineExecutionContext>(() => new AfterExecutionPipelineExecutionContext(expression, cmd)));
+                    }
+                }
             );
 
-            events.AfterDelete?.Invoke(new Lazy<AfterDeletePipelineExecutionContext>(() => new AfterDeletePipelineExecutionContext(expression)));
+            if (events.AfterDelete is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking after update events for delete query.");
+                events.AfterDelete?.Invoke(new Lazy<AfterDeletePipelineExecutionContext>(() => new AfterDeletePipelineExecutionContext(expression)));
+            }
 
             return rowsAffected;
         }
@@ -89,19 +127,28 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             if (events.BeforeAssembly is not null)
             {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking before assembly events for delete query.");
                 await events.BeforeAssembly.InvokeAsync(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(expression, statementBuilder.Parameters)), ct).ConfigureAwait(false);
                 ct.ThrowIfCancellationRequested();
             }
 
+            if (logger.IsEnabled(LogLevel.Trace))
+                logger.LogTrace("Creating sql statement for delete query.");
             var statement = statementBuilder.CreateSqlStatement(expression) ?? throw new DbExpressionException("The sql statement builder returned a null value, cannot execute a delete query without a sql statement.");
+            
             if (events.AfterAssembly is not null)
             {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking after assembly events for delete query.");
                 await events.AfterAssembly.InvokeAsync(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(expression, statementBuilder.Parameters, statement)), ct).ConfigureAwait(false);
                 ct.ThrowIfCancellationRequested();
             }
 
             if (events.BeforeDelete is not null)
             {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking before delete events for delete query.");
                 await events.BeforeDelete.InvokeAsync(new Lazy<BeforeDeletePipelineExecutionContext>(() => new BeforeDeletePipelineExecutionContext(expression, statementBuilder.Parameters, statement)), ct).ConfigureAwait(false);
                 ct.ThrowIfCancellationRequested();
             }
@@ -113,6 +160,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 {
                     if (events.BeforeExecution is not null)
                     {
+                        if (logger.IsEnabled(LogLevel.Trace))
+                            logger.LogTrace("Invoking before execution events for delete query.");
                         await events.BeforeExecution.InvokeAsync(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(expression, cmd, statement)), ct).ConfigureAwait(false);
                     }
                     configureCommand?.Invoke(cmd);
@@ -121,6 +170,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 {
                     if (events.AfterExecution is not null)
                     {
+                        if (logger.IsEnabled(LogLevel.Trace))
+                            logger.LogTrace("Invoking after execution events for delete query.");
                         await events.AfterExecution.InvokeAsync(new Lazy<AfterExecutionPipelineExecutionContext>(() => new AfterExecutionPipelineExecutionContext(expression, cmd)), ct).ConfigureAwait(false);
                     }
                 },
@@ -131,6 +182,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             if (events.AfterDelete is not null)
             {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking after update events for delete query.");
                 await events.AfterDelete.InvokeAsync(new Lazy<AfterDeletePipelineExecutionContext>(() => new AfterDeletePipelineExecutionContext(expression)), ct).ConfigureAwait(false);
                 ct.ThrowIfCancellationRequested();
             }

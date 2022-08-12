@@ -22,6 +22,7 @@ using HatTrick.DbEx.Sql.Converter;
 using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
 using HatTrick.DbEx.Sql.Mapper;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -38,6 +39,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         where TDatabase : class, ISqlDatabaseRuntime
     {
         #region internals
+        private readonly ILogger<SelectQueryExpressionExecutionPipeline<TDatabase>> logger;
         private readonly ISqlStatementExecutor<TDatabase> statementExecutor;
         private readonly IValueConverterFactory<TDatabase> valueConverterFactory;
         private readonly IMapperFactory<TDatabase> mapperFactory;
@@ -48,6 +50,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
         #region constructors
         public SelectQueryExpressionExecutionPipeline(
+            ILoggerFactory loggerFactory,
             ISqlStatementExecutor<TDatabase> statementExecutor,
             IValueConverterFactory<TDatabase> valueConverterFactory,
             IMapperFactory<TDatabase> mapperFactory,
@@ -56,6 +59,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             PipelineEventHooks<TDatabase> events
         )
         {
+            this.logger = (loggerFactory ?? throw new ArgumentNullException(nameof(logger))).CreateLogger<SelectQueryExpressionExecutionPipeline<TDatabase>>();
             this.statementExecutor = statementExecutor ?? throw new ArgumentNullException(nameof(statementExecutor));
             this.valueConverterFactory = valueConverterFactory ?? throw new ArgumentNullException(nameof(valueConverterFactory));
             this.mapperFactory = mapperFactory ?? throw new ArgumentNullException(nameof(mapperFactory));
@@ -1752,21 +1756,53 @@ namespace HatTrick.DbEx.Sql.Pipeline
             if (connection is null)
                 throw new ArgumentNullException(nameof(connection));
 
-            events.BeforeAssembly?.Invoke(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(expression, statementBuilder.Parameters)));
-            var statement = statementBuilder.CreateSqlStatement(expression) ?? throw new DbExpressionException("The sql statement builder returned a null value, cannot execute a select query without a sql statement.");
-            events.AfterAssembly?.Invoke(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(expression, statementBuilder.Parameters, statement)));
+            if (events.BeforeAssembly is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking before assembly events for select query.");
+                events.BeforeAssembly.Invoke(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(expression, statementBuilder.Parameters)));
+            }
 
-            events.BeforeSelect?.Invoke(new Lazy<BeforeSelectPipelineExecutionContext>(() => new BeforeSelectPipelineExecutionContext(expression, statement, statementBuilder.Parameters)));
+            if (logger.IsEnabled(LogLevel.Trace))
+                logger.LogTrace("Creating sql statement for select query.");
+            var statement = statementBuilder.CreateSqlStatement(expression) ?? throw new DbExpressionException("The sql statement builder returned a null value, cannot execute a select query without a sql statement.");
+            
+            if (events.AfterAssembly is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking after assembly events for select query.");
+                events.AfterAssembly?.Invoke(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(expression, statementBuilder.Parameters, statement)));
+            }
+
+            if (events.BeforeSelect is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking before select events for select query.");
+                events.BeforeSelect?.Invoke(new Lazy<BeforeSelectPipelineExecutionContext>(() => new BeforeSelectPipelineExecutionContext(expression, statement, statementBuilder.Parameters)));
+            }
 
             var reader = statementExecutor.ExecuteQuery(
                 statement, 
                 connection,
                 valueConverterProvider,
                 cmd => {
-                    events.BeforeExecution?.Invoke(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(expression, cmd, statement))); 
+                    if (events.BeforeExecution is not null)
+                    {
+                        if (logger.IsEnabled(LogLevel.Trace))
+                            logger.LogTrace("Invoking before execution events for select query.");
+                        events.BeforeExecution?.Invoke(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(expression, cmd, statement)));
+                    }
                     configureCommand?.Invoke(cmd); 
                 },
-                cmd => events.AfterExecution?.Invoke(new Lazy<AfterExecutionPipelineExecutionContext>(() => new AfterExecutionPipelineExecutionContext(expression, cmd)))
+                cmd =>
+                {
+                    if (events.AfterExecution is not null)
+                    {
+                        if (logger.IsEnabled(LogLevel.Trace))
+                            logger.LogTrace("Invoking after execution events for select query.");
+                        events.AfterExecution?.Invoke(new Lazy<AfterExecutionPipelineExecutionContext>(() => new AfterExecutionPipelineExecutionContext(expression, cmd)));
+                    }
+                }
             );
 
             if (reader is null)
@@ -1774,7 +1810,12 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             transform(reader);
 
-            events.AfterSelect?.Invoke(new Lazy<AfterSelectPipelineExecutionContext>(() => new AfterSelectPipelineExecutionContext(expression)));
+            if (events.AfterSelect is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking after select events for select query.");
+                events.AfterSelect?.Invoke(new Lazy<AfterSelectPipelineExecutionContext>(() => new AfterSelectPipelineExecutionContext(expression)));
+            }
         }
 
         private async Task ExecuteSelectQueryAsync(
@@ -1794,19 +1835,28 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             if (events.BeforeAssembly is not null)
             {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking before assembly events for select query.");
                 await events.BeforeAssembly.InvokeAsync(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(expression, statementBuilder.Parameters)), ct).ConfigureAwait(false);
                 ct.ThrowIfCancellationRequested();
             }
 
+            if (logger.IsEnabled(LogLevel.Trace))
+                logger.LogTrace("Creating sql statement for select query.");
             var statement = statementBuilder.CreateSqlStatement(expression) ?? throw new DbExpressionException("The sql statement builder returned a null value, cannot execute a select query without a sql statement.");
+            
             if (events.AfterAssembly is not null)
             {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking after assembly events for select query.");
                 await events.AfterAssembly.InvokeAsync(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(expression, statementBuilder.Parameters, statement)), ct).ConfigureAwait(false);
                 ct.ThrowIfCancellationRequested();
             }
 
             if (events.BeforeSelect is not null)
             {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking before select events for select query.");
                 await events.BeforeSelect.InvokeAsync(new Lazy<BeforeSelectPipelineExecutionContext>(() => new BeforeSelectPipelineExecutionContext(expression, statement, statementBuilder.Parameters)), ct).ConfigureAwait(false);
                 ct.ThrowIfCancellationRequested();
             }
@@ -1819,6 +1869,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 {
                     if (events.BeforeExecution is not null)
                     {
+                        if (logger.IsEnabled(LogLevel.Trace))
+                            logger.LogTrace("Invoking before execution events for select query.");
                         await events.BeforeExecution.InvokeAsync(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(expression, cmd, statement)), ct).ConfigureAwait(false);
                     }
                     configureCommand?.Invoke(cmd);
@@ -1827,6 +1879,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 {
                     if (events.AfterExecution is not null)
                     {
+                        if (logger.IsEnabled(LogLevel.Trace))
+                            logger.LogTrace("Invoking after execution events for select query.");
                         await events.AfterExecution.InvokeAsync(new Lazy<AfterExecutionPipelineExecutionContext>(() => new AfterExecutionPipelineExecutionContext(expression, cmd)), ct).ConfigureAwait(false);
                     }
                 },
@@ -1842,6 +1896,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             if (events.AfterSelect is not null)
             {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking after select events for select query.");
                 await events.AfterSelect.InvokeAsync(new Lazy<AfterSelectPipelineExecutionContext>(() => new AfterSelectPipelineExecutionContext(expression)), ct).ConfigureAwait(false);
                 ct.ThrowIfCancellationRequested();
             }

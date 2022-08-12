@@ -19,6 +19,7 @@
 ﻿using HatTrick.DbEx.Sql.Mapper;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging;
 using System;
 
 namespace HatTrick.DbEx.Sql.Configuration
@@ -70,7 +71,11 @@ namespace HatTrick.DbEx.Sql.Configuration
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            services.TryAddSingleton<IEntityFactory<TDatabase>>(sp => new DefaultEntityFactoryWithFallbackConstruction<TDatabase>(t => factory(sp, t)));
+            services.TryAddSingleton<IEntityFactory<TDatabase>>(sp => new DefaultEntityFactoryWithFallbackConstruction<TDatabase>(
+                    sp.GetRequiredService<ILoggerFactory>().CreateLogger<DefaultEntityFactoryWithFallbackConstruction<TDatabase>>(), 
+                    t => factory(sp, t)
+                )
+            );
             return caller;
         }
 
@@ -80,7 +85,11 @@ namespace HatTrick.DbEx.Sql.Configuration
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            services.TryAddSingleton<IEntityFactory<TDatabase>>(sp => new DefaultEntityFactoryWithFallbackConstruction<TDatabase>(t => factory(sp, t)));
+            services.TryAddSingleton<IEntityFactory<TDatabase>>(sp => new DefaultEntityFactoryWithFallbackConstruction<TDatabase>(
+                    sp.GetRequiredService<ILoggerFactory>().CreateLogger<DefaultEntityFactoryWithFallbackConstruction<TDatabase>>(),
+                    t => factory(sp, t)
+                )
+            );
             configureEntityTypes.Invoke(new EntityFactoryConfigurationBuilder<TDatabase>(caller, services));
             return caller;
         }

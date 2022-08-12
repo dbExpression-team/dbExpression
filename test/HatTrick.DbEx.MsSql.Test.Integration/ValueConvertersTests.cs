@@ -21,7 +21,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             bool toFired = false;
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
                     x.ForEnumType<PaymentSourceType>().Use(
                         to =>
                         {
@@ -74,7 +74,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //given
             bool toFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
                     x.ForEnumType<PaymentSourceType>().Use(
                         to =>
                         {
@@ -106,7 +106,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             bool toFired = false;
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
                     x.ForEnumType<PaymentMethodType>().Use(
                         to =>
                         {
@@ -160,7 +160,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //given
             bool toFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
                     x.ForEnumType<PaymentMethodType>().Use(
                         to =>
                         {
@@ -191,7 +191,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             bool toFired = false;
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
                     x.ForValueType<DateTime?>().Use(
                         to =>
                         {
@@ -239,7 +239,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             bool toFired = false;
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
                     x.ForValueType<DateTimeOffset>().Use(
                         to =>
                         {
@@ -285,7 +285,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             DateTime expected = DateTime.UtcNow;
             bool toFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
                     x.ForValueType<DateTimeOffset>().Use(
                         to =>
                         {
@@ -314,7 +314,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //given
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
                     x.ForEnumType<PaymentMethodType>().Use(
                         to => throw new NotImplementedException(),
                         from =>
@@ -350,7 +350,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             bool toFired = false;
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
                     x.ForEnumType<PaymentMethodType>().Use(
                         to =>
                         {
@@ -393,7 +393,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //given
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
                     x.ForEnumType<PaymentSourceType>().Use(
                         to => throw new NotImplementedException(),
                         from =>
@@ -429,7 +429,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             bool toFired = false;
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
                     x.ForEnumType<PaymentSourceType>().Use(
                         to =>
                         {
@@ -474,7 +474,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             bool toFired = false;
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
                     x.ForValueType<DateTime?>().Use(
                         to =>
                         {
@@ -514,7 +514,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             bool toFired = false;
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
                     x.ForValueType<DateTime?>().Use(
                         to =>
                         {
@@ -553,7 +553,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             DateTimeOffset expected = DateTimeOffset.UtcNow;
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
                     x.ForValueType<DateTimeOffset>().Use(
                         to => throw new NotImplementedException(),
                         from =>
@@ -588,7 +588,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             bool toFired = false;
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
                     x.ForValueType<DateTime?>().Use(
                         to =>
                         {
@@ -628,7 +628,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             bool toFired = false;
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
                     x.ForValueType<DateTimeOffset>().Use(
                         to =>
                         {
@@ -668,7 +668,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             bool toFired = false;
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
                     x.ForValueType<DateTime?>().Use(
                         to =>
                         {
@@ -710,7 +710,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             DateTimeOffset expected = DateTimeOffset.UtcNow;
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
                     x.ForValueType<DateTimeOffset>().Use(
                         to => throw new NotImplementedException(),
                         from =>
@@ -748,7 +748,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             bool toFired = false;
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
                     x.ForValueType<DateTime?>().Use(
                         to =>
                         {
@@ -791,7 +791,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             bool toFired = false;
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
                     x.ForValueType<DateTimeOffset>().Use(
                         to =>
                         {
@@ -834,7 +834,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             bool toFired = false;
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
                     x.ForValueType<DateTime?>().Use(
                         to =>
                         {
@@ -877,7 +877,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             bool toFired = false;
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
                     x.ForValueType<DateTime?>().Use(
                         to =>
                         {
@@ -916,7 +916,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             DateTimeOffset expected = DateTimeOffset.UtcNow;
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
                     x.ForValueType<DateTimeOffset>().Use(
                         to => throw new NotImplementedException(),
                         from =>
@@ -951,7 +951,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             bool toFired = false;
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
                     x.ForValueType<DateTime?>().Use(
                         to =>
                         {
@@ -991,7 +991,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             bool toFired = false;
             bool fromFired = false;
 
-            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
                     x.ForValueType<DateTimeOffset>().Use(
                         to =>
                         {
@@ -1027,7 +1027,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_select_purchases_using_in_clause_of_list_of_enums_mapped_to_strings_result_in_correct_output(int version, int expectedCount = 9)
         {
             //given
-            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
                     x.ForEnumType<PaymentMethodType>().PersistAsString()
                 )
             );
@@ -1051,7 +1051,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //given
             bool toFired = false;
             bool fromFired = false;
-            ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
                     x.ForEnumType<PaymentMethodType>().Use(
                         to => {
                             toFired = true;
@@ -1092,7 +1092,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_select_product_and_deserialize_description_result_in_correct_output(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             //when
             var persisted = db.SelectOne<Product>()
@@ -1110,7 +1110,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_insert_a_product_and_serialize_description_successfully(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var product = new Product
             {
@@ -1141,7 +1141,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_update_a_product_and_json_serialize_description_successfully(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             //when
             db.Update(

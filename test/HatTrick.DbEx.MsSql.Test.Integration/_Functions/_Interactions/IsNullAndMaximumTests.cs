@@ -18,7 +18,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_isnull_of_credit_limit_and_max_of_quantity_succeed(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.IsNull(dbo.Person.CreditLimit, db.fx.Max(dbo.PurchaseLine.Quantity))
@@ -39,7 +39,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_max_of_isnull_of_credit_limit_and_quantity_succeed(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Max(db.fx.IsNull(dbo.Person.CreditLimit, dbo.PurchaseLine.Quantity))
@@ -61,7 +61,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_isnull_of_ship_date_and_max_of_expected_delivery_date_succeed(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.IsNull(dbo.Purchase.ShipDate, db.fx.Max(dbo.Purchase.ExpectedDeliveryDate))
@@ -81,7 +81,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_max_of_isnull_of_ship_date_and_expected_delivery_date_succeed(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Max(db.fx.IsNull(dbo.Purchase.ShipDate, dbo.Purchase.ExpectedDeliveryDate))

@@ -16,7 +16,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_cast_of_maximum_of_quantity_to_varchar_succeed(int version, string expected = "3")
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Cast(db.fx.Max(dbo.PurchaseLine.Quantity)).AsVarChar(50)
@@ -35,7 +35,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             = 2)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Max(db.fx.Cast(dbo.Person.GenderType).AsInt())

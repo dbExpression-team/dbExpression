@@ -17,7 +17,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_static_value_character_count_for_left_of_isnull_of_address_line2_succeed(int version, int characterCount = 3, string expected = "FOO")
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Left(db.fx.IsNull(dbo.Address.Line2, expected), characterCount)
@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_static_value_character_count_for_left_of_isnull_of_address_line1_succeed(int version, int characterCount = 3)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.IsNull(dbo.Address.Line2, db.fx.Left(dbo.Address.Line1, characterCount))
@@ -55,7 +55,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_left_of_isnull_of_address_line2_and_static_value_character_count_for_succeed(int version, int characterCount = 3, string expected = "FOO")
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Left(db.fx.IsNull(dbo.Address.Line1, expected), characterCount)

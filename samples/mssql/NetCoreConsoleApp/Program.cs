@@ -5,6 +5,11 @@ using SimpleConsole.Data;
 using SimpleConsole.DataService;
 using System;
 using System.Diagnostics;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
+using Microsoft.Extensions.Options;
+using HatTrick.DbEx.Sql;
 
 namespace NetCoreConsoleApp
 {
@@ -50,21 +55,32 @@ namespace NetCoreConsoleApp
                         .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
                         .Build();
 
-            dbExpression.Initialize(
-                dbex => {
+            var services = new ServiceCollection();
+            services.AddLogging(builder =>
+            {
+                builder.ClearProviders();
+                builder.AddConsole();
+                builder.SetMinimumLevel(LogLevel.Debug);
+            });
+            services.AddDbExpression(dbex =>
+            {
 
-                    dbex.AddMsSql2019Database<SimpleConsoleDb>(
-                        database => {
-                            database.ConnectionString.Use(config.GetConnectionString("dbex_mssql_test"));
-                            database.SqlStatements.Assembly.ConfigureOutputSettings(x => x.PrependCommaOnSelectClause = false);
-                            database.Conversions.ForTypes(x =>
-                                x.ForEnumType<PaymentMethodType>().PersistAsString()
-                                 .ForEnumType<PaymentSourceType>().PersistAsString()
-                            );
-                        }
-                    );
+                dbex.AddMsSql2019Database<SimpleConsoleDb>(
+                    database =>
+                    {
+                        database.ConnectionString.Use(config.GetConnectionString("dbex_mssql_test"));
+                        database.SqlStatements.Assembly.ConfigureOutputSettings(x => x.PrependCommaOnSelectClause = false);
+                        database.Conversions.ForTypes(x =>
+                            x.ForEnumType<PaymentMethodType>().PersistAsString()
+                             .ForEnumType<PaymentSourceType>().PersistAsString()
+                        );
+                        database.Logging.ConfigureLoggingSettings(l => l.LogParameterValues = false);
+                    }
+                );
 
-                });
+            });
+            var provider = services.BuildServiceProvider();
+            provider.UseStaticRuntimeFor<SimpleConsoleDb>();
         }
         #endregion
 

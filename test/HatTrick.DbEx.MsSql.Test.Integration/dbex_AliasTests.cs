@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_select_many_dynamic_with_aliased_subquery_result_in_correct_output(int version, int expectedCount = 3)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             int year = 2019;
             int purchaseCount = 3;  //any person making 3 or more purchases (in a calendar year are considered VIP customers
@@ -75,7 +75,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_select_many_dynamic_with_adding_PersonId_to_aliased_PurchaseCount_from_aliased_subquery_result_in_correct_output(int version, int expectedCount = 3)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             int year = 2019;
             int purchaseCount = 3;  //any person making 3 or more purchases (in a calendar year are considered VIP customers
@@ -124,7 +124,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_select_many_dynamic_with_adding_PersonYear_to_aliased_PurchaseCount_from_aliased_subquery_result_in_correct_output(int version, int expectedCount = 3)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             int year = 2019;
             int purchaseCount = 3;  //any person making 3 or more purchases (in a calendar year are considered VIP customers
@@ -172,7 +172,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_select_many_dynamic_with_multiple_subqueries_and_functions_result_in_correct_output(int version, int expectedCount = 50)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             int year = 2017;
             int purchaseCount = 3;  //any person making 3 or more purchases (in a calendar year are considered VIP customers
@@ -233,7 +233,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_aliasing_an_alias_result_in_correct_output(int version, int expected = 2)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             dynamic? vipStatistics = db.SelectOne(
                 dbo.Person.Id.As("PersonId"),
@@ -264,7 +264,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_aliased_subquery_result_in_correct_counts_for_dynamic_return(int version, int personCount = 50, int addressCount = 17)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             IList<dynamic> persons = db.SelectMany(
                 dbo.Person.Id,
@@ -295,7 +295,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_aliased_subquery_result_in_correct_counts_for_value_return(int version, int personCount = 50, int addressCount = 17)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             IList<string?> persons = db.SelectMany(
                 dbex.Alias<string?>("person_address", "Line1").As("Foo")
@@ -325,7 +325,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_aliased_subquery_result_in_correct_counts_for_entity_return(int version, int personCount = 50)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             IList<Person> persons = db.SelectMany<Person>()
                 .From(dbo.Person)
@@ -351,7 +351,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_aliased_subqueries_result_in_correct_counts_for_coalesced_value_return(int version, int count = 50)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             int purchaseCount = 3;  //any person making 3 or more purchases (in a calendar year are considered VIP customers
 
@@ -404,7 +404,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_aliased_subqueries_result_in_correct_counts_for_coalesced_value_using_custom_mapping_in_execute(int version, int count = 50)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             int purchaseCount = 3;  //any person making 3 or more purchases (in a calendar year are considered VIP customers
 
@@ -464,7 +464,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_alias_result_in_correct_conversion_for_nullable_enum_using_custom_mapping(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             dynamic? values = db.SelectOne(
                 dbo.Person.Id,
@@ -492,7 +492,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_alias_result_in_correct_conversion_for_nullable_enum_using_standard_mapping(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             dynamic? values = db.SelectOne(
                 dbo.Person.Id,
@@ -513,7 +513,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_alias_result_in_correct_conversion_for_nullable_int_using_standard_mapping(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             //when
             int? value = db.SelectOne(
@@ -533,7 +533,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_alias_result_in_correct_conversion_for_int_using_standard_mapping(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             //when
             int value = db.SelectOne(
@@ -553,7 +553,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_alias_of_subquery_field_result_in_correct_conversion_for_fields_including_an_enum_and_using_delegate_mapping(int version, int expected = 52)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             //when
             var values = db.SelectMany(
@@ -592,7 +592,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_use_alias_of_subquery_string_field(int version, int expected = 9)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             //when
             IList<dynamic> values = db.SelectMany(

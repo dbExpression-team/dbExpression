@@ -17,7 +17,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_count_of_dateadd_of_purchase_date_succeed(int version, int expected = 15)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Count(db.fx.DateAdd(DateParts.Hour, 1, dbo.Purchase.PurchaseDate))
@@ -35,7 +35,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_count_of_dateadd_of_ship_date_succeed(int version, int expected = 12)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Count(db.fx.DateAdd(DateParts.Hour, 1, dbo.Purchase.ShipDate))

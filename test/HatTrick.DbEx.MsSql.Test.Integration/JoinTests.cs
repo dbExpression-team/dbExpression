@@ -18,7 +18,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_persons_with_address_and_address_id_constrained_to_value_in_join_condition_succeed(int version, int expected = 14)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person)
@@ -37,7 +37,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_persons_joined_back_to_persons_on_firstname_and_lastname_succeed(int version, int expected = 50)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(dbex.Alias<int>("joined", "Id"))
                 .From(dbo.Person)
@@ -56,7 +56,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_persons_joined_back_to_persons_on_firstname_and_lastname_with_where_clause_succeed(int version, string firstName = "Kyle", int expected = 1)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(dbex.Alias<int>("joined", "Id"))
                 .From(dbo.Person)
@@ -78,7 +78,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_persons_joined_to_personaddress_joined_to_address_with_in_condition_on_addresstype_and_where_clause_succeed(int version, string firstName = "Kyle", int expectedCount = 1, int expectedId = 3)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(dbo.Address.Id)
                 .Distinct()
@@ -101,7 +101,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_persons_cross_joined_to_personaddress_with_where_clause_succeed(int version, string firstName = "Kyle", int expectedCount = 52)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     dbex.SelectAllFor(dbo.Person, "Person").Concat(dbex.SelectAllFor(dbo.PersonAddress, "PersonAddress"))

@@ -18,7 +18,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_select_person_entity_and_map_using_default_mapping_execute_successfully(int version, int expected = 50)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -35,7 +35,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_use_select_all_for_person_entity_and_map_using_default_mapping_execute_successfully(int version, int expected = 50)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
             var persons = new List<Person>();
             var map = dbex.GetDefaultMappingFor(dbo.Person);
 
@@ -62,7 +62,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_use_select_all_for_person_entity_and_additional_field_and_map_using_default_mapping_execute_successfully(int version, int expected = 52)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
             var persons = new List<(Person, int)>();
             var map = dbex.GetDefaultMappingFor(dbo.Person);
 
@@ -92,7 +92,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_use_select_all_for_person_and_address_entity_and_map_using_default_mappings_execute_successfully(int version, int expected = 52)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
             var persons = new List<(Person, Address)>();
             var personMap = dbex.GetDefaultMappingFor(dbo.Person);
             var addressMap = dbex.GetDefaultMappingFor(dbo.Address);

@@ -18,7 +18,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_floor_total_purchase_amount_succeed(int version, double expected = 7.00)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Floor(dbo.Purchase.TotalPurchaseAmount).As("min_amount")
@@ -37,7 +37,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_order_by_floor_of_total_purchase_amount_ascending_succeed(int version, double expected = 5.00)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Floor(dbo.Purchase.TotalPurchaseAmount)
@@ -57,7 +57,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_order_by_floor_of_total_purchase_amount_descending_succeed(int version, double expected = 55.00)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Floor(dbo.Purchase.TotalPurchaseAmount)
@@ -77,7 +77,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_order_by_floor_of_total_purchase_amount_ascending_and_aliasing_succeed(int version, double expected = 5.00)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Floor(dbo.Purchase.TotalPurchaseAmount).As("alias")
@@ -97,7 +97,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_order_by_floor_of_total_purchase_amount_descending_and_aliasing_succeed(int version, double expected = 55.00)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Floor(dbo.Purchase.TotalPurchaseAmount).As("alias")
@@ -117,7 +117,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_floor_of_aliased_field_succeed(int version, decimal expected = 7m)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Floor(("lines", "PurchasePrice")).As("alias")

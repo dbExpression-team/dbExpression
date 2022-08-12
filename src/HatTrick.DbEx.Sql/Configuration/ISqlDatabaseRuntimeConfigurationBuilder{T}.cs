@@ -17,7 +17,6 @@
 #endregion
 
 using HatTrick.DbEx.Sql.Expression;
-using System;
 
 namespace HatTrick.DbEx.Sql.Configuration
 {
@@ -54,5 +53,10 @@ namespace HatTrick.DbEx.Sql.Configuration
         /// Configuration for the services used for the creation of entities prior to mapping from data returned from the database.  
         /// </summary>
         IEntitiesConfigurationBuilderGrouping<TDatabase> Entities { get; }
+
+        /// <summary>
+        /// Configuration logging settings.  
+        /// </summary>
+        ILoggingOptionsBuilder<TDatabase> Logging { get; }
     }
 }

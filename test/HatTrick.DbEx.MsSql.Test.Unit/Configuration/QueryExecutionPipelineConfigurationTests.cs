@@ -21,14 +21,14 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
     {
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void A_query_expression_factory_registered_via_service_provider_should_resolve_the_correct_statement_builder(int version)
+        public void A_query_expression_factory_registered_via_service_serviceProvider_should_resolve_the_correct_statement_builder(int version)
         {
             //given
             var factory = Substitute.For<IQueryExecutionPipelineFactory<MsSqlDb>>();
-            var provider = ConfigureForMsSqlVersion(version, configure: c => c.SqlStatements.QueryExecution.Pipeline.Use(sp => factory));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure: c => c.SqlStatements.QueryExecution.Pipeline.Use(sp => factory));
 
             //when
-            var resolved = provider.GetService<IQueryExecutionPipelineFactory<MsSqlDb>>();
+            var resolved = serviceProvider.GetService<IQueryExecutionPipelineFactory<MsSqlDb>>();
 
             //then
             resolved.Should().Be(factory);
@@ -39,10 +39,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void A_query_expression_factory_registered_via_generic_should_resolve_the_correct_statement_builder(int version)
         {
             //given
-            var provider = ConfigureForMsSqlVersion(version, configure: c => c.SqlStatements.QueryExecution.Pipeline.Use<NoOpQueryExecutionPipelineFactory>());
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure: c => c.SqlStatements.QueryExecution.Pipeline.Use<NoOpQueryExecutionPipelineFactory>());
 
             //when
-            var resolved = provider.GetService<IQueryExecutionPipelineFactory<MsSqlDb>>();
+            var resolved = serviceProvider.GetService<IQueryExecutionPipelineFactory<MsSqlDb>>();
 
             //then
             resolved.Should().NotBeNull().And.BeOfType<NoOpQueryExecutionPipelineFactory>();
@@ -54,10 +54,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         {
             //given
             var builder = Substitute.For<IQueryExecutionPipelineFactory<MsSqlDb>>();
-            var provider = ConfigureForMsSqlVersion(version, configure: c => c.SqlStatements.QueryExecution.Pipeline.Use(() => builder));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure: c => c.SqlStatements.QueryExecution.Pipeline.Use(() => builder));
 
             //when
-            var resolved = provider.GetService<IQueryExecutionPipelineFactory<MsSqlDb>>();
+            var resolved = serviceProvider.GetService<IQueryExecutionPipelineFactory<MsSqlDb>>();
 
             //then
             resolved.Should().Be(builder);
@@ -66,14 +66,14 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Query_execution_pipeline_resolved_from_service_provider_should_be_transient(int version)
+        public void Query_execution_pipeline_resolved_from_service_serviceProvider_should_be_transient(int version)
         {
             //given
-            var provider = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             //when
-            var a1 = provider.GetService<ISelectQueryExecutionPipeline<MsSqlDb>>();
-            var a2 = provider.GetService<ISelectQueryExecutionPipeline<MsSqlDb>>();
+            var a1 = serviceProvider.GetService<ISelectQueryExecutionPipeline<MsSqlDb>>();
+            var a2 = serviceProvider.GetService<ISelectQueryExecutionPipeline<MsSqlDb>>();
 
             //then
             a1.Should().NotBe(a2);
@@ -84,11 +84,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Default_registration_of_query_execution_pipeline_should_resolve_singletons(int version)
         {
             //given
-            var provider = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             //when
-            var a1 = provider.GetRequiredService<IQueryExecutionPipelineFactory<MsSqlDb>>();
-            var a2 = provider.GetRequiredService<IQueryExecutionPipelineFactory<MsSqlDb>>();
+            var a1 = serviceProvider.GetRequiredService<IQueryExecutionPipelineFactory<MsSqlDb>>();
+            var a2 = serviceProvider.GetRequiredService<IQueryExecutionPipelineFactory<MsSqlDb>>();
 
             //then
             a1.Should().Be(a2);
@@ -99,11 +99,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Registration_of_query_execution_pipeline_via_delegate_should_resolve_singletons(int version)
         {
             //given
-            var provider = ConfigureForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Pipeline.Use<NoOpQueryExecutionPipelineFactory>());
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Pipeline.Use<NoOpQueryExecutionPipelineFactory>());
 
             //when
-            var a1 = provider.GetRequiredService<IQueryExecutionPipelineFactory<MsSqlDb>>();
-            var a2 = provider.GetRequiredService<IQueryExecutionPipelineFactory<MsSqlDb>>();
+            var a1 = serviceProvider.GetRequiredService<IQueryExecutionPipelineFactory<MsSqlDb>>();
+            var a2 = serviceProvider.GetRequiredService<IQueryExecutionPipelineFactory<MsSqlDb>>();
 
             //then
             a1.Should().Be(a2);
@@ -111,14 +111,14 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Registration_of_query_execution_pipeline_via_service_provider_should_resolve_singletons(int version)
+        public void Registration_of_query_execution_pipeline_via_service_serviceProvider_should_resolve_singletons(int version)
         {
             //given
-            var provider = ConfigureForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Pipeline.Use(sp => Substitute.For<IQueryExecutionPipelineFactory<MsSqlDb>>()));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Pipeline.Use(sp => Substitute.For<IQueryExecutionPipelineFactory<MsSqlDb>>()));
 
             //when
-            var a1 = provider.GetRequiredService<IQueryExecutionPipelineFactory<MsSqlDb>>();
-            var a2 = provider.GetRequiredService<IQueryExecutionPipelineFactory<MsSqlDb>>();
+            var a1 = serviceProvider.GetRequiredService<IQueryExecutionPipelineFactory<MsSqlDb>>();
+            var a2 = serviceProvider.GetRequiredService<IQueryExecutionPipelineFactory<MsSqlDb>>();
 
             //then
             a1.Should().Be(a2);
@@ -126,16 +126,16 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Registration_of_query_execution_pipeline_via_service_provider_and_override_via_service_provider_should_resolve_singletons_and_same_instance(int version)
+        public void Registration_of_query_execution_pipeline_via_service_serviceProvider_and_override_via_service_serviceProvider_should_resolve_singletons_and_same_instance(int version)
         {
             //given
-            IServiceProvider? provider = null;
-            var factory = new DelegateQueryExecutionPipelineFactory<MsSqlDb>(t => provider!.GetRequiredService<ISelectQueryExecutionPipeline<MsSqlDb>>());
-            provider = ConfigureForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Pipeline.Use(sp => factory, c => c.ForSelect().Use(sp => Substitute.For<ISelectQueryExecutionPipeline<MsSqlDb>>())));
+            IServiceProvider? serviceProvider = null;
+            var factory = new DelegateQueryExecutionPipelineFactory<MsSqlDb>(t => serviceProvider!.GetRequiredService<ISelectQueryExecutionPipeline<MsSqlDb>>());
+            serviceProvider = ConfigureForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Pipeline.Use(sp => factory, c => c.ForSelect().Use(sp => Substitute.For<ISelectQueryExecutionPipeline<MsSqlDb>>()))).serviceProvider;
 
             //when
-            var a1 = provider.GetRequiredService<ISelectQueryExecutionPipeline<MsSqlDb>>();
-            var a2 = provider.GetRequiredService<ISelectQueryExecutionPipeline<MsSqlDb>>();
+            var a1 = serviceProvider.GetRequiredService<ISelectQueryExecutionPipeline<MsSqlDb>>();
+            var a2 = serviceProvider.GetRequiredService<ISelectQueryExecutionPipeline<MsSqlDb>>();
 
             //then
             a1.Should().NotBe(a2);
@@ -143,16 +143,16 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Registration_of_query_execution_pipeline_via_service_provider_and_override_via_delegate_should_resolve_singletons_and_same_instance(int version)
+        public void Registration_of_query_execution_pipeline_via_service_serviceProvider_and_override_via_delegate_should_resolve_singletons_and_same_instance(int version)
         {
             //given
-            IServiceProvider? provider = null;
-            var factory = new DelegateQueryExecutionPipelineFactory<MsSqlDb>(t => provider!.GetRequiredService<ISelectQueryExecutionPipeline<MsSqlDb>>());
-            provider = ConfigureForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Pipeline.Use(sp => factory, c => c.ForSelect().Use(() => Substitute.For<ISelectQueryExecutionPipeline<MsSqlDb>>())));
+            IServiceProvider? serviceProvider = null;
+            var factory = new DelegateQueryExecutionPipelineFactory<MsSqlDb>(t => serviceProvider!.GetRequiredService<ISelectQueryExecutionPipeline<MsSqlDb>>());
+            serviceProvider = ConfigureForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Pipeline.Use(sp => factory, c => c.ForSelect().Use(() => Substitute.For<ISelectQueryExecutionPipeline<MsSqlDb>>()))).serviceProvider;
 
             //when
-            var a1 = provider.GetRequiredService<ISelectQueryExecutionPipeline<MsSqlDb>>();
-            var a2 = provider.GetRequiredService<ISelectQueryExecutionPipeline<MsSqlDb>>();
+            var a1 = serviceProvider.GetRequiredService<ISelectQueryExecutionPipeline<MsSqlDb>>();
+            var a2 = serviceProvider.GetRequiredService<ISelectQueryExecutionPipeline<MsSqlDb>>();
 
             //then
             a1.Should().NotBe(a2);
@@ -160,16 +160,16 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Registration_of_query_execution_pipeline_via_service_provider_and_override_via_generic_should_resolve_singletons_and_same_instance(int version)
+        public void Registration_of_query_execution_pipeline_via_service_serviceProvider_and_override_via_generic_should_resolve_singletons_and_same_instance(int version)
         {
             //given
-            IServiceProvider? provider = null;
-            var factory = new DelegateQueryExecutionPipelineFactory<MsSqlDb>(t => provider!.GetRequiredService<ISelectQueryExecutionPipeline<MsSqlDb>>());
-            provider = ConfigureForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Pipeline.Use(sp => factory, c => c.ForSelect().Use<SelectQueryExpressionExecutionPipeline<MsSqlDb>>()));
+            IServiceProvider? serviceProvider = null;
+            var factory = new DelegateQueryExecutionPipelineFactory<MsSqlDb>(t => serviceProvider!.GetRequiredService<ISelectQueryExecutionPipeline<MsSqlDb>>());
+            serviceProvider = ConfigureForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Pipeline.Use(sp => factory, c => c.ForSelect().Use<SelectQueryExpressionExecutionPipeline<MsSqlDb>>())).serviceProvider;
 
             //when
-            var a1 = provider.GetRequiredService<ISelectQueryExecutionPipeline<MsSqlDb>>();
-            var a2 = provider.GetRequiredService<ISelectQueryExecutionPipeline<MsSqlDb>>();
+            var a1 = serviceProvider.GetRequiredService<ISelectQueryExecutionPipeline<MsSqlDb>>();
+            var a2 = serviceProvider.GetRequiredService<ISelectQueryExecutionPipeline<MsSqlDb>>();
 
             //then
             a1.Should().NotBe(a2);
@@ -177,16 +177,16 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Registration_of_query_execution_pipeline_via_delegate_and_override_via_service_provider_should_resolve_singletons_and_same_instance(int version)
+        public void Registration_of_query_execution_pipeline_via_delegate_and_override_via_service_serviceProvider_should_resolve_singletons_and_same_instance(int version)
         {
             //given
-            IServiceProvider? provider = null;
-            var factory = new DelegateQueryExecutionPipelineFactory<MsSqlDb>(t => provider!.GetRequiredService<ISelectQueryExecutionPipeline<MsSqlDb>>());
-            provider = ConfigureForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Pipeline.Use(() => factory, c => c.ForSelect().Use(sp => Substitute.For<ISelectQueryExecutionPipeline<MsSqlDb>>())));
+            IServiceProvider? serviceProvider = null;
+            var factory = new DelegateQueryExecutionPipelineFactory<MsSqlDb>(t => serviceProvider!.GetRequiredService<ISelectQueryExecutionPipeline<MsSqlDb>>());
+            serviceProvider = ConfigureForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Pipeline.Use(() => factory, c => c.ForSelect().Use(sp => Substitute.For<ISelectQueryExecutionPipeline<MsSqlDb>>()))).serviceProvider;
 
             //when
-            var a1 = provider.GetRequiredService<ISelectQueryExecutionPipeline<MsSqlDb>>();
-            var a2 = provider.GetRequiredService<ISelectQueryExecutionPipeline<MsSqlDb>>();
+            var a1 = serviceProvider.GetRequiredService<ISelectQueryExecutionPipeline<MsSqlDb>>();
+            var a2 = serviceProvider.GetRequiredService<ISelectQueryExecutionPipeline<MsSqlDb>>();
 
             //then
             a1.Should().NotBe(a2);
@@ -197,13 +197,13 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Registration_of_query_execution_pipeline_via_delegate_and_override_via_delegate_should_resolve_singletons_and_same_instance(int version)
         {
             //given
-            IServiceProvider? provider = null;
-            var factory = new DelegateQueryExecutionPipelineFactory<MsSqlDb>(t => provider!.GetRequiredService<ISelectQueryExecutionPipeline<MsSqlDb>>());
-            provider = ConfigureForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Pipeline.Use(() => factory, c => c.ForSelect().Use(() => Substitute.For<ISelectQueryExecutionPipeline<MsSqlDb>>())));
+            IServiceProvider? serviceProvider = null;
+            var factory = new DelegateQueryExecutionPipelineFactory<MsSqlDb>(t => serviceProvider!.GetRequiredService<ISelectQueryExecutionPipeline<MsSqlDb>>());
+            serviceProvider = ConfigureForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Pipeline.Use(() => factory, c => c.ForSelect().Use(() => Substitute.For<ISelectQueryExecutionPipeline<MsSqlDb>>()))).serviceProvider;
 
             //when
-            var a1 = provider.GetRequiredService<ISelectQueryExecutionPipeline<MsSqlDb>>();
-            var a2 = provider.GetRequiredService<ISelectQueryExecutionPipeline<MsSqlDb>>();
+            var a1 = serviceProvider.GetRequiredService<ISelectQueryExecutionPipeline<MsSqlDb>>();
+            var a2 = serviceProvider.GetRequiredService<ISelectQueryExecutionPipeline<MsSqlDb>>();
 
             //then
             a1.Should().NotBe(a2);
@@ -214,13 +214,13 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Registration_of_query_execution_pipeline_via_delegate_and_override_via_generic_should_resolve_singletons_and_same_instance(int version)
         {
             //given
-            IServiceProvider? provider = null;
-            var factory = new DelegateQueryExecutionPipelineFactory<MsSqlDb>(t => provider!.GetRequiredService<ISelectQueryExecutionPipeline<MsSqlDb>>());
-            provider = ConfigureForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Pipeline.Use(() => factory, c => c.ForSelect().Use<SelectQueryExpressionExecutionPipeline<MsSqlDb>>()));
+            IServiceProvider? serviceProvider = null;
+            var factory = new DelegateQueryExecutionPipelineFactory<MsSqlDb>(t => serviceProvider!.GetRequiredService<ISelectQueryExecutionPipeline<MsSqlDb>>());
+            serviceProvider = ConfigureForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Pipeline.Use(() => factory, c => c.ForSelect().Use<SelectQueryExpressionExecutionPipeline<MsSqlDb>>())).serviceProvider;
 
             //when
-            var a1 = provider.GetRequiredService<ISelectQueryExecutionPipeline<MsSqlDb>>();
-            var a2 = provider.GetRequiredService<ISelectQueryExecutionPipeline<MsSqlDb>>();
+            var a1 = serviceProvider.GetRequiredService<ISelectQueryExecutionPipeline<MsSqlDb>>();
+            var a2 = serviceProvider.GetRequiredService<ISelectQueryExecutionPipeline<MsSqlDb>>();
 
             //then
             a1.Should().NotBe(a2);
@@ -231,11 +231,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Registering_statement_builders_via_a_delegate_should_resolve_singletons(int version)
         {
             //given
-            var provider = ConfigureForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Pipeline.Use(() => Substitute.For<IQueryExecutionPipelineFactory<MsSqlDb>>()));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Pipeline.Use(() => Substitute.For<IQueryExecutionPipelineFactory<MsSqlDb>>()));
 
             //when
-            var a1 = provider.GetRequiredService<IQueryExecutionPipelineFactory<MsSqlDb>>();
-            var a2 = provider.GetRequiredService<IQueryExecutionPipelineFactory<MsSqlDb>>();
+            var a1 = serviceProvider.GetRequiredService<IQueryExecutionPipelineFactory<MsSqlDb>>();
+            var a2 = serviceProvider.GetRequiredService<IQueryExecutionPipelineFactory<MsSqlDb>>();
 
             //then
             a1.Should().Be(a2);
@@ -246,11 +246,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Registering_statement_builders_via_instance_should_resolve_singletons(int version)
         {
             //given
-            var provider = ConfigureForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Pipeline.Use(new NoOpQueryExecutionPipelineFactory()));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Pipeline.Use(new NoOpQueryExecutionPipelineFactory()));
 
             //when
-            var a1 = provider.GetRequiredService<IQueryExecutionPipelineFactory<MsSqlDb>>();
-            var a2 = provider.GetRequiredService<IQueryExecutionPipelineFactory<MsSqlDb>>();
+            var a1 = serviceProvider.GetRequiredService<IQueryExecutionPipelineFactory<MsSqlDb>>();
+            var a2 = serviceProvider.GetRequiredService<IQueryExecutionPipelineFactory<MsSqlDb>>();
 
             //then
             a1.Should().Be(a2);

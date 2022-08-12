@@ -18,7 +18,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
         public void Does_a_single_where_predicate_result_in_valid_clause(int version)
         {
             //given
-            var provider = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             ITerminationExpressionBuilder<MsSqlDb> exp = 
 
@@ -27,8 +27,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
                     .Where(sec.Person.Id > 0);
 
             SelectQueryExpression queryExpression = ((exp as IQueryExpressionProvider)!.Expression as SelectQueryExpression)!;
-            ISqlStatementBuilder builder = provider.GetRequiredService<ISqlStatementBuilder<MsSqlDb>>();
-            AssemblyContext context = provider.GetRequiredService<AssemblyContext>();
+            ISqlStatementBuilder builder = serviceProvider.GetRequiredService<ISqlStatementBuilder<MsSqlDb>>();
+            AssemblyContext context = serviceProvider.GetRequiredService<AssemblyContext>();
             string whereClause;
 
             //when

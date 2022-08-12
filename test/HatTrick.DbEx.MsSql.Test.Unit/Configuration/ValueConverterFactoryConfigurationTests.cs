@@ -25,10 +25,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_of_a_converter_factory_using_generic_use_method_succeed(int version)
         {
             //given
-            var provider = ConfigureForMsSqlVersion(version, builder => builder.Conversions.Use<NoOpValueConverterFactory>());
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, builder => builder.Conversions.Use<NoOpValueConverterFactory>());
 
             //when
-            var matchingType = provider.GetService<IValueConverterFactory<MsSqlDb>>() is NoOpValueConverterFactory;
+            var matchingType = serviceProvider.GetService<IValueConverterFactory<MsSqlDb>>() is NoOpValueConverterFactory;
 
             //then
             matchingType.Should().BeTrue();
@@ -39,10 +39,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_of_a_converter_factory_using_instance_use_method_succeed(int version)
         {
             //given
-            var provider = ConfigureForMsSqlVersion(version, builder => builder.Conversions.Use(new NoOpValueConverterFactory()));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, builder => builder.Conversions.Use(new NoOpValueConverterFactory()));
 
             //when
-            var matchingType = provider.GetService<IValueConverterFactory<MsSqlDb>>() is NoOpValueConverterFactory;
+            var matchingType = serviceProvider.GetService<IValueConverterFactory<MsSqlDb>>() is NoOpValueConverterFactory;
 
             //then
             matchingType.Should().BeTrue();
@@ -53,10 +53,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_of_a_type_converter_override_using_generic_method_succeed(int version)
         {
             //given
-            var provider = ConfigureForMsSqlVersion(version, builder => builder.Conversions.ForTypes(x => x.ForValueType<int>().Use<NoOpValueConverter<int>>()));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, builder => builder.Conversions.ForTypes(x => x.ForValueType<int>().Use<NoOpValueConverter<int>>()));
 
             //when
-            var matchingType = provider.GetService<IValueConverterFactory<MsSqlDb>>() is not null;
+            var matchingType = serviceProvider.GetService<IValueConverterFactory<MsSqlDb>>() is not null;
 
             //then
             matchingType.Should().BeTrue();
@@ -67,8 +67,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_of_type_using_generic_method_return_correct_converter_of_a_type_converter_override(int version)
         {
             //given
-            var provider = ConfigureForMsSqlVersion(version, builder => builder.Conversions.ForTypes(x => x.ForValueType<int>().Use<NoOpValueConverter<int>>()));
-            var converter = provider.GetRequiredService<IValueConverterFactory<MsSqlDb>>().CreateConverter<int>();
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, builder => builder.Conversions.ForTypes(x => x.ForValueType<int>().Use<NoOpValueConverter<int>>()));
+            var converter = serviceProvider.GetRequiredService<IValueConverterFactory<MsSqlDb>>().CreateConverter<int>();
 
             //when & then
             Assert.Throws<NotImplementedException>(() => converter.ConvertFromDatabase(1));
@@ -80,10 +80,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_of_a_type_converter_override_using_instance_method_succeed(int version)
         {
             //given
-            var provider = ConfigureForMsSqlVersion(version, builder => builder.Conversions.ForTypes(x => x.ForValueType<int>().Use(new NoOpValueConverter<int>())));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, builder => builder.Conversions.ForTypes(x => x.ForValueType<int>().Use(new NoOpValueConverter<int>())));
 
             //when
-            var matchingType = provider.GetService<IValueConverterFactory<MsSqlDb>>() is not null;
+            var matchingType = serviceProvider.GetService<IValueConverterFactory<MsSqlDb>>() is not null;
 
             //then
             matchingType.Should().BeTrue();
@@ -94,8 +94,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_of_a_type_using_instance_method_return_correct_converter_of_a_type_converter_override(int version)
         {
             //given
-            var provider = ConfigureForMsSqlVersion(version, builder => builder.Conversions.ForTypes(x => x.ForValueType<int>().Use(new NoOpValueConverter<int>())));
-            var converter = provider.GetRequiredService<IValueConverterFactory<MsSqlDb>>().CreateConverter<int>();
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, builder => builder.Conversions.ForTypes(x => x.ForValueType<int>().Use(new NoOpValueConverter<int>())));
+            var converter = serviceProvider.GetRequiredService<IValueConverterFactory<MsSqlDb>>().CreateConverter<int>();
 
             //when & then
             Assert.Throws<NotImplementedException>(() => converter.ConvertFromDatabase(1));
@@ -107,10 +107,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_of_a_enum_type_converter_override_using_generic_method_succeed(int version)
         {
             //given
-            var provider = ConfigureForMsSqlVersion(version, builder => builder.Conversions.ForTypes(x => x.ForEnumType<AddressType>().Use<NoOpValueConverter<AddressType>>()));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, builder => builder.Conversions.ForTypes(x => x.ForEnumType<AddressType>().Use<NoOpValueConverter<AddressType>>()));
 
             //when
-            var matchingType = provider.GetService<IValueConverterFactory<MsSqlDb>>() is not null;
+            var matchingType = serviceProvider.GetService<IValueConverterFactory<MsSqlDb>>() is not null;
 
             //then
             matchingType.Should().BeTrue();
@@ -121,8 +121,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_of_enum_type_using_generic_method_return_correct_converter_of_a_type_converter_override(int version)
         {
             //given
-            var provider = ConfigureForMsSqlVersion(version, builder => builder.Conversions.ForTypes(x => x.ForEnumType<AddressType>().Use<NoOpValueConverter<AddressType>>()));
-            var converter = provider.GetRequiredService<IValueConverterFactory<MsSqlDb>>().CreateConverter<AddressType>();
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, builder => builder.Conversions.ForTypes(x => x.ForEnumType<AddressType>().Use<NoOpValueConverter<AddressType>>()));
+            var converter = serviceProvider.GetRequiredService<IValueConverterFactory<MsSqlDb>>().CreateConverter<AddressType>();
 
             //when & then
             Assert.Throws<NotImplementedException>(() => converter.ConvertFromDatabase(1));
@@ -134,8 +134,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_using_instance_for_enum_type_method_return_correct_converter_of_a_type_converter_override(int version)
         {
             //given
-            var provider = ConfigureForMsSqlVersion(version, builder => builder.Conversions.ForTypes(x => x.ForEnumType<AddressType>().Use(new NoOpValueConverter<AddressType>())));
-            var converter = provider.GetRequiredService<IValueConverterFactory<MsSqlDb>>().CreateConverter<AddressType>();
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, builder => builder.Conversions.ForTypes(x => x.ForEnumType<AddressType>().Use(new NoOpValueConverter<AddressType>())));
+            var converter = serviceProvider.GetRequiredService<IValueConverterFactory<MsSqlDb>>().CreateConverter<AddressType>();
 
             //when & then
             Assert.Throws<NotImplementedException>(() => converter.ConvertFromDatabase(1));
@@ -147,8 +147,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_using_delegates_for_enum_type_method_return_correct_converter_of_a_enum_type_converter_override(int version)
         {
             //given
-            var provider = ConfigureForMsSqlVersion(version, builder => builder.Conversions.ForTypes(x => x.ForEnumType<AddressType>().Use(a => throw new NotImplementedException(), a => AddressType.Mailing)));
-            var converter = provider.GetRequiredService<IValueConverterFactory<MsSqlDb>>().CreateConverter<AddressType>();
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, builder => builder.Conversions.ForTypes(x => x.ForEnumType<AddressType>().Use(a => throw new NotImplementedException(), a => AddressType.Mailing)));
+            var converter = serviceProvider.GetRequiredService<IValueConverterFactory<MsSqlDb>>().CreateConverter<AddressType>();
 
             //when
             var value = converter.ConvertFromDatabase(AddressType.Billing);
@@ -162,8 +162,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_value_converter_factory_produce_singletons(int version)
         {
             //given
-            var provider = ConfigureForMsSqlVersion(version);
-            var factory = provider.GetRequiredService<IValueConverterFactory<MsSqlDb>>();
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var factory = serviceProvider.GetRequiredService<IValueConverterFactory<MsSqlDb>>();
 
             //when
             var a1 = factory.CreateConverter<int>();
@@ -178,8 +178,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_enum_value_converter_factory_produce_singletons(int version)
         {
             //given
-            var provider = ConfigureForMsSqlVersion(version, builder => builder.Conversions.ForTypes(x => x.ForEnumType<AddressType>().Use(a => throw new NotImplementedException(), a => AddressType.Mailing)));
-            var factory = provider.GetRequiredService<IValueConverterFactory<MsSqlDb>>();
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, builder => builder.Conversions.ForTypes(x => x.ForEnumType<AddressType>().Use(a => throw new NotImplementedException(), a => AddressType.Mailing)));
+            var factory = serviceProvider.GetRequiredService<IValueConverterFactory<MsSqlDb>>();
 
             //when
             var a1 = factory.CreateConverter<AddressType>();
