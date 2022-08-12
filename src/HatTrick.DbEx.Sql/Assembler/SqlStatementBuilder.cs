@@ -39,7 +39,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         public ISqlParameterBuilder Parameters { get; private set; }
 
         public SqlStatementBuilder(
-            ILoggerFactory loggerFactory,
+            ILogger<SqlStatementBuilder<TDatabase>> logger,
             TDatabase database,
             AssemblyContext assemblyContext,
             IExpressionElementAppenderFactory<TDatabase> elementAppenderFactory,
@@ -48,7 +48,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             IValueConverterFactory<TDatabase> valueConverterFactory
         )
         {
-            this.logger = (loggerFactory ?? throw new ArgumentNullException(nameof(logger))).CreateLogger<SqlStatementBuilder<TDatabase>>();
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.database = database ?? throw new ArgumentNullException(nameof(database));
             this.assemblyContext = assemblyContext ?? throw new ArgumentNullException(nameof(assemblyContext));
             this.elementAppenderFactory = elementAppenderFactory ?? throw new ArgumentNullException(nameof(elementAppenderFactory));

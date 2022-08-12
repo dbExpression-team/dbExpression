@@ -261,6 +261,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
 
             //begin direct registrations
             services.TryAddSingleton<ILoggerFactory, NullLoggerFactory>();
+            services.TryAddSingleton(typeof(ILogger<>), typeof(NullLogger<>));
             services.TryAddSingleton<SqlStatementAssemblyOptions>();
             services.TryAddSingleton<LoggingOptions>();
 

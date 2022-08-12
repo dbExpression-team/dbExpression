@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Executor
     public class SqlStatementExecutor<TDatabase> : SqlStatementExecutor, ISqlStatementExecutor<TDatabase>
         where TDatabase : class, ISqlDatabaseRuntime
     {
-        public SqlStatementExecutor(ILoggerFactory loggerFactory, LoggingOptions loggingOptions) : base(loggerFactory, loggingOptions)
+        public SqlStatementExecutor(ILogger<SqlStatementExecutor<TDatabase>> logger, LoggingOptions loggingOptions) : base(logger, loggingOptions)
         {
 
         }
