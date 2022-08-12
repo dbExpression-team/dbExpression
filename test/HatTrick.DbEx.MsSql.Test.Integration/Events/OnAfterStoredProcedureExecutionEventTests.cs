@@ -18,7 +18,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var actionExecuted = false;
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterStoredProcedureExecution(_ => actionExecuted = true));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterStoredProcedureExecution(_ => actionExecuted = true));
 
             //when
             int value = db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input(1).GetValue<int>().Execute();
@@ -33,7 +33,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var actionExecuted = false;
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterStoredProcedureExecution(_ => actionExecuted = true));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterStoredProcedureExecution(_ => actionExecuted = true));
 
             //when
             IList<int> values = db.sp.dbo.SelectPersonId_As_ScalarValueList_With_Input(1).GetValues<int>().Execute();
@@ -48,7 +48,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var actionExecuted = false;
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterStoredProcedureExecution(_ => actionExecuted = true));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterStoredProcedureExecution(_ => actionExecuted = true));
 
             //when
             dynamic? value = db.sp.dbo.SelectPerson_As_Dynamic_With_Input(1).GetValue().Execute();
@@ -63,7 +63,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var actionExecuted = false;
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterStoredProcedureExecution(_ => actionExecuted = true));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterStoredProcedureExecution(_ => actionExecuted = true));
 
             //when
             IList<dynamic> values = db.sp.dbo.SelectPerson_As_DynamicList_With_Input(1).GetValues().Execute();
@@ -78,7 +78,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var actionExecuted = false;
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterStoredProcedureExecution(_ => actionExecuted = true));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterStoredProcedureExecution(_ => actionExecuted = true));
 
             //when
             db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input(1).MapValues(row => { }).Execute();
@@ -93,7 +93,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var actionExecuted = false;
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterStoredProcedureExecution(_ => actionExecuted = true));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterStoredProcedureExecution(_ => actionExecuted = true));
 
             //when
             int value = await db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input(1).GetValue<int>().ExecuteAsync();
@@ -108,7 +108,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var actionExecuted = false;
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterStoredProcedureExecution(_ => actionExecuted = true));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterStoredProcedureExecution(_ => actionExecuted = true));
 
             //when
             IList<int> values = await db.sp.dbo.SelectPersonId_As_ScalarValueList_With_Input(1).GetValues<int>().ExecuteAsync();
@@ -123,7 +123,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var actionExecuted = false;
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterStoredProcedureExecution(_ => actionExecuted = true));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterStoredProcedureExecution(_ => actionExecuted = true));
 
             //when
             dynamic? value = await db.sp.dbo.SelectPerson_As_Dynamic_With_Input(1).GetValue().ExecuteAsync();
@@ -138,7 +138,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var actionExecuted = false;
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterStoredProcedureExecution(_ => actionExecuted = true));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterStoredProcedureExecution(_ => actionExecuted = true));
 
             //when
             IList<dynamic> values = await db.sp.dbo.SelectPerson_As_DynamicList_With_Input(1).GetValues().ExecuteAsync();
@@ -154,7 +154,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
             //given
             var source = new CancellationTokenSource();
             var token = source.Token;
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterStoredProcedureExecution(_ => source.Cancel()));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterStoredProcedureExecution(_ => source.Cancel()));
             var task = db.sp.dbo.SelectPerson_As_DynamicList_With_Input(1).GetValues().ExecuteAsync(token);
 
             //when
@@ -170,7 +170,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var actionExecuted = false;
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterStoredProcedureExecution(_ => actionExecuted = true));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterStoredProcedureExecution(_ => actionExecuted = true));
 
             //when
             await db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input(1).MapValues(row => { }).ExecuteAsync();

@@ -17,8 +17,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Experimental.Batch
         public void Can_successfully_remove_person_using_batch(int version)
         {
             //given
-            var provider = ConfigureForMsSqlVersion(version, c => (c as MsSqlSqlDatabaseRuntimeConfigurationBuilder<MsSqlDb>)!.Services.AddTransient<IBatchBuilder<MsSqlDb>, BatchBuilder<MsSqlDb>>());
-            var builder = provider.GetRequiredService<IBatchBuilder<MsSqlDb>>();
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, c => (c as MsSqlSqlDatabaseRuntimeConfigurationBuilder<MsSqlDb>)!.Services.AddTransient<IBatchBuilder<MsSqlDb>, BatchBuilder<MsSqlDb>>());
+            var builder = serviceProvider.GetRequiredService<IBatchBuilder<MsSqlDb>>();
 
             var d1 = db.Delete().From(dbo.PurchaseLine).InnerJoin(dbo.Purchase).On(dbo.PurchaseLine.PurchaseId == dbo.Purchase.Id).Where(dbo.Purchase.PersonId == 3);
             var d2 = db.Delete().From(dbo.Purchase).Where(dbo.Purchase.PersonId == 3);
@@ -35,8 +35,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Experimental.Batch
         public async Task Can_successfully_remove_person_using_batch_async(int version)
         {
             //given
-            var provider = ConfigureForMsSqlVersion(version, c => (c as MsSqlSqlDatabaseRuntimeConfigurationBuilder<MsSqlDb>)!.Services.AddTransient<IBatchBuilder<MsSqlDb>, BatchBuilder<MsSqlDb>>());
-            var builder = provider.GetRequiredService<IBatchBuilder<MsSqlDb>>();
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, c => (c as MsSqlSqlDatabaseRuntimeConfigurationBuilder<MsSqlDb>)!.Services.AddTransient<IBatchBuilder<MsSqlDb>, BatchBuilder<MsSqlDb>>());
+            var builder = serviceProvider.GetRequiredService<IBatchBuilder<MsSqlDb>>();
 
             var d1 = db.Delete().From(dbo.PurchaseLine).InnerJoin(dbo.Purchase).On(dbo.PurchaseLine.PurchaseId == dbo.Purchase.Id).Where(dbo.Purchase.PersonId == 3);
             var d2 = db.Delete().From(dbo.Purchase).Where(dbo.Purchase.PersonId == 3);

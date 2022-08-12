@@ -18,7 +18,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Does_single_filter_construct_correctly(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             //when
             FilterExpression exp = sec.Person.Id > 0;
@@ -41,7 +41,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Does_single_filter_and_another_single_filter_construct_correctly(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             //when
             FilterExpressionSet exp = sec.Person.Id > 0 & sec.Person.SocialSecurityNumber == "XXX";
@@ -82,7 +82,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Do_three_filters_construct_correctly(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
             var now = DateTime.UtcNow;
 
             //when
@@ -136,7 +136,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Does_complex_filters_construct_correctly(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             //when
             FilterExpressionSet exp = dbo.Person.Id > 0 & dbo.Person.LastName == "Cartman" & dbo.Person.CreditLimit == 10000 & (dbo.Person.FirstName == "Kyle" | dbo.Person.LastName == "Stan") & dbo.Person.BirthDate <= DateTime.Today;
@@ -197,7 +197,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Does_complex_filters_construct_correctly_2(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             //when
             FilterExpressionSet exp = dbo.Person.Id > 0 & !(dbo.Person.LastName == "Cartman" | !(dbo.Person.CreditLimit == 10000)) & (dbo.Person.FirstName == "Kyle" | dbo.Person.LastName == "Stan") & !(dbo.Person.BirthDate <= DateTime.Today);

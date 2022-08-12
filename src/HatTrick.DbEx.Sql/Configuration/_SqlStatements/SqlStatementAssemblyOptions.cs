@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,15 +16,25 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace HatTrick.DbEx.Sql.Builder
+﻿namespace HatTrick.DbEx.Sql.Configuration
 {
-    public interface IBatchTerminationBuilder<TDatabase>
-        where TDatabase : class, ISqlDatabaseRuntime
+    public class SqlStatementAssemblyOptions
     {
-        IDictionary<int, object?> Execute();
-        Task<IDictionary<int, object?>> ExecuteAsync();
+        public bool IncludeSchemaName { get; set; } = true;
+        public bool PrependCommaOnSelectClause { get; set; } = false;
+        public Delimeters IdentifierDelimiter { get; set; } = new Delimeters('[', ']');
+        public char StatementTerminator { get; set; } = ';';
+
+        public class Delimeters
+        {
+            public char Begin { get; set; } = '[';
+            public char End { get; set; } = ']';
+
+            public Delimeters(char begin, char end)
+            {
+                Begin = begin;
+                End = end;
+            }
+        }
     }
 }

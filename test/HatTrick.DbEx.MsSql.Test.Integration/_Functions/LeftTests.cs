@@ -19,7 +19,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_left_of_person_first_name_succeed(int version, string firstName = "Kenny", int leftLength = 3)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Left(dbo.Person.FirstName, leftLength)
@@ -43,7 +43,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_left_of_address_line2_succeed(int version, int leftLength = 1)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Left(dbo.Address.Line2, leftLength)
@@ -63,7 +63,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_left_of_aliased_field_succeed(int version, int leftLength = 3, string expected = "100")
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Left(("_address", "Line1"), leftLength).As("address_line1")

@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
     {
         private readonly Func<Type,object> factory;
 
-        public DelegateQueryExecutionPipelineFactory(Func<Type, object> factory)
+        public DelegateQueryExecutionPipelineFactory(Func<Type, IQueryExecutionPipeline<TDatabase>> factory)
         {
             this.factory = factory ?? throw new ArgumentNullException(nameof(factory));
         }

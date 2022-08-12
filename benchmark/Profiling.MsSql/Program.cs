@@ -1,7 +1,8 @@
 ﻿using HatTrick.DbEx.MsSql.Configuration;
-using HatTrick.DbEx.Sql.Configuration;
+using HatTrick.DbEx.Sql;
 using JetBrains.Profiler.Api;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Profiling.MsSql.DataService;
 using Profiling.MsSql.Target;
 
@@ -14,7 +15,14 @@ string connectionString = configuration.GetConnectionString("hattrick_dbex_mssql
 
 using IProfileTarget sut = new SelectOneQueryExpressionProfileTarget();
 
-IServiceProvider provider = dbExpression.Initialize(dbex => dbex.AddMsSql2019Database<ProfilingDatabase>(db => { db.ConnectionString.Use(connectionString); sut.Configure(db); }));
+var services = new ServiceCollection();
+services.AddDbExpression(dbex =>
+{
+    dbex.AddMsSql2019Database<ProfilingDatabase>(db => { db.ConnectionString.Use(connectionString); sut.Configure(db); });
+});
+var provider = services.BuildServiceProvider();
+provider.UseStaticRuntimeFor<ProfilingDatabase>();
+
 
 MemoryProfiler.CollectAllocations(true);
 MeasureProfiler.StartCollectingData();

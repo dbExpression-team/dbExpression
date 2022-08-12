@@ -16,6 +16,7 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Concurrent;
 
@@ -25,13 +26,15 @@ namespace HatTrick.DbEx.Sql.Mapper
         where TDatabase : class, ISqlDatabaseRuntime
     {
         #region internals
+        private readonly ILogger<DefaultEntityFactoryWithFallbackConstruction<TDatabase>> logger;
         private readonly Func<Type, IDbEntity?> factory;
         private readonly ConcurrentDictionary<Type, Func<Type, IDbEntity?>> map = new();
         #endregion
 
         #region constructors
-        public DefaultEntityFactoryWithFallbackConstruction(Func<Type, IDbEntity?> factory)
+        public DefaultEntityFactoryWithFallbackConstruction(ILogger<DefaultEntityFactoryWithFallbackConstruction<TDatabase>> logger, Func<Type, IDbEntity?> factory)
         {
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.factory = factory ?? throw new ArgumentNullException(nameof(factory));
         }
         #endregion
@@ -43,9 +46,18 @@ namespace HatTrick.DbEx.Sql.Mapper
             if (map.ContainsKey(typeof(TEntity)))
                 return (map[typeof(TEntity)](typeof(TEntity)) as TEntity)!;
 
+            if (logger.IsEnabled(LogLevel.Trace))
+                logger.LogTrace("Entity factory for {entity} not found in internal cache.", typeof(TEntity));
+
             var entity = factory(typeof(TEntity));
             if (entity is not null)
                 return (entity as TEntity)!;
+
+            if (logger.IsEnabled(LogLevel.Trace))
+                logger.LogTrace("Entity factory for {entity} not found in provided factory.", typeof(TEntity));
+
+            if (logger.IsEnabled(LogLevel.Trace))
+                logger.LogTrace("Entity factory not found in internal cache or in provided factory, creating a factory for {entity} using public parameterless constructor.", typeof(TEntity));
 
             map.TryAdd(typeof(TEntity), t => new TEntity());
             return CreateEntity<TEntity>();

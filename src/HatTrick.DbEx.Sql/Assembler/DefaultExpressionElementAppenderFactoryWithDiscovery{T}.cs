@@ -17,6 +17,7 @@
 #endregion
 
 using HatTrick.DbEx.Sql.Expression;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Concurrent;
 
@@ -26,13 +27,15 @@ namespace HatTrick.DbEx.Sql.Assembler
         where TDatabase : class, ISqlDatabaseRuntime
     {
         #region internals
+        private readonly ILogger<DefaultExpressionElementAppenderFactoryWithDiscovery<TDatabase>> logger;
         private readonly Func<Type, IExpressionElementAppender?> overrides;
         private readonly ConcurrentDictionary<Type, Func<Type, IExpressionElementAppender?>> appenders = new();
         #endregion
 
         #region constructors
-        public DefaultExpressionElementAppenderFactoryWithDiscovery(Func<Type, IExpressionElementAppender> overrides)
+        public DefaultExpressionElementAppenderFactoryWithDiscovery(ILogger<DefaultExpressionElementAppenderFactoryWithDiscovery<TDatabase>> logger, Func<Type, IExpressionElementAppender> overrides)
         {
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.overrides = overrides ?? throw new ArgumentNullException(nameof(overrides));
         }
         #endregion

@@ -13,11 +13,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Assembly_context_resolved_from_service_provider_should_be_transient(int version)
         {
             //given
-            var provider = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             //when
-            var a1 = provider.GetRequiredService<AssemblyContext>();
-            var a2 = provider.GetRequiredService<AssemblyContext>();
+            var a1 = serviceProvider.GetRequiredService<AssemblyContext>();
+            var a2 = serviceProvider.GetRequiredService<AssemblyContext>();
 
             //then
             a1.Should().NotBe(a2);
@@ -36,10 +36,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_for_appender_output_settings_with_configuration_action_succeed(int version)
         {
             //given
-            var provider = ConfigureForMsSqlVersion(version, builder => builder.SqlStatements.Assembly.ConfigureOutputSettings(a => a.IdentifierDelimiter.Begin = '&'));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, builder => builder.SqlStatements.Assembly.ConfigureOutputSettings(a => a.IdentifierDelimiter.Begin = '&'));
 
             //when & then
-            provider.GetRequiredService<AssemblyContext>().IdentifierDelimiter.Begin.Should().Be('&');
+            serviceProvider.GetRequiredService<AssemblyContext>().IdentifierDelimiter.Begin.Should().Be('&');
         }
 
         [Theory]
@@ -47,11 +47,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Assembly_context_should_be_transient_when_resolved(int version)
         {
             //given
-            var provider = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             //when
-            var a1 = provider.GetRequiredService<AssemblyContext>();
-            var a2 = provider.GetRequiredService<AssemblyContext>();
+            var a1 = serviceProvider.GetRequiredService<AssemblyContext>();
+            var a2 = serviceProvider.GetRequiredService<AssemblyContext>();
 
             //then
             a1.Should().NotBe(a2);
@@ -62,11 +62,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Assembly_context_with_custom_configuration_should_be_transient_when_resolved(int version)
         {
             //given
-            var provider = ConfigureForMsSqlVersion(version, builder => builder.SqlStatements.Assembly.ConfigureOutputSettings(a => a.IdentifierDelimiter.Begin = '&'));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, builder => builder.SqlStatements.Assembly.ConfigureOutputSettings(a => a.IdentifierDelimiter.Begin = '&'));
 
             //when
-            var a1 = provider.GetRequiredService<AssemblyContext>();
-            var a2 = provider.GetRequiredService<AssemblyContext>();
+            var a1 = serviceProvider.GetRequiredService<AssemblyContext>();
+            var a2 = serviceProvider.GetRequiredService<AssemblyContext>();
 
             //then
             a1.Should().NotBe(a2);

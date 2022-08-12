@@ -27,10 +27,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         {
             //given
             var appenderFactory = Substitute.For<IExpressionElementAppenderFactory<MsSqlDb>>();
-            var provider = ConfigureForMsSqlVersion(version, c => c.SqlStatements.Assembly.ElementAppender.Use(appenderFactory));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, c => c.SqlStatements.Assembly.ElementAppender.Use(appenderFactory));
 
             //when
-            var factory = provider.GetService<IExpressionElementAppenderFactory<MsSqlDb>>();
+            var factory = serviceProvider.GetService<IExpressionElementAppenderFactory<MsSqlDb>>();
 
             //then
             factory.Should().Be(appenderFactory);
@@ -41,10 +41,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_of_a_default_element_appender_factory_resolve_to_the_correct_type(int version)
         {
             //given
-            var provider = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             //when
-            var resolved = provider.GetService<IExpressionElementAppenderFactory<MsSqlDb>>();
+            var resolved = serviceProvider.GetService<IExpressionElementAppenderFactory<MsSqlDb>>();
 
             //then
             resolved.Should().BeOfType<DefaultExpressionElementAppenderFactoryWithDiscovery<MsSqlDb>>();
@@ -55,10 +55,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void An_element_appender_factory_registered_via_generic_should_be_the_correct_type(int version)
         {
             //given
-            var provider = ConfigureForMsSqlVersion(version, c => c.SqlStatements.Assembly.ElementAppender.Use<NoOpExpressionElementAppenderFactory>());
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, c => c.SqlStatements.Assembly.ElementAppender.Use<NoOpExpressionElementAppenderFactory>());
 
             //when
-            var factory = provider.GetService<IExpressionElementAppenderFactory<MsSqlDb>>();
+            var factory = serviceProvider.GetService<IExpressionElementAppenderFactory<MsSqlDb>>();
 
             //then
             factory.Should().BeOfType<NoOpExpressionElementAppenderFactory>();
@@ -70,10 +70,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         {
             //given
             var factory = Substitute.For<IExpressionElementAppenderFactory<MsSqlDb>>();
-            var provider = ConfigureForMsSqlVersion(version, c => c.SqlStatements.Assembly.ElementAppender.Use(t => factory));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, c => c.SqlStatements.Assembly.ElementAppender.Use(t => factory));
 
             //when
-            var resolved = provider.GetService<IExpressionElementAppenderFactory<MsSqlDb>>();
+            var resolved = serviceProvider.GetService<IExpressionElementAppenderFactory<MsSqlDb>>();
 
             //then
             resolved.Should().Be(factory);
@@ -84,10 +84,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void An_element_appender_factory_registered_via_delegate_with_element_appender_override_registered_generically_should_resolve_correctly(int version)
         {
             //given
-            var provider = ConfigureForMsSqlVersion(version, c => c.SqlStatements.Assembly.ElementAppender.Use(sp => new DelegateExpressionElementAppenderFactory<MsSqlDb>(t => sp.GetRequiredService<FieldExpressionAppender>()), c => c.ForElementType<FieldExpression>().Use<FieldExpressionAppender>()));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, c => c.SqlStatements.Assembly.ElementAppender.Use(sp => new DelegateExpressionElementAppenderFactory<MsSqlDb>(t => sp.GetRequiredService<IExpressionElementAppender<FieldExpression>>()), c => c.ForElementType<FieldExpression>().Use<FieldExpressionAppender>()));
 
             //when
-            var resolved = provider.GetRequiredService<IExpressionElementAppenderFactory<MsSqlDb>>();
+            var resolved = serviceProvider.GetRequiredService<IExpressionElementAppenderFactory<MsSqlDb>>();
             var appender = resolved.CreateElementAppender<FieldExpression>();
 
             //then
@@ -99,8 +99,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void The_default_factory_registration_should_discover_the_correct_appender_for_an_unregistered_appender(int version)
         {
             //given
-            var provider = ConfigureForMsSqlVersion(version);
-            var factory = provider.GetRequiredService<IExpressionElementAppenderFactory<MsSqlDb>>();
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var factory = serviceProvider.GetRequiredService<IExpressionElementAppenderFactory<MsSqlDb>>();
 
             //when
             var appender = factory.CreateElementAppender(dbo.Person.Id.GetType());
@@ -115,8 +115,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         {
             //given
             var appender = Substitute.For<IExpressionElementAppender<SchemaExpression>>();
-            var provider = ConfigureForMsSqlVersion(version, c => c.SqlStatements.Assembly.ElementAppender.ForElementTypes(b => b.ForElementType<SchemaExpression>().Use(appender)));
-            var factory = provider.GetRequiredService<IExpressionElementAppenderFactory<MsSqlDb>>();
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, c => c.SqlStatements.Assembly.ElementAppender.ForElementTypes(b => b.ForElementType<SchemaExpression>().Use(appender)));
+            var factory = serviceProvider.GetRequiredService<IExpressionElementAppenderFactory<MsSqlDb>>();
 
             //when
             var resolved = factory.CreateElementAppender(typeof(SchemaExpression));
@@ -132,8 +132,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         {
             //given
             var appender = Substitute.For<IExpressionElementAppender<SchemaExpression>>();
-            var provider = ConfigureForMsSqlVersion(version, c => c.SqlStatements.Assembly.ElementAppender.ForElementTypes(b => b.ForElementType<SchemaExpression>().Use(() => appender)));
-            var factory = provider.GetRequiredService<IExpressionElementAppenderFactory<MsSqlDb>>();
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, c => c.SqlStatements.Assembly.ElementAppender.ForElementTypes(b => b.ForElementType<SchemaExpression>().Use(() => appender)));
+            var factory = serviceProvider.GetRequiredService<IExpressionElementAppenderFactory<MsSqlDb>>();
 
             //when
             var resolved = factory.CreateElementAppender<SchemaExpression>();
@@ -145,12 +145,12 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void The_default_factory_registration_with_custom_appender_registered_with_service_provider_should_resolve_correctly(int version)
+        public void The_default_factory_registration_with_custom_appender_registered_with_service_serviceProvider_should_resolve_correctly(int version)
         {
             //given
             var appender = Substitute.For<IExpressionElementAppender<SchemaExpression>>();
-            var provider = ConfigureForMsSqlVersion(version, c => c.SqlStatements.Assembly.ElementAppender.ForElementTypes(b => b.ForElementType<SchemaExpression>().Use(sp => appender)));
-            var factory = provider.GetRequiredService<IExpressionElementAppenderFactory<MsSqlDb>>();
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, c => c.SqlStatements.Assembly.ElementAppender.ForElementTypes(b => b.ForElementType<SchemaExpression>().Use(sp => appender)));
+            var factory = serviceProvider.GetRequiredService<IExpressionElementAppenderFactory<MsSqlDb>>();
 
             //when
             var resolved = factory.CreateElementAppender(typeof(SchemaExpression));
@@ -165,8 +165,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void The_default_factory_registration_with_custom_appender_registered_generically_should_resolve_correctly(int version)
         {
             //given
-            var provider = ConfigureForMsSqlVersion(version, c => c.SqlStatements.Assembly.ElementAppender.ForElementTypes(b => b.ForElementType<SchemaExpression>().Use<NoOpSchemaAppender>()));
-            var factory = provider.GetRequiredService<IExpressionElementAppenderFactory<MsSqlDb>>();
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, c => c.SqlStatements.Assembly.ElementAppender.ForElementTypes(b => b.ForElementType<SchemaExpression>().Use<NoOpSchemaAppender>()));
+            var factory = serviceProvider.GetRequiredService<IExpressionElementAppenderFactory<MsSqlDb>>();
 
             //when
             var resolved = factory.CreateElementAppender<SchemaExpression>();
@@ -181,8 +181,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void An_element_appender_factory_registered_via_delegate_should_resolve_the_correct_appender(int version)
         {
             //given
-            var provider = ConfigureForMsSqlVersion(version, c => c.SqlStatements.Assembly.ElementAppender.Use(t => new FieldExpressionAppender()));
-            var factory = provider.GetRequiredService<IExpressionElementAppenderFactory<MsSqlDb>>();
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, c => c.SqlStatements.Assembly.ElementAppender.Use(t => new FieldExpressionAppender()));
+            var factory = serviceProvider.GetRequiredService<IExpressionElementAppenderFactory<MsSqlDb>>();
 
             //when
             var appender = factory.CreateElementAppender(dbo.Person.Id.GetType());
@@ -193,11 +193,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void An_element_appender_factory_registered_via_delegate_using_service_provider_should_resolve_the_correct_appender(int version)
+        public void An_element_appender_factory_registered_via_delegate_using_service_serviceProvider_should_resolve_the_correct_appender(int version)
         {
             //given
-            var provider = ConfigureForMsSqlVersion(version, c => c.SqlStatements.Assembly.ElementAppender.Use((sp, t) => new FieldExpressionAppender()));
-            var factory = provider.GetRequiredService<IExpressionElementAppenderFactory<MsSqlDb>>();
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, c => c.SqlStatements.Assembly.ElementAppender.Use((sp, t) => new FieldExpressionAppender()));
+            var factory = serviceProvider.GetRequiredService<IExpressionElementAppenderFactory<MsSqlDb>>();
 
             //when
             var appender = factory.CreateElementAppender(dbo.Person.Id.GetType());
@@ -211,8 +211,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void The_default_factory_registration_should_resolve_appenders_as_singletons(int version)
         {
             //given
-            var provider = ConfigureForMsSqlVersion(version);
-            var factory = provider.GetRequiredService<IExpressionElementAppenderFactory<MsSqlDb>>();
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var factory = serviceProvider.GetRequiredService<IExpressionElementAppenderFactory<MsSqlDb>>();
 
             //when
             var first = factory.CreateElementAppender(typeof(SchemaExpression));
@@ -228,8 +228,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         {
             //given
             var appender = Substitute.For<IExpressionElementAppender<SchemaExpression>>();
-            var provider = ConfigureForMsSqlVersion(version, c => c.SqlStatements.Assembly.ElementAppender.ForElementTypes(b => b.ForElementType<SchemaExpression>().Use(appender)));
-            var factory = provider.GetRequiredService<IExpressionElementAppenderFactory<MsSqlDb>>();
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, c => c.SqlStatements.Assembly.ElementAppender.ForElementTypes(b => b.ForElementType<SchemaExpression>().Use(appender)));
+            var factory = serviceProvider.GetRequiredService<IExpressionElementAppenderFactory<MsSqlDb>>();
 
             //when
             var a1 = factory.CreateElementAppender<SchemaExpression>();
@@ -247,8 +247,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         {
             //given
             var appender = Substitute.For<IExpressionElementAppender<SchemaExpression>>();
-            var provider = ConfigureForMsSqlVersion(version, c => c.SqlStatements.Assembly.ElementAppender.ForElementTypes(b => b.ForElementType<SchemaExpression>().Use(() => appender)));
-            var factory = provider.GetRequiredService<IExpressionElementAppenderFactory<MsSqlDb>>();
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, c => c.SqlStatements.Assembly.ElementAppender.ForElementTypes(b => b.ForElementType<SchemaExpression>().Use(() => appender)));
+            var factory = serviceProvider.GetRequiredService<IExpressionElementAppenderFactory<MsSqlDb>>();
 
             //when
             var a1 = factory.CreateElementAppender<SchemaExpression>();
@@ -262,12 +262,12 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void The_default_factory_registration_with_custom_appender_registered_with_service_provider_should_resolve_singletons(int version)
+        public void The_default_factory_registration_with_custom_appender_registered_with_service_serviceProvider_should_resolve_singletons(int version)
         {
             //given
             var appender = Substitute.For<IExpressionElementAppender<SchemaExpression>>();
-            var provider = ConfigureForMsSqlVersion(version, c => c.SqlStatements.Assembly.ElementAppender.ForElementTypes(b => b.ForElementType<SchemaExpression>().Use(sp => appender)));
-            var factory = provider.GetRequiredService<IExpressionElementAppenderFactory<MsSqlDb>>();
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, c => c.SqlStatements.Assembly.ElementAppender.ForElementTypes(b => b.ForElementType<SchemaExpression>().Use(sp => appender)));
+            var factory = serviceProvider.GetRequiredService<IExpressionElementAppenderFactory<MsSqlDb>>();
 
             //when
             var a1 = factory.CreateElementAppender<SchemaExpression>();

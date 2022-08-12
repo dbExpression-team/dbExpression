@@ -16,19 +16,17 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using HatTrick.DbEx.Sql.Connection;
-using System;
-using System.Data;
-using System.Data.Common;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+using HatTrick.DbEx.Sql.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace HatTrick.DbEx.Sql.Executor
 {
     public class SqlStatementExecutor<TDatabase> : SqlStatementExecutor, ISqlStatementExecutor<TDatabase>
         where TDatabase : class, ISqlDatabaseRuntime
     {
-        
+        public SqlStatementExecutor(ILoggerFactory loggerFactory, LoggingOptions loggingOptions) : base(loggerFactory, loggingOptions)
+        {
+
+        }
     }
 }

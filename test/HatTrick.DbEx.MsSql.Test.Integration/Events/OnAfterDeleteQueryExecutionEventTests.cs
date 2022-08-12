@@ -19,7 +19,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var actionExecuted = false;
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterDeleteQueryExecution(_ => actionExecuted = true));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterDeleteQueryExecution(_ => actionExecuted = true));
 
             //when
             db.Delete().From(dbo.PersonAddress).Execute();
@@ -34,7 +34,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var actionExecuted = false;
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterDeleteQueryExecution(_ => actionExecuted = true));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterDeleteQueryExecution(_ => actionExecuted = true));
 
             //when
             db.Delete().From(dbo.PersonAddress).Execute();
@@ -49,7 +49,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var actionExecutedCount = 0;
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterDeleteQueryExecution(_ => actionExecutedCount++));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterDeleteQueryExecution(_ => actionExecutedCount++));
 
             //when
             for (var i = 0; i < expected; i++)
@@ -65,7 +65,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var actionExecuted = false;
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterDeleteQueryExecution(_ => actionExecuted = true, p => true));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterDeleteQueryExecution(_ => actionExecuted = true, p => true));
 
             //when
             db.Delete().From(dbo.PersonAddress).Execute();
@@ -80,7 +80,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var actionExecuted = false;
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterDeleteQueryExecution(_ => actionExecuted = true, p => false));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterDeleteQueryExecution(_ => actionExecuted = true, p => false));
 
             //when
             db.Delete().From(dbo.PersonAddress).Execute();
@@ -95,7 +95,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var actionExecuted = false;
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterDeleteQueryExecution(_ => actionExecuted = true));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterDeleteQueryExecution(_ => actionExecuted = true));
 
             //when
             await db.Delete().From(dbo.PersonAddress).ExecuteAsync();
@@ -110,7 +110,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var actionExecuted = false;
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterDeleteQueryExecution(_ => actionExecuted = true));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterDeleteQueryExecution(_ => actionExecuted = true));
 
             //when
             await db.Delete().From(dbo.PersonAddress).ExecuteAsync();
@@ -125,7 +125,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var actionExecutedCount = 0;
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterDeleteQueryExecution(_ => actionExecutedCount++));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterDeleteQueryExecution(_ => actionExecutedCount++));
 
             //when
             for (var i = 0; i < expected; i++)
@@ -141,7 +141,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var actionExecuted = false;
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterDeleteQueryExecution(_ => actionExecuted = true, p => true));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterDeleteQueryExecution(_ => actionExecuted = true, p => true));
 
             //when
             await db.Delete().From(dbo.PersonAddress).ExecuteAsync();
@@ -156,7 +156,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var actionExecuted = false;
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterDeleteQueryExecution(_ => actionExecuted = true, p => false));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterDeleteQueryExecution(_ => actionExecuted = true, p => false));
 
             //when
             await db.Delete().From(dbo.PersonAddress).ExecuteAsync();
@@ -171,7 +171,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterDeleteQueryExecution(async _ => await Task.Run(() => actionExecuted = true)));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterDeleteQueryExecution(async _ => await Task.Run(() => actionExecuted = true)));
 
             //when
             db.Delete().From(dbo.PersonAddress).Execute();
@@ -188,7 +188,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterDeleteQueryExecution(async _ => await Task.Run(() => actionExecuted = true), p => true));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterDeleteQueryExecution(async _ => await Task.Run(() => actionExecuted = true), p => true));
 
             //when
             db.Delete().From(dbo.PersonAddress).Execute();
@@ -205,7 +205,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterDeleteQueryExecution(async _ => await Task.Run(() => actionExecuted = true), p => false));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterDeleteQueryExecution(async _ => await Task.Run(() => actionExecuted = true), p => false));
 
             //when
             db.Delete().From(dbo.PersonAddress).Execute();
@@ -222,7 +222,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterDeleteQueryExecution(async _ => await Task.Run(() => actionExecuted = true)));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterDeleteQueryExecution(async _ => await Task.Run(() => actionExecuted = true)));
 
             //when
             await db.Delete().From(dbo.PersonAddress).ExecuteAsync();
@@ -237,7 +237,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterDeleteQueryExecution(async _ => await Task.Run(() => actionExecuted = true), p => true));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterDeleteQueryExecution(async _ => await Task.Run(() => actionExecuted = true), p => true));
 
             //when
             await db.Delete().From(dbo.PersonAddress).ExecuteAsync();
@@ -251,7 +251,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         public void Does_after_delete_query_execution_event_throw_exception_when_fired_with_sync_action_configured_with_sync_execute_while_selecting_entity(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterDeleteQueryExecution(_ => throw new NotImplementedException()));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterDeleteQueryExecution(_ => throw new NotImplementedException()));
 
             //when & then
             Assert.Throws<NotImplementedException>(() => db.Delete().From(dbo.PersonAddress).Execute());
@@ -263,7 +263,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterDeleteQueryExecution(_ => actionExecuted = true, _ => throw new NotImplementedException()));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterDeleteQueryExecution(_ => actionExecuted = true, _ => throw new NotImplementedException()));
 
             //when & then
             Assert.Throws<NotImplementedException>(() => db.Delete().From(dbo.PersonAddress).Execute());
@@ -277,7 +277,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
             //given
             var source = new CancellationTokenSource();
             var token = source.Token;
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterDeleteQueryExecution(_ => source.Cancel()));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnAfterDeleteQueryExecution(_ => source.Cancel()));
             var task = db.Delete().From(dbo.PersonAddress).ExecuteAsync(token);
 
             //when

@@ -18,7 +18,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_coalesce_of_max_of_credit_limit_and_static_value_succeed(int version, int expected = 40000)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Coalesce(db.fx.Max(dbo.Person.CreditLimit), 1)
@@ -37,7 +37,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_coalesce_of_max_of_credit_limit_and_person_id_succeed(int version, int expected = 50)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     db.fx.Coalesce(db.fx.Max(dbo.Person.CreditLimit), dbo.Person.Id)
@@ -57,7 +57,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_max_of_coalesce_of_quantity_and_static_value_succeed(int version, int expected = 40000)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Max(db.fx.Coalesce<int>(dbo.Person.CreditLimit, 1))
@@ -75,7 +75,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_max_of_coalesce_of_quantity_and_person_id_succeed(int version, int expected = 40000)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Max(db.fx.Coalesce<int>(dbo.Person.CreditLimit, dbo.Person.Id))
@@ -93,7 +93,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_max_of_coalesce_of_quantity_and_year_of_last_credit_limit_review_succeed(int version, int expected = 40000)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Max(db.fx.Coalesce<int?>(dbo.Person.CreditLimit, dbo.Person.YearOfLastCreditLimitReview))

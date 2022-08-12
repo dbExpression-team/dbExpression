@@ -32,7 +32,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         private IAppenderFactoryConfigurationBuilder<TDatabase>? _appender;
         private ISqlParameterBuilderFactoryConfigurationBuilder<TDatabase>? _parameter;
         private ISqlStatementBuilderFactoryConfigurationBuilder<TDatabase>? _statement;
-        private readonly SqlStatementAssemblerConfiguration assemblerConfiguration = new();
+        private readonly SqlStatementAssemblyOptions assemblerConfiguration = new();
         #endregion
 
         #region interface
@@ -58,13 +58,13 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         #region methods
         /// <inheritdoc />
-        public ISqlStatementAssemblyGroupingConfigurationBuilders<TDatabase> ConfigureOutputSettings(Action<SqlStatementAssemblerConfiguration> config)
+        public ISqlStatementAssemblyGroupingConfigurationBuilders<TDatabase> ConfigureOutputSettings(Action<SqlStatementAssemblyOptions> config)
         {
             if (config is null)
                 throw new ArgumentNullException(nameof(config));
 
             config(assemblerConfiguration);
-            services.TryAddSingleton<SqlStatementAssemblerConfiguration>(assemblerConfiguration); 
+            services.TryAddSingleton<SqlStatementAssemblyOptions>(assemblerConfiguration); 
             return this;
         }
         #endregion

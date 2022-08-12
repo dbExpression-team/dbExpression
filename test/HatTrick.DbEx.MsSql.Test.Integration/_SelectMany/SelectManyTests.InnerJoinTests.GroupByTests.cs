@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 public void Does_address_count_by_person_have_correct_record_counts(int version, int expected = 35, int oneAddressCount = 18, int twoAddressCount = 17)
                 {
                     //given
-                    ConfigureForMsSqlVersion(version);
+                    var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
                     var exp = db.SelectMany(
                             dbo.Person.Id,
@@ -54,7 +54,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 public void Does_address_count_by_person_having_count_greater_than_1_have_18_records(int version, int expected = 17)
                 {
                     //given
-                    ConfigureForMsSqlVersion(version);
+                    var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
                     var exp = db.SelectMany(
                             dbo.Person.Id,
@@ -83,7 +83,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 public void Does_address_count_by_person_having_count_greater_than_1_and_less_than_3_have_18_records(int version, int expected = 17)
                 {
                     //given
-                    ConfigureForMsSqlVersion(version);
+                    var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
                     var exp = db.SelectMany(
                             dbo.Person.Id,
@@ -113,7 +113,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 public void Does_address_count_by_person_having_count_equal_to_1_2_or_3_have_35_records(int version, int expected = 35, int oneAddressCount = 18, int twoAddressCount = 17, int threeAddressCount = 0)
                 {
                     //given
-                    ConfigureForMsSqlVersion(version);
+                    var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
                     var exp = db.SelectMany(
                             dbo.Person.Id,
@@ -147,7 +147,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 public void Does_purchasedate_count_by_person_having_count_of_shipdate_equal_to_3_and_year_equal_to_2017_have_correct_count(int version, int expected = 3, int shippedCount = 3, int year = 2019)
                 {
                     //given
-                    ConfigureForMsSqlVersion(version);
+                    var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
                     var exp = db.SelectMany(
                             dbo.Person.Id,

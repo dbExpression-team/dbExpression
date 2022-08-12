@@ -20,7 +20,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         {
             //given
             var converter = new DelegateEnumValueConverter<GenderType>(g => Enum.ToObject(typeof(GenderType), 0), o => default);
-            ConfigureForMsSqlVersion(version, c => c.Conversions.ForTypes(x => x.ForEnumType<GenderType>().Use(converter)));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, c => c.Conversions.ForTypes(x => x.ForEnumType<GenderType>().Use(converter)));
 
             //when
             IList<Person> persons = db.SelectMany<Person>()

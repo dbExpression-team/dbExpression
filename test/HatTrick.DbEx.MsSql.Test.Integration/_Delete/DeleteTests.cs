@@ -15,7 +15,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_a_personaddress_be_deleted(int version, int expected = 14)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.Delete()
                 .From(dbo.PersonAddress)
@@ -33,7 +33,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_a_personaddress_be_deleted_joining_thru_address(int version, int expected = 14)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.Delete()
                 .From(dbo.PersonAddress)
@@ -52,7 +52,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_a_personaddress_be_deleted_for_person_lastname(int version, string lastName = "Broflovski", int expected = 6)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.Delete()
                 .From(dbo.PersonAddress)
@@ -71,7 +71,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_a_purchaseline_be_deleted_using_top_be_deleted_and_return_correct_records_affected(int version, int expected = 1)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.Delete()
                 .Top(1)
@@ -89,7 +89,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_a_purchaseline_be_deleted_using_top_be_deleted_and_return_correct_record_count(int version, int expected = 17)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             //when               
             db.Delete()

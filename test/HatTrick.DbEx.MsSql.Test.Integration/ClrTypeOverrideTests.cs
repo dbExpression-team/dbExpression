@@ -19,7 +19,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_select_a_int_field_mapped_to_an_string_clr_type(int version, string expected = "1")
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             //when
             var quantity = await db.SelectOne(
@@ -39,7 +39,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_update_a_int_field_mapped_to_an_string_clr_type(int version, string expected = "2")
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             //when
             await db.Update(
@@ -61,7 +61,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_select_entity_with_int_field_mapped_to_an_string_clr_type(int version, string expected = "1")
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             //when
             var purchase = await db.SelectOne<Purchase>()
@@ -79,7 +79,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_insert_entity_with_int_field_mapped_to_an_string_clr_type(int version, string expected = "2")
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var purchase = new Purchase
             {

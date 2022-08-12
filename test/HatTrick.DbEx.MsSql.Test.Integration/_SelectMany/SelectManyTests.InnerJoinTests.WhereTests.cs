@@ -19,7 +19,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_filtering_by_billing_addresstype_equal_to_billing_have_35_records(int version, int expected = 35)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person)
@@ -39,7 +39,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_filtering_by_address_id_equal_to_1_have_14_records(int version, int expected = 14)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person)
@@ -59,7 +59,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_filtering_by_addresstype_equal_to_billing_and_address_id_not_equal_to_1_have_35_records(int version, int expected = 35)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person)

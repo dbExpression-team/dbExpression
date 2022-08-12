@@ -13,7 +13,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Select_expressions_of_same_fields_should_be_equal(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp1 = new SelectExpression<int>(dbo.Person.Id);
             var exp2 = new SelectExpression<int>(dbo.Person.Id);
@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Select_expressions_of_different_fields_should_not_be_equal(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp1 = new SelectExpression<int?>(dbo.Person.CreditLimit);
             var exp2 = new SelectExpression<int?>(dbo.Person.YearOfLastCreditLimitReview);
@@ -41,7 +41,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Select_expressions_with_same_fields_and_same_alias_should_be_equal(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp1 = new SelectExpression<int?>(dbo.Person.CreditLimit, "this");
             var exp2 = new SelectExpression<int?>(dbo.Person.CreditLimit, "this");
@@ -55,7 +55,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Select_expressions_with_same_fields_and_one_alias_should_not_be_equal(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp1 = new SelectExpression<int?>(dbo.Person.CreditLimit, "this");
             var exp2 = new SelectExpression<int?>(dbo.Person.CreditLimit);
@@ -69,7 +69,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Select_expressions_of_same_fields_should_have_same_hash_codes(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp1 = new SelectExpression<int>(dbo.Person.Id);
             var exp2 = new SelectExpression<int>(dbo.Person.Id);
@@ -87,7 +87,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Select_expressions_of_different_fields_should_have_different_hash_codes(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp1 = new SelectExpression<int?>(dbo.Person.CreditLimit);
             var exp2 = new SelectExpression<int?>(dbo.Person.YearOfLastCreditLimitReview);
@@ -105,7 +105,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Select_expressions_with_same_fields_and_one_alias_should_have_different_hash_codes(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp1 = new SelectExpression<int?>(dbo.Person.CreditLimit, "this");
             var exp2 = new SelectExpression<int?>(dbo.Person.CreditLimit);
@@ -123,7 +123,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Select_expressions_with_same_fields_and_same_alias_should_have_same_hash_codes(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp1 = new SelectExpression<int?>(dbo.Person.CreditLimit, "this");
             var exp2 = new SelectExpression<int?>(dbo.Person.CreditLimit, "this");

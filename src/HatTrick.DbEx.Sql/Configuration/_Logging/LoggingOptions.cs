@@ -16,27 +16,13 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using System;
-using TinyIoC;
-
 namespace HatTrick.DbEx.Sql.Configuration
 {
-    internal class TinyIoCServiceProvider : IServiceProvider
+    public class LoggingOptions
     {
-        private readonly TinyIoCContainer _container;
-
-        public TinyIoCServiceProvider(TinyIoCContainer container)
-        { 
-            _container = container ?? throw new ArgumentNullException(nameof(container));
-        }
-
-        public object? GetService(Type serviceType)
-        {
-            if (_container.TryResolve(serviceType, out object? it))
-            {
-                return it;
-            }
-            return null;
-        }
+        /// <summary>
+        /// Use this value to specify whether parameter values should be written to logs.  The default value is false.
+        /// </summary>
+        public bool LogParameterValues { get; set; } = false;
     }
 }

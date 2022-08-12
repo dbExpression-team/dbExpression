@@ -17,7 +17,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_isnull_of_average_of_quantity_and_static_value_succeed(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.IsNull(dbo.Person.CreditLimit, db.fx.Avg(dbo.PurchaseLine.Quantity))
@@ -38,7 +38,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_average_of_isnull_of_quantity_and_static_value_succeed(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Avg(db.fx.IsNull(dbo.Person.CreditLimit, dbo.PurchaseLine.Quantity))

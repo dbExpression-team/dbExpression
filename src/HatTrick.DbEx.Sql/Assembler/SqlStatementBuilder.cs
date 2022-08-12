@@ -18,6 +18,7 @@
 
 using HatTrick.DbEx.Sql.Converter;
 using HatTrick.DbEx.Sql.Expression;
+using Microsoft.Extensions.Logging;
 using System;
 
 namespace HatTrick.DbEx.Sql.Assembler
@@ -26,6 +27,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         where TDatabase : class, ISqlDatabaseRuntime
     {
         #region internals
+        private readonly ILogger<SqlStatementBuilder<TDatabase>> logger;
         private readonly TDatabase database;
         private readonly AssemblyContext assemblyContext;
         private readonly IExpressionElementAppenderFactory<TDatabase> elementAppenderFactory;
@@ -37,6 +39,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         public ISqlParameterBuilder Parameters { get; private set; }
 
         public SqlStatementBuilder(
+            ILoggerFactory loggerFactory,
             TDatabase database,
             AssemblyContext assemblyContext,
             IExpressionElementAppenderFactory<TDatabase> elementAppenderFactory,
@@ -45,6 +48,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             IValueConverterFactory<TDatabase> valueConverterFactory
         )
         {
+            this.logger = (loggerFactory ?? throw new ArgumentNullException(nameof(logger))).CreateLogger<SqlStatementBuilder<TDatabase>>();
             this.database = database ?? throw new ArgumentNullException(nameof(database));
             this.assemblyContext = assemblyContext ?? throw new ArgumentNullException(nameof(assemblyContext));
             this.elementAppenderFactory = elementAppenderFactory ?? throw new ArgumentNullException(nameof(elementAppenderFactory));
@@ -59,6 +63,9 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (expression is null)
                 throw new ArgumentNullException(nameof(expression));
 
+            if (logger.IsEnabled(LogLevel.Trace))
+                logger.LogTrace("Creating sql statement for {query}.", expression.GetType());
+            
             AppendElement(expression, assemblyContext);
 
             Appender.Write(assemblyContext.StatementTerminator);
@@ -76,6 +83,9 @@ namespace HatTrick.DbEx.Sql.Assembler
                 throw new ArgumentNullException(nameof(context));
 
             var appender = elementAppenderFactory.CreateElementAppender(element.GetType());
+
+            if (logger.IsEnabled(LogLevel.Trace))
+                logger.LogTrace("Appending element {element}.", element.GetType());
 
             appender.AppendElement(element, this, context);
         }

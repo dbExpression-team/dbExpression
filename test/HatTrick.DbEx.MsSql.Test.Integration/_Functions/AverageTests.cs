@@ -19,7 +19,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_averaging_total_purchase_amount_succeed(int version, double expected = 20.543)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Avg(dbo.Purchase.TotalPurchaseAmount).As("avg_amount")
@@ -37,7 +37,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_averaging_distinct_total_purchase_amount_succeed(int version, double expected = 21.367)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Avg(dbo.Purchase.TotalPurchaseAmount).Distinct().As("avg_amount")
@@ -56,7 +56,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_order_by_average_of_total_purchase_amount_ascending_succeed(int version, double expected = 21.367)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Avg(dbo.Purchase.TotalPurchaseAmount).Distinct()
@@ -76,7 +76,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_order_by_average_of_total_purchase_amount_descending_succeed(int version, double expected = 21.367)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Avg(dbo.Purchase.TotalPurchaseAmount).Distinct()
@@ -96,7 +96,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_order_by_average_of_total_purchase_amount_ascending_and_aliasing_succeed(int version, double expected = 21.367)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Avg(dbo.Purchase.TotalPurchaseAmount).Distinct().As("alias")
@@ -116,7 +116,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_order_by_average_of_total_purchase_amount_descending_and_aliasing_succeed(int version, double expected = 21.367)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Avg(dbo.Purchase.TotalPurchaseAmount).Distinct().As("alias")
@@ -135,7 +135,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_average_of_total_purchase_amount_added_to_static_value_succeed(int version, double expected = 21.543)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     (db.fx.Avg(dbo.Purchase.TotalPurchaseAmount) + 1).As("avg_amount")
@@ -153,7 +153,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_average_of_credit_limit_added_to_static_value_succeed(int version, int expected = 24635)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     (db.fx.Avg(dbo.Person.CreditLimit) + 1).As("avg_amount")
@@ -171,7 +171,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_average_of_total_purchase_amount_minus_static_value_succeed(int version, double expected = 19.543)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     (db.fx.Avg(dbo.Purchase.TotalPurchaseAmount) - 1).As("avg_amount")
@@ -189,7 +189,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_average_of_credit_limit_added_minus_static_value_succeed(int version, int expected = 24633)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     (db.fx.Avg(dbo.Person.CreditLimit) - 1).As("avg_amount")
@@ -207,7 +207,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_average_of_total_purchase_amount_multiplied_by_static_value_succeed(int version, double expected = 20.543333)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     (db.fx.Avg(dbo.Purchase.TotalPurchaseAmount) * 1).As("avg_amount")
@@ -225,7 +225,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_average_of_credit_limit_added_multiplied_by_static_value_succeed(int version, int expected = 24634)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     (db.fx.Avg(dbo.Person.CreditLimit) * 1).As("avg_amount")
@@ -243,7 +243,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_average_of_total_purchase_amount_divided_by_static_value_succeed(int version, double expected = 20.543333)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     (db.fx.Avg(dbo.Purchase.TotalPurchaseAmount) / 1).As("avg_amount")
@@ -261,7 +261,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_average_of_credit_limit_added_divided_by_static_value_succeed(int version, int expected = 24634)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     (db.fx.Avg(dbo.Person.CreditLimit) / 1).As("avg_amount")
@@ -279,7 +279,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_average_of_total_purchase_amount_modulus_of_static_value_succeed(int version, double expected = 0.543333)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     (db.fx.Avg(dbo.Purchase.TotalPurchaseAmount) % 1).As("avg_amount")
@@ -297,7 +297,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_average_of_credit_limit_added_modulus_of_static_value_succeed(int version, int expected = 0)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     (db.fx.Avg(dbo.Person.CreditLimit) % 1).As("avg_amount")
@@ -317,7 +317,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_average_of_credit_limit_grouped_by_lastname_and_having_null_average_succeed(int version, int expected = 2)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var averages = db.SelectMany(
                     dbo.Person.LastName,
@@ -340,7 +340,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_averaged_of_aliased_field_succeed(int version, decimal expected = 13.268m)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Avg(("lines", "PurchasePrice")).Distinct().As("alias")

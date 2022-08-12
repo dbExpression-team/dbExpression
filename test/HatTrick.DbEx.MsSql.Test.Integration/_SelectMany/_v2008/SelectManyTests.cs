@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_execute_trim_function_for_v2008(int version, int expectedCount)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             //when
             IList<string> persons = db.SelectMany(db.fx.Trim(dbo.Person.FirstName))

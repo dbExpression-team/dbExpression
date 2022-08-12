@@ -33,6 +33,8 @@ using HatTrick.DbEx.Sql.Pipeline;
 using HatTrick.DbEx.Sql.Types;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using System;
 using System.Data;
 
@@ -258,11 +260,14 @@ namespace HatTrick.DbEx.MsSql.Configuration
             typedBuilder.Build();
 
             //begin direct registrations
+            services.TryAddSingleton<ILoggerFactory, NullLoggerFactory>();
+            services.TryAddSingleton<SqlStatementAssemblyOptions>();
+            services.TryAddSingleton<LoggingOptions>();
+
             services.TryAddSingleton<IDbTypeMapFactory<SqlDbType>, MsSqlTypeMapFactory>();
             services.TryAddSingleton<IQueryExpressionBuilderFactory<TDatabase>, MsSqlQueryExpressionBuilderFactory<TDatabase>>();
-            services.TryAddTransient<AssemblyContext>(sp => sp.GetRequiredService<SqlStatementAssemblerConfiguration>().ToAssemblyContext());
+            services.TryAddTransient<AssemblyContext>(sp => sp.GetRequiredService<SqlStatementAssemblyOptions>().ToAssemblyContext());
             services.TryAddSingleton<PipelineEventHooks<TDatabase>>(sp => new PipelineEventHooks<TDatabase>());
-            services.TryAddSingleton<SqlStatementAssemblerConfiguration>(new SqlStatementAssemblerConfiguration());
             services.TryAddSingleton<IExpandoObjectMapper, ExpandoObjectMapper>();
 
             services.TryAddSingleton<SingletonSqlDatabaseRuntimeFactory<TDatabase>>(sp =>
@@ -284,7 +289,9 @@ namespace HatTrick.DbEx.MsSql.Configuration
             where TDatabase : class, ISqlDatabaseRuntime
         {
             builder.Use(sp => new DefaultQueryExpressionFactoryWithDiscovery<TDatabase>(
-                t => sp.GetService(t) as QueryExpression), //null returns are managed by the factory
+                    sp.GetRequiredService<ILoggerFactory>().CreateLogger<DefaultQueryExpressionFactoryWithDiscovery<TDatabase>>(),
+                    t => sp.GetService(t) as QueryExpression //null returns are managed by the factory
+                ),
                 x => x.WithDefaults()
             );
         }
@@ -292,7 +299,11 @@ namespace HatTrick.DbEx.MsSql.Configuration
         private static IEntitiesConfigurationBuilderGrouping<TDatabase> UseDelegateEntityFactoryWithDiscovery<TDatabase>(this IEntitiesConfigurationBuilderGrouping<TDatabase> builder)
             where TDatabase : class, ISqlDatabaseRuntime
         {
-            builder.Creation.Use(sp => new DefaultEntityFactoryWithFallbackConstruction<TDatabase>(t => sp.GetService(t) as IDbEntity ?? throw CreateNullServiceException("Entities", t)));
+            builder.Creation.Use(sp => new DefaultEntityFactoryWithFallbackConstruction<TDatabase>(
+                    sp.GetRequiredService<ILoggerFactory>().CreateLogger<DefaultEntityFactoryWithFallbackConstruction<TDatabase>>(),
+                    t => sp.GetService(t) as IDbEntity //null returns are managed by the factory
+                ) 
+            );
             return builder;
         }
 
@@ -301,6 +312,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
         {
             builder.Mapping.Use(
                 sp => new DefaultMapperFactoryWithDiscovery<TDatabase>(
+                    sp.GetRequiredService<ILoggerFactory>().CreateLogger<DefaultMapperFactoryWithDiscovery<TDatabase>>(),
                     t => (sp.GetService(t) as IEntityMapper)!, //null returns are managed by the factory
                     () => sp.GetService<IExpandoObjectMapper>() ?? throw CreateNullServiceException("Entities", typeof(IExpandoObjectMapper))
                 )
@@ -312,7 +324,9 @@ namespace HatTrick.DbEx.MsSql.Configuration
             where TDatabase : class, ISqlDatabaseRuntime
         {
             builder.Use(sp => new DefaultValueConverterFactoryWithDiscovery<TDatabase>(
-                t => (sp.GetService(t) as IValueConverter)!), //null returns are managed by the factory
+                    sp.GetRequiredService<ILoggerFactory>().CreateLogger<DefaultValueConverterFactoryWithDiscovery<TDatabase>>(),
+                    t => sp.GetService(t) as IValueConverter //null returns are managed by the factory
+                ),
                 x => x.WithDefaults()
             );
         }
@@ -320,8 +334,8 @@ namespace HatTrick.DbEx.MsSql.Configuration
         private static ISqlStatementsConfigurationBuilderGrouping<TDatabase> UseDelegateExpressionElementAppenderFactoryWithDefaults<TDatabase>(this ISqlStatementsConfigurationBuilderGrouping<TDatabase> builder)
             where TDatabase : class, ISqlDatabaseRuntime
         {
-            builder.Assembly.ElementAppender.Use(
-                sp => new DefaultExpressionElementAppenderFactoryWithDiscovery<TDatabase>(
+            builder.Assembly.ElementAppender.Use(sp => new DefaultExpressionElementAppenderFactoryWithDiscovery<TDatabase>(
+                    sp.GetRequiredService<ILoggerFactory>().CreateLogger<DefaultExpressionElementAppenderFactoryWithDiscovery<TDatabase>>(),
                     t => (sp.GetService(t) as IExpressionElementAppender)! //null returns are managed by the factory
                 ),
                 x => MsSqlServices.WithDefaults(x)

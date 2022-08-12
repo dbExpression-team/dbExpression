@@ -19,6 +19,7 @@
 using HatTrick.DbEx.Sql.Assembler;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging;
 using System;
 
 namespace HatTrick.DbEx.Sql.Configuration
@@ -74,7 +75,11 @@ namespace HatTrick.DbEx.Sql.Configuration
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            services.TryAddSingleton<IExpressionElementAppenderFactory<TDatabase>>(sp => new DefaultExpressionElementAppenderFactoryWithDiscovery<TDatabase>(factory));
+            services.TryAddSingleton<IExpressionElementAppenderFactory<TDatabase>>(sp => new DefaultExpressionElementAppenderFactoryWithDiscovery<TDatabase>(
+                    sp.GetRequiredService<ILoggerFactory>().CreateLogger<DefaultExpressionElementAppenderFactoryWithDiscovery<TDatabase>>(),
+                    factory
+                )
+            );
             return caller;
         }
 
@@ -84,7 +89,11 @@ namespace HatTrick.DbEx.Sql.Configuration
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            services.TryAddSingleton<IExpressionElementAppenderFactory<TDatabase>>(sp => new DefaultExpressionElementAppenderFactoryWithDiscovery<TDatabase>(t => factory(sp, t)));
+            services.TryAddSingleton<IExpressionElementAppenderFactory<TDatabase>>(sp => new DefaultExpressionElementAppenderFactoryWithDiscovery<TDatabase>(
+                    sp.GetRequiredService<ILoggerFactory>().CreateLogger<DefaultExpressionElementAppenderFactoryWithDiscovery<TDatabase>>(),
+                    t => factory(sp, t)
+                )
+            );
             return caller;
         }
 
@@ -97,7 +106,11 @@ namespace HatTrick.DbEx.Sql.Configuration
             if (configureElementTypes is null)
                 throw new ArgumentNullException(nameof(configureElementTypes));
 
-            services.TryAddSingleton<IExpressionElementAppenderFactory<TDatabase>>(sp => new DefaultExpressionElementAppenderFactoryWithDiscovery<TDatabase>(t => factory(sp, t)));
+            services.TryAddSingleton<IExpressionElementAppenderFactory<TDatabase>>(sp => new DefaultExpressionElementAppenderFactoryWithDiscovery<TDatabase>(
+                    sp.GetRequiredService<ILoggerFactory>().CreateLogger<DefaultExpressionElementAppenderFactoryWithDiscovery<TDatabase>>(),
+                    t => factory(sp, t)
+                )
+            );
             configureElementTypes.Invoke(new ExpressionElementAppenderFactoryContinuationConfigurationBuilder<TDatabase>(services));
             return caller;
         }

@@ -19,7 +19,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_datediff_of_dateadd_of_ship_date_and_purchase_date_succeed(int version, int expected = 15)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     db.fx.DateDiff(DateParts.Year, db.fx.DateAdd(DateParts.Year, 1, dbo.Purchase.ShipDate), dbo.Purchase.PurchaseDate)
@@ -37,7 +37,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_datediff_of_dateadd_of_purcchase_date_and_ship_date_succeed(int version, int expected = 15)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     db.fx.DateDiff(DateParts.Year, db.fx.DateAdd(DateParts.Year, 1, dbo.Purchase.PurchaseDate), dbo.Purchase.ShipDate)
@@ -55,7 +55,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_datediff_of_dateadd_of_purcchase_date_and_date_created_succeed(int version, int expected = 15)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     db.fx.DateDiff(DateParts.Year, db.fx.DateAdd(DateParts.Year, 1, dbo.Purchase.PurchaseDate), dbo.Purchase.DateCreated)

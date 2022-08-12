@@ -18,6 +18,7 @@
 
 ﻿using HatTrick.DbEx.Sql.Expression;
 using System;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
@@ -26,6 +27,7 @@ namespace HatTrick.DbEx.Sql.Assembler
     {
         #region internals
         private readonly Func<Type, IExpressionElementAppender> factory;
+        private readonly Dictionary<Type, Type> map = new();
         #endregion
 
         #region constructors
@@ -40,7 +42,13 @@ namespace HatTrick.DbEx.Sql.Assembler
         {
             if (elementType is null)
                 throw new ArgumentNullException(nameof(elementType));
-            return factory(elementType);
+
+            if (map.ContainsKey(elementType))
+                return factory(map[elementType]);
+
+            map.Add(elementType, typeof(IExpressionElementAppender<>).MakeGenericType(new[] { elementType }));
+
+            return factory(map[elementType]);
         }
 
         public IExpressionElementAppender<T> CreateElementAppender<T>()

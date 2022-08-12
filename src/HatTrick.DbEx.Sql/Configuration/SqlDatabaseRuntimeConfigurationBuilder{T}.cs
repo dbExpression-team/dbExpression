@@ -32,6 +32,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         private IValueConverterFactoryConfigurationBuilder<TDatabase>? _valueConverter;
         private IQueryExecutionPipelineEventConfigurationBuilder<TDatabase>? _event;
         private IEntitiesConfigurationBuilderGrouping<TDatabase>? _entities;
+        private ILoggingOptionsBuilder<TDatabase>? _logging;
         #endregion
 
         #region interface
@@ -42,6 +43,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         IValueConverterFactoryConfigurationBuilder<TDatabase> ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>.Conversions => _valueConverter ??= new ValueConverterFactoryConfigurationBuilder<TDatabase>(Services);
         ISqlStatementsConfigurationBuilderGrouping<TDatabase> ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>.SqlStatements => _assembler ??= new SqlStatementsConfigurationBuilderGrouping<TDatabase>(Services);
         IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>.Events => _event ??= new QueryExecutionPipelineEventConfigurationBuilder<TDatabase>(Services);
+        ILoggingOptionsBuilder<TDatabase> ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>.Logging => _logging ??= new LoggingOptionsBuilder<TDatabase>(this, Services);
         #endregion
 
         #region constructors

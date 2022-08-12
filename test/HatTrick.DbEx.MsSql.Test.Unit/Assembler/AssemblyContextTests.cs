@@ -13,8 +13,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
         public void Can_set_state_successfully(int version)
         {
             //given
-            var provider = ConfigureForMsSqlVersion(version);
-            var assemblyContext = provider.GetRequiredService<SqlStatementAssemblerConfiguration>().ToAssemblyContext();
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var assemblyContext = serviceProvider.GetRequiredService<SqlStatementAssemblyOptions>().ToAssemblyContext();
 
             //when
             Action setState = () => assemblyContext.SetState(new TestState());
@@ -28,8 +28,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
         public void Can_retrieve_state_successfully(int version)
         {
             //given
-            var provider = ConfigureForMsSqlVersion(version);
-            var assemblyContext = provider.GetRequiredService<SqlStatementAssemblerConfiguration>().ToAssemblyContext();
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var assemblyContext = serviceProvider.GetRequiredService<SqlStatementAssemblyOptions>().ToAssemblyContext();
             assemblyContext.SetState(new TestState());
 
             //when
@@ -44,8 +44,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
         public void Can_remove_state_successfully(int version)
         {
             //given
-            var provider = ConfigureForMsSqlVersion(version);
-            var assemblyContext = provider.GetRequiredService<SqlStatementAssemblerConfiguration>().ToAssemblyContext();
+            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var assemblyContext = serviceProvider.GetRequiredService<SqlStatementAssemblyOptions>().ToAssemblyContext();
             assemblyContext.SetState(new TestState());
 
             //when
