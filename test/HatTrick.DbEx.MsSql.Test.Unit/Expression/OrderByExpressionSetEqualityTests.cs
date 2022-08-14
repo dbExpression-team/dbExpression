@@ -12,7 +12,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void OrderBy_expressions_of_same_field_and_direction_should_be_equal(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp1 = dbo.Person.CreditLimit.Asc;
             var exp2 = dbo.Person.CreditLimit.Asc;
@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void OrderBy_expressions_of_same_field_and_different_directions_should_not_be_equal(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp1 = dbo.Person.CreditLimit.Asc;
             var exp2 = dbo.Person.CreditLimit.Desc;
@@ -40,7 +40,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void OrderBy_expressions_with_same_fields_and_same_direction_should_be_equal(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp1 = dbo.Person.CreditLimit.Asc & dbo.Person.Id.Desc;
             var exp2 = dbo.Person.CreditLimit.Asc & dbo.Person.Id.Desc;
@@ -54,7 +54,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void OrderBy_expressions_with_same_fields_and_same_direction_alternating_in_construction_should_not_be_equal(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp1 = dbo.Person.CreditLimit.Asc & dbo.Person.Id.Desc;
             var exp2 = dbo.Person.CreditLimit.Desc & dbo.Person.Id.Asc;
@@ -68,7 +68,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void OrderBy_expressions_with_same_fields_and_alternating_direction_alternating_in_construction_should_not_be_equal(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp1 = dbo.Person.CreditLimit.Asc & dbo.Person.Id.Desc;
             var exp2 = dbo.Person.Id.Desc & dbo.Person.CreditLimit.Asc;
@@ -82,7 +82,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void OrderBy_expressions_of_same_field_and_direction_should_have_same_hash_codes(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp1 = dbo.Person.CreditLimit.Asc;
             var exp2 = dbo.Person.CreditLimit.Asc;
@@ -100,7 +100,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void OrderBy_expressions_of_same_field_and_different_directions_should_have_different_hash_codes(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp1 = dbo.Person.CreditLimit.Asc;
             var exp2 = dbo.Person.CreditLimit.Desc;
@@ -118,7 +118,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void OrderBy_expressions_with_same_fields_and_same_direction_should_have_same_hash_codes(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp1 = dbo.Person.CreditLimit.Asc & dbo.Person.Id.Desc;
             var exp2 = dbo.Person.CreditLimit.Asc & dbo.Person.Id.Desc;
@@ -136,7 +136,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void OrderBy_expressions_with_same_fields_and_same_direction_alternating_in_construction_should_have_different_hash_codes(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp1 = dbo.Person.CreditLimit.Asc & dbo.Person.Id.Desc;
             var exp2 = dbo.Person.CreditLimit.Desc & dbo.Person.Id.Asc;
@@ -154,7 +154,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void OrderBy_expressions_with_same_fields_and_alternating_direction_alternating_in_construction_should_have_different_hash_codes(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp1 = dbo.Person.CreditLimit.Asc & dbo.Person.Id.Desc;
             var exp2 = dbo.Person.Id.Desc & dbo.Person.CreditLimit.Asc;

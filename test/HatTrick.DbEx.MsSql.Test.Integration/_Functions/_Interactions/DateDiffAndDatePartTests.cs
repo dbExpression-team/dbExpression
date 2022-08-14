@@ -19,7 +19,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_datediff_of_purchase_date_and_date_created_added_to_datepart_of_purchase_date_succeed(int version, int expected = 2019)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated) + db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate)
@@ -38,7 +38,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_datepart_of_ship_date_added_to_datediff_of_purchase_date_and_ship_date_succeed(int version, int expected = 2019)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate) + db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
@@ -58,7 +58,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_datepart_of_ship_date_added_to_datediff_of_purchase_date_and_date_created_succeed(int version, int expected = 2019)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate) + db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)
@@ -78,7 +78,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_datepart_of_purchase_date_added_to_datediff_of_purchase_date_and_date_created_succeed(int version, int expected = 2019)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate) + db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)
@@ -97,7 +97,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_datediff_of_purchase_date_and_date_created_minus_datepart_of_purchase_date_succeed(int version, int expected = -2019)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated) - db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate)
@@ -116,7 +116,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_datepart_of_ship_date_minus_datediff_of_purchase_date_and_ship_date_succeed(int version, int expected = 2019)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate) - db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
@@ -136,7 +136,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_datepart_of_ship_date_minus_datediff_of_purchase_date_and_date_created_succeed(int version, int expected = 2019)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate) - db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)
@@ -156,7 +156,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_datepart_of_purchase_date_minums_datediff_of_purchase_date_and_date_created_succeed(int version, int expected = 2019)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate) - db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)
@@ -175,7 +175,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_datediff_of_purchase_date_and_date_created_multiplied_by_datepart_of_purchase_date_succeed(int version, int expected = 0)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated) * db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate)
@@ -194,7 +194,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_datepart_of_ship_date_multiplied_by_datediff_of_purchase_date_and_ship_date_succeed(int version, int expected = 0)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate) * db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
@@ -214,7 +214,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_datepart_of_ship_date_multiplied_by_datediff_of_purchase_date_and_date_created_succeed(int version, int expected = 0)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate) * db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)
@@ -234,7 +234,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_datepart_of_purchase_date_multiplied_by_datediff_of_purchase_date_and_date_created_succeed(int version, int expected = 0)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate) * db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)
@@ -253,7 +253,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_datediff_of_purchase_date_and_date_created_divided_by_datepart_of_purchase_date_succeed(int version, int expected = 0)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated) / db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate)
@@ -272,7 +272,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_datepart_of_ship_date_divided_by_datediff_of_purchase_date_and_ship_date_succeed(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             Action execute = () => db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate) / db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
@@ -289,7 +289,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_datepart_of_ship_date_divided_by_datediff_of_purchase_date_and_date_created_succeed(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             Action execute = () => db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate) / db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)
@@ -306,7 +306,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_datepart_of_purchase_date_divided_by_datediff_of_purchase_date_and_date_created_succeed(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             Action execute = () => db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate) / db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)
@@ -323,7 +323,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_datediff_of_purchase_date_and_date_created_modulus_of_datepart_of_purchase_date_succeed(int version, int expected = 0)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated) % db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate)
@@ -342,7 +342,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_datepart_of_ship_date_modulus_of_datediff_of_purchase_date_and_ship_date_succeed(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             Action execute = () => db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate) % db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
@@ -359,7 +359,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_datepart_of_ship_date_modulus_of_datediff_of_purchase_date_and_date_created_succeed(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             Action execute = () => db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate) % db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)
@@ -376,7 +376,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_datepart_of_purchase_date_modulus_of_datediff_of_purchase_date_and_date_created_succeed(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             Action execute = () => db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate) % db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)

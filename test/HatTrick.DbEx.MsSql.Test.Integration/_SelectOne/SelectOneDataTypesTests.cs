@@ -15,7 +15,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_select_boolean_field_expression(int version, bool expected = true)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(unit_test.ExpressionElementType.Boolean)
                 .From(unit_test.ExpressionElementType)
@@ -34,7 +34,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_select_nullable_boolean_field_expression(int version, bool? expected = null)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(unit_test.ExpressionElementType.NullableBoolean)
                 .From(unit_test.ExpressionElementType)
@@ -53,7 +53,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_select_byte_field_expression(int version, byte expected = 1)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(unit_test.ExpressionElementType.Byte)
                 .From(unit_test.ExpressionElementType)
@@ -72,7 +72,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_select_nullable_byte_field_expression(int version, byte? expected = null)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(unit_test.ExpressionElementType.NullableByte)
                 .From(unit_test.ExpressionElementType)
@@ -91,7 +91,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_select_bytearray_field_expression(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(unit_test.ExpressionElementType.ByteArray)
                 .From(unit_test.ExpressionElementType)
@@ -111,7 +111,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_select_nullable_bytearray_field_expression(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(unit_test.ExpressionElementType.NullableByteArray)
                 .From(unit_test.ExpressionElementType)
@@ -130,7 +130,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_select_DateTime_field_expression(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(unit_test.ExpressionElementType.DateTime)
                 .From(unit_test.ExpressionElementType)
@@ -149,7 +149,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_select_nullable_DateTime_field_expression(int version, DateTime? expected = null)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(unit_test.ExpressionElementType.NullableDateTime)
                 .From(unit_test.ExpressionElementType)
@@ -168,7 +168,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_select_DateTimeOffset_field_expression(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(unit_test.ExpressionElementType.DateTimeOffset)
                 .From(unit_test.ExpressionElementType)
@@ -187,7 +187,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_select_nullable_DateTimeOffset_field_expression(int version, DateTimeOffset? expected = null)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(unit_test.ExpressionElementType.NullableDateTimeOffset)
                 .From(unit_test.ExpressionElementType)
@@ -206,7 +206,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_select_decimal_field_expression(int version, decimal expected = 1.2345m)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(unit_test.ExpressionElementType.Decimal)
                 .From(unit_test.ExpressionElementType)
@@ -225,7 +225,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_select_nullable_decimal_field_expression(int version, decimal? expected = null)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(unit_test.ExpressionElementType.NullableDecimal)
                 .From(unit_test.ExpressionElementType)
@@ -244,7 +244,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_select_double_field_expression(int version, double expected = 1.23d)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(unit_test.ExpressionElementType.Double)
                 .From(unit_test.ExpressionElementType)
@@ -263,7 +263,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_select_Guid_field_expression(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(unit_test.ExpressionElementType.Guid)
                 .From(unit_test.ExpressionElementType)
@@ -282,7 +282,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_select_nullable_Guid_field_expression(int version, Guid? expected = null)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(unit_test.ExpressionElementType.NullableGuid)
                 .From(unit_test.ExpressionElementType)
@@ -301,7 +301,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_select_nullable_double_field_expression(int version, double? expected = null)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(unit_test.ExpressionElementType.NullableDouble)
                 .From(unit_test.ExpressionElementType)
@@ -320,7 +320,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_select_short_field_expression(int version, short expected = short.MaxValue)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(unit_test.ExpressionElementType.Int16)
                 .From(unit_test.ExpressionElementType)
@@ -339,7 +339,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_select_nullable_short_field_expression(int version, short? expected = null)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(unit_test.ExpressionElementType.NullableInt16)
                 .From(unit_test.ExpressionElementType)
@@ -358,7 +358,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_select_int_field_expression(int version, int expected = int.MaxValue)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(unit_test.ExpressionElementType.Int32)
                 .From(unit_test.ExpressionElementType)
@@ -377,7 +377,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_select_nullable_int_field_expression(int version, int? expected = null)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(unit_test.ExpressionElementType.NullableInt32)
                 .From(unit_test.ExpressionElementType)
@@ -396,7 +396,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_select_long_field_expression(int version, long expected = long.MaxValue)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(unit_test.ExpressionElementType.Int64)
                 .From(unit_test.ExpressionElementType)
@@ -415,7 +415,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_select_nullable_long_field_expression(int version, long? expected = null)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(unit_test.ExpressionElementType.NullableInt64)
                 .From(unit_test.ExpressionElementType)
@@ -434,7 +434,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_select_string_field_expression(int version, string expected = nameof(String))
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(unit_test.ExpressionElementType.String)
                 .From(unit_test.ExpressionElementType)
@@ -453,7 +453,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_select_nullable_string_field_expression(int version, string? expected = null)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(unit_test.ExpressionElementType.NullableString)
                 .From(unit_test.ExpressionElementType)
@@ -472,7 +472,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_select_TimeSpan_field_expression(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(unit_test.ExpressionElementType.TimeSpan)
                 .From(unit_test.ExpressionElementType)
@@ -491,7 +491,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_select_nullable_TimeSpan_field_expression(int version, TimeSpan? expected = null)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(unit_test.ExpressionElementType.NullableTimeSpan)
                 .From(unit_test.ExpressionElementType)
@@ -510,7 +510,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_select_single_field_expression(int version, float expected = 3.4028235f)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(unit_test.ExpressionElementType.Single)
                 .From(unit_test.ExpressionElementType)
@@ -529,7 +529,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_select_nullable_single_field_expression(int version, float? expected = null)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(unit_test.ExpressionElementType.NullableSingle)
                 .From(unit_test.ExpressionElementType)

@@ -12,7 +12,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Arithmetic_functions_of_person_id_should_be_equal(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp1 = dbo.Person.Id + 1;
             var exp2 = dbo.Person.Id + 1;
@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Arithmetic_functions_of_person_id_should_not_be_equal_when_adding_different_values(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp1 = dbo.Person.Id + 1;
             var exp2 = dbo.Person.Id + 2;
@@ -40,7 +40,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Arithmetic_functions_of_person_id_with_one_aliased_should_not_be_equal(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp1 = dbo.Person.Id + 1;
             var exp2 = (dbo.Person.Id + 1).As("foo");
@@ -54,7 +54,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Arithmetic_functions_of_person_id_should_have_same_hash_codes(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp1 = dbo.Person.Id + 1;
             var exp2 = dbo.Person.Id + 1;
@@ -72,7 +72,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Arithmetic_functions_of_person_id_with_one_aliased_should_have_different_hash_codes(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp1 = dbo.Person.Id + 1;
             var exp2 = (dbo.Person.Id + 1).As("foo");

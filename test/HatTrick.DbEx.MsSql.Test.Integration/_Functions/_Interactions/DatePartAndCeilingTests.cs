@@ -17,7 +17,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_ceiling_of_year_datepart_of_purchase_date_succeed(int version, int expected = 2019)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.Ceiling(db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate))
@@ -35,7 +35,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_ceiling_of_year_datepart_of_ship_date_succeed(int version, int expected = 2019)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.Ceiling(db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate))

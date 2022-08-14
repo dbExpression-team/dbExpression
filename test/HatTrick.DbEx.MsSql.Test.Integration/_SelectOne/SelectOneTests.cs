@@ -23,7 +23,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_a_person_record_select_successfully(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne<Person>()
                 .From(dbo.Person)
@@ -43,7 +43,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_a_person_record_select_async_successfully(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne<Person>()
                 .From(dbo.Person)
@@ -63,7 +63,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_a_group_by_select_async_when_table_name_is_aliased_runsuccessfully(int version, int expected = 1)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var table = dbo.Person.As("dboPerson");  
                         
@@ -81,7 +81,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_select_two_person_fields_as_a_dynamic(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             dynamic? person = await db.SelectOne(
                     sec.Person.Id, 
@@ -99,7 +99,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_an_overriden_property_name_aliased_return_the_correct_data_type_when_selecting_value(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var person = await db.SelectOne(
                     sec.Person.SocialSecurityNumber.As("foo")
@@ -115,7 +115,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_select_dynamic_by_providing_list_of_any_element(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             dynamic? person = await db.SelectOne(
                     new List<AnyElement>() {
@@ -136,7 +136,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_select_dynamic_by_providing_list_of_any_element_and_additional_fields_as_params(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             dynamic? person = await db.SelectOne(
                     new List<AnyElement>() {
@@ -162,7 +162,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_an_overriden_property_type_return_the_correct_data_type_when_selecting_value(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             //when
             ProductDescription? value = await db.SelectOne(
@@ -181,7 +181,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_an_overriden_property_type_and_aliased_return_the_correct_data_type_when_selecting_value(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             //when
             ProductDescription? value = await db.SelectOne(
@@ -200,7 +200,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_select_dynamic_with_an_overriden_property_type_return_the_correct_data_type_when_selecting_value(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             //when
             dynamic? value = await db.SelectOne(
@@ -220,7 +220,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_select_dynamic_with_an_overriden_property_type_and_aliased_return_the_correct_data_type_when_selecting_value(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             //when
             dynamic? value = await db.SelectOne(
@@ -240,7 +240,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_select_count_of_bytearray_when_equal_to_dbnull(int version, int expected = 9)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
             AppendImagesToProductsInDatabase();
 
             //when
@@ -258,7 +258,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_select_aliased_bytearray_when_equal_to_dbnull(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
             AppendImagesToProductsInDatabase();
 
             //when
@@ -279,7 +279,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_select_sys_date_time(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             //when
             DateTime value = await db.SelectOne(
@@ -297,7 +297,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_select_sys_date_time_offset(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             //when
             DateTimeOffset value = await db.SelectOne(
@@ -315,7 +315,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_select_sys_utc_date_time(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             //when
             DateTime value = await db.SelectOne(

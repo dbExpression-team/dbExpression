@@ -1,6 +1,7 @@
 ﻿using DbEx.DataService;
 using DbEx.secDataService;
 using FluentAssertions;
+using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Builder;
 using HatTrick.DbEx.Sql.Expression;
@@ -18,7 +19,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
         public void Does_a_single_where_predicate_result_in_valid_clause(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             ITerminationExpressionBuilder<MsSqlDb> exp = 
 
@@ -27,8 +28,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
                     .Where(sec.Person.Id > 0);
 
             SelectQueryExpression queryExpression = ((exp as IQueryExpressionProvider)!.Expression as SelectQueryExpression)!;
-            ISqlStatementBuilder builder = serviceProvider.GetRequiredService<ISqlStatementBuilder<MsSqlDb>>();
-            AssemblyContext context = serviceProvider.GetRequiredService<AssemblyContext>();
+            ISqlStatementBuilder builder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlStatementBuilder<MsSqlDb>>();
+            AssemblyContext context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
             string whereClause;
 
             //when

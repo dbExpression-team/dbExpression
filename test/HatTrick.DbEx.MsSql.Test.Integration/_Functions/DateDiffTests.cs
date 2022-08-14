@@ -20,7 +20,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_datediff_selecting_day_between_purchase_date_and_ship_date_succeed(int version, int expected = 7)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.DateDiff(DateParts.Day, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
@@ -40,7 +40,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_order_by_datediff_selecting_day_between_purchase_date_and_ship_date_ascending_succeed(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.DateDiff(DateParts.Day, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
@@ -60,7 +60,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_order_by_datediff_selecting_day_between_purchase_date_and_ship_date_descending_succeed(int version, int expected = 7)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.DateDiff(DateParts.Day, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
@@ -80,7 +80,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_order_by_datediff_selecting_day_between_purchase_date_and_ship_date_ascending_and_aliasing_succeed(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.DateDiff(DateParts.Day, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate).As("alias")
@@ -100,7 +100,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_order_by_datediff_selecting_day_between_purchase_date_and_ship_date_descending_and_aliasing_succeed(int version, int expected = 7)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.DateDiff(DateParts.Day, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate).As("alias")
@@ -120,7 +120,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_group_by_datediff_selecting_day_between_purchase_date_and_ship_date_succeed(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.DateDiff(DateParts.Day, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
@@ -140,7 +140,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_group_by_datediff_selecting_day_between_purchase_date_and_ship_date_and_aliasing_succeed(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.DateDiff(DateParts.Day, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate).As("alias")
@@ -160,7 +160,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_datediff_of_aliased_field_succeed(int version, int expected = 7)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.DateDiff(DateParts.Day, dbex.Alias<DateTime>("lines", "DateCreated"), dbo.Purchase.ShipDate).As("alias")

@@ -1,5 +1,6 @@
 ﻿using DbEx.DataService;
 using FluentAssertions;
+using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.MsSql.Connection;
 using HatTrick.DbEx.Sql.Connection;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,10 +18,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         {
             //given
             var factory = Substitute.For<ISqlConnectionFactory<MsSqlDb>>();
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Connection.Use(factory));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, c => c.SqlStatements.QueryExecution.Connection.Use(factory));
 
             //when
-            var resolved = serviceProvider.GetService<ISqlConnectionFactory<MsSqlDb>>();
+            var resolved = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<ISqlConnectionFactory<MsSqlDb>>();
 
             //then
             resolved.Should().Be(factory);
@@ -32,10 +33,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         {
             //given
             var sqlConnector = Substitute.For<IDbConnection>();
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Connection.Use((sp, cs) => sqlConnector));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, c => c.SqlStatements.QueryExecution.Connection.Use((sp, cs) => sqlConnector));
 
             //when
-            var factory = serviceProvider.GetService<ISqlConnectionFactory<MsSqlDb>>();
+            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<ISqlConnectionFactory<MsSqlDb>>();
 
             //then
             factory.Should().BeOfType<DelegateSqlConnectionFactory<MsSqlDb>>();
@@ -46,10 +47,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void A_sql_connector_factory_registered_generically_should_return_the_correct_factory(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Connection.Use<NoOpSqlConnectionFactory>());
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, c => c.SqlStatements.QueryExecution.Connection.Use<NoOpSqlConnectionFactory>());
 
             //when
-            var factory = serviceProvider.GetRequiredService<ISqlConnectionFactory<MsSqlDb>>();
+            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlConnectionFactory<MsSqlDb>>();
 
             //then
             factory.Should().NotBeNull().And.BeOfType<NoOpSqlConnectionFactory>();
@@ -61,8 +62,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         {
             //given
             var sqlConnector = Substitute.For<IDbConnection>();
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Connection.Use(cs => sqlConnector));
-            var factory = serviceProvider.GetRequiredService<ISqlConnectionFactory<MsSqlDb>>();
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, c => c.SqlStatements.QueryExecution.Connection.Use(cs => sqlConnector));
+            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlConnectionFactory<MsSqlDb>>();
 
             //when
             var factorySqlConnector = factory.CreateSqlConnection("connection string");
@@ -77,8 +78,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         {
             //given
             var sqlConnector = Substitute.For<IDbConnection>();
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Connection.Use((sp, cs) => sqlConnector));
-            var factory = serviceProvider.GetRequiredService<ISqlConnectionFactory<MsSqlDb>>();
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, c => c.SqlStatements.QueryExecution.Connection.Use((sp, cs) => sqlConnector));
+            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlConnectionFactory<MsSqlDb>>();
 
             //when
             var factorySqlConnector = factory.CreateSqlConnection("connection string");
@@ -92,8 +93,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void A_sql_connector_factory_registered_using_instance_should_produce_transients(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Connection.Use(new MsSqlConnectionFactory<MsSqlDb>()));
-            var factory = serviceProvider.GetRequiredService<ISqlConnectionFactory<MsSqlDb>>();
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, c => c.SqlStatements.QueryExecution.Connection.Use(new MsSqlConnectionFactory<MsSqlDb>()));
+            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlConnectionFactory<MsSqlDb>>();
 
             //when
             var a1 = factory.CreateSqlConnection(ConfigurationProvider.ConnectionString);
@@ -108,8 +109,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void A_sql_connector_factory_registered_via_service_provideer_should_produce_transients(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Connection.Use((sp, cs) => Substitute.For<IDbConnection>()));
-            var factory = serviceProvider.GetRequiredService<ISqlConnectionFactory<MsSqlDb>>();
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, c => c.SqlStatements.QueryExecution.Connection.Use((sp, cs) => Substitute.For<IDbConnection>()));
+            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlConnectionFactory<MsSqlDb>>();
 
             //when
             var a1 = factory.CreateSqlConnection("abc");
@@ -124,8 +125,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void A_sql_connector_factory_registered_via_delegate_should_produce_transients(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Connection.Use(cs => Substitute.For<IDbConnection>()));
-            var factory = serviceProvider.GetRequiredService<ISqlConnectionFactory<MsSqlDb>>();
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, c => c.SqlStatements.QueryExecution.Connection.Use(cs => Substitute.For<IDbConnection>()));
+            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlConnectionFactory<MsSqlDb>>();
 
             //when
             var a1 = factory.CreateSqlConnection("abc");
@@ -141,8 +142,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         {
             //given
             var sqlConnector = Substitute.For<IDbConnection>();
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Connection.Use((sp, cs) => sqlConnector));
-            var factory = serviceProvider.GetRequiredService<ISqlConnectionFactory<MsSqlDb>>();
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, c => c.SqlStatements.QueryExecution.Connection.Use((sp, cs) => sqlConnector));
+            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlConnectionFactory<MsSqlDb>>();
 
             //when
             var factorySqlConnector = factory.CreateSqlConnection("connection string");

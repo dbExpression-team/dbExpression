@@ -12,7 +12,7 @@ namespace {$.DatabaseExpression.NamespaceRoot}DataService
     {?var:databaseName = $.DatabaseExpression.Name}
     public class {:databaseName}SqlDatabaseMetadata : ISqlDatabaseMetadata
     {{
-        private static readonly Dictionary<string, ISqlMetadata> _metadata = new();
+        private static readonly Dictionary<string, ISqlMetadata> _metadata = new Dictionary<string, ISqlMetadata>();
 
         #region interface
         public string Name {{ get; private set; }} = "{$.Database.Name}";

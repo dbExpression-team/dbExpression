@@ -1,0 +1,97 @@
+{
+	"nullable": "enable",
+	"source": {
+		"type": "MsSql",
+		"connectionString": {
+			"value": "Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=MsSqlDbExTest;Integrated Security=true;Connect Timeout=30"
+		}
+	},
+	"databaseAccessor": "dbAlt",
+	"workingDirectory": "./",
+	"outputDirectory": "./Generated/MsSqlDbAlt",
+	"rootNamespace": "DbExAlt",
+	"enums": [],
+	"overrides": [
+		{
+			"apply": {
+				"ignore": true,
+				"to": { "path": "dbo.sysdiagrams" }
+			}
+		},
+		{
+			"apply": {
+				"ignore": true,
+				"to": { "path": "sec.sysdiagrams" }
+
+			}
+		},
+		{
+			"apply": {
+				"name": "MsSqlDbAlt",
+				"to": {
+					"path": "."
+				}
+			}
+		},
+		{
+			"apply": {
+				"allowInsert": false,
+				"allowUpdate": false,
+				"to": {
+					"path": "*.*.DateCreated",
+					"objectType": "tablecolumn"
+				}
+			}
+		},
+		{
+			"apply": {
+				"allowInsert": false,
+				"allowUpdate": false,
+				"to": {
+					"path": "*.*.DateUpdated",
+					"objectType": "tablecolumn"
+				}
+			}
+		},
+		{
+			"apply": {
+				"ignore": true,
+				"to": {
+					"path": "dbo.SelectPersonId_As_ScalarValue_With_Input_And_Default_Value.@P1"
+				}
+			}
+		},
+		{
+			"apply": {
+				"direction": "InputOutput",
+				"to": {
+					"path": "dbo.SelectPerson_As_Dynamic_With_Input_And_InputOutput.@CreditLimit"
+				}
+			}
+		},
+		{
+			"apply": {
+				"direction": "InputOutput",
+				"to": {
+					"path": "dbo.SelectPerson_As_DynamicList_With_Input_And_InputOutput.@CreditLimit"
+				}
+			}
+		},
+		{
+			"apply": {
+				"direction": "InputOutput",
+				"to": {
+					"path": "dbo.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput.@CreditLimit"
+				}
+			}
+		},
+		{
+			"apply": {
+				"direction": "InputOutput",
+				"to": {
+					"path": "dbo.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput.@CreditLimit"
+				}
+			}
+		}
+	]
+}

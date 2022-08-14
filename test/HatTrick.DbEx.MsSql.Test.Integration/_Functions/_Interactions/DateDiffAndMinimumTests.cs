@@ -19,7 +19,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_minimum_of_datediff_of_purchase_date_and_ship_date_succeed(int version, int expected = 0)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.Min(db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate))
@@ -37,7 +37,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_minimum_of_datediff_of_purchase_date_and_date_created_succeed(int version, int expected = 0)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.Min(db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated))
@@ -56,7 +56,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_minimum_of_quantity_added_to_datediff_of_purchase_date_and_ship_date_succeed(int version, int expected = 1)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.Min(dbo.PurchaseLine.Quantity) + db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
@@ -79,7 +79,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_minimum_of_credit_limit_added_to_datediff_of_purchase_date_and_ship_date_succeed(int version, int expected = 10000)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.Min(dbo.Person.CreditLimit) + db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
@@ -102,7 +102,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_minimum_of_credit_limit_added_to_datediff_of_purchase_date_and_date_created_succeed(int version, int expected = 10000)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.Min(dbo.Person.CreditLimit) + db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)
@@ -125,7 +125,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_minimum_of_quantity_added_to_datediff_of_purchase_date_and_date_created_succeed(int version, int expected = 1)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.Min(dbo.PurchaseLine.Quantity) + db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)
@@ -148,7 +148,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_minimum_of_quantity_minus_datediff_of_purchase_date_and_ship_date_succeed(int version, int expected = 1)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.Min(dbo.PurchaseLine.Quantity) - db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
@@ -171,7 +171,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_minimum_of_credit_limit_minus_datediff_of_purchase_date_and_ship_date_succeed(int version, int expected = 10000)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.Min(dbo.Person.CreditLimit) - db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
@@ -194,7 +194,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_minimum_of_credit_limit_minus_datediff_of_purchase_date_and_date_created_succeed(int version, int expected = 10000)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.Min(dbo.Person.CreditLimit) - db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)
@@ -217,7 +217,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_minimum_of_quantity_minus_datediff_of_purchase_date_and_date_created_succeed(int version, int expected = 1)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.Min(dbo.PurchaseLine.Quantity) - db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)
@@ -240,7 +240,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_minimum_of_quantity_multiplied_by_datediff_of_purchase_date_and_ship_date_succeed(int version, int expected = 0)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.Min(dbo.PurchaseLine.Quantity) * db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
@@ -263,7 +263,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_minimum_of_credit_limit_multiplied_by_datediff_of_purchase_date_and_ship_date_succeed(int version, int expected = 0)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.Min(dbo.Person.CreditLimit) * db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
@@ -286,7 +286,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_minimum_of_credit_limit_multiplied_by_datediff_of_purchase_date_and_date_created_succeed(int version, int expected = 0)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.Min(dbo.Person.CreditLimit) * db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)
@@ -309,7 +309,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_minimum_of_quantity_multiplied_by_datediff_of_purchase_date_and_date_created_succeed(int version, int expected = 0)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.Min(dbo.PurchaseLine.Quantity) * db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)
@@ -332,7 +332,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_minimum_of_quantity_divided_by_datediff_of_purchase_date_and_ship_date_succeed(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             Action execute = () => db.SelectOne(
                     db.fx.Min(dbo.PurchaseLine.Quantity) / db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
@@ -352,7 +352,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_minimum_of_credit_limit_divided_by_datediff_of_purchase_date_and_ship_date_succeed(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             Action execute = () => db.SelectOne(
                     db.fx.Min(dbo.Person.CreditLimit) / db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
@@ -372,7 +372,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_minimum_of_credit_limit_divided_by_datediff_of_purchase_date_and_date_created_succeed(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             Action execute = () => db.SelectOne(
                     db.fx.Min(dbo.Person.CreditLimit) / db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)
@@ -392,7 +392,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_minimum_of_quantity_divided_by_datediff_of_purchase_date_and_date_created_succeed(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             Action execute = () => db.SelectOne(
                     db.fx.Min(dbo.PurchaseLine.Quantity) / db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)
@@ -412,7 +412,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_minimum_of_quantity_modulus_of_datediff_of_purchase_date_and_ship_date_succeed(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             Action execute = () => db.SelectOne(
                     db.fx.Min(dbo.PurchaseLine.Quantity) % db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
@@ -432,7 +432,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_minimum_of_credit_limit_modulus_of_datediff_of_purchase_date_and_ship_date_succeed(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             Action execute = () => db.SelectOne(
                     db.fx.Min(dbo.Person.CreditLimit) % db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
@@ -452,7 +452,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_minimum_of_credit_limit_modulus_of_datediff_of_purchase_date_and_date_created_succeed(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             Action execute = () => db.SelectOne(
                     db.fx.Min(dbo.Person.CreditLimit) % db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)
@@ -472,7 +472,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_minimum_of_quantity_modulus_of_datediff_of_purchase_date_and_date_created_succeed(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             Action execute = () => db.SelectOne(
                     db.fx.Min(dbo.PurchaseLine.Quantity) % db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)

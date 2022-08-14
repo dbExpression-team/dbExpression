@@ -18,7 +18,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_sum_of_total_purchase_amount_succeed(int version, double expected = 308.15)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.Sum(dbo.Purchase.TotalPurchaseAmount).As("sum")
@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_sum_of_distinct_total_purchase_amount_succeed(int version, double expected = 299.15)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.Sum(dbo.Purchase.TotalPurchaseAmount).Distinct().As("sum")
@@ -56,7 +56,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_order_by_sum_of_total_purchase_amount_ascending_succeed(int version, double expected = 308.15)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.Sum(dbo.Purchase.TotalPurchaseAmount)
@@ -76,7 +76,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_order_by_sum_of_total_purchase_amount_descending_succeed(int version, double expected = 308.15)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.Sum(dbo.Purchase.TotalPurchaseAmount)
@@ -96,7 +96,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_order_by_sum_of_total_purchase_amount_ascending_and_aliasing_succeed(int version, double expected = 308.15)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.Sum(dbo.Purchase.TotalPurchaseAmount).As("alias")
@@ -116,7 +116,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_order_by_sum_of_total_purchase_amount_descending_and_aliasing_succeed(int version, double expected = 308.15)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.Sum(dbo.Purchase.TotalPurchaseAmount).As("alias")
@@ -136,7 +136,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_sum_of_aliased_field_succeed(int version, decimal expected = 222.65m)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.Sum(("lines", "PurchasePrice")).As("alias")

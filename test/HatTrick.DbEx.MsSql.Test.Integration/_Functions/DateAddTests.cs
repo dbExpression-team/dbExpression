@@ -20,7 +20,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_dateadd_of_year_to_shipdate_succeed(int version, int expectedValue = 2020)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.DateAdd(DateParts.Year, 1, dbo.Purchase.ShipDate)
@@ -41,7 +41,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_dateadd_of_year_to_null_shipdate_returning_datetime_succeed(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.DateAdd(DateParts.Year, 1, dbo.Purchase.ShipDate)
@@ -61,7 +61,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_order_by_dateadd_of_year_to_null_ship_date_ascending_succeed(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.DateAdd(DateParts.Year, 1, dbo.Purchase.ShipDate)
@@ -81,7 +81,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_order_by_dateadd_of_year_to_null_ship_date_descending_succeed(int version, int expected = 2020)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.DateAdd(DateParts.Year, 1, dbo.Purchase.ShipDate)
@@ -102,7 +102,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_order_by_dateadd_of_year_to_null_ship_date_ascending_and_aliasing_succeed(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.DateAdd(DateParts.Year, 1, dbo.Purchase.ShipDate).As("alias")
@@ -122,7 +122,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_order_by_dateadd_of_year_to_null_ship_date_descending_and_aliasing_succeed(int version, int expected = 2020)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.DateAdd(DateParts.Year, 1, dbo.Purchase.ShipDate).As("alias")
@@ -143,7 +143,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_select_date_add_of_aliased_value(int version, int expected = 2020)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.DateAdd(DateParts.Year, 1, ("other", "DateCreated")).As("alias")
@@ -171,7 +171,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_select_date_add_of_aliased_value_and_aliased_field(int version, int expected = 2020)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.DateAdd(DateParts.Year, ("other", "PurchaseId"), ("other", "DateCreated")).As("alias")

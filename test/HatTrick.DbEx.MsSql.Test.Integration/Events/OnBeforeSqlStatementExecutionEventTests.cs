@@ -19,7 +19,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var actionExecuted = false;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeSqlStatementExecution(_ => actionExecuted = true));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, configure => configure.Events.OnBeforeSqlStatementExecution(_ => actionExecuted = true));
 
             //when
             db.SelectOne<Person>().From(dbo.Person).Execute();
@@ -34,7 +34,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var actionExecuted = false;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeSqlStatementExecution(_ => actionExecuted = true));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, configure => configure.Events.OnBeforeSqlStatementExecution(_ => actionExecuted = true));
 
             //when
             db.SelectMany<Person>().From(dbo.Person).Execute();
@@ -49,7 +49,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var actionExecuted = false;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeSqlStatementExecution(_ => actionExecuted = true));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, configure => configure.Events.OnBeforeSqlStatementExecution(_ => actionExecuted = true));
 
             //when
             db.SelectOne(dbo.Person.Id).From(dbo.Person).Execute();
@@ -64,7 +64,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var actionExecuted = false;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeSqlStatementExecution(_ => actionExecuted = true));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, configure => configure.Events.OnBeforeSqlStatementExecution(_ => actionExecuted = true));
 
             //when
             db.SelectMany(dbo.Person.Id).From(dbo.Person).Execute();
@@ -79,7 +79,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var actionExecuted = false;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeSqlStatementExecution(_ => actionExecuted = true));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, configure => configure.Events.OnBeforeSqlStatementExecution(_ => actionExecuted = true));
 
             //when
             db.SelectOne(dbo.Person.Id, dbo.Person.FirstName).From(dbo.Person).Execute();
@@ -94,7 +94,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var actionExecuted = false;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeSqlStatementExecution(_ => actionExecuted = true));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, configure => configure.Events.OnBeforeSqlStatementExecution(_ => actionExecuted = true));
 
             //when
             db.SelectMany(dbo.Person.Id, dbo.Person.FirstName).From(dbo.Person).Execute();
@@ -109,7 +109,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var actionExecutedCount = 0;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeSqlStatementExecution(_ => actionExecutedCount++));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, configure => configure.Events.OnBeforeSqlStatementExecution(_ => actionExecutedCount++));
 
             //when
             for (var i = 0; i < expected; i++)
@@ -125,7 +125,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var actionExecuted = false;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeSqlStatementExecution(_ => actionExecuted = true, p => true));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, configure => configure.Events.OnBeforeSqlStatementExecution(_ => actionExecuted = true, p => true));
 
             //when
             db.SelectOne<Person>().From(dbo.Person).Execute();
@@ -140,7 +140,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var actionExecuted = false;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeSqlStatementExecution(_ => actionExecuted = true, p => false));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, configure => configure.Events.OnBeforeSqlStatementExecution(_ => actionExecuted = true, p => false));
 
             //when
             db.SelectOne<Person>().From(dbo.Person).Execute();
@@ -155,7 +155,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var actionExecuted = false;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeSqlStatementExecution(_ => actionExecuted = true));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, configure => configure.Events.OnBeforeSqlStatementExecution(_ => actionExecuted = true));
 
             //when
             await db.SelectOne<Person>().From(dbo.Person).ExecuteAsync();
@@ -170,7 +170,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var actionExecuted = false;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeSqlStatementExecution(_ => actionExecuted = true));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, configure => configure.Events.OnBeforeSqlStatementExecution(_ => actionExecuted = true));
 
             //when
             await db.SelectMany<Person>().From(dbo.Person).ExecuteAsync();
@@ -185,7 +185,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var actionExecuted = false;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeSqlStatementExecution(_ => actionExecuted = true));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, configure => configure.Events.OnBeforeSqlStatementExecution(_ => actionExecuted = true));
 
             //when
             await db.SelectOne(dbo.Person.Id).From(dbo.Person).ExecuteAsync();
@@ -200,7 +200,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var actionExecuted = false;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeSqlStatementExecution(_ => actionExecuted = true));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, configure => configure.Events.OnBeforeSqlStatementExecution(_ => actionExecuted = true));
 
             //when
             await db.SelectMany(dbo.Person.Id).From(dbo.Person).ExecuteAsync();
@@ -215,7 +215,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var actionExecuted = false;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeSqlStatementExecution(_ => actionExecuted = true));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, configure => configure.Events.OnBeforeSqlStatementExecution(_ => actionExecuted = true));
 
             //when
             await db.SelectOne(dbo.Person.Id, dbo.Person.FirstName).From(dbo.Person).ExecuteAsync();
@@ -230,7 +230,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var actionExecuted = false;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeSqlStatementExecution(_ => actionExecuted = true));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, configure => configure.Events.OnBeforeSqlStatementExecution(_ => actionExecuted = true));
 
             //when
             await db.SelectMany(dbo.Person.Id, dbo.Person.FirstName).From(dbo.Person).ExecuteAsync();
@@ -245,7 +245,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var actionExecutedCount = 0;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeSqlStatementExecution(_ => actionExecutedCount++));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, configure => configure.Events.OnBeforeSqlStatementExecution(_ => actionExecutedCount++));
 
             //when
             for (var i = 0; i < expected; i++)
@@ -261,7 +261,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var actionExecuted = false;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeSqlStatementExecution(_ => actionExecuted = true, p => true));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, configure => configure.Events.OnBeforeSqlStatementExecution(_ => actionExecuted = true, p => true));
 
             //when
             await db.SelectOne<Person>().From(dbo.Person).ExecuteAsync();
@@ -276,7 +276,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var actionExecuted = false;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeSqlStatementExecution(_ => actionExecuted = true, p => false));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, configure => configure.Events.OnBeforeSqlStatementExecution(_ => actionExecuted = true, p => false));
 
             //when
             await db.SelectOne<Person>().From(dbo.Person).ExecuteAsync();
@@ -291,7 +291,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeSqlStatementExecution(async _ => await Task.Run(() => actionExecuted = true)));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, configure => configure.Events.OnBeforeSqlStatementExecution(async _ => await Task.Run(() => actionExecuted = true)));
 
             //when
             db.SelectOne<Person>().From(dbo.Person).Execute();
@@ -308,7 +308,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeSqlStatementExecution(async _ => await Task.Run(() => actionExecuted = true), p => true));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, configure => configure.Events.OnBeforeSqlStatementExecution(async _ => await Task.Run(() => actionExecuted = true), p => true));
 
             //when
             db.SelectOne<Person>().From(dbo.Person).Execute();
@@ -325,7 +325,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeSqlStatementExecution(async _ => await Task.Run(() => actionExecuted = true), p => false));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, configure => configure.Events.OnBeforeSqlStatementExecution(async _ => await Task.Run(() => actionExecuted = true), p => false));
 
             //when
             db.SelectOne<Person>().From(dbo.Person).Execute();
@@ -342,7 +342,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeSqlStatementExecution(async _ => await Task.Run(() => actionExecuted = true)));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, configure => configure.Events.OnBeforeSqlStatementExecution(async _ => await Task.Run(() => actionExecuted = true)));
 
             //when
             await db.SelectOne<Person>().From(dbo.Person).ExecuteAsync();
@@ -357,7 +357,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeSqlStatementExecution(async _ => await Task.Run(() => actionExecuted = true), p => true));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, configure => configure.Events.OnBeforeSqlStatementExecution(async _ => await Task.Run(() => actionExecuted = true), p => true));
 
             //when
             await db.SelectOne<Person>().From(dbo.Person).ExecuteAsync();
@@ -371,7 +371,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         public void Does_before_sql_statement_execution_event_throw_exception_when_fired_with_sync_action_configured_with_sync_execute_while_selecting_entity(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeSqlStatementExecution(_ => throw new NotImplementedException()));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, configure => configure.Events.OnBeforeSqlStatementExecution(_ => throw new NotImplementedException()));
 
             //when & then
             Assert.Throws<NotImplementedException>(() => db.SelectOne<Person>().From(dbo.Person).Execute());
@@ -383,7 +383,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeSqlStatementExecution(_ => actionExecuted = true, _ => throw new NotImplementedException()));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, configure => configure.Events.OnBeforeSqlStatementExecution(_ => actionExecuted = true, _ => throw new NotImplementedException()));
 
             //when & then
             Assert.Throws<NotImplementedException>(() => db.SelectOne<Person>().From(dbo.Person).Execute());
@@ -397,7 +397,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
             //given
             var source = new CancellationTokenSource();
             var token = source.Token;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeSqlStatementExecution(_ => source.Cancel()));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, configure => configure.Events.OnBeforeSqlStatementExecution(_ => source.Cancel()));
             var task = db.SelectOne<Person>().From(dbo.Person).ExecuteAsync(token);
 
             //when
@@ -414,7 +414,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
             //given
             var source = new CancellationTokenSource();
             var token = source.Token;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, configure => 
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, configure => 
                 configure.Events
                     .OnBeforeSqlStatementExecution(_ => source.Cancel())
                     .OnAfterSqlStatementExecution(_ => throw new NotImplementedException())

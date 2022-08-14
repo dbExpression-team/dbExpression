@@ -1,5 +1,6 @@
 ﻿using DbEx.DataService;
 using FluentAssertions;
+using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Expression;
@@ -19,10 +20,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         {
             //given
             var builder = Substitute.For<ISqlParameterBuilder<MsSqlDb>>();
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, c => c.SqlStatements.Assembly.ParameterBuilder.Use(() => builder));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, c => c.SqlStatements.Assembly.ParameterBuilder.Use(() => builder));
 
             //when
-            var resolved = serviceProvider.GetService<ISqlParameterBuilder<MsSqlDb>>();
+            var resolved = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<ISqlParameterBuilder<MsSqlDb>>();
 
             //then
             resolved.Should().Be(builder);
@@ -34,10 +35,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         {
             //given
             var builder = Substitute.For<ISqlParameterBuilder<MsSqlDb>>();
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, c => c.SqlStatements.Assembly.ParameterBuilder.Use(sp => builder));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, c => c.SqlStatements.Assembly.ParameterBuilder.Use(sp => builder));
 
             //when
-            var resolved = serviceProvider.GetService<ISqlParameterBuilder<MsSqlDb>>();
+            var resolved = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<ISqlParameterBuilder<MsSqlDb>>();
 
             //then
             resolved.Should().Be(builder);
@@ -48,10 +49,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void An_parameter_builder_registered_via_generic_should_resolve_the_same_parameter_builder(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, c => c.SqlStatements.Assembly.ParameterBuilder.Use<NoOpSqlParameterBuilder>());
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, c => c.SqlStatements.Assembly.ParameterBuilder.Use<NoOpSqlParameterBuilder>());
 
             //when
-            var resolved = serviceProvider.GetService<ISqlParameterBuilder<MsSqlDb>>();
+            var resolved = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<ISqlParameterBuilder<MsSqlDb>>();
 
             //then
             resolved.Should().NotBeNull().And.BeOfType<NoOpSqlParameterBuilder>();
@@ -63,12 +64,12 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         {
             //given
             var builder = Substitute.For<ISqlParameterBuilder<MsSqlDb>>();
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, c => c.SqlStatements.Assembly.ParameterBuilder.Use(sp => builder));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, c => c.SqlStatements.Assembly.ParameterBuilder.Use(sp => builder));
             var factory = serviceProvider.GetService<ISqlParameterBuilder<MsSqlDb>>();
 
             //when
-            var a1 = serviceProvider.GetService<ISqlParameterBuilder<MsSqlDb>>();
-            var a2 = serviceProvider.GetService<ISqlParameterBuilder<MsSqlDb>>();
+            var a1 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<ISqlParameterBuilder<MsSqlDb>>();
+            var a2 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<ISqlParameterBuilder<MsSqlDb>>();
 
             //then
             a1.Should().Be(a2);
@@ -79,11 +80,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void An_parameter_builder_registered_via_defaults_should_produce_transients(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             //when
-            var a1 = serviceProvider.GetService<ISqlParameterBuilder<MsSqlDb>>();
-            var a2 = serviceProvider.GetService<ISqlParameterBuilder<MsSqlDb>>();
+            var a1 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<ISqlParameterBuilder<MsSqlDb>>();
+            var a2 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<ISqlParameterBuilder<MsSqlDb>>();
 
             //then
             a1.Should().NotBe(a2);
@@ -94,11 +95,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void An_parameter_builder_registered_via_delegate_should_produce_transients(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, c => c.SqlStatements.Assembly.ParameterBuilder.Use(() => Substitute.For<ISqlParameterBuilder<MsSqlDb>>()));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, c => c.SqlStatements.Assembly.ParameterBuilder.Use(() => Substitute.For<ISqlParameterBuilder<MsSqlDb>>()));
 
             //when
-            var a1 = serviceProvider.GetService<ISqlParameterBuilder<MsSqlDb>>();
-            var a2 = serviceProvider.GetService<ISqlParameterBuilder<MsSqlDb>>();
+            var a1 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<ISqlParameterBuilder<MsSqlDb>>();
+            var a2 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<ISqlParameterBuilder<MsSqlDb>>();
 
             //then
             a1.Should().NotBe(a2);
@@ -109,11 +110,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void An_parameter_builder_registered_via_service_provideer_should_produce_transients(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, c => c.SqlStatements.Assembly.ParameterBuilder.Use(sp => Substitute.For<ISqlParameterBuilder<MsSqlDb>>()));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, c => c.SqlStatements.Assembly.ParameterBuilder.Use(sp => Substitute.For<ISqlParameterBuilder<MsSqlDb>>()));
 
             //when
-            var a1 = serviceProvider.GetService<ISqlParameterBuilder<MsSqlDb>>();
-            var a2 = serviceProvider.GetService<ISqlParameterBuilder<MsSqlDb>>();
+            var a1 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<ISqlParameterBuilder<MsSqlDb>>();
+            var a2 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<ISqlParameterBuilder<MsSqlDb>>();
 
             //then
             a1.Should().NotBe(a2);
@@ -121,14 +122,14 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void xxxAn_parameter_builder_registered_via_generic_should_produce_transients(int version)
+        public void An_parameter_builder_registered_via_generic_should_produce_transients(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, c => c.SqlStatements.Assembly.ParameterBuilder.Use<NoOpSqlParameterBuilder>());
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, c => c.SqlStatements.Assembly.ParameterBuilder.Use<NoOpSqlParameterBuilder>());
 
             //when
-            var a1 = serviceProvider.GetService<ISqlParameterBuilder<MsSqlDb>>();
-            var a2 = serviceProvider.GetService<ISqlParameterBuilder<MsSqlDb>>();
+            var a1 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<ISqlParameterBuilder<MsSqlDb>>();
+            var a2 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<ISqlParameterBuilder<MsSqlDb>>();
 
             //then
             a1.Should().NotBe(a2);
@@ -147,7 +148,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
                 Substitute.For<ISqlParameterBuilder<MsSqlDb>>(),
                 Substitute.For<ISqlParameterBuilder<MsSqlDb>>()
             };
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, c => c.SqlStatements.Assembly.ParameterBuilder.Use(sp =>
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, c => c.SqlStatements.Assembly.ParameterBuilder.Use(sp =>
             {
                 index++;
                 return builders[index];
@@ -156,7 +157,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
             //when
             var resolved = new List<ISqlParameterBuilder<MsSqlDb>>();
             for (var i = 0; i < builders.Count; i++)
-                resolved.Add(serviceProvider.GetRequiredService<ISqlParameterBuilder<MsSqlDb>>());
+                resolved.Add(serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlParameterBuilder<MsSqlDb>>());
 
             //then
             resolved.Should().Equal(builders);

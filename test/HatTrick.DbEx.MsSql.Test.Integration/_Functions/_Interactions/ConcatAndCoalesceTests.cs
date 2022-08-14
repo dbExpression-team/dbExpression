@@ -18,7 +18,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_concat_of_ship_date_to_varchar_succeed(int version, int expectedCount = 15)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectMany(
                     db.fx.Concat("Shipped On: ", db.fx.Cast(dbo.Purchase.ShipDate).AsVarChar(50))
@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_concat_of_literal_and_purchaseid_to_varchar_succeed(int version, int expectedCount = 15)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectMany(
                     db.fx.Concat("1", db.fx.Cast(dbo.Purchase.Id).AsVarChar(50))
@@ -54,7 +54,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_concat_of_product_name_and_purchase_payment_source_type_succeed(int version, int expected = 10)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectMany(
                     db.fx.Concat(dbo.Product.Name, db.fx.Cast(dbo.Purchase.PaymentSourceType).AsVarChar(20))

@@ -97,7 +97,7 @@ namespace HatTrick.DbEx.Sql.Expression
             if (@override is not null)
             {
                 factories.TryAdd(requestedType, t => overrides(currentType));
-                return factories[requestedType];
+                return t => @override;
             }
 
             if (logger.IsEnabled(LogLevel.Trace))

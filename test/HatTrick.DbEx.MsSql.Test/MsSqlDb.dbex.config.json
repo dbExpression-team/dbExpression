@@ -7,7 +7,7 @@
 		}
 	},
 	"workingDirectory": "./",
-	"outputDirectory": "./Generated",
+	"outputDirectory": "./Generated/MsSqlDb",
 	"rootNamespace": "DbEx",
 	"enums": [
 		"DbEx.Data.AddressType",

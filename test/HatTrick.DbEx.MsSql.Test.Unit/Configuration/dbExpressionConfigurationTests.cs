@@ -75,29 +75,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
             var serviceProvider = services.BuildServiceProvider();
 
             //when
-            var a1 = serviceProvider.GetService<SelectQueryExpression>();
-            var a2 = serviceProvider.GetService<SelectQueryExpression>();
+            var a1 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<SelectQueryExpression>();
+            var a2 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<SelectQueryExpression>();
 
             //then
             a1.Should().NotBe(a2);
-        }
-
-        [Fact]
-        public void Does_second_registration_of_transient_using_add_resolve_second_registration()
-        {
-            //given
-            var exp = Substitute.For<SelectQueryExpression>();
-            var services = new ServiceCollection();
-            services.AddTransient<SelectQueryExpression>();
-            services.AddTransient<SelectQueryExpression>(sp => exp);
-            services.AddDbExpression(dbex => dbex.AddMsSql2019Database<MsSqlDb>(c => c.ConnectionString.Use("foo")));
-            var serviceProvider = services.BuildServiceProvider();
-
-            //when
-            var resolved = serviceProvider.GetService<SelectQueryExpression>();
-
-            //then
-            resolved.Should().Be(exp);
         }
 
         [Fact]

@@ -18,7 +18,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var executionCount = 0;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version,
                     c => c.Events
                         .OnBeforeSqlStatementAssembly(_ => executionCount++)
                         .OnAfterSqlStatementAssembly(_ => executionCount++)
@@ -41,7 +41,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var executionCount = 0;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version,
                     c => c.Events
                         .OnBeforeSqlStatementAssembly(_ => executionCount++)
                         .OnBeforeSqlStatementAssembly(_ => executionCount++)
@@ -75,7 +75,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var execution = "";
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version,
                     c => c.Events
                         .OnBeforeSqlStatementAssembly(_ => execution += "5")
                         .OnAfterSqlStatementAssembly(_ => execution += "4")
@@ -98,7 +98,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var execution = 0;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version,
                     c => c.Events
                         .OnBeforeSqlStatementAssembly(_ => execution++, c => c.Expression.IsSelectQueryExpression())
                         .OnAfterSqlStatementAssembly(_ => execution++, c => c.Expression.IsSelectQueryExpression())
@@ -121,7 +121,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var executionCount = 0;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version,
                     c => c.Events
                         .OnBeforeSqlStatementAssembly(_ => executionCount++)
                         .OnAfterSqlStatementAssembly(_ => executionCount++)
@@ -144,7 +144,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var executionCount = 0;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version,
                     c => c.Events
                         .OnBeforeSqlStatementAssembly(_ => executionCount++)
                         .OnBeforeSqlStatementAssembly(_ => executionCount++)
@@ -178,7 +178,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var execution = "";
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version,
                     c => c.Events
                         .OnBeforeSqlStatementAssembly(_ => execution += "5")
                         .OnAfterSqlStatementAssembly(_ => execution += "4")
@@ -201,7 +201,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var executionCount = 0;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version,
                     c => c.Events
                         .OnBeforeSqlStatementAssembly(_ => executionCount++)
                         .OnBeforeInsertSqlStatementAssembly(_ => executionCount++)
@@ -225,7 +225,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var executionCount = 0;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version,
                     c => c.Events
                         .OnBeforeSqlStatementAssembly(_ => executionCount++)
                         .OnBeforeSqlStatementAssembly(_ => executionCount++)
@@ -262,7 +262,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var execution = "";
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version,
                     c => c.Events
                         .OnBeforeSqlStatementAssembly(_ => execution += "6")
                         .OnBeforeInsertSqlStatementAssembly(_ => execution += "5")
@@ -286,7 +286,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var execution = 0;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version,
                     c => c.Events
                         .OnBeforeSqlStatementAssembly(_ => execution++, c => c.Expression.IsInsertQueryExpression())
                         .OnAfterSqlStatementAssembly(_ => execution++, c => c.Expression.IsInsertQueryExpression())
@@ -309,7 +309,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var executionCount = 0;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version,
                     c => c.Events
                         .OnBeforeSqlStatementAssembly(_ => executionCount++)
                         .OnBeforeInsertSqlStatementAssembly(_ => executionCount++)
@@ -333,7 +333,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var executionCount = 0;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version,
                     c => c.Events
                         .OnBeforeSqlStatementAssembly(_ => executionCount++)
                         .OnBeforeSqlStatementAssembly(_ => executionCount++)
@@ -370,7 +370,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var execution = "";
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version,
                     c => c.Events
                         .OnBeforeSqlStatementAssembly(_ => execution += "6")
                         .OnBeforeInsertSqlStatementAssembly(_ => execution += "5")
@@ -394,7 +394,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var executionCount = 0;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version,
                     c => c.Events
                         .OnBeforeSqlStatementAssembly(_ => executionCount++)
                         .OnBeforeUpdateSqlStatementAssembly(_ => executionCount++)
@@ -418,7 +418,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var executionCount = 0;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version,
                     c => c.Events
                         .OnBeforeSqlStatementAssembly(_ => executionCount++)
                         .OnBeforeSqlStatementAssembly(_ => executionCount++)
@@ -455,7 +455,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var execution = "";
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version,
                     c => c.Events
                         .OnBeforeSqlStatementAssembly(_ => execution += "6")
                         .OnBeforeUpdateSqlStatementAssembly(_ => execution += "5")
@@ -479,7 +479,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var execution = 0;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version,
                     c => c.Events
                         .OnBeforeSqlStatementAssembly(_ => execution++, c => c.Expression.IsUpdateQueryExpression())
                         .OnAfterSqlStatementAssembly(_ => execution++, c => c.Expression.IsUpdateQueryExpression())
@@ -502,7 +502,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var executionCount = 0;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version,
                     c => c.Events
                         .OnBeforeSqlStatementAssembly(_ => executionCount++)
                         .OnBeforeUpdateSqlStatementAssembly(_ => executionCount++)
@@ -526,7 +526,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var executionCount = 0;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version,
                     c => c.Events
                         .OnBeforeSqlStatementAssembly(_ => executionCount++)
                         .OnBeforeSqlStatementAssembly(_ => executionCount++)
@@ -563,7 +563,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var execution = "";
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version,
                     c => c.Events
                         .OnBeforeSqlStatementAssembly(_ => execution += "6")
                         .OnBeforeUpdateSqlStatementAssembly(_ => execution += "5")
@@ -587,7 +587,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var executionCount = 0;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version,
                     c => c.Events
                         .OnBeforeSqlStatementAssembly(_ => executionCount++)
                         .OnAfterSqlStatementAssembly(_ => executionCount++)
@@ -610,7 +610,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var executionCount = 0;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version,
                     c => c.Events
                         .OnBeforeSqlStatementAssembly(_ => executionCount++)
                         .OnBeforeSqlStatementAssembly(_ => executionCount++)
@@ -644,7 +644,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var execution = "";
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version,
                     c => c.Events
                         .OnBeforeSqlStatementAssembly(_ => execution += "5")
                         .OnAfterSqlStatementAssembly(_ => execution += "4")
@@ -667,7 +667,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var execution = 0;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version,
                     c => c.Events
                         .OnBeforeSqlStatementAssembly(_ => execution++, c => c.Expression.IsDeleteQueryExpression())
                         .OnAfterSqlStatementAssembly(_ => execution++, c => c.Expression.IsDeleteQueryExpression())
@@ -690,7 +690,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var executionCount = 0;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version,
                     c => c.Events
                         .OnBeforeSqlStatementAssembly(_ => executionCount++)
                         .OnAfterSqlStatementAssembly(_ => executionCount++)
@@ -713,7 +713,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var executionCount = 0;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version,
                     c => c.Events
                         .OnBeforeSqlStatementAssembly(_ => executionCount++)
                         .OnBeforeSqlStatementAssembly(_ => executionCount++)
@@ -747,7 +747,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var execution = "";
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version,
                     c => c.Events
                         .OnBeforeSqlStatementAssembly(_ => execution += "5")
                         .OnAfterSqlStatementAssembly(_ => execution += "4")
@@ -771,7 +771,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
             //given
             var before = 0;
             var after = 0;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version,
                     c => c.Events.OnBeforeSqlStatementExecution(_ => before++)
                         .OnAfterSqlStatementExecution(_ => after++));
 
@@ -794,7 +794,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
             var source = new CancellationTokenSource();
             var token = source.Token;
 
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version,
                     c => c.Events.OnBeforeSqlStatementExecution(_ =>
                             {
                                 if (before == cancelOnIteration)
@@ -823,7 +823,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var executionCount = 0;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version,
                     c => c.Events
                         .OnBeforeSqlStatementAssembly(_ => executionCount++)
                         .OnAfterSqlStatementAssembly(_ => executionCount++)
@@ -846,7 +846,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var executionCount = 0;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version,
                     c => c.Events
                         .OnBeforeSqlStatementAssembly(_ => executionCount++)
                         .OnBeforeSqlStatementAssembly(_ => executionCount++)
@@ -880,7 +880,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var execution = "";
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version,
                     c => c.Events
                         .OnBeforeSqlStatementAssembly(_ => execution += "5")
                         .OnAfterSqlStatementAssembly(_ => execution += "4")
@@ -903,7 +903,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var executionCount = 0;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version,
                     c => c.Events
                         .OnBeforeSqlStatementAssembly(_ => executionCount++)
                         .OnAfterSqlStatementAssembly(_ => executionCount++)
@@ -926,7 +926,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var executionCount = 0;
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version,
                     c => c.Events
                         .OnBeforeSqlStatementAssembly(_ => executionCount++)
                         .OnBeforeSqlStatementAssembly(_ => executionCount++)
@@ -960,7 +960,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             var execution = "";
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version,
                     c => c.Events
                         .OnBeforeSqlStatementAssembly(_ => execution += "5")
                         .OnAfterSqlStatementAssembly(_ => execution += "4")
