@@ -16,7 +16,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Builder
         public void Does_select_many_for_single_field_result_in_valid_expression(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             SelectValuesContinuation<MsSqlDb,int> builder;
             SelectQueryExpression expressionSet;
@@ -40,7 +40,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Builder
         public void Does_select_many_for_multiple_values_result_in_valid_expression(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             SelectDynamicsContinuation<MsSqlDb> builder;
             SelectQueryExpression expressionSet;

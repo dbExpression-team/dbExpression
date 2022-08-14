@@ -20,7 +20,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             public void Are_there_50_records_for_persons_when_inner_joining_to_sec_schema(int version, int expected = 50)
             {
                 //given
-                var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+                var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
                 var exp = db.SelectMany(
                         dbo.Person.As("dboPerson").Id.As("dboId"), 
@@ -42,7 +42,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             public void Are_there_50_records_for_persons_when_inner_joining_to_sec_schema_when_reversing_join_condition(int version, int expected = 50)
             {
                 //given
-                var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+                var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
                 var exp = db.SelectMany(
                         dbo.Person.As("dboPerson").Id.As("dboId"), 

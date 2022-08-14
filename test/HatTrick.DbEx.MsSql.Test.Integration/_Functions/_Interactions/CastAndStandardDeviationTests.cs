@@ -16,7 +16,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_cast_of_standarddeviation_of_quantity_to_varchar_succeed(int version, string expected = "0.704")
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.Cast(db.fx.StDev(dbo.PurchaseLine.Quantity)).AsVarChar(50)
@@ -34,7 +34,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_standarddeviation_of_cast_of_gendertype_to_int_succeed(int version, float expected = .4629f)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.StDev(db.fx.Cast(dbo.Person.GenderType).AsInt())

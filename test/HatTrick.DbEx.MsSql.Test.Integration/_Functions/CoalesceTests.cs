@@ -19,7 +19,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_coalesceing_ship_date_and_purchase_date_succeed(int version, int expected = 15)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectMany(
                     db.fx.Coalesce(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate).As("relevant_date")
@@ -37,7 +37,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_coalesceing_all_product_dates_succeed(int version, int expected = 15)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectMany(
                     db.fx.Coalesce(
@@ -59,7 +59,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_coalesceing_ship_date_and_getdate_plus_purchase_date_succeed(int version, int expected = 15)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectMany(
                     dbo.Purchase.TotalPurchaseAmount,
@@ -81,7 +81,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_coalesceing_ship_date_and_static_value_succeed(int version, int expected = 15)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectMany(
                     db.fx.Coalesce(
@@ -102,7 +102,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_coalesceing_ship_date_and_expected_delivery_date_and_static_value_succeed(int version, int expected = 15)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectMany(
                     db.fx.Coalesce(
@@ -124,7 +124,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_coalesceing_ship_date_and_expected_delivery_date_and_static_null_value_succeed(int version, int expected = 15)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectMany(
                     db.fx.Coalesce(
@@ -146,7 +146,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_coalesceing_ship_date_and_expected_delivery_date_and_static_non_null_value_succeed(int version, int expected = 15)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectMany(
                     db.fx.Coalesce(
@@ -169,7 +169,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_order_by_coalesce_of_ship_date_and_purchase_date_ascending_succeed(int version, int expected = 2019)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.Coalesce(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate)
@@ -189,7 +189,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_order_by_coalesce_of_ship_date_and_purchase_date_descending_succeed(int version, int expected = 2019)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.Coalesce(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate)
@@ -209,7 +209,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_order_by_coalesce_of_ship_date_and_purchase_date_ascending_and_aliasing_succeed(int version, int expected = 2019)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.Coalesce(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate).As("alias")
@@ -229,7 +229,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_order_by_coalesce_of_ship_date_and_purchase_date_descending_and_aliasing_succeed(int version, int expected = 2019)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                    db.fx.Coalesce(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate).As("alias")
@@ -248,7 +248,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_coalesce_of_ship_date_and_expected_delivery_date_with_aliasing_succeed(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                    db.fx.Coalesce(dbo.Purchase.ShipDate, dbo.Purchase.ExpectedDeliveryDate).As("alias")
@@ -267,7 +267,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_coalesce_of_ship_date_and_expected_delivery_date_and_id_with_aliasing_succeed(int version, int expected = 13)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                    db.fx.Coalesce(dbo.Purchase.ShipDate, dbo.Purchase.ExpectedDeliveryDate, dbo.Purchase.Id).As("alias")
@@ -287,7 +287,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_group_by_coalesce_of_ship_date_and_purchase_date_descending_succeed(int version, int expected = 5)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectMany(
                     db.fx.Coalesce(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate)
@@ -306,7 +306,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_group_by_coalesce_of_ship_date_and_purchase_date_descending_and_aliasing_succeed(int version, int expected = 5)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectMany(
                     db.fx.Coalesce(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate).As("relevant_date")
@@ -325,7 +325,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_coalesce_of_ship_date_and_expected_delivery_date_succeed(int version, int expected = 15)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectMany(
                     db.fx.Coalesce(dbo.Purchase.ShipDate, dbo.Purchase.ExpectedDeliveryDate).As("relevant_date")
@@ -343,7 +343,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_coalesce_of_ship_date_and_expected_delivery_date_and_null_date_succeed(int version, int expected = 15)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectMany(
                     db.fx.Coalesce(dbo.Purchase.ShipDate, dbo.Purchase.ExpectedDeliveryDate, (DateTime?)null!).As("relevant_date")
@@ -361,7 +361,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_coalesce_of_valid_start_time_of_day_for_purchase_and_valid_end_time_of_day_for_purchase_and_timespan_succeed(int version, int expected = 1)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectMany(
                     db.fx.Coalesce(dbo.Product.ValidStartTimeOfDayForPurchase, dbo.Product.ValidEndTimeOfDayForPurchase, TimeSpan.FromHours(expected)).As("relevant_date")
@@ -380,7 +380,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_coalesce_of_valid_start_time_of_day_for_purchase_and_valid_end_time_of_day_for_purchase_and_null_succeed(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectMany(
                     db.fx.Coalesce(dbo.Product.ValidStartTimeOfDayForPurchase, dbo.Product.ValidEndTimeOfDayForPurchase, (TimeSpan?)null!).As("relevant_date")
@@ -399,7 +399,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_coalesce_of_productcategorytype_for_product_and_terminate_with_null_succeed(int version, int expectedCount = 1)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectMany(
                     db.fx.Coalesce(dbo.Product.ProductCategoryType, dbo.Product.ProductCategoryType, (ProductCategoryType?)null!).As("relevant")
@@ -418,7 +418,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_coalesce_of_productcategorytype_for_product_and_terminate_with_valid_productcategorytype_succeed(int version, int expectedCount = 1)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectMany(
                     db.fx.Coalesce(dbo.Product.ProductCategoryType, dbo.Product.ProductCategoryType, ProductCategoryType.Books).As("relevant")
@@ -437,7 +437,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_coalesce_of_productcategorytype_for_product_and_terminate_with_productcategorytype_succeed(int version, int expectedCount = 1)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectMany(
                     db.fx.Coalesce(dbo.Product.ProductCategoryType, dbo.Product.ProductCategoryType, dbo.Product.ProductCategoryType).As("relevant")

@@ -17,7 +17,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_length_of_person_first_name_succeed(int version, string firstName = "Kenny", long expected = 5)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.Len(dbo.Person.FirstName)
@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_length_of_address_line2_succeed(int version, string? line2 = null)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.Len(dbo.Address.Line2)
@@ -56,7 +56,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_datepart_of_aliased_field_succeed(int version, long expected = 10)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     db.fx.Len(("other", "Line1")).As("alias")

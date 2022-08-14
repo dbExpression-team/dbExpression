@@ -13,7 +13,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void DbType_expressions_of_same_values_should_be_equal(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp1 = new DbTypeExpression<TestEnum>(TestEnum.AValue);
             var exp2 = new DbTypeExpression<TestEnum>(TestEnum.AValue);
@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void DbType_expressions_of_different_values_should_not_be_equal(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp1 = new DbTypeExpression<TestEnum>(TestEnum.AValue);
             var exp2 = new DbTypeExpression<TestEnum>(TestEnum.BValue);
@@ -41,7 +41,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void DbType_expressions_of_same_values_should_have_same_hash_codes(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp1 = new DbTypeExpression<TestEnum>(TestEnum.AValue);
             var exp2 = new DbTypeExpression<TestEnum>(TestEnum.AValue);
@@ -59,7 +59,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void DbType_expressions_of_different_values_should_have_different_hash_codes(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp1 = new DbTypeExpression<TestEnum>(TestEnum.AValue);
             var exp2 = new DbTypeExpression<TestEnum>(TestEnum.BValue);

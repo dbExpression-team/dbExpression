@@ -1,6 +1,7 @@
 ﻿using DbEx.DataService;
 using DbEx.dboData;
 using FluentAssertions;
+using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Mapper;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,7 +17,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_using_instance_method_with_null_instance_throw_expected_exception(int version)
         {
             //given & when & then
-            Assert.Throws<DbExpressionConfigurationException>(() => ConfigureForMsSqlVersion(version, builder => builder.Entities.Creation.Use((IEntityFactory<MsSqlDb>)null!)));
+            Assert.Throws<DbExpressionConfigurationException>(() => ConfigureForMsSqlVersion<MsSqlDb>(version, builder => builder.Entities.Creation.Use((IEntityFactory<MsSqlDb>)null!)));
         }
 
         [Theory]
@@ -24,10 +25,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_of_a_entity_creation_factory_using_generic_use_method_succeed(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, builder => builder.Entities.Creation.Use<NoOpEntityFactory>());
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, builder => builder.Entities.Creation.Use<NoOpEntityFactory>());
 
             //when
-            var factory = serviceProvider.GetRequiredService<IEntityFactory<MsSqlDb>>() is NoOpEntityFactory;
+            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IEntityFactory<MsSqlDb>>() is NoOpEntityFactory;
 
             //then
             factory.Should().BeTrue();
@@ -38,10 +39,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_of_a_entity_creation_factory_using_service_serviceProvider_and_new_instance_from_factory_succeed(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, builder => builder.Entities.Creation.Use(sp => new NoOpEntityFactory()));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, builder => builder.Entities.Creation.Use(sp => new NoOpEntityFactory()));
 
             //when
-            var factory = serviceProvider.GetRequiredService<IEntityFactory<MsSqlDb>>() is NoOpEntityFactory;
+            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IEntityFactory<MsSqlDb>>() is NoOpEntityFactory;
 
             //then
             factory.Should().BeTrue();
@@ -52,10 +53,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_of_a_entity_creation_factory_using_service_serviceProvider_and_type_returning_new_instance_of_entity_should_succeed(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, builder => builder.Entities.Creation.Use((sp, t) => new Person()));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, builder => builder.Entities.Creation.Use((sp, t) => new Person()));
 
             //when
-            var entity = serviceProvider.GetRequiredService<IEntityFactory<MsSqlDb>>().CreateEntity<Person>();
+            var entity = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IEntityFactory<MsSqlDb>>().CreateEntity<Person>();
 
             //then
             entity.Should().NotBeNull().And.BeOfType<Person>();
@@ -66,10 +67,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_of_a_entity_creation_factory_using_service_serviceProvider_and_type_with_additional_override_resolve_correctly(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, builder => builder.Entities.Creation.Use((sp, t) => sp.GetRequiredService<Person>(), c => c.ForEntityType<Person>().Use(() => new Person() { FirstName = "override" })));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, builder => builder.Entities.Creation.Use((sp, t) => sp.GetRequiredService<Person>(), c => c.ForEntityType<Person>().Use(() => new Person() { FirstName = "override" })));
 
             //when
-            var entity = serviceProvider.GetRequiredService<IEntityFactory<MsSqlDb>>().CreateEntity<Person>();
+            var entity = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IEntityFactory<MsSqlDb>>().CreateEntity<Person>();
 
             //then
             entity.Should().NotBeNull().And.BeOfType<Person>().Which.FirstName.Should().Be("override");
@@ -80,10 +81,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_of_a_entity_creation_factory_using_instance_method_succeed(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, builder => builder.Entities.Creation.Use(new NoOpEntityFactory()));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, builder => builder.Entities.Creation.Use(new NoOpEntityFactory()));
 
             //when
-            var factory = serviceProvider.GetRequiredService<IEntityFactory<MsSqlDb>>() is NoOpEntityFactory;
+            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IEntityFactory<MsSqlDb>>() is NoOpEntityFactory;
 
             //then
             factory.Should().BeTrue();
@@ -94,10 +95,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_of_a_entity_creation_factory_using_service_serviceProvider_and_instance_method_succeed(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, builder => builder.Entities.Creation.Use(sp => new NoOpEntityFactory()));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, builder => builder.Entities.Creation.Use(sp => new NoOpEntityFactory()));
 
             //when
-            var factory = serviceProvider.GetRequiredService<IEntityFactory<MsSqlDb>>() is NoOpEntityFactory;
+            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IEntityFactory<MsSqlDb>>() is NoOpEntityFactory;
 
             //then
             factory.Should().BeTrue();
@@ -109,10 +110,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         {
             //given
 
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             //when
-            var factory = serviceProvider.GetRequiredService<IEntityFactory<MsSqlDb>>() is not null;
+            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IEntityFactory<MsSqlDb>>() is not null;
 
             //then
             factory.Should().BeTrue();
@@ -123,10 +124,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_of_type_for_entity_creation_factory_using_generic_method_return_correct_converter_of_a_type_converter_override(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, builder => builder.Entities.Creation.ForEntityTypes(x => x.ForEntityType<Person>().Use(sp => new Person { FirstName = "UseThis" })));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, builder => builder.Entities.Creation.ForEntityTypes(x => x.ForEntityType<Person>().Use(sp => new Person { FirstName = "UseThis" })));
 
             //when
-            var person = serviceProvider.GetRequiredService<IEntityFactory<MsSqlDb>>().CreateEntity<Person>();
+            var person = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IEntityFactory<MsSqlDb>>().CreateEntity<Person>();
 
             //then
             person.FirstName.Should().Be("UseThis");
@@ -137,10 +138,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_of_a_entity_mapping_factory_using_generic_use_method_succeed(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, builder => builder.Entities.Mapping.Use<NoOpMapperFactory>());
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, builder => builder.Entities.Mapping.Use<NoOpMapperFactory>());
 
             //when
-            var factory = serviceProvider.GetRequiredService<IMapperFactory<MsSqlDb>>() is NoOpMapperFactory;
+            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IMapperFactory<MsSqlDb>>() is NoOpMapperFactory;
 
             //then
             factory.Should().BeTrue();
@@ -151,10 +152,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_of_a_entity_mapping_factory_using_instance_use_method_succeed(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, builder => builder.Entities.Mapping.Use(new NoOpMapperFactory()));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, builder => builder.Entities.Mapping.Use(new NoOpMapperFactory()));
 
             //when
-            var factory = serviceProvider.GetRequiredService<IMapperFactory<MsSqlDb>>() is NoOpMapperFactory;
+            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IMapperFactory<MsSqlDb>>() is NoOpMapperFactory;
 
             //then
             factory.Should().BeTrue();
@@ -166,10 +167,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         {
             //given
 
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             //when
-            var factory = serviceProvider.GetRequiredService<IMapperFactory<MsSqlDb>>() is not null;
+            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IMapperFactory<MsSqlDb>>() is not null;
 
             //then
             factory.Should().BeTrue();
@@ -180,10 +181,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_of_type_for_entity_mapping_factory_using_generic_method_return_correct_converter_of_a_type_converter_override(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, builder => builder.Entities.Creation.ForEntityTypes(x => x.ForEntityType<Person>().Use(sp => new Person { FirstName = "UseDefaultFactory" })));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, builder => builder.Entities.Creation.ForEntityTypes(x => x.ForEntityType<Person>().Use(sp => new Person { FirstName = "UseDefaultFactory" })));
 
             //when
-            var person = serviceProvider.GetRequiredService<IEntityFactory<MsSqlDb>>().CreateEntity<Person>();
+            var person = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IEntityFactory<MsSqlDb>>().CreateEntity<Person>();
 
             //then
             person.FirstName.Should().Be("UseDefaultFactory");
@@ -194,11 +195,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_of_a_entity_creation_factory_using_service_serviceProvider_and_new_instance_from_factory_resolve_as_transient(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, builder => builder.Entities.Creation.Use(sp => new NoOpEntityFactory()));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, builder => builder.Entities.Creation.Use(sp => new NoOpEntityFactory()));
 
             //when
-            var a1 = serviceProvider.GetRequiredService<IEntityFactory<MsSqlDb>>();
-            var a2 = serviceProvider.GetRequiredService<IEntityFactory<MsSqlDb>>();
+            var a1 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IEntityFactory<MsSqlDb>>();
+            var a2 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IEntityFactory<MsSqlDb>>();
 
             //then
             a1.Should().NotBe(a2);
@@ -209,11 +210,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_of_a_entity_creation_factory_generically_regsistered_resolve_as_singleton(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, builder => builder.Entities.Creation.Use<NoOpEntityFactory>());
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, builder => builder.Entities.Creation.Use<NoOpEntityFactory>());
 
             //when
-            var a1 = serviceProvider.GetRequiredService<IEntityFactory<MsSqlDb>>();
-            var a2 = serviceProvider.GetRequiredService<IEntityFactory<MsSqlDb>>();
+            var a1 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IEntityFactory<MsSqlDb>>();
+            var a2 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IEntityFactory<MsSqlDb>>();
 
             //then
             a1.Should().Be(a2);
@@ -224,11 +225,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_of_a_entity_creation_factory_regsistered_with_instance_resolve_as_singleton(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, builder => builder.Entities.Creation.Use(new NoOpEntityFactory()));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, builder => builder.Entities.Creation.Use(new NoOpEntityFactory()));
 
             //when
-            var a1 = serviceProvider.GetRequiredService<IEntityFactory<MsSqlDb>>();
-            var a2 = serviceProvider.GetRequiredService<IEntityFactory<MsSqlDb>>();
+            var a1 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IEntityFactory<MsSqlDb>>();
+            var a2 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IEntityFactory<MsSqlDb>>();
 
             //then
             a1.Should().Be(a2);
@@ -240,11 +241,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         {
             //given
             var factory = new DelegateEntityFactory<MsSqlDb>(t => new Person());
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, builder => builder.Entities.Creation.Use(sp => factory, c => c.ForEntityType<Person>().Use(() => new Person { FirstName = "x" })));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, builder => builder.Entities.Creation.Use(sp => factory, c => c.ForEntityType<Person>().Use(() => new Person { FirstName = "x" })));
 
             //when
-            var a1 = serviceProvider.GetRequiredService<Person>();
-            var a2 = serviceProvider.GetRequiredService<Person>();
+            var a1 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<Person>();
+            var a2 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<Person>();
 
             //then
             a1.Should().NotBe(a2);
@@ -257,11 +258,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void An_entity_resolved_via_service_serviceProvider_and_type_should_be_transient(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, builder => builder.Entities.Creation.Use((sp, t) => new Person()));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, builder => builder.Entities.Creation.Use((sp, t) => new Person()));
 
             //when
-            var a1 = serviceProvider.GetRequiredService<IEntityFactory<MsSqlDb>>().CreateEntity<Person>();
-            var a2 = serviceProvider.GetRequiredService<IEntityFactory<MsSqlDb>>().CreateEntity<Person>();
+            var a1 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IEntityFactory<MsSqlDb>>().CreateEntity<Person>();
+            var a2 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IEntityFactory<MsSqlDb>>().CreateEntity<Person>();
 
             //then
             a1.Should().NotBe(a2);
@@ -272,11 +273,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void An_entity_resolved_via_override_during_factory_configuration_for_entity_type_delegate_should_be_transient(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, builder => builder.Entities.Creation.Use((sp, t) => new Person() { FirstName = "base" }, c => c.ForEntityType<Person>().Use(() => new Person() { FirstName = "override" })));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, builder => builder.Entities.Creation.Use((sp, t) => new Person() { FirstName = "base" }, c => c.ForEntityType<Person>().Use(() => new Person() { FirstName = "override" })));
 
             //when
-            var a1 = serviceProvider.GetRequiredService<Person>();
-            var a2 = serviceProvider.GetRequiredService<Person>();
+            var a1 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<Person>();
+            var a2 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<Person>();
 
             //then
             a1.Should().NotBe(a2);
@@ -287,11 +288,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void An_entity_resolved_via_override_for_entity_type_delegate_should_be_transient(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, builder => builder.Entities.Creation.ForEntityTypes(x => x.ForEntityType<Person>().Use(sp => new Person { FirstName = "UseThis" })));
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, builder => builder.Entities.Creation.ForEntityTypes(x => x.ForEntityType<Person>().Use(sp => new Person { FirstName = "UseThis" })));
 
             //when
-            var a1 = serviceProvider.GetRequiredService<Person>();
-            var a2 = serviceProvider.GetRequiredService<Person>();
+            var a1 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<Person>();
+            var a2 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<Person>();
 
             //then
             a1.Should().NotBe(a2);

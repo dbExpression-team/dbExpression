@@ -16,16 +16,24 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
+using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
+using TinyIoC;
 
-namespace HatTrick.DbEx.Sql
+namespace HatTrick.DbEx.Sql.Configuration
 {
-    public sealed class SingletonSqlDatabaseRuntimeFactory<TDatabase> : SingletonSqlDatabaseRuntimeFactory
+    public class TinyIoCServiceCollection<TDatabase> : List<ServiceDescriptor>, IServiceCollection
         where TDatabase : class, ISqlDatabaseRuntime
     {
-        public SingletonSqlDatabaseRuntimeFactory(Func<ISqlDatabaseRuntime> factory) : base(typeof(TDatabase), factory)
-        { 
-        
+        private readonly TinyIoCContainer container = new();
+
+        public IServiceProvider<TDatabase> BuildServiceProvider(IServiceProvider root)
+        {
+            var adapter = new TinyIoCServiceCollectionAdapter(this, container);
+            adapter.AdaptServiceDescriptors();
+            container.Register<IServiceProvider>(root);
+            return new ServiceProviderDecorator<TDatabase>(container);
         }
     }
 }

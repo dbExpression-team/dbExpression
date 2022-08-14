@@ -65,7 +65,7 @@ namespace NetCoreConsoleApp
             services.AddDbExpression(dbex =>
             {
 
-                dbex.AddMsSql2019Database<SimpleConsoleDb>(
+                dbex.AddMsSql2014Database<SimpleConsoleDb>(
                     database =>
                     {
                         database.ConnectionString.Use(config.GetConnectionString("dbex_mssql_test"));
@@ -74,7 +74,7 @@ namespace NetCoreConsoleApp
                             x.ForEnumType<PaymentMethodType>().PersistAsString()
                              .ForEnumType<PaymentSourceType>().PersistAsString()
                         );
-                        database.Logging.ConfigureLoggingSettings(l => l.LogParameterValues = false);
+                        database.Logging.ConfigureLoggingSettings(l => l.LogParameterValues = true);
                     }
                 );
 

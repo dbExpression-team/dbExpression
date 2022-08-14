@@ -17,7 +17,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Builder
         public void Does_select_for_single_value_result_in_valid_expression(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             SelectValueContinuation<MsSqlDb,int> builder;
             SelectQueryExpression expression;
@@ -41,7 +41,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Builder
         public void Does_select_for_multiple_values_result_in_valid_expression(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             SelectDynamicContinuation<MsSqlDb> builder;
             SelectQueryExpression expression;

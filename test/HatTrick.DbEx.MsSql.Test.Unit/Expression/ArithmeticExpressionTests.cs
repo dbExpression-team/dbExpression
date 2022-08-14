@@ -1,4 +1,5 @@
-﻿using DbEx.dboDataService;
+﻿using DbEx.DataService;
+using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.Sql.Expression;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Does_arithmetic_expression_of_a_field_added_to_an_int_literal_value_construct_correctly(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             //when
             Int32ExpressionMediator exp = dbo.Person.Id + 0;
@@ -42,7 +43,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Does_arithmetic_expression_of_an_int_literal_value_added_to_a_field_construct_correctly(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             //when
             Int32ExpressionMediator exp = 0 + dbo.Person.Id;
@@ -69,7 +70,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Does_arithmetic_expression_of_an_int_literal_value_added_to_a_field_and_another_int_literal_value_construct_correctly(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             //when
             Int32ExpressionMediator exp = 0 + dbo.Person.Id + 3;
@@ -102,7 +103,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Does_arithmetic_expression_of_an_int_literal_value_added_to_an_int_literal_value_added_to_a_field_result_in_compiler_addition_then_arithmetic_expression_with_two_args(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             //when
             Int32ExpressionMediator exp = 0 + 3 + dbo.Person.Id;
@@ -130,7 +131,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Does_arithmetic_expression_of_an_int_literal_value_added_to_a_field_value_and_subtracting_an_int_literal_value_result_in_correct_arithmetic_expression(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             //when
             Int32ExpressionMediator exp = 0 + dbo.Person.Id - 3;
@@ -170,7 +171,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Does_arithmetic_expression_of_an_int_literal_value_added_to_a_precedence_declared_field_value_subtracting_an_int_literal_value_result_in_correct_arithmetic_expression(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             //when
             Int32ExpressionMediator exp = 0 + (dbo.Person.Id - 3);
@@ -209,7 +210,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Does_arithmetic_expression_of_an_int_literal_value_added_to_a_precedence_declared_field_value_subtracting_an_int_literal_value_than_multiplied_by_int_literal_value_result_in_correct_arithmetic_expression(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             //when
             Int32ExpressionMediator exp = 0 + (dbo.Person.Id - 3) * 20;
@@ -263,7 +264,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Does_arithmetic_expression_of_an_int_literal_value_added_to_a_precedence_declared_field_value_subtracting_a_double_literal_value_than_multiplied_by_int_literal_value_result_in_correct_arithmetic_expression(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             //when
             DoubleExpressionMediator exp = 0 + (dbo.Person.Id - 3.25d) * 20;

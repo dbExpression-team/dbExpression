@@ -212,7 +212,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
         #endregion
 
         #region common
-        public static void AddMsSqlCommon<TDatabase>(
+        private static void AddMsSqlCommon<TDatabase>(
             this IServiceCollection services,
             Action<ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>> configureRuntime
         )
@@ -224,12 +224,13 @@ namespace HatTrick.DbEx.MsSql.Configuration
             if (configureRuntime is null)
                 throw new ArgumentNullException(nameof(configureRuntime));
 
-            var typedBuilder = new MsSqlSqlDatabaseRuntimeConfigurationBuilder<TDatabase>(services);
-            var builder = typedBuilder as ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>;
+            var dbServices = new TinyIoCServiceCollection<TDatabase>();
+            var builder = new MsSqlSqlDatabaseRuntimeConfigurationBuilder<TDatabase>(dbServices);
+            var dbServicesBuilder = builder as ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>;
 
             try
             {
-                configureRuntime.Invoke(builder);
+                configureRuntime.Invoke(dbServicesBuilder);
             }
             catch (Exception e)
             {
@@ -237,15 +238,15 @@ namespace HatTrick.DbEx.MsSql.Configuration
             }            
 
             //begin registrations using builder
-            builder.QueryExpressions.UseDelegateQueryExpressionFactoryWithDefaults();
+            dbServicesBuilder.QueryExpressions.UseDelegateQueryExpressionFactoryWithDefaults();
 
-            builder.Entities
+            dbServicesBuilder.Entities
                 .UseDelegateEntityFactoryWithDiscovery()
                 .UseDelegateMapperFactoryWithDiscovery();
 
-            builder.Conversions.UseDelegateValueConverterFactoryWithDiscoveryWithDefaults();
+            dbServicesBuilder.Conversions.UseDelegateValueConverterFactoryWithDiscoveryWithDefaults();
 
-            builder.SqlStatements
+            dbServicesBuilder.SqlStatements
                 .UseDelegateExpressionElementAppenderFactoryWithDefaults()
                 .UseDelegateQueryExecutionPipelineFactoryWithDefaults()
                 .Assembly
@@ -257,33 +258,51 @@ namespace HatTrick.DbEx.MsSql.Configuration
                     .Connection.Use<MsSqlConnectionFactory<TDatabase>>();
             //end registrations using builder
 
-            typedBuilder.Build();
+            builder.Build();
 
-            //begin direct registrations
+            //begin direct registrations in database service collection
+            dbServices.TryAddSingleton<SqlStatementAssemblyOptions>();
+            dbServices.TryAddSingleton<LoggingOptions>();
+            dbServices.TryAddSingleton<IDbTypeMapFactory<SqlDbType>, MsSqlTypeMapFactory>();
+            dbServices.TryAddSingleton<IQueryExpressionBuilderFactory<TDatabase>, MsSqlQueryExpressionBuilderFactory<TDatabase>>();
+            dbServices.TryAddTransient<AssemblyContext>(sp => sp.GetRequiredService<SqlStatementAssemblyOptions>().ToAssemblyContext());
+            dbServices.TryAddSingleton<PipelineEventHooks<TDatabase>>(sp => new PipelineEventHooks<TDatabase>());
+            dbServices.TryAddSingleton<IExpandoObjectMapper, ExpandoObjectMapper>();
+
+            //begin direct registrations in root service collection
             services.TryAddSingleton<ILoggerFactory, NullLoggerFactory>();
             services.TryAddSingleton(typeof(ILogger<>), typeof(NullLogger<>));
-            services.TryAddSingleton<SqlStatementAssemblyOptions>();
-            services.TryAddSingleton<LoggingOptions>();
-
-            services.TryAddSingleton<IDbTypeMapFactory<SqlDbType>, MsSqlTypeMapFactory>();
-            services.TryAddSingleton<IQueryExpressionBuilderFactory<TDatabase>, MsSqlQueryExpressionBuilderFactory<TDatabase>>();
-            services.TryAddTransient<AssemblyContext>(sp => sp.GetRequiredService<SqlStatementAssemblyOptions>().ToAssemblyContext());
-            services.TryAddSingleton<PipelineEventHooks<TDatabase>>(sp => new PipelineEventHooks<TDatabase>());
-            services.TryAddSingleton<IExpandoObjectMapper, ExpandoObjectMapper>();
-
-            services.TryAddSingleton<SingletonSqlDatabaseRuntimeFactory<TDatabase>>(sp =>
-                new SingletonSqlDatabaseRuntimeFactory<TDatabase>(() => (sp.GetService(typeof(TDatabase)) as ISqlDatabaseRuntime)!)
-            );
             services.AddSingleton<TDatabase>(sp =>
-                (TDatabase)Activator.CreateInstance(
-                    typeof(TDatabase),
-                    sp.GetService(typeof(IQueryExpressionBuilderFactory<TDatabase>)),
-                    sp.GetService(typeof(IConnectionStringFactory<TDatabase>)),
-                    sp.GetService(typeof(ISqlConnectionFactory<TDatabase>))
-                )!
-            );
-            //end direct registrations
+                {
+                    try
+                    {
+                        return (TDatabase)Activator.CreateInstance(
+                            typeof(TDatabase),
+                            sp.GetServiceProviderFor<TDatabase>().GetRequiredService<IQueryExpressionBuilderFactory<TDatabase>>(),
+                            sp.GetServiceProviderFor<TDatabase>().GetRequiredService<IConnectionStringFactory<TDatabase>>(),
+                            sp.GetServiceProviderFor<TDatabase>().GetRequiredService<ISqlConnectionFactory<TDatabase>>()
+                        )!;
+                    }
+                    catch (Exception e)
+                    {
+                        //There are defaults for all configuration except connection strings.  Likely with this exception there is no connection string factory.
+                        //As this is in startup, and an exception will be thrown either way, try and resolve a connection string to see if a better error message
+                        //can be returned/thrown.
+                        if (sp.GetServiceProviderFor<TDatabase>().GetService(typeof(IConnectionStringFactory<TDatabase>)) is null)
+                            throw new DbExpressionConfigurationException($"Initialization of runtime database {typeof(TDatabase)} failed.  " +
+                                $"A connection string factory has not been properly registered.  Please ensure a connection string, or a delegate providing a connection string, has been provided.");
 
+                        throw new DbExpressionConfigurationException($"Could not create an instance of database {typeof(TDatabase)}, see inner exception for details.", e);
+                    }
+                }
+            );
+            services.AddSingleton<IServiceProvider<TDatabase>>(sp => dbServices.BuildServiceProvider(sp));
+        }
+
+        public static IServiceProvider GetServiceProviderFor<TDatabase>(this IServiceProvider sp)
+            where TDatabase : class, ISqlDatabaseRuntime
+        {
+            return sp.GetService<IServiceProvider<TDatabase>>()!;
         }
 
         private static void UseDelegateQueryExpressionFactoryWithDefaults<TDatabase>(this IQueryExpressionFactoryConfigurationBuilder<TDatabase> builder)

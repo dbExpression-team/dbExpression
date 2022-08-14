@@ -17,7 +17,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Is_connection_returned_to_the_connection_pool_after_query_execution(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, c => c.ConnectionString.Use(
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, c => c.ConnectionString.Use(
                         new DelegateConnectionStringFactory<MsSqlDb>(() => $"{ConfigurationProvider.ConnectionString};Connect Timeout=3;Max Pool Size=1;Min Pool Size = 1;"))
                     );
 
@@ -34,7 +34,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Is_connection_returned_to_the_connection_pool_after_async_query_execution(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version, c => c.ConnectionString.Use(
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, c => c.ConnectionString.Use(
                         new DelegateConnectionStringFactory<MsSqlDb>(() => $"{ConfigurationProvider.ConnectionString};Connect Timeout=3;Max Pool Size=1;Min Pool Size = 1;"))
                     );
             

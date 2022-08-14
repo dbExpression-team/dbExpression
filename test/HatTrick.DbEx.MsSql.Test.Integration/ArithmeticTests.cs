@@ -20,7 +20,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_arithmetic_order_of_precedence_succeed(int version, double expected = 36)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     (dbo.Purchase.TotalPurchaseAmount + 2) * 3
@@ -39,7 +39,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_arithmetic_order_of_precedence_reversed_succeed(int version, double expected = 36)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     3 * (dbo.Purchase.TotalPurchaseAmount + 2)
@@ -58,7 +58,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_arithmetic_with_no_order_of_precedence_succeed(int version, double expected = 1002.00)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     dbo.Product.ListPrice * dbo.Product.Quantity + 3
@@ -77,7 +77,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_arithmetic_of_person_firstname_a_space_and_person_lastname_succeed(int version, string expected = "Kenny McCormick")
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp = db.SelectOne(
                     dbo.Person.FirstName + " " + dbo.Person.LastName
@@ -98,7 +98,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_arithmetic_of_a_field_added_to_an_int_literal_value_calculate_correctly(int version, int id, int expected)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             //when
             int value = db.SelectOne(dbo.Person.Id + 0)
@@ -117,7 +117,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_arithmetic_of_an_int_literal_value_added_to_a_field_calculate_correctly(int version, int id, int expected = 1)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             //when
             int value = db.SelectOne(0 + dbo.Person.Id)
@@ -136,7 +136,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_arithmetic_of_an_int_literal_value_added_to_a_field_and_another_int_literal_value_calculate_correctly(int version, int id = 1, int expected = 4)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             //when
             int value = db.SelectOne(id + dbo.Person.Id + 3)
@@ -155,7 +155,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_arithmetic_of_an_int_literal_value_added_to_an_int_literal_value_added_to_a_field_use_compiler_addition_and_calculate_correctly(int version, int id, int expected)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             //when
             int value = db.SelectOne(id + 3 + dbo.Person.Id)
@@ -174,7 +174,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_arithmetic_of_an_int_literal_value_added_to_a_field_value_and_subtracting_an_int_literal_value_calculate_correctly(int version, int id, int expected)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             //when
             int value = db.SelectOne(id + dbo.Person.Id - 3)
@@ -193,7 +193,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_arithmetic_of_an_int_literal_value_added_to_a_precedence_declared_field_value_subtracting_an_int_literal_value_calculate_correctly(int version, int id, int expected)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             //when
             int value = db.SelectOne(id + (dbo.Person.Id - 3))
@@ -212,7 +212,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_arithmetic_of_an_int_literal_value_added_to_a_precedence_declared_field_value_subtracting_an_int_literal_value_than_multiplied_by_int_literal_value_calculate_correctly(int version, int id, int expected)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             //when
             int value = db.SelectOne(id + (dbo.Person.Id - 3) * 20)
@@ -231,7 +231,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_arithmetic_expression_of_an_int_literal_value_added_to_a_precedence_declared_field_value_subtracting_a_double_literal_value_than_multiplied_by_int_literal_value_calculate_correctly(int version, int id, double expected)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             //when
             double value = db.SelectOne(id + (dbo.Person.Id - 3.25d) * 20)

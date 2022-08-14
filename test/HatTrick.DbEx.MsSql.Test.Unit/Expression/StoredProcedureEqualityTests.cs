@@ -16,7 +16,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void StoredProcedure_expressions_of_same_values_should_be_equal(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp1 = new StoredProcedureExpression("id", "name", new dboSchemaExpression("id"));
             var exp2 = new StoredProcedureExpression("id", "name", new dboSchemaExpression("id"));
@@ -30,7 +30,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void StoredProcedure_expressions_of_different_values_should_not_be_equal(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp1 = new StoredProcedureExpression("id", "name", new dboSchemaExpression("id"));
             var exp2 = new StoredProcedureExpression("id", "name2", new dboSchemaExpression("id"));
@@ -44,7 +44,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void StoredProcedure_expressions_of_same_values_should_have_same_hash_codes(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp1 = new StoredProcedureExpression("id", "name", new dboSchemaExpression("id"));
             var exp2 = new StoredProcedureExpression("id", "name", new dboSchemaExpression("id"));
@@ -62,7 +62,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void StoredProcedure_expressions_of_different_values_should_have_different_hash_codes(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
 
             var exp1 = new StoredProcedureExpression("id", "name", new dboSchemaExpression("id"));
             var exp2 = new StoredProcedureExpression("id", "name2", new dboSchemaExpression("id"));

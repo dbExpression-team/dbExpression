@@ -30,7 +30,7 @@ namespace HatTrick.DbEx.MsSql.Extensions.DependencyInjection.Tests
             var provider = services.BuildServiceProvider();
 
             //when
-            var resolved = provider.GetRequiredService<IQueryExpressionFactory<MsSqlDb>>();
+            var resolved = provider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IQueryExpressionFactory<MsSqlDb>>();
 
             //then
             resolved?.Should().Be(queryFactory);
@@ -53,7 +53,7 @@ namespace HatTrick.DbEx.MsSql.Extensions.DependencyInjection.Tests
             
             //when
             var db = provider.GetRequiredService<MsSqlDb>();
-            var resolved = provider.GetRequiredService<IQueryExpressionFactory<MsSqlDb>>();
+            var resolved = provider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IQueryExpressionFactory<MsSqlDb>>();
 
             //then
             resolved.Should().NotBeNull();
@@ -79,7 +79,7 @@ namespace HatTrick.DbEx.MsSql.Extensions.DependencyInjection.Tests
             var provider = services.BuildServiceProvider();
 
             //when
-            var factory = provider.GetRequiredService<IQueryExpressionFactory<MsSqlDb>>();
+            var factory = provider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IQueryExpressionFactory<MsSqlDb>>();
             var resolved = factory.CreateQueryExpression<SelectQueryExpression>();
 
             //then
