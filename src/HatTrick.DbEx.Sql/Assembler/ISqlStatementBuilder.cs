@@ -29,6 +29,8 @@ namespace HatTrick.DbEx.Sql.Assembler
         #endregion
 
         #region methods
+        SqlStatement CreateSqlStatement<TQuery>(TQuery expression)
+           where TQuery : QueryExpression;
         void AppendElement<T>(T element, AssemblyContext context)
             where T : class, IExpressionElement;
         string GenerateAlias();

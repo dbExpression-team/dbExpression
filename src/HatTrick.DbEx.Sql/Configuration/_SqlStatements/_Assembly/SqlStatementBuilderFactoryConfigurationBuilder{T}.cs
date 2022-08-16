@@ -37,29 +37,29 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         /// <inheritdoc />
         public ISqlStatementAssemblyGroupingConfigurationBuilders<TDatabase> Use<TBuilder>()
-            where TBuilder : class, ISqlStatementBuilder<TDatabase>
+            where TBuilder : class, ISqlStatementBuilder
         {
-            services.TryAddTransient<ISqlStatementBuilder<TDatabase>, TBuilder>();
+            services.TryAddTransient<ISqlStatementBuilder, TBuilder>();
             return caller;
         }
 
         /// <inheritdoc />
-        public ISqlStatementAssemblyGroupingConfigurationBuilders<TDatabase> Use(Func<ISqlStatementBuilder<TDatabase>> factory)
+        public ISqlStatementAssemblyGroupingConfigurationBuilders<TDatabase> Use(Func<ISqlStatementBuilder> factory)
         {
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            services.TryAddTransient<ISqlStatementBuilder<TDatabase>>(sp => factory());
+            services.TryAddTransient<ISqlStatementBuilder>(sp => factory());
             return caller;
         }
 
         /// <inheritdoc />
-        public ISqlStatementAssemblyGroupingConfigurationBuilders<TDatabase> Use(Func<IServiceProvider, ISqlStatementBuilder<TDatabase>> factory)
+        public ISqlStatementAssemblyGroupingConfigurationBuilders<TDatabase> Use(Func<IServiceProvider, ISqlStatementBuilder> factory)
         {
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            services.TryAddTransient<ISqlStatementBuilder<TDatabase>>(factory);
+            services.TryAddTransient<ISqlStatementBuilder>(factory);
             return caller;
         }
     }

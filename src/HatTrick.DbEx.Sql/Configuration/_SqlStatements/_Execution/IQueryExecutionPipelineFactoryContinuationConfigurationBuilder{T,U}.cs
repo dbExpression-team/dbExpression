@@ -23,7 +23,7 @@ namespace HatTrick.DbEx.Sql.Configuration
 {
     public interface IQueryExecutionPipelineFactoryContinuationConfigurationBuilder<TDatabase, TPipeline>
         where TDatabase : class, ISqlDatabaseRuntime
-        where TPipeline : class, IQueryExecutionPipeline<TDatabase>
+        where TPipeline : class, IQueryExecutionPipeline
     {
         /// <summary>
         /// Use this execution pipeline.

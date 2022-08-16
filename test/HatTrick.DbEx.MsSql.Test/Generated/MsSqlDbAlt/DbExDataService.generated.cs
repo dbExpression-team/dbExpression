@@ -48,9 +48,9 @@ namespace DbExAlt.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <returns><see cref="SelectEntity{MsSqlDbAlt, TEntity}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
+        /// <returns><see cref="SelectEntity{TEntity}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
-        public static SelectEntity<MsSqlDbAlt, TEntity> SelectOne<TEntity>()
+        public static SelectEntity<TEntity> SelectOne<TEntity>()
             where TEntity : class, IDbEntity, new()
             => MsSqlDbAlt.SelectOne<TEntity>();
 
@@ -62,9 +62,9 @@ namespace DbExAlt.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />
         /// </param>
-        /// <returns><see cref="Sql.SelectValue{MsSqlDbAlt, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
+        /// <returns><see cref="Sql.SelectValue{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
-        public static SelectValue<MsSqlDbAlt, TEnum> SelectOne<TEnum>(AnyElement<TEnum> element)
+        public static SelectValue<TEnum> SelectOne<TEnum>(AnyElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
             => MsSqlDbAlt.SelectOne<TEnum>(element);
 
@@ -76,9 +76,9 @@ namespace DbExAlt.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />?
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
-        public static SelectValue<MsSqlDbAlt, TEnum?> SelectOne<TEnum>(AnyElement<TEnum?> element)
+        public static SelectValue<TEnum?> SelectOne<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable
             => MsSqlDbAlt.SelectOne<TEnum>(element);
 
@@ -90,8 +90,8 @@ namespace DbExAlt.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="ObjectElement" />
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDbAlt, object>? SelectOne(ObjectElement element)
+        /// <returns><see cref="SelectValue{object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<object>? SelectOne(ObjectElement element)
             => MsSqlDbAlt.SelectOne(element);
 
         /// <summary>
@@ -102,8 +102,8 @@ namespace DbExAlt.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableObjectElement" />
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDbAlt, object?> SelectOne(NullableObjectElement element)
+        /// <returns><see cref="SelectValue{object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<object?> SelectOne(NullableObjectElement element)
             => MsSqlDbAlt.SelectOne(element);
 
         /// <summary>
@@ -114,9 +114,9 @@ namespace DbExAlt.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="ObjectElement{T}" />
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the object to select.</typeparam>
-        public static SelectObject<MsSqlDbAlt, T> SelectOne<T>(ObjectElement<T> element)
+        public static SelectObject<T> SelectOne<T>(ObjectElement<T> element)
             where T : class?
             => MsSqlDbAlt.SelectOne<T>(element);
 
@@ -128,9 +128,9 @@ namespace DbExAlt.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AliasedElement{T}" />      
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the value to select.</typeparam>
-        public static SelectValue<MsSqlDbAlt, T> SelectOne<T>(AliasedElement<T> element)
+        public static SelectValue<T> SelectOne<T>(AliasedElement<T> element)
             => MsSqlDbAlt.SelectOne<T>(element);
 
         /// <summary>
@@ -142,8 +142,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />
         ///, for example "unit_test.ExpressionElementType.Boolean" or "db.fx.IsNull(unit_test.ExpressionElementType.Boolean, false)
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, Boolean}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDbAlt, bool> SelectOne(AnyElement<bool> element)
+        /// <returns><see cref="SelectValue{Boolean}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<bool> SelectOne(AnyElement<bool> element)
             => MsSqlDbAlt.SelectOne(element);
 
         /// <summary>
@@ -155,8 +155,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />?
         ///, for example "unit_test.ExpressionElementType.NullableBoolean""
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, Boolean}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDbAlt, bool?> SelectOne(AnyElement<bool?> element)
+        /// <returns><see cref="SelectValue{Boolean}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<bool?> SelectOne(AnyElement<bool?> element)
             => MsSqlDbAlt.SelectOne(element);
 
         /// <summary>
@@ -168,8 +168,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />
         ///, for example "unit_test.ExpressionElementType.Byte" or "db.fx.IsNull(unit_test.ExpressionElementType.Byte, byte.MinValue)"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDbAlt, byte> SelectOne(AnyElement<byte> element)
+        /// <returns><see cref="SelectValue{Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<byte> SelectOne(AnyElement<byte> element)
             => MsSqlDbAlt.SelectOne(element);
 
         /// <summary>
@@ -181,8 +181,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />?
         ///, for example "unit_test.ExpressionElementType.NullableByte"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDbAlt, byte?> SelectOne(AnyElement<byte?> element)
+        /// <returns><see cref="SelectValue{Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<byte?> SelectOne(AnyElement<byte?> element)
             => MsSqlDbAlt.SelectOne(element);
 
         /// <summary>
@@ -193,8 +193,8 @@ namespace DbExAlt.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDbAlt, byte[]> SelectOne(AnyElement<byte[]> element)
+        /// <returns><see cref="SelectValue{Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<byte[]> SelectOne(AnyElement<byte[]> element)
             => MsSqlDbAlt.SelectOne(element);
 
         /// <summary>
@@ -206,8 +206,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />
         ///, for example "dbo.AccessAuditLog.DateCreated", "db.fx.DateAdd(DateParts.Year, 1, dbo.AccessAuditLog.DateCreated) or "db.fx.IsNull(dbo.AccessAuditLog.DateCreated, DateTime.Now)"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDbAlt, DateTime> SelectOne(AnyElement<DateTime> element)
+        /// <returns><see cref="SelectValue{DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<DateTime> SelectOne(AnyElement<DateTime> element)
             => MsSqlDbAlt.SelectOne(element);
 
         /// <summary>
@@ -219,8 +219,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />?
         ///, for example "dbo.Person.BirthDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.BirthDate)
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDbAlt, DateTime?> SelectOne(AnyElement<DateTime?> field)
+        /// <returns><see cref="SelectValue{DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<DateTime?> SelectOne(AnyElement<DateTime?> field)
             => MsSqlDbAlt.SelectOne(field);
 
         /// <summary>
@@ -232,8 +232,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />
         ///, for example "dbo.Person.RegistrationDate", "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.RegistrationDate)" or "db.fx.IsNull(dbo.Person.RegistrationDate, DateTimeOffset.Now)"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDbAlt, DateTimeOffset> SelectOne(AnyElement<DateTimeOffset> element)
+        /// <returns><see cref="SelectValue{DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<DateTimeOffset> SelectOne(AnyElement<DateTimeOffset> element)
             => MsSqlDbAlt.SelectOne(element);
 
         /// <summary>
@@ -245,8 +245,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />?
         ///, for example "dbo.Person.LastLoginDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.LastLoginDate)" 
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDbAlt, DateTimeOffset?> SelectOne(AnyElement<DateTimeOffset?> element)
+        /// <returns><see cref="SelectValue{DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<DateTimeOffset?> SelectOne(AnyElement<DateTimeOffset?> element)
             => MsSqlDbAlt.SelectOne(element);
 
         /// <summary>
@@ -258,8 +258,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />
         ///, for example "dbo.Product.ShippingWeight" or "db.fx.IsNull(dbo.Product.ShippingWeight, decimal.MinValue)"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDbAlt, decimal> SelectOne(AnyElement<decimal> element)
+        /// <returns><see cref="SelectValue{Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<decimal> SelectOne(AnyElement<decimal> element)
             => MsSqlDbAlt.SelectOne(element);
 
         /// <summary>
@@ -271,8 +271,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />?
         ///, for example "dbo.Product.Height" or "db.fx.Min(dbo.Product.Height)"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDbAlt, decimal?> SelectOne(AnyElement<decimal?> element)
+        /// <returns><see cref="SelectValue{Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<decimal?> SelectOne(AnyElement<decimal?> element)
             => MsSqlDbAlt.SelectOne(element);
 
         /// <summary>
@@ -284,8 +284,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Double}" />
         ///, for example "dbo.Product.ListPrice" or "db.fx.IsNull(dbo.Product.ListPrice, double.MinValue)"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDbAlt, double> SelectOne(AnyElement<double> element)
+        /// <returns><see cref="SelectValue{Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<double> SelectOne(AnyElement<double> element)
             => MsSqlDbAlt.SelectOne(element);
 
         /// <summary>
@@ -297,8 +297,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Double}" />?
         ///, for example "dbo.PersonTotalPurchasesView.TotalAmount" or "db.fx.Min(dbo.PersonTotalPurchasesView.TotalAmount)"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDbAlt, double?> SelectOne(AnyElement<double?> element)
+        /// <returns><see cref="SelectValue{Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<double?> SelectOne(AnyElement<double?> element)
             => MsSqlDbAlt.SelectOne(element);
 
         /// <summary>
@@ -310,8 +310,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />
         ///, for example "unit_test.ExpressionElementType.Guid" or "db.fx.IsNull(unit_test.ExpressionElementType.Guid, Guid.Empty)"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDbAlt, Guid> SelectOne(AnyElement<Guid> element)
+        /// <returns><see cref="SelectValue{Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<Guid> SelectOne(AnyElement<Guid> element)
             => MsSqlDbAlt.SelectOne(element);
 
         /// <summary>
@@ -323,8 +323,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />?
         ///, for example "dbo.Purchase.TrackingIdentifier"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDbAlt, Guid?> SelectOne(AnyElement<Guid?> element)
+        /// <returns><see cref="SelectValue{Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<Guid?> SelectOne(AnyElement<Guid?> element)
             => MsSqlDbAlt.SelectOne(element);
 
         /// <summary>
@@ -336,8 +336,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />
         ///, for example "unit_test.ExpressionElementType.Int16" or "db.fx.IsNull(unit_test.ExpressionElementType.Int16, short.MinValue)"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDbAlt, short> SelectOne(AnyElement<short> element)
+        /// <returns><see cref="SelectValue{Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<short> SelectOne(AnyElement<short> element)
             => MsSqlDbAlt.SelectOne(element);
 
         /// <summary>
@@ -349,8 +349,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />?
         ///, for example "unit_test.ExpressionElementType.NullableInt16" or "db.fx.Max(unit_test.ExpressionElementType.NullableInt16)"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDbAlt, short?> SelectOne(AnyElement<short?> element)
+        /// <returns><see cref="SelectValue{Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<short?> SelectOne(AnyElement<short?> element)
             => MsSqlDbAlt.SelectOne(element);
 
         /// <summary>
@@ -362,8 +362,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />?
         ///, for example "dbo.AccessAuditLog.Id" or "db.fx.Avg(dbo.AccessAuditLog.Id)"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDbAlt, int> SelectOne(AnyElement<int> element)
+        /// <returns><see cref="SelectValue{Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<int> SelectOne(AnyElement<int> element)
             => MsSqlDbAlt.SelectOne(element);
 
         /// <summary>
@@ -375,8 +375,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />?
         ///, for example "dbo.Address.AddressType" or "db.fx.Avg(dbo.Address.AddressType)"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDbAlt, int?> SelectOne(AnyElement<int?> element)
+        /// <returns><see cref="SelectValue{Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<int?> SelectOne(AnyElement<int?> element)
             => MsSqlDbAlt.SelectOne(element);
 
         /// <summary>
@@ -388,8 +388,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />
         ///, for example "unit_test.ExpressionElementType.Int64" or "db.fx.IsNull(unit_test.ExpressionElementType.Int64, long.MinValue)"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDbAlt, long> SelectOne(AnyElement<long> element)
+        /// <returns><see cref="SelectValue{Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<long> SelectOne(AnyElement<long> element)
             => MsSqlDbAlt.SelectOne(element);
 
         /// <summary>
@@ -401,8 +401,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />?
         ///, for example "unit_test.ExpressionElementType.NullableInt64" or "db.fx.Max(unit_test.ExpressionElementType.NullableInt64)"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDbAlt, long?> SelectOne(AnyElement<long?> element)
+        /// <returns><see cref="SelectValue{Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<long?> SelectOne(AnyElement<long?> element)
             => MsSqlDbAlt.SelectOne(element);
 
         /// <summary>
@@ -414,8 +414,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Single}" />
         ///, for example "unit_test.ExpressionElementType.Single" or "db.fx.IsNull(unit_test.ExpressionElementType.Single, float.MinValue)"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDbAlt, float> SelectOne(AnyElement<float> element)
+        /// <returns><see cref="SelectValue{Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<float> SelectOne(AnyElement<float> element)
             => MsSqlDbAlt.SelectOne(element);
 
         /// <summary>
@@ -427,8 +427,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Single}" />?
         ///, for example "unit_test.ExpressionElementType.NullableSingle" or "db.fx.Max(unit_test.ExpressionElementType.NullableSingle)"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDbAlt, float?> SelectOne(AnyElement<float?> element)
+        /// <returns><see cref="SelectValue{Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<float?> SelectOne(AnyElement<float?> element)
             => MsSqlDbAlt.SelectOne(element);
 
         /// <summary>
@@ -440,8 +440,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDbAlt, string> SelectOne(StringElement element) 
+        /// <returns><see cref="SelectValue{String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<string> SelectOne(StringElement element) 
             => MsSqlDbAlt.SelectOne(element);
 
         /// <summary>
@@ -453,8 +453,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDbAlt, string?> SelectOne(NullableStringElement element) 
+        /// <returns><see cref="SelectValue{String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<string?> SelectOne(NullableStringElement element) 
             => MsSqlDbAlt.SelectOne(element);
 
         /// <summary>
@@ -466,8 +466,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />
         ///, for example "unit_test.ExpressionElementType.TimeSpan", "db.fx.IsNull(unit_test.ExpressionElementType.TimeSpan, TimeSpan.MinValue)" or "unit_test.ExpressionElementType.TimeSpan + DateTime.Now"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDbAlt, TimeSpan> SelectOne(AnyElement<TimeSpan> element)
+        /// <returns><see cref="SelectValue{TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<TimeSpan> SelectOne(AnyElement<TimeSpan> element)
             => MsSqlDbAlt.SelectOne(element);
 
         /// <summary>
@@ -479,21 +479,21 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />?
         ///, for example "dbo.Product.ValidStartTimeOfDayForPurchase"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDbAlt, TimeSpan?> SelectOne(AnyElement<TimeSpan?> element)
+        /// <returns><see cref="SelectValue{TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<TimeSpan?> SelectOne(AnyElement<TimeSpan?> element)
             => MsSqlDbAlt.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
-        /// <para>
+        /// <para>databaseExpressionName
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element1">Any expression</param>
         /// <param name="element2">Any expression</param>
         /// <param name="elements">Any expression</param>
-        /// <returns><see cref="SelectDynamic{ MsSqlDbAlt }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectDynamic<MsSqlDbAlt> SelectOne(AnyElement element1, AnyElement element2, params AnyElement[] elements)
+        /// <returns><see cref="SelectDynamic"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectDynamic SelectOne(AnyElement element1, AnyElement element2, params AnyElement[] elements)
             => MsSqlDbAlt.SelectOne(element1, element2, elements);
 
         /// <summary>
@@ -504,8 +504,8 @@ namespace DbExAlt.DataService
         /// </summary>
         /// <param name="element1">Any expression</param>
         /// <param name="elements">A list of any expression</param>
-        /// <returns><see cref="SelectDynamic{ MsSqlDbAlt }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectDynamic<MsSqlDbAlt> SelectOne(IEnumerable<AnyElement> elements)
+        /// <returns><see cref="SelectDynamic"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectDynamic SelectOne(IEnumerable<AnyElement> elements)
             => MsSqlDbAlt.SelectOne(elements);
 
         /// <summary>
@@ -516,8 +516,8 @@ namespace DbExAlt.DataService
         /// </summary>
         /// <param name="elements">A list of any expression that is valid for a SELECT query expression.</param>
         /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
-        /// <returns><see cref="SelectDynamics{ MsSqlDbAlt }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectDynamic<MsSqlDbAlt> SelectOne(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
+        /// <returns><see cref="SelectDynamics"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectDynamic SelectOne(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
             => MsSqlDbAlt.SelectOne((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
         #endregion
 
@@ -531,9 +531,9 @@ namespace DbExAlt.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <returns><see cref="SelectEntities{MsSqlDbAlt, TEntity}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
+        /// <returns><see cref="SelectEntities{TEntity}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
-        public static SelectEntities<MsSqlDbAlt, TEntity> SelectMany<TEntity>()
+        public static SelectEntities<TEntity> SelectMany<TEntity>()
            where TEntity : class, IDbEntity, new()
            => MsSqlDbAlt.SelectMany<TEntity>();
 
@@ -545,8 +545,8 @@ namespace DbExAlt.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
-        public static SelectValues<MsSqlDbAlt, TEnum> SelectMany<TEnum>(AnyElement<TEnum> element)
+        /// <returns><see cref="SelectValues{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
+        public static SelectValues<TEnum> SelectMany<TEnum>(AnyElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
             => MsSqlDbAlt.SelectMany<TEnum>(element);
 
@@ -558,8 +558,8 @@ namespace DbExAlt.DataService
         /// </para>
         /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />?
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDbAlt, TEnum?> SelectMany<TEnum>(AnyElement<TEnum?> element)
+        /// <returns><see cref="SelectValues{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<TEnum?> SelectMany<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable
             => MsSqlDbAlt.SelectMany<TEnum>(element);
 
@@ -571,8 +571,8 @@ namespace DbExAlt.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="ObjectElement" />
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDbAlt, object>? SelectMany(ObjectElement element)
+        /// <returns><see cref="SelectValues{object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<object>? SelectMany(ObjectElement element)
             => MsSqlDbAlt.SelectMany(element);
 
         /// <summary>
@@ -583,8 +583,8 @@ namespace DbExAlt.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableObjectElement" />
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDbAlt, object?> SelectMany(NullableObjectElement element)
+        /// <returns><see cref="SelectValues{object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<object?> SelectMany(NullableObjectElement element)
             => MsSqlDbAlt.SelectMany(element);
 
         /// <summary>
@@ -595,9 +595,9 @@ namespace DbExAlt.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="ObjectElement{T}" />
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the object to select.</typeparam>
-        public static SelectObjects<MsSqlDbAlt, T> SelectMany<T>(ObjectElement<T> element)
+        public static SelectObjects<T> SelectMany<T>(ObjectElement<T> element)
             where T : class?
             => MsSqlDbAlt.SelectMany<T>(element);
 
@@ -609,9 +609,9 @@ namespace DbExAlt.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AliasedElement{T}" />      
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the value to select.</typeparam>
-        public static SelectValues<MsSqlDbAlt, T> SelectMany<T>(AliasedElement<T> element)
+        public static SelectValues<T> SelectMany<T>(AliasedElement<T> element)
             => MsSqlDbAlt.SelectMany<T>(element);
 
         /// <summary>
@@ -623,8 +623,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />
         ///, for example "unit_test.ExpressionElementType.Boolean" or "db.fx.IsNull(unit_test.ExpressionElementType.Boolean, false)
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, Boolean}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDbAlt, bool> SelectMany(AnyElement<bool> element)
+        /// <returns><see cref="SelectValues{Boolean}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<bool> SelectMany(AnyElement<bool> element)
             => MsSqlDbAlt.SelectMany(element);
 
         /// <summary>
@@ -636,8 +636,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />?
         ///, for example "unit_test.ExpressionElementType.NullableBoolean""
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, Boolean}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDbAlt, bool?> SelectMany(AnyElement<bool?> element)
+        /// <returns><see cref="SelectValues{Boolean}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<bool?> SelectMany(AnyElement<bool?> element)
             => MsSqlDbAlt.SelectMany(element);
 
         /// <summary>
@@ -649,8 +649,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />
         ///, for example "unit_test.ExpressionElementType.Byte" or "db.fx.IsNull(unit_test.ExpressionElementType.Byte, byte.MinValue)"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDbAlt, byte> SelectMany(AnyElement<byte> element)
+        /// <returns><see cref="SelectValues{Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<byte> SelectMany(AnyElement<byte> element)
             => MsSqlDbAlt.SelectMany(element);
 
         /// <summary>
@@ -662,8 +662,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />?
         ///, for example "unit_test.ExpressionElementType.NullableByte"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDbAlt, byte?> SelectMany(AnyElement<byte?> element)
+        /// <returns><see cref="SelectValues{Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<byte?> SelectMany(AnyElement<byte?> element)
             => MsSqlDbAlt.SelectMany(element);
 
         /// <summary>
@@ -674,8 +674,8 @@ namespace DbExAlt.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDbAlt, byte[]> SelectMany(AnyElement<byte[]> element)
+        /// <returns><see cref="SelectValues{Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<byte[]> SelectMany(AnyElement<byte[]> element)
             => MsSqlDbAlt.SelectMany(element);
 
         /// <summary>
@@ -687,8 +687,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />
         ///, for example "dbo.AccessAuditLog.DateCreated", "db.fx.DateAdd(DateParts.Year, 1, dbo.AccessAuditLog.DateCreated) or "db.fx.IsNull(dbo.AccessAuditLog.DateCreated, DateTime.Now)"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDbAlt, DateTime> SelectMany(AnyElement<DateTime> element)
+        /// <returns><see cref="SelectValues{DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<DateTime> SelectMany(AnyElement<DateTime> element)
             => MsSqlDbAlt.SelectMany(element);
 
         /// <summary>
@@ -700,8 +700,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />?
         ///, for example "dbo.Person.BirthDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.BirthDate)
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDbAlt, DateTime?> SelectMany(AnyElement<DateTime?> element)
+        /// <returns><see cref="SelectValues{DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<DateTime?> SelectMany(AnyElement<DateTime?> element)
             => MsSqlDbAlt.SelectMany(element);
 
         /// <summary>
@@ -713,8 +713,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />
         ///, for example "dbo.Person.RegistrationDate", "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.RegistrationDate)" or "db.fx.IsNull(dbo.Person.RegistrationDate, DateTimeOffset.Now)"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDbAlt, DateTimeOffset> SelectMany(AnyElement<DateTimeOffset> element)
+        /// <returns><see cref="SelectValues{DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<DateTimeOffset> SelectMany(AnyElement<DateTimeOffset> element)
             => MsSqlDbAlt.SelectMany(element);
 
         /// <summary>
@@ -726,8 +726,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />?
         ///, for example "dbo.Person.LastLoginDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.LastLoginDate)" 
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDbAlt, DateTimeOffset?> SelectMany(AnyElement<DateTimeOffset?> element)
+        /// <returns><see cref="SelectValues{DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<DateTimeOffset?> SelectMany(AnyElement<DateTimeOffset?> element)
             => MsSqlDbAlt.SelectMany(element);
 
         /// <summary>
@@ -739,8 +739,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />
         ///, for example "dbo.Product.ShippingWeight" or "db.fx.IsNull(dbo.Product.ShippingWeight, decimal.MinValue)"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDbAlt, decimal> SelectMany(AnyElement<decimal> element)
+        /// <returns><see cref="SelectValues{Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<decimal> SelectMany(AnyElement<decimal> element)
             => MsSqlDbAlt.SelectMany(element);
 
         /// <summary>
@@ -752,8 +752,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />?
         ///, for example "dbo.Product.Height"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDbAlt, decimal?> SelectMany(AnyElement<decimal?> element)
+        /// <returns><see cref="SelectValues{Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<decimal?> SelectMany(AnyElement<decimal?> element)
             => MsSqlDbAlt.SelectMany(element);
 
         /// <summary>
@@ -765,8 +765,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Double}" />
         ///, for example "dbo.Product.ListPrice" or "db.fx.IsNull(dbo.Product.ListPrice, double.MinValue)"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDbAlt, double> SelectMany(AnyElement<double> element)
+        /// <returns><see cref="SelectValues{Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<double> SelectMany(AnyElement<double> element)
             => MsSqlDbAlt.SelectMany(element);
 
         /// <summary>
@@ -778,8 +778,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Double}" />?
         ///, for example "dbo.PersonTotalPurchasesView.TotalAmount"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDbAlt, double?> SelectMany(AnyElement<double?> element)
+        /// <returns><see cref="SelectValues{Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<double?> SelectMany(AnyElement<double?> element)
             => MsSqlDbAlt.SelectMany(element);
 
         /// <summary>
@@ -791,8 +791,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />
         ///, for example "unit_test.ExpressionElementType.Guid" or "db.fx.IsNull(unit_test.ExpressionElementType.Guid, Guid.Empty)"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDbAlt, Guid> SelectMany(AnyElement<Guid> element)
+        /// <returns><see cref="SelectValues{Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<Guid> SelectMany(AnyElement<Guid> element)
             => MsSqlDbAlt.SelectMany(element);
 
         /// <summary>
@@ -804,8 +804,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />?
         ///, for example "dbo.Purchase.TrackingIdentifier"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDbAlt, Guid?> SelectMany(AnyElement<Guid?> element)
+        /// <returns><see cref="SelectValues{Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<Guid?> SelectMany(AnyElement<Guid?> element)
             => MsSqlDbAlt.SelectMany(element);
 
         /// <summary>
@@ -817,8 +817,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />
         ///, for example "unit_test.ExpressionElementType.Int16" or "db.fx.IsNull(unit_test.ExpressionElementType.Int16, short.MinValue)"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDbAlt, short> SelectMany(AnyElement<short> element)
+        /// <returns><see cref="SelectValues{Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<short> SelectMany(AnyElement<short> element)
             => MsSqlDbAlt.SelectMany(element);
 
         /// <summary>
@@ -830,8 +830,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />?
         ///, for example "unit_test.ExpressionElementType.NullableInt16"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDbAlt, short?> SelectMany(AnyElement<short?> element)
+        /// <returns><see cref="SelectValues{Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<short?> SelectMany(AnyElement<short?> element)
             => MsSqlDbAlt.SelectMany(element);
 
         /// <summary>
@@ -843,8 +843,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />
         ///, for example "dbo.AccessAuditLog.Id"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDbAlt, int> SelectMany(AnyElement<int> element)
+        /// <returns><see cref="SelectValues{Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<int> SelectMany(AnyElement<int> element)
             => MsSqlDbAlt.SelectMany(element);
 
         /// <summary>
@@ -856,8 +856,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />?
         ///, for example "dbo.:column.Entity.Name}.AddressType"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDbAlt, int?> SelectMany(AnyElement<int?> element)
+        /// <returns><see cref="SelectValues{Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<int?> SelectMany(AnyElement<int?> element)
             => MsSqlDbAlt.SelectMany(element);
 
         /// <summary>
@@ -869,8 +869,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />
         ///, for example "unit_test.ExpressionElementType.Int64" or "db.fx.IsNull(unit_test.ExpressionElementType.Int64, long.MinValue)"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDbAlt, long> SelectMany(AnyElement<long> element)
+        /// <returns><see cref="SelectValues{Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<long> SelectMany(AnyElement<long> element)
             => MsSqlDbAlt.SelectMany(element);
 
         /// <summary>
@@ -882,8 +882,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />?
         ///, for example "unit_test.ExpressionElementType.NullableInt64"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDbAlt, long?> SelectMany(AnyElement<long?> element)
+        /// <returns><see cref="SelectValues{Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<long?> SelectMany(AnyElement<long?> element)
             => MsSqlDbAlt.SelectMany(element);
 
         /// <summary>
@@ -895,8 +895,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Single}" />
         ///, for example "unit_test.ExpressionElementType.Single" or "db.fx.IsNull(unit_test.ExpressionElementType.Single, float.MinValue)"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDbAlt, float> SelectMany(AnyElement<float> element)
+        /// <returns><see cref="SelectValues{Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<float> SelectMany(AnyElement<float> element)
             => MsSqlDbAlt.SelectMany(element);
 
         /// <summary>
@@ -908,8 +908,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Single}" />?
         ///, for example "unit_test.ExpressionElementType.NullableSingle"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDbAlt, float?> SelectMany(AnyElement<float?> element)
+        /// <returns><see cref="SelectValues{Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<float?> SelectMany(AnyElement<float?> element)
             => MsSqlDbAlt.SelectMany(element);
 
         /// <summary>
@@ -921,8 +921,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDbAlt, string> SelectMany(StringElement element)
+        /// <returns><see cref="SelectValues{String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<string> SelectMany(StringElement element)
             => MsSqlDbAlt.SelectMany(element);
 
         /// <summary>
@@ -934,8 +934,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDbAlt, string?> SelectMany(NullableStringElement element)
+        /// <returns><see cref="SelectValues{String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<string?> SelectMany(NullableStringElement element)
             => MsSqlDbAlt.SelectMany(element);
 
         /// <summary>
@@ -947,8 +947,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />
         ///, for example "unit_test.ExpressionElementType.TimeSpan", "db.fx.IsNull(unit_test.ExpressionElementType.TimeSpan, TimeSpan.MinValue)" or "unit_test.ExpressionElementType.TimeSpan + DateTime.Now"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDbAlt, TimeSpan> SelectMany(AnyElement<TimeSpan> element)
+        /// <returns><see cref="SelectValues{TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<TimeSpan> SelectMany(AnyElement<TimeSpan> element)
             => MsSqlDbAlt.SelectMany(element);
 
         /// <summary>
@@ -960,8 +960,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />?
         ///, for example "dbo.Product.ValidStartTimeOfDayForPurchase"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDbAlt, TimeSpan?> SelectMany(AnyElement<TimeSpan?> element)
+        /// <returns><see cref="SelectValues{TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<TimeSpan?> SelectMany(AnyElement<TimeSpan?> element)
             => MsSqlDbAlt.SelectMany(element);
 
         /// <summary>
@@ -973,8 +973,8 @@ namespace DbExAlt.DataService
         /// <param name="element1">Any expression</param>
         /// <param name="element2">Any expression</param>
         /// <param name="elements">Any expression</param>
-        /// <returns><see cref="SelectDynamics{ MsSqlDbAlt }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectDynamics<MsSqlDbAlt> SelectMany(AnyElement element1, AnyElement element2, params AnyElement[] elements)
+        /// <returns><see cref="SelectDynamics"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectDynamics SelectMany(AnyElement element1, AnyElement element2, params AnyElement[] elements)
             => MsSqlDbAlt.SelectMany(element1, element2, elements);
 
         /// <summary>
@@ -984,8 +984,8 @@ namespace DbExAlt.DataService
         /// </para>
         /// </summary>
         /// <param name="elements">A list of any expression</param>
-        /// <returns><see cref="SelectDynamics{ MsSqlDbAlt }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectDynamics<MsSqlDbAlt> SelectMany(IEnumerable<AnyElement> elements)
+        /// <returns><see cref="SelectDynamics"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectDynamics SelectMany(IEnumerable<AnyElement> elements)
             => MsSqlDbAlt.SelectMany(elements);
 
         /// <summary>
@@ -996,8 +996,8 @@ namespace DbExAlt.DataService
         /// </summary>
         /// <param name="elements">A list of any expression that is valid for a SELECT query expression.</param>
         /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
-        /// <returns><see cref="SelectDynamics{ MsSqlDbAlt }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectDynamics<MsSqlDbAlt> SelectMany(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
+        /// <returns><see cref="SelectDynamics"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectDynamics SelectMany(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
             => MsSqlDbAlt.SelectMany((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
         #endregion
 
@@ -1013,8 +1013,8 @@ namespace DbExAlt.DataService
         /// or "dbo.Address.AddressType.Set(dbo.Address.AddressType + 10)"
         ///</param>
         /// <param name="assignments">An additional list of <see cref="EntityFieldAssignment" />(s) assigning database fields/columns new values.  </param>
-        /// <returns><see cref="UpdateEntities{ MsSqlDbAlt }"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
-        public static UpdateEntities<MsSqlDbAlt> Update(EntityFieldAssignment assignment, params EntityFieldAssignment[] assignments)
+        /// <returns><see cref="UpdateEntities"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
+        public static UpdateEntities Update(EntityFieldAssignment assignment, params EntityFieldAssignment[] assignments)
             => MsSqlDbAlt.Update(assignment, assignments);
 
         /// <summary>
@@ -1027,8 +1027,8 @@ namespace DbExAlt.DataService
         /// For example "dbo.Address.Line1.Set("new value")"
         /// or "dbo.Address.AddressType.Set(dbo.Address.AddressType + 10)"
         ///</param>
-        /// <returns><see cref="UpdateEntities{ MsSqlDbAlt }"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
-        public static UpdateEntities<MsSqlDbAlt> Update(IEnumerable<EntityFieldAssignment> assignments)
+        /// <returns><see cref="UpdateEntities"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
+        public static UpdateEntities Update(IEnumerable<EntityFieldAssignment> assignments)
             => MsSqlDbAlt.Update(assignments);   
         #endregion
 
@@ -1039,8 +1039,8 @@ namespace DbExAlt.DataService
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/statements/delete-transact-sql">Microsoft docs on DELETE</see>
         /// </para>
         /// </summary>
-        /// <returns><see cref="DeleteEntities{ MsSqlDbAlt }"/>, a fluent builder for constructing a sql DELETE statement.</returns>
-        public static DeleteEntities<MsSqlDbAlt> Delete()
+        /// <returns><see cref="DeleteEntities"/>, a fluent builder for constructing a sql DELETE statement.</returns>
+        public static DeleteEntities Delete()
             => MsSqlDbAlt.Delete();
         #endregion
 
@@ -1053,9 +1053,9 @@ namespace DbExAlt.DataService
         /// </summary>
         /// <param name="entity">The entity supplying the property values.
         /// </param>
-        /// <returns><see cref="InsertEntity{MsSqlDbAlt, TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
+        /// <returns><see cref="InsertEntity{TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
         /// <typeparam name="TEntity">The entity type of the entity to insert.</typeparam>
-        public static InsertEntity<MsSqlDbAlt, TEntity> Insert<TEntity>(TEntity entity)
+        public static InsertEntity<TEntity> Insert<TEntity>(TEntity entity)
             where TEntity : class, IDbEntity
             => MsSqlDbAlt.Insert<TEntity>(entity);
 
@@ -1067,9 +1067,9 @@ namespace DbExAlt.DataService
         /// </summary>
         /// <param name="entities">A list of entities.
         /// </param>
-        /// <returns><see cref="InsertEntities{MsSqlDbAlt, TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
+        /// <returns><see cref="InsertEntities{TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
         /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
-        public static InsertEntities<MsSqlDbAlt, TEntity> InsertMany<TEntity>(TEntity entity, params TEntity[] entities)
+        public static InsertEntities<TEntity> InsertMany<TEntity>(TEntity entity, params TEntity[] entities)
             where TEntity : class, IDbEntity
             => MsSqlDbAlt.InsertMany<TEntity>(entity, entities);
 
@@ -1081,9 +1081,9 @@ namespace DbExAlt.DataService
         /// </summary>
         /// <param name="entities">A list of entities.
         /// </param>
-        /// <returns><see cref="InsertEntities{MsSqlDbAlt, TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
+        /// <returns><see cref="InsertEntities{TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
         /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
-        public static InsertEntities<MsSqlDbAlt, TEntity> InsertMany<TEntity>(IEnumerable<TEntity> entities)
+        public static InsertEntities<TEntity> InsertMany<TEntity>(IEnumerable<TEntity> entities)
             where TEntity : class, IDbEntity
             => MsSqlDbAlt.InsertMany<TEntity>(entities);
         #endregion
@@ -1106,20 +1106,19 @@ namespace DbExAlt.DataService
 
     #region MsSqlDbAlt
     public class MsSqlDbAlt : ISqlDatabaseRuntime, 
-        SelectOneInitiation<MsSqlDbAlt>, 
-        SelectManyInitiation<MsSqlDbAlt>,
-        UpdateEntitiesInitiation<MsSqlDbAlt>,
-        DeleteEntitiesInitiation<MsSqlDbAlt>,
-        InsertEntitiesInitiation<MsSqlDbAlt>
+        SelectOneInitiation, 
+        SelectManyInitiation,
+        UpdateEntitiesInitiation,
+        DeleteEntitiesInitiation,
+        InsertEntitiesInitiation
     {
         #region internals
         private static readonly SqlDatabaseMetadataProvider _metadata = new SqlDatabaseMetadataProvider(new MsSqlDbAltSqlDatabaseMetadata("MsSqlDbAlt"));
         private static readonly MsSqlFunctionExpressionBuilder _fx = new MsSqlFunctionExpressionBuilder();
         private static readonly List<SchemaExpression> _schemas = new List<SchemaExpression>();
         private static readonly Dictionary<Type, Table> _entityTypeToTableMap = new Dictionary<Type, Table>();
-        private readonly IQueryExpressionBuilderFactory<MsSqlDbAlt> _queryExpressionBuilderFactory;
-        private readonly IConnectionStringFactory<MsSqlDbAlt> _connectionStringFactory;
-        private readonly ISqlConnectionFactory<MsSqlDbAlt> _connectionFactory;
+        private readonly IQueryExpressionBuilderFactory _queryExpressionBuilderFactory;
+        private readonly ISqlConnectionFactory _connectionFactory;
         private MsSqlDbAltStoredProcedures? _sp;
         #endregion
 
@@ -1162,13 +1161,11 @@ namespace DbExAlt.DataService
         }
 
         public MsSqlDbAlt(
-            IQueryExpressionBuilderFactory<MsSqlDbAlt> queryExpressionBuilderFactory,
-            IConnectionStringFactory<MsSqlDbAlt> connectionStringFactory, 
-            ISqlConnectionFactory<MsSqlDbAlt> connectionFactory        
+            IQueryExpressionBuilderFactory queryExpressionBuilderFactory,
+            ISqlConnectionFactory connectionFactory        
         )
         {
             _queryExpressionBuilderFactory = queryExpressionBuilderFactory ?? throw new ArgumentNullException(nameof(queryExpressionBuilderFactory));
-            _connectionStringFactory = connectionStringFactory ?? throw new ArgumentNullException(nameof(connectionStringFactory));
             _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
         }
         #endregion
@@ -1177,8 +1174,8 @@ namespace DbExAlt.DataService
         void ISqlDatabaseRuntime.InitializeStaticRuntime()
             => dbAlt.UseDatabase(this);
 
-        protected IQueryExpressionBuilder<MsSqlDbAlt> GetBuilder()
-            => _queryExpressionBuilderFactory.CreateQueryExpressionBuilder(this);
+        protected IQueryExpressionBuilder GetBuilder()
+            => _queryExpressionBuilderFactory.CreateQueryExpressionBuilder();
 
         #region select one
         /// <summary>
@@ -1190,9 +1187,9 @@ namespace DbExAlt.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <returns><see cref="SelectEntity{MsSqlDbAlt, TEntity}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
+        /// <returns><see cref="SelectEntity{TEntity}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
-        public SelectEntity<MsSqlDbAlt, TEntity> SelectOne<TEntity>()
+        public SelectEntity<TEntity> SelectOne<TEntity>()
             where TEntity : class, IDbEntity, new()
             => GetBuilder().CreateSelectEntityBuilder<TEntity>(GetTable<TEntity>());
 
@@ -1204,9 +1201,9 @@ namespace DbExAlt.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />
         /// </param>
-        /// <returns><see cref="Sql.SelectValue{MsSqlDbAlt, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
+        /// <returns><see cref="Sql.SelectValue{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
-        public SelectValue<MsSqlDbAlt, TEnum> SelectOne<TEnum>(AnyElement<TEnum> element)
+        public SelectValue<TEnum> SelectOne<TEnum>(AnyElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
             => GetBuilder().CreateSelectValueBuilder<TEnum>(element);
 
@@ -1218,9 +1215,9 @@ namespace DbExAlt.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />?
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
-        public SelectValue<MsSqlDbAlt, TEnum?> SelectOne<TEnum>(AnyElement<TEnum?> element)
+        public SelectValue<TEnum?> SelectOne<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable
             => GetBuilder().CreateSelectValueBuilder<TEnum>(element);
 
@@ -1232,8 +1229,8 @@ namespace DbExAlt.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="ObjectElement" />
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDbAlt, object>? SelectOne(ObjectElement element)
+        /// <returns><see cref="SelectValue{object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<object>? SelectOne(ObjectElement element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1244,8 +1241,8 @@ namespace DbExAlt.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableObjectElement" />
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDbAlt, object?> SelectOne(NullableObjectElement element)
+        /// <returns><see cref="SelectValue{object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<object?> SelectOne(NullableObjectElement element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1256,9 +1253,9 @@ namespace DbExAlt.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="ObjectElement{T}" />
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the object to select.</typeparam>
-        public SelectObject<MsSqlDbAlt, T> SelectOne<T>(ObjectElement<T> element)
+        public SelectObject<T> SelectOne<T>(ObjectElement<T> element)
             where T : class?
             => GetBuilder().CreateSelectValueBuilder<T>(element);
 
@@ -1270,8 +1267,8 @@ namespace DbExAlt.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AliasedElement{T}" />    
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDbAlt, T> SelectOne<T>(AliasedElement<T> element)
+        /// <returns><see cref="SelectValue{T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<T> SelectOne<T>(AliasedElement<T> element)
             => GetBuilder().CreateSelectValueBuilder<T>(element);
 
         /// <summary>
@@ -1283,8 +1280,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />
         ///, for example "unit_test.ExpressionElementType.Boolean" or "db.fx.IsNull(unit_test.ExpressionElementType.Boolean, false)
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDbAlt, bool> SelectOne(AnyElement<bool> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<bool> SelectOne(AnyElement<bool> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1296,8 +1293,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />?
         ///, for example "unit_test.ExpressionElementType.NullableBoolean""
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDbAlt, bool?> SelectOne(AnyElement<bool?> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<bool?> SelectOne(AnyElement<bool?> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1309,8 +1306,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />
         ///, for example "unit_test.ExpressionElementType.Byte" or "db.fx.IsNull(unit_test.ExpressionElementType.Byte, byte.MinValue)"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDbAlt, byte> SelectOne(AnyElement<byte> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<byte> SelectOne(AnyElement<byte> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1322,8 +1319,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />?
         ///, for example "unit_test.ExpressionElementType.NullableByte"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDbAlt, byte?> SelectOne(AnyElement<byte?> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<byte?> SelectOne(AnyElement<byte?> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1334,8 +1331,8 @@ namespace DbExAlt.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDbAlt, byte[]> SelectOne(AnyElement<byte[]> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<byte[]> SelectOne(AnyElement<byte[]> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1347,8 +1344,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />
         ///, for example "dbo.AccessAuditLog.DateCreated", "db.fx.DateAdd(DateParts.Year, 1, dbo.AccessAuditLog.DateCreated) or "db.fx.IsNull(dbo.AccessAuditLog.DateCreated, DateTime.Now)"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDbAlt, DateTime> SelectOne(AnyElement<DateTime> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<DateTime> SelectOne(AnyElement<DateTime> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1360,8 +1357,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />?
         ///, for example "dbo.Person.BirthDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.BirthDate)
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDbAlt, DateTime?> SelectOne(AnyElement<DateTime?> field)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<DateTime?> SelectOne(AnyElement<DateTime?> field)
             => GetBuilder().CreateSelectValueBuilder(field);
 
         /// <summary>
@@ -1373,8 +1370,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />
         ///, for example "dbo.Person.RegistrationDate", "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.RegistrationDate)" or "db.fx.IsNull(dbo.Person.RegistrationDate, DateTimeOffset.Now)"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDbAlt, DateTimeOffset> SelectOne(AnyElement<DateTimeOffset> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<DateTimeOffset> SelectOne(AnyElement<DateTimeOffset> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1386,8 +1383,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />?
         ///, for example "dbo.Person.LastLoginDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.LastLoginDate)" 
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDbAlt, DateTimeOffset?> SelectOne(AnyElement<DateTimeOffset?> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<DateTimeOffset?> SelectOne(AnyElement<DateTimeOffset?> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1399,8 +1396,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />
         ///, for example "dbo.Product.ShippingWeight" or "db.fx.IsNull(dbo.Product.ShippingWeight, decimal.MinValue)"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDbAlt, decimal> SelectOne(AnyElement<decimal> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<decimal> SelectOne(AnyElement<decimal> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1412,8 +1409,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />?
         ///, for example "dbo.Product.Height" or "db.fx.Min(dbo.Product.Height)"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDbAlt, decimal?> SelectOne(AnyElement<decimal?> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<decimal?> SelectOne(AnyElement<decimal?> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1425,8 +1422,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Double}" />
         ///, for example "dbo.Product.ListPrice" or "db.fx.IsNull(dbo.Product.ListPrice, double.MinValue)"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDbAlt, double> SelectOne(AnyElement<double> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<double> SelectOne(AnyElement<double> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1438,8 +1435,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Double}" />?
         ///, for example "dbo.PersonTotalPurchasesView.TotalAmount" or "db.fx.Min(dbo.PersonTotalPurchasesView.TotalAmount)"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDbAlt, double?> SelectOne(AnyElement<double?> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<double?> SelectOne(AnyElement<double?> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1451,8 +1448,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />
         ///, for example "unit_test.ExpressionElementType.Guid" or "db.fx.IsNull(unit_test.ExpressionElementType.Guid, Guid.Empty)"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDbAlt, Guid> SelectOne(AnyElement<Guid> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<Guid> SelectOne(AnyElement<Guid> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1464,8 +1461,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />?
         ///, for example "dbo.Purchase.TrackingIdentifier"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDbAlt, Guid?> SelectOne(AnyElement<Guid?> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<Guid?> SelectOne(AnyElement<Guid?> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1477,8 +1474,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />
         ///, for example "unit_test.ExpressionElementType.Int16" or "db.fx.IsNull(unit_test.ExpressionElementType.Int16, short.MinValue)"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDbAlt, short> SelectOne(AnyElement<short> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<short> SelectOne(AnyElement<short> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1490,8 +1487,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />?
         ///, for example "unit_test.ExpressionElementType.NullableInt16" or "db.fx.Max(unit_test.ExpressionElementType.NullableInt16)"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDbAlt, short?> SelectOne(AnyElement<short?> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<short?> SelectOne(AnyElement<short?> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1503,8 +1500,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />?
         ///, for example "dbo.AccessAuditLog.Id" or "db.fx.Avg(dbo.AccessAuditLog.Id)"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDbAlt, int> SelectOne(AnyElement<int> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<int> SelectOne(AnyElement<int> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1516,8 +1513,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />?
         ///, for example "dbo.Address.AddressType" or "db.fx.Avg(dbo.Address.AddressType)"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDbAlt, int?> SelectOne(AnyElement<int?> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<int?> SelectOne(AnyElement<int?> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1529,8 +1526,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />
         ///, for example "unit_test.ExpressionElementType.Int64" or "db.fx.IsNull(unit_test.ExpressionElementType.Int64, long.MinValue)"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDbAlt, long> SelectOne(AnyElement<long> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<long> SelectOne(AnyElement<long> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1542,8 +1539,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />?
         ///, for example "unit_test.ExpressionElementType.NullableInt64" or "db.fx.Max(unit_test.ExpressionElementType.NullableInt64)"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDbAlt, long?> SelectOne(AnyElement<long?> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<long?> SelectOne(AnyElement<long?> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1555,8 +1552,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Single}" />
         ///, for example "unit_test.ExpressionElementType.Single" or "db.fx.IsNull(unit_test.ExpressionElementType.Single, float.MinValue)"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDbAlt, float> SelectOne(AnyElement<float> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<float> SelectOne(AnyElement<float> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1568,8 +1565,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Single}" />?
         ///, for example "unit_test.ExpressionElementType.NullableSingle" or "db.fx.Max(unit_test.ExpressionElementType.NullableSingle)"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDbAlt, float?> SelectOne(AnyElement<float?> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<float?> SelectOne(AnyElement<float?> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1581,8 +1578,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDbAlt, string> SelectOne(StringElement element) 
+        /// <returns><see cref="SelectValue{String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<string> SelectOne(StringElement element) 
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1594,8 +1591,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDbAlt, string?> SelectOne(NullableStringElement element) 
+        /// <returns><see cref="SelectValue{String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<string?> SelectOne(NullableStringElement element) 
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1607,8 +1604,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />
         ///, for example "unit_test.ExpressionElementType.TimeSpan", "db.fx.IsNull(unit_test.ExpressionElementType.TimeSpan, TimeSpan.MinValue)" or "unit_test.ExpressionElementType.TimeSpan + DateTime.Now"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDbAlt, TimeSpan> SelectOne(AnyElement<TimeSpan> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<TimeSpan> SelectOne(AnyElement<TimeSpan> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1620,8 +1617,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />?
         ///, for example "dbo.Product.ValidStartTimeOfDayForPurchase"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDbAlt, TimeSpan?> SelectOne(AnyElement<TimeSpan?> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<TimeSpan?> SelectOne(AnyElement<TimeSpan?> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1633,8 +1630,8 @@ namespace DbExAlt.DataService
         /// <param name="element1">Any expression</param>
         /// <param name="element2">Any expression</param>
         /// <param name="elements">Any expression</param>
-        /// <returns><see cref="SelectDynamic{ MsSqlDbAlt }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectDynamic<MsSqlDbAlt> SelectOne(AnyElement element1, AnyElement element2, params AnyElement[] elements)
+        /// <returns><see cref="SelectDynamic "/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectDynamic SelectOne(AnyElement element1, AnyElement element2, params AnyElement[] elements)
             => GetBuilder().CreateSelectDynamicBuilder(element1, element2, elements);
 
         /// <summary>
@@ -1645,8 +1642,8 @@ namespace DbExAlt.DataService
         /// </summary>
         /// <param name="element1">Any expression</param>
         /// <param name="elements">A list of any expression</param>
-        /// <returns><see cref="SelectDynamic{ MsSqlDbAlt }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectDynamic<MsSqlDbAlt> SelectOne(IEnumerable<AnyElement> elements)
+        /// <returns><see cref="SelectDynamic "/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectDynamic SelectOne(IEnumerable<AnyElement> elements)
             => GetBuilder().CreateSelectDynamicBuilder(elements);
 
         /// <summary>
@@ -1657,8 +1654,8 @@ namespace DbExAlt.DataService
         /// </summary>
         /// <param name="elements">A list of any expression that is valid for a SELECT query expression.</param>
         /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
-        /// <returns><see cref="SelectDynamic{ MsSqlDbAlt }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectDynamic<MsSqlDbAlt> SelectOne(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
+        /// <returns><see cref="SelectDynamic "/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectDynamic SelectOne(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
             => GetBuilder().CreateSelectDynamicBuilder((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
         #endregion
 
@@ -1672,9 +1669,9 @@ namespace DbExAlt.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <returns><see cref="SelectEntities{MsSqlDbAlt, TEntity}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
+        /// <returns><see cref="SelectEntities{TEntity}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
-        public SelectEntities<MsSqlDbAlt, TEntity> SelectMany<TEntity>()
+        public SelectEntities<TEntity> SelectMany<TEntity>()
            where TEntity : class, IDbEntity, new()
            => GetBuilder().CreateSelectEntitiesBuilder<TEntity>(GetTable<TEntity>());
 
@@ -1686,8 +1683,8 @@ namespace DbExAlt.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
-        public SelectValues<MsSqlDbAlt, TEnum> SelectMany<TEnum>(AnyElement<TEnum> element)
+        /// <returns><see cref="SelectValues{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
+        public SelectValues<TEnum> SelectMany<TEnum>(AnyElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
             => GetBuilder().CreateSelectValuesBuilder<TEnum>(element);
 
@@ -1699,8 +1696,8 @@ namespace DbExAlt.DataService
         /// </para>
         /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />?
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDbAlt, TEnum?> SelectMany<TEnum>(AnyElement<TEnum?> element)
+        /// <returns><see cref="SelectValues{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<TEnum?> SelectMany<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable
             => GetBuilder().CreateSelectValuesBuilder<TEnum>(element);
 
@@ -1712,8 +1709,8 @@ namespace DbExAlt.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="ObjectElement" />
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDbAlt, object>? SelectMany(ObjectElement element)
+        /// <returns><see cref="SelectValues{object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<object>? SelectMany(ObjectElement element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1724,8 +1721,8 @@ namespace DbExAlt.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableObjectElement" />
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDbAlt, object?> SelectMany(NullableObjectElement element)
+        /// <returns><see cref="SelectValues{object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<object?> SelectMany(NullableObjectElement element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1736,9 +1733,9 @@ namespace DbExAlt.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="ObjectElement{T}" />
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the object to select.</typeparam>
-        public SelectObjects<MsSqlDbAlt, T> SelectMany<T>(ObjectElement<T> element)
+        public SelectObjects<T> SelectMany<T>(ObjectElement<T> element)
             where T : class?
             => GetBuilder().CreateSelectValuesBuilder<T>(element);
 
@@ -1750,8 +1747,8 @@ namespace DbExAlt.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AliasedElement{T}" />    
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDbAlt, T> SelectMany<T>(AliasedElement<T> element)
+        /// <returns><see cref="SelectValues{T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<T> SelectMany<T>(AliasedElement<T> element)
             => GetBuilder().CreateSelectValuesBuilder<T>(element);
 
         /// <summary>
@@ -1763,8 +1760,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />
         ///, for example "unit_test.ExpressionElementType.Boolean" or "db.fx.IsNull(unit_test.ExpressionElementType.Boolean, false)
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDbAlt, bool> SelectMany(AnyElement<bool> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<bool> SelectMany(AnyElement<bool> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1776,8 +1773,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />?
         ///, for example "unit_test.ExpressionElementType.NullableBoolean""
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDbAlt, bool?> SelectMany(AnyElement<bool?> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<bool?> SelectMany(AnyElement<bool?> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1789,8 +1786,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />
         ///, for example "unit_test.ExpressionElementType.Byte" or "db.fx.IsNull(unit_test.ExpressionElementType.Byte, byte.MinValue)"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDbAlt, byte> SelectMany(AnyElement<byte> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<byte> SelectMany(AnyElement<byte> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1802,8 +1799,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />?
         ///, for example "unit_test.ExpressionElementType.NullableByte"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDbAlt, byte?> SelectMany(AnyElement<byte?> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<byte?> SelectMany(AnyElement<byte?> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1814,8 +1811,8 @@ namespace DbExAlt.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDbAlt, byte[]> SelectMany(AnyElement<byte[]> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<byte[]> SelectMany(AnyElement<byte[]> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1827,8 +1824,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />
         ///, for example "dbo.AccessAuditLog.DateCreated", "db.fx.DateAdd(DateParts.Year, 1, dbo.AccessAuditLog.DateCreated) or "db.fx.IsNull(dbo.AccessAuditLog.DateCreated, DateTime.Now)"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDbAlt, DateTime> SelectMany(AnyElement<DateTime> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<DateTime> SelectMany(AnyElement<DateTime> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1840,8 +1837,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />?
         ///, for example "dbo.Person.BirthDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.BirthDate)
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDbAlt, DateTime?> SelectMany(AnyElement<DateTime?> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<DateTime?> SelectMany(AnyElement<DateTime?> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1853,8 +1850,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />
         ///, for example "dbo.Person.RegistrationDate", "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.RegistrationDate)" or "db.fx.IsNull(dbo.Person.RegistrationDate, DateTimeOffset.Now)"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDbAlt, DateTimeOffset> SelectMany(AnyElement<DateTimeOffset> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<DateTimeOffset> SelectMany(AnyElement<DateTimeOffset> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1866,8 +1863,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />?
         ///, for example "dbo.Person.LastLoginDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.LastLoginDate)" 
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDbAlt, DateTimeOffset?> SelectMany(AnyElement<DateTimeOffset?> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<DateTimeOffset?> SelectMany(AnyElement<DateTimeOffset?> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1879,8 +1876,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />
         ///, for example "dbo.Product.ShippingWeight" or "db.fx.IsNull(dbo.Product.ShippingWeight, decimal.MinValue)"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDbAlt, decimal> SelectMany(AnyElement<decimal> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<decimal> SelectMany(AnyElement<decimal> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1892,8 +1889,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />?
         ///, for example "dbo.Product.Height"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDbAlt, decimal?> SelectMany(AnyElement<decimal?> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<decimal?> SelectMany(AnyElement<decimal?> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1905,8 +1902,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Double}" />
         ///, for example "dbo.Product.ListPrice" or "db.fx.IsNull(dbo.Product.ListPrice, double.MinValue)"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDbAlt, double> SelectMany(AnyElement<double> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<double> SelectMany(AnyElement<double> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1918,8 +1915,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Double}" />?
         ///, for example "dbo.PersonTotalPurchasesView.TotalAmount"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDbAlt, double?> SelectMany(AnyElement<double?> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<double?> SelectMany(AnyElement<double?> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1931,8 +1928,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />
         ///, for example "unit_test.ExpressionElementType.Guid" or "db.fx.IsNull(unit_test.ExpressionElementType.Guid, Guid.Empty)"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDbAlt, Guid> SelectMany(AnyElement<Guid> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<Guid> SelectMany(AnyElement<Guid> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1944,8 +1941,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />?
         ///, for example "dbo.Purchase.TrackingIdentifier"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDbAlt, Guid?> SelectMany(AnyElement<Guid?> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<Guid?> SelectMany(AnyElement<Guid?> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1957,8 +1954,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />
         ///, for example "unit_test.ExpressionElementType.Int16" or "db.fx.IsNull(unit_test.ExpressionElementType.Int16, short.MinValue)"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDbAlt, short> SelectMany(AnyElement<short> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<short> SelectMany(AnyElement<short> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1970,8 +1967,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />?
         ///, for example "unit_test.ExpressionElementType.NullableInt16"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDbAlt, short?> SelectMany(AnyElement<short?> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<short?> SelectMany(AnyElement<short?> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1983,8 +1980,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />
         ///, for example "dbo.AccessAuditLog.Id"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDbAlt, int> SelectMany(AnyElement<int> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<int> SelectMany(AnyElement<int> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1996,8 +1993,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />?
         ///, for example "dbo.:column.Entity.Name}.AddressType"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDbAlt, int?> SelectMany(AnyElement<int?> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<int?> SelectMany(AnyElement<int?> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -2009,8 +2006,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />
         ///, for example "unit_test.ExpressionElementType.Int64" or "db.fx.IsNull(unit_test.ExpressionElementType.Int64, long.MinValue)"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDbAlt, long> SelectMany(AnyElement<long> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<long> SelectMany(AnyElement<long> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -2022,8 +2019,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />?
         ///, for example "unit_test.ExpressionElementType.NullableInt64"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDbAlt, long?> SelectMany(AnyElement<long?> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<long?> SelectMany(AnyElement<long?> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -2035,8 +2032,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Single}" />
         ///, for example "unit_test.ExpressionElementType.Single" or "db.fx.IsNull(unit_test.ExpressionElementType.Single, float.MinValue)"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDbAlt, float> SelectMany(AnyElement<float> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<float> SelectMany(AnyElement<float> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -2048,8 +2045,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Single}" />?
         ///, for example "unit_test.ExpressionElementType.NullableSingle"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDbAlt, float?> SelectMany(AnyElement<float?> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<float?> SelectMany(AnyElement<float?> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -2061,8 +2058,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDbAlt, string> SelectMany(StringElement element)
+        /// <returns><see cref="SelectValues{String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<string> SelectMany(StringElement element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -2074,8 +2071,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDbAlt, string?> SelectMany(NullableStringElement element)
+        /// <returns><see cref="SelectValues{String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<string?> SelectMany(NullableStringElement element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -2087,8 +2084,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />
         ///, for example "unit_test.ExpressionElementType.TimeSpan", "db.fx.IsNull(unit_test.ExpressionElementType.TimeSpan, TimeSpan.MinValue)" or "unit_test.ExpressionElementType.TimeSpan + DateTime.Now"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDbAlt, TimeSpan> SelectMany(AnyElement<TimeSpan> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<TimeSpan> SelectMany(AnyElement<TimeSpan> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -2100,8 +2097,8 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />?
         ///, for example "dbo.Product.ValidStartTimeOfDayForPurchase"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDbAlt, TimeSpan?> SelectMany(AnyElement<TimeSpan?> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<TimeSpan?> SelectMany(AnyElement<TimeSpan?> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -2113,8 +2110,8 @@ namespace DbExAlt.DataService
         /// <param name="element1">Any expression</param>
         /// <param name="element2">Any expression</param>
         /// <param name="elements">Any expression</param>
-        /// <returns><see cref="SelectDynamics{ MsSqlDbAlt }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectDynamics<MsSqlDbAlt> SelectMany(AnyElement element1, AnyElement element2, params AnyElement[] elements)
+        /// <returns><see cref="SelectDynamics "/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectDynamics SelectMany(AnyElement element1, AnyElement element2, params AnyElement[] elements)
             => GetBuilder().CreateSelectDynamicsBuilder(element1, element2, elements);
 
         /// <summary>
@@ -2124,8 +2121,8 @@ namespace DbExAlt.DataService
         /// </para>
         /// </summary>
         /// <param name="elements">A list of any expression</param>
-        /// <returns><see cref="SelectDynamics{ MsSqlDbAlt }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectDynamics<MsSqlDbAlt> SelectMany(IEnumerable<AnyElement> elements)
+        /// <returns><see cref="SelectDynamics "/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectDynamics SelectMany(IEnumerable<AnyElement> elements)
             => GetBuilder().CreateSelectDynamicsBuilder(elements);
 
             /// <summary>
@@ -2136,8 +2133,8 @@ namespace DbExAlt.DataService
         /// </summary>
         /// <param name="elements">A list of any expression that is valid for a SELECT query expression.</param>
         /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
-        /// <returns><see cref="SelectDynamics{ MsSqlDbAlt }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectDynamics<MsSqlDbAlt> SelectMany(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
+        /// <returns><see cref="SelectDynamics "/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectDynamics SelectMany(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
             => GetBuilder().CreateSelectDynamicsBuilder((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
         #endregion
 
@@ -2153,8 +2150,8 @@ namespace DbExAlt.DataService
         /// or "dbo.Address.AddressType.Set(dbo.Address.AddressType + 10)"
         /// </param>
         /// <param name="assignments">An additional list of <see cref="EntityFieldAssignment" />(s) assigning database fields/columns new values.  </param>
-        /// <returns><see cref="UpdateEntities{ MsSqlDbAlt }"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
-        public UpdateEntities<MsSqlDbAlt> Update(EntityFieldAssignment assignment, params EntityFieldAssignment[] assignments)
+        /// <returns><see cref="UpdateEntities "/>, a fluent builder for constructing a sql UPDATE statement.</returns>
+        public UpdateEntities Update(EntityFieldAssignment assignment, params EntityFieldAssignment[] assignments)
             => GetBuilder().CreateUpdateExpressionBuilder(assignment, assignments);
 
         /// <summary>
@@ -2167,8 +2164,8 @@ namespace DbExAlt.DataService
         /// For example "dbo.Address.Line1.Set("new value")"
         /// or "dbo.Address.AddressType.Set(dbo.Address.AddressType + 10)"
         /// </param>
-        /// <returns><see cref="UpdateEntities{ MsSqlDbAlt }"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
-        public UpdateEntities<MsSqlDbAlt> Update(IEnumerable<EntityFieldAssignment> assignments)
+        /// <returns><see cref="UpdateEntities "/>, a fluent builder for constructing a sql UPDATE statement.</returns>
+        public UpdateEntities Update(IEnumerable<EntityFieldAssignment> assignments)
             => GetBuilder().CreateUpdateExpressionBuilder(assignments);   
         #endregion
 
@@ -2179,8 +2176,8 @@ namespace DbExAlt.DataService
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/statements/delete-transact-sql">Microsoft docs on DELETE</see>
         /// </para>
         /// </summary>
-        /// <returns><see cref="DeleteEntities{ MsSqlDbAlt }"/>, a fluent builder for constructing a sql DELETE statement.</returns>
-        public DeleteEntities<MsSqlDbAlt> Delete()
+        /// <returns><see cref="DeleteEntities "/>, a fluent builder for constructing a sql DELETE statement.</returns>
+        public DeleteEntities Delete()
             => GetBuilder().CreateDeleteExpressionBuilder();
         #endregion
 
@@ -2193,9 +2190,9 @@ namespace DbExAlt.DataService
         /// </summary>
         /// <param name="entity">The entity supplying the property values.
         /// </param>
-        /// <returns><see cref="InsertEntity{MsSqlDbAlt, TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
+        /// <returns><see cref="InsertEntity{TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
         /// <typeparam name="TEntity">The entity type of the entity to insert.</typeparam>
-        public InsertEntity<MsSqlDbAlt, TEntity> Insert<TEntity>(TEntity entity)
+        public InsertEntity<TEntity> Insert<TEntity>(TEntity entity)
             where TEntity : class, IDbEntity
             => GetBuilder().CreateInsertExpressionBuilder<TEntity>(entity);
 
@@ -2207,9 +2204,9 @@ namespace DbExAlt.DataService
         /// </summary>
         /// <param name="entities">A list of entities.
         /// </param>
-        /// <returns><see cref="InsertEntities{MsSqlDbAlt, TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
+        /// <returns><see cref="InsertEntities{TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
         /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
-        public InsertEntities<MsSqlDbAlt, TEntity> InsertMany<TEntity>(TEntity entity, params TEntity[] entities)
+        public InsertEntities<TEntity> InsertMany<TEntity>(TEntity entity, params TEntity[] entities)
             where TEntity : class, IDbEntity
             => GetBuilder().CreateInsertExpressionBuilder<TEntity>(entity, entities);
 
@@ -2221,9 +2218,9 @@ namespace DbExAlt.DataService
         /// </summary>
         /// <param name="entities">A list of entities.
         /// </param>
-        /// <returns><see cref="InsertEntities{MsSqlDbAlt, TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
+        /// <returns><see cref="InsertEntities{TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
         /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
-        public InsertEntities<MsSqlDbAlt, TEntity> InsertMany<TEntity>(IEnumerable<TEntity> entities)
+        public InsertEntities<TEntity> InsertMany<TEntity>(IEnumerable<TEntity> entities)
             where TEntity : class, IDbEntity
             => GetBuilder().CreateInsertExpressionBuilder<TEntity>(entities);
         #endregion
@@ -2237,7 +2234,7 @@ namespace DbExAlt.DataService
         /// </summary>
         /// <returns><see cref="ISqlConnection"/>, a connection to the database.</returns>
         public ISqlConnection GetConnection()
-            => new SqlConnector<MsSqlDbAlt>(_connectionStringFactory, _connectionFactory);
+            => new SqlConnector(_connectionFactory);
         #endregion
 
         protected virtual Table<TEntity> GetTable<TEntity>()
@@ -2327,7 +2324,7 @@ namespace DbExAlt.DataService
             /// </para>
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<MsSqlDbAlt> SelectPerson_As_Dynamic_With_Input(int? P1)
+            public StoredProcedureContinuation SelectPerson_As_Dynamic_With_Input(int? P1)
                 => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPerson_As_Dynamic_With_InputStoredProcedure("dbo", _dbo, P1));
 
             /// <summary>
@@ -2349,7 +2346,7 @@ namespace DbExAlt.DataService
             /// </para>
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<MsSqlDbAlt> SelectPerson_As_Dynamic_With_Input_And_InputOutput(int? P1,int? CreditLimit, Action<ISqlOutputParameterList> outputParameters)
+            public StoredProcedureContinuation SelectPerson_As_Dynamic_With_Input_And_InputOutput(int? P1,int? CreditLimit, Action<ISqlOutputParameterList> outputParameters)
                 => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPerson_As_Dynamic_With_Input_And_InputOutputStoredProcedure("dbo", _dbo, P1, CreditLimit, outputParameters));
 
             /// <summary>
@@ -2372,7 +2369,7 @@ namespace DbExAlt.DataService
             /// </param>
             /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<MsSqlDbAlt> SelectPerson_As_Dynamic_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
+            public StoredProcedureContinuation SelectPerson_As_Dynamic_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
                 => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPerson_As_Dynamic_With_Input_And_OutputStoredProcedure("dbo", _dbo, P1, outputParameters));
 
             /// <summary>
@@ -2394,7 +2391,7 @@ namespace DbExAlt.DataService
             /// </para>
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<MsSqlDbAlt> SelectPerson_As_DynamicList_With_Input(int? P1)
+            public StoredProcedureContinuation SelectPerson_As_DynamicList_With_Input(int? P1)
                 => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPerson_As_DynamicList_With_InputStoredProcedure("dbo", _dbo, P1));
 
             /// <summary>
@@ -2416,7 +2413,7 @@ namespace DbExAlt.DataService
             /// </para>
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<MsSqlDbAlt> SelectPerson_As_DynamicList_With_Input_And_InputOutput(int? P1,int? CreditLimit, Action<ISqlOutputParameterList> outputParameters)
+            public StoredProcedureContinuation SelectPerson_As_DynamicList_With_Input_And_InputOutput(int? P1,int? CreditLimit, Action<ISqlOutputParameterList> outputParameters)
                 => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPerson_As_DynamicList_With_Input_And_InputOutputStoredProcedure("dbo", _dbo, P1, CreditLimit, outputParameters));
 
             /// <summary>
@@ -2439,7 +2436,7 @@ namespace DbExAlt.DataService
             /// </param>
             /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<MsSqlDbAlt> SelectPerson_As_DynamicList_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
+            public StoredProcedureContinuation SelectPerson_As_DynamicList_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
                 => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPerson_As_DynamicList_With_Input_And_OutputStoredProcedure("dbo", _dbo, P1, outputParameters));
 
             /// <summary>
@@ -2461,14 +2458,14 @@ namespace DbExAlt.DataService
             /// </para>
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<MsSqlDbAlt> SelectPersonId_As_ScalarValue_With_Input(int? P1)
+            public StoredProcedureContinuation SelectPersonId_As_ScalarValue_With_Input(int? P1)
                 => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValue_With_InputStoredProcedure("dbo", _dbo, P1));
 
             /// <summary>
             /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValue_With_Input_And_Default_Value stored procedure.
             /// </summary>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<MsSqlDbAlt> SelectPersonId_As_ScalarValue_With_Input_And_Default_Value()
+            public StoredProcedureContinuation SelectPersonId_As_ScalarValue_With_Input_And_Default_Value()
                 => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValue_With_Input_And_Default_ValueStoredProcedure("dbo", _dbo));
 
             /// <summary>
@@ -2490,7 +2487,7 @@ namespace DbExAlt.DataService
             /// </para>
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<MsSqlDbAlt> SelectPersonId_As_ScalarValue_With_Input_And_InputOutput(int? P1,int? CreditLimit, Action<ISqlOutputParameterList> outputParameters)
+            public StoredProcedureContinuation SelectPersonId_As_ScalarValue_With_Input_And_InputOutput(int? P1,int? CreditLimit, Action<ISqlOutputParameterList> outputParameters)
                 => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValue_With_Input_And_InputOutputStoredProcedure("dbo", _dbo, P1, CreditLimit, outputParameters));
 
             /// <summary>
@@ -2513,7 +2510,7 @@ namespace DbExAlt.DataService
             /// </param>
             /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<MsSqlDbAlt> SelectPersonId_As_ScalarValue_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
+            public StoredProcedureContinuation SelectPersonId_As_ScalarValue_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
                 => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValue_With_Input_And_OutputStoredProcedure("dbo", _dbo, P1, outputParameters));
 
             /// <summary>
@@ -2535,7 +2532,7 @@ namespace DbExAlt.DataService
             /// </para>
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<MsSqlDbAlt> SelectPersonId_As_ScalarValueList_With_Input(int? P1)
+            public StoredProcedureContinuation SelectPersonId_As_ScalarValueList_With_Input(int? P1)
                 => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValueList_With_InputStoredProcedure("dbo", _dbo, P1));
 
             /// <summary>
@@ -2557,7 +2554,7 @@ namespace DbExAlt.DataService
             /// </para>
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<MsSqlDbAlt> SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput(int? P1,int? CreditLimit, Action<ISqlOutputParameterList> outputParameters)
+            public StoredProcedureContinuation SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput(int? P1,int? CreditLimit, Action<ISqlOutputParameterList> outputParameters)
                 => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValueList_With_Input_And_InputOutputStoredProcedure("dbo", _dbo, P1, CreditLimit, outputParameters));
 
             /// <summary>
@@ -2580,7 +2577,7 @@ namespace DbExAlt.DataService
             /// </param>
             /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<MsSqlDbAlt> SelectPersonId_As_ScalarValueList_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
+            public StoredProcedureContinuation SelectPersonId_As_ScalarValueList_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
                 => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValueList_With_Input_And_OutputStoredProcedure("dbo", _dbo, P1, outputParameters));
 
             /// <summary>
@@ -2617,7 +2614,7 @@ namespace DbExAlt.DataService
             /// </para>
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<MsSqlDbAlt> UpdatePersonCreditLimit_With_Inputs(int? P1,int? CreditLimit)
+            public StoredProcedureContinuation UpdatePersonCreditLimit_With_Inputs(int? P1,int? CreditLimit)
                 => _database.GetBuilder().CreateStoredProcedureBuilder(new UpdatePersonCreditLimit_With_InputsStoredProcedure("dbo", _dbo, P1, CreditLimit));
 
             #endregion

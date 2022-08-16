@@ -13,7 +13,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void DateParts_expressions_of_same_values_should_be_equal(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp1 = new DatePartsExpression<TestEnum>(TestEnum.AValue);
             var exp2 = new DatePartsExpression<TestEnum>(TestEnum.AValue);
@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void DateParts_expressions_of_different_values_should_not_be_equal(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp1 = new DatePartsExpression<TestEnum>(TestEnum.AValue);
             var exp2 = new DatePartsExpression<TestEnum>(TestEnum.BValue);
@@ -41,7 +41,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void DateParts_expressions_of_same_values_should_have_same_hash_codes(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp1 = new DatePartsExpression<TestEnum>(TestEnum.AValue);
             var exp2 = new DatePartsExpression<TestEnum>(TestEnum.AValue);
@@ -59,7 +59,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void DateParts_expressions_of_different_values_should_have_different_hash_codes(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp1 = new DatePartsExpression<TestEnum>(TestEnum.AValue);
             var exp2 = new DatePartsExpression<TestEnum>(TestEnum.BValue);

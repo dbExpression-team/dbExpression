@@ -42,18 +42,18 @@ namespace HatTrick.DbEx.Sql.Configuration
         /// <summary>
         /// Use a custom connection string factory to provide a connection string to connect to the database.
         /// </summary>
-        void Use(IConnectionStringFactory<TDatabase> factory);
+        void Use(IConnectionStringFactory factory);
 
         /// <summary>
         /// Use a custom connection string factory to provide a connection string to connect to the database.
         /// </summary>
         void Use<TConnectionStringFactory>()
-            where TConnectionStringFactory : class, IConnectionStringFactory<TDatabase>;
+            where TConnectionStringFactory : class, IConnectionStringFactory;
 
         /// <summary>
         /// Use a custom factory for creating a factory for creating connection strings to connect to the database.
         /// </summary>
         /// <param name="factory">A delegate responsible for creating an <see cref="IConnectionStringFactory{TDatabase}"/>.</param>
-        void Use(Func<IServiceProvider, IConnectionStringFactory<TDatabase>> factory);
+        void Use(Func<IServiceProvider, IConnectionStringFactory> factory);
     }
 }

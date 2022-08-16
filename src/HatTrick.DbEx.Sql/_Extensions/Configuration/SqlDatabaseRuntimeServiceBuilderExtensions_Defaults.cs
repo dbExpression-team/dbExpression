@@ -42,12 +42,12 @@ namespace HatTrick.DbEx.Sql.Configuration
             where TDatabase : class, ISqlDatabaseRuntime
         {
             builder
-                .ForPipelineType<ISelectSetQueryExecutionPipeline<TDatabase>>().Use<SelectQueryExpressionExecutionPipeline<TDatabase>>()
-                .ForPipelineType<IStoredProcedureExecutionPipeline<TDatabase>>().Use<StoredProcedureQueryExpressionExecutionPipeline<TDatabase>>()
-                .ForSelect().Use<SelectQueryExpressionExecutionPipeline<TDatabase>>()
-                .ForInsert().Use<InsertQueryExecutionPipeline<TDatabase>>()
-                .ForUpdate().Use<UpdateQueryExpressionExecutionPipeline<TDatabase>>()
-                .ForDelete().Use<DeleteQueryExecutionPipeline<TDatabase>>();
+                .ForPipelineType<ISelectSetQueryExecutionPipeline>().Use<SelectQueryExpressionExecutionPipeline>()
+                .ForPipelineType<IStoredProcedureExecutionPipeline>().Use<StoredProcedureQueryExpressionExecutionPipeline>()
+                .ForSelect().Use<SelectQueryExpressionExecutionPipeline>()
+                .ForInsert().Use<InsertQueryExecutionPipeline>()
+                .ForUpdate().Use<UpdateQueryExpressionExecutionPipeline>()
+                .ForDelete().Use<DeleteQueryExecutionPipeline>();
         }
 
         public static void WithDefaults<TDatabase>(this IValueConverterFactoryContinuationConfigurationBuilder<TDatabase> builder)

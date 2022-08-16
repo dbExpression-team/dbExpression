@@ -48,7 +48,7 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         #region methods
         /// <inheritdoc />
-        public IEntitiesConfigurationBuilderMappingGrouping<TDatabase> Use(IEntityFactory<TDatabase> factory)
+        public IEntitiesConfigurationBuilderMappingGrouping<TDatabase> Use(IEntityFactory factory)
         {
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
@@ -59,9 +59,9 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         /// <inheritdoc />
         public IEntitiesConfigurationBuilderMappingGrouping<TDatabase> Use<TEntityFactory>()
-            where TEntityFactory : class, IEntityFactory<TDatabase>
+            where TEntityFactory : class, IEntityFactory
         {
-            services.TryAddSingleton<IEntityFactory<TDatabase>, TEntityFactory>();
+            services.TryAddSingleton<IEntityFactory, TEntityFactory>();
             return caller;
         }
 
@@ -71,8 +71,8 @@ namespace HatTrick.DbEx.Sql.Configuration
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            services.TryAddSingleton<IEntityFactory<TDatabase>>(sp => new DefaultEntityFactoryWithFallbackConstruction<TDatabase>(
-                    sp.GetRequiredService<ILoggerFactory>().CreateLogger<DefaultEntityFactoryWithFallbackConstruction<TDatabase>>(), 
+            services.TryAddSingleton<IEntityFactory>(sp => new DefaultEntityFactoryWithFallbackConstruction(
+                    sp.GetRequiredService<ILogger<DefaultEntityFactoryWithFallbackConstruction>>(), 
                     t => factory(sp, t)
                 )
             );
@@ -85,8 +85,8 @@ namespace HatTrick.DbEx.Sql.Configuration
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            services.TryAddSingleton<IEntityFactory<TDatabase>>(sp => new DefaultEntityFactoryWithFallbackConstruction<TDatabase>(
-                    sp.GetRequiredService<ILoggerFactory>().CreateLogger<DefaultEntityFactoryWithFallbackConstruction<TDatabase>>(),
+            services.TryAddSingleton<IEntityFactory>(sp => new DefaultEntityFactoryWithFallbackConstruction(
+                    sp.GetRequiredService<ILogger<DefaultEntityFactoryWithFallbackConstruction>>(),
                     t => factory(sp, t)
                 )
             );
@@ -95,22 +95,22 @@ namespace HatTrick.DbEx.Sql.Configuration
         }
 
         /// <inheritdoc />
-        public IEntitiesConfigurationBuilderMappingGrouping<TDatabase> Use(Func<IServiceProvider, IEntityFactory<TDatabase>> factory)
+        public IEntitiesConfigurationBuilderMappingGrouping<TDatabase> Use(Func<IServiceProvider, IEntityFactory> factory)
         {
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            services.TryAddTransient<IEntityFactory<TDatabase>>(factory);
+            services.TryAddTransient<IEntityFactory>(factory);
             return caller;
         }
 
         /// <inheritdoc />
-        public IEntitiesConfigurationBuilderMappingGrouping<TDatabase> Use(Func<IServiceProvider, IEntityFactory<TDatabase>> factory, Action<IEntityFactoryContinuationConfigurationBuilder<TDatabase>> configureEntityTypes)
+        public IEntitiesConfigurationBuilderMappingGrouping<TDatabase> Use(Func<IServiceProvider, IEntityFactory> factory, Action<IEntityFactoryContinuationConfigurationBuilder<TDatabase>> configureEntityTypes)
         {
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            services.TryAddSingleton<IEntityFactory<TDatabase>>(factory);
+            services.TryAddSingleton<IEntityFactory>(factory);
             configureEntityTypes.Invoke(new EntityFactoryConfigurationBuilder<TDatabase>(caller, services));
             return caller;
         }

@@ -17,7 +17,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_static_value_character_count_for_right_of_isnull_of_address_line2_succeed(int version, int characterCount = 3, string expected = "FOO")
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Right(db.fx.IsNull(dbo.Address.Line2, expected), characterCount)
@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_static_value_character_count_for_right_of_isnull_of_address_line1_succeed(int version, int characterCount = 3, string expected = "FOO")
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Right(db.fx.IsNull(dbo.Address.Line1, expected), characterCount)
@@ -55,7 +55,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_right_of_isnull_of_address_line2_and_static_value_character_count_for_succeed(int version, int characterCount = 3, string expected = "FOO")
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Right(db.fx.IsNull(dbo.Address.Line1, expected), characterCount)

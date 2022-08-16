@@ -22,7 +22,22 @@ using System.Collections.Generic;
 namespace HatTrick.DbEx.Sql.Configuration
 {
     public class RegisteredSqlDatabaseRuntimeTypes : List<Type>
-    { 
-    
+    {
+        public RegisteredSqlDatabaseRuntimeTypes(IEnumerable<Type> databaseTypes) : base(databaseTypes)
+        { 
+        
+        }
+
+        private RegisteredSqlDatabaseRuntimeTypes()
+        { 
+        
+        }
+
+#pragma warning disable IDE0051 // Remove unused private members
+        private RegisteredSqlDatabaseRuntimeTypes(int capacity) : base(capacity)
+#pragma warning restore IDE0051 // Remove unused private members
+        {
+
+        }
     }
 }

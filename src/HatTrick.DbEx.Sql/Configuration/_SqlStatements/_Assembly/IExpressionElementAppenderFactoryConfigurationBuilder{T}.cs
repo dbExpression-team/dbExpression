@@ -27,13 +27,13 @@ namespace HatTrick.DbEx.Sql.Configuration
         /// <summary>
         /// Use a custom factory for creating an expression element appender for appending the element's state to a sql statement writer.
         /// </summary>
-        ISqlStatementAssemblyGroupingConfigurationBuilders<TDatabase> Use(IExpressionElementAppenderFactory<TDatabase> factory);
+        ISqlStatementAssemblyGroupingConfigurationBuilders<TDatabase> Use(IExpressionElementAppenderFactory factory);
 
         /// <summary>
         /// Use a custom factory for creating an expression element appender for appending the element's state to a sql statement writer.
         /// </summary>
         ISqlStatementAssemblyGroupingConfigurationBuilders<TDatabase> Use<TExpressionElementAppenderFactory>()
-            where TExpressionElementAppenderFactory : class, IExpressionElementAppenderFactory<TDatabase>;
+            where TExpressionElementAppenderFactory : class, IExpressionElementAppenderFactory;
 
         /// <summary>
         /// Use the provided delegate to create an expression element appender for appending the element's state to a sql statement writer.
@@ -50,24 +50,24 @@ namespace HatTrick.DbEx.Sql.Configuration
         /// <summary>
         /// Use a custom factory for creating an expression element appender for appending the element's state to a sql statement writer.
         /// </summary>
-        ISqlStatementAssemblyGroupingConfigurationBuilders<TDatabase> Use(Func<IServiceProvider, IExpressionElementAppenderFactory<TDatabase>> factory);
+        ISqlStatementAssemblyGroupingConfigurationBuilders<TDatabase> Use(Func<IServiceProvider, IExpressionElementAppenderFactory> factory);
 
         /// <summary>
         /// Use a custom factory for creating an expression element appender for appending the element's state to a sql statement writer.
         /// </summary>
-        ISqlStatementAssemblyGroupingConfigurationBuilders<TDatabase> Use(Func<IServiceProvider, IExpressionElementAppenderFactory<TDatabase>> factory, Action<IExpressionElementAppenderFactoryContinuationConfigurationBuilder<TDatabase>> configureElementTypes);
+        ISqlStatementAssemblyGroupingConfigurationBuilders<TDatabase> Use(Func<IServiceProvider, IExpressionElementAppenderFactory> factory, Action<IExpressionElementAppenderFactoryContinuationConfigurationBuilder<TDatabase>> configureElementTypes);
 
         /// <summary>
-        /// Configure specific element types that are returned from a configured <see cref="IExpressionElementAppenderFactory{TDatabase}"/> factory.
+        /// Configure specific element types that are returned from a configured <see cref="IExpressionElementAppenderFactory"/> factory.
         /// </summary>
         /// <param name="configureElementTypes">A delegate allowing configuration of specific expression element types.</param>
         /// <remarks>
         /// Typically used when the factory has already been specified, and overrides to that factory are needed.
         /// This simply registers each provided type with the service provider.
         /// <para>
-        /// <strong>NOTE:</strong> Based on the type of <see cref="IExpressionElementAppenderFactory{TDatabase}"/> used, this may or may not provide the desired
-        /// results from the overrides - use when you are certain the registered <see cref="IExpressionElementAppenderFactory{TDatabase}"/> uses the service
-        /// provider to create new instances of expression element appenders.  The default <see cref="IExpressionElementAppenderFactory{TDatabase}"/> honors the overrides provided.
+        /// <strong>NOTE:</strong> Based on the type of <see cref="IExpressionElementAppenderFactory"/> used, this may or may not provide the desired
+        /// results from the overrides - use when you are certain the registered <see cref="IExpressionElementAppenderFactory"/> uses the service
+        /// provider to create new instances of expression element appenders.  The default <see cref="IExpressionElementAppenderFactory"/> honors the overrides provided.
         /// </para>
         /// </remarks>
         ISqlStatementAssemblyGroupingConfigurationBuilders<TDatabase> ForElementTypes(Action<IExpressionElementAppenderFactoryContinuationConfigurationBuilder<TDatabase>> configureElementTypes);

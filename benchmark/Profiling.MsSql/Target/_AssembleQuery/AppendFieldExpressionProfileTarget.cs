@@ -16,8 +16,8 @@ namespace Profiling.MsSql.Target
 
         public override void Execute(IServiceProvider provider)
         {
-            var builder = provider.GetRequiredService<ISqlStatementBuilder<ProfilingDatabase>>();
-            var appenderFactory = provider.GetRequiredService<IExpressionElementAppenderFactory<ProfilingDatabase>>();
+            var builder = provider.GetRequiredService<ISqlStatementBuilder>();
+            var appenderFactory = provider.GetRequiredService<IExpressionElementAppenderFactory>();
             var context = provider.GetRequiredService<AssemblyContext>();
             var appender = appenderFactory.CreateElementAppender<FieldExpression>();
             appender.AppendElement(dbo.Person.FirstName, builder, context);

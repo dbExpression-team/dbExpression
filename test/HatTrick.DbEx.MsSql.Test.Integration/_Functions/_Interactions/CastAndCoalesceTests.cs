@@ -20,7 +20,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_cast_of_coalesce_of_ship_date_and_static_value_to_varchar_succeed(int version, int expected = 15)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     db.fx.Cast(db.fx.Coalesce(dbo.Purchase.ShipDate, DateTime.Parse("1/1/2010"))).AsVarChar(50)
@@ -38,7 +38,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_coalesce_of_cast_of_credit_limit_and_person_id_to_int_succeed(int version, int expected = 50)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     db.fx.Coalesce<int>(db.fx.Cast(dbo.Person.CreditLimit).AsInt(), dbo.Person.Id)
@@ -56,7 +56,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_cast_of_coalesce_of_ship_date_and_null_static_value_to_varchar_succeed(int version, int expected = 15)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     db.fx.Cast(db.fx.Coalesce(dbo.Purchase.ShipDate, (DateTime?)null!)).AsVarChar(50)
@@ -74,7 +74,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_coalesce_of_cast_of_credit_limit_and_null_static_value_to_int_succeed(int version, int expected = 50)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     db.fx.Coalesce<int?>(db.fx.Cast(dbo.Person.CreditLimit).AsInt(), (int?)null!)

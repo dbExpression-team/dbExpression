@@ -28,16 +28,16 @@ namespace HatTrick.DbEx.Sql.Configuration
         /// Use a custom factory for creating a <see cref="ISqlStatementExecutor"/> used to execute a sql statement against the target database.
         /// </summary>
         ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use<TSqlStatementExecutor>()
-            where TSqlStatementExecutor : class, ISqlStatementExecutor<TDatabase>;
+            where TSqlStatementExecutor : class, ISqlStatementExecutor;
 
         /// <summary>
         /// Use a custom factory for creating an <see cref="ISqlStatementExecutor"/> used to execute a sql statement against the target database.
         /// </summary>
-        ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(Func<ISqlStatementExecutor<TDatabase>> factory);
+        ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(Func<ISqlStatementExecutor> factory);
 
         /// <summary>
         /// Use the service provider to resolve a <see cref="ISqlStatementExecutor"/> used to execute a sql statement against the target database.
         /// </summary>
-        ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(Func<IServiceProvider, ISqlStatementExecutor<TDatabase>> factory);
+        ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(Func<IServiceProvider, ISqlStatementExecutor> factory);
     }
 }

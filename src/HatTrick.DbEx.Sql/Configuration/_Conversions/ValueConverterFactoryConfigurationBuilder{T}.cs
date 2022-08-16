@@ -40,7 +40,7 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         #region methods
         /// <inheritdoc />
-        public void Use(IValueConverterFactory<TDatabase> factory)
+        public void Use(IValueConverterFactory factory)
         {
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
@@ -50,9 +50,9 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         /// <inheritdoc />
         public void Use<TValueConverterFactory>()
-            where TValueConverterFactory : class, IValueConverterFactory<TDatabase>
+            where TValueConverterFactory : class, IValueConverterFactory
         {
-            services.TryAddSingleton<IValueConverterFactory<TDatabase>, TValueConverterFactory>();
+            services.TryAddSingleton<IValueConverterFactory, TValueConverterFactory>();
         }
 
         /// <inheritdoc />
@@ -61,7 +61,7 @@ namespace HatTrick.DbEx.Sql.Configuration
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            services.TryAddSingleton<IValueConverterFactory<TDatabase>>(sp => new DelegateValueConverterFactory<TDatabase>(factory));
+            services.TryAddSingleton<IValueConverterFactory>(sp => new DelegateValueConverterFactory(factory));
         }
 
         /// <inheritdoc />
@@ -70,7 +70,7 @@ namespace HatTrick.DbEx.Sql.Configuration
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            services.TryAddSingleton<IValueConverterFactory<TDatabase>>(sp => new DelegateValueConverterFactory<TDatabase>(t => factory(sp, t)));
+            services.TryAddSingleton<IValueConverterFactory>(sp => new DelegateValueConverterFactory(t => factory(sp, t)));
         }
 
         /// <inheritdoc />
@@ -83,29 +83,29 @@ namespace HatTrick.DbEx.Sql.Configuration
                 throw new ArgumentNullException(nameof(configureTypes));
 
             configureTypes.Invoke(new ValueConverterFactoryContinuationConfigurationBuilder<TDatabase>(services));
-            services.TryAddSingleton<IValueConverterFactory<TDatabase>>(sp => new DelegateValueConverterFactory<TDatabase>(t => factory(sp, t)));
+            services.TryAddSingleton<IValueConverterFactory>(sp => new DelegateValueConverterFactory(t => factory(sp, t)));
         }
 
         /// <inheritdoc />
-        public void Use(Func<IValueConverterFactory<TDatabase>> factory)
+        public void Use(Func<IValueConverterFactory> factory)
         {
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            services.TryAddSingleton<IValueConverterFactory<TDatabase>>(sp => factory());
+            services.TryAddSingleton<IValueConverterFactory>(sp => factory());
         }
 
         /// <inheritdoc />
-        public void Use(Func<IServiceProvider, IValueConverterFactory<TDatabase>> factory)
+        public void Use(Func<IServiceProvider, IValueConverterFactory> factory)
         {
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            services.TryAddSingleton<IValueConverterFactory<TDatabase>>(factory);
+            services.TryAddSingleton<IValueConverterFactory>(factory);
         }
 
         /// <inheritdoc />
-        public void Use(Func<IServiceProvider, IValueConverterFactory<TDatabase>> factory, Action<IValueConverterFactoryContinuationConfigurationBuilder<TDatabase>> configureTypes)
+        public void Use(Func<IServiceProvider, IValueConverterFactory> factory, Action<IValueConverterFactoryContinuationConfigurationBuilder<TDatabase>> configureTypes)
         {
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
@@ -114,7 +114,7 @@ namespace HatTrick.DbEx.Sql.Configuration
                 throw new ArgumentNullException(nameof(configureTypes));
 
             configureTypes.Invoke(new ValueConverterFactoryContinuationConfigurationBuilder<TDatabase>(services));
-            services.TryAddSingleton<IValueConverterFactory<TDatabase>>(factory);
+            services.TryAddSingleton<IValueConverterFactory>(factory);
         }
 
         /// <inheritdoc />

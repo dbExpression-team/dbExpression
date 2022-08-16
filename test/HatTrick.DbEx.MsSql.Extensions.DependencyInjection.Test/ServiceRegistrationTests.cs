@@ -16,7 +16,7 @@ namespace HatTrick.DbEx.MsSql.Extensions.DependencyInjection.Tests
         {
             //given
             var services = new ServiceCollection();
-            var queryFactory = Substitute.For<IQueryExpressionFactory<MsSqlDb>>();
+            var queryFactory = Substitute.For<IQueryExpressionFactory>();
             DbExpressionConfigurationException? exception = null;
 
             //when
@@ -46,7 +46,7 @@ namespace HatTrick.DbEx.MsSql.Extensions.DependencyInjection.Tests
         {
             //given
             var services = new ServiceCollection();
-            var queryFactory = Substitute.For<IQueryExpressionFactory<MsSqlDb>>();
+            var queryFactory = Substitute.For<IQueryExpressionFactory>();
             DbExpressionConfigurationException? exception = null;
 
             //when
@@ -76,7 +76,7 @@ namespace HatTrick.DbEx.MsSql.Extensions.DependencyInjection.Tests
         {
             //given
             var services = new ServiceCollection();
-            var queryFactory = Substitute.For<IQueryExpressionFactory<MsSqlDb>>();
+            var queryFactory = Substitute.For<IQueryExpressionFactory>();
             DbExpressionConfigurationException? exception = null;
 
             //when

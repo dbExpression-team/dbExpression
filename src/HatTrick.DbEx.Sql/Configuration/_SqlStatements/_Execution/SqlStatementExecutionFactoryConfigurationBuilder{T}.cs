@@ -42,29 +42,29 @@ namespace HatTrick.DbEx.Sql.Configuration
         #region methods
         /// <inheritdoc />
         public ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use<TSqlStatementExecutor>()
-            where TSqlStatementExecutor : class, ISqlStatementExecutor<TDatabase>
+            where TSqlStatementExecutor : class, ISqlStatementExecutor
         {
-            services.TryAddSingleton<ISqlStatementExecutor<TDatabase>, TSqlStatementExecutor>();
+            services.TryAddSingleton<ISqlStatementExecutor, TSqlStatementExecutor>();
             return caller;
         }
 
         /// <inheritdoc />
-        public ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(Func<ISqlStatementExecutor<TDatabase>> factory)
+        public ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(Func<ISqlStatementExecutor> factory)
         {
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            services.TryAddSingleton<ISqlStatementExecutorFactory<TDatabase>>(new DelegateSqlStatementExecutorFactory<TDatabase>(factory));
+            services.TryAddSingleton<ISqlStatementExecutorFactory>(new DelegateSqlStatementExecutorFactory(factory));
             return caller;
         }
 
         /// <inheritdoc />
-        public ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(Func<IServiceProvider, ISqlStatementExecutor<TDatabase>> factory)
+        public ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(Func<IServiceProvider, ISqlStatementExecutor> factory)
         {
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            services.TryAddSingleton<ISqlStatementExecutorFactory<TDatabase>>(sp => new DelegateSqlStatementExecutorFactory<TDatabase>(() => factory(sp)));
+            services.TryAddSingleton<ISqlStatementExecutorFactory>(sp => new DelegateSqlStatementExecutorFactory(() => factory(sp)));
             return caller;
         }
         #endregion

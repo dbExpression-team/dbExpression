@@ -26,29 +26,29 @@ namespace HatTrick.DbEx.Sql.Configuration
         where TDatabase : class, ISqlDatabaseRuntime
     {
         /// <summary>
-        /// Use a custom factory for creating creating an <see cref="IDbConnection"/> used to execute sql statements against the target database.
+        /// Use a custom factory for creating creating an <see cref="ISqlConnection"/> used to execute sql statements against the target database.
         /// </summary>
-        ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(ISqlConnectionFactory<TDatabase> factory);
+        ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(ISqlConnectionFactory factory);
 
         /// <summary>
-        /// Use a custom factory for creating creating an <see cref="IDbConnection"/> used to execute sql statements against the target database.
+        /// Use a custom factory for creating creating an <see cref="ISqlConnection"/> used to execute sql statements against the target database.
         /// </summary>
-        ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(Func<IServiceProvider, ISqlConnectionFactory<TDatabase>> factory);
+        ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(Func<IServiceProvider, ISqlConnectionFactory> factory);
 
         /// <summary>
-        /// Use a custom factory for creating creating an <see cref="IDbConnection"/> used to execute sql statements against the target database.
+        /// Use a custom factory for creating creating an <see cref="ISqlConnection"/> used to execute sql statements against the target database.
         /// </summary>
         ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use<TSqlConnectionFactory>()
-            where TSqlConnectionFactory : class, ISqlConnectionFactory<TDatabase>;
+            where TSqlConnectionFactory : class, ISqlConnectionFactory;
 
         /// <summary>
-        /// Use a connection string for creating an <see cref="IDbConnection"/> used to execute sql statements against the target database.
+        /// Use a connection string for creating an <see cref="ISqlConnection"/> used to execute sql statements against the target database.
         /// </summary>
-        ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(Func<string, IDbConnection> factory);
+        ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(Func<ISqlConnection> factory);
 
         /// <summary>
-        /// Use the service provider and a connection string for creating an <see cref="IDbConnection"/> used to execute sql statements against the target database.
+        /// Use the service provider and a connection string for creating an <see cref="ISqlConnection"/> used to execute sql statements against the target database.
         /// </summary>
-        ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(Func<IServiceProvider, string, IDbConnection> factory);
+        ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(Func<IServiceProvider, ISqlConnection> factory);
     }
 }

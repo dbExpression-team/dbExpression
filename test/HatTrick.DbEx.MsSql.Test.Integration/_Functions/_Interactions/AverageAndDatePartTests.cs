@@ -17,7 +17,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_average_of_datedpart_of_purchasedate_and_shipdate_and_datepart_of_purchasedate_succeed(int version, int expected = 2019)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Avg(db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate))

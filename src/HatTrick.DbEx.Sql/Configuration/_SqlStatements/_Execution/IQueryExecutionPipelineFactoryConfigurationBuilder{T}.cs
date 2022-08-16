@@ -27,39 +27,39 @@ namespace HatTrick.DbEx.Sql.Configuration
         /// <summary>
         /// Use a custom factory for creating an execution pipeline used to build and execute a sql statement from a query expression.
         /// </summary>
-        ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(IQueryExecutionPipelineFactory<TDatabase> factory);
+        ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(IQueryExecutionPipelineFactory factory);
 
         /// <summary>
         /// Use a custom factory for creating an execution pipeline used to build and execute a sql statement from a query expression.
         /// </summary>
         ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use<TExecutionPipelineFactory>()
-            where TExecutionPipelineFactory : class, IQueryExecutionPipelineFactory<TDatabase>;
+            where TExecutionPipelineFactory : class, IQueryExecutionPipelineFactory;
 
         /// <summary>
         /// Use a custom factory for creating an execution pipeline used to build and execute a sql statement from a query expression.
         /// </summary>
         /// <param name="factory">A delegate for creating an execution pipeline.</param>
-        ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(Func<IQueryExecutionPipelineFactory<TDatabase>> factory);
+        ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(Func<IQueryExecutionPipelineFactory> factory);
 
         /// <summary>
         /// Use a custom factory for creating an execution pipeline used to build and execute a sql statement from a query expression.
         /// </summary>
         /// <param name="factory">A delegate for creating an execution pipeline.</param>
         /// <param name="configureFactory">A delegate for specifying execution pipelines for specific query types.</param>
-        ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(Func<IQueryExecutionPipelineFactory<TDatabase>> factory, Action<IQueryExecutionPipelineFactoryContinuationConfigurationBuilder<TDatabase>> configureFactory);
+        ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(Func<IQueryExecutionPipelineFactory> factory, Action<IQueryExecutionPipelineFactoryContinuationConfigurationBuilder<TDatabase>> configureFactory);
 
         /// <summary>
         /// Use the service provider for creating an execution pipeline used to build and execute a sql statement from a query expression.
         /// </summary>
         /// <param name="factory">A delegate for creating an execution pipeline.</param>
-        ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(Func<IServiceProvider, IQueryExecutionPipelineFactory<TDatabase>> factory);
+        ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(Func<IServiceProvider, IQueryExecutionPipelineFactory> factory);
 
         /// <summary>
         /// Use the service provider for creating an execution pipeline used to build and execute a sql statement from a query expression.
         /// </summary>
         /// <param name="factory">A delegate for creating an execution pipeline.</param>
         /// <param name="configureFactory">A delegate for specifying execution pipelines for specific query types.</param>
-        ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(Func<IServiceProvider, IQueryExecutionPipelineFactory<TDatabase>> factory, Action<IQueryExecutionPipelineFactoryContinuationConfigurationBuilder<TDatabase>> configureFactory);
+        ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(Func<IServiceProvider, IQueryExecutionPipelineFactory> factory, Action<IQueryExecutionPipelineFactoryContinuationConfigurationBuilder<TDatabase>> configureFactory);
 
         /// <summary>
         /// Use the service provider for creating an execution pipeline used to build and execute a sql statement from a query expression.

@@ -4,9 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{E797F978-C42D-491C-B5A4-4DEADB7342A3}"
-	ProjectSection(SolutionItems) = preProject
-		test\HatTrick.DbEx.MsSql.Test\MsSqlDb.dbex.config.json = test\HatTrick.DbEx.MsSql.Test\MsSqlDb.dbex.config.json
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HatTrick.DbEx.Sql", "src\HatTrick.DbEx.Sql\HatTrick.DbEx.Sql.csproj", "{42A7C509-96EE-475C-8000-A5700766F8A8}"
 EndProject

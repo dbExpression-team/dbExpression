@@ -33,7 +33,7 @@ namespace HatTrick.DbEx.Sql.Configuration
             var adapter = new TinyIoCServiceCollectionAdapter(this, container);
             adapter.AdaptServiceDescriptors();
             container.Register<IServiceProvider>(root);
-            return new ServiceProviderDecorator<TDatabase>(container);
+            return new DatabaseServiceProvider<TDatabase>(container);
         }
     }
 }

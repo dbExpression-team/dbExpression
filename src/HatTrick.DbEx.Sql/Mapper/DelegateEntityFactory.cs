@@ -20,8 +20,7 @@ using System;
 
 namespace HatTrick.DbEx.Sql.Mapper
 {
-    public class DelegateEntityFactory<TDatabase> : IEntityFactory<TDatabase>
-        where TDatabase : class, ISqlDatabaseRuntime
+    public class DelegateEntityFactory : IEntityFactory
     {
         #region internals
         private readonly Func<Type, IDbEntity> factory;

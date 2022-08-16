@@ -27,28 +27,28 @@ namespace HatTrick.DbEx.Sql.Configuration
         /// <summary>
         /// Use a custom factory to create query expressions used in fluent builders.
         /// </summary>
-        void Use(IQueryExpressionFactory<TDatabase> factory);
+        void Use(IQueryExpressionFactory factory);
 
         /// <summary>
         /// Use the specified factory to create query expressions used in fluent builders.
         /// </summary>
         void Use<TQueryExpressionFactory>()
-            where TQueryExpressionFactory : class, IQueryExpressionFactory<TDatabase>;
+            where TQueryExpressionFactory : class, IQueryExpressionFactory;
 
         /// <summary>
         /// Use the provided factory to create query expressions used in fluent builders.
         /// </summary>
-        void Use(Func<IQueryExpressionFactory<TDatabase>> factory);
+        void Use(Func<IQueryExpressionFactory> factory);
 
         /// <summary>
         /// Use the service provider to create query expressions used in fluent builders.
         /// </summary>
-        void Use(Func<IServiceProvider, IQueryExpressionFactory<TDatabase>> factory);
+        void Use(Func<IServiceProvider, IQueryExpressionFactory> factory);
 
         /// <summary>
         /// Use the service provider to resolve a factory responsible for creating query expressions used in fluent builders.
         /// </summary>
-        void Use(Func<IServiceProvider, IQueryExpressionFactory<TDatabase>> factory, Action<IQueryExpressionContinuationConfigurationBuilder<TDatabase>> configureFactory);
+        void Use(Func<IServiceProvider, IQueryExpressionFactory> factory, Action<IQueryExpressionContinuationConfigurationBuilder<TDatabase>> configureFactory);
 
         /// <summary>
         /// Use the service provider to resolve query expressions used in fluent builders.

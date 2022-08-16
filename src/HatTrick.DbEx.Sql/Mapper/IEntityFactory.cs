@@ -18,8 +18,7 @@
 
 ﻿namespace HatTrick.DbEx.Sql.Mapper
 {
-    public interface IEntityFactory<TDatabase>
-        where TDatabase : class, ISqlDatabaseRuntime
+    public interface IEntityFactory
     {
         T CreateEntity<T>() where T : class, IDbEntity, new();
     }

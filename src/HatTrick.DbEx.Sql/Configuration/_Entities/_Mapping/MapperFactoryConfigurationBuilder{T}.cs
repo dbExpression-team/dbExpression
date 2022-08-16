@@ -48,7 +48,7 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         #region methods
         /// <inheritdoc />
-        public IEntitiesConfigurationBuilderCreationGrouping<TDatabase> Use(IMapperFactory<TDatabase> factory)
+        public IEntitiesConfigurationBuilderCreationGrouping<TDatabase> Use(IMapperFactory factory)
         {
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
@@ -59,9 +59,9 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         /// <inheritdoc />
         public IEntitiesConfigurationBuilderCreationGrouping<TDatabase> Use<TMapperFactory>()
-            where TMapperFactory : class, IMapperFactory<TDatabase>
+            where TMapperFactory : class, IMapperFactory
         {
-            services.TryAddSingleton<IMapperFactory<TDatabase>, TMapperFactory>();
+            services.TryAddSingleton<IMapperFactory, TMapperFactory>();
             return caller;
         }
 
@@ -71,7 +71,7 @@ namespace HatTrick.DbEx.Sql.Configuration
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            services.TryAddSingleton<IMapperFactory<TDatabase>>(sp => new DelegateMapperFactory<TDatabase>(factory, () => sp.GetRequiredService<IExpandoObjectMapper>()));
+            services.TryAddSingleton<IMapperFactory>(sp => new DelegateMapperFactory(factory, () => sp.GetRequiredService<IExpandoObjectMapper>()));
             return caller;
         }
 
@@ -81,17 +81,17 @@ namespace HatTrick.DbEx.Sql.Configuration
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            services.TryAddSingleton<IMapperFactory<TDatabase>>(sp => new DelegateMapperFactory<TDatabase>(t => factory(sp, t), () => sp.GetRequiredService<IExpandoObjectMapper>()));
+            services.TryAddSingleton<IMapperFactory>(sp => new DelegateMapperFactory(t => factory(sp, t), () => sp.GetRequiredService<IExpandoObjectMapper>()));
             return caller;
         }
 
         /// <inheritdoc />
-        public IEntitiesConfigurationBuilderCreationGrouping<TDatabase> Use(Func<IServiceProvider, IMapperFactory<TDatabase>> factory)
+        public IEntitiesConfigurationBuilderCreationGrouping<TDatabase> Use(Func<IServiceProvider, IMapperFactory> factory)
         {
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            services.TryAddSingleton<IMapperFactory<TDatabase>>(factory);
+            services.TryAddSingleton<IMapperFactory>(factory);
             return caller;
         }
 

@@ -19,11 +19,10 @@
 namespace HatTrick.DbEx.Sql
 {
 #pragma warning disable IDE1006 // Naming Styles
-    public interface SelectObjectsOffsetContinuation<TDatabase, TObject> :
+    public interface SelectObjectsOffsetContinuation<TObject> :
 #pragma warning restore IDE1006 // Naming Styles
-        Limit<SelectObjectsOrderByContinuation<TDatabase, TObject>>,
-        SelectObjectsTermination<TDatabase, TObject>
-        where TDatabase : class, ISqlDatabaseRuntime
+        Limit<SelectObjectsOrderByContinuation<TObject>>,
+        SelectObjectsTermination<TObject>
         where TObject : class?
     {
     }

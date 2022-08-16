@@ -18,9 +18,9 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Builder
         public void Does_select_one_with_single_fields_unioned_with_select_many_result_in_valid_expression(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            SelectValuesContinuation<MsSqlDb,int> builder;
+            SelectValuesContinuation<int> builder;
             SelectSetQueryExpression expressionSet;
 
             //when
@@ -30,7 +30,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Builder
                .SelectMany(dbo.Address.Id)
                .From(dbo.Address);
             
-            expressionSet = (((builder as SelectValuesSelectQueryExpressionBuilder<MsSqlDb, int>)!.Controller as IQueryExpressionProvider)!.Expression as SelectSetQueryExpression)!;
+            expressionSet = (((builder as SelectValuesSelectQueryExpressionBuilder<int>)!.Controller as IQueryExpressionProvider)!.Expression as SelectSetQueryExpression)!;
 
             //then
             expressionSet.Expressions.Should().HaveCount(2);
@@ -55,9 +55,9 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Builder
         public void Does_select_one_with_multiple_fields_unioned_with_select_many_result_in_valid_expression(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            SelectDynamicsContinuation<MsSqlDb> exp;
+            SelectDynamicsContinuation exp;
             SelectSetQueryExpression expressionSet;
 
             //when
@@ -67,7 +67,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Builder
                .SelectMany(dbo.Address.Id, dbo.Address.City)
                .From(dbo.Address);
 
-            expressionSet = (((exp as SelectDynamicsSelectQueryExpressionBuilder<MsSqlDb>)!.Controller as IQueryExpressionProvider)!.Expression as SelectSetQueryExpression)!;
+            expressionSet = (((exp as SelectDynamicsSelectQueryExpressionBuilder)!.Controller as IQueryExpressionProvider)!.Expression as SelectSetQueryExpression)!;
 
             //then
             expressionSet.Expressions.Should().HaveCount(2);
@@ -94,9 +94,9 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Builder
         public void Does_select_one_with_single_fields_union_all_with_select_many_result_in_valid_expression(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            SelectValuesContinuation<MsSqlDb, int> exp;
+            SelectValuesContinuation<int> exp;
             SelectSetQueryExpression expressionSet;
 
             //when
@@ -105,7 +105,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Builder
                .UnionAll().SelectMany(dbo.Address.Id)
                .From(dbo.Address);
 
-            expressionSet = (((exp as SelectValuesSelectQueryExpressionBuilder<MsSqlDb, int>)!.Controller as IQueryExpressionProvider)!.Expression as SelectSetQueryExpression)!;
+            expressionSet = (((exp as SelectValuesSelectQueryExpressionBuilder<int>)!.Controller as IQueryExpressionProvider)!.Expression as SelectSetQueryExpression)!;
 
             //then
             expressionSet.Expressions.Should().HaveCount(2);
@@ -130,9 +130,9 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Builder
         public void Does_select_one_with_multiple_fields_union_all_with_select_many_result_in_valid_expression(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            SelectDynamicsContinuation<MsSqlDb> builder;
+            SelectDynamicsContinuation builder;
             SelectSetQueryExpression expressionSet;
 
             //when
@@ -142,9 +142,9 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Builder
                .SelectMany(dbo.Address.Id, dbo.Address.City)
                .From(dbo.Address);
 
-            var x = (builder as SelectDynamicsSelectQueryExpressionBuilder<MsSqlDb>)!.Controller;
+            var x = (builder as SelectDynamicsSelectQueryExpressionBuilder)!.Controller;
             var y = (x as IQueryExpressionProvider)!.Expression;
-            expressionSet = (((builder as SelectDynamicsSelectQueryExpressionBuilder<MsSqlDb>)!.Controller as IQueryExpressionProvider)!.Expression as SelectSetQueryExpression)!;
+            expressionSet = (((builder as SelectDynamicsSelectQueryExpressionBuilder)!.Controller as IQueryExpressionProvider)!.Expression as SelectSetQueryExpression)!;
 
             //then
             expressionSet.Expressions.Should().HaveCount(2);

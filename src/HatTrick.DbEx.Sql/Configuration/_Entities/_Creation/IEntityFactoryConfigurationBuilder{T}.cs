@@ -27,13 +27,13 @@ namespace HatTrick.DbEx.Sql.Configuration
         /// <summary>
         /// Use a custom factory to create an entity prior to mapping data retrieved from the target database.
         /// </summary>
-        IEntitiesConfigurationBuilderMappingGrouping<TDatabase> Use(IEntityFactory<TDatabase> factory);
+        IEntitiesConfigurationBuilderMappingGrouping<TDatabase> Use(IEntityFactory factory);
 
         /// <summary>
         /// Use a custom factory to create an entity prior to mapping data retrieved from the target database.
         /// </summary>
         IEntitiesConfigurationBuilderMappingGrouping<TDatabase> Use<TEntityFactory>()
-            where TEntityFactory : class, IEntityFactory<TDatabase>;
+            where TEntityFactory : class, IEntityFactory;
 
         /// <summary>
         /// Use a custom factory to create an entity prior to mapping data retrieved from the target database.
@@ -51,13 +51,13 @@ namespace HatTrick.DbEx.Sql.Configuration
         /// Use a custom factory to create an entity prior to mapping data retrieved from the target database.
         /// </summary>
         /// <param name="factory">A delegate responsible for creating an <see cref="IDbEntity"/>.</param>
-        IEntitiesConfigurationBuilderMappingGrouping<TDatabase> Use(Func<IServiceProvider, IEntityFactory<TDatabase>> factory);
+        IEntitiesConfigurationBuilderMappingGrouping<TDatabase> Use(Func<IServiceProvider, IEntityFactory> factory);
 
         /// <summary>
         /// Use a custom factory to create an entity prior to mapping data retrieved from the target database.
         /// </summary>
         /// <param name="factory">A delegate responsible for creating an <see cref="IDbEntity"/>.</param>
-        IEntitiesConfigurationBuilderMappingGrouping<TDatabase> Use(Func<IServiceProvider, IEntityFactory<TDatabase>> factory, Action<IEntityFactoryContinuationConfigurationBuilder<TDatabase>> configureEntityTypes);
+        IEntitiesConfigurationBuilderMappingGrouping<TDatabase> Use(Func<IServiceProvider, IEntityFactory> factory, Action<IEntityFactoryContinuationConfigurationBuilder<TDatabase>> configureEntityTypes);
 
         /// <summary>
         /// Provide overrides for specific entity types.

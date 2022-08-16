@@ -27,13 +27,13 @@ namespace HatTrick.DbEx.Sql.Configuration
         /// <summary>
         /// Use a custom factory to create a <see cref="IEntityMapper"/> used to map data retrieved from the target database.
         /// </summary>
-        IEntitiesConfigurationBuilderCreationGrouping<TDatabase> Use(IMapperFactory<TDatabase> factory);
+        IEntitiesConfigurationBuilderCreationGrouping<TDatabase> Use(IMapperFactory factory);
 
         /// <summary>
         /// Use a custom factory to create a <see cref="IEntityMapper"/> used to map data retrieved from the target database.
         /// </summary>
         IEntitiesConfigurationBuilderCreationGrouping<TDatabase> Use<TMapperFactory>()
-            where TMapperFactory : class, IMapperFactory<TDatabase>;
+            where TMapperFactory : class, IMapperFactory;
 
         /// <summary>
         /// Use a custom factory to create a <see cref="IEntityMapper"/> used to map data retrieved from the target database.
@@ -51,6 +51,6 @@ namespace HatTrick.DbEx.Sql.Configuration
         /// Use a custom factory to create a <see cref="IEntityMapper"/> used to map data retrieved from the target database.
         /// </summary>
         /// <param name="factory">A delegate responsible for creating an <see cref="IEntityMapper"/>.</param>
-        IEntitiesConfigurationBuilderCreationGrouping<TDatabase> Use(Func<IServiceProvider, IMapperFactory<TDatabase>> factory);
+        IEntitiesConfigurationBuilderCreationGrouping<TDatabase> Use(Func<IServiceProvider, IMapperFactory> factory);
     }
 }

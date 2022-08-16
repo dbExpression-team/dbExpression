@@ -30,12 +30,12 @@ using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql.Executor
 {
-    public abstract class SqlStatementExecutor
+    public class SqlStatementExecutor : ISqlStatementExecutor
     {
         private readonly ILogger<SqlStatementExecutor> logger;
         private readonly LoggingOptions loggingOptions;
 
-        protected SqlStatementExecutor(ILogger<SqlStatementExecutor> logger, LoggingOptions loggingOptions)
+        public SqlStatementExecutor(ILogger<SqlStatementExecutor> logger, LoggingOptions loggingOptions)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.loggingOptions = loggingOptions ?? throw new ArgumentNullException(nameof(loggingOptions));
@@ -44,6 +44,12 @@ namespace HatTrick.DbEx.Sql.Executor
         public virtual int ExecuteNonQuery(SqlStatement statement, ISqlConnection connection, Action<IDbCommand>? beforeExecution, Action<IDbCommand>? afterExecution)
         {
             int @return = 0;
+
+            if (statement is null)
+                throw new ArgumentNullException(nameof(statement));
+
+            if (connection is null)
+                throw new ArgumentNullException(nameof(connection));
 
             using IDbCommand cmd = connection.CreateCommand();
             cmd.Connection = connection.DbConnection;
@@ -69,6 +75,13 @@ namespace HatTrick.DbEx.Sql.Executor
         public virtual async Task<int> ExecuteNonQueryAsync(SqlStatement statement, ISqlConnection connection, Action<IDbCommand>? beforeExecution, Action<IDbCommand>? afterExecution, CancellationToken ct)
         {
             int @return = 0;
+
+            if (statement is null)
+                throw new ArgumentNullException(nameof(statement));
+
+            if (connection is null)
+                throw new ArgumentNullException(nameof(connection));
+
             using IDbCommand cmd = connection.CreateCommand();
             cmd.Connection = connection.DbConnection;
             cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
@@ -95,6 +108,15 @@ namespace HatTrick.DbEx.Sql.Executor
 
         public virtual ISqlRowReader ExecuteQuery(SqlStatement statement, ISqlConnection connection, IValueConverterProvider finder, Action<IDbCommand>? beforeExecution, Action<IDbCommand>? afterExecution)
         {
+            if (statement is null)
+                throw new ArgumentNullException(nameof(statement));
+
+            if (connection is null)
+                throw new ArgumentNullException(nameof(connection));
+
+            if (finder is null)
+                throw new ArgumentNullException(nameof(finder));
+
             using IDbCommand cmd = connection.CreateCommand();
             cmd.Connection = connection.DbConnection;
             cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
@@ -117,6 +139,15 @@ namespace HatTrick.DbEx.Sql.Executor
 
         public virtual async Task<IAsyncSqlRowReader> ExecuteQueryAsync(SqlStatement statement, ISqlConnection connection, IValueConverterProvider finder, Action<IDbCommand>? beforeExecution, Action<IDbCommand>? afterExecution, CancellationToken ct)
         {
+            if (statement is null)
+                throw new ArgumentNullException(nameof(statement));
+
+            if (connection is null)
+                throw new ArgumentNullException(nameof(connection));
+
+            if (finder is null)
+                throw new ArgumentNullException(nameof(finder));
+
             using IDbCommand cmd = connection.CreateCommand();
             cmd.Connection = connection.DbConnection;
             cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
@@ -143,6 +174,12 @@ namespace HatTrick.DbEx.Sql.Executor
 
         public virtual T? ExecuteScalar<T>(SqlStatement statement, ISqlConnection connection, Action<IDbCommand>? beforeExecution, Action<IDbCommand>? afterExecution)
         {
+            if (statement is null)
+                throw new ArgumentNullException(nameof(statement));
+
+            if (connection is null)
+                throw new ArgumentNullException(nameof(connection));
+
             using IDbCommand cmd = connection.CreateCommand();
             cmd.Connection = connection.DbConnection;
             cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;

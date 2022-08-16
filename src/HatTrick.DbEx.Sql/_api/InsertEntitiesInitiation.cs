@@ -21,9 +21,8 @@ using System.Collections.Generic;
 namespace HatTrick.DbEx.Sql
 {
 #pragma warning disable IDE1006 // Naming Styles
-    public interface InsertEntitiesInitiation<TDatabase>
+    public interface InsertEntitiesInitiation
 #pragma warning restore IDE1006 // Naming Styles
-        where TDatabase : class, ISqlDatabaseRuntime
     {
         /// <summary>
         /// Start constructing a sql INSERT query expression to insert a record.  Property values from the <paramref name="entity"/> instance are used to create the record values for the INSERT statement. 
@@ -33,9 +32,9 @@ namespace HatTrick.DbEx.Sql
         /// </summary>
         /// <param name="entity">The entity supplying the property values.
         /// </param>
-        /// <returns><see cref="InsertEntity{TDatabase, TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
+        /// <returns><see cref="InsertEntity{TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
         /// <typeparam name="TEntity">The entity type of the entity to insert.</typeparam>
-        InsertEntity<TDatabase, TEntity> Insert<TEntity>(TEntity entity)
+        InsertEntity<TEntity> Insert<TEntity>(TEntity entity)
             where TEntity : class, IDbEntity;
 
         /// <summary>
@@ -46,9 +45,9 @@ namespace HatTrick.DbEx.Sql
         /// </summary>
         /// <param name="entities">A list of entities.
         /// </param>
-        /// <returns><see cref="InsertEntities{TDatabase, TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
+        /// <returns><see cref="InsertEntities{TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
         /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
-        InsertEntities<TDatabase, TEntity> InsertMany<TEntity>(TEntity entity, params TEntity[] entities)
+        InsertEntities<TEntity> InsertMany<TEntity>(TEntity entity, params TEntity[] entities)
             where TEntity : class, IDbEntity;
 
         /// <summary>
@@ -59,9 +58,9 @@ namespace HatTrick.DbEx.Sql
         /// </summary>
         /// <param name="entities">A list of entities.
         /// </param>
-        /// <returns><see cref="InsertEntities{TDatabase, TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
+        /// <returns><see cref="InsertEntities{TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
         /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
-        InsertEntities<TDatabase, TEntity> InsertMany<TEntity>(IEnumerable<TEntity> entities)
+        InsertEntities<TEntity> InsertMany<TEntity>(IEnumerable<TEntity> entities)
             where TEntity : class, IDbEntity;
 
     }

@@ -10,7 +10,7 @@ namespace Profiling.MsSql.DataService
 {
     public class ProfilingDatabaseSqlDatabaseMetadata : ISqlDatabaseMetadata
     {
-        private static readonly Dictionary<string, ISqlMetadata> _metadata = new();
+        private static readonly Dictionary<string, ISqlMetadata> _metadata = new Dictionary<string, ISqlMetadata>();
 
         #region interface
         public string Name { get; private set; } = "MsSqlDbExTest";
