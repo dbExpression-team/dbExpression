@@ -1,13 +1,16 @@
 # Changelog
 
-## [0.9.2]
+## [0.9.2] - 2022-08-17
 
 ### Added
-- Runtime configuration builders now support the ability to provide a func/delegate that receives the service provider.
+- Internal service resolution for dbExpression services are now provided by dependency injection.  Each database has it's own set of services, through separate containers.  Database container use Microsoft's dependency injection service provider as a fallback to services not registered in each container (i.e. services.AddLogging).
+- Runtime configuration builders support the ability to configure a func/delegate that receives the service provider for services resolution.
+- Logging has been added to internal services and uses the Microsoft standard logging framework, where services are injected with an ILogger.  The majority of internal logging uses the Trace level, and rarely is the Debug level used.  Any "higher" levels are expected to be implemented via exception handling by the user.  Logging configuration includes a flag that specifies whether parameter values should be logged in addition to the sql statements using the parameters.
 
 ### Changed
 - Runtime configuration changed from using a static service locator pattern to using dependency injection for internal services.
 - Folded sql statement assemblers into element appenders as they were identical in processing, the only difference being a method name.
+- Removed generic constraint on services that associated the service with the runtime database (i.e. MyService<MyDatabase> -> MyService).  As there is a container for each database, there is no need/value in the generic constraint.
  
 ### Fixed
 
@@ -29,10 +32,9 @@ Configuration has significant changes with the implementation of dependency inje
 - Execution pipeline configuration
 	- .UseDefaultFactoryFor -> .ForPipelineTypes
 	
-- Any configuration/customization related to query expression assemblers.  All classes and configuration related to query expressionassembly has been removed.
+- Any configuration/customization related to query expression assemblers were deprecated along with the assembler implementations when assembler functionality was merged into appender functionality.
 	
-Dependency injection integration with Microsoft (HatTrick.DbEx.MsSql.Extensions.DependencyInjection) no longer supports registration of services specific to a database.  This has been mitigated
-by generically typing most services used by dbExpression.  Service resolution is therefore inherently scoped to the database specific services.
+- Dependency injection integration with Microsoft (HatTrick.DbEx.MsSql.Extensions.DependencyInjection) no longer supports registration of services specific to a database; as all database-specific services are registered in their own container.
 
 ## [0.9.1] - 2022-06-14
 
