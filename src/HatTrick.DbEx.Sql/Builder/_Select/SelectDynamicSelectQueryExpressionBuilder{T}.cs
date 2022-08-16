@@ -221,7 +221,7 @@ namespace HatTrick.DbEx.Sql.Builder
             return ExecutePipeline(
                 null,
                 null,
-                map
+                map ?? throw new ArgumentNullException(nameof(map))
             );
         }
 
@@ -231,7 +231,7 @@ namespace HatTrick.DbEx.Sql.Builder
             return ExecutePipeline(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 null,
-                map
+                map ?? throw new ArgumentNullException(nameof(map))
             );
         }
 
@@ -244,7 +244,7 @@ namespace HatTrick.DbEx.Sql.Builder
             return ExecutePipeline(
                 null,
                 command => command.CommandTimeout = commandTimeout,
-                map
+                map ?? throw new ArgumentNullException(nameof(map))
             );
         }
 
@@ -257,7 +257,7 @@ namespace HatTrick.DbEx.Sql.Builder
             return ExecutePipeline(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 command => command.CommandTimeout = commandTimeout,
-                map
+                map ?? throw new ArgumentNullException(nameof(map))
             );
         }
 
