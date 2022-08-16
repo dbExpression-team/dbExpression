@@ -44,27 +44,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         #region methods
         public void Build()
         {
-            //var hooks = new PipelineEventHooks<TDatabase>()
-            //{
-            //    BeforeAssembly = new PipelineEventHook<BeforeAssemblyPipelineExecutionContext>(events.BeforeAssembly.SyncActions, events.BeforeAssembly.AsyncActions),
-            //    BeforeUpdateAssembly = new PipelineEventHook<BeforeUpdateAssemblyPipelineExecutionContext>(events.BeforeUpdateAssembly.SyncActions, events.BeforeUpdateAssembly.AsyncActions),
-            //    BeforeInsertAssembly = new PipelineEventHook<BeforeInsertAssemblyPipelineExecutionContext>(events.BeforeInsertAssembly.SyncActions, events.BeforeInsertAssembly.AsyncActions),
-            //    AfterAssembly = new PipelineEventHook<AfterAssemblyPipelineExecutionContext>(events.AfterAssembly.SyncActions, events.AfterAssembly.AsyncActions),
-            //    BeforeExecution = new PipelineEventHook<BeforeExecutionPipelineExecutionContext>(events.BeforeExecution.SyncActions, events.BeforeExecution.AsyncActions),
-            //    AfterExecution = new PipelineEventHook<AfterExecutionPipelineExecutionContext>(events.AfterExecution.SyncActions, events.AfterExecution.AsyncActions),
-            //    BeforeInsert = new PipelineEventHook<BeforeInsertPipelineExecutionContext>(events.BeforeInsert.SyncActions, events.BeforeInsert.AsyncActions),
-            //    AfterInsert = new PipelineEventHook<AfterInsertPipelineExecutionContext>(events.AfterInsert.SyncActions, events.AfterInsert.AsyncActions),
-            //    BeforeDelete = new PipelineEventHook<BeforeDeletePipelineExecutionContext>(events.BeforeDelete.SyncActions, events.BeforeDelete.AsyncActions),
-            //    AfterDelete = new PipelineEventHook<AfterDeletePipelineExecutionContext>(events.AfterDelete.SyncActions, events.AfterDelete.AsyncActions),
-            //    BeforeUpdate = new PipelineEventHook<BeforeUpdatePipelineExecutionContext>(events.BeforeUpdate.SyncActions, events.BeforeUpdate.AsyncActions),
-            //    AfterUpdate = new PipelineEventHook<AfterUpdatePipelineExecutionContext>(events.AfterUpdate.SyncActions, events.AfterUpdate.AsyncActions),
-            //    BeforeSelect = new PipelineEventHook<BeforeSelectPipelineExecutionContext>(events.BeforeSelect.SyncActions, events.BeforeSelect.AsyncActions),
-            //    AfterSelect = new PipelineEventHook<AfterSelectPipelineExecutionContext>(events.AfterSelect.SyncActions, events.AfterSelect.AsyncActions),
-            //    BeforeStoredProcedure = new PipelineEventHook<BeforeStoredProcedurePipelineExecutionContext>(events.BeforeStoredProcedure.SyncActions, events.BeforeStoredProcedure.AsyncActions),
-            //    AfterStoredProcedure = new PipelineEventHook<AfterStoredProcedurePipelineExecutionContext>(events.AfterStoredProcedure.SyncActions, events.AfterStoredProcedure.AsyncActions)
-            //};
-
-            var hooks = new PipelineEventHooks<TDatabase>();
+            var hooks = new PipelineEventHooks();
             
             if (events.BeforeAssembly.SyncActions.Any() || events.BeforeAssembly.AsyncActions.Any()) hooks.BeforeAssembly = new PipelineEventHook<BeforeAssemblyPipelineExecutionContext>(events.BeforeAssembly.SyncActions, events.BeforeAssembly.AsyncActions);
             if (events.BeforeUpdateAssembly.SyncActions.Any() || events.BeforeUpdateAssembly.AsyncActions.Any()) hooks.BeforeUpdateAssembly = new PipelineEventHook<BeforeUpdateAssemblyPipelineExecutionContext>(events.BeforeUpdateAssembly.SyncActions, events.BeforeUpdateAssembly.AsyncActions);
@@ -83,7 +63,7 @@ namespace HatTrick.DbEx.Sql.Configuration
             if (events.BeforeStoredProcedure.SyncActions.Any() || events.BeforeStoredProcedure.AsyncActions.Any()) hooks.BeforeStoredProcedure = new PipelineEventHook<BeforeStoredProcedurePipelineExecutionContext>(events.BeforeStoredProcedure.SyncActions, events.BeforeStoredProcedure.AsyncActions);
             if (events.AfterStoredProcedure.SyncActions.Any() || events.AfterStoredProcedure.AsyncActions.Any()) hooks.AfterStoredProcedure = new PipelineEventHook<AfterStoredProcedurePipelineExecutionContext>(events.AfterStoredProcedure.SyncActions, events.AfterStoredProcedure.AsyncActions);
             
-            services.TryAddSingleton<PipelineEventHooks<TDatabase>>(hooks);
+            services.TryAddSingleton<PipelineEventHooks>(hooks);
         }
 
         #region assembly

@@ -21,7 +21,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_datepart_selecting_year_of_purchase_date_succeed(int version, int expected = 2019)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate)
@@ -41,7 +41,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_datepart_selecting_day_of_ship_date_succeed(int version, int expected = 8)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.DatePart(DateParts.Day, dbo.Purchase.ShipDate)
@@ -61,7 +61,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_order_by_datepart_selecting_year_of_purchase_date_ascending_succeed(int version, int expected = 2019)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate)
@@ -81,7 +81,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_order_by_datepart_selecting_year_of_ship_date_descending_succeed(int version, int expected = 2019)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate)
@@ -101,7 +101,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_order_by_datepart_selecting_year_of_purchase_date_and_aliasing_succeed(int version, int expected = 2019)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate).As("alias")
@@ -121,7 +121,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_order_by_datepart_selecting_year_of_ship_date_descending_and_aliasing_succeed(int version, int expected = 2019)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate).As("alias")
@@ -141,7 +141,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_group_by_datepart_selecting_year_of_ship_date_succeed(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate)
@@ -161,7 +161,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_group_by_datepart_selecting_year_of_purchase_date_and_aliasing_succeed(int version, int expected = 2019)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate).As("alias")
@@ -181,7 +181,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_datepart_of_aliased_field_succeed(int version, int expected = 4)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.DatePart(DateParts.Day, ("lines", "DateCreated")).As("alias")

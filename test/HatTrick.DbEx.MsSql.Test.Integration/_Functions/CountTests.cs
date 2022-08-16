@@ -18,7 +18,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_count_of_personid_succeed(int version, int expectedValue = 15)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Count(dbo.Purchase.PersonId).As("count")
@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_count_of_distinct_personid_succeed(int version, int expectedValue = 6)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Count(dbo.Purchase.PersonId).Distinct().As("count")
@@ -54,7 +54,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_count_of_star_succeed(int version, int expectedValue = 15)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Count()
@@ -73,7 +73,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_order_by_count_of_total_purchase_amount_ascending_succeed(int version, int expected = 14)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Count(dbo.Purchase.TotalPurchaseAmount).Distinct()
@@ -93,7 +93,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_order_by_count_of_total_purchase_amount_descending_succeed(int version, int expected = 14)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Count(dbo.Purchase.TotalPurchaseAmount).Distinct()
@@ -113,7 +113,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_order_by_count_of_total_purchase_amount_ascending_and_aliasing_succeed(int version, int expected = 14)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Count(dbo.Purchase.TotalPurchaseAmount).Distinct().As("alias")
@@ -133,7 +133,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_order_by_count_of_total_purchase_amount_descending_and_aliasing_succeed(int version, int expected = 14)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Count(dbo.Purchase.TotalPurchaseAmount).Distinct().As("alias")
@@ -153,7 +153,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_count_aliased_field_succeed(int version, int expected = 15)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Count(("lines","PurchaseId")).Distinct().As("alias")

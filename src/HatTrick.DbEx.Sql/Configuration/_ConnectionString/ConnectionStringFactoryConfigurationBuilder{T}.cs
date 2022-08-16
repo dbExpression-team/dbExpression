@@ -47,7 +47,7 @@ namespace HatTrick.DbEx.Sql.Configuration
             if (string.IsNullOrWhiteSpace(connectionString))
                 throw new ArgumentException("Connection string cannot be whitespace.");
 
-            services.TryAddSingleton<IConnectionStringFactory<TDatabase>>(new DelegateConnectionStringFactory<TDatabase>(() => connectionString));
+            services.TryAddSingleton<IConnectionStringFactory>(new DelegateConnectionStringFactory(() => connectionString));
         }
 
         /// <inheritdoc />
@@ -56,7 +56,7 @@ namespace HatTrick.DbEx.Sql.Configuration
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            services.TryAddSingleton<IConnectionStringFactory<TDatabase>>(new DelegateConnectionStringFactory<TDatabase>(factory));
+            services.TryAddSingleton<IConnectionStringFactory>(new DelegateConnectionStringFactory(factory));
         }
 
         /// <inheritdoc />
@@ -65,32 +65,32 @@ namespace HatTrick.DbEx.Sql.Configuration
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            services.TryAddSingleton<IConnectionStringFactory<TDatabase>>(sp => new DelegateConnectionStringFactory<TDatabase>(() => factory(sp)));
+            services.TryAddSingleton<IConnectionStringFactory>(sp => new DelegateConnectionStringFactory(() => factory(sp)));
         }
 
         /// <inheritdoc />
-        public void Use(IConnectionStringFactory<TDatabase> factory)
+        public void Use(IConnectionStringFactory factory)
         {
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            services.TryAddSingleton<IConnectionStringFactory<TDatabase>>(factory);
+            services.TryAddSingleton<IConnectionStringFactory>(factory);
         }
 
         /// <inheritdoc />
         public void Use<TConnectionStringFactory>()
-            where TConnectionStringFactory : class, IConnectionStringFactory<TDatabase>
+            where TConnectionStringFactory : class, IConnectionStringFactory
         {
-            services.TryAddSingleton<IConnectionStringFactory<TDatabase>, TConnectionStringFactory>();
+            services.TryAddSingleton<IConnectionStringFactory, TConnectionStringFactory>();
         }
 
         /// <inheritdoc />
-        public void Use(Func<IServiceProvider, IConnectionStringFactory<TDatabase>> factory)
+        public void Use(Func<IServiceProvider, IConnectionStringFactory> factory)
         {
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            services.TryAddSingleton<IConnectionStringFactory<TDatabase>>(factory);
+            services.TryAddSingleton<IConnectionStringFactory>(factory);
         }
         #endregion
     }

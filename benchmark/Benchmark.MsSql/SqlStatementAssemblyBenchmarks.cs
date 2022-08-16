@@ -66,43 +66,43 @@ namespace HatTrick.DbEx.MsSql.Benchmark
         [Benchmark]
         public void CreateSelectSqlStatement()
         {
-            serviceProvider.GetRequiredService<ISqlStatementBuilder<BenchmarkDatabase>>().CreateSqlStatement(selectQueryExpression);
+            serviceProvider.GetRequiredService<ISqlStatementBuilder>().CreateSqlStatement(selectQueryExpression);
         }
 
         [Benchmark]
         public void CreateSelectSqlStatementWithFieldAlias()
         {
-            serviceProvider.GetRequiredService<ISqlStatementBuilder<BenchmarkDatabase>>().CreateSqlStatement(selectWithFieldAliasQueryExpression);
+            serviceProvider.GetRequiredService<ISqlStatementBuilder>().CreateSqlStatement(selectWithFieldAliasQueryExpression);
         }
 
         [Benchmark]
         public void CreateSelectSqlStatementWithJoinClause()
         {
-            serviceProvider.GetRequiredService<ISqlStatementBuilder<BenchmarkDatabase>>().CreateSqlStatement(selectWithJoinClauseQueryExpression);
+            serviceProvider.GetRequiredService<ISqlStatementBuilder>().CreateSqlStatement(selectWithJoinClauseQueryExpression);
         }
 
         [Benchmark]
         public void CreateSelectSqlStatementWithWhereClause()
         {
-            serviceProvider.GetRequiredService<ISqlStatementBuilder<BenchmarkDatabase>>().CreateSqlStatement(selectWithWhereClauseQueryExpression);
+            serviceProvider.GetRequiredService<ISqlStatementBuilder>().CreateSqlStatement(selectWithWhereClauseQueryExpression);
         }
 
         [Benchmark]
         public void CreateSelectSqlStatementWithOrderByClause()
         {
-            serviceProvider.GetRequiredService<ISqlStatementBuilder<BenchmarkDatabase>>().CreateSqlStatement(selectWithOrderByClauseQueryExpression);
+            serviceProvider.GetRequiredService<ISqlStatementBuilder>().CreateSqlStatement(selectWithOrderByClauseQueryExpression);
         }
 
         [Benchmark]
         public void CreateSelectSqlStatementWithCountFunctionAndGroupByClause()
         {
-            serviceProvider.GetRequiredService<ISqlStatementBuilder<BenchmarkDatabase>>().CreateSqlStatement(selectWithCountFunctionAndGroupByClauseQueryExpression);
+            serviceProvider.GetRequiredService<ISqlStatementBuilder>().CreateSqlStatement(selectWithCountFunctionAndGroupByClauseQueryExpression);
         }
 
         [Benchmark]
         public void CreateSelectSqlStatementWithCountFunctionAndGroupByClauseAndHavingClause()
         {
-            serviceProvider.GetRequiredService<ISqlStatementBuilder<BenchmarkDatabase>>().CreateSqlStatement(selectWithCountFunctionAndHavingClauseQueryExpression);
+            serviceProvider.GetRequiredService<ISqlStatementBuilder>().CreateSqlStatement(selectWithCountFunctionAndHavingClauseQueryExpression);
         }
     }
 }

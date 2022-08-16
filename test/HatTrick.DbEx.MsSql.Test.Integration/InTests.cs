@@ -18,7 +18,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_persons_using_empty_enumerable_result_in_no_output(int version, int expectedCount = 0)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
             var personIds = Enumerable.Empty<int>();
 
             //when
@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_addresses_using_a_null_value_as_first_element_in_the_enumerable_result_in_no_output(int version, int expectedCount = 2)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
             var lines = new List<string> { null!, "Box 13", "Apt. 42" };
 
             //when
@@ -54,7 +54,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_addresses_using_a_null_value_in_the_enumerable_result_in_correct_output(int version, int expectedCount = 2)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
             var lines = new List<string> { "Box 13", null!, "Apt. 42" };
 
             //when
@@ -72,7 +72,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_addresses_using_a_null_values_for_every_element_of_the_enumerable_result_in_no_output(int version, int expectedCount = 0)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
             var lines = new List<string> { null!, null!, null!, null! };
 
             //when
@@ -90,7 +90,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_persons_using_enumerable_of_ids_result_in_correct_output(int version, int expectedCount = 15)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
             var personIds = Enumerable.Range(1, 15);
 
             //when
@@ -108,7 +108,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_persons_using_params_of_ids_result_in_correct_output(int version, int expectedCount = 15)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             //when
             var persons = db.SelectMany<Person>()
@@ -125,7 +125,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_persons_using_enumerable_of_ids_exclusive_result_in_correct_output(int version, int expectedCount = 35)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
             var personIds = Enumerable.Range(1, 15);
 
             //when
@@ -143,7 +143,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_persons_using_params_of_ids_exclusive_result_in_correct_output(int version, int expectedCount = 35)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             //when
             var persons = db.SelectMany<Person>()
@@ -160,7 +160,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_persons_using_enumerable_of_ids_appended_to_before_execution_result_in_correct_output(int version, int expectedCount = 50)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
             var personIds = Enumerable.Range(1, 15).ToList();
 
             var exp = db.SelectMany<Person>()

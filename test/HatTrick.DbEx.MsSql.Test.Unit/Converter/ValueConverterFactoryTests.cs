@@ -16,10 +16,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Converter
         public void Can_register_converter_for_int_generically(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, database => database.Conversions.ForTypes(c => c.ForValueType<int>().Use<SomeValueConverter<int>>()));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, database => database.Conversions.ForTypes(c => c.ForValueType<int>().Use<SomeValueConverter<int>>()));
 
             //when
-            var converter = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IValueConverterFactory<MsSqlDb>>().CreateConverter<int>();
+            var converter = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IValueConverterFactory>().CreateConverter<int>();
 
             //then
             converter.Should().BeOfType<SomeValueConverter<int>>();
@@ -30,10 +30,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Converter
         public void Can_register_converter_for_nullable_int_generically(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, database => database.Conversions.ForTypes(c => c.ForValueType<int>().Use<SomeValueConverter<int>>()));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, database => database.Conversions.ForTypes(c => c.ForValueType<int>().Use<SomeValueConverter<int>>()));
 
             //when
-            var converter = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IValueConverterFactory<MsSqlDb>>().CreateConverter<int?>();
+            var converter = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IValueConverterFactory>().CreateConverter<int?>();
 
             //then
             converter.Should().BeOfType<NullableValueConverter<int?>>();
@@ -44,10 +44,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Converter
         public void Can_register_converter_for_enum_generically(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, database => database.Conversions.ForTypes(c => c.ForValueType<AddressType>().Use<SomeValueConverter<AddressType>>()));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, database => database.Conversions.ForTypes(c => c.ForValueType<AddressType>().Use<SomeValueConverter<AddressType>>()));
 
             //when
-            var converter = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IValueConverterFactory<MsSqlDb>>().CreateConverter<AddressType>();
+            var converter = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IValueConverterFactory>().CreateConverter<AddressType>();
 
             //then
             converter.Should().BeOfType<SomeValueConverter<AddressType>>();
@@ -58,10 +58,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Converter
         public void Can_register_converter_for_nullable_enum_generically(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, database => database.Conversions.ForTypes(c => c.ForEnumType<AddressType>().Use<SomeValueConverter<AddressType>>()));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, database => database.Conversions.ForTypes(c => c.ForEnumType<AddressType>().Use<SomeValueConverter<AddressType>>()));
 
             //when
-            var converter = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IValueConverterFactory<MsSqlDb>>().CreateConverter<AddressType?>();
+            var converter = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IValueConverterFactory>().CreateConverter<AddressType?>();
 
             //then
             converter.Should().BeOfType<DelegateValueConverter<AddressType?>>();
@@ -72,10 +72,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Converter
         public void Can_register_converter_for_nullable_enum_and_retrieve_default_for_different_type(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, database => database.Conversions.ForTypes(c => c.ForEnumType<AddressType>().Use<SomeValueConverter<AddressType>>()));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, database => database.Conversions.ForTypes(c => c.ForEnumType<AddressType>().Use<SomeValueConverter<AddressType>>()));
 
             //when
-            var converter = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IValueConverterFactory<MsSqlDb>>().CreateConverter<int?>();
+            var converter = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IValueConverterFactory>().CreateConverter<int?>();
 
             //then
             converter.Should().NotBeOfType<SomeValueConverter<int?>>();

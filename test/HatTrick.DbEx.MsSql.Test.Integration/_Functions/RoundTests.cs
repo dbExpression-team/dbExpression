@@ -20,7 +20,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_round_of_product_shipping_weight_and_static_length_and_no_function_succeed(int version, decimal expected = 1m)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Round(dbo.Product.ShippingWeight, 0)
@@ -39,7 +39,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_round_of_product_shipping_weight_and_field_for_length_and_no_function_succeed(int version, decimal expected = 1.5m)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Round(dbo.Product.ShippingWeight, dbo.Product.Id)
@@ -58,7 +58,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_round_of_product_shipping_weight_and_static_value_for_length_and_static_value_for_function_succeed(int version, decimal expected = 1m)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Round(dbo.Product.ShippingWeight, 0, 1)
@@ -77,7 +77,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_round_of_product_shipping_weight_and_field_for_length_and_static_value_for_function_succeed(int version, decimal expected = 1.5m)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Round(dbo.Product.ShippingWeight, dbo.Product.Id, 1)
@@ -96,7 +96,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_round_of_product_shipping_weight_and_field_for_length_and_field_for_function_succeed(int version, decimal expected = 1.5m)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Round(dbo.Product.ShippingWeight, dbo.Product.Id, dbo.Product.Id)
@@ -116,7 +116,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_round_of_aliased_field_succeed(int version, decimal expected = 1.5m)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Round(("_product", "ShippingWeight"), 1).As("shipping_weight")

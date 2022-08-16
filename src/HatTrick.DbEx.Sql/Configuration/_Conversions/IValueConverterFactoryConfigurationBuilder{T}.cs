@@ -28,14 +28,14 @@ namespace HatTrick.DbEx.Sql.Configuration
         /// Use a custom factory to create a value converter used to convert data to and from the target database.
         /// </summary>
         /// </remarks>
-        void Use(IValueConverterFactory<TDatabase> factory);
+        void Use(IValueConverterFactory factory);
 
         /// <summary>
         /// Use a custom factory to create a value converter used to convert data to and from the target database.
         /// </summary>
         /// </remarks>
         void Use<TValueConverterFactory>()
-            where TValueConverterFactory : class, IValueConverterFactory<TDatabase>;
+            where TValueConverterFactory : class, IValueConverterFactory;
 
         /// <summary>
         /// Use the provided delegate to create a value converter used to convert data to and from the target database.
@@ -60,21 +60,21 @@ namespace HatTrick.DbEx.Sql.Configuration
         /// Use the provided delegate to create a value converter used to convert data to and from the target database.
         /// </summary>
         /// <param name="factory">A delegate responsible for creating an <see cref="IValueConverter"/> for the provided type.</param>
-        void Use(Func<IValueConverterFactory<TDatabase>> factory);
+        void Use(Func<IValueConverterFactory> factory);
 
         /// <summary>
         /// Use the service provider to create a value converter used to convert data to and from the target database.
         /// </summary>
         /// <param name="factory">A delegate responsible for creating an <see cref="IValueConverter"/> for the provided type.</param>
         /// <param name="configureTypes">A delegate allowing configuration of specific value, enum or reference type.</param>
-        void Use(Func<IServiceProvider, IValueConverterFactory<TDatabase>> factory);
+        void Use(Func<IServiceProvider, IValueConverterFactory> factory);
 
         /// <summary>
         /// Use the service provider to create a value converter used to convert data to and from the target database.
         /// </summary>
         /// <param name="factory">A delegate responsible for creating an <see cref="IValueConverter"/> for the provided type.</param>
         /// <param name="configureTypes">A delegate allowing configuration of specific value, enum or reference type.</param>
-        void Use(Func<IServiceProvider, IValueConverterFactory<TDatabase>> factory, Action<IValueConverterFactoryContinuationConfigurationBuilder<TDatabase>> configureTypes);
+        void Use(Func<IServiceProvider, IValueConverterFactory> factory, Action<IValueConverterFactoryContinuationConfigurationBuilder<TDatabase>> configureTypes);
 
         /// <summary>
         /// Provide overrides for specific enum, value, and reference types.

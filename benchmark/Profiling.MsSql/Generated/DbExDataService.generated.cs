@@ -46,9 +46,9 @@ namespace Profiling.MsSql.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <returns><see cref="SelectEntity{ProfilingDatabase, TEntity}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
+        /// <returns><see cref="SelectEntity{TEntity}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
-        public static SelectEntity<ProfilingDatabase, TEntity> SelectOne<TEntity>()
+        public static SelectEntity<TEntity> SelectOne<TEntity>()
             where TEntity : class, IDbEntity, new()
             => ProfilingDatabase.SelectOne<TEntity>();
 
@@ -61,9 +61,9 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />
         ///, for example "dbo.Person.GenderType"
         /// </param>
-        /// <returns><see cref="Sql.SelectValue{ProfilingDatabase, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
+        /// <returns><see cref="Sql.SelectValue{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
-        public static SelectValue<ProfilingDatabase, TEnum> SelectOne<TEnum>(AnyElement<TEnum> element)
+        public static SelectValue<TEnum> SelectOne<TEnum>(AnyElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
             => ProfilingDatabase.SelectOne<TEnum>(element);
 
@@ -76,9 +76,9 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />?
         ///, for example "dbo.Address.AddressType"
         /// </param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
-        public static SelectValue<ProfilingDatabase, TEnum?> SelectOne<TEnum>(AnyElement<TEnum?> element)
+        public static SelectValue<TEnum?> SelectOne<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable
             => ProfilingDatabase.SelectOne<TEnum>(element);
 
@@ -90,8 +90,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="ObjectElement" />
         /// </param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<ProfilingDatabase, object> SelectOne(ObjectElement element)
+        /// <returns><see cref="SelectValue{object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<object> SelectOne(ObjectElement element)
             => ProfilingDatabase.SelectOne(element);
 
         /// <summary>
@@ -102,8 +102,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableObjectElement" />
         /// </param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<ProfilingDatabase, object> SelectOne(NullableObjectElement element)
+        /// <returns><see cref="SelectValue{object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<object> SelectOne(NullableObjectElement element)
             => ProfilingDatabase.SelectOne(element);
 
         /// <summary>
@@ -114,9 +114,9 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="ObjectElement{T}" />
         /// </param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the object to select.</typeparam>
-        public static SelectObject<ProfilingDatabase, T> SelectOne<T>(ObjectElement<T> element)
+        public static SelectObject<T> SelectOne<T>(ObjectElement<T> element)
             where T : class
             => ProfilingDatabase.SelectOne<T>(element);
 
@@ -128,9 +128,9 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AliasedElement{T}" />      
         /// </param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the value to select.</typeparam>
-        public static SelectValue<ProfilingDatabase, T> SelectOne<T>(AliasedElement<T> element)
+        public static SelectValue<T> SelectOne<T>(AliasedElement<T> element)
             => ProfilingDatabase.SelectOne<T>(element);
 
         /// <summary>
@@ -141,8 +141,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />
         ///</param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, Boolean}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<ProfilingDatabase, bool> SelectOne(AnyElement<bool> element)
+        /// <returns><see cref="SelectValue{Boolean}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<bool> SelectOne(AnyElement<bool> element)
             => ProfilingDatabase.SelectOne(element);
 
         /// <summary>
@@ -153,8 +153,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />?
         ///</param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, Boolean}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<ProfilingDatabase, bool?> SelectOne(AnyElement<bool?> element)
+        /// <returns><see cref="SelectValue{Boolean}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<bool?> SelectOne(AnyElement<bool?> element)
             => ProfilingDatabase.SelectOne(element);
 
         /// <summary>
@@ -165,8 +165,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />
         ///</param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<ProfilingDatabase, byte> SelectOne(AnyElement<byte> element)
+        /// <returns><see cref="SelectValue{Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<byte> SelectOne(AnyElement<byte> element)
             => ProfilingDatabase.SelectOne(element);
 
         /// <summary>
@@ -177,8 +177,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />?
         ///</param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<ProfilingDatabase, byte?> SelectOne(AnyElement<byte?> element)
+        /// <returns><see cref="SelectValue{Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<byte?> SelectOne(AnyElement<byte?> element)
             => ProfilingDatabase.SelectOne(element);
 
         /// <summary>
@@ -189,8 +189,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         ///</param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<ProfilingDatabase, byte[]> SelectOne(AnyElement<byte[]> element)
+        /// <returns><see cref="SelectValue{Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<byte[]> SelectOne(AnyElement<byte[]> element)
             => ProfilingDatabase.SelectOne(element);
 
         /// <summary>
@@ -202,8 +202,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />
         ///, for example "dbo.AccessAuditLog.DateCreated", "db.fx.DateAdd(DateParts.Year, 1, dbo.AccessAuditLog.DateCreated) or "db.fx.IsNull(dbo.AccessAuditLog.DateCreated, DateTime.Now)"
         ///</param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<ProfilingDatabase, DateTime> SelectOne(AnyElement<DateTime> element)
+        /// <returns><see cref="SelectValue{DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<DateTime> SelectOne(AnyElement<DateTime> element)
             => ProfilingDatabase.SelectOne(element);
 
         /// <summary>
@@ -215,8 +215,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />?
         ///, for example "dbo.Person.BirthDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.BirthDate)
         ///</param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<ProfilingDatabase, DateTime?> SelectOne(AnyElement<DateTime?> field)
+        /// <returns><see cref="SelectValue{DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<DateTime?> SelectOne(AnyElement<DateTime?> field)
             => ProfilingDatabase.SelectOne(field);
 
         /// <summary>
@@ -228,8 +228,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />
         ///, for example "dbo.Person.RegistrationDate", "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.RegistrationDate)" or "db.fx.IsNull(dbo.Person.RegistrationDate, DateTimeOffset.Now)"
         ///</param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<ProfilingDatabase, DateTimeOffset> SelectOne(AnyElement<DateTimeOffset> element)
+        /// <returns><see cref="SelectValue{DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<DateTimeOffset> SelectOne(AnyElement<DateTimeOffset> element)
             => ProfilingDatabase.SelectOne(element);
 
         /// <summary>
@@ -241,8 +241,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />?
         ///, for example "dbo.Person.LastLoginDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.LastLoginDate)" 
         ///</param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<ProfilingDatabase, DateTimeOffset?> SelectOne(AnyElement<DateTimeOffset?> element)
+        /// <returns><see cref="SelectValue{DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<DateTimeOffset?> SelectOne(AnyElement<DateTimeOffset?> element)
             => ProfilingDatabase.SelectOne(element);
 
         /// <summary>
@@ -254,8 +254,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />
         ///, for example "dbo.Product.ShippingWeight" or "db.fx.IsNull(dbo.Product.ShippingWeight, decimal.MinValue)"
         ///</param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<ProfilingDatabase, decimal> SelectOne(AnyElement<decimal> element)
+        /// <returns><see cref="SelectValue{Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<decimal> SelectOne(AnyElement<decimal> element)
             => ProfilingDatabase.SelectOne(element);
 
         /// <summary>
@@ -267,8 +267,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />?
         ///, for example "dbo.Product.Height" or "db.fx.Min(dbo.Product.Height)"
         ///</param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<ProfilingDatabase, decimal?> SelectOne(AnyElement<decimal?> element)
+        /// <returns><see cref="SelectValue{Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<decimal?> SelectOne(AnyElement<decimal?> element)
             => ProfilingDatabase.SelectOne(element);
 
         /// <summary>
@@ -280,8 +280,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Double}" />
         ///, for example "dbo.Product.ListPrice" or "db.fx.IsNull(dbo.Product.ListPrice, double.MinValue)"
         ///</param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<ProfilingDatabase, double> SelectOne(AnyElement<double> element)
+        /// <returns><see cref="SelectValue{Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<double> SelectOne(AnyElement<double> element)
             => ProfilingDatabase.SelectOne(element);
 
         /// <summary>
@@ -293,8 +293,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Double}" />?
         ///, for example "dbo.PersonTotalPurchasesView.TotalAmount" or "db.fx.Min(dbo.PersonTotalPurchasesView.TotalAmount)"
         ///</param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<ProfilingDatabase, double?> SelectOne(AnyElement<double?> element)
+        /// <returns><see cref="SelectValue{Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<double?> SelectOne(AnyElement<double?> element)
             => ProfilingDatabase.SelectOne(element);
 
         /// <summary>
@@ -305,8 +305,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />
         ///</param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<ProfilingDatabase, Guid> SelectOne(AnyElement<Guid> element)
+        /// <returns><see cref="SelectValue{Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<Guid> SelectOne(AnyElement<Guid> element)
             => ProfilingDatabase.SelectOne(element);
 
         /// <summary>
@@ -318,8 +318,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />?
         ///, for example "dbo.Purchase.TrackingIdentifier"
         ///</param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<ProfilingDatabase, Guid?> SelectOne(AnyElement<Guid?> element)
+        /// <returns><see cref="SelectValue{Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<Guid?> SelectOne(AnyElement<Guid?> element)
             => ProfilingDatabase.SelectOne(element);
 
         /// <summary>
@@ -330,8 +330,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />
         ///</param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<ProfilingDatabase, short> SelectOne(AnyElement<short> element)
+        /// <returns><see cref="SelectValue{Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<short> SelectOne(AnyElement<short> element)
             => ProfilingDatabase.SelectOne(element);
 
         /// <summary>
@@ -342,8 +342,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />?
         ///</param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<ProfilingDatabase, short?> SelectOne(AnyElement<short?> element)
+        /// <returns><see cref="SelectValue{Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<short?> SelectOne(AnyElement<short?> element)
             => ProfilingDatabase.SelectOne(element);
 
         /// <summary>
@@ -355,8 +355,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />?
         ///, for example "dbo.AccessAuditLog.Id" or "db.fx.Avg(dbo.AccessAuditLog.Id)"
         ///</param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<ProfilingDatabase, int> SelectOne(AnyElement<int> element)
+        /// <returns><see cref="SelectValue{Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<int> SelectOne(AnyElement<int> element)
             => ProfilingDatabase.SelectOne(element);
 
         /// <summary>
@@ -368,8 +368,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />?
         ///, for example "dbo.Person.CreditLimit" or "db.fx.Avg(dbo.Person.CreditLimit)"
         ///</param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<ProfilingDatabase, int?> SelectOne(AnyElement<int?> element)
+        /// <returns><see cref="SelectValue{Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<int?> SelectOne(AnyElement<int?> element)
             => ProfilingDatabase.SelectOne(element);
 
         /// <summary>
@@ -380,8 +380,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />
         ///</param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<ProfilingDatabase, long> SelectOne(AnyElement<long> element)
+        /// <returns><see cref="SelectValue{Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<long> SelectOne(AnyElement<long> element)
             => ProfilingDatabase.SelectOne(element);
 
         /// <summary>
@@ -392,8 +392,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />?
         ///</param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<ProfilingDatabase, long?> SelectOne(AnyElement<long?> element)
+        /// <returns><see cref="SelectValue{Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<long?> SelectOne(AnyElement<long?> element)
             => ProfilingDatabase.SelectOne(element);
 
         /// <summary>
@@ -404,8 +404,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}" />
         ///</param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<ProfilingDatabase, float> SelectOne(AnyElement<float> element)
+        /// <returns><see cref="SelectValue{Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<float> SelectOne(AnyElement<float> element)
             => ProfilingDatabase.SelectOne(element);
 
         /// <summary>
@@ -416,8 +416,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}" />?
         ///</param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<ProfilingDatabase, float?> SelectOne(AnyElement<float?> element)
+        /// <returns><see cref="SelectValue{Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<float?> SelectOne(AnyElement<float?> element)
             => ProfilingDatabase.SelectOne(element);
 
         /// <summary>
@@ -429,8 +429,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{String}" />
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         ///</param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<ProfilingDatabase, string> SelectOne(StringElement element) 
+        /// <returns><see cref="SelectValue{String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<string> SelectOne(StringElement element) 
             => ProfilingDatabase.SelectOne(element);
 
         /// <summary>
@@ -442,8 +442,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{String}" />
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         ///</param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<ProfilingDatabase, string> SelectOne(NullableStringElement element) 
+        /// <returns><see cref="SelectValue{String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<string> SelectOne(NullableStringElement element) 
             => ProfilingDatabase.SelectOne(element);
 
         /// <summary>
@@ -454,8 +454,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />
         ///</param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<ProfilingDatabase, TimeSpan> SelectOne(AnyElement<TimeSpan> element)
+        /// <returns><see cref="SelectValue{TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<TimeSpan> SelectOne(AnyElement<TimeSpan> element)
             => ProfilingDatabase.SelectOne(element);
 
         /// <summary>
@@ -467,21 +467,21 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />?
         ///, for example "dbo.Product.ValidStartTimeOfDayForPurchase"
         ///</param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<ProfilingDatabase, TimeSpan?> SelectOne(AnyElement<TimeSpan?> element)
+        /// <returns><see cref="SelectValue{TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<TimeSpan?> SelectOne(AnyElement<TimeSpan?> element)
             => ProfilingDatabase.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
-        /// <para>
+        /// <para>databaseExpressionName
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element1">Any expression</param>
         /// <param name="element2">Any expression</param>
         /// <param name="elements">Any expression</param>
-        /// <returns><see cref="SelectDynamic{ ProfilingDatabase }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectDynamic<ProfilingDatabase> SelectOne(AnyElement element1, AnyElement element2, params AnyElement[] elements)
+        /// <returns><see cref="SelectDynamic"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectDynamic SelectOne(AnyElement element1, AnyElement element2, params AnyElement[] elements)
             => ProfilingDatabase.SelectOne(element1, element2, elements);
 
         /// <summary>
@@ -492,8 +492,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element1">Any expression</param>
         /// <param name="elements">A list of any expression</param>
-        /// <returns><see cref="SelectDynamic{ ProfilingDatabase }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectDynamic<ProfilingDatabase> SelectOne(IEnumerable<AnyElement> elements)
+        /// <returns><see cref="SelectDynamic"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectDynamic SelectOne(IEnumerable<AnyElement> elements)
             => ProfilingDatabase.SelectOne(elements);
 
         /// <summary>
@@ -504,8 +504,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="elements">A list of any expression that is valid for a SELECT query expression.</param>
         /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
-        /// <returns><see cref="SelectDynamics{ ProfilingDatabase }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectDynamic<ProfilingDatabase> SelectOne(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
+        /// <returns><see cref="SelectDynamics"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectDynamic SelectOne(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
             => ProfilingDatabase.SelectOne((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
         #endregion
 
@@ -519,9 +519,9 @@ namespace Profiling.MsSql.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <returns><see cref="SelectEntities{ProfilingDatabase, TEntity}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
+        /// <returns><see cref="SelectEntities{TEntity}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
-        public static SelectEntities<ProfilingDatabase, TEntity> SelectMany<TEntity>()
+        public static SelectEntities<TEntity> SelectMany<TEntity>()
            where TEntity : class, IDbEntity, new()
            => ProfilingDatabase.SelectMany<TEntity>();
 
@@ -534,8 +534,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />
         ///, for example "dbo.Person.GenderType"
         /// </param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
-        public static SelectValues<ProfilingDatabase, TEnum> SelectMany<TEnum>(AnyElement<TEnum> element)
+        /// <returns><see cref="SelectValues{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
+        public static SelectValues<TEnum> SelectMany<TEnum>(AnyElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
             => ProfilingDatabase.SelectMany<TEnum>(element);
 
@@ -548,8 +548,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />?
         ///, for example "dbo.Address.AddressType"
         /// </param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<ProfilingDatabase, TEnum?> SelectMany<TEnum>(AnyElement<TEnum?> element)
+        /// <returns><see cref="SelectValues{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<TEnum?> SelectMany<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable
             => ProfilingDatabase.SelectMany<TEnum>(element);
 
@@ -561,8 +561,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="ObjectElement" />
         /// </param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<ProfilingDatabase, object> SelectMany(ObjectElement element)
+        /// <returns><see cref="SelectValues{object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<object> SelectMany(ObjectElement element)
             => ProfilingDatabase.SelectMany(element);
 
         /// <summary>
@@ -573,8 +573,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableObjectElement" />
         /// </param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<ProfilingDatabase, object> SelectMany(NullableObjectElement element)
+        /// <returns><see cref="SelectValues{object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<object> SelectMany(NullableObjectElement element)
             => ProfilingDatabase.SelectMany(element);
 
         /// <summary>
@@ -585,9 +585,9 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="ObjectElement{T}" />
         /// </param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the object to select.</typeparam>
-        public static SelectObjects<ProfilingDatabase, T> SelectMany<T>(ObjectElement<T> element)
+        public static SelectObjects<T> SelectMany<T>(ObjectElement<T> element)
             where T : class
             => ProfilingDatabase.SelectMany<T>(element);
 
@@ -599,9 +599,9 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AliasedElement{T}" />      
         /// </param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the value to select.</typeparam>
-        public static SelectValues<ProfilingDatabase, T> SelectMany<T>(AliasedElement<T> element)
+        public static SelectValues<T> SelectMany<T>(AliasedElement<T> element)
             => ProfilingDatabase.SelectMany<T>(element);
 
         /// <summary>
@@ -612,8 +612,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />
         ///</param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, Boolean}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<ProfilingDatabase, bool> SelectMany(AnyElement<bool> element)
+        /// <returns><see cref="SelectValues{Boolean}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<bool> SelectMany(AnyElement<bool> element)
             => ProfilingDatabase.SelectMany(element);
 
         /// <summary>
@@ -624,8 +624,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />?
         ///</param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, Boolean}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<ProfilingDatabase, bool?> SelectMany(AnyElement<bool?> element)
+        /// <returns><see cref="SelectValues{Boolean}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<bool?> SelectMany(AnyElement<bool?> element)
             => ProfilingDatabase.SelectMany(element);
 
         /// <summary>
@@ -636,8 +636,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />
         ///</param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<ProfilingDatabase, byte> SelectMany(AnyElement<byte> element)
+        /// <returns><see cref="SelectValues{Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<byte> SelectMany(AnyElement<byte> element)
             => ProfilingDatabase.SelectMany(element);
 
         /// <summary>
@@ -648,8 +648,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />?
         ///</param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<ProfilingDatabase, byte?> SelectMany(AnyElement<byte?> element)
+        /// <returns><see cref="SelectValues{Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<byte?> SelectMany(AnyElement<byte?> element)
             => ProfilingDatabase.SelectMany(element);
 
         /// <summary>
@@ -660,8 +660,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         ///</param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<ProfilingDatabase, byte[]> SelectMany(AnyElement<byte[]> element)
+        /// <returns><see cref="SelectValues{Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<byte[]> SelectMany(AnyElement<byte[]> element)
             => ProfilingDatabase.SelectMany(element);
 
         /// <summary>
@@ -673,8 +673,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />
         ///, for example "dbo.AccessAuditLog.DateCreated", "db.fx.DateAdd(DateParts.Year, 1, dbo.AccessAuditLog.DateCreated) or "db.fx.IsNull(dbo.AccessAuditLog.DateCreated, DateTime.Now)"
         ///</param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<ProfilingDatabase, DateTime> SelectMany(AnyElement<DateTime> element)
+        /// <returns><see cref="SelectValues{DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<DateTime> SelectMany(AnyElement<DateTime> element)
             => ProfilingDatabase.SelectMany(element);
 
         /// <summary>
@@ -686,8 +686,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />?
         ///, for example "dbo.Person.BirthDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.BirthDate)
         ///</param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<ProfilingDatabase, DateTime?> SelectMany(AnyElement<DateTime?> element)
+        /// <returns><see cref="SelectValues{DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<DateTime?> SelectMany(AnyElement<DateTime?> element)
             => ProfilingDatabase.SelectMany(element);
 
         /// <summary>
@@ -699,8 +699,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />
         ///, for example "dbo.Person.RegistrationDate", "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.RegistrationDate)" or "db.fx.IsNull(dbo.Person.RegistrationDate, DateTimeOffset.Now)"
         ///</param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<ProfilingDatabase, DateTimeOffset> SelectMany(AnyElement<DateTimeOffset> element)
+        /// <returns><see cref="SelectValues{DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<DateTimeOffset> SelectMany(AnyElement<DateTimeOffset> element)
             => ProfilingDatabase.SelectMany(element);
 
         /// <summary>
@@ -712,8 +712,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />?
         ///, for example "dbo.Person.LastLoginDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.LastLoginDate)" 
         ///</param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<ProfilingDatabase, DateTimeOffset?> SelectMany(AnyElement<DateTimeOffset?> element)
+        /// <returns><see cref="SelectValues{DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<DateTimeOffset?> SelectMany(AnyElement<DateTimeOffset?> element)
             => ProfilingDatabase.SelectMany(element);
 
         /// <summary>
@@ -725,8 +725,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />
         ///, for example "dbo.Product.ShippingWeight" or "db.fx.IsNull(dbo.Product.ShippingWeight, decimal.MinValue)"
         ///</param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<ProfilingDatabase, decimal> SelectMany(AnyElement<decimal> element)
+        /// <returns><see cref="SelectValues{Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<decimal> SelectMany(AnyElement<decimal> element)
             => ProfilingDatabase.SelectMany(element);
 
         /// <summary>
@@ -738,8 +738,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />?
         ///, for example "dbo.Product.Height"
         ///</param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<ProfilingDatabase, decimal?> SelectMany(AnyElement<decimal?> element)
+        /// <returns><see cref="SelectValues{Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<decimal?> SelectMany(AnyElement<decimal?> element)
             => ProfilingDatabase.SelectMany(element);
 
         /// <summary>
@@ -751,8 +751,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Double}" />
         ///, for example "dbo.Product.ListPrice" or "db.fx.IsNull(dbo.Product.ListPrice, double.MinValue)"
         ///</param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<ProfilingDatabase, double> SelectMany(AnyElement<double> element)
+        /// <returns><see cref="SelectValues{Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<double> SelectMany(AnyElement<double> element)
             => ProfilingDatabase.SelectMany(element);
 
         /// <summary>
@@ -764,8 +764,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Double}" />?
         ///, for example "dbo.PersonTotalPurchasesView.TotalAmount"
         ///</param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<ProfilingDatabase, double?> SelectMany(AnyElement<double?> element)
+        /// <returns><see cref="SelectValues{Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<double?> SelectMany(AnyElement<double?> element)
             => ProfilingDatabase.SelectMany(element);
 
         /// <summary>
@@ -776,8 +776,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />
         ///</param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<ProfilingDatabase, Guid> SelectMany(AnyElement<Guid> element)
+        /// <returns><see cref="SelectValues{Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<Guid> SelectMany(AnyElement<Guid> element)
             => ProfilingDatabase.SelectMany(element);
 
         /// <summary>
@@ -789,8 +789,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />?
         ///, for example "dbo.Purchase.TrackingIdentifier"
         ///</param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<ProfilingDatabase, Guid?> SelectMany(AnyElement<Guid?> element)
+        /// <returns><see cref="SelectValues{Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<Guid?> SelectMany(AnyElement<Guid?> element)
             => ProfilingDatabase.SelectMany(element);
 
         /// <summary>
@@ -801,8 +801,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />
         ///</param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<ProfilingDatabase, short> SelectMany(AnyElement<short> element)
+        /// <returns><see cref="SelectValues{Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<short> SelectMany(AnyElement<short> element)
             => ProfilingDatabase.SelectMany(element);
 
         /// <summary>
@@ -813,8 +813,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />?
         ///</param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<ProfilingDatabase, short?> SelectMany(AnyElement<short?> element)
+        /// <returns><see cref="SelectValues{Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<short?> SelectMany(AnyElement<short?> element)
             => ProfilingDatabase.SelectMany(element);
 
         /// <summary>
@@ -826,8 +826,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />
         ///, for example "dbo.AccessAuditLog.Id"
         ///</param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<ProfilingDatabase, int> SelectMany(AnyElement<int> element)
+        /// <returns><see cref="SelectValues{Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<int> SelectMany(AnyElement<int> element)
             => ProfilingDatabase.SelectMany(element);
 
         /// <summary>
@@ -839,8 +839,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />?
         ///, for example "dbo.:column.Entity.Name}.CreditLimit"
         ///</param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<ProfilingDatabase, int?> SelectMany(AnyElement<int?> element)
+        /// <returns><see cref="SelectValues{Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<int?> SelectMany(AnyElement<int?> element)
             => ProfilingDatabase.SelectMany(element);
 
         /// <summary>
@@ -851,8 +851,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />
         ///</param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<ProfilingDatabase, long> SelectMany(AnyElement<long> element)
+        /// <returns><see cref="SelectValues{Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<long> SelectMany(AnyElement<long> element)
             => ProfilingDatabase.SelectMany(element);
 
         /// <summary>
@@ -863,8 +863,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />?
         ///</param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<ProfilingDatabase, long?> SelectMany(AnyElement<long?> element)
+        /// <returns><see cref="SelectValues{Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<long?> SelectMany(AnyElement<long?> element)
             => ProfilingDatabase.SelectMany(element);
 
         /// <summary>
@@ -875,8 +875,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}" />
         ///</param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<ProfilingDatabase, float> SelectMany(AnyElement<float> element)
+        /// <returns><see cref="SelectValues{Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<float> SelectMany(AnyElement<float> element)
             => ProfilingDatabase.SelectMany(element);
 
         /// <summary>
@@ -887,8 +887,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}" />?
         ///</param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<ProfilingDatabase, float?> SelectMany(AnyElement<float?> element)
+        /// <returns><see cref="SelectValues{Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<float?> SelectMany(AnyElement<float?> element)
             => ProfilingDatabase.SelectMany(element);
 
         /// <summary>
@@ -900,8 +900,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{String}" />
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         ///</param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<ProfilingDatabase, string> SelectMany(StringElement element)
+        /// <returns><see cref="SelectValues{String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<string> SelectMany(StringElement element)
             => ProfilingDatabase.SelectMany(element);
 
         /// <summary>
@@ -913,8 +913,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{String}" />
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         ///</param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<ProfilingDatabase, string> SelectMany(NullableStringElement element)
+        /// <returns><see cref="SelectValues{String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<string> SelectMany(NullableStringElement element)
             => ProfilingDatabase.SelectMany(element);
 
         /// <summary>
@@ -925,8 +925,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />
         ///</param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<ProfilingDatabase, TimeSpan> SelectMany(AnyElement<TimeSpan> element)
+        /// <returns><see cref="SelectValues{TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<TimeSpan> SelectMany(AnyElement<TimeSpan> element)
             => ProfilingDatabase.SelectMany(element);
 
         /// <summary>
@@ -938,8 +938,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />?
         ///, for example "dbo.Product.ValidStartTimeOfDayForPurchase"
         ///</param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<ProfilingDatabase, TimeSpan?> SelectMany(AnyElement<TimeSpan?> element)
+        /// <returns><see cref="SelectValues{TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<TimeSpan?> SelectMany(AnyElement<TimeSpan?> element)
             => ProfilingDatabase.SelectMany(element);
 
         /// <summary>
@@ -951,8 +951,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element1">Any expression</param>
         /// <param name="element2">Any expression</param>
         /// <param name="elements">Any expression</param>
-        /// <returns><see cref="SelectDynamics{ ProfilingDatabase }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectDynamics<ProfilingDatabase> SelectMany(AnyElement element1, AnyElement element2, params AnyElement[] elements)
+        /// <returns><see cref="SelectDynamics"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectDynamics SelectMany(AnyElement element1, AnyElement element2, params AnyElement[] elements)
             => ProfilingDatabase.SelectMany(element1, element2, elements);
 
         /// <summary>
@@ -962,8 +962,8 @@ namespace Profiling.MsSql.DataService
         /// </para>
         /// </summary>
         /// <param name="elements">A list of any expression</param>
-        /// <returns><see cref="SelectDynamics{ ProfilingDatabase }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectDynamics<ProfilingDatabase> SelectMany(IEnumerable<AnyElement> elements)
+        /// <returns><see cref="SelectDynamics"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectDynamics SelectMany(IEnumerable<AnyElement> elements)
             => ProfilingDatabase.SelectMany(elements);
 
         /// <summary>
@@ -974,8 +974,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="elements">A list of any expression that is valid for a SELECT query expression.</param>
         /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
-        /// <returns><see cref="SelectDynamics{ ProfilingDatabase }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectDynamics<ProfilingDatabase> SelectMany(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
+        /// <returns><see cref="SelectDynamics"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectDynamics SelectMany(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
             => ProfilingDatabase.SelectMany((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
         #endregion
 
@@ -991,8 +991,8 @@ namespace Profiling.MsSql.DataService
         /// or "dbo.Person.CreditLimit.Set(dbo.Person.CreditLimit + 10)"
         ///</param>
         /// <param name="assignments">An additional list of <see cref="EntityFieldAssignment" />(s) assigning database fields/columns new values.  </param>
-        /// <returns><see cref="UpdateEntities{ ProfilingDatabase }"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
-        public static UpdateEntities<ProfilingDatabase> Update(EntityFieldAssignment assignment, params EntityFieldAssignment[] assignments)
+        /// <returns><see cref="UpdateEntities"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
+        public static UpdateEntities Update(EntityFieldAssignment assignment, params EntityFieldAssignment[] assignments)
             => ProfilingDatabase.Update(assignment, assignments);
 
         /// <summary>
@@ -1005,8 +1005,8 @@ namespace Profiling.MsSql.DataService
         /// For example "dbo.Address.Line1.Set("new value")"
         /// or "dbo.Person.CreditLimit.Set(dbo.Person.CreditLimit + 10)"
         ///</param>
-        /// <returns><see cref="UpdateEntities{ ProfilingDatabase }"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
-        public static UpdateEntities<ProfilingDatabase> Update(IEnumerable<EntityFieldAssignment> assignments)
+        /// <returns><see cref="UpdateEntities"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
+        public static UpdateEntities Update(IEnumerable<EntityFieldAssignment> assignments)
             => ProfilingDatabase.Update(assignments);   
         #endregion
 
@@ -1017,8 +1017,8 @@ namespace Profiling.MsSql.DataService
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/statements/delete-transact-sql">Microsoft docs on DELETE</see>
         /// </para>
         /// </summary>
-        /// <returns><see cref="DeleteEntities{ ProfilingDatabase }"/>, a fluent builder for constructing a sql DELETE statement.</returns>
-        public static DeleteEntities<ProfilingDatabase> Delete()
+        /// <returns><see cref="DeleteEntities"/>, a fluent builder for constructing a sql DELETE statement.</returns>
+        public static DeleteEntities Delete()
             => ProfilingDatabase.Delete();
         #endregion
 
@@ -1031,9 +1031,9 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="entity">The entity supplying the property values.
         /// </param>
-        /// <returns><see cref="InsertEntity{ProfilingDatabase, TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
+        /// <returns><see cref="InsertEntity{TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
         /// <typeparam name="TEntity">The entity type of the entity to insert.</typeparam>
-        public static InsertEntity<ProfilingDatabase, TEntity> Insert<TEntity>(TEntity entity)
+        public static InsertEntity<TEntity> Insert<TEntity>(TEntity entity)
             where TEntity : class, IDbEntity
             => ProfilingDatabase.Insert<TEntity>(entity);
 
@@ -1045,9 +1045,9 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="entities">A list of entities.
         /// </param>
-        /// <returns><see cref="InsertEntities{ProfilingDatabase, TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
+        /// <returns><see cref="InsertEntities{TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
         /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
-        public static InsertEntities<ProfilingDatabase, TEntity> InsertMany<TEntity>(TEntity entity, params TEntity[] entities)
+        public static InsertEntities<TEntity> InsertMany<TEntity>(TEntity entity, params TEntity[] entities)
             where TEntity : class, IDbEntity
             => ProfilingDatabase.InsertMany<TEntity>(entity, entities);
 
@@ -1059,9 +1059,9 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="entities">A list of entities.
         /// </param>
-        /// <returns><see cref="InsertEntities{ProfilingDatabase, TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
+        /// <returns><see cref="InsertEntities{TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
         /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
-        public static InsertEntities<ProfilingDatabase, TEntity> InsertMany<TEntity>(IEnumerable<TEntity> entities)
+        public static InsertEntities<TEntity> InsertMany<TEntity>(IEnumerable<TEntity> entities)
             where TEntity : class, IDbEntity
             => ProfilingDatabase.InsertMany<TEntity>(entities);
         #endregion
@@ -1084,20 +1084,19 @@ namespace Profiling.MsSql.DataService
 
     #region ProfilingDatabase
     public class ProfilingDatabase : ISqlDatabaseRuntime, 
-        SelectOneInitiation<ProfilingDatabase>, 
-        SelectManyInitiation<ProfilingDatabase>,
-        UpdateEntitiesInitiation<ProfilingDatabase>,
-        DeleteEntitiesInitiation<ProfilingDatabase>,
-        InsertEntitiesInitiation<ProfilingDatabase>
+        SelectOneInitiation, 
+        SelectManyInitiation,
+        UpdateEntitiesInitiation,
+        DeleteEntitiesInitiation,
+        InsertEntitiesInitiation
     {
         #region internals
         private static readonly SqlDatabaseMetadataProvider _metadata = new SqlDatabaseMetadataProvider(new ProfilingDatabaseSqlDatabaseMetadata("ProfilingDatabase"));
         private static readonly MsSqlFunctionExpressionBuilder _fx = new MsSqlFunctionExpressionBuilder();
         private static readonly List<SchemaExpression> _schemas = new List<SchemaExpression>();
         private static readonly Dictionary<Type, Table> _entityTypeToTableMap = new Dictionary<Type, Table>();
-        private readonly IQueryExpressionBuilderFactory<ProfilingDatabase> _queryExpressionBuilderFactory;
-        private readonly IConnectionStringFactory<ProfilingDatabase> _connectionStringFactory;
-        private readonly ISqlConnectionFactory<ProfilingDatabase> _connectionFactory;
+        private readonly IQueryExpressionBuilderFactory _queryExpressionBuilderFactory;
+        private readonly ISqlConnectionFactory _connectionFactory;
         private ProfilingDatabaseStoredProcedures _sp;
         #endregion
 
@@ -1130,13 +1129,11 @@ namespace Profiling.MsSql.DataService
         }
 
         public ProfilingDatabase(
-            IQueryExpressionBuilderFactory<ProfilingDatabase> queryExpressionBuilderFactory,
-            IConnectionStringFactory<ProfilingDatabase> connectionStringFactory, 
-            ISqlConnectionFactory<ProfilingDatabase> connectionFactory        
+            IQueryExpressionBuilderFactory queryExpressionBuilderFactory,
+            ISqlConnectionFactory connectionFactory        
         )
         {
             _queryExpressionBuilderFactory = queryExpressionBuilderFactory ?? throw new ArgumentNullException(nameof(queryExpressionBuilderFactory));
-            _connectionStringFactory = connectionStringFactory ?? throw new ArgumentNullException(nameof(connectionStringFactory));
             _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
         }
         #endregion
@@ -1145,8 +1142,8 @@ namespace Profiling.MsSql.DataService
         void ISqlDatabaseRuntime.InitializeStaticRuntime()
             => db.UseDatabase(this);
 
-        protected IQueryExpressionBuilder<ProfilingDatabase> GetBuilder()
-            => _queryExpressionBuilderFactory.CreateQueryExpressionBuilder(this);
+        protected IQueryExpressionBuilder GetBuilder()
+            => _queryExpressionBuilderFactory.CreateQueryExpressionBuilder();
 
         #region select one
         /// <summary>
@@ -1158,9 +1155,9 @@ namespace Profiling.MsSql.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <returns><see cref="SelectEntity{ProfilingDatabase, TEntity}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
+        /// <returns><see cref="SelectEntity{TEntity}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
-        public SelectEntity<ProfilingDatabase, TEntity> SelectOne<TEntity>()
+        public SelectEntity<TEntity> SelectOne<TEntity>()
             where TEntity : class, IDbEntity, new()
             => GetBuilder().CreateSelectEntityBuilder<TEntity>(GetTable<TEntity>());
 
@@ -1173,9 +1170,9 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />
         ///, for example "dbo.Person.GenderType"
         /// </param>
-        /// <returns><see cref="Sql.SelectValue{ProfilingDatabase, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
+        /// <returns><see cref="Sql.SelectValue{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
-        public SelectValue<ProfilingDatabase, TEnum> SelectOne<TEnum>(AnyElement<TEnum> element)
+        public SelectValue<TEnum> SelectOne<TEnum>(AnyElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
             => GetBuilder().CreateSelectValueBuilder<TEnum>(element);
 
@@ -1188,9 +1185,9 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />?
         ///, for example "dbo.Address.AddressType"
         /// </param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
-        public SelectValue<ProfilingDatabase, TEnum?> SelectOne<TEnum>(AnyElement<TEnum?> element)
+        public SelectValue<TEnum?> SelectOne<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable
             => GetBuilder().CreateSelectValueBuilder<TEnum>(element);
 
@@ -1202,8 +1199,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="ObjectElement" />
         /// </param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<ProfilingDatabase, object> SelectOne(ObjectElement element)
+        /// <returns><see cref="SelectValue{object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<object> SelectOne(ObjectElement element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1214,8 +1211,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableObjectElement" />
         /// </param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<ProfilingDatabase, object> SelectOne(NullableObjectElement element)
+        /// <returns><see cref="SelectValue{object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<object> SelectOne(NullableObjectElement element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1226,9 +1223,9 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="ObjectElement{T}" />
         /// </param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the object to select.</typeparam>
-        public SelectObject<ProfilingDatabase, T> SelectOne<T>(ObjectElement<T> element)
+        public SelectObject<T> SelectOne<T>(ObjectElement<T> element)
             where T : class
             => GetBuilder().CreateSelectValueBuilder<T>(element);
 
@@ -1240,8 +1237,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AliasedElement{T}" />    
         /// </param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<ProfilingDatabase, T> SelectOne<T>(AliasedElement<T> element)
+        /// <returns><see cref="SelectValue{T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<T> SelectOne<T>(AliasedElement<T> element)
             => GetBuilder().CreateSelectValueBuilder<T>(element);
 
         /// <summary>
@@ -1252,8 +1249,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />
         /// </param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<ProfilingDatabase, bool> SelectOne(AnyElement<bool> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<bool> SelectOne(AnyElement<bool> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1264,8 +1261,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />?
         /// </param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<ProfilingDatabase, bool?> SelectOne(AnyElement<bool?> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<bool?> SelectOne(AnyElement<bool?> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1276,8 +1273,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />
         /// </param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<ProfilingDatabase, byte> SelectOne(AnyElement<byte> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<byte> SelectOne(AnyElement<byte> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1288,8 +1285,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />?
         /// </param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<ProfilingDatabase, byte?> SelectOne(AnyElement<byte?> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<byte?> SelectOne(AnyElement<byte?> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1300,8 +1297,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         /// </param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<ProfilingDatabase, byte[]> SelectOne(AnyElement<byte[]> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<byte[]> SelectOne(AnyElement<byte[]> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1313,8 +1310,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />
         ///, for example "dbo.AccessAuditLog.DateCreated", "db.fx.DateAdd(DateParts.Year, 1, dbo.AccessAuditLog.DateCreated) or "db.fx.IsNull(dbo.AccessAuditLog.DateCreated, DateTime.Now)"
         /// </param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<ProfilingDatabase, DateTime> SelectOne(AnyElement<DateTime> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<DateTime> SelectOne(AnyElement<DateTime> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1326,8 +1323,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />?
         ///, for example "dbo.Person.BirthDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.BirthDate)
         /// </param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<ProfilingDatabase, DateTime?> SelectOne(AnyElement<DateTime?> field)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<DateTime?> SelectOne(AnyElement<DateTime?> field)
             => GetBuilder().CreateSelectValueBuilder(field);
 
         /// <summary>
@@ -1339,8 +1336,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />
         ///, for example "dbo.Person.RegistrationDate", "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.RegistrationDate)" or "db.fx.IsNull(dbo.Person.RegistrationDate, DateTimeOffset.Now)"
         /// </param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<ProfilingDatabase, DateTimeOffset> SelectOne(AnyElement<DateTimeOffset> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<DateTimeOffset> SelectOne(AnyElement<DateTimeOffset> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1352,8 +1349,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />?
         ///, for example "dbo.Person.LastLoginDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.LastLoginDate)" 
         /// </param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<ProfilingDatabase, DateTimeOffset?> SelectOne(AnyElement<DateTimeOffset?> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<DateTimeOffset?> SelectOne(AnyElement<DateTimeOffset?> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1365,8 +1362,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />
         ///, for example "dbo.Product.ShippingWeight" or "db.fx.IsNull(dbo.Product.ShippingWeight, decimal.MinValue)"
         /// </param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<ProfilingDatabase, decimal> SelectOne(AnyElement<decimal> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<decimal> SelectOne(AnyElement<decimal> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1378,8 +1375,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />?
         ///, for example "dbo.Product.Height" or "db.fx.Min(dbo.Product.Height)"
         /// </param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<ProfilingDatabase, decimal?> SelectOne(AnyElement<decimal?> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<decimal?> SelectOne(AnyElement<decimal?> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1391,8 +1388,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Double}" />
         ///, for example "dbo.Product.ListPrice" or "db.fx.IsNull(dbo.Product.ListPrice, double.MinValue)"
         /// </param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<ProfilingDatabase, double> SelectOne(AnyElement<double> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<double> SelectOne(AnyElement<double> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1404,8 +1401,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Double}" />?
         ///, for example "dbo.PersonTotalPurchasesView.TotalAmount" or "db.fx.Min(dbo.PersonTotalPurchasesView.TotalAmount)"
         /// </param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<ProfilingDatabase, double?> SelectOne(AnyElement<double?> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<double?> SelectOne(AnyElement<double?> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1416,8 +1413,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />
         /// </param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<ProfilingDatabase, Guid> SelectOne(AnyElement<Guid> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<Guid> SelectOne(AnyElement<Guid> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1429,8 +1426,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />?
         ///, for example "dbo.Purchase.TrackingIdentifier"
         /// </param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<ProfilingDatabase, Guid?> SelectOne(AnyElement<Guid?> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<Guid?> SelectOne(AnyElement<Guid?> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1441,8 +1438,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />
         /// </param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<ProfilingDatabase, short> SelectOne(AnyElement<short> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<short> SelectOne(AnyElement<short> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1453,8 +1450,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />?
         /// </param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<ProfilingDatabase, short?> SelectOne(AnyElement<short?> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<short?> SelectOne(AnyElement<short?> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1466,8 +1463,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />?
         ///, for example "dbo.AccessAuditLog.Id" or "db.fx.Avg(dbo.AccessAuditLog.Id)"
         /// </param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<ProfilingDatabase, int> SelectOne(AnyElement<int> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<int> SelectOne(AnyElement<int> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1479,8 +1476,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />?
         ///, for example "dbo.Person.CreditLimit" or "db.fx.Avg(dbo.Person.CreditLimit)"
         /// </param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<ProfilingDatabase, int?> SelectOne(AnyElement<int?> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<int?> SelectOne(AnyElement<int?> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1491,8 +1488,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />
         /// </param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<ProfilingDatabase, long> SelectOne(AnyElement<long> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<long> SelectOne(AnyElement<long> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1503,8 +1500,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />?
         /// </param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<ProfilingDatabase, long?> SelectOne(AnyElement<long?> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<long?> SelectOne(AnyElement<long?> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1515,8 +1512,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}" />
         /// </param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<ProfilingDatabase, float> SelectOne(AnyElement<float> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<float> SelectOne(AnyElement<float> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1527,8 +1524,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}" />?
         /// </param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<ProfilingDatabase, float?> SelectOne(AnyElement<float?> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<float?> SelectOne(AnyElement<float?> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1540,8 +1537,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{String}" />
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         /// </param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<ProfilingDatabase, string> SelectOne(StringElement element) 
+        /// <returns><see cref="SelectValue{String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<string> SelectOne(StringElement element) 
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1553,8 +1550,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{String}" />
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         /// </param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<ProfilingDatabase, string> SelectOne(NullableStringElement element) 
+        /// <returns><see cref="SelectValue{String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<string> SelectOne(NullableStringElement element) 
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1565,8 +1562,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />
         /// </param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<ProfilingDatabase, TimeSpan> SelectOne(AnyElement<TimeSpan> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<TimeSpan> SelectOne(AnyElement<TimeSpan> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1578,8 +1575,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />?
         ///, for example "dbo.Product.ValidStartTimeOfDayForPurchase"
         /// </param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<ProfilingDatabase, TimeSpan?> SelectOne(AnyElement<TimeSpan?> element)
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<TimeSpan?> SelectOne(AnyElement<TimeSpan?> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1591,8 +1588,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element1">Any expression</param>
         /// <param name="element2">Any expression</param>
         /// <param name="elements">Any expression</param>
-        /// <returns><see cref="SelectDynamic{ ProfilingDatabase }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectDynamic<ProfilingDatabase> SelectOne(AnyElement element1, AnyElement element2, params AnyElement[] elements)
+        /// <returns><see cref="SelectDynamic "/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectDynamic SelectOne(AnyElement element1, AnyElement element2, params AnyElement[] elements)
             => GetBuilder().CreateSelectDynamicBuilder(element1, element2, elements);
 
         /// <summary>
@@ -1603,8 +1600,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element1">Any expression</param>
         /// <param name="elements">A list of any expression</param>
-        /// <returns><see cref="SelectDynamic{ ProfilingDatabase }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectDynamic<ProfilingDatabase> SelectOne(IEnumerable<AnyElement> elements)
+        /// <returns><see cref="SelectDynamic "/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectDynamic SelectOne(IEnumerable<AnyElement> elements)
             => GetBuilder().CreateSelectDynamicBuilder(elements);
 
         /// <summary>
@@ -1615,8 +1612,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="elements">A list of any expression that is valid for a SELECT query expression.</param>
         /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
-        /// <returns><see cref="SelectDynamic{ ProfilingDatabase }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectDynamic<ProfilingDatabase> SelectOne(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
+        /// <returns><see cref="SelectDynamic "/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectDynamic SelectOne(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
             => GetBuilder().CreateSelectDynamicBuilder((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
         #endregion
 
@@ -1630,9 +1627,9 @@ namespace Profiling.MsSql.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <returns><see cref="SelectEntities{ProfilingDatabase, TEntity}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
+        /// <returns><see cref="SelectEntities{TEntity}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
-        public SelectEntities<ProfilingDatabase, TEntity> SelectMany<TEntity>()
+        public SelectEntities<TEntity> SelectMany<TEntity>()
            where TEntity : class, IDbEntity, new()
            => GetBuilder().CreateSelectEntitiesBuilder<TEntity>(GetTable<TEntity>());
 
@@ -1645,8 +1642,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />
         ///, for example "dbo.Person.GenderType"
         /// </param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
-        public SelectValues<ProfilingDatabase, TEnum> SelectMany<TEnum>(AnyElement<TEnum> element)
+        /// <returns><see cref="SelectValues{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
+        public SelectValues<TEnum> SelectMany<TEnum>(AnyElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
             => GetBuilder().CreateSelectValuesBuilder<TEnum>(element);
 
@@ -1659,8 +1656,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />?
         ///, for example "dbo.Address.AddressType"
         /// </param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<ProfilingDatabase, TEnum?> SelectMany<TEnum>(AnyElement<TEnum?> element)
+        /// <returns><see cref="SelectValues{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<TEnum?> SelectMany<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable
             => GetBuilder().CreateSelectValuesBuilder<TEnum>(element);
 
@@ -1672,8 +1669,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="ObjectElement" />
         /// </param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<ProfilingDatabase, object> SelectMany(ObjectElement element)
+        /// <returns><see cref="SelectValues{object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<object> SelectMany(ObjectElement element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1684,8 +1681,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableObjectElement" />
         /// </param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<ProfilingDatabase, object> SelectMany(NullableObjectElement element)
+        /// <returns><see cref="SelectValues{object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<object> SelectMany(NullableObjectElement element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1696,9 +1693,9 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="ObjectElement{T}" />
         /// </param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the object to select.</typeparam>
-        public SelectObjects<ProfilingDatabase, T> SelectMany<T>(ObjectElement<T> element)
+        public SelectObjects<T> SelectMany<T>(ObjectElement<T> element)
             where T : class
             => GetBuilder().CreateSelectValuesBuilder<T>(element);
 
@@ -1710,8 +1707,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AliasedElement{T}" />    
         /// </param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<ProfilingDatabase, T> SelectMany<T>(AliasedElement<T> element)
+        /// <returns><see cref="SelectValues{T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<T> SelectMany<T>(AliasedElement<T> element)
             => GetBuilder().CreateSelectValuesBuilder<T>(element);
 
         /// <summary>
@@ -1722,8 +1719,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />
         /// </param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<ProfilingDatabase, bool> SelectMany(AnyElement<bool> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<bool> SelectMany(AnyElement<bool> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1734,8 +1731,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />?
         /// </param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<ProfilingDatabase, bool?> SelectMany(AnyElement<bool?> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<bool?> SelectMany(AnyElement<bool?> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1746,8 +1743,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />
         /// </param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<ProfilingDatabase, byte> SelectMany(AnyElement<byte> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<byte> SelectMany(AnyElement<byte> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1758,8 +1755,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />?
         /// </param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<ProfilingDatabase, byte?> SelectMany(AnyElement<byte?> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<byte?> SelectMany(AnyElement<byte?> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1770,8 +1767,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         /// </param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<ProfilingDatabase, byte[]> SelectMany(AnyElement<byte[]> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<byte[]> SelectMany(AnyElement<byte[]> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1783,8 +1780,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />
         ///, for example "dbo.AccessAuditLog.DateCreated", "db.fx.DateAdd(DateParts.Year, 1, dbo.AccessAuditLog.DateCreated) or "db.fx.IsNull(dbo.AccessAuditLog.DateCreated, DateTime.Now)"
         /// </param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<ProfilingDatabase, DateTime> SelectMany(AnyElement<DateTime> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<DateTime> SelectMany(AnyElement<DateTime> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1796,8 +1793,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />?
         ///, for example "dbo.Person.BirthDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.BirthDate)
         /// </param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<ProfilingDatabase, DateTime?> SelectMany(AnyElement<DateTime?> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<DateTime?> SelectMany(AnyElement<DateTime?> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1809,8 +1806,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />
         ///, for example "dbo.Person.RegistrationDate", "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.RegistrationDate)" or "db.fx.IsNull(dbo.Person.RegistrationDate, DateTimeOffset.Now)"
         /// </param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<ProfilingDatabase, DateTimeOffset> SelectMany(AnyElement<DateTimeOffset> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<DateTimeOffset> SelectMany(AnyElement<DateTimeOffset> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1822,8 +1819,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />?
         ///, for example "dbo.Person.LastLoginDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.LastLoginDate)" 
         /// </param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<ProfilingDatabase, DateTimeOffset?> SelectMany(AnyElement<DateTimeOffset?> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<DateTimeOffset?> SelectMany(AnyElement<DateTimeOffset?> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1835,8 +1832,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />
         ///, for example "dbo.Product.ShippingWeight" or "db.fx.IsNull(dbo.Product.ShippingWeight, decimal.MinValue)"
         /// </param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<ProfilingDatabase, decimal> SelectMany(AnyElement<decimal> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<decimal> SelectMany(AnyElement<decimal> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1848,8 +1845,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />?
         ///, for example "dbo.Product.Height"
         /// </param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<ProfilingDatabase, decimal?> SelectMany(AnyElement<decimal?> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<decimal?> SelectMany(AnyElement<decimal?> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1861,8 +1858,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Double}" />
         ///, for example "dbo.Product.ListPrice" or "db.fx.IsNull(dbo.Product.ListPrice, double.MinValue)"
         /// </param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<ProfilingDatabase, double> SelectMany(AnyElement<double> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<double> SelectMany(AnyElement<double> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1874,8 +1871,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Double}" />?
         ///, for example "dbo.PersonTotalPurchasesView.TotalAmount"
         /// </param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<ProfilingDatabase, double?> SelectMany(AnyElement<double?> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<double?> SelectMany(AnyElement<double?> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1886,8 +1883,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />
         /// </param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<ProfilingDatabase, Guid> SelectMany(AnyElement<Guid> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<Guid> SelectMany(AnyElement<Guid> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1899,8 +1896,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />?
         ///, for example "dbo.Purchase.TrackingIdentifier"
         /// </param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<ProfilingDatabase, Guid?> SelectMany(AnyElement<Guid?> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<Guid?> SelectMany(AnyElement<Guid?> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1911,8 +1908,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />
         /// </param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<ProfilingDatabase, short> SelectMany(AnyElement<short> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<short> SelectMany(AnyElement<short> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1923,8 +1920,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />?
         /// </param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<ProfilingDatabase, short?> SelectMany(AnyElement<short?> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<short?> SelectMany(AnyElement<short?> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1936,8 +1933,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />
         ///, for example "dbo.AccessAuditLog.Id"
         /// </param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<ProfilingDatabase, int> SelectMany(AnyElement<int> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<int> SelectMany(AnyElement<int> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1949,8 +1946,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />?
         ///, for example "dbo.:column.Entity.Name}.CreditLimit"
         /// </param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<ProfilingDatabase, int?> SelectMany(AnyElement<int?> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<int?> SelectMany(AnyElement<int?> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1961,8 +1958,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />
         /// </param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<ProfilingDatabase, long> SelectMany(AnyElement<long> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<long> SelectMany(AnyElement<long> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1973,8 +1970,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />?
         /// </param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<ProfilingDatabase, long?> SelectMany(AnyElement<long?> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<long?> SelectMany(AnyElement<long?> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1985,8 +1982,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}" />
         /// </param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<ProfilingDatabase, float> SelectMany(AnyElement<float> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<float> SelectMany(AnyElement<float> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1997,8 +1994,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}" />?
         /// </param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<ProfilingDatabase, float?> SelectMany(AnyElement<float?> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<float?> SelectMany(AnyElement<float?> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -2010,8 +2007,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{String}" />
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         /// </param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<ProfilingDatabase, string> SelectMany(StringElement element)
+        /// <returns><see cref="SelectValues{String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<string> SelectMany(StringElement element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -2023,8 +2020,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{String}" />
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         /// </param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<ProfilingDatabase, string> SelectMany(NullableStringElement element)
+        /// <returns><see cref="SelectValues{String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<string> SelectMany(NullableStringElement element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -2035,8 +2032,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />
         /// </param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<ProfilingDatabase, TimeSpan> SelectMany(AnyElement<TimeSpan> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<TimeSpan> SelectMany(AnyElement<TimeSpan> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -2048,8 +2045,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />?
         ///, for example "dbo.Product.ValidStartTimeOfDayForPurchase"
         /// </param>
-        /// <returns><see cref="SelectValues{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<ProfilingDatabase, TimeSpan?> SelectMany(AnyElement<TimeSpan?> element)
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<TimeSpan?> SelectMany(AnyElement<TimeSpan?> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -2061,8 +2058,8 @@ namespace Profiling.MsSql.DataService
         /// <param name="element1">Any expression</param>
         /// <param name="element2">Any expression</param>
         /// <param name="elements">Any expression</param>
-        /// <returns><see cref="SelectDynamics{ ProfilingDatabase }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectDynamics<ProfilingDatabase> SelectMany(AnyElement element1, AnyElement element2, params AnyElement[] elements)
+        /// <returns><see cref="SelectDynamics "/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectDynamics SelectMany(AnyElement element1, AnyElement element2, params AnyElement[] elements)
             => GetBuilder().CreateSelectDynamicsBuilder(element1, element2, elements);
 
         /// <summary>
@@ -2072,8 +2069,8 @@ namespace Profiling.MsSql.DataService
         /// </para>
         /// </summary>
         /// <param name="elements">A list of any expression</param>
-        /// <returns><see cref="SelectDynamics{ ProfilingDatabase }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectDynamics<ProfilingDatabase> SelectMany(IEnumerable<AnyElement> elements)
+        /// <returns><see cref="SelectDynamics "/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectDynamics SelectMany(IEnumerable<AnyElement> elements)
             => GetBuilder().CreateSelectDynamicsBuilder(elements);
 
             /// <summary>
@@ -2084,8 +2081,8 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="elements">A list of any expression that is valid for a SELECT query expression.</param>
         /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
-        /// <returns><see cref="SelectDynamics{ ProfilingDatabase }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectDynamics<ProfilingDatabase> SelectMany(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
+        /// <returns><see cref="SelectDynamics "/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectDynamics SelectMany(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
             => GetBuilder().CreateSelectDynamicsBuilder((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
         #endregion
 
@@ -2101,8 +2098,8 @@ namespace Profiling.MsSql.DataService
         /// or "dbo.Person.CreditLimit.Set(dbo.Person.CreditLimit + 10)"
         /// </param>
         /// <param name="assignments">An additional list of <see cref="EntityFieldAssignment" />(s) assigning database fields/columns new values.  </param>
-        /// <returns><see cref="UpdateEntities{ ProfilingDatabase }"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
-        public UpdateEntities<ProfilingDatabase> Update(EntityFieldAssignment assignment, params EntityFieldAssignment[] assignments)
+        /// <returns><see cref="UpdateEntities "/>, a fluent builder for constructing a sql UPDATE statement.</returns>
+        public UpdateEntities Update(EntityFieldAssignment assignment, params EntityFieldAssignment[] assignments)
             => GetBuilder().CreateUpdateExpressionBuilder(assignment, assignments);
 
         /// <summary>
@@ -2115,8 +2112,8 @@ namespace Profiling.MsSql.DataService
         /// For example "dbo.Address.Line1.Set("new value")"
         /// or "dbo.Person.CreditLimit.Set(dbo.Person.CreditLimit + 10)"
         /// </param>
-        /// <returns><see cref="UpdateEntities{ ProfilingDatabase }"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
-        public UpdateEntities<ProfilingDatabase> Update(IEnumerable<EntityFieldAssignment> assignments)
+        /// <returns><see cref="UpdateEntities "/>, a fluent builder for constructing a sql UPDATE statement.</returns>
+        public UpdateEntities Update(IEnumerable<EntityFieldAssignment> assignments)
             => GetBuilder().CreateUpdateExpressionBuilder(assignments);   
         #endregion
 
@@ -2127,8 +2124,8 @@ namespace Profiling.MsSql.DataService
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/statements/delete-transact-sql">Microsoft docs on DELETE</see>
         /// </para>
         /// </summary>
-        /// <returns><see cref="DeleteEntities{ ProfilingDatabase }"/>, a fluent builder for constructing a sql DELETE statement.</returns>
-        public DeleteEntities<ProfilingDatabase> Delete()
+        /// <returns><see cref="DeleteEntities "/>, a fluent builder for constructing a sql DELETE statement.</returns>
+        public DeleteEntities Delete()
             => GetBuilder().CreateDeleteExpressionBuilder();
         #endregion
 
@@ -2141,9 +2138,9 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="entity">The entity supplying the property values.
         /// </param>
-        /// <returns><see cref="InsertEntity{ProfilingDatabase, TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
+        /// <returns><see cref="InsertEntity{TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
         /// <typeparam name="TEntity">The entity type of the entity to insert.</typeparam>
-        public InsertEntity<ProfilingDatabase, TEntity> Insert<TEntity>(TEntity entity)
+        public InsertEntity<TEntity> Insert<TEntity>(TEntity entity)
             where TEntity : class, IDbEntity
             => GetBuilder().CreateInsertExpressionBuilder<TEntity>(entity);
 
@@ -2155,9 +2152,9 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="entities">A list of entities.
         /// </param>
-        /// <returns><see cref="InsertEntities{ProfilingDatabase, TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
+        /// <returns><see cref="InsertEntities{TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
         /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
-        public InsertEntities<ProfilingDatabase, TEntity> InsertMany<TEntity>(TEntity entity, params TEntity[] entities)
+        public InsertEntities<TEntity> InsertMany<TEntity>(TEntity entity, params TEntity[] entities)
             where TEntity : class, IDbEntity
             => GetBuilder().CreateInsertExpressionBuilder<TEntity>(entity, entities);
 
@@ -2169,9 +2166,9 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="entities">A list of entities.
         /// </param>
-        /// <returns><see cref="InsertEntities{ProfilingDatabase, TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
+        /// <returns><see cref="InsertEntities{TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
         /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
-        public InsertEntities<ProfilingDatabase, TEntity> InsertMany<TEntity>(IEnumerable<TEntity> entities)
+        public InsertEntities<TEntity> InsertMany<TEntity>(IEnumerable<TEntity> entities)
             where TEntity : class, IDbEntity
             => GetBuilder().CreateInsertExpressionBuilder<TEntity>(entities);
         #endregion
@@ -2185,7 +2182,7 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <returns><see cref="ISqlConnection"/>, a connection to the database.</returns>
         public ISqlConnection GetConnection()
-            => new SqlConnector<ProfilingDatabase>(_connectionStringFactory, _connectionFactory);
+            => new SqlConnector(_connectionFactory);
         #endregion
 
         protected virtual Table<TEntity> GetTable<TEntity>()
@@ -2268,7 +2265,7 @@ namespace Profiling.MsSql.DataService
             /// </para>
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<ProfilingDatabase> SelectPerson_As_Dynamic_With_Input(int? P1)
+            public StoredProcedureContinuation SelectPerson_As_Dynamic_With_Input(int? P1)
                 => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPerson_As_Dynamic_With_InputStoredProcedure("dbo", _dbo, P1));
 
             /// <summary>
@@ -2290,7 +2287,7 @@ namespace Profiling.MsSql.DataService
             /// </para>
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<ProfilingDatabase> SelectPerson_As_Dynamic_With_Input_And_InputOutput(int? P1,int? CreditLimit, Action<ISqlOutputParameterList> outputParameters)
+            public StoredProcedureContinuation SelectPerson_As_Dynamic_With_Input_And_InputOutput(int? P1,int? CreditLimit, Action<ISqlOutputParameterList> outputParameters)
                 => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPerson_As_Dynamic_With_Input_And_InputOutputStoredProcedure("dbo", _dbo, P1, CreditLimit, outputParameters));
 
             /// <summary>
@@ -2313,7 +2310,7 @@ namespace Profiling.MsSql.DataService
             /// </param>
             /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<ProfilingDatabase> SelectPerson_As_Dynamic_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
+            public StoredProcedureContinuation SelectPerson_As_Dynamic_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
                 => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPerson_As_Dynamic_With_Input_And_OutputStoredProcedure("dbo", _dbo, P1, outputParameters));
 
             /// <summary>
@@ -2335,7 +2332,7 @@ namespace Profiling.MsSql.DataService
             /// </para>
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<ProfilingDatabase> SelectPerson_As_DynamicList_With_Input(int? P1)
+            public StoredProcedureContinuation SelectPerson_As_DynamicList_With_Input(int? P1)
                 => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPerson_As_DynamicList_With_InputStoredProcedure("dbo", _dbo, P1));
 
             /// <summary>
@@ -2357,7 +2354,7 @@ namespace Profiling.MsSql.DataService
             /// </para>
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<ProfilingDatabase> SelectPerson_As_DynamicList_With_Input_And_InputOutput(int? P1,int? CreditLimit, Action<ISqlOutputParameterList> outputParameters)
+            public StoredProcedureContinuation SelectPerson_As_DynamicList_With_Input_And_InputOutput(int? P1,int? CreditLimit, Action<ISqlOutputParameterList> outputParameters)
                 => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPerson_As_DynamicList_With_Input_And_InputOutputStoredProcedure("dbo", _dbo, P1, CreditLimit, outputParameters));
 
             /// <summary>
@@ -2380,7 +2377,7 @@ namespace Profiling.MsSql.DataService
             /// </param>
             /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<ProfilingDatabase> SelectPerson_As_DynamicList_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
+            public StoredProcedureContinuation SelectPerson_As_DynamicList_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
                 => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPerson_As_DynamicList_With_Input_And_OutputStoredProcedure("dbo", _dbo, P1, outputParameters));
 
             /// <summary>
@@ -2402,14 +2399,14 @@ namespace Profiling.MsSql.DataService
             /// </para>
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<ProfilingDatabase> SelectPersonId_As_ScalarValue_With_Input(int? P1)
+            public StoredProcedureContinuation SelectPersonId_As_ScalarValue_With_Input(int? P1)
                 => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValue_With_InputStoredProcedure("dbo", _dbo, P1));
 
             /// <summary>
             /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValue_With_Input_And_Default_Value stored procedure.
             /// </summary>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<ProfilingDatabase> SelectPersonId_As_ScalarValue_With_Input_And_Default_Value()
+            public StoredProcedureContinuation SelectPersonId_As_ScalarValue_With_Input_And_Default_Value()
                 => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValue_With_Input_And_Default_ValueStoredProcedure("dbo", _dbo));
 
             /// <summary>
@@ -2431,7 +2428,7 @@ namespace Profiling.MsSql.DataService
             /// </para>
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<ProfilingDatabase> SelectPersonId_As_ScalarValue_With_Input_And_InputOutput(int? P1,int? CreditLimit, Action<ISqlOutputParameterList> outputParameters)
+            public StoredProcedureContinuation SelectPersonId_As_ScalarValue_With_Input_And_InputOutput(int? P1,int? CreditLimit, Action<ISqlOutputParameterList> outputParameters)
                 => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValue_With_Input_And_InputOutputStoredProcedure("dbo", _dbo, P1, CreditLimit, outputParameters));
 
             /// <summary>
@@ -2454,7 +2451,7 @@ namespace Profiling.MsSql.DataService
             /// </param>
             /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<ProfilingDatabase> SelectPersonId_As_ScalarValue_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
+            public StoredProcedureContinuation SelectPersonId_As_ScalarValue_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
                 => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValue_With_Input_And_OutputStoredProcedure("dbo", _dbo, P1, outputParameters));
 
             /// <summary>
@@ -2476,7 +2473,7 @@ namespace Profiling.MsSql.DataService
             /// </para>
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<ProfilingDatabase> SelectPersonId_As_ScalarValueList_With_Input(int? P1)
+            public StoredProcedureContinuation SelectPersonId_As_ScalarValueList_With_Input(int? P1)
                 => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValueList_With_InputStoredProcedure("dbo", _dbo, P1));
 
             /// <summary>
@@ -2498,7 +2495,7 @@ namespace Profiling.MsSql.DataService
             /// </para>
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<ProfilingDatabase> SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput(int? P1,int? CreditLimit, Action<ISqlOutputParameterList> outputParameters)
+            public StoredProcedureContinuation SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput(int? P1,int? CreditLimit, Action<ISqlOutputParameterList> outputParameters)
                 => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValueList_With_Input_And_InputOutputStoredProcedure("dbo", _dbo, P1, CreditLimit, outputParameters));
 
             /// <summary>
@@ -2521,7 +2518,7 @@ namespace Profiling.MsSql.DataService
             /// </param>
             /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<ProfilingDatabase> SelectPersonId_As_ScalarValueList_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
+            public StoredProcedureContinuation SelectPersonId_As_ScalarValueList_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
                 => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValueList_With_Input_And_OutputStoredProcedure("dbo", _dbo, P1, outputParameters));
 
             /// <summary>
@@ -2558,7 +2555,7 @@ namespace Profiling.MsSql.DataService
             /// </para>
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<ProfilingDatabase> UpdatePersonCreditLimit_With_Inputs(int? P1,int? CreditLimit)
+            public StoredProcedureContinuation UpdatePersonCreditLimit_With_Inputs(int? P1,int? CreditLimit)
                 => _database.GetBuilder().CreateStoredProcedureBuilder(new UpdatePersonCreditLimit_With_InputsStoredProcedure("dbo", _dbo, P1, CreditLimit));
 
             #endregion

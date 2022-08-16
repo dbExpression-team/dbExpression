@@ -17,7 +17,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_isnull_of_count_of_quantity_and_static_value_succeed(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.IsNull(dbo.Person.CreditLimit, db.fx.Count(dbo.PurchaseLine.Quantity))
@@ -38,7 +38,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_count_of_isnull_of_quantity_and_static_value_succeed(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Count(db.fx.IsNull(dbo.Person.CreditLimit, dbo.PurchaseLine.Quantity))

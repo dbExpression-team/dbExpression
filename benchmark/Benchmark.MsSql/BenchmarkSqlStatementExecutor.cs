@@ -17,8 +17,8 @@ namespace HatTrick.DbEx.MsSql.Benchmark
         private static ISqlRowReader _reader;
         private static IAsyncSqlRowReader _asyncReader;
 
-        private IAsyncSqlRowReader asyncReader => _asyncReader ?? (_asyncReader = new PersonRowReader(new SqlStatementValueConverterProvider(provider.GetRequiredService<IValueConverterFactory<BenchmarkDatabase>>())));
-        private ISqlRowReader reader => _reader ?? (_reader = new PersonRowReader(new SqlStatementValueConverterProvider(provider.GetRequiredService<IValueConverterFactory<BenchmarkDatabase>>())));
+        private IAsyncSqlRowReader asyncReader => _asyncReader ?? (_asyncReader = new PersonRowReader(new SqlStatementValueConverterProvider(provider.GetRequiredService<IValueConverterFactory>())));
+        private ISqlRowReader reader => _reader ?? (_reader = new PersonRowReader(new SqlStatementValueConverterProvider(provider.GetRequiredService<IValueConverterFactory>())));
 
         public BenchmarkSqlStatementExecutor(IServiceProvider provider)
         {

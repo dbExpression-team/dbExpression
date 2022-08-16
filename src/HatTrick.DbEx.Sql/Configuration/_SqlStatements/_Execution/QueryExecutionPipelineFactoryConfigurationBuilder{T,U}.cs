@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.Sql.Configuration
     public class QueryExecutionPipelineFactoryConfigurationBuilder<TDatabase, TPipeline> : 
         IQueryExecutionPipelineFactoryContinuationConfigurationBuilder<TDatabase, TPipeline>
         where TDatabase : class, ISqlDatabaseRuntime
-        where TPipeline : class, IQueryExecutionPipeline<TDatabase>
+        where TPipeline : class, IQueryExecutionPipeline
     {
         private readonly IQueryExecutionPipelineFactoryContinuationConfigurationBuilder<TDatabase> caller;
         private readonly IServiceCollection services;

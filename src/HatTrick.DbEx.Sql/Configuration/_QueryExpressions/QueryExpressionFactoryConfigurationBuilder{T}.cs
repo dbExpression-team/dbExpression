@@ -41,7 +41,7 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         #region methods
         /// <inheritdoc />
-        public void Use(IQueryExpressionFactory<TDatabase> factory)
+        public void Use(IQueryExpressionFactory factory)
         {
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
@@ -51,31 +51,31 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         /// <inheritdoc />
         public void Use<TQueryExpressionFactory>()
-            where TQueryExpressionFactory : class, IQueryExpressionFactory<TDatabase>
+            where TQueryExpressionFactory : class, IQueryExpressionFactory
         {
-            services.TryAddSingleton<IQueryExpressionFactory<TDatabase>, TQueryExpressionFactory>();
+            services.TryAddSingleton<IQueryExpressionFactory, TQueryExpressionFactory>();
         }
 
         /// <inheritdoc />
-        public void Use(Func<IQueryExpressionFactory<TDatabase>> factory)
-        {
-            if (factory is null)
-                throw new ArgumentNullException(nameof(factory));
-
-            services.TryAddSingleton<IQueryExpressionFactory<TDatabase>>(sp => factory());
-        }
-
-        /// <inheritdoc />
-        public void Use(Func<IServiceProvider, IQueryExpressionFactory<TDatabase>> factory)
+        public void Use(Func<IQueryExpressionFactory> factory)
         {
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            services.TryAddSingleton<IQueryExpressionFactory<TDatabase>>(factory);
+            services.TryAddSingleton<IQueryExpressionFactory>(sp => factory());
         }
 
         /// <inheritdoc />
-        public void Use(Func<IServiceProvider, IQueryExpressionFactory<TDatabase>> factory, Action<IQueryExpressionContinuationConfigurationBuilder<TDatabase>> configureFactory)
+        public void Use(Func<IServiceProvider, IQueryExpressionFactory> factory)
+        {
+            if (factory is null)
+                throw new ArgumentNullException(nameof(factory));
+
+            services.TryAddSingleton<IQueryExpressionFactory>(factory);
+        }
+
+        /// <inheritdoc />
+        public void Use(Func<IServiceProvider, IQueryExpressionFactory> factory, Action<IQueryExpressionContinuationConfigurationBuilder<TDatabase>> configureFactory)
         {
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
@@ -83,7 +83,7 @@ namespace HatTrick.DbEx.Sql.Configuration
             if (configureFactory is null)
                 throw new ArgumentNullException(nameof(configureFactory));
 
-            services.TryAddSingleton<IQueryExpressionFactory<TDatabase>>(factory);
+            services.TryAddSingleton<IQueryExpressionFactory>(factory);
 
             configureFactory.Invoke(this);
         }
@@ -94,7 +94,7 @@ namespace HatTrick.DbEx.Sql.Configuration
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            services.TryAddSingleton<IQueryExpressionFactory<TDatabase>>(sp => new DelegateQueryExpressionFactory<TDatabase>(t => factory(sp, t)));
+            services.TryAddSingleton<IQueryExpressionFactory>(sp => new DelegateQueryExpressionFactory(t => factory(sp, t)));
         }
 
         /// <inheritdoc />
@@ -106,7 +106,7 @@ namespace HatTrick.DbEx.Sql.Configuration
             if (configureFactory is null)
                 throw new ArgumentNullException(nameof(configureFactory));
 
-            services.TryAddSingleton<IQueryExpressionFactory<TDatabase>>(sp => new DelegateQueryExpressionFactory<TDatabase>(t => factory(sp,t)));
+            services.TryAddSingleton<IQueryExpressionFactory>(sp => new DelegateQueryExpressionFactory(t => factory(sp,t)));
 
             configureFactory.Invoke(this);
         }

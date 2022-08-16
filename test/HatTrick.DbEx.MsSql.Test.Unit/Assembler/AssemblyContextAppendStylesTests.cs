@@ -16,10 +16,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
         public void Does_both_field_and_entity_append_styles_set_to_Declaration_append_correctly(int version, string expected = "[dbo].[Person].[Id]")
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
             var field = dbo.Person.Id;
-            ISqlStatementBuilder builder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlStatementBuilder<MsSqlDb>>();
-            IExpressionElementAppender appender = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IExpressionElementAppenderFactory<MsSqlDb>>().CreateElementAppender(field.GetType())!;
+            ISqlStatementBuilder builder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlStatementBuilder>();
+            IExpressionElementAppender appender = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IExpressionElementAppenderFactory>().CreateElementAppender(field.GetType())!;
 
             var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<SqlStatementAssemblyOptions>().ToAssemblyContext();
             context.PushAppendStyles(EntityExpressionAppendStyle.Declaration, FieldExpressionAppendStyle.Declaration);
@@ -38,10 +38,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
         public void Does_field_style_of_None_and_entity_append_style_of_Declaration_append_correctly(int version, string expected = "[dbo].[Person]")
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
             var entity = dbo.Person;
-            ISqlStatementBuilder builder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlStatementBuilder<MsSqlDb>>();
-            IExpressionElementAppender appender = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IExpressionElementAppenderFactory<MsSqlDb>>().CreateElementAppender(entity.GetType())!;
+            ISqlStatementBuilder builder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlStatementBuilder>();
+            IExpressionElementAppender appender = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IExpressionElementAppenderFactory>().CreateElementAppender(entity.GetType())!;
 
             var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<SqlStatementAssemblyOptions>().ToAssemblyContext();
             context.PushAppendStyles(EntityExpressionAppendStyle.Declaration, FieldExpressionAppendStyle.None);
@@ -60,10 +60,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
         public void Does_field_style_of_Declaration_and_entity_append_style_of_None_append_correctly(int version, string expected = "[Id]")
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
             var field = dbo.Person.Id;
-            ISqlStatementBuilder builder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlStatementBuilder<MsSqlDb>>();
-            IExpressionElementAppender appender = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IExpressionElementAppenderFactory<MsSqlDb>>().CreateElementAppender(field.GetType())!;
+            ISqlStatementBuilder builder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlStatementBuilder>();
+            IExpressionElementAppender appender = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IExpressionElementAppenderFactory>().CreateElementAppender(field.GetType())!;
 
             var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<SqlStatementAssemblyOptions>().ToAssemblyContext();
             context.PushAppendStyles(EntityExpressionAppendStyle.None, FieldExpressionAppendStyle.Declaration);
@@ -82,10 +82,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
         public void Does_both_field_and_entity_append_styles_set_to_None_append_correctly(int version, string expected = "[dbo].[Person]")
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
             var entity = dbo.Person;
-            ISqlStatementBuilder builder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlStatementBuilder<MsSqlDb>>();
-            IExpressionElementAppender appender = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IExpressionElementAppenderFactory<MsSqlDb>>().CreateElementAppender(entity.GetType())!;
+            ISqlStatementBuilder builder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlStatementBuilder>();
+            IExpressionElementAppender appender = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IExpressionElementAppenderFactory>().CreateElementAppender(entity.GetType())!;
 
             var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<SqlStatementAssemblyOptions>().ToAssemblyContext();
             context.PushAppendStyles(EntityExpressionAppendStyle.None, FieldExpressionAppendStyle.None);
@@ -104,10 +104,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
         public void Does_both_field_and_entity_append_styles_set_to_Alias_append_correctly(int version, string fieldAlias = "fieldAlias", string entityAlias = "entityAlias", string expected = "[entityAlias].[Id] AS [fieldAlias]")
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
             var field = dbo.Person.As(entityAlias).Id.As(fieldAlias);
-            ISqlStatementBuilder builder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlStatementBuilder<MsSqlDb>>();
-            IExpressionElementAppender appender = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IExpressionElementAppenderFactory<MsSqlDb>>().CreateElementAppender(field.GetType())!;
+            ISqlStatementBuilder builder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlStatementBuilder>();
+            IExpressionElementAppender appender = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IExpressionElementAppenderFactory>().CreateElementAppender(field.GetType())!;
 
             var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<SqlStatementAssemblyOptions>().ToAssemblyContext();
             context.PushAppendStyles(EntityExpressionAppendStyle.Alias, FieldExpressionAppendStyle.Alias);
@@ -126,10 +126,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
         public void Does_field_style_of_None_and_entity_append_style_of_Alias_append_correctly(int version, string entityAlias = "entityAlias", string expected = "[entityAlias]")
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
             var entity = dbo.Person.As(entityAlias);
-            ISqlStatementBuilder builder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlStatementBuilder<MsSqlDb>>();
-            IExpressionElementAppender appender = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IExpressionElementAppenderFactory<MsSqlDb>>().CreateElementAppender(entity.GetType())!;
+            ISqlStatementBuilder builder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlStatementBuilder>();
+            IExpressionElementAppender appender = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IExpressionElementAppenderFactory>().CreateElementAppender(entity.GetType())!;
 
             var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<SqlStatementAssemblyOptions>().ToAssemblyContext();
             context.PushAppendStyles(EntityExpressionAppendStyle.Alias, FieldExpressionAppendStyle.None);
@@ -148,10 +148,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
         public void Does_field_style_of_Alias_and_entity_append_style_of_None_append_correctly(int version, string fieldAlias = "fieldAlias", string entityAlias = "entityAlias", string expected = "[Id] AS [fieldAlias]")
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
             var field = dbo.Person.As(entityAlias).Id.As(fieldAlias);
-            ISqlStatementBuilder builder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlStatementBuilder<MsSqlDb>>();
-            IExpressionElementAppender appender = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IExpressionElementAppenderFactory<MsSqlDb>>().CreateElementAppender(field.GetType())!;
+            ISqlStatementBuilder builder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlStatementBuilder>();
+            IExpressionElementAppender appender = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IExpressionElementAppenderFactory>().CreateElementAppender(field.GetType())!;
 
             var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<SqlStatementAssemblyOptions>().ToAssemblyContext();
             context.PushAppendStyles(EntityExpressionAppendStyle.None, FieldExpressionAppendStyle.Alias);
@@ -170,10 +170,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
         public void Does_field_style_of_Declaration_and_entity_append_style_of_Alias_append_correctly(int version, string entityAlias = "entityAlias", string expected = "[entityAlias]")
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
             var entity = dbo.Person.As(entityAlias);
-            ISqlStatementBuilder builder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlStatementBuilder<MsSqlDb>>();
-            IExpressionElementAppender appender = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IExpressionElementAppenderFactory<MsSqlDb>>().CreateElementAppender(entity.GetType())!;
+            ISqlStatementBuilder builder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlStatementBuilder>();
+            IExpressionElementAppender appender = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IExpressionElementAppenderFactory>().CreateElementAppender(entity.GetType())!;
 
             var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<SqlStatementAssemblyOptions>().ToAssemblyContext();
             context.PushAppendStyles(EntityExpressionAppendStyle.Alias, FieldExpressionAppendStyle.Declaration);
@@ -192,10 +192,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
         public void Does_field_style_of_Alias_and_entity_append_style_of_Declaration_append_correctly(int version, string fieldAlias = "fieldAlias", string expected = "[dbo].[Person].[Id] AS [fieldAlias]")
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
             var field = dbo.Person.Id.As(fieldAlias);
-            ISqlStatementBuilder builder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlStatementBuilder<MsSqlDb>>();
-            IExpressionElementAppender appender = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IExpressionElementAppenderFactory<MsSqlDb>>().CreateElementAppender(field.GetType())!;
+            ISqlStatementBuilder builder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlStatementBuilder>();
+            IExpressionElementAppender appender = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IExpressionElementAppenderFactory>().CreateElementAppender(field.GetType())!;
 
             var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<SqlStatementAssemblyOptions>().ToAssemblyContext();
             context.PushAppendStyles(EntityExpressionAppendStyle.Alias, FieldExpressionAppendStyle.Declaration);

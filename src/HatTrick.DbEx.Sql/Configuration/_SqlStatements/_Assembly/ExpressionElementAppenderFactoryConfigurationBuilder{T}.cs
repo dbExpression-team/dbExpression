@@ -42,7 +42,7 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         #region methods
         /// <inheritdoc />
-        public ISqlStatementAssemblyGroupingConfigurationBuilders<TDatabase> Use(IExpressionElementAppenderFactory<TDatabase> factory)
+        public ISqlStatementAssemblyGroupingConfigurationBuilders<TDatabase> Use(IExpressionElementAppenderFactory factory)
         {
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
@@ -52,7 +52,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         }
 
         /// <inheritdoc />
-        public ISqlStatementAssemblyGroupingConfigurationBuilders<TDatabase> Use(Func<IExpressionElementAppenderFactory<TDatabase>> factory)
+        public ISqlStatementAssemblyGroupingConfigurationBuilders<TDatabase> Use(Func<IExpressionElementAppenderFactory> factory)
         {
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
@@ -63,9 +63,9 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         /// <inheritdoc />
         public ISqlStatementAssemblyGroupingConfigurationBuilders<TDatabase> Use<TExpressionElementAppenderFactory>()
-            where TExpressionElementAppenderFactory : class, IExpressionElementAppenderFactory<TDatabase>
+            where TExpressionElementAppenderFactory : class, IExpressionElementAppenderFactory
         {
-            services.TryAddSingleton<IExpressionElementAppenderFactory<TDatabase>, TExpressionElementAppenderFactory>();
+            services.TryAddSingleton<IExpressionElementAppenderFactory, TExpressionElementAppenderFactory>();
             return caller;
         }
 
@@ -75,8 +75,8 @@ namespace HatTrick.DbEx.Sql.Configuration
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            services.TryAddSingleton<IExpressionElementAppenderFactory<TDatabase>>(sp => new DefaultExpressionElementAppenderFactoryWithDiscovery<TDatabase>(
-                    sp.GetRequiredService<ILoggerFactory>().CreateLogger<DefaultExpressionElementAppenderFactoryWithDiscovery<TDatabase>>(),
+            services.TryAddSingleton<IExpressionElementAppenderFactory>(sp => new DefaultExpressionElementAppenderFactoryWithDiscovery(
+                    sp.GetRequiredService<ILogger<DefaultExpressionElementAppenderFactoryWithDiscovery>>(),
                     factory
                 )
             );
@@ -89,8 +89,8 @@ namespace HatTrick.DbEx.Sql.Configuration
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            services.TryAddSingleton<IExpressionElementAppenderFactory<TDatabase>>(sp => new DefaultExpressionElementAppenderFactoryWithDiscovery<TDatabase>(
-                    sp.GetRequiredService<ILoggerFactory>().CreateLogger<DefaultExpressionElementAppenderFactoryWithDiscovery<TDatabase>>(),
+            services.TryAddSingleton<IExpressionElementAppenderFactory>(sp => new DefaultExpressionElementAppenderFactoryWithDiscovery(
+                    sp.GetRequiredService<ILogger<DefaultExpressionElementAppenderFactoryWithDiscovery>>(),
                     t => factory(sp, t)
                 )
             );
@@ -106,8 +106,8 @@ namespace HatTrick.DbEx.Sql.Configuration
             if (configureElementTypes is null)
                 throw new ArgumentNullException(nameof(configureElementTypes));
 
-            services.TryAddSingleton<IExpressionElementAppenderFactory<TDatabase>>(sp => new DefaultExpressionElementAppenderFactoryWithDiscovery<TDatabase>(
-                    sp.GetRequiredService<ILoggerFactory>().CreateLogger<DefaultExpressionElementAppenderFactoryWithDiscovery<TDatabase>>(),
+            services.TryAddSingleton<IExpressionElementAppenderFactory>(sp => new DefaultExpressionElementAppenderFactoryWithDiscovery(
+                    sp.GetRequiredService<ILogger<DefaultExpressionElementAppenderFactoryWithDiscovery>>(),
                     t => factory(sp, t)
                 )
             );
@@ -126,23 +126,23 @@ namespace HatTrick.DbEx.Sql.Configuration
         }
 
         /// <inheritdoc />
-        public ISqlStatementAssemblyGroupingConfigurationBuilders<TDatabase> Use(Func<IServiceProvider, IExpressionElementAppenderFactory<TDatabase>> factory, Action<IExpressionElementAppenderFactoryContinuationConfigurationBuilder<TDatabase>> configureElementTypes)
+        public ISqlStatementAssemblyGroupingConfigurationBuilders<TDatabase> Use(Func<IServiceProvider, IExpressionElementAppenderFactory> factory, Action<IExpressionElementAppenderFactoryContinuationConfigurationBuilder<TDatabase>> configureElementTypes)
         {
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            services.TryAddSingleton<IExpressionElementAppenderFactory<TDatabase>>(sp => factory(sp));
+            services.TryAddSingleton<IExpressionElementAppenderFactory>(sp => factory(sp));
             configureElementTypes.Invoke(new ExpressionElementAppenderFactoryContinuationConfigurationBuilder<TDatabase>(services));
             return caller;
         }
 
         /// <inheritdoc />
-        public ISqlStatementAssemblyGroupingConfigurationBuilders<TDatabase> Use(Func<IServiceProvider, IExpressionElementAppenderFactory<TDatabase>> factory)
+        public ISqlStatementAssemblyGroupingConfigurationBuilders<TDatabase> Use(Func<IServiceProvider, IExpressionElementAppenderFactory> factory)
         {
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            services.TryAddSingleton<IExpressionElementAppenderFactory<TDatabase>>(sp => factory(sp));
+            services.TryAddSingleton<IExpressionElementAppenderFactory>(sp => factory(sp));
             return caller;
         }
         #endregion

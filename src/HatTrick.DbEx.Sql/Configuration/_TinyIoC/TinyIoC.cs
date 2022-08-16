@@ -2592,63 +2592,67 @@ namespace TinyIoC
                 }
             }
 
-            // Attempt container resolution of open generic
-            if (type.IsGenericType)
-            {
-                if (_RegisteredTypes.TryGetValue(type.GetGenericTypeDefinition(), out factory))
-                {
-                    try
-                    {
-                        return factory.GetObject(type, this, parameters, options);
-                    }
-                    catch (TinyIoCResolutionException)
-                    {
-                        throw;
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new TinyIoCResolutionException(type, ex);
-                    }
-                }
-            }
+            #region HatTrick Labs - functionality not needed
+            //// Attempt container resolution of open generic
+            //if (type.IsGenericType)
+            //{
+            //    if (_RegisteredTypes.TryGetValue(type.GetGenericTypeDefinition(), out factory))
+            //    {
+            //        try
+            //        {
+            //            return factory.GetObject(type, this, parameters, options);
+            //        }
+            //        catch (TinyIoCResolutionException)
+            //        {
+            //            throw;
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            throw new TinyIoCResolutionException(type, ex);
+            //        }
+            //    }
+            //}
 
-            // Attempt to get a factory from parent if we can
-            var bubbledObjectFactory = GetParentObjectFactory(type);
-            if (bubbledObjectFactory != null)
-            {
-                try
-                {
-                    return bubbledObjectFactory.GetObject(type, this, parameters, options);
-                }
-                catch (TinyIoCResolutionException)
-                {
-                    throw;
-                }
-                catch (Exception ex)
-                {
-                    throw new TinyIoCResolutionException(type, ex);
-                }
-            }
+            //// Attempt to get a factory from parent if we can
+            //var bubbledObjectFactory = GetParentObjectFactory(type);
+            //if (bubbledObjectFactory != null)
+            //{
+            //    try
+            //    {
+            //        return bubbledObjectFactory.GetObject(type, this, parameters, options);
+            //    }
+            //    catch (TinyIoCResolutionException)
+            //    {
+            //        throw;
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        throw new TinyIoCResolutionException(type, ex);
+            //    }
+            //}
 
-            // Attempt to construct an automatic lazy factory if possible
-            if (IsAutomaticLazyFactoryRequest(type))
-                return GetLazyAutomaticFactoryRequest(type);
+            //// Attempt to construct an automatic lazy factory if possible
+            //if (IsAutomaticLazyFactoryRequest(type))
+            //    return GetLazyAutomaticFactoryRequest(type);
+            #endregion
 
             if (IsIEnumerableRequest(type))
                 return GetIEnumerableRequest(type);
 
-            // Attempt unregistered construction if possible and requested
-            if ((options.UnregisteredResolutionAction == UnregisteredResolutionActions.AttemptResolve) || (type.IsGenericType && options.UnregisteredResolutionAction == UnregisteredResolutionActions.GenericsOnly))
-            {
-                if (!type.IsAbstract && !type.IsInterface)
-                    return ConstructType(null, type, parameters, options);
-            }
+            #region HatTrick Labs - functionality not needed
+            //// Attempt unregistered construction if possible and requested
+            //if ((options.UnregisteredResolutionAction == UnregisteredResolutionActions.AttemptResolve) || (type.IsGenericType && options.UnregisteredResolutionAction == UnregisteredResolutionActions.GenericsOnly))
+            //{
+            //    if (!type.IsAbstract && !type.IsInterface)
+            //        return ConstructType(null, type, parameters, options);
+            //}
+            #endregion
 
-            // Start HatTrick Labs
-            // Resolution using internal container (and any parent container) has failed, try from root IServiceProvider
+            #region HatTrick Labs - added functionality
+            // Resolution using internal container failed, try from root IServiceProvider (a parent container that is NOT a TinyIoCContainer).
             if (TryResolveFromRoot(type, out object service))
                 return service;
-            // End HatTrick Labs
+            #endregion
 
             // Unable to resolve - throw
             throw new TinyIoCResolutionException(type);

@@ -23,15 +23,14 @@ using System;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
-    public class SqlStatementBuilder<TDatabase> : ISqlStatementBuilder<TDatabase>
-        where TDatabase : class, ISqlDatabaseRuntime
+    public class SqlStatementBuilder : ISqlStatementBuilder
     {
         #region internals
-        private readonly ILogger<SqlStatementBuilder<TDatabase>> logger;
-        private readonly TDatabase database;
+        private readonly ILogger<SqlStatementBuilder> logger;
+        private readonly ISqlDatabaseMetadataProvider metadataProvider;
         private readonly AssemblyContext assemblyContext;
-        private readonly IExpressionElementAppenderFactory<TDatabase> elementAppenderFactory;
-        private readonly IValueConverterFactory<TDatabase> valueConverterFactory;
+        private readonly IExpressionElementAppenderFactory elementAppenderFactory;
+        private readonly IValueConverterFactory valueConverterFactory;
         private int _currentAliasCounter;
         #endregion
 
@@ -39,21 +38,21 @@ namespace HatTrick.DbEx.Sql.Assembler
         public ISqlParameterBuilder Parameters { get; private set; }
 
         public SqlStatementBuilder(
-            ILogger<SqlStatementBuilder<TDatabase>> logger,
-            TDatabase database,
+            ILogger<SqlStatementBuilder> logger,
+            ISqlDatabaseMetadataProvider metadataProvider,
             AssemblyContext assemblyContext,
-            IExpressionElementAppenderFactory<TDatabase> elementAppenderFactory,
             IAppender appender,
-            ISqlParameterBuilder<TDatabase> parameterBuilder,
-            IValueConverterFactory<TDatabase> valueConverterFactory
+            ISqlParameterBuilder parameterBuilder,
+            IExpressionElementAppenderFactory elementAppenderFactory,
+            IValueConverterFactory valueConverterFactory
         )
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            this.database = database ?? throw new ArgumentNullException(nameof(database));
+            this.metadataProvider = metadataProvider ?? throw new ArgumentNullException(nameof(metadataProvider));
             this.assemblyContext = assemblyContext ?? throw new ArgumentNullException(nameof(assemblyContext));
-            this.elementAppenderFactory = elementAppenderFactory ?? throw new ArgumentNullException(nameof(elementAppenderFactory));
             Appender = appender ?? throw new ArgumentNullException(nameof(appender));
             Parameters = parameterBuilder ?? throw new ArgumentNullException(nameof(parameterBuilder));
+            this.elementAppenderFactory = elementAppenderFactory ?? throw new ArgumentNullException(nameof(elementAppenderFactory));
             this.valueConverterFactory = valueConverterFactory ?? throw new ArgumentNullException(nameof(valueConverterFactory));
         }
 
@@ -92,10 +91,10 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public string GenerateAlias() => $"_t{++_currentAliasCounter}";
 
-        public ISqlMetadata? FindMetadata(Schema schema) => database.MetadataProvider.GetMetadata<ISqlMetadata>(schema.Identifier);
-        public ISqlMetadata? FindMetadata(Table entity) => database.MetadataProvider.GetMetadata<ISqlMetadata>(entity.Identifier);
-        public ISqlColumnMetadata? FindMetadata(Field field) => database.MetadataProvider.GetMetadata<ISqlColumnMetadata>(field.Identifier);
-        public ISqlParameterMetadata? FindMetadata(QueryParameter parameter) => database.MetadataProvider.GetMetadata<ISqlParameterMetadata>(parameter.Identifier);
+        public ISqlMetadata? FindMetadata(Schema schema) => metadataProvider.GetMetadata<ISqlMetadata>(schema.Identifier);
+        public ISqlMetadata? FindMetadata(Table entity) => metadataProvider.GetMetadata<ISqlMetadata>(entity.Identifier);
+        public ISqlColumnMetadata? FindMetadata(Field field) => metadataProvider.GetMetadata<ISqlColumnMetadata>(field.Identifier);
+        public ISqlParameterMetadata? FindMetadata(QueryParameter parameter) => metadataProvider.GetMetadata<ISqlParameterMetadata>(parameter.Identifier);
 
         public (Type, object?) ConvertValue(object? value, Field? field)
         {

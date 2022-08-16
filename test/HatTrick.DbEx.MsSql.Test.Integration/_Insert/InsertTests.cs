@@ -19,7 +19,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_an_address_be_inserted(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.Insert(
                 new Address
@@ -59,7 +59,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_an_address_be_inserted_and_identity_id_set(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var address = new Address
             {
@@ -87,7 +87,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_an_person_be_inserted_and_identity_id_set(int version, string expected = "INSERT")
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var person = new Person
             {
@@ -121,7 +121,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_a_person_with_string_delimiter_in_last_name_be_inserted_successfully(int version, string expected = "O'Conner")
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var person = new Person
             {
@@ -150,7 +150,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_many_persons_be_inserted_successfully(int version, int expected = 10)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var firstNames = Enumerable.Range(0, expected).Select(x => $"FirstName_{x}");
             var lastNames = Enumerable.Range(0, expected).Select(x => $"LastName_{x}");
@@ -182,7 +182,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_a_product_be_inserted_successfully(int version, double expected = 2.99)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.Insert(
                 new Product
@@ -223,7 +223,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_empty_list_of_persons_execute_without_exception(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.InsertMany(new List<Person>()).Into(dbo.Person);
 
@@ -236,7 +236,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_null_value_for_list_of_persons_execute_and_fail_as_expected(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             Action execute = () => db.InsertMany((IEnumerable<Person>)null!)
                 .Into(dbo.Person)

@@ -18,7 +18,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_isnull_of_variance_of_credit_limit_and_static_value_succeed(int version, float expected = 130487810f)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.IsNull(db.fx.Var(dbo.Person.CreditLimit), 1f)
@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_variance_of_isnull_of_quantity_and_static_value_succeed(int version, float expected = 197910940f)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Var(db.fx.IsNull(dbo.Person.CreditLimit, 1))
@@ -53,7 +53,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_isnull_of_variance_of_credit_limit_and_year_of_last_credit_limit_review_succeed(int version, float expected = 130487810f)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.IsNull(db.fx.Var(dbo.Person.CreditLimit), db.fx.Var(dbo.Person.YearOfLastCreditLimitReview))
@@ -71,7 +71,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_variance_of_isnull_of_credit_limit_and_year_of_last_credit_limit_review_succeed(int version, float expected = 130487810f)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Var(db.fx.IsNull(dbo.Person.CreditLimit, dbo.Person.YearOfLastCreditLimitReview))

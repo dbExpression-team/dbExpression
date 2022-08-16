@@ -26,17 +26,30 @@ namespace HatTrick.DbEx.Sql.Assembler
         public override void AppendElement(SelectExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             builder.AppendElement(expression.Expression, context);
-            AppendAlias(expression, builder, context);
+
+            var alias = expression as IExpressionAliasProvider;
+            if (alias is not null && !string.IsNullOrWhiteSpace(alias.Alias))
+            {
+                AppendAlias(alias.Alias!, builder, context);
+                return;
+            }
+
+            //if it is a field expression and the database column name is different than the entity property name (i.e. name override)
+            //then the property name needs to be emmitted as an alias
+            if (expression.Expression.AsFieldExpression() is FieldExpression field)
+            {
+                var columnName = builder.FindMetadata(field)?.Name ?? throw new DbExpressionException($"Cannot resolve metadata for {field}.");
+                var entityPropertyName = (field as IExpressionNameProvider).Name;
+                if (columnName != entityPropertyName)
+                    AppendAlias(entityPropertyName, builder, context);
+            }
         }
 
-        protected virtual void AppendAlias(IExpressionAliasProvider aliasable, ISqlStatementBuilder builder, AssemblyContext context)
+        protected virtual void AppendAlias(string alias, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            if (string.IsNullOrWhiteSpace(aliasable.Alias))
-                return;
-
             builder.Appender.Write(" AS ")
                 .Write(context.IdentifierDelimiter.Begin)
-                .Write(aliasable.Alias!)
+                .Write(alias)
                 .Write(context.IdentifierDelimiter.End);
         }
         #endregion

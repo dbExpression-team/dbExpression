@@ -16,7 +16,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_cast_of_sum_of_quantity_to_varchar_succeed(int version, string expected = "26")
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Cast(db.fx.Sum(dbo.PurchaseLine.Quantity)).AsVarChar(50)
@@ -34,7 +34,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_sum_of_cast_of_gendertype_to_int_succeed(int version, int expected = 65)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Sum(db.fx.Cast(dbo.Person.GenderType).AsInt())

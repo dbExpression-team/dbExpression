@@ -16,14 +16,11 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-
-using Microsoft.Extensions.DependencyInjection;
-
 namespace HatTrick.DbEx.Sql.Configuration
 {
     public interface ISqlDatabaseRuntimeServicesRegistrar
     {
-        IServiceCollection ServicesFor<TDatabase>()
+        SqlDatabaseRuntimeRegistrar Register<TDatabase>()
             where TDatabase : class, ISqlDatabaseRuntime;
     }
 }

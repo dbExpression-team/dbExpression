@@ -19,11 +19,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void A_statement_builder_registered_via_service_serviceProvider_should_resolve_the_correct_statement_builder(int version)
         {
             //given
-            var builder = Substitute.For<ISqlStatementBuilder<MsSqlDb>>();
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, configure: c => c.SqlStatements.Assembly.StatementBuilder.Use(sp => builder));
+            var builder = Substitute.For<ISqlStatementBuilder>();
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure: c => c.SqlStatements.Assembly.StatementBuilder.Use(sp => builder));
 
             //when
-            var resolved = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<ISqlStatementBuilder<MsSqlDb>>();
+            var resolved = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<ISqlStatementBuilder>();
 
             //then
             resolved.Should().Be(builder);
@@ -34,10 +34,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void A_statement_builder_registered_via_generic_should_resolve_the_correct_statement_builder(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, configure: c => c.SqlStatements.Assembly.StatementBuilder.Use<NoOpSqlStatementBuilder>());
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure: c => c.SqlStatements.Assembly.StatementBuilder.Use<NoOpSqlStatementBuilder>());
 
             //when
-            var resolved = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<ISqlStatementBuilder<MsSqlDb>>();
+            var resolved = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<ISqlStatementBuilder>();
 
             //then
             resolved.Should().NotBeNull().And.BeOfType<NoOpSqlStatementBuilder>();
@@ -48,11 +48,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void A_statement_builder_registered_via_delegate_should_resolve_the_correct_statement_builder(int version)
         {
             //given
-            var builder = Substitute.For<ISqlStatementBuilder<MsSqlDb>>();
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, configure: c => c.SqlStatements.Assembly.StatementBuilder.Use(() => builder));
+            var builder = Substitute.For<ISqlStatementBuilder>();
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure: c => c.SqlStatements.Assembly.StatementBuilder.Use(() => builder));
 
             //when
-            var resolved = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<ISqlStatementBuilder<MsSqlDb>>();
+            var resolved = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<ISqlStatementBuilder>();
 
             //then
             resolved.Should().Be(builder);
@@ -63,11 +63,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Statement_builder_resolved_from_service_serviceProvider_should_be_transient(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             //when
-            var a1 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<ISqlStatementBuilder<MsSqlDb>>();
-            var a2 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<ISqlStatementBuilder<MsSqlDb>>();
+            var a1 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<ISqlStatementBuilder>();
+            var a2 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<ISqlStatementBuilder>();
 
             //then
             a1.Should().NotBe(a2);
@@ -79,23 +79,23 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         {
             //given
             var index = -1;
-            var builders = new List<ISqlStatementBuilder<MsSqlDb>>
+            var builders = new List<ISqlStatementBuilder>
             {
-                Substitute.For<ISqlStatementBuilder<MsSqlDb>>(),
-                Substitute.For<ISqlStatementBuilder<MsSqlDb>>(),
-                Substitute.For<ISqlStatementBuilder<MsSqlDb>>(),
-                Substitute.For<ISqlStatementBuilder<MsSqlDb>>()
+                Substitute.For<ISqlStatementBuilder>(),
+                Substitute.For<ISqlStatementBuilder>(),
+                Substitute.For<ISqlStatementBuilder>(),
+                Substitute.For<ISqlStatementBuilder>()
             };
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, c => c.SqlStatements.Assembly.StatementBuilder.Use(sp =>
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.SqlStatements.Assembly.StatementBuilder.Use(sp =>
             {
                 index++;
                 return builders[index];
             }));
 
             //when
-            var resolved = new List<ISqlStatementBuilder<MsSqlDb>>();
+            var resolved = new List<ISqlStatementBuilder>();
             for (var i = 0; i < builders.Count; i++)
-                resolved.Add(serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlStatementBuilder<MsSqlDb>>());
+                resolved.Add(serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlStatementBuilder>());
 
             //then
             resolved.Should().Equal(builders);
@@ -106,12 +106,12 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Registering_statement_builders_via_generic_should_return_transients(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, c => c.SqlStatements.Assembly.StatementBuilder.Use<NoOpSqlStatementBuilder>());
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.SqlStatements.Assembly.StatementBuilder.Use<NoOpSqlStatementBuilder>());
 
             //when
-            var resolved = new List<ISqlStatementBuilder<MsSqlDb>>();
+            var resolved = new List<ISqlStatementBuilder>();
             for (var i = 0; i < 5; i++)
-                resolved.Add(serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlStatementBuilder<MsSqlDb>>());
+                resolved.Add(serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlStatementBuilder>());
 
             //then
             resolved.Should().AllBeOfType<NoOpSqlStatementBuilder>().And.OnlyHaveUniqueItems();
@@ -123,29 +123,29 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         {
             //given
             var index = -1;
-            var builders = new List<ISqlStatementBuilder<MsSqlDb>>
+            var builders = new List<ISqlStatementBuilder>
             {
-                Substitute.For<ISqlStatementBuilder<MsSqlDb>>(),
-                Substitute.For<ISqlStatementBuilder<MsSqlDb>>(),
-                Substitute.For<ISqlStatementBuilder<MsSqlDb>>(),
-                Substitute.For<ISqlStatementBuilder<MsSqlDb>>()
+                Substitute.For<ISqlStatementBuilder>(),
+                Substitute.For<ISqlStatementBuilder>(),
+                Substitute.For<ISqlStatementBuilder>(),
+                Substitute.For<ISqlStatementBuilder>()
             };
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, c => c.SqlStatements.Assembly.StatementBuilder.Use(() =>
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.SqlStatements.Assembly.StatementBuilder.Use(() =>
             {
                 index++;
                 return builders[index];
             }));
 
             //when
-            var resolved = new List<ISqlStatementBuilder<MsSqlDb>>();
+            var resolved = new List<ISqlStatementBuilder>();
             for (var i = 0; i < builders.Count; i++)
-                resolved.Add(serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlStatementBuilder<MsSqlDb>>());
+                resolved.Add(serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlStatementBuilder>());
 
             //then
             resolved.Should().Equal(builders);
         }
 
-        private class NoOpSqlStatementBuilder : ISqlStatementBuilder<MsSqlDb>
+        private class NoOpSqlStatementBuilder : ISqlStatementBuilder
         {
             public ISqlParameterBuilder Parameters { get; }
             public IAppender Appender { get; }

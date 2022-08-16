@@ -20,8 +20,7 @@ using System;
 
 namespace HatTrick.DbEx.Sql.Mapper
 {
-    public interface IMapperFactory<TDatabase>
-        where TDatabase : class, ISqlDatabaseRuntime
+    public interface IMapperFactory
     {
         IEntityMapper<TEntity> CreateEntityMapper<TEntity>(Table<TEntity> entity)
             where TEntity : class, IDbEntity;

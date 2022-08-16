@@ -1,9 +1,6 @@
 using DbEx.DataService;
 using DbEx.dboDataService;
-using FluentAssertions;
-using HatTrick.DbEx.MsSql.Connection;
 using HatTrick.DbEx.MsSql.Test.Executor;
-using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Connection;
 using System.Threading.Tasks;
 using Xunit;
@@ -17,8 +14,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Is_connection_returned_to_the_connection_pool_after_query_execution(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, c => c.ConnectionString.Use(
-                        new DelegateConnectionStringFactory<MsSqlDb>(() => $"{ConfigurationProvider.ConnectionString};Connect Timeout=3;Max Pool Size=1;Min Pool Size = 1;"))
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.ConnectionString.Use(
+                        new DelegateConnectionStringFactory(() => $"{ConfigurationProvider.ConnectionString};Connect Timeout=3;Max Pool Size=1;Min Pool Size = 1;"))
                     );
 
             //when
@@ -34,8 +31,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Is_connection_returned_to_the_connection_pool_after_async_query_execution(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, c => c.ConnectionString.Use(
-                        new DelegateConnectionStringFactory<MsSqlDb>(() => $"{ConfigurationProvider.ConnectionString};Connect Timeout=3;Max Pool Size=1;Min Pool Size = 1;"))
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.ConnectionString.Use(
+                        new DelegateConnectionStringFactory(() => $"{ConfigurationProvider.ConnectionString};Connect Timeout=3;Max Pool Size=1;Min Pool Size = 1;"))
                     );
             
             //when

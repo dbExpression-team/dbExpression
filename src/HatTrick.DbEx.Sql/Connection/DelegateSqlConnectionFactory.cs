@@ -21,23 +21,24 @@ using System.Data;
 
 namespace HatTrick.DbEx.Sql.Connection
 {
-    public class DelegateSqlConnectionFactory<TDatabase> : ISqlConnectionFactory<TDatabase>
-        where TDatabase : class, ISqlDatabaseRuntime
+    public class DelegateSqlConnectionFactory : ISqlConnectionFactory
     {
         #region internals
-        private readonly Func<string, IDbConnection> factory;
+        private readonly Func<ISqlConnection> factory;
         #endregion
 
         #region constructors
-        public DelegateSqlConnectionFactory(Func<string, IDbConnection> factory)
+        public DelegateSqlConnectionFactory(Func<ISqlConnection> factory)
         {
-            this.factory = factory ?? throw new DbExpressionConfigurationException($"{nameof(factory)} is required to initialize a Sql Connection."); ;
+            this.factory = factory ?? throw new ArgumentNullException(nameof(factory));
         }
         #endregion
 
         #region methods
-        public IDbConnection CreateSqlConnection(string connectionString)
-            => factory(connectionString);
+        public IDbConnection CreateSqlConnection()
+        {
+            return factory();
+        }
         #endregion
     }
 }

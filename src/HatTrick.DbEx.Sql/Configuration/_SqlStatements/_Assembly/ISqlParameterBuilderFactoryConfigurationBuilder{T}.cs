@@ -28,18 +28,18 @@ namespace HatTrick.DbEx.Sql.Configuration
         /// Use a custom factory for creating a builder for creating parameters used in a parameterized sql statement.
         /// </summary>
         ISqlStatementAssemblyGroupingConfigurationBuilders<TDatabase> Use<TSqlParameterBuilder>()
-            where TSqlParameterBuilder : class, ISqlParameterBuilder<TDatabase>;
+            where TSqlParameterBuilder : class, ISqlParameterBuilder;
 
         /// <summary>
         /// Use the provided delegate to create a builder for creating parameters used in a parameterized sql statement.
         /// </summary>
         /// <param name="factory">A delegate responsible for creating an <see cref="ISqlParameterBuilder"/>.</param>
-        ISqlStatementAssemblyGroupingConfigurationBuilders<TDatabase> Use(Func<ISqlParameterBuilder<TDatabase>> factory);
+        ISqlStatementAssemblyGroupingConfigurationBuilders<TDatabase> Use(Func<ISqlParameterBuilder> factory);
 
         /// <summary>
         /// Use the service provider to create a builder for creating parameters used in a parameterized sql statement.
         /// </summary>
         /// <param name="factory">A delegate responsible for creating an <see cref="ISqlParameterBuilder"/>.</param>
-        ISqlStatementAssemblyGroupingConfigurationBuilders<TDatabase> Use(Func<IServiceProvider, ISqlParameterBuilder<TDatabase>> factory);
+        ISqlStatementAssemblyGroupingConfigurationBuilders<TDatabase> Use(Func<IServiceProvider, ISqlParameterBuilder> factory);
     }
 }

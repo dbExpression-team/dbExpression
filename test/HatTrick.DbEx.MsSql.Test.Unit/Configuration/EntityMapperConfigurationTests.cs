@@ -20,7 +20,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_of_mapper_factory_using_instance_factory_with_null_instance_throw_expected_exception(int version)
         {
             //given & when & then
-            Assert.Throws<DbExpressionConfigurationException>(() => ConfigureForMsSqlVersion<MsSqlDb>(version, builder => builder.Entities.Mapping.Use((IMapperFactory<MsSqlDb>)null!)));
+            Assert.Throws<DbExpressionConfigurationException>(() => Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.Entities.Mapping.Use((IMapperFactory)null!)));
         }
 
         [Theory]
@@ -28,10 +28,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_of_a_entity_mapper_factory_using_generic_use_method_succeed(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, builder => builder.Entities.Mapping.Use<NoOpMapperFactory>());
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.Entities.Mapping.Use<NoOpMapperFactory>());
 
             //when
-            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IMapperFactory<MsSqlDb>>() is NoOpMapperFactory;
+            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IMapperFactory>() is NoOpMapperFactory;
 
             //then
             factory.Should().BeTrue();
@@ -42,10 +42,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_of_a_entity_mapper_factory_using_service_serviceProvider_and_new_instance_from_factory_succeed(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, builder => builder.Entities.Mapping.Use(sp => new NoOpMapperFactory()));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.Entities.Mapping.Use(sp => new NoOpMapperFactory()));
 
             //when
-            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IMapperFactory<MsSqlDb>>() is NoOpMapperFactory;
+            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IMapperFactory>() is NoOpMapperFactory;
 
             //then
             factory.Should().BeTrue();
@@ -56,10 +56,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_of_a_entity_mapper_factory_using_service_serviceProvider_and_type_returning_new_instance_of_entity_should_succeed(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, builder => builder.Entities.Mapping.Use((sp, t) => new NoOpEntityMapper<Person>()));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.Entities.Mapping.Use((sp, t) => new NoOpEntityMapper<Person>()));
 
             //when
-            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IMapperFactory<MsSqlDb>>().CreateEntityMapper<Person>(dbo.Person);
+            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IMapperFactory>().CreateEntityMapper<Person>(dbo.Person);
 
             //then
             factory.Should().NotBeNull().And.BeOfType<NoOpEntityMapper<Person>>();
@@ -70,8 +70,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_of_a_entity_mapping_factory_using_instance_method_resolve_correctly(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, builder => builder.Entities.Mapping.Use(t => new NoOpEntityMapper<Person>()));
-            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IMapperFactory<MsSqlDb>>();
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.Entities.Mapping.Use(t => new NoOpEntityMapper<Person>()));
+            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IMapperFactory>();
 
             //when
             var matchingType = factory.CreateEntityMapper<Person>(dbo.Person) is NoOpEntityMapper<Person>;
@@ -85,8 +85,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_of_a_entity_mapping_factory_using_service_serviceProvider_and_instance_method_resolve_correctly(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, builder => builder.Entities.Mapping.Use((sp, t) => new NoOpEntityMapper<Person>()));
-            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IMapperFactory<MsSqlDb>>();
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.Entities.Mapping.Use((sp, t) => new NoOpEntityMapper<Person>()));
+            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IMapperFactory>();
 
             //when
             var matchingType = factory.CreateEntityMapper<Person>(dbo.Person) is NoOpEntityMapper<Person>;
@@ -100,8 +100,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_of_a_entity_mapping_factory_using_defaults_resolve_correctly(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
-            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IMapperFactory<MsSqlDb>>();
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IMapperFactory>();
 
             //when
             var mapper = factory.CreateEntityMapper<Person>(dbo.Person);
@@ -115,11 +115,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_of_default_entity_mapping_factory_using_service_serviceProvider_and_new_instance_from_factory_resolve_as_singleton(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             //when
-            var a1 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IMapperFactory<MsSqlDb>>();
-            var a2 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IMapperFactory<MsSqlDb>>();
+            var a1 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IMapperFactory>();
+            var a2 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IMapperFactory>();
 
             //then
             a1.Should().Be(a2);
@@ -130,11 +130,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_of_a_entity_mapping_factory_using_service_serviceProvider_and_new_instance_from_factory_resolve_as_singleton(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, builder => builder.Entities.Mapping.Use(sp => new EntityMapper<Person>((dbo.Person as Table<Person>).HydrateEntity)));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.Entities.Mapping.Use(sp => new EntityMapper<Person>((dbo.Person as Table<Person>).HydrateEntity)));
 
             //when
-            var a1 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IMapperFactory<MsSqlDb>>();
-            var a2 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IMapperFactory<MsSqlDb>>();
+            var a1 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IMapperFactory>();
+            var a2 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IMapperFactory>();
 
             //then
             a1.Should().Be(a2);
@@ -145,11 +145,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_of_a_entity_mapping_factory_using_service_serviceProvider_and_type_and_new_instance_from_factory_resolve_as_singleton(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, builder => builder.Entities.Mapping.Use((sp, t) => new EntityMapper<Person>((dbo.Person as Table<Person>).HydrateEntity)));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.Entities.Mapping.Use((sp, t) => new EntityMapper<Person>((dbo.Person as Table<Person>).HydrateEntity)));
 
             //when
-            var a1 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IMapperFactory<MsSqlDb>>();
-            var a2 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IMapperFactory<MsSqlDb>>();
+            var a1 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IMapperFactory>();
+            var a2 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IMapperFactory>();
 
             //then
             a1.Should().Be(a2);
@@ -160,8 +160,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_of_a_entity_mapping_factory_using_service_serviceProvider_and_new_instance_from_factory_resolve_transient_entity_mappers(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, builder => builder.Entities.Mapping.Use((sp, t) => new EntityMapper<Person>((dbo.Person as Table<Person>).HydrateEntity)));
-            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IMapperFactory<MsSqlDb>>();
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.Entities.Mapping.Use((sp, t) => new EntityMapper<Person>((dbo.Person as Table<Person>).HydrateEntity)));
+            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IMapperFactory>();
 
             //when
             var a1 = factory.CreateEntityMapper<Person>(dbo.Person);
@@ -176,8 +176,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_of_default_entity_mapping_factory_using_service_serviceProvider_resolve_singleton_entity_mappers(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
-            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IMapperFactory<MsSqlDb>>();
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IMapperFactory>();
 
             //when
             var a1 = factory.CreateEntityMapper<Person>(dbo.Person);
@@ -193,8 +193,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         {
             //given
             var impl = new EntityMapper<Person>((dbo.Person as Table<Person>).HydrateEntity);
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version, builder => builder.Entities.Mapping.Use((sp, t) => impl));
-            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IMapperFactory<MsSqlDb>>();
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.Entities.Mapping.Use((sp, t) => impl));
+            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IMapperFactory>();
 
             //when
             var a1 = factory.CreateEntityMapper<Person>(dbo.Person);
@@ -209,8 +209,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_of_default_entity_mapping_factory_using_service_serviceProvider_resolve_singleton_expando_object_mappers(int version)
         {
             //given
-            var (db, serviceProvider) = ConfigureForMsSqlVersion<MsSqlDb>(version);
-            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IMapperFactory<MsSqlDb>>();
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IMapperFactory>();
 
             //when
             var a1 = factory.CreateExpandoObjectMapper();
@@ -227,14 +227,14 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
             Action<ISqlFieldReader, IDbEntity> IEntityMapper.Map { get; } = null!;
         }
 
-        public class NoOpMapperFactory : IMapperFactory<MsSqlDb>
+        public class NoOpMapperFactory : IMapperFactory
         {
             public IExpandoObjectMapper CreateExpandoObjectMapper()
             {
                 throw new NotImplementedException();
             }
 
-            IEntityMapper<TEntity> IMapperFactory<MsSqlDb>.CreateEntityMapper<TEntity>(Table<TEntity> entity)
+            IEntityMapper<TEntity> IMapperFactory.CreateEntityMapper<TEntity>(Table<TEntity> entity)
             {
                 throw new NotImplementedException();
             }

@@ -28,16 +28,16 @@ namespace HatTrick.DbEx.Sql.Configuration
         /// Use the specified builder for building sql statements.
         /// </summary>
         ISqlStatementAssemblyGroupingConfigurationBuilders<TDatabase> Use<TBuilder>()
-            where TBuilder : class, ISqlStatementBuilder<TDatabase>;
+            where TBuilder : class, ISqlStatementBuilder;
 
         /// <summary>
         /// Use the provided delegate to provide a builder for building sql statements.
         /// </summary>
-        ISqlStatementAssemblyGroupingConfigurationBuilders<TDatabase> Use(Func<ISqlStatementBuilder<TDatabase>> factory);
+        ISqlStatementAssemblyGroupingConfigurationBuilders<TDatabase> Use(Func<ISqlStatementBuilder> factory);
 
         /// <summary>
         /// Use the service provider to provide a builder for building sql statements.
         /// </summary>
-        ISqlStatementAssemblyGroupingConfigurationBuilders<TDatabase> Use(Func<IServiceProvider, ISqlStatementBuilder<TDatabase>> factory);
+        ISqlStatementAssemblyGroupingConfigurationBuilders<TDatabase> Use(Func<IServiceProvider, ISqlStatementBuilder> factory);
     }
 }

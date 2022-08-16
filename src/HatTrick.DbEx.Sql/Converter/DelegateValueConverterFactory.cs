@@ -20,8 +20,7 @@ using System;
 
 namespace HatTrick.DbEx.Sql.Converter
 {
-    public class DelegateValueConverterFactory<TDatabase> : IValueConverterFactory<TDatabase>
-        where TDatabase : class, ISqlDatabaseRuntime
+    public class DelegateValueConverterFactory : IValueConverterFactory
     {
         #region internals
         private readonly Func<Type, IValueConverter> factory;
