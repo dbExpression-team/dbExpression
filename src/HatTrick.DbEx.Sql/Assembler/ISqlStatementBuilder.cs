@@ -34,10 +34,9 @@ namespace HatTrick.DbEx.Sql.Assembler
         void AppendElement<T>(T element, AssemblyContext context)
             where T : class, IExpressionElement;
         string GenerateAlias();
-        ISqlMetadata? FindMetadata(Schema schema);
-        ISqlMetadata? FindMetadata(Table entity);
-        ISqlColumnMetadata? FindMetadata(Field field);
-        ISqlParameterMetadata? FindMetadata(QueryParameter parameter);
+        string GetPlatformName(ISqlMetadataIdentifierProvider identifier);
+        ISqlColumnMetadata GetPlatformMetadata(Field field);
+        ISqlParameterMetadata GetPlatformMetadata(QueryParameter parameter);
         (Type ConvertedType, object? ConvertedValue) ConvertValue(object? value, Field? field);
         #endregion
     }

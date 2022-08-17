@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         public override void AppendElement(ParameterExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             ParameterizedExpression param;
-            ISqlParameterMetadata meta = builder.FindMetadata(expression) ?? throw new DbExpressionException($"Could not resolve parameter metadata for {(expression as IExpressionNameProvider).Name}");
+            ISqlParameterMetadata meta = builder.GetPlatformMetadata(expression);
             switch (expression.Direction)
             {
                 case ParameterDirection.Input:

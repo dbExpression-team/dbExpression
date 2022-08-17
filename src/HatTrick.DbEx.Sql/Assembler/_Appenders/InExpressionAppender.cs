@@ -53,7 +53,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 var param = builder.Parameters.CreateInputParameter(
                        enumerator.Current is null || enumerator.Current is NullElement ? DBNull.Value : enumerator.Current,
                        (expression.Field as IExpressionTypeProvider).DeclaredType,
-                       builder.FindMetadata(expression.Field) ?? throw new DbExpressionException($"Expected to find metadata for {expression.Field}, but metadata is actually null."),
+                       builder.GetPlatformMetadata(expression.Field) ?? throw new DbExpressionException($"Expected to find metadata for {expression.Field}, but metadata is actually null."),
                        context
                 );
                 builder.Parameters.AddParameter(param);

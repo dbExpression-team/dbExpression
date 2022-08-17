@@ -166,22 +166,17 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
                 throw new NotImplementedException();
             }
 
-            public ISqlMetadata? FindMetadata(Schema schema)
+            public string GetPlatformName(ISqlMetadataIdentifierProvider expression)
             {
                 throw new NotImplementedException();
             }
 
-            public ISqlMetadata? FindMetadata(Table entity)
+            public ISqlColumnMetadata GetPlatformMetadata(Field field)
             {
                 throw new NotImplementedException();
             }
 
-            public ISqlColumnMetadata? FindMetadata(Field field)
-            {
-                throw new NotImplementedException();
-            }
-
-            public ISqlParameterMetadata? FindMetadata(QueryParameter parameter)
+            public ISqlParameterMetadata GetPlatformMetadata(QueryParameter parameter)
             {
                 throw new NotImplementedException();
             }

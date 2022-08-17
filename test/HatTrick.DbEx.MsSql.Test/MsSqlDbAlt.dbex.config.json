@@ -35,6 +35,46 @@
 		},
 		{
 			"apply": {
+				"name": "dboAlt",
+				"to": {
+					"path": "dbo"
+				}
+			}
+		},
+		{
+			"apply": {
+				"name": "PersonAlt",
+				"to": {
+					"path": "dbo.Person"
+				}
+			}
+		},
+		{
+			"apply": {
+				"name": "FirstNameAlt",
+				"to": {
+					"path": "dbo.Person.FirstName"
+				}
+			}
+		},
+		{
+			"apply": {
+				"name": "SelectPerson_As_Dynamic_With_InputAlt",
+				"to": {
+					"path": "dbo.SelectPerson_As_Dynamic_With_Input"
+				}
+			}
+		},
+		{
+			"apply": {
+				"name": "@P1Alt",
+				"to": {
+					"path": "dbo.SelectPerson_As_Dynamic_With_Input.@P1"
+				}
+			}
+		},
+		{
+			"apply": {
 				"allowInsert": false,
 				"allowUpdate": false,
 				"to": {

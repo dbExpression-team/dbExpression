@@ -1,21 +1,18 @@
 ﻿using DbEx.DataService;
+using DbEx.dboData;
+using DbEx.dboDataService;
 using DbExAlt.DataService;
-using DbExAlt.dboDataService;
+using DbExAlt.dboAltData;
 using FluentAssertions;
-using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Expression;
-using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using System.Linq;
 using Xunit;
 
-using Person = DbEx.dboData.Person;
-using PersonAlt = DbExAlt.dboData.Person;
-
-namespace HatTrick.DbEx.MsSql.Test.Integration.Configuration
+namespace HatTrick.DbEx.MsSql.Test.Integration
 {
-    public class MultipleDatabaseConfigurationTests : TestBase
+    public class MultipleDatabaseTests : TestBase
     {
         [Theory]
         [MsSqlVersions.AllVersions]
@@ -77,6 +74,24 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Configuration
             p1.Should().NotBeNull();
             p2.Should().NotBeNull();
             p1!.Id.Should().Be(p2!.Id);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Do_stored_procedures_from_different_databases_execute_successfully_when_using_instance_versions_of_database(int version)
+        {
+            //given
+            var (mssqldb, mssqldbServiceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (mssqldbAlt, mssqldbAltServiceProvider) = Configure<MsSqlDbAlt>().ForMsSqlVersion(version);
+
+            //whe
+            int? p1 = mssqldb.sp.dbo.SelectPerson_As_Dynamic_With_Input(P1: 1).GetValue().Execute()?.Id;
+            int? p2 = mssqldbAlt.sp.dboAlt.SelectPerson_As_Dynamic_With_InputAlt(P1Alt: 1).GetValue().Execute()?.Id;
+
+            //then
+            p1.Should().NotBeNull();
+            p2.Should().NotBeNull();
+            p1.Should().Be(p2);
         }
     }
 }

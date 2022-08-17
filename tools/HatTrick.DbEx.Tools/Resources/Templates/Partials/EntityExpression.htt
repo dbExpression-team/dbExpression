@@ -29,7 +29,7 @@
         private {$.EntityExpression.Name}Entity(string {:identifierArgName}, string {:nameArgName}, Schema {:schemaArgName}, string{:nullableAnnotation} {:aliasArgName}) : base({:identifierArgName}, {:nameArgName}, {:schemaArgName}, {:aliasArgName})
         {{
             {#each $.Columns}
-            Attributes.Fields.Add($"{{identifier}}.{$.FieldExpression.Name}", {$.FieldExpression.Name} = new {$.FieldExpression.Name}Field($"{:identifierInterpolationArgName}.{$.FieldExpression.Name}", "{$.FieldExpression.Name}", this));
+            Attributes.Fields.Add($"{{identifier}}.{$.Column.Name}", {$.FieldExpression.Name} = new {$.FieldExpression.Name}Field($"{:identifierInterpolationArgName}.{$.Column.Name}", "{$.FieldExpression.Name}", this));
             {/each}
         }}
         #endregion

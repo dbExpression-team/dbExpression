@@ -1,6 +1,9 @@
 ﻿using DbEx.DataService;
+using DbEx.dboData;
+using DbEx.dboDataService;
 using DbExAlt.DataService;
-using DbExAlt.dboDataService;
+using DbExAlt.dboAltData;
+using DbExAlt.dboAltDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.Sql;
@@ -10,13 +13,23 @@ using NSubstitute;
 using System.Linq;
 using Xunit;
 
-using Person = DbEx.dboData.Person;
-using PersonAlt = DbExAlt.dboData.Person;
-
 namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
 {
     public class MultipleDatabaseConfigurationTests : TestBase
     {
+        [Fact]
+        public void Does_registering_the_same_database_twice_fail_as_expected()
+        {
+            //given
+            var services = new ServiceCollection();
+
+            //when & then
+            Assert.Throws<DbExpressionConfigurationException>(() => services.AddDbExpression(
+                dbex => dbex.AddMsSql2019Database<MsSqlDb>(c => c.ConnectionString.Use("foo")),
+                dbex => dbex.AddMsSql2019Database<MsSqlDb>(c => c.ConnectionString.Use("foo"))
+            ));
+        }
+
         [Theory]
         [MsSqlVersions.AllVersions]
         public void Does_accessing_a_database_statically_that_hasnt_been_initialized_fail_as_expected(int version)
@@ -28,7 +41,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
             mssqldbServiceProvider.UseStaticRuntimeFor<MsSqlDb>();
 
             //when & then
-            Assert.Throws<DbExpressionConfigurationException>(() => dbAlt.SelectOne<Person>().From(dbo.Person));
+            Assert.Throws<DbExpressionConfigurationException>(() => dbAlt.SelectOne<PersonAlt>().From(dboAlt.PersonAlt));
         }
 
         [Theory]
@@ -64,7 +77,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
 
             //when
             var p1 = db.SelectOne<Person>().From(dbo.Person).OrderBy(dbo.Person.Id.Asc);
-            var p2 = dbAlt.SelectOne<PersonAlt>().From(dbo.Person).OrderBy(dbo.Person.Id.Asc);
+            var p2 = dbAlt.SelectOne<PersonAlt>().From(dboAlt.PersonAlt).OrderBy(dboAlt.PersonAlt.Id.Asc);
 
             //then
             p1.Should().NotBeNull();
@@ -95,7 +108,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         }
 
         [Fact]
-        public void Does_configuration_of_two_databases_sharing_a_service_provider_execute_queries_successfully()
+        public void Does_configuration_of_two_databases_sharing_a_service_provider_build_queries_successfully()
         {
             //given
             var query = Substitute.For<SelectQueryExpression>();
@@ -113,6 +126,54 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
             //when
             var p1 = db.SelectOne<Person>().From(dbo.Person).Expression;
             var p2 = dbAlt.SelectOne<PersonAlt>().From(dbo.Person).Expression;
+
+            //then
+            p1.Should().Be(query);
+            p2.Should().NotBe(query);
+            usedCount.Should().Be(1);
+        }
+
+        [Fact]
+        public void Does_configuration_of_two_databases_sharing_a_service_provider_build_stored_procedure_expressions_successfully()
+        {
+            //given
+            var services = new ServiceCollection();
+            services.AddDbExpression(
+                dbex => dbex.AddMsSql2019Database<MsSqlDb>(c => c.ConnectionString.Use("foo")),
+                dbex => dbex.AddMsSql2019Database<MsSqlDbAlt>(c => c.ConnectionString.Use("foo"))
+            );
+            var serviceProvider = services.BuildServiceProvider();
+
+            var mssqldb = serviceProvider.GetRequiredService<MsSqlDb>();
+            var mssqldbAlt = serviceProvider.GetRequiredService<MsSqlDbAlt>();
+
+            //when
+            var p1 = mssqldb.sp.dbo.SelectPerson_As_Dynamic_With_Input(P1: 1).GetValue();
+            var p2 = mssqldbAlt.sp.dboAlt.SelectPerson_As_Dynamic_With_InputAlt(P1Alt: 1).GetValue();
+
+            //then
+            p1.Should().NotBe(p2);
+        }
+
+        [Fact]
+        public void Does_configuration_of_two_databases_sharing_a_service_provider_with_diffent_query_expressions_build_stored_procedure_expressions_successfully()
+        {
+            //given
+            var query = Substitute.For<StoredProcedureQueryExpression>();
+            var usedCount = 0;
+            var services = new ServiceCollection();
+            services.AddDbExpression(
+                dbex => dbex.AddMsSql2019Database<MsSqlDb>(c => { c.ConnectionString.Use("foo"); c.QueryExpressions.ForQueryTypes(x => x.ForQueryType<StoredProcedureQueryExpression>().Use(() => { usedCount++; return query; })); }),
+                dbex => dbex.AddMsSql2019Database<MsSqlDbAlt>(c => c.ConnectionString.Use("foo"))
+            );
+            var serviceProvider = services.BuildServiceProvider();
+
+            var mssqldb = serviceProvider.GetRequiredService<MsSqlDb>();
+            var mssqldbAlt = serviceProvider.GetRequiredService<MsSqlDbAlt>();
+
+            //when
+            var p1 = (mssqldb.sp.dbo.SelectPerson_As_Dynamic_With_Input(P1: 1).GetValue() as IQueryExpressionProvider)!.Expression;
+            var p2 = (mssqldbAlt.sp.dboAlt.SelectPerson_As_Dynamic_With_InputAlt(P1Alt: 1).GetValue() as IQueryExpressionProvider)!.Expression;
 
             //then
             p1.Should().Be(query);

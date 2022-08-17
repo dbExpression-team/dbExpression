@@ -91,10 +91,9 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public string GenerateAlias() => $"_t{++_currentAliasCounter}";
 
-        public ISqlMetadata? FindMetadata(Schema schema) => metadataProvider.GetMetadata<ISqlMetadata>(schema.Identifier);
-        public ISqlMetadata? FindMetadata(Table entity) => metadataProvider.GetMetadata<ISqlMetadata>(entity.Identifier);
-        public ISqlColumnMetadata? FindMetadata(Field field) => metadataProvider.GetMetadata<ISqlColumnMetadata>(field.Identifier);
-        public ISqlParameterMetadata? FindMetadata(QueryParameter parameter) => metadataProvider.GetMetadata<ISqlParameterMetadata>(parameter.Identifier);
+        public string GetPlatformName(ISqlMetadataIdentifierProvider expression) => (metadataProvider.GetMetadata<ISqlMetadata>(expression.Identifier) ?? throw new DbExpressionException($"Could not resolve parameter metadata for {expression}.")).Name;
+        public ISqlColumnMetadata GetPlatformMetadata(Field field) => metadataProvider.GetMetadata<ISqlColumnMetadata>(field.Identifier) ?? throw new DbExpressionException($"Could not resolve column metadata for {field.Name}");
+        public ISqlParameterMetadata GetPlatformMetadata(QueryParameter parameter) => metadataProvider.GetMetadata<ISqlParameterMetadata>(parameter.Identifier) ?? throw new DbExpressionException($"Could not resolve parameter metadata for {parameter.Name}");
 
         public (Type, object?) ConvertValue(object? value, Field? field)
         {

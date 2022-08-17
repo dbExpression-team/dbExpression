@@ -14,10 +14,10 @@
             {#if $.HasOutputParameters}
             ,Action<ISqlOutputParameterList> outputParameters
             {/if}
-        ) : base($"{{identifier}}.{:procedureName}", "{:procedureName}", schema{#if $.HasOutputParameters}, outputParameters{/if})
+        ) : base($"{{identifier}}.{:procedureName}", "{:procedureExpressionName}", schema{#if $.HasOutputParameters}, outputParameters{/if})
         {{ 
             {#each $.Parameters}
-            Attributes.Parameters.Add("{($.ParameterExpression.Name, "@") => TrimStart}", new ParameterExpression<{$.ParameterExpression.Type.NullableAlias}>($"{{identifier}}.{:procedureName}.{$.Parameter.Name}", "{($.ParameterExpression.Name, "@") => TrimStart}"{#if $.ParameterExpression.RequiresInput}, {($.ParameterExpression.Name, "@") => TrimStart}{/if}, ParameterDirection.{$.ParameterExpression.Direction}));
+            Attributes.Parameters.Add("{($.Parameter.Name, "@") => TrimStart}", new ParameterExpression<{$.ParameterExpression.Type.NullableAlias}>($"{{identifier}}.{:procedureName}.{$.Parameter.Name}", "{($.ParameterExpression.Name, "@") => TrimStart}"{#if $.ParameterExpression.RequiresInput}, {($.ParameterExpression.Name, "@") => TrimStart}{/if}, ParameterDirection.{$.ParameterExpression.Direction}));
             {/each}
         }}
     }}

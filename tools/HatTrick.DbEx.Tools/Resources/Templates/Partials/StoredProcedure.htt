@@ -24,7 +24,7 @@
                 if (database is null)
                     throw new ArgumentNullException(nameof(database));
                 {-#each $.Schemas}
-                _{$.SchemaExpression.Name}StoredProcedures = new {$.SchemaExpression.Name}StoredProcedures(database, schemas.Single(s => s.Identifier == "{$.SchemaExpression.Name}"));
+                _{$.SchemaExpression.Name}StoredProcedures = new {$.SchemaExpression.Name}StoredProcedures(database, schemas.Single(s => s.Identifier == "{$.Schema.Name}"));
                 {/each}
             }}
             #endregion
@@ -32,7 +32,6 @@
 
         #region classes
         {-#each $.Schemas}
-        {?var:schemaName = $.SchemaExpression.Name}
         /// <summary>
         /// Accessors to construct and execute stored procedure query expressions in the {$.SchemaExpression.Name} schema.
         /// </summary>
@@ -52,11 +51,13 @@
             #endregion
 
             #region methods
+            {?var:schemaName = $.Schema.Name}
+            {?var:schemaExpressionName = $.SchemaExpression.Name}
             {#each $.StoredProcedures}
             {?var:isFirstParameter = true}
             {>("StoredProcedureExpression.Documentation") => GetTemplatePartial+}
             public StoredProcedureContinuation {$.StoredProcedureExpression.Name}({#each $.Parameters}{#if $.ParameterExpression.RequiresInput}{#if !:isFirstParameter}, {/if}{?:isFirstParameter = false}{$.ParameterExpression.Type.NullableAlias} {($.ParameterExpression.Name, "@") => TrimStart}{/if}{/each}{#if $.HasOutputParameters}{#if $.HasInputParameters}, {+/if}Action<ISqlOutputParameterList> outputParameters{/if})
-                => _database.GetBuilder().CreateStoredProcedureBuilder(new {$.StoredProcedureExpression.Name}StoredProcedure("{:schemaName}", _{:schemaName}{#each $.Parameters}{#if $.ParameterExpression.RequiresInput}, {($.ParameterExpression.Name, "@") => TrimStart}{/if}{/each}{#if $.HasOutputParameters}{#if $.HasInputParameters}, {+/if}outputParameters{/if}));
+                => _database.GetBuilder().CreateStoredProcedureBuilder(new {$.StoredProcedureExpression.Name}StoredProcedure("{:schemaName}", _{:schemaExpressionName}{#each $.Parameters}{#if $.ParameterExpression.RequiresInput}, {($.ParameterExpression.Name, "@") => TrimStart}{/if}{/each}{#if $.HasOutputParameters}{#if $.HasInputParameters}, {+/if}outputParameters{/if}));
 
             {/each}
             #endregion

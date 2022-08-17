@@ -2,7 +2,7 @@ using System;
 using HatTrick.DbEx.Sql;
 #nullable enable
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-namespace DbExAlt.dboData
+namespace DbExAlt.dboAltData
 {
     #region access audit log
     public partial class AccessAuditLog : IDbEntity
@@ -45,12 +45,12 @@ namespace DbExAlt.dboData
     }
     #endregion
 
-    #region person
-    public partial class Person : IDbEntity
+    #region person alt
+    public partial class PersonAlt : IDbEntity
     {
         #region interface
         public virtual int Id { get; set; }
-        public virtual string FirstName { get; set; } = string.Empty;
+        public virtual string FirstNameAlt { get; set; } = string.Empty;
         public virtual string LastName { get; set; } = string.Empty;
         public virtual DateTime? BirthDate { get; set; } = null;
         public virtual int GenderType { get; set; }
@@ -63,7 +63,7 @@ namespace DbExAlt.dboData
         #endregion
 
         #region constructor
-        public Person()
+        public PersonAlt()
         {
         }
         #endregion
