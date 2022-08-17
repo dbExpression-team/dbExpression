@@ -32,7 +32,7 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2005
                 throw new DbExpressionException("MsSql version 2005 does not support inserting multiple records in a single statement.");
 
             var inserts = (expression.Inserts.Values.Single() as IExpressionListProvider<InsertExpression>).Expressions.ToList();
-            var identityField = expression.Into!.Fields.SingleOrDefault(x => builder.FindMetadata(x)?.IsIdentity == true);
+            var identityField = expression.Into!.Fields.SingleOrDefault(x => builder.GetPlatformMetadata(x)?.IsIdentity == true);
             var identity = identityField is not null ? identityField as FieldExpression ?? throw new DbExpressionException($"Expected identity field to be of type {typeof(FieldExpression)}") : null;
 
             builder.Appender.Indent().Write("SET NOCOUNT ON;").LineBreak();

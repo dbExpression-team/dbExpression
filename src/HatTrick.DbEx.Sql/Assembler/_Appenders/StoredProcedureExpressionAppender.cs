@@ -32,7 +32,7 @@ namespace HatTrick.DbEx.Sql.Assembler
 
             builder.Appender
                 .Write(context.IdentifierDelimiter.Begin)
-                .Write((expression as IExpressionNameProvider).Name)
+                .Write(builder.GetPlatformName(expression))
                 .Write(context.IdentifierDelimiter.End);
 
             var parameters = (expression as StoredProcedure).Parameters;

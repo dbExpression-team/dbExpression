@@ -32,7 +32,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
             const string insertValuesName = "__values";
 
             var template = expression.Inserts.First().Value;
-            var identityField = expression.Into!.Fields.SingleOrDefault(x => builder.FindMetadata(x)?.IsIdentity == true);
+            var identityField = expression.Into!.Fields.SingleOrDefault(x => builder.GetPlatformMetadata(x)?.IsIdentity == true);
             var identity = identityField is not null ? identityField as FieldExpression ?? throw new DbExpressionException($"Expected identity field to be of type {typeof(FieldExpression)}") : null;
 
             builder.Appender.Indent().Write("SET NOCOUNT ON;").LineBreak();

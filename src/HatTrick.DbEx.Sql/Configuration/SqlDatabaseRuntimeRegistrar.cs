@@ -31,7 +31,7 @@ namespace HatTrick.DbEx.Sql.Configuration
     {
         #region internals
         private readonly IServiceCollection _services;
-        private readonly List<Type> databases = new();
+        private readonly HashSet<Type> databases = new();
         #endregion
 
         #region interface
@@ -54,6 +54,8 @@ namespace HatTrick.DbEx.Sql.Configuration
         public SqlDatabaseRuntimeRegistrar Register<TDatabase>()
             where TDatabase : class, ISqlDatabaseRuntime
         {
+            if (databases.Contains(typeof(TDatabase)))
+                throw new DbExpressionConfigurationException($"The database {typeof(TDatabase)} has already been configured.");
             databases.Add(typeof(TDatabase));
             return this;
         }

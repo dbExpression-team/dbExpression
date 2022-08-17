@@ -13,7 +13,7 @@
         public {$.SchemaExpression.Name}SchemaExpression(string {:identifierArgName}) : base({:identifierArgName})
         {{
             {#each $.Entities}
-            Attributes.Entities.Add($"{{identifier}}.{$.EntityExpression.Name}", {$.EntityExpression.Name} = new {$.EntityExpression.Name}Entity($"{:identifierInterpolationArgName}.{$.EntityExpression.Name}", "{$.EntityExpression.Name}", this));
+            Attributes.Entities.Add($"{{identifier}}.{$.Entity.Name}", {$.EntityExpression.Name} = new {$.EntityExpression.Name}Entity($"{:identifierInterpolationArgName}.{$.Entity.Name}", "{$.EntityExpression.Name}", this));
             {/each}
         }}
         #endregion

@@ -38,7 +38,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             //then the property name needs to be emmitted as an alias
             if (expression.Expression.AsFieldExpression() is FieldExpression field)
             {
-                var columnName = builder.FindMetadata(field)?.Name ?? throw new DbExpressionException($"Cannot resolve metadata for {field}.");
+                var columnName = builder.GetPlatformMetadata(field)?.Name ?? throw new DbExpressionException($"Cannot resolve metadata for {field}.");
                 var entityPropertyName = (field as IExpressionNameProvider).Name;
                 if (columnName != entityPropertyName)
                     AppendAlias(entityPropertyName, builder, context);

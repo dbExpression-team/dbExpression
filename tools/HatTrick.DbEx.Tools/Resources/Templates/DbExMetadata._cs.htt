@@ -23,17 +23,17 @@ namespace {$.DatabaseExpression.NamespaceRoot}DataService
         static {$.DatabaseExpression.Name}SqlDatabaseMetadata()
         {{
             {#each $.Schemas}
-            {?var:schemaName = $.SchemaExpression.Name}
+            {?var:schemaName = $.Schema.Name}
             #region {:schemaName} schema
             _metadata.Add("{:schemaName}", new SqlSchemaMetadata("{:schemaName}"));
             
             #region {:schemaName} entities
             {#each $.Entities}
-            {?var:entityName = $.EntityExpression.Name}
+            {?var:entityName = $.Entity.Name}
             #region {:schemaName}.{:entityName}
-            _metadata.Add("{:schemaName}.{:entityName}", new SqlTableMetadata("{$.Entity.Name}"));
+            _metadata.Add("{:schemaName}.{:entityName}", new SqlTableMetadata("{:entityName}"));
             {#each $.Columns}
-            _metadata.Add("{:schemaName}.{:entityName}.{$.FieldExpression.Name}", new MsSqlColumnMetadata("{$.Column.Name}", SqlDbType.{$.Column.SqlType}{#if $.Column.Size}, {$.Column.Size}{/if}{#if $.Column.Precision}, {$.Column.Precision}{/if}{#if $.Column.Scale}, {$.Column.Scale}{/if}){#if $.Column.IsIdentity+} {{ IsIdentity = true }}{/if});
+            _metadata.Add("{:schemaName}.{:entityName}.{$.Column.Name}", new MsSqlColumnMetadata("{$.Column.Name}", SqlDbType.{$.Column.SqlType}{#if $.Column.Size}, {$.Column.Size}{/if}{#if $.Column.Precision}, {$.Column.Precision}{/if}{#if $.Column.Scale}, {$.Column.Scale}{/if}){#if $.Column.IsIdentity+} {{ IsIdentity = true }}{/if});
             {/each}
             #endregion
 
@@ -42,10 +42,10 @@ namespace {$.DatabaseExpression.NamespaceRoot}DataService
 
             #region {:schemaName} stored procedures
             {#each $.StoredProcedures}
-            {?var:storedProcedureName = $.StoredProcedureExpression.Name}
-            _metadata.Add("{:schemaName}.{:storedProcedureName}", new StoredProcedureMetadata("{$.StoredProcedure.Name}"));
+            {?var:storedProcedureName = $.StoredProcedure.Name}
+            _metadata.Add("{:schemaName}.{:storedProcedureName}", new StoredProcedureMetadata("{:storedProcedureName}"));
             {#each $.Parameters}
-            _metadata.Add($"{:schemaName}.{:storedProcedureName}.{$.ParameterExpression.Name}", new MsSqlParameterMetadata("{$.Parameter.Name}", SqlDbType.{$.Parameter.SqlType}{#if $.Parameter.Size}, {$.Parameter.Size}{/if}{#if $.Parameter.Precision}, {$.Parameter.Precision}{/if}{#if $.Parameter.Scale}, {$.Parameter.Scale}{/if}));
+            _metadata.Add("{:schemaName}.{:storedProcedureName}.{$.Parameter.Name}", new MsSqlParameterMetadata("{$.Parameter.Name}", SqlDbType.{$.Parameter.SqlType}{#if $.Parameter.Size}, {$.Parameter.Size}{/if}{#if $.Parameter.Precision}, {$.Parameter.Precision}{/if}{#if $.Parameter.Scale}, {$.Parameter.Scale}{/if}));
             {/each}
             {/each}
             #endregion

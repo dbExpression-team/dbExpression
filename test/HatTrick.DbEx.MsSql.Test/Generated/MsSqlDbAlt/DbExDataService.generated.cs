@@ -14,10 +14,10 @@ using System.Linq;
 #pragma warning disable CA1034 // Nested types should not be visible
 namespace DbExAlt.DataService
 {
-	using DbExAlt.dboDataService;
+	using DbExAlt.dboAltDataService;
 	using DbExAlt.unit_testDataService;
 	using DbExAlt.secDataService;
-	using _dboDataService = DbExAlt.dboDataService;
+	using _dboAltDataService = DbExAlt.dboAltDataService;
 	using _unit_testDataService = DbExAlt.unit_testDataService;
 	using _secDataService = DbExAlt.secDataService;
 
@@ -42,7 +42,7 @@ namespace DbExAlt.DataService
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single entity.
         /// <para>
-        /// To retrieve a <see cref="DbExAlt.dboData.AccessAuditLog" />, use a type param of <see cref="DbExAlt.dboData.AccessAuditLog" />
+        /// To retrieve a <see cref="DbExAlt.dboAltData.AccessAuditLog" />, use a type param of <see cref="DbExAlt.dboAltData.AccessAuditLog" />
         /// </para>
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
@@ -525,7 +525,7 @@ namespace DbExAlt.DataService
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of entities.
         /// <para>
-        /// To retrieve a list of <see cref="DbExAlt.dboData.AccessAuditLog" />(s), use a type param of <see cref="DbExAlt.dboData.AccessAuditLog" />
+        /// To retrieve a list of <see cref="DbExAlt.dboAltData.AccessAuditLog" />(s), use a type param of <see cref="DbExAlt.dboAltData.AccessAuditLog" />
         /// </para>
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
@@ -1131,17 +1131,17 @@ namespace DbExAlt.DataService
         #region constructors
         static MsSqlDbAlt()
         {
-            var dboSchema = new _dboDataService.dboSchemaExpression("dbo");
-            _schemas.Add(dboSchema);
-            _dboDataService.dbo.UseSchema(dboSchema);
-            _entityTypeToTableMap.Add(typeof(dboData.AccessAuditLog), dboSchema.AccessAuditLog);
-            _entityTypeToTableMap.Add(typeof(dboData.Address), dboSchema.Address);
-            _entityTypeToTableMap.Add(typeof(dboData.Person), dboSchema.Person);
-            _entityTypeToTableMap.Add(typeof(dboData.Person_Address), dboSchema.Person_Address);
-            _entityTypeToTableMap.Add(typeof(dboData.Product), dboSchema.Product);
-            _entityTypeToTableMap.Add(typeof(dboData.Purchase), dboSchema.Purchase);
-            _entityTypeToTableMap.Add(typeof(dboData.PurchaseLine), dboSchema.PurchaseLine);
-            _entityTypeToTableMap.Add(typeof(dboData.PersonTotalPurchasesView), dboSchema.PersonTotalPurchasesView);
+            var dboAltSchema = new _dboAltDataService.dboAltSchemaExpression("dbo");
+            _schemas.Add(dboAltSchema);
+            _dboAltDataService.dboAlt.UseSchema(dboAltSchema);
+            _entityTypeToTableMap.Add(typeof(dboAltData.AccessAuditLog), dboAltSchema.AccessAuditLog);
+            _entityTypeToTableMap.Add(typeof(dboAltData.Address), dboAltSchema.Address);
+            _entityTypeToTableMap.Add(typeof(dboAltData.PersonAlt), dboAltSchema.PersonAlt);
+            _entityTypeToTableMap.Add(typeof(dboAltData.Person_Address), dboAltSchema.Person_Address);
+            _entityTypeToTableMap.Add(typeof(dboAltData.Product), dboAltSchema.Product);
+            _entityTypeToTableMap.Add(typeof(dboAltData.Purchase), dboAltSchema.Purchase);
+            _entityTypeToTableMap.Add(typeof(dboAltData.PurchaseLine), dboAltSchema.PurchaseLine);
+            _entityTypeToTableMap.Add(typeof(dboAltData.PersonTotalPurchasesView), dboAltSchema.PersonTotalPurchasesView);
 
             var unit_testSchema = new _unit_testDataService.unit_testSchemaExpression("unit_test");
             _schemas.Add(unit_testSchema);
@@ -1181,7 +1181,7 @@ namespace DbExAlt.DataService
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single entity.
         /// <para>
-        /// To retrieve a <see cref="DbExAlt.dboData.AccessAuditLog" />, use a type param of <see cref="DbExAlt.dboData.AccessAuditLog" />
+        /// To retrieve a <see cref="DbExAlt.dboAltData.AccessAuditLog" />, use a type param of <see cref="DbExAlt.dboAltData.AccessAuditLog" />
         /// </para>
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
@@ -1663,7 +1663,7 @@ namespace DbExAlt.DataService
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of entities.
         /// <para>
-        /// To retrieve a list of <see cref="DbExAlt.dboData.AccessAuditLog" />(s), use a type param of <see cref="DbExAlt.dboData.AccessAuditLog" />
+        /// To retrieve a list of <see cref="DbExAlt.dboAltData.AccessAuditLog" />(s), use a type param of <see cref="DbExAlt.dboAltData.AccessAuditLog" />
         /// </para>
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
@@ -2250,16 +2250,16 @@ namespace DbExAlt.DataService
         public class MsSqlDbAltStoredProcedures
         {
             #region internals
-            private readonly dboStoredProcedures _dboStoredProcedures;
+            private readonly dboAltStoredProcedures _dboAltStoredProcedures;
             private readonly unit_testStoredProcedures _unit_testStoredProcedures;
             private readonly secStoredProcedures _secStoredProcedures;
             #endregion
 
             #region interface
             /// <summary>
-            /// Accessors to construct and execute stored procedure query expressions in the dbo schema.
+            /// Accessors to construct and execute stored procedure query expressions in the dboAlt schema.
             /// </summary>
-            public dboStoredProcedures dbo => _dboStoredProcedures;
+            public dboAltStoredProcedures dboAlt => _dboAltStoredProcedures;
 
             /// <summary>
             /// Accessors to construct and execute stored procedure query expressions in the unit_test schema.
@@ -2278,7 +2278,7 @@ namespace DbExAlt.DataService
             {
                 if (database is null)
                     throw new ArgumentNullException(nameof(database));
-                _dboStoredProcedures = new dboStoredProcedures(database, schemas.Single(s => s.Identifier == "dbo"));
+                _dboAltStoredProcedures = new dboAltStoredProcedures(database, schemas.Single(s => s.Identifier == "dbo"));
                 _unit_testStoredProcedures = new unit_testStoredProcedures(database, schemas.Single(s => s.Identifier == "unit_test"));
                 _secStoredProcedures = new secStoredProcedures(database, schemas.Single(s => s.Identifier == "sec"));
             }
@@ -2287,28 +2287,28 @@ namespace DbExAlt.DataService
 
         #region classes
         /// <summary>
-        /// Accessors to construct and execute stored procedure query expressions in the dbo schema.
+        /// Accessors to construct and execute stored procedure query expressions in the dboAlt schema.
         /// </summary>
-        public class dboStoredProcedures
+        public class dboAltStoredProcedures
         {
             #region internals
             private readonly MsSqlDbAlt _database;
-            private readonly SchemaExpression _dbo;
+            private readonly SchemaExpression _dboAlt;
             #endregion
 
             #region constructors
-            public dboStoredProcedures(MsSqlDbAlt database, SchemaExpression schema)
+            public dboAltStoredProcedures(MsSqlDbAlt database, SchemaExpression schema)
             {
                 _database = database ?? throw new ArgumentNullException(nameof(database));
-                _dbo = schema ?? throw new ArgumentNullException(nameof(schema));
+                _dboAlt = schema ?? throw new ArgumentNullException(nameof(schema));
             }
             #endregion
 
             #region methods
             /// <summary>
-            /// Method to start constructing a stored procedure query expression for the SelectPerson_As_Dynamic_With_Input stored procedure.
+            /// Method to start constructing a stored procedure query expression for the SelectPerson_As_Dynamic_With_InputAlt stored procedure.
             /// </summary>
-            /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
+            /// <param name="P1Alt">The value to use for creating the stored procedure parameter @P1.
             /// <para>Database Properties:
             /// <list type="table">
             /// <item>
@@ -2324,8 +2324,8 @@ namespace DbExAlt.DataService
             /// </para>
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation SelectPerson_As_Dynamic_With_Input(int? P1)
-                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPerson_As_Dynamic_With_InputStoredProcedure("dbo", _dbo, P1));
+            public StoredProcedureContinuation SelectPerson_As_Dynamic_With_InputAlt(int? P1Alt)
+                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPerson_As_Dynamic_With_InputAltStoredProcedure("dbo", _dboAlt, P1Alt));
 
             /// <summary>
             /// Method to start constructing a stored procedure query expression for the SelectPerson_As_Dynamic_With_Input_And_InputOutput stored procedure.
@@ -2347,7 +2347,7 @@ namespace DbExAlt.DataService
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
             public StoredProcedureContinuation SelectPerson_As_Dynamic_With_Input_And_InputOutput(int? P1,int? CreditLimit, Action<ISqlOutputParameterList> outputParameters)
-                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPerson_As_Dynamic_With_Input_And_InputOutputStoredProcedure("dbo", _dbo, P1, CreditLimit, outputParameters));
+                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPerson_As_Dynamic_With_Input_And_InputOutputStoredProcedure("dbo", _dboAlt, P1, CreditLimit, outputParameters));
 
             /// <summary>
             /// Method to start constructing a stored procedure query expression for the SelectPerson_As_Dynamic_With_Input_And_Output stored procedure.
@@ -2370,7 +2370,7 @@ namespace DbExAlt.DataService
             /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
             public StoredProcedureContinuation SelectPerson_As_Dynamic_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
-                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPerson_As_Dynamic_With_Input_And_OutputStoredProcedure("dbo", _dbo, P1, outputParameters));
+                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPerson_As_Dynamic_With_Input_And_OutputStoredProcedure("dbo", _dboAlt, P1, outputParameters));
 
             /// <summary>
             /// Method to start constructing a stored procedure query expression for the SelectPerson_As_DynamicList_With_Input stored procedure.
@@ -2392,7 +2392,7 @@ namespace DbExAlt.DataService
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
             public StoredProcedureContinuation SelectPerson_As_DynamicList_With_Input(int? P1)
-                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPerson_As_DynamicList_With_InputStoredProcedure("dbo", _dbo, P1));
+                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPerson_As_DynamicList_With_InputStoredProcedure("dbo", _dboAlt, P1));
 
             /// <summary>
             /// Method to start constructing a stored procedure query expression for the SelectPerson_As_DynamicList_With_Input_And_InputOutput stored procedure.
@@ -2414,7 +2414,7 @@ namespace DbExAlt.DataService
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
             public StoredProcedureContinuation SelectPerson_As_DynamicList_With_Input_And_InputOutput(int? P1,int? CreditLimit, Action<ISqlOutputParameterList> outputParameters)
-                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPerson_As_DynamicList_With_Input_And_InputOutputStoredProcedure("dbo", _dbo, P1, CreditLimit, outputParameters));
+                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPerson_As_DynamicList_With_Input_And_InputOutputStoredProcedure("dbo", _dboAlt, P1, CreditLimit, outputParameters));
 
             /// <summary>
             /// Method to start constructing a stored procedure query expression for the SelectPerson_As_DynamicList_With_Input_And_Output stored procedure.
@@ -2437,7 +2437,7 @@ namespace DbExAlt.DataService
             /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
             public StoredProcedureContinuation SelectPerson_As_DynamicList_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
-                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPerson_As_DynamicList_With_Input_And_OutputStoredProcedure("dbo", _dbo, P1, outputParameters));
+                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPerson_As_DynamicList_With_Input_And_OutputStoredProcedure("dbo", _dboAlt, P1, outputParameters));
 
             /// <summary>
             /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValue_With_Input stored procedure.
@@ -2459,14 +2459,14 @@ namespace DbExAlt.DataService
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
             public StoredProcedureContinuation SelectPersonId_As_ScalarValue_With_Input(int? P1)
-                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValue_With_InputStoredProcedure("dbo", _dbo, P1));
+                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValue_With_InputStoredProcedure("dbo", _dboAlt, P1));
 
             /// <summary>
             /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValue_With_Input_And_Default_Value stored procedure.
             /// </summary>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
             public StoredProcedureContinuation SelectPersonId_As_ScalarValue_With_Input_And_Default_Value()
-                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValue_With_Input_And_Default_ValueStoredProcedure("dbo", _dbo));
+                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValue_With_Input_And_Default_ValueStoredProcedure("dbo", _dboAlt));
 
             /// <summary>
             /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValue_With_Input_And_InputOutput stored procedure.
@@ -2488,7 +2488,7 @@ namespace DbExAlt.DataService
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
             public StoredProcedureContinuation SelectPersonId_As_ScalarValue_With_Input_And_InputOutput(int? P1,int? CreditLimit, Action<ISqlOutputParameterList> outputParameters)
-                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValue_With_Input_And_InputOutputStoredProcedure("dbo", _dbo, P1, CreditLimit, outputParameters));
+                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValue_With_Input_And_InputOutputStoredProcedure("dbo", _dboAlt, P1, CreditLimit, outputParameters));
 
             /// <summary>
             /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValue_With_Input_And_Output stored procedure.
@@ -2511,7 +2511,7 @@ namespace DbExAlt.DataService
             /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
             public StoredProcedureContinuation SelectPersonId_As_ScalarValue_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
-                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValue_With_Input_And_OutputStoredProcedure("dbo", _dbo, P1, outputParameters));
+                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValue_With_Input_And_OutputStoredProcedure("dbo", _dboAlt, P1, outputParameters));
 
             /// <summary>
             /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValueList_With_Input stored procedure.
@@ -2533,7 +2533,7 @@ namespace DbExAlt.DataService
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
             public StoredProcedureContinuation SelectPersonId_As_ScalarValueList_With_Input(int? P1)
-                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValueList_With_InputStoredProcedure("dbo", _dbo, P1));
+                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValueList_With_InputStoredProcedure("dbo", _dboAlt, P1));
 
             /// <summary>
             /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput stored procedure.
@@ -2555,7 +2555,7 @@ namespace DbExAlt.DataService
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
             public StoredProcedureContinuation SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput(int? P1,int? CreditLimit, Action<ISqlOutputParameterList> outputParameters)
-                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValueList_With_Input_And_InputOutputStoredProcedure("dbo", _dbo, P1, CreditLimit, outputParameters));
+                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValueList_With_Input_And_InputOutputStoredProcedure("dbo", _dboAlt, P1, CreditLimit, outputParameters));
 
             /// <summary>
             /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValueList_With_Input_And_Output stored procedure.
@@ -2578,7 +2578,7 @@ namespace DbExAlt.DataService
             /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
             public StoredProcedureContinuation SelectPersonId_As_ScalarValueList_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
-                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValueList_With_Input_And_OutputStoredProcedure("dbo", _dbo, P1, outputParameters));
+                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValueList_With_Input_And_OutputStoredProcedure("dbo", _dboAlt, P1, outputParameters));
 
             /// <summary>
             /// Method to start constructing a stored procedure query expression for the UpdatePersonCreditLimit_With_Inputs stored procedure.
@@ -2615,7 +2615,7 @@ namespace DbExAlt.DataService
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
             public StoredProcedureContinuation UpdatePersonCreditLimit_With_Inputs(int? P1,int? CreditLimit)
-                => _database.GetBuilder().CreateStoredProcedureBuilder(new UpdatePersonCreditLimit_With_InputsStoredProcedure("dbo", _dbo, P1, CreditLimit));
+                => _database.GetBuilder().CreateStoredProcedureBuilder(new UpdatePersonCreditLimit_With_InputsStoredProcedure("dbo", _dboAlt, P1, CreditLimit));
 
             #endregion
         }
@@ -2671,18 +2671,18 @@ namespace DbExAlt.DataService
 
 }
 
-namespace DbExAlt.dboDataService
+namespace DbExAlt.dboAltDataService
 {
-	using DbExAlt.dboData;
+	using DbExAlt.dboAltData;
 	using System.Data;
 
-    #region dbo schema expression
-    public class dboSchemaExpression : SchemaExpression
+    #region dboAlt schema expression
+    public class dboAltSchemaExpression : SchemaExpression
     {
         #region interface
         public readonly AccessAuditLogEntity AccessAuditLog;
         public readonly AddressEntity Address;
-        public readonly PersonEntity Person;
+        public readonly PersonAltEntity PersonAlt;
         public readonly Person_AddressEntity Person_Address;
         public readonly ProductEntity Product;
         public readonly PurchaseEntity Purchase;
@@ -2691,11 +2691,11 @@ namespace DbExAlt.dboDataService
         #endregion
 
         #region constructors
-        public dboSchemaExpression(string identifier) : base(identifier)
+        public dboAltSchemaExpression(string identifier) : base(identifier)
         {
             Attributes.Entities.Add($"{identifier}.AccessAuditLog", AccessAuditLog = new AccessAuditLogEntity($"{identifier}.AccessAuditLog", "AccessAuditLog", this));
             Attributes.Entities.Add($"{identifier}.Address", Address = new AddressEntity($"{identifier}.Address", "Address", this));
-            Attributes.Entities.Add($"{identifier}.Person", Person = new PersonEntity($"{identifier}.Person", "Person", this));
+            Attributes.Entities.Add($"{identifier}.Person", PersonAlt = new PersonAltEntity($"{identifier}.Person", "PersonAlt", this));
             Attributes.Entities.Add($"{identifier}.Person_Address", Person_Address = new Person_AddressEntity($"{identifier}.Person_Address", "Person_Address", this));
             Attributes.Entities.Add($"{identifier}.Product", Product = new ProductEntity($"{identifier}.Product", "Product", this));
             Attributes.Entities.Add($"{identifier}.Purchase", Purchase = new PurchaseEntity($"{identifier}.Purchase", "Purchase", this));
@@ -2715,8 +2715,8 @@ namespace DbExAlt.dboDataService
 
         #region interface
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.AccessAuditLogEntity.IdField"/> representing the "dbo.AccessAuditLog.Id" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExAlt.dboDataService.AccessAuditLogEntity.IdField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.AccessAuditLogEntity.IdField"/> representing the "dbo.AccessAuditLog.Id" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExAlt.dboAltDataService.AccessAuditLogEntity.IdField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -2738,8 +2738,8 @@ namespace DbExAlt.dboDataService
         public readonly IdField Id;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.AccessAuditLogEntity.PersonIdField"/> representing the "dbo.AccessAuditLog.PersonId" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExAlt.dboDataService.AccessAuditLogEntity.PersonIdField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.AccessAuditLogEntity.PersonIdField"/> representing the "dbo.AccessAuditLog.PersonId" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExAlt.dboAltDataService.AccessAuditLogEntity.PersonIdField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -2758,8 +2758,8 @@ namespace DbExAlt.dboDataService
         public readonly PersonIdField PersonId;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.AccessAuditLogEntity.AccessResultField"/> representing the "dbo.AccessAuditLog.AccessResult" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExAlt.dboDataService.AccessAuditLogEntity.AccessResultField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.AccessAuditLogEntity.AccessResultField"/> representing the "dbo.AccessAuditLog.AccessResult" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExAlt.dboAltDataService.AccessAuditLogEntity.AccessResultField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -2778,8 +2778,8 @@ namespace DbExAlt.dboDataService
         public readonly AccessResultField AccessResult;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.AccessAuditLogEntity.DateCreatedField"/> representing the "dbo.AccessAuditLog.DateCreated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbExAlt.dboDataService.AccessAuditLogEntity.DateCreatedField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.AccessAuditLogEntity.DateCreatedField"/> representing the "dbo.AccessAuditLog.DateCreated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbExAlt.dboAltDataService.AccessAuditLogEntity.DateCreatedField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -2965,8 +2965,8 @@ namespace DbExAlt.dboDataService
 
         #region interface
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.AddressEntity.IdField"/> representing the "dbo.Address.Id" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExAlt.dboDataService.AddressEntity.IdField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.AddressEntity.IdField"/> representing the "dbo.Address.Id" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExAlt.dboAltDataService.AddressEntity.IdField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -2988,8 +2988,8 @@ namespace DbExAlt.dboDataService
         public readonly IdField Id;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.AddressEntity.AddressTypeField"/> representing the "dbo.Address.AddressType" column in the database, 
-        /// with a .NET type of <see cref="int"/>?.  The <see cref="DbExAlt.dboDataService.AddressEntity.AddressTypeField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.AddressEntity.AddressTypeField"/> representing the "dbo.Address.AddressType" column in the database, 
+        /// with a .NET type of <see cref="int"/>?.  The <see cref="DbExAlt.dboAltDataService.AddressEntity.AddressTypeField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -3008,8 +3008,8 @@ namespace DbExAlt.dboDataService
         public readonly AddressTypeField AddressType;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.AddressEntity.Line1Field"/> representing the "dbo.Address.Line1" column in the database, 
-        /// with a .NET type of <see cref="string"/>.  The <see cref="DbExAlt.dboDataService.AddressEntity.Line1Field"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.AddressEntity.Line1Field"/> representing the "dbo.Address.Line1" column in the database, 
+        /// with a .NET type of <see cref="string"/>.  The <see cref="DbExAlt.dboAltDataService.AddressEntity.Line1Field"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -3028,8 +3028,8 @@ namespace DbExAlt.dboDataService
         public readonly Line1Field Line1;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.AddressEntity.Line2Field"/> representing the "dbo.Address.Line2" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.dboDataService.AddressEntity.Line2Field"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.AddressEntity.Line2Field"/> representing the "dbo.Address.Line2" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.dboAltDataService.AddressEntity.Line2Field"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -3048,8 +3048,8 @@ namespace DbExAlt.dboDataService
         public readonly Line2Field Line2;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.AddressEntity.CityField"/> representing the "dbo.Address.City" column in the database, 
-        /// with a .NET type of <see cref="string"/>.  The <see cref="DbExAlt.dboDataService.AddressEntity.CityField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.AddressEntity.CityField"/> representing the "dbo.Address.City" column in the database, 
+        /// with a .NET type of <see cref="string"/>.  The <see cref="DbExAlt.dboAltDataService.AddressEntity.CityField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -3068,8 +3068,8 @@ namespace DbExAlt.dboDataService
         public readonly CityField City;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.AddressEntity.StateField"/> representing the "dbo.Address.State" column in the database, 
-        /// with a .NET type of <see cref="string"/>.  The <see cref="DbExAlt.dboDataService.AddressEntity.StateField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.AddressEntity.StateField"/> representing the "dbo.Address.State" column in the database, 
+        /// with a .NET type of <see cref="string"/>.  The <see cref="DbExAlt.dboAltDataService.AddressEntity.StateField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -3088,8 +3088,8 @@ namespace DbExAlt.dboDataService
         public readonly StateField State;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.AddressEntity.ZipField"/> representing the "dbo.Address.Zip" column in the database, 
-        /// with a .NET type of <see cref="string"/>.  The <see cref="DbExAlt.dboDataService.AddressEntity.ZipField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.AddressEntity.ZipField"/> representing the "dbo.Address.Zip" column in the database, 
+        /// with a .NET type of <see cref="string"/>.  The <see cref="DbExAlt.dboAltDataService.AddressEntity.ZipField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -3108,8 +3108,8 @@ namespace DbExAlt.dboDataService
         public readonly ZipField Zip;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.AddressEntity.DateCreatedField"/> representing the "dbo.Address.DateCreated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbExAlt.dboDataService.AddressEntity.DateCreatedField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.AddressEntity.DateCreatedField"/> representing the "dbo.Address.DateCreated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbExAlt.dboAltDataService.AddressEntity.DateCreatedField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -3131,8 +3131,8 @@ namespace DbExAlt.dboDataService
         public readonly DateCreatedField DateCreated;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.AddressEntity.DateUpdatedField"/> representing the "dbo.Address.DateUpdated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbExAlt.dboDataService.AddressEntity.DateUpdatedField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.AddressEntity.DateUpdatedField"/> representing the "dbo.Address.DateUpdated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbExAlt.dboAltDataService.AddressEntity.DateUpdatedField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -3441,8 +3441,8 @@ namespace DbExAlt.dboDataService
     }
     #endregion
 
-    #region person entity expression
-    public partial class PersonEntity : EntityExpression<Person>
+    #region person alt entity expression
+    public partial class PersonAltEntity : EntityExpression<PersonAlt>
     {
         #region internals
         private SelectExpressionSet? _inclusiveSelectExpressionSet;
@@ -3450,8 +3450,8 @@ namespace DbExAlt.dboDataService
 
         #region interface
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.PersonEntity.IdField"/> representing the "dbo.Person.Id" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExAlt.dboDataService.PersonEntity.IdField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.PersonAltEntity.IdField"/> representing the "dbo.Person.Id" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExAlt.dboAltDataService.PersonAltEntity.IdField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -3473,8 +3473,8 @@ namespace DbExAlt.dboDataService
         public readonly IdField Id;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.PersonEntity.FirstNameField"/> representing the "dbo.Person.FirstName" column in the database, 
-        /// with a .NET type of <see cref="string"/>.  The <see cref="DbExAlt.dboDataService.PersonEntity.FirstNameField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.PersonAltEntity.FirstNameAltField"/> representing the "dbo.Person.FirstName" column in the database, 
+        /// with a .NET type of <see cref="string"/>.  The <see cref="DbExAlt.dboAltDataService.PersonAltEntity.FirstNameAltField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -3490,11 +3490,11 @@ namespace DbExAlt.dboDataService
         /// </list>
         /// </para>
         /// </summary>
-        public readonly FirstNameField FirstName;
+        public readonly FirstNameAltField FirstNameAlt;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.PersonEntity.LastNameField"/> representing the "dbo.Person.LastName" column in the database, 
-        /// with a .NET type of <see cref="string"/>.  The <see cref="DbExAlt.dboDataService.PersonEntity.LastNameField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.PersonAltEntity.LastNameField"/> representing the "dbo.Person.LastName" column in the database, 
+        /// with a .NET type of <see cref="string"/>.  The <see cref="DbExAlt.dboAltDataService.PersonAltEntity.LastNameField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -3513,8 +3513,8 @@ namespace DbExAlt.dboDataService
         public readonly LastNameField LastName;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.PersonEntity.BirthDateField"/> representing the "dbo.Person.BirthDate" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>?.  The <see cref="DbExAlt.dboDataService.PersonEntity.BirthDateField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.PersonAltEntity.BirthDateField"/> representing the "dbo.Person.BirthDate" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>?.  The <see cref="DbExAlt.dboAltDataService.PersonAltEntity.BirthDateField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -3533,8 +3533,8 @@ namespace DbExAlt.dboDataService
         public readonly BirthDateField BirthDate;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.PersonEntity.GenderTypeField"/> representing the "dbo.Person.GenderType" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExAlt.dboDataService.PersonEntity.GenderTypeField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.PersonAltEntity.GenderTypeField"/> representing the "dbo.Person.GenderType" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExAlt.dboAltDataService.PersonAltEntity.GenderTypeField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -3553,8 +3553,8 @@ namespace DbExAlt.dboDataService
         public readonly GenderTypeField GenderType;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.PersonEntity.CreditLimitField"/> representing the "dbo.Person.CreditLimit" column in the database, 
-        /// with a .NET type of <see cref="int"/>?.  The <see cref="DbExAlt.dboDataService.PersonEntity.CreditLimitField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.PersonAltEntity.CreditLimitField"/> representing the "dbo.Person.CreditLimit" column in the database, 
+        /// with a .NET type of <see cref="int"/>?.  The <see cref="DbExAlt.dboAltDataService.PersonAltEntity.CreditLimitField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -3573,8 +3573,8 @@ namespace DbExAlt.dboDataService
         public readonly CreditLimitField CreditLimit;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.PersonEntity.YearOfLastCreditLimitReviewField"/> representing the "dbo.Person.YearOfLastCreditLimitReview" column in the database, 
-        /// with a .NET type of <see cref="int"/>?.  The <see cref="DbExAlt.dboDataService.PersonEntity.YearOfLastCreditLimitReviewField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.PersonAltEntity.YearOfLastCreditLimitReviewField"/> representing the "dbo.Person.YearOfLastCreditLimitReview" column in the database, 
+        /// with a .NET type of <see cref="int"/>?.  The <see cref="DbExAlt.dboAltDataService.PersonAltEntity.YearOfLastCreditLimitReviewField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -3593,8 +3593,8 @@ namespace DbExAlt.dboDataService
         public readonly YearOfLastCreditLimitReviewField YearOfLastCreditLimitReview;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.PersonEntity.RegistrationDateField"/> representing the "dbo.Person.RegistrationDate" column in the database, 
-        /// with a .NET type of <see cref="DateTimeOffset"/>.  The <see cref="DbExAlt.dboDataService.PersonEntity.RegistrationDateField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.PersonAltEntity.RegistrationDateField"/> representing the "dbo.Person.RegistrationDate" column in the database, 
+        /// with a .NET type of <see cref="DateTimeOffset"/>.  The <see cref="DbExAlt.dboAltDataService.PersonAltEntity.RegistrationDateField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTimeOffset}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -3616,8 +3616,8 @@ namespace DbExAlt.dboDataService
         public readonly RegistrationDateField RegistrationDate;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.PersonEntity.LastLoginDateField"/> representing the "dbo.Person.LastLoginDate" column in the database, 
-        /// with a .NET type of <see cref="DateTimeOffset"/>?.  The <see cref="DbExAlt.dboDataService.PersonEntity.LastLoginDateField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.PersonAltEntity.LastLoginDateField"/> representing the "dbo.Person.LastLoginDate" column in the database, 
+        /// with a .NET type of <see cref="DateTimeOffset"/>?.  The <see cref="DbExAlt.dboAltDataService.PersonAltEntity.LastLoginDateField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTimeOffset}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -3636,8 +3636,8 @@ namespace DbExAlt.dboDataService
         public readonly LastLoginDateField LastLoginDate;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.PersonEntity.DateCreatedField"/> representing the "dbo.Person.DateCreated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbExAlt.dboDataService.PersonEntity.DateCreatedField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.PersonAltEntity.DateCreatedField"/> representing the "dbo.Person.DateCreated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbExAlt.dboAltDataService.PersonAltEntity.DateCreatedField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -3659,8 +3659,8 @@ namespace DbExAlt.dboDataService
         public readonly DateCreatedField DateCreated;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.PersonEntity.DateUpdatedField"/> representing the "dbo.Person.DateUpdated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbExAlt.dboDataService.PersonEntity.DateUpdatedField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.PersonAltEntity.DateUpdatedField"/> representing the "dbo.Person.DateUpdated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbExAlt.dboAltDataService.PersonAltEntity.DateUpdatedField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -3684,14 +3684,14 @@ namespace DbExAlt.dboDataService
         #endregion
 
         #region constructors
-        public PersonEntity(string identifier, string name, Schema schema) : this(identifier, name, schema, null)
+        public PersonAltEntity(string identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
 
-        private PersonEntity(string identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
+        private PersonAltEntity(string identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
         {
             Attributes.Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", "Id", this));
-            Attributes.Fields.Add($"{identifier}.FirstName", FirstName = new FirstNameField($"{identifier}.FirstName", "FirstName", this));
+            Attributes.Fields.Add($"{identifier}.FirstName", FirstNameAlt = new FirstNameAltField($"{identifier}.FirstName", "FirstNameAlt", this));
             Attributes.Fields.Add($"{identifier}.LastName", LastName = new LastNameField($"{identifier}.LastName", "LastName", this));
             Attributes.Fields.Add($"{identifier}.BirthDate", BirthDate = new BirthDateField($"{identifier}.BirthDate", "BirthDate", this));
             Attributes.Fields.Add($"{identifier}.GenderType", GenderType = new GenderTypeField($"{identifier}.GenderType", "GenderType", this));
@@ -3705,14 +3705,14 @@ namespace DbExAlt.dboDataService
         #endregion
 
         #region methods
-        public PersonEntity As(string alias)
-            => new PersonEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
+        public PersonAltEntity As(string alias)
+            => new PersonAltEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
                 new SelectExpression<int>(Id)
-                ,new SelectExpression<string>(FirstName)
+                ,new SelectExpression<string>(FirstNameAlt)
                 ,new SelectExpression<string>(LastName)
                 ,new SelectExpression<DateTime?>(BirthDate)
                 ,new SelectExpression<int>(GenderType)
@@ -3736,8 +3736,8 @@ namespace DbExAlt.dboDataService
             aliased = alias(nameof(Id));
             set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Id));
 
-            aliased = alias(nameof(FirstName));
-            set &= aliased != nameof(FirstName) ? new SelectExpression<string>(FirstName, aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(FirstName));
+            aliased = alias(nameof(FirstNameAlt));
+            set &= aliased != nameof(FirstNameAlt) ? new SelectExpression<string>(FirstNameAlt, aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(FirstNameAlt));
 
             aliased = alias(nameof(LastName));
             set &= aliased != nameof(LastName) ? new SelectExpression<string>(LastName, aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(LastName));
@@ -3769,10 +3769,10 @@ namespace DbExAlt.dboDataService
             return set;
         }
 		
-        protected override InsertExpressionSet<Person> GetInclusiveInsertExpression(Person entity)
+        protected override InsertExpressionSet<PersonAlt> GetInclusiveInsertExpression(PersonAlt entity)
         {
-            return new InsertExpressionSet<Person>(entity 
-                ,new InsertExpression<string>(entity.FirstName, FirstName)
+            return new InsertExpressionSet<PersonAlt>(entity 
+                ,new InsertExpression<string>(entity.FirstNameAlt, FirstNameAlt)
                 ,new InsertExpression<string>(entity.LastName, LastName)
                 ,new InsertExpression<DateTime?>(entity.BirthDate, BirthDate)
                 ,new InsertExpression<int>(entity.GenderType, GenderType)
@@ -3783,11 +3783,11 @@ namespace DbExAlt.dboDataService
             );
         }
 
-        protected override AssignmentExpressionSet GetAssignmentExpression(Person target, Person source)
+        protected override AssignmentExpressionSet GetAssignmentExpression(PersonAlt target, PersonAlt source)
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
 
-            if (target.FirstName != source.FirstName) { expr &= FirstName.Set(source.FirstName); }
+            if (target.FirstNameAlt != source.FirstNameAlt) { expr &= FirstNameAlt.Set(source.FirstNameAlt); }
             if (target.LastName != source.LastName) { expr &= LastName.Set(source.LastName); }
             if (target.BirthDate != source.BirthDate) { expr &= BirthDate.Set(source.BirthDate); }
             if (target.GenderType != source.GenderType) { expr &= GenderType.Set(source.GenderType); }
@@ -3798,10 +3798,10 @@ namespace DbExAlt.dboDataService
             return expr;
         }
 
-        protected override void HydrateEntity(ISqlFieldReader reader, Person entity)
+        protected override void HydrateEntity(ISqlFieldReader reader, PersonAlt entity)
         {
             entity.Id = reader.ReadField()!.GetValue<int>();
-            entity.FirstName = reader.ReadField()!.GetValue<string>();
+            entity.FirstNameAlt = reader.ReadField()!.GetValue<string>();
             entity.LastName = reader.ReadField()!.GetValue<string>();
             entity.BirthDate = reader.ReadField()!.GetValue<DateTime?>();
             entity.GenderType = reader.ReadField()!.GetValue<int>();
@@ -3816,7 +3816,7 @@ namespace DbExAlt.dboDataService
 
         #region classes
         #region id field expression
-        public partial class IdField : Int32FieldExpression<Person>
+        public partial class IdField : Int32FieldExpression<PersonAlt>
         {
             #region constructors
             public IdField(string identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3833,11 +3833,11 @@ namespace DbExAlt.dboDataService
         }
         #endregion
 
-        #region first name field expression
-        public partial class FirstNameField : StringFieldExpression<Person>
+        #region first name alt field expression
+        public partial class FirstNameAltField : StringFieldExpression<PersonAlt>
         {
             #region constructors
-            public FirstNameField(string identifier, string name, Table entity) : base(identifier, name, entity)
+            public FirstNameAltField(string identifier, string name, Table entity) : base(identifier, name, entity)
             {
 
             }
@@ -3852,7 +3852,7 @@ namespace DbExAlt.dboDataService
         #endregion
 
         #region last name field expression
-        public partial class LastNameField : StringFieldExpression<Person>
+        public partial class LastNameField : StringFieldExpression<PersonAlt>
         {
             #region constructors
             public LastNameField(string identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3870,7 +3870,7 @@ namespace DbExAlt.dboDataService
         #endregion
 
         #region birth date field expression
-        public partial class BirthDateField : NullableDateTimeFieldExpression<Person>
+        public partial class BirthDateField : NullableDateTimeFieldExpression<PersonAlt>
         {
             #region constructors
             public BirthDateField(string identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3891,7 +3891,7 @@ namespace DbExAlt.dboDataService
         #endregion
 
         #region gender type field expression
-        public partial class GenderTypeField : Int32FieldExpression<Person>
+        public partial class GenderTypeField : Int32FieldExpression<PersonAlt>
         {
             #region constructors
             public GenderTypeField(string identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3909,7 +3909,7 @@ namespace DbExAlt.dboDataService
         #endregion
 
         #region credit limit field expression
-        public partial class CreditLimitField : NullableInt32FieldExpression<Person>
+        public partial class CreditLimitField : NullableInt32FieldExpression<PersonAlt>
         {
             #region constructors
             public CreditLimitField(string identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3930,7 +3930,7 @@ namespace DbExAlt.dboDataService
         #endregion
 
         #region year of last credit limit review field expression
-        public partial class YearOfLastCreditLimitReviewField : NullableInt32FieldExpression<Person>
+        public partial class YearOfLastCreditLimitReviewField : NullableInt32FieldExpression<PersonAlt>
         {
             #region constructors
             public YearOfLastCreditLimitReviewField(string identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3951,7 +3951,7 @@ namespace DbExAlt.dboDataService
         #endregion
 
         #region registration date field expression
-        public partial class RegistrationDateField : DateTimeOffsetFieldExpression<Person>
+        public partial class RegistrationDateField : DateTimeOffsetFieldExpression<PersonAlt>
         {
             #region constructors
             public RegistrationDateField(string identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3969,7 +3969,7 @@ namespace DbExAlt.dboDataService
         #endregion
 
         #region last login date field expression
-        public partial class LastLoginDateField : NullableDateTimeOffsetFieldExpression<Person>
+        public partial class LastLoginDateField : NullableDateTimeOffsetFieldExpression<PersonAlt>
         {
             #region constructors
             public LastLoginDateField(string identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3990,7 +3990,7 @@ namespace DbExAlt.dboDataService
         #endregion
 
         #region date created field expression
-        public partial class DateCreatedField : DateTimeFieldExpression<Person>
+        public partial class DateCreatedField : DateTimeFieldExpression<PersonAlt>
         {
             #region constructors
             public DateCreatedField(string identifier, string name, Table entity) : base(identifier, name, entity)
@@ -4008,7 +4008,7 @@ namespace DbExAlt.dboDataService
         #endregion
 
         #region date updated field expression
-        public partial class DateUpdatedField : DateTimeFieldExpression<Person>
+        public partial class DateUpdatedField : DateTimeFieldExpression<PersonAlt>
         {
             #region constructors
             public DateUpdatedField(string identifier, string name, Table entity) : base(identifier, name, entity)
@@ -4038,8 +4038,8 @@ namespace DbExAlt.dboDataService
 
         #region interface
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.Person_AddressEntity.IdField"/> representing the "dbo.Person_Address.Id" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExAlt.dboDataService.Person_AddressEntity.IdField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.Person_AddressEntity.IdField"/> representing the "dbo.Person_Address.Id" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExAlt.dboAltDataService.Person_AddressEntity.IdField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -4061,8 +4061,8 @@ namespace DbExAlt.dboDataService
         public readonly IdField Id;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.Person_AddressEntity.PersonIdField"/> representing the "dbo.Person_Address.PersonId" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExAlt.dboDataService.Person_AddressEntity.PersonIdField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.Person_AddressEntity.PersonIdField"/> representing the "dbo.Person_Address.PersonId" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExAlt.dboAltDataService.Person_AddressEntity.PersonIdField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -4081,8 +4081,8 @@ namespace DbExAlt.dboDataService
         public readonly PersonIdField PersonId;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.Person_AddressEntity.AddressIdField"/> representing the "dbo.Person_Address.AddressId" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExAlt.dboDataService.Person_AddressEntity.AddressIdField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.Person_AddressEntity.AddressIdField"/> representing the "dbo.Person_Address.AddressId" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExAlt.dboAltDataService.Person_AddressEntity.AddressIdField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -4101,8 +4101,8 @@ namespace DbExAlt.dboDataService
         public readonly AddressIdField AddressId;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.Person_AddressEntity.DateCreatedField"/> representing the "dbo.Person_Address.DateCreated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbExAlt.dboDataService.Person_AddressEntity.DateCreatedField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.Person_AddressEntity.DateCreatedField"/> representing the "dbo.Person_Address.DateCreated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbExAlt.dboAltDataService.Person_AddressEntity.DateCreatedField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -4288,8 +4288,8 @@ namespace DbExAlt.dboDataService
 
         #region interface
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.ProductEntity.IdField"/> representing the "dbo.Product.Id" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExAlt.dboDataService.ProductEntity.IdField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.ProductEntity.IdField"/> representing the "dbo.Product.Id" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExAlt.dboAltDataService.ProductEntity.IdField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -4311,8 +4311,8 @@ namespace DbExAlt.dboDataService
         public readonly IdField Id;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.ProductEntity.ProductCategoryTypeField"/> representing the "dbo.Product.ProductCategoryType" column in the database, 
-        /// with a .NET type of <see cref="int"/>?.  The <see cref="DbExAlt.dboDataService.ProductEntity.ProductCategoryTypeField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.ProductEntity.ProductCategoryTypeField"/> representing the "dbo.Product.ProductCategoryType" column in the database, 
+        /// with a .NET type of <see cref="int"/>?.  The <see cref="DbExAlt.dboAltDataService.ProductEntity.ProductCategoryTypeField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -4331,8 +4331,8 @@ namespace DbExAlt.dboDataService
         public readonly ProductCategoryTypeField ProductCategoryType;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.ProductEntity.NameField"/> representing the "dbo.Product.Name" column in the database, 
-        /// with a .NET type of <see cref="string"/>.  The <see cref="DbExAlt.dboDataService.ProductEntity.NameField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.ProductEntity.NameField"/> representing the "dbo.Product.Name" column in the database, 
+        /// with a .NET type of <see cref="string"/>.  The <see cref="DbExAlt.dboAltDataService.ProductEntity.NameField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -4351,8 +4351,8 @@ namespace DbExAlt.dboDataService
         public readonly NameField Name;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.ProductEntity.DescriptionField"/> representing the "dbo.Product.Description" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.dboDataService.ProductEntity.DescriptionField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.ProductEntity.DescriptionField"/> representing the "dbo.Product.Description" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.dboAltDataService.ProductEntity.DescriptionField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -4371,8 +4371,8 @@ namespace DbExAlt.dboDataService
         public readonly DescriptionField Description;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.ProductEntity.ListPriceField"/> representing the "dbo.Product.ListPrice" column in the database, 
-        /// with a .NET type of <see cref="double"/>.  The <see cref="DbExAlt.dboDataService.ProductEntity.ListPriceField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.ProductEntity.ListPriceField"/> representing the "dbo.Product.ListPrice" column in the database, 
+        /// with a .NET type of <see cref="double"/>.  The <see cref="DbExAlt.dboAltDataService.ProductEntity.ListPriceField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Double}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -4391,8 +4391,8 @@ namespace DbExAlt.dboDataService
         public readonly ListPriceField ListPrice;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.ProductEntity.PriceField"/> representing the "dbo.Product.Price" column in the database, 
-        /// with a .NET type of <see cref="double"/>.  The <see cref="DbExAlt.dboDataService.ProductEntity.PriceField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.ProductEntity.PriceField"/> representing the "dbo.Product.Price" column in the database, 
+        /// with a .NET type of <see cref="double"/>.  The <see cref="DbExAlt.dboAltDataService.ProductEntity.PriceField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Double}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -4411,8 +4411,8 @@ namespace DbExAlt.dboDataService
         public readonly PriceField Price;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.ProductEntity.QuantityField"/> representing the "dbo.Product.Quantity" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExAlt.dboDataService.ProductEntity.QuantityField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.ProductEntity.QuantityField"/> representing the "dbo.Product.Quantity" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExAlt.dboAltDataService.ProductEntity.QuantityField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -4431,8 +4431,8 @@ namespace DbExAlt.dboDataService
         public readonly QuantityField Quantity;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.ProductEntity.ImageField"/> representing the "dbo.Product.Image" column in the database, 
-        /// with a .NET type of <see cref="byte"/>[].  The <see cref="DbExAlt.dboDataService.ProductEntity.ImageField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.ProductEntity.ImageField"/> representing the "dbo.Product.Image" column in the database, 
+        /// with a .NET type of <see cref="byte"/>[].  The <see cref="DbExAlt.dboAltDataService.ProductEntity.ImageField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Byte[]}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -4451,8 +4451,8 @@ namespace DbExAlt.dboDataService
         public readonly ImageField Image;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.ProductEntity.HeightField"/> representing the "dbo.Product.Height" column in the database, 
-        /// with a .NET type of <see cref="decimal"/>?.  The <see cref="DbExAlt.dboDataService.ProductEntity.HeightField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.ProductEntity.HeightField"/> representing the "dbo.Product.Height" column in the database, 
+        /// with a .NET type of <see cref="decimal"/>?.  The <see cref="DbExAlt.dboAltDataService.ProductEntity.HeightField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Decimal}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -4471,8 +4471,8 @@ namespace DbExAlt.dboDataService
         public readonly HeightField Height;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.ProductEntity.WidthField"/> representing the "dbo.Product.Width" column in the database, 
-        /// with a .NET type of <see cref="decimal"/>?.  The <see cref="DbExAlt.dboDataService.ProductEntity.WidthField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.ProductEntity.WidthField"/> representing the "dbo.Product.Width" column in the database, 
+        /// with a .NET type of <see cref="decimal"/>?.  The <see cref="DbExAlt.dboAltDataService.ProductEntity.WidthField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Decimal}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -4491,8 +4491,8 @@ namespace DbExAlt.dboDataService
         public readonly WidthField Width;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.ProductEntity.DepthField"/> representing the "dbo.Product.Depth" column in the database, 
-        /// with a .NET type of <see cref="decimal"/>?.  The <see cref="DbExAlt.dboDataService.ProductEntity.DepthField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.ProductEntity.DepthField"/> representing the "dbo.Product.Depth" column in the database, 
+        /// with a .NET type of <see cref="decimal"/>?.  The <see cref="DbExAlt.dboAltDataService.ProductEntity.DepthField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Decimal}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -4511,8 +4511,8 @@ namespace DbExAlt.dboDataService
         public readonly DepthField Depth;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.ProductEntity.WeightField"/> representing the "dbo.Product.Weight" column in the database, 
-        /// with a .NET type of <see cref="decimal"/>?.  The <see cref="DbExAlt.dboDataService.ProductEntity.WeightField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.ProductEntity.WeightField"/> representing the "dbo.Product.Weight" column in the database, 
+        /// with a .NET type of <see cref="decimal"/>?.  The <see cref="DbExAlt.dboAltDataService.ProductEntity.WeightField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Decimal}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -4531,8 +4531,8 @@ namespace DbExAlt.dboDataService
         public readonly WeightField Weight;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.ProductEntity.ShippingWeightField"/> representing the "dbo.Product.ShippingWeight" column in the database, 
-        /// with a .NET type of <see cref="decimal"/>.  The <see cref="DbExAlt.dboDataService.ProductEntity.ShippingWeightField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.ProductEntity.ShippingWeightField"/> representing the "dbo.Product.ShippingWeight" column in the database, 
+        /// with a .NET type of <see cref="decimal"/>.  The <see cref="DbExAlt.dboAltDataService.ProductEntity.ShippingWeightField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Decimal}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -4551,8 +4551,8 @@ namespace DbExAlt.dboDataService
         public readonly ShippingWeightField ShippingWeight;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.ProductEntity.ValidStartTimeOfDayForPurchaseField"/> representing the "dbo.Product.ValidStartTimeOfDayForPurchase" column in the database, 
-        /// with a .NET type of <see cref="TimeSpan"/>?.  The <see cref="DbExAlt.dboDataService.ProductEntity.ValidStartTimeOfDayForPurchaseField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.ProductEntity.ValidStartTimeOfDayForPurchaseField"/> representing the "dbo.Product.ValidStartTimeOfDayForPurchase" column in the database, 
+        /// with a .NET type of <see cref="TimeSpan"/>?.  The <see cref="DbExAlt.dboAltDataService.ProductEntity.ValidStartTimeOfDayForPurchaseField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{TimeSpan}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -4571,8 +4571,8 @@ namespace DbExAlt.dboDataService
         public readonly ValidStartTimeOfDayForPurchaseField ValidStartTimeOfDayForPurchase;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.ProductEntity.ValidEndTimeOfDayForPurchaseField"/> representing the "dbo.Product.ValidEndTimeOfDayForPurchase" column in the database, 
-        /// with a .NET type of <see cref="TimeSpan"/>?.  The <see cref="DbExAlt.dboDataService.ProductEntity.ValidEndTimeOfDayForPurchaseField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.ProductEntity.ValidEndTimeOfDayForPurchaseField"/> representing the "dbo.Product.ValidEndTimeOfDayForPurchase" column in the database, 
+        /// with a .NET type of <see cref="TimeSpan"/>?.  The <see cref="DbExAlt.dboAltDataService.ProductEntity.ValidEndTimeOfDayForPurchaseField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{TimeSpan}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -4591,8 +4591,8 @@ namespace DbExAlt.dboDataService
         public readonly ValidEndTimeOfDayForPurchaseField ValidEndTimeOfDayForPurchase;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.ProductEntity.DateCreatedField"/> representing the "dbo.Product.DateCreated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbExAlt.dboDataService.ProductEntity.DateCreatedField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.ProductEntity.DateCreatedField"/> representing the "dbo.Product.DateCreated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbExAlt.dboAltDataService.ProductEntity.DateCreatedField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -4614,8 +4614,8 @@ namespace DbExAlt.dboDataService
         public readonly DateCreatedField DateCreated;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.ProductEntity.DateUpdatedField"/> representing the "dbo.Product.DateUpdated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbExAlt.dboDataService.ProductEntity.DateUpdatedField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.ProductEntity.DateUpdatedField"/> representing the "dbo.Product.DateUpdated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbExAlt.dboAltDataService.ProductEntity.DateUpdatedField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -5160,8 +5160,8 @@ namespace DbExAlt.dboDataService
 
         #region interface
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.PurchaseEntity.IdField"/> representing the "dbo.Purchase.Id" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExAlt.dboDataService.PurchaseEntity.IdField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.PurchaseEntity.IdField"/> representing the "dbo.Purchase.Id" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExAlt.dboAltDataService.PurchaseEntity.IdField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -5183,8 +5183,8 @@ namespace DbExAlt.dboDataService
         public readonly IdField Id;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.PurchaseEntity.PersonIdField"/> representing the "dbo.Purchase.PersonId" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExAlt.dboDataService.PurchaseEntity.PersonIdField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.PurchaseEntity.PersonIdField"/> representing the "dbo.Purchase.PersonId" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExAlt.dboAltDataService.PurchaseEntity.PersonIdField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -5203,8 +5203,8 @@ namespace DbExAlt.dboDataService
         public readonly PersonIdField PersonId;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.PurchaseEntity.OrderNumberField"/> representing the "dbo.Purchase.OrderNumber" column in the database, 
-        /// with a .NET type of <see cref="string"/>.  The <see cref="DbExAlt.dboDataService.PurchaseEntity.OrderNumberField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.PurchaseEntity.OrderNumberField"/> representing the "dbo.Purchase.OrderNumber" column in the database, 
+        /// with a .NET type of <see cref="string"/>.  The <see cref="DbExAlt.dboAltDataService.PurchaseEntity.OrderNumberField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -5223,8 +5223,8 @@ namespace DbExAlt.dboDataService
         public readonly OrderNumberField OrderNumber;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.PurchaseEntity.TotalPurchaseQuantityField"/> representing the "dbo.Purchase.TotalPurchaseQuantity" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExAlt.dboDataService.PurchaseEntity.TotalPurchaseQuantityField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.PurchaseEntity.TotalPurchaseQuantityField"/> representing the "dbo.Purchase.TotalPurchaseQuantity" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExAlt.dboAltDataService.PurchaseEntity.TotalPurchaseQuantityField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -5243,8 +5243,8 @@ namespace DbExAlt.dboDataService
         public readonly TotalPurchaseQuantityField TotalPurchaseQuantity;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.PurchaseEntity.TotalPurchaseAmountField"/> representing the "dbo.Purchase.TotalPurchaseAmount" column in the database, 
-        /// with a .NET type of <see cref="double"/>.  The <see cref="DbExAlt.dboDataService.PurchaseEntity.TotalPurchaseAmountField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.PurchaseEntity.TotalPurchaseAmountField"/> representing the "dbo.Purchase.TotalPurchaseAmount" column in the database, 
+        /// with a .NET type of <see cref="double"/>.  The <see cref="DbExAlt.dboAltDataService.PurchaseEntity.TotalPurchaseAmountField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Double}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -5263,8 +5263,8 @@ namespace DbExAlt.dboDataService
         public readonly TotalPurchaseAmountField TotalPurchaseAmount;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.PurchaseEntity.PurchaseDateField"/> representing the "dbo.Purchase.PurchaseDate" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbExAlt.dboDataService.PurchaseEntity.PurchaseDateField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.PurchaseEntity.PurchaseDateField"/> representing the "dbo.Purchase.PurchaseDate" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbExAlt.dboAltDataService.PurchaseEntity.PurchaseDateField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -5283,8 +5283,8 @@ namespace DbExAlt.dboDataService
         public readonly PurchaseDateField PurchaseDate;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.PurchaseEntity.ShipDateField"/> representing the "dbo.Purchase.ShipDate" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>?.  The <see cref="DbExAlt.dboDataService.PurchaseEntity.ShipDateField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.PurchaseEntity.ShipDateField"/> representing the "dbo.Purchase.ShipDate" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>?.  The <see cref="DbExAlt.dboAltDataService.PurchaseEntity.ShipDateField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -5303,8 +5303,8 @@ namespace DbExAlt.dboDataService
         public readonly ShipDateField ShipDate;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.PurchaseEntity.ExpectedDeliveryDateField"/> representing the "dbo.Purchase.ExpectedDeliveryDate" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>?.  The <see cref="DbExAlt.dboDataService.PurchaseEntity.ExpectedDeliveryDateField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.PurchaseEntity.ExpectedDeliveryDateField"/> representing the "dbo.Purchase.ExpectedDeliveryDate" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>?.  The <see cref="DbExAlt.dboAltDataService.PurchaseEntity.ExpectedDeliveryDateField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -5323,8 +5323,8 @@ namespace DbExAlt.dboDataService
         public readonly ExpectedDeliveryDateField ExpectedDeliveryDate;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.PurchaseEntity.TrackingIdentifierField"/> representing the "dbo.Purchase.TrackingIdentifier" column in the database, 
-        /// with a .NET type of <see cref="Guid"/>?.  The <see cref="DbExAlt.dboDataService.PurchaseEntity.TrackingIdentifierField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.PurchaseEntity.TrackingIdentifierField"/> representing the "dbo.Purchase.TrackingIdentifier" column in the database, 
+        /// with a .NET type of <see cref="Guid"/>?.  The <see cref="DbExAlt.dboAltDataService.PurchaseEntity.TrackingIdentifierField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Guid}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -5343,8 +5343,8 @@ namespace DbExAlt.dboDataService
         public readonly TrackingIdentifierField TrackingIdentifier;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.PurchaseEntity.PaymentMethodTypeField"/> representing the "dbo.Purchase.PaymentMethodType" column in the database, 
-        /// with a .NET type of <see cref="string"/>.  The <see cref="DbExAlt.dboDataService.PurchaseEntity.PaymentMethodTypeField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.PurchaseEntity.PaymentMethodTypeField"/> representing the "dbo.Purchase.PaymentMethodType" column in the database, 
+        /// with a .NET type of <see cref="string"/>.  The <see cref="DbExAlt.dboAltDataService.PurchaseEntity.PaymentMethodTypeField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -5363,8 +5363,8 @@ namespace DbExAlt.dboDataService
         public readonly PaymentMethodTypeField PaymentMethodType;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.PurchaseEntity.PaymentSourceTypeField"/> representing the "dbo.Purchase.PaymentSourceType" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.dboDataService.PurchaseEntity.PaymentSourceTypeField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.PurchaseEntity.PaymentSourceTypeField"/> representing the "dbo.Purchase.PaymentSourceType" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.dboAltDataService.PurchaseEntity.PaymentSourceTypeField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -5383,8 +5383,8 @@ namespace DbExAlt.dboDataService
         public readonly PaymentSourceTypeField PaymentSourceType;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.PurchaseEntity.DateCreatedField"/> representing the "dbo.Purchase.DateCreated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbExAlt.dboDataService.PurchaseEntity.DateCreatedField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.PurchaseEntity.DateCreatedField"/> representing the "dbo.Purchase.DateCreated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbExAlt.dboAltDataService.PurchaseEntity.DateCreatedField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -5406,8 +5406,8 @@ namespace DbExAlt.dboDataService
         public readonly DateCreatedField DateCreated;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.PurchaseEntity.DateUpdatedField"/> representing the "dbo.Purchase.DateUpdated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbExAlt.dboDataService.PurchaseEntity.DateUpdatedField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.PurchaseEntity.DateUpdatedField"/> representing the "dbo.Purchase.DateUpdated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbExAlt.dboAltDataService.PurchaseEntity.DateUpdatedField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -5835,8 +5835,8 @@ namespace DbExAlt.dboDataService
 
         #region interface
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.PurchaseLineEntity.IdField"/> representing the "dbo.PurchaseLine.Id" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExAlt.dboDataService.PurchaseLineEntity.IdField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.PurchaseLineEntity.IdField"/> representing the "dbo.PurchaseLine.Id" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExAlt.dboAltDataService.PurchaseLineEntity.IdField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -5858,8 +5858,8 @@ namespace DbExAlt.dboDataService
         public readonly IdField Id;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.PurchaseLineEntity.PurchaseIdField"/> representing the "dbo.PurchaseLine.PurchaseId" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExAlt.dboDataService.PurchaseLineEntity.PurchaseIdField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.PurchaseLineEntity.PurchaseIdField"/> representing the "dbo.PurchaseLine.PurchaseId" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExAlt.dboAltDataService.PurchaseLineEntity.PurchaseIdField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -5878,8 +5878,8 @@ namespace DbExAlt.dboDataService
         public readonly PurchaseIdField PurchaseId;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.PurchaseLineEntity.ProductIdField"/> representing the "dbo.PurchaseLine.ProductId" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExAlt.dboDataService.PurchaseLineEntity.ProductIdField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.PurchaseLineEntity.ProductIdField"/> representing the "dbo.PurchaseLine.ProductId" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExAlt.dboAltDataService.PurchaseLineEntity.ProductIdField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -5898,8 +5898,8 @@ namespace DbExAlt.dboDataService
         public readonly ProductIdField ProductId;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.PurchaseLineEntity.PurchasePriceField"/> representing the "dbo.PurchaseLine.PurchasePrice" column in the database, 
-        /// with a .NET type of <see cref="decimal"/>.  The <see cref="DbExAlt.dboDataService.PurchaseLineEntity.PurchasePriceField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.PurchaseLineEntity.PurchasePriceField"/> representing the "dbo.PurchaseLine.PurchasePrice" column in the database, 
+        /// with a .NET type of <see cref="decimal"/>.  The <see cref="DbExAlt.dboAltDataService.PurchaseLineEntity.PurchasePriceField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Decimal}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -5918,8 +5918,8 @@ namespace DbExAlt.dboDataService
         public readonly PurchasePriceField PurchasePrice;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.PurchaseLineEntity.QuantityField"/> representing the "dbo.PurchaseLine.Quantity" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExAlt.dboDataService.PurchaseLineEntity.QuantityField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.PurchaseLineEntity.QuantityField"/> representing the "dbo.PurchaseLine.Quantity" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExAlt.dboAltDataService.PurchaseLineEntity.QuantityField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -5938,8 +5938,8 @@ namespace DbExAlt.dboDataService
         public readonly QuantityField Quantity;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.PurchaseLineEntity.DateCreatedField"/> representing the "dbo.PurchaseLine.DateCreated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbExAlt.dboDataService.PurchaseLineEntity.DateCreatedField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.PurchaseLineEntity.DateCreatedField"/> representing the "dbo.PurchaseLine.DateCreated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbExAlt.dboAltDataService.PurchaseLineEntity.DateCreatedField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -5961,8 +5961,8 @@ namespace DbExAlt.dboDataService
         public readonly DateCreatedField DateCreated;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.PurchaseLineEntity.DateUpdatedField"/> representing the "dbo.PurchaseLine.DateUpdated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbExAlt.dboDataService.PurchaseLineEntity.DateUpdatedField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.PurchaseLineEntity.DateUpdatedField"/> representing the "dbo.PurchaseLine.DateUpdated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbExAlt.dboAltDataService.PurchaseLineEntity.DateUpdatedField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -6224,8 +6224,8 @@ namespace DbExAlt.dboDataService
 
         #region interface
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.PersonTotalPurchasesViewEntity.IdField"/> representing the "dbo.PersonTotalPurchasesView.Id" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExAlt.dboDataService.PersonTotalPurchasesViewEntity.IdField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.PersonTotalPurchasesViewEntity.IdField"/> representing the "dbo.PersonTotalPurchasesView.Id" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExAlt.dboAltDataService.PersonTotalPurchasesViewEntity.IdField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -6244,8 +6244,8 @@ namespace DbExAlt.dboDataService
         public readonly IdField Id;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.PersonTotalPurchasesViewEntity.TotalAmountField"/> representing the "dbo.PersonTotalPurchasesView.TotalAmount" column in the database, 
-        /// with a .NET type of <see cref="double"/>?.  The <see cref="DbExAlt.dboDataService.PersonTotalPurchasesViewEntity.TotalAmountField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.PersonTotalPurchasesViewEntity.TotalAmountField"/> representing the "dbo.PersonTotalPurchasesView.TotalAmount" column in the database, 
+        /// with a .NET type of <see cref="double"/>?.  The <see cref="DbExAlt.dboAltDataService.PersonTotalPurchasesViewEntity.TotalAmountField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Double}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -6264,8 +6264,8 @@ namespace DbExAlt.dboDataService
         public readonly TotalAmountField TotalAmount;
 
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.PersonTotalPurchasesViewEntity.TotalCountField"/> representing the "dbo.PersonTotalPurchasesView.TotalCount" column in the database, 
-        /// with a .NET type of <see cref="int"/>?.  The <see cref="DbExAlt.dboDataService.PersonTotalPurchasesViewEntity.TotalCountField"/> can be 
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.PersonTotalPurchasesViewEntity.TotalCountField"/> representing the "dbo.PersonTotalPurchasesView.TotalCount" column in the database, 
+        /// with a .NET type of <see cref="int"/>?.  The <see cref="DbExAlt.dboAltDataService.PersonTotalPurchasesViewEntity.TotalCountField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -6417,16 +6417,16 @@ namespace DbExAlt.dboDataService
     }
     #endregion
 
-    #region select person_ as_ dynamic_ with_ input stored procedure expression
-    public partial class SelectPerson_As_Dynamic_With_InputStoredProcedure : StoredProcedureExpression
+    #region select person_ as_ dynamic_ with_ input alt stored procedure expression
+    public partial class SelectPerson_As_Dynamic_With_InputAltStoredProcedure : StoredProcedureExpression
     {
-        public SelectPerson_As_Dynamic_With_InputStoredProcedure(
+        public SelectPerson_As_Dynamic_With_InputAltStoredProcedure(
             string identifier
             ,Schema schema
-            ,int? P1
-        ) : base($"{identifier}.SelectPerson_As_Dynamic_With_Input", "SelectPerson_As_Dynamic_With_Input", schema)
+            ,int? P1Alt
+        ) : base($"{identifier}.SelectPerson_As_Dynamic_With_Input", "SelectPerson_As_Dynamic_With_InputAlt", schema)
         { 
-            Attributes.Parameters.Add("P1", new ParameterExpression<int?>($"{identifier}.SelectPerson_As_Dynamic_With_Input.@P1", "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add("P1", new ParameterExpression<int?>($"{identifier}.SelectPerson_As_Dynamic_With_Input.@P1", "P1Alt", P1Alt, ParameterDirection.Input));
         }
     }
     #endregion
@@ -6633,17 +6633,17 @@ namespace DbExAlt.dboDataService
     }
     #endregion
 
-    #region dbo
+    #region dboAlt
 #pragma warning disable CA1052 // Static holder types should be Static or NotInheritable
 #pragma warning disable IDE1006 // Naming Styles
-    public partial class dbo
+    public partial class dboAlt
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
     {
-        private static dboSchemaExpression? schema;
+        private static dboAltSchemaExpression? schema;
 
         #region interface
-        /// <summary>A <see cref="DbExAlt.dboDataService.AccessAuditLogEntity"/> representing the "dbo.AccessAuditLog" table in the database.
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.AccessAuditLogEntity"/> representing the "dbo.AccessAuditLog" table in the database.
         /// <para>Properties:
         /// <list type="table">
         /// <item>
@@ -6667,7 +6667,7 @@ namespace DbExAlt.dboDataService
         /// </summary>
         public static AccessAuditLogEntity AccessAuditLog { get; private set; } = null!;
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.AddressEntity"/> representing the "dbo.Address" table in the database.
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.AddressEntity"/> representing the "dbo.Address" table in the database.
         /// <para>Properties:
         /// <list type="table">
         /// <item>
@@ -6691,7 +6691,7 @@ namespace DbExAlt.dboDataService
         /// </summary>
         public static AddressEntity Address { get; private set; } = null!;
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.PersonEntity"/> representing the "dbo.Person" table in the database.
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.PersonAltEntity"/> representing the "dbo.Person" table in the database.
         /// <para>Properties:
         /// <list type="table">
         /// <item>
@@ -6713,9 +6713,9 @@ namespace DbExAlt.dboDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static PersonEntity Person { get; private set; } = null!;
+        public static PersonAltEntity PersonAlt { get; private set; } = null!;
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.Person_AddressEntity"/> representing the "dbo.Person_Address" table in the database.
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.Person_AddressEntity"/> representing the "dbo.Person_Address" table in the database.
         /// <para>Properties:
         /// <list type="table">
         /// <item>
@@ -6739,7 +6739,7 @@ namespace DbExAlt.dboDataService
         /// </summary>
         public static Person_AddressEntity Person_Address { get; private set; } = null!;
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.ProductEntity"/> representing the "dbo.Product" table in the database.
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.ProductEntity"/> representing the "dbo.Product" table in the database.
         /// <para>Properties:
         /// <list type="table">
         /// <item>
@@ -6763,7 +6763,7 @@ namespace DbExAlt.dboDataService
         /// </summary>
         public static ProductEntity Product { get; private set; } = null!;
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.PurchaseEntity"/> representing the "dbo.Purchase" table in the database.
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.PurchaseEntity"/> representing the "dbo.Purchase" table in the database.
         /// <para>Properties:
         /// <list type="table">
         /// <item>
@@ -6787,7 +6787,7 @@ namespace DbExAlt.dboDataService
         /// </summary>
         public static PurchaseEntity Purchase { get; private set; } = null!;
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.PurchaseLineEntity"/> representing the "dbo.PurchaseLine" table in the database.
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.PurchaseLineEntity"/> representing the "dbo.PurchaseLine" table in the database.
         /// <para>Properties:
         /// <list type="table">
         /// <item>
@@ -6811,7 +6811,7 @@ namespace DbExAlt.dboDataService
         /// </summary>
         public static PurchaseLineEntity PurchaseLine { get; private set; } = null!;
 
-        /// <summary>A <see cref="DbExAlt.dboDataService.PersonTotalPurchasesViewEntity"/> representing the "dbo.PersonTotalPurchasesView" view in the database.
+        /// <summary>A <see cref="DbExAlt.dboAltDataService.PersonTotalPurchasesViewEntity"/> representing the "dbo.PersonTotalPurchasesView" view in the database.
         /// <para>Properties:
         /// <list type="table">
         /// <item>
@@ -6825,16 +6825,16 @@ namespace DbExAlt.dboDataService
         #endregion
 
         #region use schema
-        public static void UseSchema(dboSchemaExpression schema)
+        public static void UseSchema(dboAltSchemaExpression schema)
         { 
             if (schema == null)
                  throw new ArgumentNullException(nameof(schema));
 
-            dbo.schema = schema;
+            dboAlt.schema = schema;
 
             AccessAuditLog = schema.AccessAuditLog;
             Address = schema.Address;
-            Person = schema.Person;
+            PersonAlt = schema.PersonAlt;
             Person_Address = schema.Person_Address;
             Product = schema.Product;
             Purchase = schema.Purchase;
