@@ -37,27 +37,27 @@ namespace ServerSideBlazorApp.DataService
             _metadata.Add("dbo.Address.DateUpdated", new MsSqlColumnMetadata("DateUpdated", SqlDbType.DateTime));
             #endregion
 
-            #region dbo.Customer
-            _metadata.Add("dbo.Customer", new SqlTableMetadata("Person"));
-            _metadata.Add("dbo.Customer.Id", new MsSqlColumnMetadata("Id", SqlDbType.Int) { IsIdentity = true });
-            _metadata.Add("dbo.Customer.FirstName", new MsSqlColumnMetadata("FirstName", SqlDbType.VarChar, 20));
-            _metadata.Add("dbo.Customer.LastName", new MsSqlColumnMetadata("LastName", SqlDbType.VarChar, 20));
-            _metadata.Add("dbo.Customer.BirthDate", new MsSqlColumnMetadata("BirthDate", SqlDbType.Date));
-            _metadata.Add("dbo.Customer.GenderType", new MsSqlColumnMetadata("GenderType", SqlDbType.Int));
-            _metadata.Add("dbo.Customer.CreditLimit", new MsSqlColumnMetadata("CreditLimit", SqlDbType.Int));
-            _metadata.Add("dbo.Customer.YearOfLastCreditLimitReview", new MsSqlColumnMetadata("YearOfLastCreditLimitReview", SqlDbType.Int));
-            _metadata.Add("dbo.Customer.RegistrationDate", new MsSqlColumnMetadata("RegistrationDate", SqlDbType.DateTimeOffset, 10));
-            _metadata.Add("dbo.Customer.LastLoginDate", new MsSqlColumnMetadata("LastLoginDate", SqlDbType.DateTimeOffset, 10));
-            _metadata.Add("dbo.Customer.DateCreated", new MsSqlColumnMetadata("DateCreated", SqlDbType.DateTime));
-            _metadata.Add("dbo.Customer.DateUpdated", new MsSqlColumnMetadata("DateUpdated", SqlDbType.DateTime));
+            #region dbo.Person
+            _metadata.Add("dbo.Person", new SqlTableMetadata("Person"));
+            _metadata.Add("dbo.Person.Id", new MsSqlColumnMetadata("Id", SqlDbType.Int) { IsIdentity = true });
+            _metadata.Add("dbo.Person.FirstName", new MsSqlColumnMetadata("FirstName", SqlDbType.VarChar, 20));
+            _metadata.Add("dbo.Person.LastName", new MsSqlColumnMetadata("LastName", SqlDbType.VarChar, 20));
+            _metadata.Add("dbo.Person.BirthDate", new MsSqlColumnMetadata("BirthDate", SqlDbType.Date));
+            _metadata.Add("dbo.Person.GenderType", new MsSqlColumnMetadata("GenderType", SqlDbType.Int));
+            _metadata.Add("dbo.Person.CreditLimit", new MsSqlColumnMetadata("CreditLimit", SqlDbType.Int));
+            _metadata.Add("dbo.Person.YearOfLastCreditLimitReview", new MsSqlColumnMetadata("YearOfLastCreditLimitReview", SqlDbType.Int));
+            _metadata.Add("dbo.Person.RegistrationDate", new MsSqlColumnMetadata("RegistrationDate", SqlDbType.DateTimeOffset, 10));
+            _metadata.Add("dbo.Person.LastLoginDate", new MsSqlColumnMetadata("LastLoginDate", SqlDbType.DateTimeOffset, 10));
+            _metadata.Add("dbo.Person.DateCreated", new MsSqlColumnMetadata("DateCreated", SqlDbType.DateTime));
+            _metadata.Add("dbo.Person.DateUpdated", new MsSqlColumnMetadata("DateUpdated", SqlDbType.DateTime));
             #endregion
 
-            #region dbo.CustomerAddress
-            _metadata.Add("dbo.CustomerAddress", new SqlTableMetadata("Person_Address"));
-            _metadata.Add("dbo.CustomerAddress.Id", new MsSqlColumnMetadata("Id", SqlDbType.Int) { IsIdentity = true });
-            _metadata.Add("dbo.CustomerAddress.CustomerId", new MsSqlColumnMetadata("PersonId", SqlDbType.Int));
-            _metadata.Add("dbo.CustomerAddress.AddressId", new MsSqlColumnMetadata("AddressId", SqlDbType.Int));
-            _metadata.Add("dbo.CustomerAddress.DateCreated", new MsSqlColumnMetadata("DateCreated", SqlDbType.DateTime));
+            #region dbo.Person_Address
+            _metadata.Add("dbo.Person_Address", new SqlTableMetadata("Person_Address"));
+            _metadata.Add("dbo.Person_Address.Id", new MsSqlColumnMetadata("Id", SqlDbType.Int) { IsIdentity = true });
+            _metadata.Add("dbo.Person_Address.PersonId", new MsSqlColumnMetadata("PersonId", SqlDbType.Int));
+            _metadata.Add("dbo.Person_Address.AddressId", new MsSqlColumnMetadata("AddressId", SqlDbType.Int));
+            _metadata.Add("dbo.Person_Address.DateCreated", new MsSqlColumnMetadata("DateCreated", SqlDbType.DateTime));
             #endregion
 
             #region dbo.Product
@@ -84,7 +84,7 @@ namespace ServerSideBlazorApp.DataService
             #region dbo.Purchase
             _metadata.Add("dbo.Purchase", new SqlTableMetadata("Purchase"));
             _metadata.Add("dbo.Purchase.Id", new MsSqlColumnMetadata("Id", SqlDbType.Int) { IsIdentity = true });
-            _metadata.Add("dbo.Purchase.CustomerId", new MsSqlColumnMetadata("PersonId", SqlDbType.Int));
+            _metadata.Add("dbo.Purchase.PersonId", new MsSqlColumnMetadata("PersonId", SqlDbType.Int));
             _metadata.Add("dbo.Purchase.OrderNumber", new MsSqlColumnMetadata("OrderNumber", SqlDbType.VarChar, 20));
             _metadata.Add("dbo.Purchase.TotalPurchaseQuantity", new MsSqlColumnMetadata("TotalPurchaseQuantity", SqlDbType.Int));
             _metadata.Add("dbo.Purchase.TotalPurchaseAmount", new MsSqlColumnMetadata("TotalPurchaseAmount", SqlDbType.Money));
@@ -120,42 +120,42 @@ namespace ServerSideBlazorApp.DataService
 
             #region dbo stored procedures
             _metadata.Add("dbo.SelectPerson_As_Dynamic_With_Input", new StoredProcedureMetadata("SelectPerson_As_Dynamic_With_Input"));
-            _metadata.Add($"dbo.SelectPerson_As_Dynamic_With_Input.@P1", new MsSqlParameterMetadata("@P1", SqlDbType.Int));
+            _metadata.Add("dbo.SelectPerson_As_Dynamic_With_Input.@P1", new MsSqlParameterMetadata("@P1", SqlDbType.Int));
             _metadata.Add("dbo.SelectPerson_As_Dynamic_With_Input_And_InputOutput", new StoredProcedureMetadata("SelectPerson_As_Dynamic_With_Input_And_InputOutput"));
-            _metadata.Add($"dbo.SelectPerson_As_Dynamic_With_Input_And_InputOutput.@P1", new MsSqlParameterMetadata("@P1", SqlDbType.Int));
-            _metadata.Add($"dbo.SelectPerson_As_Dynamic_With_Input_And_InputOutput.@CreditLimit", new MsSqlParameterMetadata("@CreditLimit", SqlDbType.Int));
+            _metadata.Add("dbo.SelectPerson_As_Dynamic_With_Input_And_InputOutput.@P1", new MsSqlParameterMetadata("@P1", SqlDbType.Int));
+            _metadata.Add("dbo.SelectPerson_As_Dynamic_With_Input_And_InputOutput.@CreditLimit", new MsSqlParameterMetadata("@CreditLimit", SqlDbType.Int));
             _metadata.Add("dbo.SelectPerson_As_Dynamic_With_Input_And_Output", new StoredProcedureMetadata("SelectPerson_As_Dynamic_With_Input_And_Output"));
-            _metadata.Add($"dbo.SelectPerson_As_Dynamic_With_Input_And_Output.@P1", new MsSqlParameterMetadata("@P1", SqlDbType.Int));
-            _metadata.Add($"dbo.SelectPerson_As_Dynamic_With_Input_And_Output.@Count", new MsSqlParameterMetadata("@Count", SqlDbType.Int));
+            _metadata.Add("dbo.SelectPerson_As_Dynamic_With_Input_And_Output.@P1", new MsSqlParameterMetadata("@P1", SqlDbType.Int));
+            _metadata.Add("dbo.SelectPerson_As_Dynamic_With_Input_And_Output.@Count", new MsSqlParameterMetadata("@Count", SqlDbType.Int));
             _metadata.Add("dbo.SelectPerson_As_DynamicList_With_Input", new StoredProcedureMetadata("SelectPerson_As_DynamicList_With_Input"));
-            _metadata.Add($"dbo.SelectPerson_As_DynamicList_With_Input.@P1", new MsSqlParameterMetadata("@P1", SqlDbType.Int));
+            _metadata.Add("dbo.SelectPerson_As_DynamicList_With_Input.@P1", new MsSqlParameterMetadata("@P1", SqlDbType.Int));
             _metadata.Add("dbo.SelectPerson_As_DynamicList_With_Input_And_InputOutput", new StoredProcedureMetadata("SelectPerson_As_DynamicList_With_Input_And_InputOutput"));
-            _metadata.Add($"dbo.SelectPerson_As_DynamicList_With_Input_And_InputOutput.@P1", new MsSqlParameterMetadata("@P1", SqlDbType.Int));
-            _metadata.Add($"dbo.SelectPerson_As_DynamicList_With_Input_And_InputOutput.@CreditLimit", new MsSqlParameterMetadata("@CreditLimit", SqlDbType.Int));
+            _metadata.Add("dbo.SelectPerson_As_DynamicList_With_Input_And_InputOutput.@P1", new MsSqlParameterMetadata("@P1", SqlDbType.Int));
+            _metadata.Add("dbo.SelectPerson_As_DynamicList_With_Input_And_InputOutput.@CreditLimit", new MsSqlParameterMetadata("@CreditLimit", SqlDbType.Int));
             _metadata.Add("dbo.SelectPerson_As_DynamicList_With_Input_And_Output", new StoredProcedureMetadata("SelectPerson_As_DynamicList_With_Input_And_Output"));
-            _metadata.Add($"dbo.SelectPerson_As_DynamicList_With_Input_And_Output.@P1", new MsSqlParameterMetadata("@P1", SqlDbType.Int));
-            _metadata.Add($"dbo.SelectPerson_As_DynamicList_With_Input_And_Output.@Count", new MsSqlParameterMetadata("@Count", SqlDbType.Int));
+            _metadata.Add("dbo.SelectPerson_As_DynamicList_With_Input_And_Output.@P1", new MsSqlParameterMetadata("@P1", SqlDbType.Int));
+            _metadata.Add("dbo.SelectPerson_As_DynamicList_With_Input_And_Output.@Count", new MsSqlParameterMetadata("@Count", SqlDbType.Int));
             _metadata.Add("dbo.SelectPersonId_As_ScalarValue_With_Input", new StoredProcedureMetadata("SelectPersonId_As_ScalarValue_With_Input"));
-            _metadata.Add($"dbo.SelectPersonId_As_ScalarValue_With_Input.@P1", new MsSqlParameterMetadata("@P1", SqlDbType.Int));
+            _metadata.Add("dbo.SelectPersonId_As_ScalarValue_With_Input.@P1", new MsSqlParameterMetadata("@P1", SqlDbType.Int));
             _metadata.Add("dbo.SelectPersonId_As_ScalarValue_With_Input_And_Default_Value", new StoredProcedureMetadata("SelectPersonId_As_ScalarValue_With_Input_And_Default_Value"));
-            _metadata.Add($"dbo.SelectPersonId_As_ScalarValue_With_Input_And_Default_Value.@P1", new MsSqlParameterMetadata("@P1", SqlDbType.Int));
+            _metadata.Add("dbo.SelectPersonId_As_ScalarValue_With_Input_And_Default_Value.@P1", new MsSqlParameterMetadata("@P1", SqlDbType.Int));
             _metadata.Add("dbo.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput", new StoredProcedureMetadata("SelectPersonId_As_ScalarValue_With_Input_And_InputOutput"));
-            _metadata.Add($"dbo.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput.@P1", new MsSqlParameterMetadata("@P1", SqlDbType.Int));
-            _metadata.Add($"dbo.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput.@CreditLimit", new MsSqlParameterMetadata("@CreditLimit", SqlDbType.Int));
+            _metadata.Add("dbo.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput.@P1", new MsSqlParameterMetadata("@P1", SqlDbType.Int));
+            _metadata.Add("dbo.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput.@CreditLimit", new MsSqlParameterMetadata("@CreditLimit", SqlDbType.Int));
             _metadata.Add("dbo.SelectPersonId_As_ScalarValue_With_Input_And_Output", new StoredProcedureMetadata("SelectPersonId_As_ScalarValue_With_Input_And_Output"));
-            _metadata.Add($"dbo.SelectPersonId_As_ScalarValue_With_Input_And_Output.@P1", new MsSqlParameterMetadata("@P1", SqlDbType.Int));
-            _metadata.Add($"dbo.SelectPersonId_As_ScalarValue_With_Input_And_Output.@Count", new MsSqlParameterMetadata("@Count", SqlDbType.Int));
+            _metadata.Add("dbo.SelectPersonId_As_ScalarValue_With_Input_And_Output.@P1", new MsSqlParameterMetadata("@P1", SqlDbType.Int));
+            _metadata.Add("dbo.SelectPersonId_As_ScalarValue_With_Input_And_Output.@Count", new MsSqlParameterMetadata("@Count", SqlDbType.Int));
             _metadata.Add("dbo.SelectPersonId_As_ScalarValueList_With_Input", new StoredProcedureMetadata("SelectPersonId_As_ScalarValueList_With_Input"));
-            _metadata.Add($"dbo.SelectPersonId_As_ScalarValueList_With_Input.@P1", new MsSqlParameterMetadata("@P1", SqlDbType.Int));
+            _metadata.Add("dbo.SelectPersonId_As_ScalarValueList_With_Input.@P1", new MsSqlParameterMetadata("@P1", SqlDbType.Int));
             _metadata.Add("dbo.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput", new StoredProcedureMetadata("SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput"));
-            _metadata.Add($"dbo.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput.@P1", new MsSqlParameterMetadata("@P1", SqlDbType.Int));
-            _metadata.Add($"dbo.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput.@CreditLimit", new MsSqlParameterMetadata("@CreditLimit", SqlDbType.Int));
+            _metadata.Add("dbo.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput.@P1", new MsSqlParameterMetadata("@P1", SqlDbType.Int));
+            _metadata.Add("dbo.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput.@CreditLimit", new MsSqlParameterMetadata("@CreditLimit", SqlDbType.Int));
             _metadata.Add("dbo.SelectPersonId_As_ScalarValueList_With_Input_And_Output", new StoredProcedureMetadata("SelectPersonId_As_ScalarValueList_With_Input_And_Output"));
-            _metadata.Add($"dbo.SelectPersonId_As_ScalarValueList_With_Input_And_Output.@P1", new MsSqlParameterMetadata("@P1", SqlDbType.Int));
-            _metadata.Add($"dbo.SelectPersonId_As_ScalarValueList_With_Input_And_Output.@Count", new MsSqlParameterMetadata("@Count", SqlDbType.Int));
+            _metadata.Add("dbo.SelectPersonId_As_ScalarValueList_With_Input_And_Output.@P1", new MsSqlParameterMetadata("@P1", SqlDbType.Int));
+            _metadata.Add("dbo.SelectPersonId_As_ScalarValueList_With_Input_And_Output.@Count", new MsSqlParameterMetadata("@Count", SqlDbType.Int));
             _metadata.Add("dbo.UpdatePersonCreditLimit_With_Inputs", new StoredProcedureMetadata("UpdatePersonCreditLimit_With_Inputs"));
-            _metadata.Add($"dbo.UpdatePersonCreditLimit_With_Inputs.@P1", new MsSqlParameterMetadata("@P1", SqlDbType.Int));
-            _metadata.Add($"dbo.UpdatePersonCreditLimit_With_Inputs.@CreditLimit", new MsSqlParameterMetadata("@CreditLimit", SqlDbType.Int));
+            _metadata.Add("dbo.UpdatePersonCreditLimit_With_Inputs.@P1", new MsSqlParameterMetadata("@P1", SqlDbType.Int));
+            _metadata.Add("dbo.UpdatePersonCreditLimit_With_Inputs.@CreditLimit", new MsSqlParameterMetadata("@CreditLimit", SqlDbType.Int));
             #endregion
             #endregion
 
