@@ -2,18 +2,18 @@
 {?var:databaseExpressionName = $.DatabaseExpression.Name}    
     #region {:databaseExpressionName}
     public class {:databaseExpressionName} : ISqlDatabaseRuntime, 
-        SelectOneInitiation, 
-        SelectManyInitiation,
-        UpdateEntitiesInitiation,
-        DeleteEntitiesInitiation,
-        InsertEntitiesInitiation
+        SelectOneInitiation<{:databaseExpressionName}>, 
+        SelectManyInitiation<{:databaseExpressionName}>,
+        UpdateEntitiesInitiation<{:databaseExpressionName}>,
+        DeleteEntitiesInitiation<{:databaseExpressionName}>,
+        InsertEntitiesInitiation<{:databaseExpressionName}>
     {{
         #region internals
         private static readonly SqlDatabaseMetadataProvider _metadata = new SqlDatabaseMetadataProvider(new {:databaseExpressionName}SqlDatabaseMetadata("{:databaseExpressionName}"));
         private static readonly {$.Platform}FunctionExpressionBuilder _fx = new {$.Platform}FunctionExpressionBuilder();
         private static readonly List<SchemaExpression> _schemas = new List<SchemaExpression>();
         private static readonly Dictionary<Type, Table> _entityTypeToTableMap = new Dictionary<Type, Table>();
-        private readonly IQueryExpressionBuilderFactory _queryExpressionBuilderFactory;
+        private readonly IQueryExpressionBuilderFactory<{:databaseExpressionName}> _queryExpressionBuilderFactory;
         private readonly ISqlConnectionFactory _connectionFactory;
         private {:databaseExpressionName}StoredProcedures{:nullableAnnotation} _sp;
         #endregion
@@ -40,7 +40,7 @@
         }}
 
         public {:databaseExpressionName}(
-            IQueryExpressionBuilderFactory queryExpressionBuilderFactory,
+            IQueryExpressionBuilderFactory<{:databaseExpressionName}> queryExpressionBuilderFactory,
             ISqlConnectionFactory connectionFactory        
         )
         {{
@@ -53,8 +53,8 @@
         void ISqlDatabaseRuntime.InitializeStaticRuntime()
             => {$.DatabaseExpression.AccessorName}.UseDatabase(this);
 
-        protected IQueryExpressionBuilder GetBuilder()
-            => _queryExpressionBuilderFactory.CreateQueryExpressionBuilder();
+        protected IQueryExpressionBuilder<{:databaseExpressionName}> GetBuilder()
+            => _queryExpressionBuilderFactory.CreateQueryExpressionBuilder(this);
 
         #region select one
         /// <summary>
@@ -66,9 +66,9 @@
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <returns><see cref="SelectEntity{{TEntity}}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
+        /// <returns><see cref="SelectEntity{{{:databaseExpressionName}, TEntity}}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
-        public SelectEntity<TEntity> SelectOne<TEntity>()
+        public SelectEntity<{:databaseExpressionName}, TEntity> SelectOne<TEntity>()
             where TEntity : class, IDbEntity, new()
             => GetBuilder().CreateSelectEntityBuilder<TEntity>(GetTable<TEntity>());
 
@@ -84,9 +84,9 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
         {/if}      
         /// </param>
-        /// <returns><see cref="Sql.SelectValue{{TEnum}}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
+        /// <returns><see cref="Sql.SelectValue{{{:databaseExpressionName}, TEnum}}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
-        public SelectValue<TEnum> SelectOne<TEnum>(AnyElement<TEnum> element)
+        public SelectValue<{:databaseExpressionName}, TEnum> SelectOne<TEnum>(AnyElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
             => GetBuilder().CreateSelectValueBuilder<TEnum>(element);
 
@@ -102,9 +102,9 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValue{{TEnum}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TEnum}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
-        public SelectValue<TEnum?> SelectOne<TEnum>(AnyElement<TEnum?> element)
+        public SelectValue<{:databaseExpressionName}, TEnum?> SelectOne<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable
             => GetBuilder().CreateSelectValueBuilder<TEnum>(element);
 
@@ -120,8 +120,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
         {/if}      
         /// </param>
-        /// <returns><see cref="SelectValue{{object}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<object>{:nullableAnnotation} SelectOne(ObjectElement element)
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, object}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<{:databaseExpressionName}, object>{:nullableAnnotation} SelectOne(ObjectElement element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -136,8 +136,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
         {/if}      
         /// </param>
-        /// <returns><see cref="SelectValue{{object}}"/>{:nullableAnnotation}, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<object{:nullableAnnotation}> SelectOne(NullableObjectElement element)
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, object}}"/>{:nullableAnnotation}, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<{:databaseExpressionName}, object{:nullableAnnotation}> SelectOne(NullableObjectElement element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -152,9 +152,9 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
         {/if}      
         /// </param>
-        /// <returns><see cref="SelectValues{{T}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, T}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the object to select.</typeparam>
-        public SelectObject<T> SelectOne<T>(ObjectElement<T> element)
+        public SelectObject<{:databaseExpressionName}, T> SelectOne<T>(ObjectElement<T> element)
             where T : class{:nullableAnnotation}
             => GetBuilder().CreateSelectValueBuilder<T>(element);
 
@@ -166,8 +166,8 @@
         /// </summary>
         /// <param name="element">An expression of type <see cref="AliasedElement{{T}}" />    
         /// </param>
-        /// <returns><see cref="SelectValue{{T}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<T> SelectOne<T>(AliasedElement<T> element)
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, T}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<{:databaseExpressionName}, T> SelectOne<T>(AliasedElement<T> element)
             => GetBuilder().CreateSelectValueBuilder<T>(element);
 
         /// <summary>
@@ -182,8 +182,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, false)
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<bool> SelectOne(AnyElement<bool> element)
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<{:databaseExpressionName}, bool> SelectOne(AnyElement<bool> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -198,8 +198,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}""
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<bool?> SelectOne(AnyElement<bool?> element)
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<{:databaseExpressionName}, bool?> SelectOne(AnyElement<bool?> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -214,8 +214,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, byte.MinValue)"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<byte> SelectOne(AnyElement<byte> element)
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<{:databaseExpressionName}, byte> SelectOne(AnyElement<byte> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -230,8 +230,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<byte?> SelectOne(AnyElement<byte?> element)
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<{:databaseExpressionName}, byte?> SelectOne(AnyElement<byte?> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -246,8 +246,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, new byte[0])"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<byte[]> SelectOne(AnyElement<byte[]> element)
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<{:databaseExpressionName}, byte[]> SelectOne(AnyElement<byte[]> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -262,8 +262,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}", "db.fx.DateAdd(DateParts.Year, 1, {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}) or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, DateTime.Now)"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<DateTime> SelectOne(AnyElement<DateTime> element)
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<{:databaseExpressionName}, DateTime> SelectOne(AnyElement<DateTime> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -278,8 +278,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.DateAdd(DateParts.Year, 1, {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<DateTime?> SelectOne(AnyElement<DateTime?> field)
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<{:databaseExpressionName}, DateTime?> SelectOne(AnyElement<DateTime?> field)
             => GetBuilder().CreateSelectValueBuilder(field);
 
         /// <summary>
@@ -294,8 +294,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}", "db.fx.DateAdd(DateParts.Year, 1, {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, DateTimeOffset.Now)"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<DateTimeOffset> SelectOne(AnyElement<DateTimeOffset> element)
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<{:databaseExpressionName}, DateTimeOffset> SelectOne(AnyElement<DateTimeOffset> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -310,8 +310,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.DateAdd(DateParts.Year, 1, {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})" 
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<DateTimeOffset?> SelectOne(AnyElement<DateTimeOffset?> element)
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<{:databaseExpressionName}, DateTimeOffset?> SelectOne(AnyElement<DateTimeOffset?> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -326,8 +326,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, decimal.MinValue)"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<decimal> SelectOne(AnyElement<decimal> element)
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<{:databaseExpressionName}, decimal> SelectOne(AnyElement<decimal> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -342,8 +342,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Min({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<decimal?> SelectOne(AnyElement<decimal?> element)
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<{:databaseExpressionName}, decimal?> SelectOne(AnyElement<decimal?> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -358,8 +358,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, double.MinValue)"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<double> SelectOne(AnyElement<double> element)
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<{:databaseExpressionName}, double> SelectOne(AnyElement<double> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -374,8 +374,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Min({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<double?> SelectOne(AnyElement<double?> element)
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<{:databaseExpressionName}, double?> SelectOne(AnyElement<double?> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -390,8 +390,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, Guid.Empty)"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<Guid> SelectOne(AnyElement<Guid> element)
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<{:databaseExpressionName}, Guid> SelectOne(AnyElement<Guid> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -406,8 +406,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<Guid?> SelectOne(AnyElement<Guid?> element)
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<{:databaseExpressionName}, Guid?> SelectOne(AnyElement<Guid?> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -422,8 +422,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, short.MinValue)"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<short> SelectOne(AnyElement<short> element)
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<{:databaseExpressionName}, short> SelectOne(AnyElement<short> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -438,8 +438,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Max({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<short?> SelectOne(AnyElement<short?> element)
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<{:databaseExpressionName}, short?> SelectOne(AnyElement<short?> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -454,8 +454,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Avg({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<int> SelectOne(AnyElement<int> element)
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<{:databaseExpressionName}, int> SelectOne(AnyElement<int> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -470,8 +470,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Avg({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<int?> SelectOne(AnyElement<int?> element)
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<{:databaseExpressionName}, int?> SelectOne(AnyElement<int?> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -486,8 +486,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, long.MinValue)"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<long> SelectOne(AnyElement<long> element)
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<{:databaseExpressionName}, long> SelectOne(AnyElement<long> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -502,8 +502,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Max({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<long?> SelectOne(AnyElement<long?> element)
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<{:databaseExpressionName}, long?> SelectOne(AnyElement<long?> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -518,8 +518,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, float.MinValue)"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<float> SelectOne(AnyElement<float> element)
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<{:databaseExpressionName}, float> SelectOne(AnyElement<float> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -534,8 +534,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Max({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<float?> SelectOne(AnyElement<float?> element)
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<{:databaseExpressionName}, float?> SelectOne(AnyElement<float?> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -550,8 +550,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Concat("Value: ", {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValue{{String}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<string> SelectOne(StringElement element) 
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, String}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<{:databaseExpressionName}, string> SelectOne(StringElement element) 
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -566,8 +566,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Concat("Value: ", {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValue{{String}}"/>{:nullableAnnotation}, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<string{:nullableAnnotation}> SelectOne(NullableStringElement element) 
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, String}}"/>{:nullableAnnotation}, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<{:databaseExpressionName}, string{:nullableAnnotation}> SelectOne(NullableStringElement element) 
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -582,8 +582,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}", "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, TimeSpan.MinValue)" or "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name} + DateTime.Now"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<TimeSpan> SelectOne(AnyElement<TimeSpan> element)
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<{:databaseExpressionName}, TimeSpan> SelectOne(AnyElement<TimeSpan> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -598,8 +598,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<TimeSpan?> SelectOne(AnyElement<TimeSpan?> element)
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<{:databaseExpressionName}, TimeSpan?> SelectOne(AnyElement<TimeSpan?> element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -611,8 +611,8 @@
         /// <param name="element1">Any expression</param>
         /// <param name="element2">Any expression</param>
         /// <param name="elements">Any expression</param>
-        /// <returns><see cref="SelectDynamic "/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectDynamic SelectOne(AnyElement element1, AnyElement element2, params AnyElement[] elements)
+        /// <returns><see cref="SelectDynamic{{ {:databaseExpressionName} }}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectDynamic<{:databaseExpressionName}> SelectOne(AnyElement element1, AnyElement element2, params AnyElement[] elements)
             => GetBuilder().CreateSelectDynamicBuilder(element1, element2, elements);
 
         /// <summary>
@@ -623,8 +623,8 @@
         /// </summary>
         /// <param name="element1">Any expression</param>
         /// <param name="elements">A list of any expression</param>
-        /// <returns><see cref="SelectDynamic "/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectDynamic SelectOne(IEnumerable<AnyElement> elements)
+        /// <returns><see cref="SelectDynamic{{ {:databaseExpressionName} }}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectDynamic<{:databaseExpressionName}> SelectOne(IEnumerable<AnyElement> elements)
             => GetBuilder().CreateSelectDynamicBuilder(elements);
 
         /// <summary>
@@ -635,8 +635,8 @@
         /// </summary>
         /// <param name="elements">A list of any expression that is valid for a SELECT query expression.</param>
         /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
-        /// <returns><see cref="SelectDynamic "/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectDynamic SelectOne(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
+        /// <returns><see cref="SelectDynamic{{ {:databaseExpressionName} }}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectDynamic<{:databaseExpressionName}> SelectOne(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
             => GetBuilder().CreateSelectDynamicBuilder((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
         #endregion
 
@@ -650,9 +650,9 @@
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <returns><see cref="SelectEntities{{TEntity}}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
+        /// <returns><see cref="SelectEntities{{{:databaseExpressionName}, TEntity}}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
-        public SelectEntities<TEntity> SelectMany<TEntity>()
+        public SelectEntities<{:databaseExpressionName}, TEntity> SelectMany<TEntity>()
            where TEntity : class, IDbEntity, new()
            => GetBuilder().CreateSelectEntitiesBuilder<TEntity>(GetTable<TEntity>());
 
@@ -668,8 +668,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
         {/if}      
         /// </param>
-        /// <returns><see cref="SelectValues{{TEnum}}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
-        public SelectValues<TEnum> SelectMany<TEnum>(AnyElement<TEnum> element)
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TEnum}}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
+        public SelectValues<{:databaseExpressionName}, TEnum> SelectMany<TEnum>(AnyElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
             => GetBuilder().CreateSelectValuesBuilder<TEnum>(element);
 
@@ -685,8 +685,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
         {/if}      
         /// </param>
-        /// <returns><see cref="SelectValues{{TEnum}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<TEnum?> SelectMany<TEnum>(AnyElement<TEnum?> element)
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TEnum}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<{:databaseExpressionName}, TEnum?> SelectMany<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable
             => GetBuilder().CreateSelectValuesBuilder<TEnum>(element);
 
@@ -702,8 +702,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
         {/if}      
         /// </param>
-        /// <returns><see cref="SelectValues{{object}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<object>{:nullableAnnotation} SelectMany(ObjectElement element)
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, object}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<{:databaseExpressionName}, object>{:nullableAnnotation} SelectMany(ObjectElement element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -718,8 +718,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
         {/if}      
         /// </param>
-        /// <returns><see cref="SelectValues{{object}}"/>{:nullableAnnotation}, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<object{:nullableAnnotation}> SelectMany(NullableObjectElement element)
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, object}}"/>{:nullableAnnotation}, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<{:databaseExpressionName}, object{:nullableAnnotation}> SelectMany(NullableObjectElement element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -734,9 +734,9 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
         {/if}      
         /// </param>
-        /// <returns><see cref="SelectValues{{T}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, T}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the object to select.</typeparam>
-        public SelectObjects<T> SelectMany<T>(ObjectElement<T> element)
+        public SelectObjects<{:databaseExpressionName}, T> SelectMany<T>(ObjectElement<T> element)
             where T : class{:nullableAnnotation}
             => GetBuilder().CreateSelectValuesBuilder<T>(element);
 
@@ -748,8 +748,8 @@
         /// </summary>
         /// <param name="element">An expression of type <see cref="AliasedElement{{T}}" />    
         /// </param>
-        /// <returns><see cref="SelectValues{{T}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<T> SelectMany<T>(AliasedElement<T> element)
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, T}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<{:databaseExpressionName}, T> SelectMany<T>(AliasedElement<T> element)
             => GetBuilder().CreateSelectValuesBuilder<T>(element);
 
         /// <summary>
@@ -764,8 +764,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, false)
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<bool> SelectMany(AnyElement<bool> element)
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<{:databaseExpressionName}, bool> SelectMany(AnyElement<bool> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -780,8 +780,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}""
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<bool?> SelectMany(AnyElement<bool?> element)
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<{:databaseExpressionName}, bool?> SelectMany(AnyElement<bool?> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -796,8 +796,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, byte.MinValue)"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<byte> SelectMany(AnyElement<byte> element)
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<{:databaseExpressionName}, byte> SelectMany(AnyElement<byte> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -812,8 +812,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<byte?> SelectMany(AnyElement<byte?> element)
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<{:databaseExpressionName}, byte?> SelectMany(AnyElement<byte?> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -828,8 +828,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, new byte[0])"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<byte[]> SelectMany(AnyElement<byte[]> element)
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<{:databaseExpressionName}, byte[]> SelectMany(AnyElement<byte[]> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -844,8 +844,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}", "db.fx.DateAdd(DateParts.Year, 1, {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}) or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, DateTime.Now)"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<DateTime> SelectMany(AnyElement<DateTime> element)
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<{:databaseExpressionName}, DateTime> SelectMany(AnyElement<DateTime> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -860,8 +860,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.DateAdd(DateParts.Year, 1, {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<DateTime?> SelectMany(AnyElement<DateTime?> element)
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<{:databaseExpressionName}, DateTime?> SelectMany(AnyElement<DateTime?> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -876,8 +876,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}", "db.fx.DateAdd(DateParts.Year, 1, {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, DateTimeOffset.Now)"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<DateTimeOffset> SelectMany(AnyElement<DateTimeOffset> element)
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<{:databaseExpressionName}, DateTimeOffset> SelectMany(AnyElement<DateTimeOffset> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -892,8 +892,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.DateAdd(DateParts.Year, 1, {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})" 
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<DateTimeOffset?> SelectMany(AnyElement<DateTimeOffset?> element)
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<{:databaseExpressionName}, DateTimeOffset?> SelectMany(AnyElement<DateTimeOffset?> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -908,8 +908,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, decimal.MinValue)"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<decimal> SelectMany(AnyElement<decimal> element)
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<{:databaseExpressionName}, decimal> SelectMany(AnyElement<decimal> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -924,8 +924,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<decimal?> SelectMany(AnyElement<decimal?> element)
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<{:databaseExpressionName}, decimal?> SelectMany(AnyElement<decimal?> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -940,8 +940,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, double.MinValue)"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<double> SelectMany(AnyElement<double> element)
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<{:databaseExpressionName}, double> SelectMany(AnyElement<double> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -956,8 +956,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<double?> SelectMany(AnyElement<double?> element)
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<{:databaseExpressionName}, double?> SelectMany(AnyElement<double?> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -972,8 +972,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, Guid.Empty)"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<Guid> SelectMany(AnyElement<Guid> element)
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<{:databaseExpressionName}, Guid> SelectMany(AnyElement<Guid> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -988,8 +988,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<Guid?> SelectMany(AnyElement<Guid?> element)
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<{:databaseExpressionName}, Guid?> SelectMany(AnyElement<Guid?> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1004,8 +1004,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, short.MinValue)"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<short> SelectMany(AnyElement<short> element)
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<{:databaseExpressionName}, short> SelectMany(AnyElement<short> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1020,8 +1020,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<short?> SelectMany(AnyElement<short?> element)
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<{:databaseExpressionName}, short?> SelectMany(AnyElement<short?> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1036,8 +1036,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<int> SelectMany(AnyElement<int> element)
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<{:databaseExpressionName}, int> SelectMany(AnyElement<int> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1052,8 +1052,8 @@
         ///, for example "{:column.Entity.Schema.Name}.:column.Entity.Name}.{:column.Name}"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<int?> SelectMany(AnyElement<int?> element)
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<{:databaseExpressionName}, int?> SelectMany(AnyElement<int?> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1068,8 +1068,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, long.MinValue)"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<long> SelectMany(AnyElement<long> element)
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<{:databaseExpressionName}, long> SelectMany(AnyElement<long> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1084,8 +1084,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<long?> SelectMany(AnyElement<long?> element)
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<{:databaseExpressionName}, long?> SelectMany(AnyElement<long?> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1100,8 +1100,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, float.MinValue)"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<float> SelectMany(AnyElement<float> element)
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<{:databaseExpressionName}, float> SelectMany(AnyElement<float> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1116,8 +1116,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<float?> SelectMany(AnyElement<float?> element)
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<{:databaseExpressionName}, float?> SelectMany(AnyElement<float?> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1132,8 +1132,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Concat("Value: ", {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValues{{String}}"/>{:nullableAnnotation}, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<string> SelectMany(StringElement element)
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, String}}"/>{:nullableAnnotation}, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<{:databaseExpressionName}, string> SelectMany(StringElement element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1148,8 +1148,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Concat("Value: ", {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValues{{String}}"/>{:nullableAnnotation}, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<string{:nullableAnnotation}> SelectMany(NullableStringElement element)
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, String}}"/>{:nullableAnnotation}, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<{:databaseExpressionName}, string{:nullableAnnotation}> SelectMany(NullableStringElement element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1164,8 +1164,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}", "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, TimeSpan.MinValue)" or "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name} + DateTime.Now"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<TimeSpan> SelectMany(AnyElement<TimeSpan> element)
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<{:databaseExpressionName}, TimeSpan> SelectMany(AnyElement<TimeSpan> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1180,8 +1180,8 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
         {/if}
         /// </param>
-        /// <returns><see cref="SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<TimeSpan?> SelectMany(AnyElement<TimeSpan?> element)
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<{:databaseExpressionName}, TimeSpan?> SelectMany(AnyElement<TimeSpan?> element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1193,8 +1193,8 @@
         /// <param name="element1">Any expression</param>
         /// <param name="element2">Any expression</param>
         /// <param name="elements">Any expression</param>
-        /// <returns><see cref="SelectDynamics "/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectDynamics SelectMany(AnyElement element1, AnyElement element2, params AnyElement[] elements)
+        /// <returns><see cref="SelectDynamics{{ {:databaseExpressionName} }}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectDynamics<{:databaseExpressionName}> SelectMany(AnyElement element1, AnyElement element2, params AnyElement[] elements)
             => GetBuilder().CreateSelectDynamicsBuilder(element1, element2, elements);
 
         /// <summary>
@@ -1204,8 +1204,8 @@
         /// </para>
         /// </summary>
         /// <param name="elements">A list of any expression</param>
-        /// <returns><see cref="SelectDynamics "/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectDynamics SelectMany(IEnumerable<AnyElement> elements)
+        /// <returns><see cref="SelectDynamics{{ {:databaseExpressionName} }}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectDynamics<{:databaseExpressionName}> SelectMany(IEnumerable<AnyElement> elements)
             => GetBuilder().CreateSelectDynamicsBuilder(elements);
 
             /// <summary>
@@ -1216,8 +1216,8 @@
         /// </summary>
         /// <param name="elements">A list of any expression that is valid for a SELECT query expression.</param>
         /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
-        /// <returns><see cref="SelectDynamics "/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectDynamics SelectMany(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
+        /// <returns><see cref="SelectDynamics{{ {:databaseExpressionName} }}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectDynamics<{:databaseExpressionName}> SelectMany(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
             => GetBuilder().CreateSelectDynamicsBuilder((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
         #endregion
 
@@ -1239,8 +1239,8 @@
         {/if}
         /// </param>
         /// <param name="assignments">An additional list of <see cref="EntityFieldAssignment" />(s) assigning database fields/columns new values.  </param>
-        /// <returns><see cref="UpdateEntities "/>, a fluent builder for constructing a sql UPDATE statement.</returns>
-        public UpdateEntities Update(EntityFieldAssignment assignment, params EntityFieldAssignment[] assignments)
+        /// <returns><see cref="UpdateEntities{{ {:databaseExpressionName} }}"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
+        public UpdateEntities<{:databaseExpressionName}> Update(EntityFieldAssignment assignment, params EntityFieldAssignment[] assignments)
             => GetBuilder().CreateUpdateExpressionBuilder(assignment, assignments);
 
         /// <summary>
@@ -1259,8 +1259,8 @@
         /// or "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}.Set({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name} + 10)"
         {/if}
         /// </param>
-        /// <returns><see cref="UpdateEntities "/>, a fluent builder for constructing a sql UPDATE statement.</returns>
-        public UpdateEntities Update(IEnumerable<EntityFieldAssignment> assignments)
+        /// <returns><see cref="UpdateEntities{{ {:databaseExpressionName} }}"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
+        public UpdateEntities<{:databaseExpressionName}> Update(IEnumerable<EntityFieldAssignment> assignments)
             => GetBuilder().CreateUpdateExpressionBuilder(assignments);   
         #endregion
 
@@ -1271,8 +1271,8 @@
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/statements/delete-transact-sql">Microsoft docs on DELETE</see>
         /// </para>
         /// </summary>
-        /// <returns><see cref="DeleteEntities "/>, a fluent builder for constructing a sql DELETE statement.</returns>
-        public DeleteEntities Delete()
+        /// <returns><see cref="DeleteEntities{{ {:databaseExpressionName} }}"/>, a fluent builder for constructing a sql DELETE statement.</returns>
+        public DeleteEntities<{:databaseExpressionName}> Delete()
             => GetBuilder().CreateDeleteExpressionBuilder();
         #endregion
 
@@ -1285,9 +1285,9 @@
         /// </summary>
         /// <param name="entity">The entity supplying the property values.
         /// </param>
-        /// <returns><see cref="InsertEntity{{TEntity}}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
+        /// <returns><see cref="InsertEntity{{{:databaseExpressionName}, TEntity}}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
         /// <typeparam name="TEntity">The entity type of the entity to insert.</typeparam>
-        public InsertEntity<TEntity> Insert<TEntity>(TEntity entity)
+        public InsertEntity<{:databaseExpressionName}, TEntity> Insert<TEntity>(TEntity entity)
             where TEntity : class, IDbEntity
             => GetBuilder().CreateInsertExpressionBuilder<TEntity>(entity);
 
@@ -1299,9 +1299,9 @@
         /// </summary>
         /// <param name="entities">A list of entities.
         /// </param>
-        /// <returns><see cref="InsertEntities{{TEntity}}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
+        /// <returns><see cref="InsertEntities{{{:databaseExpressionName}, TEntity}}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
         /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
-        public InsertEntities<TEntity> InsertMany<TEntity>(TEntity entity, params TEntity[] entities)
+        public InsertEntities<{:databaseExpressionName}, TEntity> InsertMany<TEntity>(TEntity entity, params TEntity[] entities)
             where TEntity : class, IDbEntity
             => GetBuilder().CreateInsertExpressionBuilder<TEntity>(entity, entities);
 
@@ -1313,9 +1313,9 @@
         /// </summary>
         /// <param name="entities">A list of entities.
         /// </param>
-        /// <returns><see cref="InsertEntities{{TEntity}}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
+        /// <returns><see cref="InsertEntities{{{:databaseExpressionName}, TEntity}}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
         /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
-        public InsertEntities<TEntity> InsertMany<TEntity>(IEnumerable<TEntity> entities)
+        public InsertEntities<{:databaseExpressionName}, TEntity> InsertMany<TEntity>(IEnumerable<TEntity> entities)
             where TEntity : class, IDbEntity
             => GetBuilder().CreateInsertExpressionBuilder<TEntity>(entities);
         #endregion

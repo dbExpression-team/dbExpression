@@ -16,10 +16,23 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿namespace HatTrick.DbEx.Sql.Builder
+﻿using System;
+using System.ComponentModel;
+
+namespace HatTrick.DbEx.Sql.Builder
 {
-    public interface IExpressionBuilder<T> : 
-        IExpressionBuilder
+    public interface IExpressionBuilder<TDatabase>
+        where TDatabase : class, ISqlDatabaseRuntime
     {
+        #region hide object properties
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        bool Equals(object obj);
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        int GetHashCode();
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        Type GetType();
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        string? ToString();
+        #endregion
     }
 }
