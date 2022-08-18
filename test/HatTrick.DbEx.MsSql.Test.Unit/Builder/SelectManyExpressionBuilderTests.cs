@@ -18,7 +18,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Builder
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            SelectValuesContinuation<int> builder;
+            SelectValuesContinuation<MsSqlDb, int> builder;
             SelectQueryExpression expressionSet;
 
             //when
@@ -42,7 +42,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Builder
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            SelectDynamicsContinuation builder;
+            SelectDynamicsContinuation<MsSqlDb> builder;
             SelectQueryExpression expressionSet;
 
             //when

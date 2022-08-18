@@ -20,7 +20,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            ITerminationExpressionBuilder exp =
+            ITerminationExpressionBuilder<MsSqlDb> exp =
 
                 db.SelectOne(dbo.Person.FirstName.As(alias))
                     .From(dbo.Person);
@@ -45,7 +45,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            ITerminationExpressionBuilder exp =
+            ITerminationExpressionBuilder<MsSqlDb> exp =
 
                 db.SelectOne((dbo.Person.FirstName + " " + dbo.Person.LastName).As(alias))
                     .From(dbo.Person);
@@ -71,7 +71,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
             var table = dbo.Person.As("dboPerson");
 
-            ITerminationExpressionBuilder exp =
+            ITerminationExpressionBuilder<MsSqlDb> exp =
 
                 db.SelectOne(db.fx.Count(table.FirstName).As(alias))
                     .From(table)

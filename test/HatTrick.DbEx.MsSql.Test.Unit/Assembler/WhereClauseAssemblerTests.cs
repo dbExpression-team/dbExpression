@@ -21,7 +21,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            ITerminationExpressionBuilder exp = 
+            ITerminationExpressionBuilder<MsSqlDb> exp = 
 
                 db.SelectOne(sec.Person.Id)
                     .From(sec.Person)

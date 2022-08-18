@@ -264,7 +264,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             dbServices.TryAddSingleton<SqlStatementAssemblyOptions>();
             dbServices.TryAddSingleton<LoggingOptions>();
             dbServices.TryAddSingleton<IDbTypeMapFactory<SqlDbType>, MsSqlTypeMapFactory>();
-            dbServices.TryAddSingleton<IQueryExpressionBuilderFactory, MsSqlQueryExpressionBuilderFactory>();
+            dbServices.TryAddSingleton<IQueryExpressionBuilderFactory<TDatabase>, MsSqlQueryExpressionBuilderFactory<TDatabase>>();
             dbServices.TryAddTransient<AssemblyContext>(sp => sp.GetRequiredService<SqlStatementAssemblyOptions>().ToAssemblyContext());
             dbServices.TryAddSingleton<PipelineEventHooks>();
             dbServices.TryAddSingleton<IExpandoObjectMapper, ExpandoObjectMapper>();
@@ -279,7 +279,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
                     {
                         return (TDatabase)Activator.CreateInstance(
                             typeof(TDatabase),
-                            sp.GetServiceProviderFor<TDatabase>().GetRequiredService<IQueryExpressionBuilderFactory>(),
+                            sp.GetServiceProviderFor<TDatabase>().GetRequiredService<IQueryExpressionBuilderFactory<TDatabase>>(),
                             sp.GetServiceProviderFor<TDatabase>().GetRequiredService<ISqlConnectionFactory>()
                         )!;
                     }
