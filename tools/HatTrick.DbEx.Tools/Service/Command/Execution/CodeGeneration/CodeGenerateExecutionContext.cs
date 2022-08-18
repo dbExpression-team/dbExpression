@@ -632,6 +632,7 @@ namespace HatTrick.DbEx.Tools.Service
             repo.Register(nameof(helpers.GetSchemaArgName), (Func<string, SchemaExpressionModel, string>)helpers.GetSchemaArgName);
             repo.Register(nameof(helpers.GetEntityArgName), (Func<string, EntityExpressionModel, string>)helpers.GetEntityArgName);
             repo.Register(nameof(helpers.GetFieldArgName), (Func<string, FieldExpressionModel, string>)helpers.GetFieldArgName);
+            repo.Register(nameof(helpers.Iterator), (Func<Iterator>)helpers.Iterator);
 
             string? output = null;
             try

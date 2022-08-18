@@ -2726,6 +2726,7 @@ namespace DbEx.dboDataService
     public partial class AccessAuditLogEntity : EntityExpression<AccessAuditLog>
     {
         #region internals
+        private List<SelectExpression>? _inclusiveSelectExpressions;
         private SelectExpressionSet? _inclusiveSelectExpressionSet;
         #endregion
 
@@ -2836,14 +2837,21 @@ namespace DbEx.dboDataService
         public AccessAuditLogEntity As(string alias)
             => new AccessAuditLogEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
+        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        {
+            return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
+                {
+                    new SelectExpression<int>(Id)
+                    ,new SelectExpression<int>(PersonId)
+                    ,new SelectExpression<int>(AccessResult)
+                    ,new SelectExpression<DateTime>(DateCreated)
+                }
+            );
+        }
+
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
-            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new SelectExpression<int>(Id)
-                ,new SelectExpression<int>(PersonId)
-                ,new SelectExpression<int>(AccessResult)
-                ,new SelectExpression<DateTime>(DateCreated)
-            ));
+            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
@@ -2855,17 +2863,13 @@ namespace DbEx.dboDataService
             string? aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Id));
-
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
             aliased = alias(nameof(PersonId));
-            set &= aliased != nameof(PersonId) ? new SelectExpression<int>(PersonId, aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(PersonId));
-
+            set &= aliased != nameof(PersonId) ? new SelectExpression<int>(PersonId, aliased) : GetInclusiveSelectExpressions()[1];
             aliased = alias(nameof(AccessResult));
-            set &= aliased != nameof(AccessResult) ? new SelectExpression<int>(AccessResult, aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(AccessResult));
-
+            set &= aliased != nameof(AccessResult) ? new SelectExpression<int>(AccessResult, aliased) : GetInclusiveSelectExpressions()[2];
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(DateCreated));
-
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) : GetInclusiveSelectExpressions()[3];
             return set;
         }
 		
@@ -2976,6 +2980,7 @@ namespace DbEx.dboDataService
     public partial class AddressEntity : EntityExpression<Address>
     {
         #region internals
+        private List<SelectExpression>? _inclusiveSelectExpressions;
         private SelectExpressionSet? _inclusiveSelectExpressionSet;
         #endregion
 
@@ -3194,19 +3199,26 @@ namespace DbEx.dboDataService
         public AddressEntity As(string alias)
             => new AddressEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
+        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        {
+            return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
+                {
+                    new SelectExpression<int>(Id)
+                    ,new SelectExpression<DbEx.Data.AddressType?>(AddressType)
+                    ,new SelectExpression<string>(Line1)
+                    ,new SelectExpression<string?>(Line2)
+                    ,new SelectExpression<string>(City)
+                    ,new SelectExpression<string>(State)
+                    ,new SelectExpression<string>(Zip)
+                    ,new SelectExpression<DateTime>(DateCreated)
+                    ,new SelectExpression<DateTime>(DateUpdated)
+                }
+            );
+        }
+
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
-            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new SelectExpression<int>(Id)
-                ,new SelectExpression<DbEx.Data.AddressType?>(AddressType)
-                ,new SelectExpression<string>(Line1)
-                ,new SelectExpression<string?>(Line2)
-                ,new SelectExpression<string>(City)
-                ,new SelectExpression<string>(State)
-                ,new SelectExpression<string>(Zip)
-                ,new SelectExpression<DateTime>(DateCreated)
-                ,new SelectExpression<DateTime>(DateUpdated)
-            ));
+            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
@@ -3218,32 +3230,23 @@ namespace DbEx.dboDataService
             string? aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Id));
-
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
             aliased = alias(nameof(AddressType));
-            set &= aliased != nameof(AddressType) ? new SelectExpression<DbEx.Data.AddressType?>(AddressType, aliased) as SelectExpression<DbEx.Data.AddressType?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(AddressType));
-
+            set &= aliased != nameof(AddressType) ? new SelectExpression<DbEx.Data.AddressType?>(AddressType, aliased) : GetInclusiveSelectExpressions()[1];
             aliased = alias(nameof(Line1));
-            set &= aliased != nameof(Line1) ? new SelectExpression<string>(Line1, aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Line1));
-
+            set &= aliased != nameof(Line1) ? new SelectExpression<string>(Line1, aliased) : GetInclusiveSelectExpressions()[2];
             aliased = alias(nameof(Line2));
-            set &= aliased != nameof(Line2) ? new SelectExpression<string?>(Line2, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Line2));
-
+            set &= aliased != nameof(Line2) ? new SelectExpression<string?>(Line2, aliased) : GetInclusiveSelectExpressions()[3];
             aliased = alias(nameof(City));
-            set &= aliased != nameof(City) ? new SelectExpression<string>(City, aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(City));
-
+            set &= aliased != nameof(City) ? new SelectExpression<string>(City, aliased) : GetInclusiveSelectExpressions()[4];
             aliased = alias(nameof(State));
-            set &= aliased != nameof(State) ? new SelectExpression<string>(State, aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(State));
-
+            set &= aliased != nameof(State) ? new SelectExpression<string>(State, aliased) : GetInclusiveSelectExpressions()[5];
             aliased = alias(nameof(Zip));
-            set &= aliased != nameof(Zip) ? new SelectExpression<string>(Zip, aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Zip));
-
+            set &= aliased != nameof(Zip) ? new SelectExpression<string>(Zip, aliased) : GetInclusiveSelectExpressions()[6];
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(DateCreated));
-
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) : GetInclusiveSelectExpressions()[7];
             aliased = alias(nameof(DateUpdated));
-            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated, aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(DateUpdated));
-
+            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated, aliased) : GetInclusiveSelectExpressions()[8];
             return set;
         }
 		
@@ -3461,6 +3464,7 @@ namespace DbEx.dboDataService
     public partial class PersonEntity : EntityExpression<Person>
     {
         #region internals
+        private List<SelectExpression>? _inclusiveSelectExpressions;
         private SelectExpressionSet? _inclusiveSelectExpressionSet;
         #endregion
 
@@ -3724,21 +3728,28 @@ namespace DbEx.dboDataService
         public PersonEntity As(string alias)
             => new PersonEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
+        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        {
+            return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
+                {
+                    new SelectExpression<int>(Id)
+                    ,new SelectExpression<string>(FirstName)
+                    ,new SelectExpression<string>(LastName)
+                    ,new SelectExpression<DateTime?>(BirthDate)
+                    ,new SelectExpression<DbEx.Data.GenderType>(GenderType)
+                    ,new SelectExpression<int?>(CreditLimit)
+                    ,new SelectExpression<int?>(YearOfLastCreditLimitReview)
+                    ,new SelectExpression<DateTimeOffset>(RegistrationDate)
+                    ,new SelectExpression<DateTimeOffset?>(LastLoginDate)
+                    ,new SelectExpression<DateTime>(DateCreated)
+                    ,new SelectExpression<DateTime>(DateUpdated)
+                }
+            );
+        }
+
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
-            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new SelectExpression<int>(Id)
-                ,new SelectExpression<string>(FirstName)
-                ,new SelectExpression<string>(LastName)
-                ,new SelectExpression<DateTime?>(BirthDate)
-                ,new SelectExpression<DbEx.Data.GenderType>(GenderType)
-                ,new SelectExpression<int?>(CreditLimit)
-                ,new SelectExpression<int?>(YearOfLastCreditLimitReview)
-                ,new SelectExpression<DateTimeOffset>(RegistrationDate)
-                ,new SelectExpression<DateTimeOffset?>(LastLoginDate)
-                ,new SelectExpression<DateTime>(DateCreated)
-                ,new SelectExpression<DateTime>(DateUpdated)
-            ));
+            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
@@ -3750,38 +3761,27 @@ namespace DbEx.dboDataService
             string? aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Id));
-
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
             aliased = alias(nameof(FirstName));
-            set &= aliased != nameof(FirstName) ? new SelectExpression<string>(FirstName, aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(FirstName));
-
+            set &= aliased != nameof(FirstName) ? new SelectExpression<string>(FirstName, aliased) : GetInclusiveSelectExpressions()[1];
             aliased = alias(nameof(LastName));
-            set &= aliased != nameof(LastName) ? new SelectExpression<string>(LastName, aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(LastName));
-
+            set &= aliased != nameof(LastName) ? new SelectExpression<string>(LastName, aliased) : GetInclusiveSelectExpressions()[2];
             aliased = alias(nameof(BirthDate));
-            set &= aliased != nameof(BirthDate) ? new SelectExpression<DateTime?>(BirthDate, aliased) as SelectExpression<DateTime?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(BirthDate));
-
+            set &= aliased != nameof(BirthDate) ? new SelectExpression<DateTime?>(BirthDate, aliased) : GetInclusiveSelectExpressions()[3];
             aliased = alias(nameof(GenderType));
-            set &= aliased != nameof(GenderType) ? new SelectExpression<DbEx.Data.GenderType>(GenderType, aliased) as SelectExpression<DbEx.Data.GenderType> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(GenderType));
-
+            set &= aliased != nameof(GenderType) ? new SelectExpression<DbEx.Data.GenderType>(GenderType, aliased) : GetInclusiveSelectExpressions()[4];
             aliased = alias(nameof(CreditLimit));
-            set &= aliased != nameof(CreditLimit) ? new SelectExpression<int?>(CreditLimit, aliased) as SelectExpression<int?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(CreditLimit));
-
+            set &= aliased != nameof(CreditLimit) ? new SelectExpression<int?>(CreditLimit, aliased) : GetInclusiveSelectExpressions()[5];
             aliased = alias(nameof(YearOfLastCreditLimitReview));
-            set &= aliased != nameof(YearOfLastCreditLimitReview) ? new SelectExpression<int?>(YearOfLastCreditLimitReview, aliased) as SelectExpression<int?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(YearOfLastCreditLimitReview));
-
+            set &= aliased != nameof(YearOfLastCreditLimitReview) ? new SelectExpression<int?>(YearOfLastCreditLimitReview, aliased) : GetInclusiveSelectExpressions()[6];
             aliased = alias(nameof(RegistrationDate));
-            set &= aliased != nameof(RegistrationDate) ? new SelectExpression<DateTimeOffset>(RegistrationDate, aliased) as SelectExpression<DateTimeOffset> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(RegistrationDate));
-
+            set &= aliased != nameof(RegistrationDate) ? new SelectExpression<DateTimeOffset>(RegistrationDate, aliased) : GetInclusiveSelectExpressions()[7];
             aliased = alias(nameof(LastLoginDate));
-            set &= aliased != nameof(LastLoginDate) ? new SelectExpression<DateTimeOffset?>(LastLoginDate, aliased) as SelectExpression<DateTimeOffset?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(LastLoginDate));
-
+            set &= aliased != nameof(LastLoginDate) ? new SelectExpression<DateTimeOffset?>(LastLoginDate, aliased) : GetInclusiveSelectExpressions()[8];
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(DateCreated));
-
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) : GetInclusiveSelectExpressions()[9];
             aliased = alias(nameof(DateUpdated));
-            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated, aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(DateUpdated));
-
+            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated, aliased) : GetInclusiveSelectExpressions()[10];
             return set;
         }
 		
@@ -4049,6 +4049,7 @@ namespace DbEx.dboDataService
     public partial class PersonAddressEntity : EntityExpression<PersonAddress>
     {
         #region internals
+        private List<SelectExpression>? _inclusiveSelectExpressions;
         private SelectExpressionSet? _inclusiveSelectExpressionSet;
         #endregion
 
@@ -4159,14 +4160,21 @@ namespace DbEx.dboDataService
         public PersonAddressEntity As(string alias)
             => new PersonAddressEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
+        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        {
+            return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
+                {
+                    new SelectExpression<int>(Id)
+                    ,new SelectExpression<int>(PersonId)
+                    ,new SelectExpression<int>(AddressId)
+                    ,new SelectExpression<DateTime>(DateCreated)
+                }
+            );
+        }
+
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
-            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new SelectExpression<int>(Id)
-                ,new SelectExpression<int>(PersonId)
-                ,new SelectExpression<int>(AddressId)
-                ,new SelectExpression<DateTime>(DateCreated)
-            ));
+            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
@@ -4178,17 +4186,13 @@ namespace DbEx.dboDataService
             string? aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Id));
-
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
             aliased = alias(nameof(PersonId));
-            set &= aliased != nameof(PersonId) ? new SelectExpression<int>(PersonId, aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(PersonId));
-
+            set &= aliased != nameof(PersonId) ? new SelectExpression<int>(PersonId, aliased) : GetInclusiveSelectExpressions()[1];
             aliased = alias(nameof(AddressId));
-            set &= aliased != nameof(AddressId) ? new SelectExpression<int>(AddressId, aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(AddressId));
-
+            set &= aliased != nameof(AddressId) ? new SelectExpression<int>(AddressId, aliased) : GetInclusiveSelectExpressions()[2];
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(DateCreated));
-
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) : GetInclusiveSelectExpressions()[3];
             return set;
         }
 		
@@ -4299,6 +4303,7 @@ namespace DbEx.dboDataService
     public partial class ProductEntity : EntityExpression<Product>
     {
         #region internals
+        private List<SelectExpression>? _inclusiveSelectExpressions;
         private SelectExpressionSet? _inclusiveSelectExpressionSet;
         #endregion
 
@@ -4685,27 +4690,34 @@ namespace DbEx.dboDataService
         public ProductEntity As(string alias)
             => new ProductEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
+        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        {
+            return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
+                {
+                    new SelectExpression<int>(Id)
+                    ,new SelectExpression<DbEx.Data.ProductCategoryType?>(ProductCategoryType)
+                    ,new SelectExpression<string>(Name)
+                    ,new SelectExpression<HatTrick.DbEx.MsSql.Test.ProductDescription?>(Description)
+                    ,new SelectExpression<double>(ListPrice)
+                    ,new SelectExpression<double>(Price)
+                    ,new SelectExpression<int>(Quantity)
+                    ,new SelectExpression<byte[]?>(Image)
+                    ,new SelectExpression<decimal?>(Height)
+                    ,new SelectExpression<decimal?>(Width)
+                    ,new SelectExpression<decimal?>(Depth)
+                    ,new SelectExpression<decimal?>(Weight)
+                    ,new SelectExpression<decimal>(ShippingWeight)
+                    ,new SelectExpression<TimeSpan?>(ValidStartTimeOfDayForPurchase)
+                    ,new SelectExpression<TimeSpan?>(ValidEndTimeOfDayForPurchase)
+                    ,new SelectExpression<DateTime>(DateCreated)
+                    ,new SelectExpression<DateTime>(DateUpdated)
+                }
+            );
+        }
+
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
-            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new SelectExpression<int>(Id)
-                ,new SelectExpression<DbEx.Data.ProductCategoryType?>(ProductCategoryType)
-                ,new SelectExpression<string>(Name)
-                ,new SelectExpression<HatTrick.DbEx.MsSql.Test.ProductDescription?>(Description)
-                ,new SelectExpression<double>(ListPrice)
-                ,new SelectExpression<double>(Price)
-                ,new SelectExpression<int>(Quantity)
-                ,new SelectExpression<byte[]?>(Image)
-                ,new SelectExpression<decimal?>(Height)
-                ,new SelectExpression<decimal?>(Width)
-                ,new SelectExpression<decimal?>(Depth)
-                ,new SelectExpression<decimal?>(Weight)
-                ,new SelectExpression<decimal>(ShippingWeight)
-                ,new SelectExpression<TimeSpan?>(ValidStartTimeOfDayForPurchase)
-                ,new SelectExpression<TimeSpan?>(ValidEndTimeOfDayForPurchase)
-                ,new SelectExpression<DateTime>(DateCreated)
-                ,new SelectExpression<DateTime>(DateUpdated)
-            ));
+            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
@@ -4717,56 +4729,39 @@ namespace DbEx.dboDataService
             string? aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Id));
-
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
             aliased = alias(nameof(ProductCategoryType));
-            set &= aliased != nameof(ProductCategoryType) ? new SelectExpression<DbEx.Data.ProductCategoryType?>(ProductCategoryType, aliased) as SelectExpression<DbEx.Data.ProductCategoryType?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(ProductCategoryType));
-
+            set &= aliased != nameof(ProductCategoryType) ? new SelectExpression<DbEx.Data.ProductCategoryType?>(ProductCategoryType, aliased) : GetInclusiveSelectExpressions()[1];
             aliased = alias(nameof(Name));
-            set &= aliased != nameof(Name) ? new SelectExpression<string>(Name, aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Name));
-
+            set &= aliased != nameof(Name) ? new SelectExpression<string>(Name, aliased) : GetInclusiveSelectExpressions()[2];
             aliased = alias(nameof(Description));
-            set &= aliased != nameof(Description) ? new SelectExpression<HatTrick.DbEx.MsSql.Test.ProductDescription?>(Description, aliased) as SelectExpression<HatTrick.DbEx.MsSql.Test.ProductDescription?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Description));
-
+            set &= aliased != nameof(Description) ? new SelectExpression<HatTrick.DbEx.MsSql.Test.ProductDescription?>(Description, aliased) : GetInclusiveSelectExpressions()[3];
             aliased = alias(nameof(ListPrice));
-            set &= aliased != nameof(ListPrice) ? new SelectExpression<double>(ListPrice, aliased) as SelectExpression<double> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(ListPrice));
-
+            set &= aliased != nameof(ListPrice) ? new SelectExpression<double>(ListPrice, aliased) : GetInclusiveSelectExpressions()[4];
             aliased = alias(nameof(Price));
-            set &= aliased != nameof(Price) ? new SelectExpression<double>(Price, aliased) as SelectExpression<double> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Price));
-
+            set &= aliased != nameof(Price) ? new SelectExpression<double>(Price, aliased) : GetInclusiveSelectExpressions()[5];
             aliased = alias(nameof(Quantity));
-            set &= aliased != nameof(Quantity) ? new SelectExpression<int>(Quantity, aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Quantity));
-
+            set &= aliased != nameof(Quantity) ? new SelectExpression<int>(Quantity, aliased) : GetInclusiveSelectExpressions()[6];
             aliased = alias(nameof(Image));
-            set &= aliased != nameof(Image) ? new SelectExpression<byte[]?>(Image, aliased) as SelectExpression<byte[]?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Image));
-
+            set &= aliased != nameof(Image) ? new SelectExpression<byte[]?>(Image, aliased) : GetInclusiveSelectExpressions()[7];
             aliased = alias(nameof(Height));
-            set &= aliased != nameof(Height) ? new SelectExpression<decimal?>(Height, aliased) as SelectExpression<decimal?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Height));
-
+            set &= aliased != nameof(Height) ? new SelectExpression<decimal?>(Height, aliased) : GetInclusiveSelectExpressions()[8];
             aliased = alias(nameof(Width));
-            set &= aliased != nameof(Width) ? new SelectExpression<decimal?>(Width, aliased) as SelectExpression<decimal?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Width));
-
+            set &= aliased != nameof(Width) ? new SelectExpression<decimal?>(Width, aliased) : GetInclusiveSelectExpressions()[9];
             aliased = alias(nameof(Depth));
-            set &= aliased != nameof(Depth) ? new SelectExpression<decimal?>(Depth, aliased) as SelectExpression<decimal?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Depth));
-
+            set &= aliased != nameof(Depth) ? new SelectExpression<decimal?>(Depth, aliased) : GetInclusiveSelectExpressions()[10];
             aliased = alias(nameof(Weight));
-            set &= aliased != nameof(Weight) ? new SelectExpression<decimal?>(Weight, aliased) as SelectExpression<decimal?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Weight));
-
+            set &= aliased != nameof(Weight) ? new SelectExpression<decimal?>(Weight, aliased) : GetInclusiveSelectExpressions()[11];
             aliased = alias(nameof(ShippingWeight));
-            set &= aliased != nameof(ShippingWeight) ? new SelectExpression<decimal>(ShippingWeight, aliased) as SelectExpression<decimal> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(ShippingWeight));
-
+            set &= aliased != nameof(ShippingWeight) ? new SelectExpression<decimal>(ShippingWeight, aliased) : GetInclusiveSelectExpressions()[12];
             aliased = alias(nameof(ValidStartTimeOfDayForPurchase));
-            set &= aliased != nameof(ValidStartTimeOfDayForPurchase) ? new SelectExpression<TimeSpan?>(ValidStartTimeOfDayForPurchase, aliased) as SelectExpression<TimeSpan?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(ValidStartTimeOfDayForPurchase));
-
+            set &= aliased != nameof(ValidStartTimeOfDayForPurchase) ? new SelectExpression<TimeSpan?>(ValidStartTimeOfDayForPurchase, aliased) : GetInclusiveSelectExpressions()[13];
             aliased = alias(nameof(ValidEndTimeOfDayForPurchase));
-            set &= aliased != nameof(ValidEndTimeOfDayForPurchase) ? new SelectExpression<TimeSpan?>(ValidEndTimeOfDayForPurchase, aliased) as SelectExpression<TimeSpan?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(ValidEndTimeOfDayForPurchase));
-
+            set &= aliased != nameof(ValidEndTimeOfDayForPurchase) ? new SelectExpression<TimeSpan?>(ValidEndTimeOfDayForPurchase, aliased) : GetInclusiveSelectExpressions()[14];
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(DateCreated));
-
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) : GetInclusiveSelectExpressions()[15];
             aliased = alias(nameof(DateUpdated));
-            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated, aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(DateUpdated));
-
+            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated, aliased) : GetInclusiveSelectExpressions()[16];
             return set;
         }
 		
@@ -5171,6 +5166,7 @@ namespace DbEx.dboDataService
     public partial class PurchaseEntity : EntityExpression<Purchase>
     {
         #region internals
+        private List<SelectExpression>? _inclusiveSelectExpressions;
         private SelectExpressionSet? _inclusiveSelectExpressionSet;
         #endregion
 
@@ -5473,23 +5469,30 @@ namespace DbEx.dboDataService
         public PurchaseEntity As(string alias)
             => new PurchaseEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
+        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        {
+            return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
+                {
+                    new SelectExpression<int>(Id)
+                    ,new SelectExpression<int>(PersonId)
+                    ,new SelectExpression<string>(OrderNumber)
+                    ,new SelectExpression<string>(TotalPurchaseQuantity)
+                    ,new SelectExpression<double>(TotalPurchaseAmount)
+                    ,new SelectExpression<DateTime>(PurchaseDate)
+                    ,new SelectExpression<DateTime?>(ShipDate)
+                    ,new SelectExpression<DateTime?>(ExpectedDeliveryDate)
+                    ,new SelectExpression<Guid?>(TrackingIdentifier)
+                    ,new SelectExpression<DbEx.Data.PaymentMethodType>(PaymentMethodType)
+                    ,new SelectExpression<DbEx.Data.PaymentSourceType?>(PaymentSourceType)
+                    ,new SelectExpression<DateTime>(DateCreated)
+                    ,new SelectExpression<DateTime>(DateUpdated)
+                }
+            );
+        }
+
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
-            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new SelectExpression<int>(Id)
-                ,new SelectExpression<int>(PersonId)
-                ,new SelectExpression<string>(OrderNumber)
-                ,new SelectExpression<string>(TotalPurchaseQuantity)
-                ,new SelectExpression<double>(TotalPurchaseAmount)
-                ,new SelectExpression<DateTime>(PurchaseDate)
-                ,new SelectExpression<DateTime?>(ShipDate)
-                ,new SelectExpression<DateTime?>(ExpectedDeliveryDate)
-                ,new SelectExpression<Guid?>(TrackingIdentifier)
-                ,new SelectExpression<DbEx.Data.PaymentMethodType>(PaymentMethodType)
-                ,new SelectExpression<DbEx.Data.PaymentSourceType?>(PaymentSourceType)
-                ,new SelectExpression<DateTime>(DateCreated)
-                ,new SelectExpression<DateTime>(DateUpdated)
-            ));
+            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
@@ -5501,44 +5504,31 @@ namespace DbEx.dboDataService
             string? aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Id));
-
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
             aliased = alias(nameof(PersonId));
-            set &= aliased != nameof(PersonId) ? new SelectExpression<int>(PersonId, aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(PersonId));
-
+            set &= aliased != nameof(PersonId) ? new SelectExpression<int>(PersonId, aliased) : GetInclusiveSelectExpressions()[1];
             aliased = alias(nameof(OrderNumber));
-            set &= aliased != nameof(OrderNumber) ? new SelectExpression<string>(OrderNumber, aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(OrderNumber));
-
+            set &= aliased != nameof(OrderNumber) ? new SelectExpression<string>(OrderNumber, aliased) : GetInclusiveSelectExpressions()[2];
             aliased = alias(nameof(TotalPurchaseQuantity));
-            set &= aliased != nameof(TotalPurchaseQuantity) ? new SelectExpression<string>(TotalPurchaseQuantity, aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(TotalPurchaseQuantity));
-
+            set &= aliased != nameof(TotalPurchaseQuantity) ? new SelectExpression<string>(TotalPurchaseQuantity, aliased) : GetInclusiveSelectExpressions()[3];
             aliased = alias(nameof(TotalPurchaseAmount));
-            set &= aliased != nameof(TotalPurchaseAmount) ? new SelectExpression<double>(TotalPurchaseAmount, aliased) as SelectExpression<double> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(TotalPurchaseAmount));
-
+            set &= aliased != nameof(TotalPurchaseAmount) ? new SelectExpression<double>(TotalPurchaseAmount, aliased) : GetInclusiveSelectExpressions()[4];
             aliased = alias(nameof(PurchaseDate));
-            set &= aliased != nameof(PurchaseDate) ? new SelectExpression<DateTime>(PurchaseDate, aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(PurchaseDate));
-
+            set &= aliased != nameof(PurchaseDate) ? new SelectExpression<DateTime>(PurchaseDate, aliased) : GetInclusiveSelectExpressions()[5];
             aliased = alias(nameof(ShipDate));
-            set &= aliased != nameof(ShipDate) ? new SelectExpression<DateTime?>(ShipDate, aliased) as SelectExpression<DateTime?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(ShipDate));
-
+            set &= aliased != nameof(ShipDate) ? new SelectExpression<DateTime?>(ShipDate, aliased) : GetInclusiveSelectExpressions()[6];
             aliased = alias(nameof(ExpectedDeliveryDate));
-            set &= aliased != nameof(ExpectedDeliveryDate) ? new SelectExpression<DateTime?>(ExpectedDeliveryDate, aliased) as SelectExpression<DateTime?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(ExpectedDeliveryDate));
-
+            set &= aliased != nameof(ExpectedDeliveryDate) ? new SelectExpression<DateTime?>(ExpectedDeliveryDate, aliased) : GetInclusiveSelectExpressions()[7];
             aliased = alias(nameof(TrackingIdentifier));
-            set &= aliased != nameof(TrackingIdentifier) ? new SelectExpression<Guid?>(TrackingIdentifier, aliased) as SelectExpression<Guid?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(TrackingIdentifier));
-
+            set &= aliased != nameof(TrackingIdentifier) ? new SelectExpression<Guid?>(TrackingIdentifier, aliased) : GetInclusiveSelectExpressions()[8];
             aliased = alias(nameof(PaymentMethodType));
-            set &= aliased != nameof(PaymentMethodType) ? new SelectExpression<DbEx.Data.PaymentMethodType>(PaymentMethodType, aliased) as SelectExpression<DbEx.Data.PaymentMethodType> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(PaymentMethodType));
-
+            set &= aliased != nameof(PaymentMethodType) ? new SelectExpression<DbEx.Data.PaymentMethodType>(PaymentMethodType, aliased) : GetInclusiveSelectExpressions()[9];
             aliased = alias(nameof(PaymentSourceType));
-            set &= aliased != nameof(PaymentSourceType) ? new SelectExpression<DbEx.Data.PaymentSourceType?>(PaymentSourceType, aliased) as SelectExpression<DbEx.Data.PaymentSourceType?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(PaymentSourceType));
-
+            set &= aliased != nameof(PaymentSourceType) ? new SelectExpression<DbEx.Data.PaymentSourceType?>(PaymentSourceType, aliased) : GetInclusiveSelectExpressions()[10];
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(DateCreated));
-
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) : GetInclusiveSelectExpressions()[11];
             aliased = alias(nameof(DateUpdated));
-            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated, aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(DateUpdated));
-
+            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated, aliased) : GetInclusiveSelectExpressions()[12];
             return set;
         }
 		
@@ -5848,6 +5838,7 @@ namespace DbEx.dboDataService
     public partial class PurchaseLineEntity : EntityExpression<PurchaseLine>
     {
         #region internals
+        private List<SelectExpression>? _inclusiveSelectExpressions;
         private SelectExpressionSet? _inclusiveSelectExpressionSet;
         #endregion
 
@@ -6024,17 +6015,24 @@ namespace DbEx.dboDataService
         public PurchaseLineEntity As(string alias)
             => new PurchaseLineEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
+        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        {
+            return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
+                {
+                    new SelectExpression<int>(Id)
+                    ,new SelectExpression<int>(PurchaseId)
+                    ,new SelectExpression<int>(ProductId)
+                    ,new SelectExpression<decimal>(PurchasePrice)
+                    ,new SelectExpression<int>(Quantity)
+                    ,new SelectExpression<DateTime>(DateCreated)
+                    ,new SelectExpression<DateTime>(DateUpdated)
+                }
+            );
+        }
+
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
-            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new SelectExpression<int>(Id)
-                ,new SelectExpression<int>(PurchaseId)
-                ,new SelectExpression<int>(ProductId)
-                ,new SelectExpression<decimal>(PurchasePrice)
-                ,new SelectExpression<int>(Quantity)
-                ,new SelectExpression<DateTime>(DateCreated)
-                ,new SelectExpression<DateTime>(DateUpdated)
-            ));
+            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
@@ -6046,26 +6044,19 @@ namespace DbEx.dboDataService
             string? aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Id));
-
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
             aliased = alias(nameof(PurchaseId));
-            set &= aliased != nameof(PurchaseId) ? new SelectExpression<int>(PurchaseId, aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(PurchaseId));
-
+            set &= aliased != nameof(PurchaseId) ? new SelectExpression<int>(PurchaseId, aliased) : GetInclusiveSelectExpressions()[1];
             aliased = alias(nameof(ProductId));
-            set &= aliased != nameof(ProductId) ? new SelectExpression<int>(ProductId, aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(ProductId));
-
+            set &= aliased != nameof(ProductId) ? new SelectExpression<int>(ProductId, aliased) : GetInclusiveSelectExpressions()[2];
             aliased = alias(nameof(PurchasePrice));
-            set &= aliased != nameof(PurchasePrice) ? new SelectExpression<decimal>(PurchasePrice, aliased) as SelectExpression<decimal> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(PurchasePrice));
-
+            set &= aliased != nameof(PurchasePrice) ? new SelectExpression<decimal>(PurchasePrice, aliased) : GetInclusiveSelectExpressions()[3];
             aliased = alias(nameof(Quantity));
-            set &= aliased != nameof(Quantity) ? new SelectExpression<int>(Quantity, aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Quantity));
-
+            set &= aliased != nameof(Quantity) ? new SelectExpression<int>(Quantity, aliased) : GetInclusiveSelectExpressions()[4];
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(DateCreated));
-
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) : GetInclusiveSelectExpressions()[5];
             aliased = alias(nameof(DateUpdated));
-            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated, aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(DateUpdated));
-
+            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated, aliased) : GetInclusiveSelectExpressions()[6];
             return set;
         }
 		
@@ -6237,6 +6228,7 @@ namespace DbEx.dboDataService
     public partial class PersonTotalPurchasesViewEntity : EntityExpression<PersonTotalPurchasesView>
     {
         #region internals
+        private List<SelectExpression>? _inclusiveSelectExpressions;
         private SelectExpressionSet? _inclusiveSelectExpressionSet;
         #endregion
 
@@ -6320,13 +6312,20 @@ namespace DbEx.dboDataService
         public PersonTotalPurchasesViewEntity As(string alias)
             => new PersonTotalPurchasesViewEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
+        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        {
+            return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
+                {
+                    new SelectExpression<int>(Id)
+                    ,new SelectExpression<double?>(TotalAmount)
+                    ,new SelectExpression<int?>(TotalCount)
+                }
+            );
+        }
+
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
-            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new SelectExpression<int>(Id)
-                ,new SelectExpression<double?>(TotalAmount)
-                ,new SelectExpression<int?>(TotalCount)
-            ));
+            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
@@ -6338,14 +6337,11 @@ namespace DbEx.dboDataService
             string? aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Id));
-
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
             aliased = alias(nameof(TotalAmount));
-            set &= aliased != nameof(TotalAmount) ? new SelectExpression<double?>(TotalAmount, aliased) as SelectExpression<double?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(TotalAmount));
-
+            set &= aliased != nameof(TotalAmount) ? new SelectExpression<double?>(TotalAmount, aliased) : GetInclusiveSelectExpressions()[1];
             aliased = alias(nameof(TotalCount));
-            set &= aliased != nameof(TotalCount) ? new SelectExpression<int?>(TotalCount, aliased) as SelectExpression<int?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(TotalCount));
-
+            set &= aliased != nameof(TotalCount) ? new SelectExpression<int?>(TotalCount, aliased) : GetInclusiveSelectExpressions()[2];
             return set;
         }
 		
@@ -6885,6 +6881,7 @@ namespace DbEx.unit_testDataService
     public partial class aliasEntity : EntityExpression<alias>
     {
         #region internals
+        private List<SelectExpression>? _inclusiveSelectExpressions;
         private SelectExpressionSet? _inclusiveSelectExpressionSet;
         #endregion
 
@@ -7199,24 +7196,31 @@ namespace DbEx.unit_testDataService
         public aliasEntity As(string alias)
             => new aliasEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
+        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        {
+            return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
+                {
+                    new SelectExpression<string?>(identifier)
+                    ,new SelectExpression<string?>(_identifier)
+                    ,new SelectExpression<string?>(__identifier)
+                    ,new SelectExpression<string?>(name)
+                    ,new SelectExpression<string?>(_name)
+                    ,new SelectExpression<string?>(__name)
+                    ,new SelectExpression<string?>(schema)
+                    ,new SelectExpression<string?>(_schema)
+                    ,new SelectExpression<string?>(__schema)
+                    ,new SelectExpression<string?>(_alias)
+                    ,new SelectExpression<string?>(__alias)
+                    ,new SelectExpression<string?>(entity)
+                    ,new SelectExpression<string?>(_entity)
+                    ,new SelectExpression<string?>(__entity)
+                }
+            );
+        }
+
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
-            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new SelectExpression<string?>(identifier)
-                ,new SelectExpression<string?>(_identifier)
-                ,new SelectExpression<string?>(__identifier)
-                ,new SelectExpression<string?>(name)
-                ,new SelectExpression<string?>(_name)
-                ,new SelectExpression<string?>(__name)
-                ,new SelectExpression<string?>(schema)
-                ,new SelectExpression<string?>(_schema)
-                ,new SelectExpression<string?>(__schema)
-                ,new SelectExpression<string?>(_alias)
-                ,new SelectExpression<string?>(__alias)
-                ,new SelectExpression<string?>(entity)
-                ,new SelectExpression<string?>(_entity)
-                ,new SelectExpression<string?>(__entity)
-            ));
+            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
@@ -7228,47 +7232,33 @@ namespace DbEx.unit_testDataService
             string? aliased = null;
 
             aliased = alias(nameof(identifier));
-            set &= aliased != nameof(identifier) ? new SelectExpression<string?>(identifier, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(identifier));
-
+            set &= aliased != nameof(identifier) ? new SelectExpression<string?>(identifier, aliased) : GetInclusiveSelectExpressions()[0];
             aliased = alias(nameof(_identifier));
-            set &= aliased != nameof(_identifier) ? new SelectExpression<string?>(_identifier, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(_identifier));
-
+            set &= aliased != nameof(_identifier) ? new SelectExpression<string?>(_identifier, aliased) : GetInclusiveSelectExpressions()[1];
             aliased = alias(nameof(__identifier));
-            set &= aliased != nameof(__identifier) ? new SelectExpression<string?>(__identifier, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(__identifier));
-
+            set &= aliased != nameof(__identifier) ? new SelectExpression<string?>(__identifier, aliased) : GetInclusiveSelectExpressions()[2];
             aliased = alias(nameof(name));
-            set &= aliased != nameof(name) ? new SelectExpression<string?>(name, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(name));
-
+            set &= aliased != nameof(name) ? new SelectExpression<string?>(name, aliased) : GetInclusiveSelectExpressions()[3];
             aliased = alias(nameof(_name));
-            set &= aliased != nameof(_name) ? new SelectExpression<string?>(_name, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(_name));
-
+            set &= aliased != nameof(_name) ? new SelectExpression<string?>(_name, aliased) : GetInclusiveSelectExpressions()[4];
             aliased = alias(nameof(__name));
-            set &= aliased != nameof(__name) ? new SelectExpression<string?>(__name, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(__name));
-
+            set &= aliased != nameof(__name) ? new SelectExpression<string?>(__name, aliased) : GetInclusiveSelectExpressions()[5];
             aliased = alias(nameof(schema));
-            set &= aliased != nameof(schema) ? new SelectExpression<string?>(schema, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(schema));
-
+            set &= aliased != nameof(schema) ? new SelectExpression<string?>(schema, aliased) : GetInclusiveSelectExpressions()[6];
             aliased = alias(nameof(_schema));
-            set &= aliased != nameof(_schema) ? new SelectExpression<string?>(_schema, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(_schema));
-
+            set &= aliased != nameof(_schema) ? new SelectExpression<string?>(_schema, aliased) : GetInclusiveSelectExpressions()[7];
             aliased = alias(nameof(__schema));
-            set &= aliased != nameof(__schema) ? new SelectExpression<string?>(__schema, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(__schema));
-
+            set &= aliased != nameof(__schema) ? new SelectExpression<string?>(__schema, aliased) : GetInclusiveSelectExpressions()[8];
             aliased = alias(nameof(_alias));
-            set &= aliased != nameof(_alias) ? new SelectExpression<string?>(_alias, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(_alias));
-
+            set &= aliased != nameof(_alias) ? new SelectExpression<string?>(_alias, aliased) : GetInclusiveSelectExpressions()[9];
             aliased = alias(nameof(__alias));
-            set &= aliased != nameof(__alias) ? new SelectExpression<string?>(__alias, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(__alias));
-
+            set &= aliased != nameof(__alias) ? new SelectExpression<string?>(__alias, aliased) : GetInclusiveSelectExpressions()[10];
             aliased = alias(nameof(entity));
-            set &= aliased != nameof(entity) ? new SelectExpression<string?>(entity, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(entity));
-
+            set &= aliased != nameof(entity) ? new SelectExpression<string?>(entity, aliased) : GetInclusiveSelectExpressions()[11];
             aliased = alias(nameof(_entity));
-            set &= aliased != nameof(_entity) ? new SelectExpression<string?>(_entity, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(_entity));
-
+            set &= aliased != nameof(_entity) ? new SelectExpression<string?>(_entity, aliased) : GetInclusiveSelectExpressions()[12];
             aliased = alias(nameof(__entity));
-            set &= aliased != nameof(__entity) ? new SelectExpression<string?>(__entity, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(__entity));
-
+            set &= aliased != nameof(__entity) ? new SelectExpression<string?>(__entity, aliased) : GetInclusiveSelectExpressions()[13];
             return set;
         }
 		
@@ -7607,6 +7597,7 @@ namespace DbEx.unit_testDataService
     public partial class entityEntity : EntityExpression<entity>
     {
         #region internals
+        private List<SelectExpression>? _inclusiveSelectExpressions;
         private SelectExpressionSet? _inclusiveSelectExpressionSet;
         #endregion
 
@@ -7921,24 +7912,31 @@ namespace DbEx.unit_testDataService
         public entityEntity As(string alias)
             => new entityEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
+        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        {
+            return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
+                {
+                    new SelectExpression<string?>(identifier)
+                    ,new SelectExpression<string?>(_identifier)
+                    ,new SelectExpression<string?>(__identifier)
+                    ,new SelectExpression<string?>(name)
+                    ,new SelectExpression<string?>(_name)
+                    ,new SelectExpression<string?>(__name)
+                    ,new SelectExpression<string?>(schema)
+                    ,new SelectExpression<string?>(_schema)
+                    ,new SelectExpression<string?>(__schema)
+                    ,new SelectExpression<string?>(alias)
+                    ,new SelectExpression<string?>(_alias)
+                    ,new SelectExpression<string?>(__alias)
+                    ,new SelectExpression<string?>(_entity)
+                    ,new SelectExpression<string?>(__entity)
+                }
+            );
+        }
+
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
-            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new SelectExpression<string?>(identifier)
-                ,new SelectExpression<string?>(_identifier)
-                ,new SelectExpression<string?>(__identifier)
-                ,new SelectExpression<string?>(name)
-                ,new SelectExpression<string?>(_name)
-                ,new SelectExpression<string?>(__name)
-                ,new SelectExpression<string?>(schema)
-                ,new SelectExpression<string?>(_schema)
-                ,new SelectExpression<string?>(__schema)
-                ,new SelectExpression<string?>(alias)
-                ,new SelectExpression<string?>(_alias)
-                ,new SelectExpression<string?>(__alias)
-                ,new SelectExpression<string?>(_entity)
-                ,new SelectExpression<string?>(__entity)
-            ));
+            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> ___alias)
@@ -7950,47 +7948,33 @@ namespace DbEx.unit_testDataService
             string? aliased = null;
 
             aliased = ___alias(nameof(identifier));
-            set &= aliased != nameof(identifier) ? new SelectExpression<string?>(identifier, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(identifier));
-
+            set &= aliased != nameof(identifier) ? new SelectExpression<string?>(identifier, aliased) : GetInclusiveSelectExpressions()[0];
             aliased = ___alias(nameof(_identifier));
-            set &= aliased != nameof(_identifier) ? new SelectExpression<string?>(_identifier, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(_identifier));
-
+            set &= aliased != nameof(_identifier) ? new SelectExpression<string?>(_identifier, aliased) : GetInclusiveSelectExpressions()[1];
             aliased = ___alias(nameof(__identifier));
-            set &= aliased != nameof(__identifier) ? new SelectExpression<string?>(__identifier, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(__identifier));
-
+            set &= aliased != nameof(__identifier) ? new SelectExpression<string?>(__identifier, aliased) : GetInclusiveSelectExpressions()[2];
             aliased = ___alias(nameof(name));
-            set &= aliased != nameof(name) ? new SelectExpression<string?>(name, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(name));
-
+            set &= aliased != nameof(name) ? new SelectExpression<string?>(name, aliased) : GetInclusiveSelectExpressions()[3];
             aliased = ___alias(nameof(_name));
-            set &= aliased != nameof(_name) ? new SelectExpression<string?>(_name, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(_name));
-
+            set &= aliased != nameof(_name) ? new SelectExpression<string?>(_name, aliased) : GetInclusiveSelectExpressions()[4];
             aliased = ___alias(nameof(__name));
-            set &= aliased != nameof(__name) ? new SelectExpression<string?>(__name, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(__name));
-
+            set &= aliased != nameof(__name) ? new SelectExpression<string?>(__name, aliased) : GetInclusiveSelectExpressions()[5];
             aliased = ___alias(nameof(schema));
-            set &= aliased != nameof(schema) ? new SelectExpression<string?>(schema, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(schema));
-
+            set &= aliased != nameof(schema) ? new SelectExpression<string?>(schema, aliased) : GetInclusiveSelectExpressions()[6];
             aliased = ___alias(nameof(_schema));
-            set &= aliased != nameof(_schema) ? new SelectExpression<string?>(_schema, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(_schema));
-
+            set &= aliased != nameof(_schema) ? new SelectExpression<string?>(_schema, aliased) : GetInclusiveSelectExpressions()[7];
             aliased = ___alias(nameof(__schema));
-            set &= aliased != nameof(__schema) ? new SelectExpression<string?>(__schema, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(__schema));
-
+            set &= aliased != nameof(__schema) ? new SelectExpression<string?>(__schema, aliased) : GetInclusiveSelectExpressions()[8];
             aliased = ___alias(nameof(alias));
-            set &= aliased != nameof(alias) ? new SelectExpression<string?>(alias, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(alias));
-
+            set &= aliased != nameof(alias) ? new SelectExpression<string?>(alias, aliased) : GetInclusiveSelectExpressions()[9];
             aliased = ___alias(nameof(_alias));
-            set &= aliased != nameof(_alias) ? new SelectExpression<string?>(_alias, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(_alias));
-
+            set &= aliased != nameof(_alias) ? new SelectExpression<string?>(_alias, aliased) : GetInclusiveSelectExpressions()[10];
             aliased = ___alias(nameof(__alias));
-            set &= aliased != nameof(__alias) ? new SelectExpression<string?>(__alias, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(__alias));
-
+            set &= aliased != nameof(__alias) ? new SelectExpression<string?>(__alias, aliased) : GetInclusiveSelectExpressions()[11];
             aliased = ___alias(nameof(_entity));
-            set &= aliased != nameof(_entity) ? new SelectExpression<string?>(_entity, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(_entity));
-
+            set &= aliased != nameof(_entity) ? new SelectExpression<string?>(_entity, aliased) : GetInclusiveSelectExpressions()[12];
             aliased = ___alias(nameof(__entity));
-            set &= aliased != nameof(__entity) ? new SelectExpression<string?>(__entity, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(__entity));
-
+            set &= aliased != nameof(__entity) ? new SelectExpression<string?>(__entity, aliased) : GetInclusiveSelectExpressions()[13];
             return set;
         }
 		
@@ -8329,6 +8313,7 @@ namespace DbEx.unit_testDataService
     public partial class ExpressionElementTypeEntity : EntityExpression<ExpressionElementType>
     {
         #region internals
+        private List<SelectExpression>? _inclusiveSelectExpressions;
         private SelectExpressionSet? _inclusiveSelectExpressionSet;
         #endregion
 
@@ -8958,39 +8943,46 @@ namespace DbEx.unit_testDataService
         public ExpressionElementTypeEntity As(string alias)
             => new ExpressionElementTypeEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
+        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        {
+            return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
+                {
+                    new SelectExpression<int>(Id)
+                    ,new SelectExpression<bool>(Boolean)
+                    ,new SelectExpression<bool?>(NullableBoolean)
+                    ,new SelectExpression<byte>(Byte)
+                    ,new SelectExpression<byte?>(NullableByte)
+                    ,new SelectExpression<byte[]>(ByteArray)
+                    ,new SelectExpression<byte[]?>(NullableByteArray)
+                    ,new SelectExpression<DateTime>(DateTime)
+                    ,new SelectExpression<DateTime?>(NullableDateTime)
+                    ,new SelectExpression<DateTimeOffset>(DateTimeOffset)
+                    ,new SelectExpression<DateTimeOffset?>(NullableDateTimeOffset)
+                    ,new SelectExpression<decimal>(Decimal)
+                    ,new SelectExpression<decimal?>(NullableDecimal)
+                    ,new SelectExpression<double>(Double)
+                    ,new SelectExpression<double?>(NullableDouble)
+                    ,new SelectExpression<Guid>(Guid)
+                    ,new SelectExpression<Guid?>(NullableGuid)
+                    ,new SelectExpression<short>(Int16)
+                    ,new SelectExpression<short?>(NullableInt16)
+                    ,new SelectExpression<int>(Int32)
+                    ,new SelectExpression<int?>(NullableInt32)
+                    ,new SelectExpression<long>(Int64)
+                    ,new SelectExpression<long?>(NullableInt64)
+                    ,new SelectExpression<float>(Single)
+                    ,new SelectExpression<float?>(NullableSingle)
+                    ,new SelectExpression<string>(String)
+                    ,new SelectExpression<string?>(NullableString)
+                    ,new SelectExpression<TimeSpan>(TimeSpan)
+                    ,new SelectExpression<TimeSpan?>(NullableTimeSpan)
+                }
+            );
+        }
+
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
-            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new SelectExpression<int>(Id)
-                ,new SelectExpression<bool>(Boolean)
-                ,new SelectExpression<bool?>(NullableBoolean)
-                ,new SelectExpression<byte>(Byte)
-                ,new SelectExpression<byte?>(NullableByte)
-                ,new SelectExpression<byte[]>(ByteArray)
-                ,new SelectExpression<byte[]?>(NullableByteArray)
-                ,new SelectExpression<DateTime>(DateTime)
-                ,new SelectExpression<DateTime?>(NullableDateTime)
-                ,new SelectExpression<DateTimeOffset>(DateTimeOffset)
-                ,new SelectExpression<DateTimeOffset?>(NullableDateTimeOffset)
-                ,new SelectExpression<decimal>(Decimal)
-                ,new SelectExpression<decimal?>(NullableDecimal)
-                ,new SelectExpression<double>(Double)
-                ,new SelectExpression<double?>(NullableDouble)
-                ,new SelectExpression<Guid>(Guid)
-                ,new SelectExpression<Guid?>(NullableGuid)
-                ,new SelectExpression<short>(Int16)
-                ,new SelectExpression<short?>(NullableInt16)
-                ,new SelectExpression<int>(Int32)
-                ,new SelectExpression<int?>(NullableInt32)
-                ,new SelectExpression<long>(Int64)
-                ,new SelectExpression<long?>(NullableInt64)
-                ,new SelectExpression<float>(Single)
-                ,new SelectExpression<float?>(NullableSingle)
-                ,new SelectExpression<string>(String)
-                ,new SelectExpression<string?>(NullableString)
-                ,new SelectExpression<TimeSpan>(TimeSpan)
-                ,new SelectExpression<TimeSpan?>(NullableTimeSpan)
-            ));
+            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
@@ -9002,92 +8994,63 @@ namespace DbEx.unit_testDataService
             string? aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Id));
-
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
             aliased = alias(nameof(Boolean));
-            set &= aliased != nameof(Boolean) ? new SelectExpression<bool>(Boolean, aliased) as SelectExpression<bool> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Boolean));
-
+            set &= aliased != nameof(Boolean) ? new SelectExpression<bool>(Boolean, aliased) : GetInclusiveSelectExpressions()[1];
             aliased = alias(nameof(NullableBoolean));
-            set &= aliased != nameof(NullableBoolean) ? new SelectExpression<bool?>(NullableBoolean, aliased) as SelectExpression<bool?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(NullableBoolean));
-
+            set &= aliased != nameof(NullableBoolean) ? new SelectExpression<bool?>(NullableBoolean, aliased) : GetInclusiveSelectExpressions()[2];
             aliased = alias(nameof(Byte));
-            set &= aliased != nameof(Byte) ? new SelectExpression<byte>(Byte, aliased) as SelectExpression<byte> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Byte));
-
+            set &= aliased != nameof(Byte) ? new SelectExpression<byte>(Byte, aliased) : GetInclusiveSelectExpressions()[3];
             aliased = alias(nameof(NullableByte));
-            set &= aliased != nameof(NullableByte) ? new SelectExpression<byte?>(NullableByte, aliased) as SelectExpression<byte?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(NullableByte));
-
+            set &= aliased != nameof(NullableByte) ? new SelectExpression<byte?>(NullableByte, aliased) : GetInclusiveSelectExpressions()[4];
             aliased = alias(nameof(ByteArray));
-            set &= aliased != nameof(ByteArray) ? new SelectExpression<byte[]>(ByteArray, aliased) as SelectExpression<byte[]> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(ByteArray));
-
+            set &= aliased != nameof(ByteArray) ? new SelectExpression<byte[]>(ByteArray, aliased) : GetInclusiveSelectExpressions()[5];
             aliased = alias(nameof(NullableByteArray));
-            set &= aliased != nameof(NullableByteArray) ? new SelectExpression<byte[]?>(NullableByteArray, aliased) as SelectExpression<byte[]?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(NullableByteArray));
-
+            set &= aliased != nameof(NullableByteArray) ? new SelectExpression<byte[]?>(NullableByteArray, aliased) : GetInclusiveSelectExpressions()[6];
             aliased = alias(nameof(DateTime));
-            set &= aliased != nameof(DateTime) ? new SelectExpression<DateTime>(DateTime, aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(DateTime));
-
+            set &= aliased != nameof(DateTime) ? new SelectExpression<DateTime>(DateTime, aliased) : GetInclusiveSelectExpressions()[7];
             aliased = alias(nameof(NullableDateTime));
-            set &= aliased != nameof(NullableDateTime) ? new SelectExpression<DateTime?>(NullableDateTime, aliased) as SelectExpression<DateTime?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(NullableDateTime));
-
+            set &= aliased != nameof(NullableDateTime) ? new SelectExpression<DateTime?>(NullableDateTime, aliased) : GetInclusiveSelectExpressions()[8];
             aliased = alias(nameof(DateTimeOffset));
-            set &= aliased != nameof(DateTimeOffset) ? new SelectExpression<DateTimeOffset>(DateTimeOffset, aliased) as SelectExpression<DateTimeOffset> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(DateTimeOffset));
-
+            set &= aliased != nameof(DateTimeOffset) ? new SelectExpression<DateTimeOffset>(DateTimeOffset, aliased) : GetInclusiveSelectExpressions()[9];
             aliased = alias(nameof(NullableDateTimeOffset));
-            set &= aliased != nameof(NullableDateTimeOffset) ? new SelectExpression<DateTimeOffset?>(NullableDateTimeOffset, aliased) as SelectExpression<DateTimeOffset?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(NullableDateTimeOffset));
-
+            set &= aliased != nameof(NullableDateTimeOffset) ? new SelectExpression<DateTimeOffset?>(NullableDateTimeOffset, aliased) : GetInclusiveSelectExpressions()[10];
             aliased = alias(nameof(Decimal));
-            set &= aliased != nameof(Decimal) ? new SelectExpression<decimal>(Decimal, aliased) as SelectExpression<decimal> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Decimal));
-
+            set &= aliased != nameof(Decimal) ? new SelectExpression<decimal>(Decimal, aliased) : GetInclusiveSelectExpressions()[11];
             aliased = alias(nameof(NullableDecimal));
-            set &= aliased != nameof(NullableDecimal) ? new SelectExpression<decimal?>(NullableDecimal, aliased) as SelectExpression<decimal?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(NullableDecimal));
-
+            set &= aliased != nameof(NullableDecimal) ? new SelectExpression<decimal?>(NullableDecimal, aliased) : GetInclusiveSelectExpressions()[12];
             aliased = alias(nameof(Double));
-            set &= aliased != nameof(Double) ? new SelectExpression<double>(Double, aliased) as SelectExpression<double> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Double));
-
+            set &= aliased != nameof(Double) ? new SelectExpression<double>(Double, aliased) : GetInclusiveSelectExpressions()[13];
             aliased = alias(nameof(NullableDouble));
-            set &= aliased != nameof(NullableDouble) ? new SelectExpression<double?>(NullableDouble, aliased) as SelectExpression<double?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(NullableDouble));
-
+            set &= aliased != nameof(NullableDouble) ? new SelectExpression<double?>(NullableDouble, aliased) : GetInclusiveSelectExpressions()[14];
             aliased = alias(nameof(Guid));
-            set &= aliased != nameof(Guid) ? new SelectExpression<Guid>(Guid, aliased) as SelectExpression<Guid> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Guid));
-
+            set &= aliased != nameof(Guid) ? new SelectExpression<Guid>(Guid, aliased) : GetInclusiveSelectExpressions()[15];
             aliased = alias(nameof(NullableGuid));
-            set &= aliased != nameof(NullableGuid) ? new SelectExpression<Guid?>(NullableGuid, aliased) as SelectExpression<Guid?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(NullableGuid));
-
+            set &= aliased != nameof(NullableGuid) ? new SelectExpression<Guid?>(NullableGuid, aliased) : GetInclusiveSelectExpressions()[16];
             aliased = alias(nameof(Int16));
-            set &= aliased != nameof(Int16) ? new SelectExpression<short>(Int16, aliased) as SelectExpression<short> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Int16));
-
+            set &= aliased != nameof(Int16) ? new SelectExpression<short>(Int16, aliased) : GetInclusiveSelectExpressions()[17];
             aliased = alias(nameof(NullableInt16));
-            set &= aliased != nameof(NullableInt16) ? new SelectExpression<short?>(NullableInt16, aliased) as SelectExpression<short?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(NullableInt16));
-
+            set &= aliased != nameof(NullableInt16) ? new SelectExpression<short?>(NullableInt16, aliased) : GetInclusiveSelectExpressions()[18];
             aliased = alias(nameof(Int32));
-            set &= aliased != nameof(Int32) ? new SelectExpression<int>(Int32, aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Int32));
-
+            set &= aliased != nameof(Int32) ? new SelectExpression<int>(Int32, aliased) : GetInclusiveSelectExpressions()[19];
             aliased = alias(nameof(NullableInt32));
-            set &= aliased != nameof(NullableInt32) ? new SelectExpression<int?>(NullableInt32, aliased) as SelectExpression<int?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(NullableInt32));
-
+            set &= aliased != nameof(NullableInt32) ? new SelectExpression<int?>(NullableInt32, aliased) : GetInclusiveSelectExpressions()[20];
             aliased = alias(nameof(Int64));
-            set &= aliased != nameof(Int64) ? new SelectExpression<long>(Int64, aliased) as SelectExpression<long> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Int64));
-
+            set &= aliased != nameof(Int64) ? new SelectExpression<long>(Int64, aliased) : GetInclusiveSelectExpressions()[21];
             aliased = alias(nameof(NullableInt64));
-            set &= aliased != nameof(NullableInt64) ? new SelectExpression<long?>(NullableInt64, aliased) as SelectExpression<long?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(NullableInt64));
-
+            set &= aliased != nameof(NullableInt64) ? new SelectExpression<long?>(NullableInt64, aliased) : GetInclusiveSelectExpressions()[22];
             aliased = alias(nameof(Single));
-            set &= aliased != nameof(Single) ? new SelectExpression<float>(Single, aliased) as SelectExpression<float> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Single));
-
+            set &= aliased != nameof(Single) ? new SelectExpression<float>(Single, aliased) : GetInclusiveSelectExpressions()[23];
             aliased = alias(nameof(NullableSingle));
-            set &= aliased != nameof(NullableSingle) ? new SelectExpression<float?>(NullableSingle, aliased) as SelectExpression<float?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(NullableSingle));
-
+            set &= aliased != nameof(NullableSingle) ? new SelectExpression<float?>(NullableSingle, aliased) : GetInclusiveSelectExpressions()[24];
             aliased = alias(nameof(String));
-            set &= aliased != nameof(String) ? new SelectExpression<string>(String, aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(String));
-
+            set &= aliased != nameof(String) ? new SelectExpression<string>(String, aliased) : GetInclusiveSelectExpressions()[25];
             aliased = alias(nameof(NullableString));
-            set &= aliased != nameof(NullableString) ? new SelectExpression<string?>(NullableString, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(NullableString));
-
+            set &= aliased != nameof(NullableString) ? new SelectExpression<string?>(NullableString, aliased) : GetInclusiveSelectExpressions()[26];
             aliased = alias(nameof(TimeSpan));
-            set &= aliased != nameof(TimeSpan) ? new SelectExpression<TimeSpan>(TimeSpan, aliased) as SelectExpression<TimeSpan> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(TimeSpan));
-
+            set &= aliased != nameof(TimeSpan) ? new SelectExpression<TimeSpan>(TimeSpan, aliased) : GetInclusiveSelectExpressions()[27];
             aliased = alias(nameof(NullableTimeSpan));
-            set &= aliased != nameof(NullableTimeSpan) ? new SelectExpression<TimeSpan?>(NullableTimeSpan, aliased) as SelectExpression<TimeSpan?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(NullableTimeSpan));
-
+            set &= aliased != nameof(NullableTimeSpan) ? new SelectExpression<TimeSpan?>(NullableTimeSpan, aliased) : GetInclusiveSelectExpressions()[28];
             return set;
         }
 		
@@ -9765,6 +9728,7 @@ namespace DbEx.unit_testDataService
     public partial class identifierEntity : EntityExpression<identifier>
     {
         #region internals
+        private List<SelectExpression>? _inclusiveSelectExpressions;
         private SelectExpressionSet? _inclusiveSelectExpressionSet;
         #endregion
 
@@ -10079,24 +10043,31 @@ namespace DbEx.unit_testDataService
         public identifierEntity As(string alias)
             => new identifierEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
+        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        {
+            return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
+                {
+                    new SelectExpression<string?>(_identifier)
+                    ,new SelectExpression<string?>(__identifier)
+                    ,new SelectExpression<string?>(name)
+                    ,new SelectExpression<string?>(_name)
+                    ,new SelectExpression<string?>(__name)
+                    ,new SelectExpression<string?>(schema)
+                    ,new SelectExpression<string?>(_schema)
+                    ,new SelectExpression<string?>(__schema)
+                    ,new SelectExpression<string?>(alias)
+                    ,new SelectExpression<string?>(_alias)
+                    ,new SelectExpression<string?>(__alias)
+                    ,new SelectExpression<string?>(entity)
+                    ,new SelectExpression<string?>(_entity)
+                    ,new SelectExpression<string?>(__entity)
+                }
+            );
+        }
+
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
-            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new SelectExpression<string?>(_identifier)
-                ,new SelectExpression<string?>(__identifier)
-                ,new SelectExpression<string?>(name)
-                ,new SelectExpression<string?>(_name)
-                ,new SelectExpression<string?>(__name)
-                ,new SelectExpression<string?>(schema)
-                ,new SelectExpression<string?>(_schema)
-                ,new SelectExpression<string?>(__schema)
-                ,new SelectExpression<string?>(alias)
-                ,new SelectExpression<string?>(_alias)
-                ,new SelectExpression<string?>(__alias)
-                ,new SelectExpression<string?>(entity)
-                ,new SelectExpression<string?>(_entity)
-                ,new SelectExpression<string?>(__entity)
-            ));
+            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> ___alias)
@@ -10108,47 +10079,33 @@ namespace DbEx.unit_testDataService
             string? aliased = null;
 
             aliased = ___alias(nameof(_identifier));
-            set &= aliased != nameof(_identifier) ? new SelectExpression<string?>(_identifier, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(_identifier));
-
+            set &= aliased != nameof(_identifier) ? new SelectExpression<string?>(_identifier, aliased) : GetInclusiveSelectExpressions()[0];
             aliased = ___alias(nameof(__identifier));
-            set &= aliased != nameof(__identifier) ? new SelectExpression<string?>(__identifier, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(__identifier));
-
+            set &= aliased != nameof(__identifier) ? new SelectExpression<string?>(__identifier, aliased) : GetInclusiveSelectExpressions()[1];
             aliased = ___alias(nameof(name));
-            set &= aliased != nameof(name) ? new SelectExpression<string?>(name, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(name));
-
+            set &= aliased != nameof(name) ? new SelectExpression<string?>(name, aliased) : GetInclusiveSelectExpressions()[2];
             aliased = ___alias(nameof(_name));
-            set &= aliased != nameof(_name) ? new SelectExpression<string?>(_name, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(_name));
-
+            set &= aliased != nameof(_name) ? new SelectExpression<string?>(_name, aliased) : GetInclusiveSelectExpressions()[3];
             aliased = ___alias(nameof(__name));
-            set &= aliased != nameof(__name) ? new SelectExpression<string?>(__name, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(__name));
-
+            set &= aliased != nameof(__name) ? new SelectExpression<string?>(__name, aliased) : GetInclusiveSelectExpressions()[4];
             aliased = ___alias(nameof(schema));
-            set &= aliased != nameof(schema) ? new SelectExpression<string?>(schema, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(schema));
-
+            set &= aliased != nameof(schema) ? new SelectExpression<string?>(schema, aliased) : GetInclusiveSelectExpressions()[5];
             aliased = ___alias(nameof(_schema));
-            set &= aliased != nameof(_schema) ? new SelectExpression<string?>(_schema, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(_schema));
-
+            set &= aliased != nameof(_schema) ? new SelectExpression<string?>(_schema, aliased) : GetInclusiveSelectExpressions()[6];
             aliased = ___alias(nameof(__schema));
-            set &= aliased != nameof(__schema) ? new SelectExpression<string?>(__schema, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(__schema));
-
+            set &= aliased != nameof(__schema) ? new SelectExpression<string?>(__schema, aliased) : GetInclusiveSelectExpressions()[7];
             aliased = ___alias(nameof(alias));
-            set &= aliased != nameof(alias) ? new SelectExpression<string?>(alias, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(alias));
-
+            set &= aliased != nameof(alias) ? new SelectExpression<string?>(alias, aliased) : GetInclusiveSelectExpressions()[8];
             aliased = ___alias(nameof(_alias));
-            set &= aliased != nameof(_alias) ? new SelectExpression<string?>(_alias, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(_alias));
-
+            set &= aliased != nameof(_alias) ? new SelectExpression<string?>(_alias, aliased) : GetInclusiveSelectExpressions()[9];
             aliased = ___alias(nameof(__alias));
-            set &= aliased != nameof(__alias) ? new SelectExpression<string?>(__alias, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(__alias));
-
+            set &= aliased != nameof(__alias) ? new SelectExpression<string?>(__alias, aliased) : GetInclusiveSelectExpressions()[10];
             aliased = ___alias(nameof(entity));
-            set &= aliased != nameof(entity) ? new SelectExpression<string?>(entity, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(entity));
-
+            set &= aliased != nameof(entity) ? new SelectExpression<string?>(entity, aliased) : GetInclusiveSelectExpressions()[11];
             aliased = ___alias(nameof(_entity));
-            set &= aliased != nameof(_entity) ? new SelectExpression<string?>(_entity, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(_entity));
-
+            set &= aliased != nameof(_entity) ? new SelectExpression<string?>(_entity, aliased) : GetInclusiveSelectExpressions()[12];
             aliased = ___alias(nameof(__entity));
-            set &= aliased != nameof(__entity) ? new SelectExpression<string?>(__entity, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(__entity));
-
+            set &= aliased != nameof(__entity) ? new SelectExpression<string?>(__entity, aliased) : GetInclusiveSelectExpressions()[13];
             return set;
         }
 		
@@ -10487,6 +10444,7 @@ namespace DbEx.unit_testDataService
     public partial class nameEntity : EntityExpression<name>
     {
         #region internals
+        private List<SelectExpression>? _inclusiveSelectExpressions;
         private SelectExpressionSet? _inclusiveSelectExpressionSet;
         #endregion
 
@@ -10801,24 +10759,31 @@ namespace DbEx.unit_testDataService
         public nameEntity As(string alias)
             => new nameEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
+        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        {
+            return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
+                {
+                    new SelectExpression<string?>(identifier)
+                    ,new SelectExpression<string?>(_identifier)
+                    ,new SelectExpression<string?>(__identifier)
+                    ,new SelectExpression<string?>(_name)
+                    ,new SelectExpression<string?>(__name)
+                    ,new SelectExpression<string?>(schema)
+                    ,new SelectExpression<string?>(_schema)
+                    ,new SelectExpression<string?>(__schema)
+                    ,new SelectExpression<string?>(alias)
+                    ,new SelectExpression<string?>(_alias)
+                    ,new SelectExpression<string?>(__alias)
+                    ,new SelectExpression<string?>(entity)
+                    ,new SelectExpression<string?>(_entity)
+                    ,new SelectExpression<string?>(__entity)
+                }
+            );
+        }
+
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
-            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new SelectExpression<string?>(identifier)
-                ,new SelectExpression<string?>(_identifier)
-                ,new SelectExpression<string?>(__identifier)
-                ,new SelectExpression<string?>(_name)
-                ,new SelectExpression<string?>(__name)
-                ,new SelectExpression<string?>(schema)
-                ,new SelectExpression<string?>(_schema)
-                ,new SelectExpression<string?>(__schema)
-                ,new SelectExpression<string?>(alias)
-                ,new SelectExpression<string?>(_alias)
-                ,new SelectExpression<string?>(__alias)
-                ,new SelectExpression<string?>(entity)
-                ,new SelectExpression<string?>(_entity)
-                ,new SelectExpression<string?>(__entity)
-            ));
+            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> ___alias)
@@ -10830,47 +10795,33 @@ namespace DbEx.unit_testDataService
             string? aliased = null;
 
             aliased = ___alias(nameof(identifier));
-            set &= aliased != nameof(identifier) ? new SelectExpression<string?>(identifier, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(identifier));
-
+            set &= aliased != nameof(identifier) ? new SelectExpression<string?>(identifier, aliased) : GetInclusiveSelectExpressions()[0];
             aliased = ___alias(nameof(_identifier));
-            set &= aliased != nameof(_identifier) ? new SelectExpression<string?>(_identifier, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(_identifier));
-
+            set &= aliased != nameof(_identifier) ? new SelectExpression<string?>(_identifier, aliased) : GetInclusiveSelectExpressions()[1];
             aliased = ___alias(nameof(__identifier));
-            set &= aliased != nameof(__identifier) ? new SelectExpression<string?>(__identifier, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(__identifier));
-
+            set &= aliased != nameof(__identifier) ? new SelectExpression<string?>(__identifier, aliased) : GetInclusiveSelectExpressions()[2];
             aliased = ___alias(nameof(_name));
-            set &= aliased != nameof(_name) ? new SelectExpression<string?>(_name, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(_name));
-
+            set &= aliased != nameof(_name) ? new SelectExpression<string?>(_name, aliased) : GetInclusiveSelectExpressions()[3];
             aliased = ___alias(nameof(__name));
-            set &= aliased != nameof(__name) ? new SelectExpression<string?>(__name, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(__name));
-
+            set &= aliased != nameof(__name) ? new SelectExpression<string?>(__name, aliased) : GetInclusiveSelectExpressions()[4];
             aliased = ___alias(nameof(schema));
-            set &= aliased != nameof(schema) ? new SelectExpression<string?>(schema, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(schema));
-
+            set &= aliased != nameof(schema) ? new SelectExpression<string?>(schema, aliased) : GetInclusiveSelectExpressions()[5];
             aliased = ___alias(nameof(_schema));
-            set &= aliased != nameof(_schema) ? new SelectExpression<string?>(_schema, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(_schema));
-
+            set &= aliased != nameof(_schema) ? new SelectExpression<string?>(_schema, aliased) : GetInclusiveSelectExpressions()[6];
             aliased = ___alias(nameof(__schema));
-            set &= aliased != nameof(__schema) ? new SelectExpression<string?>(__schema, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(__schema));
-
+            set &= aliased != nameof(__schema) ? new SelectExpression<string?>(__schema, aliased) : GetInclusiveSelectExpressions()[7];
             aliased = ___alias(nameof(alias));
-            set &= aliased != nameof(alias) ? new SelectExpression<string?>(alias, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(alias));
-
+            set &= aliased != nameof(alias) ? new SelectExpression<string?>(alias, aliased) : GetInclusiveSelectExpressions()[8];
             aliased = ___alias(nameof(_alias));
-            set &= aliased != nameof(_alias) ? new SelectExpression<string?>(_alias, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(_alias));
-
+            set &= aliased != nameof(_alias) ? new SelectExpression<string?>(_alias, aliased) : GetInclusiveSelectExpressions()[9];
             aliased = ___alias(nameof(__alias));
-            set &= aliased != nameof(__alias) ? new SelectExpression<string?>(__alias, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(__alias));
-
+            set &= aliased != nameof(__alias) ? new SelectExpression<string?>(__alias, aliased) : GetInclusiveSelectExpressions()[10];
             aliased = ___alias(nameof(entity));
-            set &= aliased != nameof(entity) ? new SelectExpression<string?>(entity, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(entity));
-
+            set &= aliased != nameof(entity) ? new SelectExpression<string?>(entity, aliased) : GetInclusiveSelectExpressions()[11];
             aliased = ___alias(nameof(_entity));
-            set &= aliased != nameof(_entity) ? new SelectExpression<string?>(_entity, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(_entity));
-
+            set &= aliased != nameof(_entity) ? new SelectExpression<string?>(_entity, aliased) : GetInclusiveSelectExpressions()[12];
             aliased = ___alias(nameof(__entity));
-            set &= aliased != nameof(__entity) ? new SelectExpression<string?>(__entity, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(__entity));
-
+            set &= aliased != nameof(__entity) ? new SelectExpression<string?>(__entity, aliased) : GetInclusiveSelectExpressions()[13];
             return set;
         }
 		
@@ -11209,6 +11160,7 @@ namespace DbEx.unit_testDataService
     public partial class schemaEntity : EntityExpression<schema>
     {
         #region internals
+        private List<SelectExpression>? _inclusiveSelectExpressions;
         private SelectExpressionSet? _inclusiveSelectExpressionSet;
         #endregion
 
@@ -11523,24 +11475,31 @@ namespace DbEx.unit_testDataService
         public schemaEntity As(string alias)
             => new schemaEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
+        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        {
+            return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
+                {
+                    new SelectExpression<string?>(identifier)
+                    ,new SelectExpression<string?>(_identifier)
+                    ,new SelectExpression<string?>(__identifier)
+                    ,new SelectExpression<string?>(name)
+                    ,new SelectExpression<string?>(_name)
+                    ,new SelectExpression<string?>(__name)
+                    ,new SelectExpression<string?>(_schema)
+                    ,new SelectExpression<string?>(__schema)
+                    ,new SelectExpression<string?>(alias)
+                    ,new SelectExpression<string?>(_alias)
+                    ,new SelectExpression<string?>(__alias)
+                    ,new SelectExpression<string?>(entity)
+                    ,new SelectExpression<string?>(_entity)
+                    ,new SelectExpression<string?>(__entity)
+                }
+            );
+        }
+
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
-            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new SelectExpression<string?>(identifier)
-                ,new SelectExpression<string?>(_identifier)
-                ,new SelectExpression<string?>(__identifier)
-                ,new SelectExpression<string?>(name)
-                ,new SelectExpression<string?>(_name)
-                ,new SelectExpression<string?>(__name)
-                ,new SelectExpression<string?>(_schema)
-                ,new SelectExpression<string?>(__schema)
-                ,new SelectExpression<string?>(alias)
-                ,new SelectExpression<string?>(_alias)
-                ,new SelectExpression<string?>(__alias)
-                ,new SelectExpression<string?>(entity)
-                ,new SelectExpression<string?>(_entity)
-                ,new SelectExpression<string?>(__entity)
-            ));
+            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> ___alias)
@@ -11552,47 +11511,33 @@ namespace DbEx.unit_testDataService
             string? aliased = null;
 
             aliased = ___alias(nameof(identifier));
-            set &= aliased != nameof(identifier) ? new SelectExpression<string?>(identifier, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(identifier));
-
+            set &= aliased != nameof(identifier) ? new SelectExpression<string?>(identifier, aliased) : GetInclusiveSelectExpressions()[0];
             aliased = ___alias(nameof(_identifier));
-            set &= aliased != nameof(_identifier) ? new SelectExpression<string?>(_identifier, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(_identifier));
-
+            set &= aliased != nameof(_identifier) ? new SelectExpression<string?>(_identifier, aliased) : GetInclusiveSelectExpressions()[1];
             aliased = ___alias(nameof(__identifier));
-            set &= aliased != nameof(__identifier) ? new SelectExpression<string?>(__identifier, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(__identifier));
-
+            set &= aliased != nameof(__identifier) ? new SelectExpression<string?>(__identifier, aliased) : GetInclusiveSelectExpressions()[2];
             aliased = ___alias(nameof(name));
-            set &= aliased != nameof(name) ? new SelectExpression<string?>(name, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(name));
-
+            set &= aliased != nameof(name) ? new SelectExpression<string?>(name, aliased) : GetInclusiveSelectExpressions()[3];
             aliased = ___alias(nameof(_name));
-            set &= aliased != nameof(_name) ? new SelectExpression<string?>(_name, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(_name));
-
+            set &= aliased != nameof(_name) ? new SelectExpression<string?>(_name, aliased) : GetInclusiveSelectExpressions()[4];
             aliased = ___alias(nameof(__name));
-            set &= aliased != nameof(__name) ? new SelectExpression<string?>(__name, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(__name));
-
+            set &= aliased != nameof(__name) ? new SelectExpression<string?>(__name, aliased) : GetInclusiveSelectExpressions()[5];
             aliased = ___alias(nameof(_schema));
-            set &= aliased != nameof(_schema) ? new SelectExpression<string?>(_schema, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(_schema));
-
+            set &= aliased != nameof(_schema) ? new SelectExpression<string?>(_schema, aliased) : GetInclusiveSelectExpressions()[6];
             aliased = ___alias(nameof(__schema));
-            set &= aliased != nameof(__schema) ? new SelectExpression<string?>(__schema, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(__schema));
-
+            set &= aliased != nameof(__schema) ? new SelectExpression<string?>(__schema, aliased) : GetInclusiveSelectExpressions()[7];
             aliased = ___alias(nameof(alias));
-            set &= aliased != nameof(alias) ? new SelectExpression<string?>(alias, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(alias));
-
+            set &= aliased != nameof(alias) ? new SelectExpression<string?>(alias, aliased) : GetInclusiveSelectExpressions()[8];
             aliased = ___alias(nameof(_alias));
-            set &= aliased != nameof(_alias) ? new SelectExpression<string?>(_alias, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(_alias));
-
+            set &= aliased != nameof(_alias) ? new SelectExpression<string?>(_alias, aliased) : GetInclusiveSelectExpressions()[9];
             aliased = ___alias(nameof(__alias));
-            set &= aliased != nameof(__alias) ? new SelectExpression<string?>(__alias, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(__alias));
-
+            set &= aliased != nameof(__alias) ? new SelectExpression<string?>(__alias, aliased) : GetInclusiveSelectExpressions()[10];
             aliased = ___alias(nameof(entity));
-            set &= aliased != nameof(entity) ? new SelectExpression<string?>(entity, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(entity));
-
+            set &= aliased != nameof(entity) ? new SelectExpression<string?>(entity, aliased) : GetInclusiveSelectExpressions()[11];
             aliased = ___alias(nameof(_entity));
-            set &= aliased != nameof(_entity) ? new SelectExpression<string?>(_entity, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(_entity));
-
+            set &= aliased != nameof(_entity) ? new SelectExpression<string?>(_entity, aliased) : GetInclusiveSelectExpressions()[12];
             aliased = ___alias(nameof(__entity));
-            set &= aliased != nameof(__entity) ? new SelectExpression<string?>(__entity, aliased) as SelectExpression<string?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(__entity));
-
+            set &= aliased != nameof(__entity) ? new SelectExpression<string?>(__entity, aliased) : GetInclusiveSelectExpressions()[13];
             return set;
         }
 		
@@ -12050,6 +11995,7 @@ namespace DbEx.secDataService
     public partial class PersonEntity : EntityExpression<Person>
     {
         #region internals
+        private List<SelectExpression>? _inclusiveSelectExpressions;
         private SelectExpressionSet? _inclusiveSelectExpressionSet;
         #endregion
 
@@ -12160,14 +12106,21 @@ namespace DbEx.secDataService
         public PersonEntity As(string alias)
             => new PersonEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
+        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        {
+            return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
+                {
+                    new SelectExpression<int>(Id)
+                    ,new SelectExpression<string>(SocialSecurityNumber)
+                    ,new SelectExpression<DateTime>(DateCreated)
+                    ,new SelectExpression<DateTime>(DateUpdated)
+                }
+            );
+        }
+
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
-            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new SelectExpression<int>(Id)
-                ,new SelectExpression<string>(SocialSecurityNumber)
-                ,new SelectExpression<DateTime>(DateCreated)
-                ,new SelectExpression<DateTime>(DateUpdated)
-            ));
+            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
@@ -12179,17 +12132,13 @@ namespace DbEx.secDataService
             string? aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(Id));
-
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
             aliased = alias(nameof(SocialSecurityNumber));
-            set &= aliased != nameof(SocialSecurityNumber) ? new SelectExpression<string>(SocialSecurityNumber, aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(SocialSecurityNumber));
-
+            set &= aliased != nameof(SocialSecurityNumber) ? new SelectExpression<string>(SocialSecurityNumber, aliased) : GetInclusiveSelectExpressions()[1];
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(DateCreated));
-
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) : GetInclusiveSelectExpressions()[2];
             aliased = alias(nameof(DateUpdated));
-            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated, aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider)?.Name == nameof(DateUpdated));
-
+            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated, aliased) : GetInclusiveSelectExpressions()[3];
             return set;
         }
 		
