@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.9.2]
+## [0.9.2] - 2022-08-19
 
 ### Added
 - Internal service resolution for dbExpression services are now provided by dependency injection.  Each database has it's own set of services, through separate containers.  Database container use Microsoft's dependency injection service provider as a fallback to services not registered in each container (i.e. services.AddLogging).
@@ -14,26 +14,27 @@
 ### Fixed
 
 ### Breaking Changes
-Configuration has significant changes with the implementation of dependency injection for internal operations of dbExpression, and to additionally improve the API.  Specifically:
-- Value converter configuration
-	- .UseDefaultFactoryFor -> .ForTypes
-	- .OverrideForEnumType -> .ForEnumType
-	- .OverrideForValueType -> .ForValueType
-	- .OverrideForReferenceType -> .ForReferenceType
-- Entity configuration
-	- .UseDefaultFactoryFor -> .ForEntityTypes
-	- .OverrideForEntity -> .ForEntityType
-- Expression element configuration
-	- .UseDefaultFactoryFor -> .ForElementTypesgit 
-	- .ForElement -> .ForElementType
-- Query expression configuration
-	- .UseDefaultFactoryFor -> .ForQueryTypes
-- Execution pipeline configuration
-	- .UseDefaultFactoryFor -> .ForPipelineTypes
+- TOOLS UPDATE IS REQUIRED
+- Configuration has significant changes with the implementation of dependency injection for internal operations of dbExpression, and to additionally improve the API.  Specifically:
+	- Value converter configuration
+		- .UseDefaultFactoryFor -> .ForTypes
+		- .OverrideForEnumType -> .ForEnumType
+		- .OverrideForValueType -> .ForValueType
+		- .OverrideForReferenceType -> .ForReferenceType
+	- Entity configuration
+		- .UseDefaultFactoryFor -> .ForEntityTypes
+		- .OverrideForEntity -> .ForEntityType
+	- Expression element configuration
+		- .UseDefaultFactoryFor -> .ForElementTypesgit 
+		- .ForElement -> .ForElementType
+	- Query expression configuration
+		- .UseDefaultFactoryFor -> .ForQueryTypes
+	- Execution pipeline configuration
+		- .UseDefaultFactoryFor -> .ForPipelineTypes
+		
+	- Any configuration/customization related to query expression assemblers were deprecated along with the assembler implementations when assembler functionality was merged into appender functionality.
 	
-- Any configuration/customization related to query expression assemblers were deprecated along with the assembler implementations when assembler functionality was merged into appender functionality.
-	
-- Dependency injection integration with Microsoft (HatTrick.DbEx.MsSql.Extensions.DependencyInjection) no longer supports registration of services specific to a database.  This has been mitigated
+- Dependency injection integration with Microsoft (HatTrick.DbEx.MsSql.Extensions.DependencyInjection) no longer supports registration of services specific to a database.  This has been mitigated by registration of database specific services in their own container.
 
 - Static configuration via dbExpression class has been deprecated now that dbExpression uses dependency injection.  See [sample console app](https://github.com/HatTrickLabs/dbExpression/blob/90c82b939961ec09def5bfaf0b61ec3b2a097261/samples/mssql/NetCoreConsoleApp/Program.cs)
 for an example on how to configure dbExpression in a console application.

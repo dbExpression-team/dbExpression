@@ -2656,7 +2656,7 @@ namespace SimpleConsole.dboDataService
     public partial class AccessAuditLogEntity : EntityExpression<AccessAuditLog>
     {
         #region internals
-        private List<SelectExpression>? _inclusiveSelectExpressions;
+        private List<SelectExpression> _inclusiveSelectExpressions;
         private SelectExpressionSet _inclusiveSelectExpressionSet;
         #endregion
 
@@ -2910,7 +2910,7 @@ namespace SimpleConsole.dboDataService
     public partial class AddressEntity : EntityExpression<Address>
     {
         #region internals
-        private List<SelectExpression>? _inclusiveSelectExpressions;
+        private List<SelectExpression> _inclusiveSelectExpressions;
         private SelectExpressionSet _inclusiveSelectExpressionSet;
         #endregion
 
@@ -3394,7 +3394,7 @@ namespace SimpleConsole.dboDataService
     public partial class PersonEntity : EntityExpression<Person>
     {
         #region internals
-        private List<SelectExpression>? _inclusiveSelectExpressions;
+        private List<SelectExpression> _inclusiveSelectExpressions;
         private SelectExpressionSet _inclusiveSelectExpressionSet;
         #endregion
 
@@ -3979,7 +3979,7 @@ namespace SimpleConsole.dboDataService
     public partial class PersonAddressEntity : EntityExpression<PersonAddress>
     {
         #region internals
-        private List<SelectExpression>? _inclusiveSelectExpressions;
+        private List<SelectExpression> _inclusiveSelectExpressions;
         private SelectExpressionSet _inclusiveSelectExpressionSet;
         #endregion
 
@@ -4233,7 +4233,7 @@ namespace SimpleConsole.dboDataService
     public partial class ProductEntity : EntityExpression<Product>
     {
         #region internals
-        private List<SelectExpression>? _inclusiveSelectExpressions;
+        private List<SelectExpression> _inclusiveSelectExpressions;
         private SelectExpressionSet _inclusiveSelectExpressionSet;
         #endregion
 
@@ -5096,7 +5096,7 @@ namespace SimpleConsole.dboDataService
     public partial class PurchaseEntity : EntityExpression<Purchase>
     {
         #region internals
-        private List<SelectExpression>? _inclusiveSelectExpressions;
+        private List<SelectExpression> _inclusiveSelectExpressions;
         private SelectExpressionSet _inclusiveSelectExpressionSet;
         #endregion
 
@@ -5768,7 +5768,7 @@ namespace SimpleConsole.dboDataService
     public partial class PurchaseLineEntity : EntityExpression<PurchaseLine>
     {
         #region internals
-        private List<SelectExpression>? _inclusiveSelectExpressions;
+        private List<SelectExpression> _inclusiveSelectExpressions;
         private SelectExpressionSet _inclusiveSelectExpressionSet;
         #endregion
 
@@ -6158,7 +6158,7 @@ namespace SimpleConsole.dboDataService
     public partial class PersonTotalPurchasesViewEntity : EntityExpression<PersonTotalPurchasesView>
     {
         #region internals
-        private List<SelectExpression>? _inclusiveSelectExpressions;
+        private List<SelectExpression> _inclusiveSelectExpressions;
         private SelectExpressionSet _inclusiveSelectExpressionSet;
         #endregion
 
@@ -6799,7 +6799,7 @@ namespace SimpleConsole.secDataService
     public partial class PersonEntity : EntityExpression<Person>
     {
         #region internals
-        private List<SelectExpression>? _inclusiveSelectExpressions;
+        private List<SelectExpression> _inclusiveSelectExpressions;
         private SelectExpressionSet _inclusiveSelectExpressionSet;
         #endregion
 
