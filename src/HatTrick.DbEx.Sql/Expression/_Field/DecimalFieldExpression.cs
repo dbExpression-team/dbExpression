@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<DecimalFieldExpression>
     {
         #region constructors
-        protected DecimalFieldExpression(string identifier, string name, Table entity) : base(identifier, name, typeof(decimal), entity)
+        protected DecimalFieldExpression(int identifier, string name, Table entity) : base(identifier, name, typeof(decimal), entity)
         {
 
         }

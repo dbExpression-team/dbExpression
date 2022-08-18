@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<NullableDateTimeFieldExpression>
     {
         #region constructors
-        protected NullableDateTimeFieldExpression(string identifier, string name, Table entity) : base(identifier, name, entity)
+        protected NullableDateTimeFieldExpression(int identifier, string name, Table entity) : base(identifier, name, entity)
         {
 
         }

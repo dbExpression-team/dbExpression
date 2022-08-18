@@ -9,6 +9,7 @@ namespace HatTrick.DbEx.Tools.Model
 {
 	public class StoredProcedurePairModel
 	{
+        public int Identifier { get; }
         public StoredProcedureModel StoredProcedure { get; }
         public StoredProcedureExpressionModel StoredProcedureExpression { get; }
         public IList<ParameterPairModel> Parameters { get; } = new List<ParameterPairModel>();
@@ -18,8 +19,9 @@ namespace HatTrick.DbEx.Tools.Model
         public bool HasOutputParameters => OutputParameters.Any() || InputOutputParameters.Any();
         public bool HasInputParameters => InputParameters.Any() || InputOutputParameters.Any();
 
-        public StoredProcedurePairModel(StoredProcedureModel procedure, StoredProcedureExpressionModel procedureExpression)
+        public StoredProcedurePairModel(int identifier, StoredProcedureModel procedure, StoredProcedureExpressionModel procedureExpression)
         {
+            Identifier = identifier;
             StoredProcedure = procedure ?? throw new ArgumentNullException(nameof(procedure));
             StoredProcedureExpression = procedureExpression ?? throw new ArgumentNullException(nameof(procedureExpression));
         }

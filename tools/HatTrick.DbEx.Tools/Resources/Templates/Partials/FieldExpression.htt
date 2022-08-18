@@ -8,7 +8,7 @@
         public partial class {$.FieldExpression.Name}Field : {$.FieldExpression.FieldExpressionTypeName}
         {{
             #region constructors
-            public {$.FieldExpression.Name}Field(string {:identifierArgName}, string {:nameArgName}, Table {:entityArgName}) : base({:identifierArgName}, {:nameArgName}, {:entityArgName})
+            public {$.FieldExpression.Name}Field(int {:identifierArgName}, string {:nameArgName}, Table {:entityArgName}) : base({:identifierArgName}, {:nameArgName}, {:entityArgName})
             {{
 
             }}

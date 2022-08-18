@@ -31,12 +31,12 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region interface
-        public string Identifier => Attributes.Identifier;
-        IEnumerable<Table> Schema.Entities => Attributes.Entities.Values;
+        int ISqlMetadataIdentifierProvider.Identifier => Attributes.Identifier;
+        IEnumerable<Table> Schema.Entities => Attributes.Entities;
         #endregion
 
         #region constructors
-        protected SchemaExpression(string identifier)
+        protected SchemaExpression(int identifier)
         {
             this.Attributes = new(identifier);
         }
@@ -44,7 +44,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region methods
         public override string? ToString()
-            => Identifier;
+            => $"[schema:{Attributes.Identifier}]";
         #endregion
 
         #region operators
@@ -96,14 +96,14 @@ namespace HatTrick.DbEx.Sql.Expression
         public class SchemaExpressionAttributes : IEquatable<SchemaExpressionAttributes>
         {
             #region interface
-            public string Identifier { get; }
-            public Dictionary<string, EntityExpression> Entities { get; } = new();
+            public int Identifier { get; }
+            public HashSet<EntityExpression> Entities { get; } = new();
             #endregion
 
             #region constructors
-            public SchemaExpressionAttributes(string identifier)
+            public SchemaExpressionAttributes(int identifier)
             {
-                this.Identifier = identifier ?? throw new ArgumentNullException(nameof(identifier));
+                this.Identifier = identifier;
             }
             #endregion
 
@@ -113,7 +113,7 @@ namespace HatTrick.DbEx.Sql.Expression
                 if (obj is null) return false;
                 if (ReferenceEquals(obj, this)) return true;
 
-                if (!StringComparer.Ordinal.Equals(Identifier, obj.Identifier)) return false;
+                if (Identifier != obj.Identifier) return false;
 
                 return true;
             }
@@ -129,7 +129,7 @@ namespace HatTrick.DbEx.Sql.Expression
                     const int multiplier = 16777619;
 
                     int hash = @base;
-                    hash = (hash * multiplier) ^ (Identifier is not null ? Identifier.GetHashCode() : 0);
+                    hash = (hash * multiplier) ^ Identifier.GetHashCode();
                     return hash;
                 }
             }

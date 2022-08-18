@@ -22,14 +22,14 @@
         #endregion
 
         #region constructors
-        public {$.EntityExpression.Name}Entity(string {:identifierArgName}, string {:nameArgName}, Schema {:schemaArgName}) : this({:identifierArgName}, {:nameArgName}, {:schemaArgName}, null)
+        public {$.EntityExpression.Name}Entity(int {:identifierArgName}, string {:nameArgName}, Schema {:schemaArgName}) : this({:identifierArgName}, {:nameArgName}, {:schemaArgName}, null)
         {{
         }}
 
-        private {$.EntityExpression.Name}Entity(string {:identifierArgName}, string {:nameArgName}, Schema {:schemaArgName}, string{:nullableAnnotation} {:aliasArgName}) : base({:identifierArgName}, {:nameArgName}, {:schemaArgName}, {:aliasArgName})
+        private {$.EntityExpression.Name}Entity(int {:identifierArgName}, string {:nameArgName}, Schema {:schemaArgName}, string{:nullableAnnotation} {:aliasArgName}) : base({:identifierArgName}, {:nameArgName}, {:schemaArgName}, {:aliasArgName})
         {{
             {#each $.Columns}
-            Attributes.Fields.Add($"{{identifier}}.{$.Column.Name}", {$.FieldExpression.Name} = new {$.FieldExpression.Name}Field($"{:identifierInterpolationArgName}.{$.Column.Name}", "{$.FieldExpression.Name}", this));
+            Attributes.Fields.Add({$.FieldExpression.Name} = new {$.FieldExpression.Name}Field({$.Identifier}, "{$.FieldExpression.Name}", this));
             {/each}
         }}
         #endregion

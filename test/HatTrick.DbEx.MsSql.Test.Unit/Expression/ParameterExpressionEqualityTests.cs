@@ -16,8 +16,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            var exp1 = new ParameterExpression<string>("id", "name", "value", ParameterDirection.Input);
-            var exp2 = new ParameterExpression<string>("id", "name", "value", ParameterDirection.Input);
+            var exp1 = new ParameterExpression<string>(1, "name", "value", ParameterDirection.Input);
+            var exp2 = new ParameterExpression<string>(1, "name", "value", ParameterDirection.Input);
 
             //then
             Assert.True(exp1.Equals(exp2));
@@ -30,8 +30,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            var exp1 = new ParameterExpression<string>("id", "name", "value", ParameterDirection.Input);
-            var exp2 = new ParameterExpression<string>("id", "name", "value2", ParameterDirection.Input);
+            var exp1 = new ParameterExpression<string>(1, "name", "value", ParameterDirection.Input);
+            var exp2 = new ParameterExpression<string>(1, "name", "value2", ParameterDirection.Input);
 
             //then
             Assert.False(exp1.Equals(exp2));
@@ -44,8 +44,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            var exp1 = new ParameterExpression<string>("id", "name", "value", ParameterDirection.Input);
-            var exp2 = new ParameterExpression<string>("id", "name", "value", ParameterDirection.Output);
+            var exp1 = new ParameterExpression<string>(1, "name", "value", ParameterDirection.Input);
+            var exp2 = new ParameterExpression<string>(1, "name", "value", ParameterDirection.Output);
 
             //then
             Assert.False(exp1.Equals(exp2));
@@ -58,8 +58,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            var exp1 = new ParameterExpression<string>("id", "name", "value", ParameterDirection.Input);
-            var exp2 = new ParameterExpression<string>("id", "name", "value", ParameterDirection.Input);
+            var exp1 = new ParameterExpression<string>(1, "name", "value", ParameterDirection.Input);
+            var exp2 = new ParameterExpression<string>(1, "name", "value", ParameterDirection.Input);
 
             //when
             var hc1 = exp1.GetHashCode();
@@ -76,8 +76,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            var exp1 = new ParameterExpression<string>("id", "name", "value", ParameterDirection.Input);
-            var exp2 = new ParameterExpression<string>("id", "name", "value2", ParameterDirection.Input);
+            var exp1 = new ParameterExpression<string>(1, "name", "value", ParameterDirection.Input);
+            var exp2 = new ParameterExpression<string>(1, "name", "value2", ParameterDirection.Input);
 
             //when
             var hc1 = exp1.GetHashCode();

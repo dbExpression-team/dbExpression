@@ -33,7 +33,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<NullableStringFieldExpression>
     {
         #region constructors
-        protected NullableStringFieldExpression(string identifier, string name, Table entity) : base(identifier, name, entity)
+        protected NullableStringFieldExpression(int identifier, string name, Table entity) : base(identifier, name, entity)
         {
 
         }

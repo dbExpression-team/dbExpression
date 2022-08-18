@@ -25,23 +25,23 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<FieldExpression>
     {
         #region internals
-        protected readonly string identifier;
+        protected readonly int identifier;
         protected readonly Type declaredType;
         protected readonly string name;
         protected readonly Table entity;
         #endregion
 
         #region interface
-        string ISqlMetadataIdentifierProvider.Identifier => identifier;
+        int ISqlMetadataIdentifierProvider.Identifier => identifier;
         string IExpressionNameProvider.Name => name;
         Type IExpressionTypeProvider.DeclaredType => declaredType;
         Table Field.Table => entity;
         #endregion
 
         #region constructors
-        protected FieldExpression(string identifier, string name, Type declaredType, Table entity)
+        protected FieldExpression(int identifier, string name, Type declaredType, Table entity)
         {
-            this.identifier = identifier ?? throw new ArgumentNullException(nameof(identifier));
+            this.identifier = identifier;
             this.name = name ?? throw new ArgumentNullException(nameof(name));
             this.declaredType = declaredType ?? throw new ArgumentNullException(nameof(declaredType));
             this.entity = entity ?? throw new ArgumentNullException(nameof(entity));
@@ -49,7 +49,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region to string
-        public override string? ToString() => identifier;
+        public override string? ToString() => name;
         #endregion
 
         #region order
@@ -68,7 +68,7 @@ namespace HatTrick.DbEx.Sql.Expression
             if (entity is not null && !entity.Equals(obj.entity)) return false;
 
             if (declaredType != obj.declaredType) return false;
-            if (!StringComparer.Ordinal.Equals(identifier, obj.identifier)) return false;
+            if (identifier != obj.identifier) return false;
 
             return true;
         }
@@ -84,7 +84,7 @@ namespace HatTrick.DbEx.Sql.Expression
                 const int multiplier = 16777619;
 
                 int hash = @base;
-                hash = (hash * multiplier) ^ (identifier is not null ? identifier.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ identifier.GetHashCode();
                 hash = (hash * multiplier) ^ (entity is not null ? entity.GetHashCode() : 0);
                 hash = (hash * multiplier) ^ (declaredType is not null ? declaredType.GetHashCode() : 0);
                 return hash;
@@ -113,7 +113,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public class FieldExpressionAttributes : IEquatable<FieldExpressionAttributes>
         {
             #region interface
-            public string Identifier { get; }
+            public int Identifier { get; }
             public string Name { get; }
             public Table Table { get; }
             public Type DeclaredType { get; }
@@ -121,9 +121,9 @@ namespace HatTrick.DbEx.Sql.Expression
             #endregion
 
             #region constructors
-            public FieldExpressionAttributes(string identifier, string name, Type declaredType, Table table, string? alias)
+            public FieldExpressionAttributes(int identifier, string name, Type declaredType, Table table, string? alias)
             {
-                this.Identifier = identifier ?? throw new ArgumentNullException(nameof(identifier));
+                this.Identifier = identifier;
                 this.Name = name ?? throw new ArgumentNullException(nameof(name));
                 this.DeclaredType = declaredType ?? throw new ArgumentNullException(nameof(declaredType));
                 this.Table = table ?? throw new ArgumentNullException(nameof(table));
@@ -139,7 +139,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
                 if (!Table.Equals(obj.Table)) return false;
                 if (!StringComparer.Ordinal.Equals(Alias, obj.Alias)) return false;
-                if (!StringComparer.Ordinal.Equals(Identifier, obj.Identifier)) return false;
+                if (Identifier != obj.Identifier) return false;
 
                 return true;
             }
@@ -155,7 +155,7 @@ namespace HatTrick.DbEx.Sql.Expression
                     const int multiplier = 16777619;
 
                     int hash = @base;
-                    hash = (hash * multiplier) ^ (Identifier is not null ? Identifier.GetHashCode() : 0);
+                    hash = (hash * multiplier) ^ Identifier.GetHashCode();
                     hash = (hash * multiplier) ^ (DeclaredType is not null ? DeclaredType.GetHashCode() : 0);
                     hash = (hash * multiplier) ^ (Table is not null ? Table.GetHashCode() : 0);
                     hash = (hash * multiplier) ^ (Alias is not null ? Alias.GetHashCode() : 0);

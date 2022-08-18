@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<TimeSpanFieldExpression>
     {
         #region constructors
-        protected TimeSpanFieldExpression(string identifier, string name, Table entity) : base(identifier, name, typeof(TimeSpan), entity)
+        protected TimeSpanFieldExpression(int identifier, string name, Table entity) : base(identifier, name, typeof(TimeSpan), entity)
         {
 
         }

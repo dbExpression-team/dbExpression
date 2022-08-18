@@ -22,6 +22,6 @@ namespace HatTrick.DbEx.Sql
 {
     public interface ISqlDatabaseMetadata : ISqlMetadata
     {
-        IDictionary<string, ISqlMetadata> Metadata { get; }
+        IDictionary<int, ISqlMetadata> Metadata { get; }
     }
 }

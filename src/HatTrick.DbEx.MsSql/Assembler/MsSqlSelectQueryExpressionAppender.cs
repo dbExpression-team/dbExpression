@@ -124,7 +124,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
             builder.Appender.Indentation--.LineBreak()
                     .Write(") AS ")
                     .Write(context.IdentifierDelimiter.Begin)
-                    .Write((expression.From!.Expression as Table)!.Identifier)
+                    .Write(builder.GetPlatformName((expression.From!.Expression as Table)!))
                     .Write(context.IdentifierDelimiter.End)
                     .LineBreak()
                 .Indentation--.Indent().Write("WHERE").LineBreak()

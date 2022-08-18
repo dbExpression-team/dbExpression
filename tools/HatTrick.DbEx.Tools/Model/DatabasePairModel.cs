@@ -23,7 +23,8 @@ using System.Collections.Generic;
 namespace HatTrick.DbEx.Tools.Model
 {
     public class DatabasePairModel
-    { 
+    {
+        public int Identifier { get; }
         public string? Platform { get; set; }
         public LanguageFeatures LanguageFeatures { get; set; }
         public MsSqlModel Database { get; set; }
@@ -31,8 +32,9 @@ namespace HatTrick.DbEx.Tools.Model
         public IList<SchemaPairModel> Schemas { get; set; } = new List<SchemaPairModel>();
         public DocumentationItemsModel? Documentation { get; set; }
 
-        public DatabasePairModel(string platform, MsSqlModel database, DatabaseExpressionModel databaseExpression, LanguageFeatures features)
+        public DatabasePairModel(int identifier, string platform, MsSqlModel database, DatabaseExpressionModel databaseExpression, LanguageFeatures features)
         {
+            Identifier = identifier;
             if (string.IsNullOrWhiteSpace(platform))
                 throw new ArgumentException($"{nameof(platform)} is required.");
             Platform = platform;

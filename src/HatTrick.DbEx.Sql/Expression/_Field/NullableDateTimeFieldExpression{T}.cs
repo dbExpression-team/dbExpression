@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.Sql.Expression
         where TEntity : class, IDbEntity
     {
         #region constructors
-        public NullableDateTimeFieldExpression(string identifier, string name, Table entity) : base(identifier, name, entity)
+        public NullableDateTimeFieldExpression(int identifier, string name, Table entity) : base(identifier, name, entity)
         {
 
         }

@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.Sql.Expression
         AnyElement<TNullableValue>
     {
         #region constructors
-        protected NullableFieldExpression(string identifier, string name, Table entity) : base(identifier, name, typeof(TNullableValue), entity)
+        protected NullableFieldExpression(int identifier, string name, Table entity) : base(identifier, name, typeof(TNullableValue), entity)
         {
 
         }
