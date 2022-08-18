@@ -2637,6 +2637,7 @@ namespace Profiling.MsSql.dboDataService
     public partial class AccessAuditLogEntity : EntityExpression<AccessAuditLog>
     {
         #region internals
+        private List<SelectExpression>? _inclusiveSelectExpressions;
         private SelectExpressionSet _inclusiveSelectExpressionSet;
         #endregion
 
@@ -2747,14 +2748,21 @@ namespace Profiling.MsSql.dboDataService
         public AccessAuditLogEntity As(string alias)
             => new AccessAuditLogEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
+        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        {
+            return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
+                {
+                    new SelectExpression<int>(Id)
+                    ,new SelectExpression<int>(PersonId)
+                    ,new SelectExpression<int>(AccessResult)
+                    ,new SelectExpression<DateTime>(DateCreated)
+                }
+            );
+        }
+
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
-            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new SelectExpression<int>(Id)
-                ,new SelectExpression<int>(PersonId)
-                ,new SelectExpression<int>(AccessResult)
-                ,new SelectExpression<DateTime>(DateCreated)
-            ));
+            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
@@ -2766,17 +2774,13 @@ namespace Profiling.MsSql.dboDataService
             string aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
-
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
             aliased = alias(nameof(PersonId));
-            set &= aliased != nameof(PersonId) ? new SelectExpression<int>(PersonId, aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PersonId));
-
+            set &= aliased != nameof(PersonId) ? new SelectExpression<int>(PersonId, aliased) : GetInclusiveSelectExpressions()[1];
             aliased = alias(nameof(AccessResult));
-            set &= aliased != nameof(AccessResult) ? new SelectExpression<int>(AccessResult, aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(AccessResult));
-
+            set &= aliased != nameof(AccessResult) ? new SelectExpression<int>(AccessResult, aliased) : GetInclusiveSelectExpressions()[2];
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
-
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) : GetInclusiveSelectExpressions()[3];
             return set;
         }
 		
@@ -2887,6 +2891,7 @@ namespace Profiling.MsSql.dboDataService
     public partial class AddressEntity : EntityExpression<Address>
     {
         #region internals
+        private List<SelectExpression>? _inclusiveSelectExpressions;
         private SelectExpressionSet _inclusiveSelectExpressionSet;
         #endregion
 
@@ -3105,19 +3110,26 @@ namespace Profiling.MsSql.dboDataService
         public AddressEntity As(string alias)
             => new AddressEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
+        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        {
+            return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
+                {
+                    new SelectExpression<int>(Id)
+                    ,new SelectExpression<Profiling.MsSql.AddressType?>(AddressType)
+                    ,new SelectExpression<string>(Line1)
+                    ,new SelectExpression<string>(Line2)
+                    ,new SelectExpression<string>(City)
+                    ,new SelectExpression<string>(State)
+                    ,new SelectExpression<string>(Zip)
+                    ,new SelectExpression<DateTime>(DateCreated)
+                    ,new SelectExpression<DateTime>(DateUpdated)
+                }
+            );
+        }
+
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
-            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new SelectExpression<int>(Id)
-                ,new SelectExpression<Profiling.MsSql.AddressType?>(AddressType)
-                ,new SelectExpression<string>(Line1)
-                ,new SelectExpression<string>(Line2)
-                ,new SelectExpression<string>(City)
-                ,new SelectExpression<string>(State)
-                ,new SelectExpression<string>(Zip)
-                ,new SelectExpression<DateTime>(DateCreated)
-                ,new SelectExpression<DateTime>(DateUpdated)
-            ));
+            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
@@ -3129,32 +3141,23 @@ namespace Profiling.MsSql.dboDataService
             string aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
-
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
             aliased = alias(nameof(AddressType));
-            set &= aliased != nameof(AddressType) ? new SelectExpression<Profiling.MsSql.AddressType?>(AddressType, aliased) as SelectExpression<Profiling.MsSql.AddressType?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(AddressType));
-
+            set &= aliased != nameof(AddressType) ? new SelectExpression<Profiling.MsSql.AddressType?>(AddressType, aliased) : GetInclusiveSelectExpressions()[1];
             aliased = alias(nameof(Line1));
-            set &= aliased != nameof(Line1) ? new SelectExpression<string>(Line1, aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Line1));
-
+            set &= aliased != nameof(Line1) ? new SelectExpression<string>(Line1, aliased) : GetInclusiveSelectExpressions()[2];
             aliased = alias(nameof(Line2));
-            set &= aliased != nameof(Line2) ? new SelectExpression<string>(Line2, aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Line2));
-
+            set &= aliased != nameof(Line2) ? new SelectExpression<string>(Line2, aliased) : GetInclusiveSelectExpressions()[3];
             aliased = alias(nameof(City));
-            set &= aliased != nameof(City) ? new SelectExpression<string>(City, aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(City));
-
+            set &= aliased != nameof(City) ? new SelectExpression<string>(City, aliased) : GetInclusiveSelectExpressions()[4];
             aliased = alias(nameof(State));
-            set &= aliased != nameof(State) ? new SelectExpression<string>(State, aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(State));
-
+            set &= aliased != nameof(State) ? new SelectExpression<string>(State, aliased) : GetInclusiveSelectExpressions()[5];
             aliased = alias(nameof(Zip));
-            set &= aliased != nameof(Zip) ? new SelectExpression<string>(Zip, aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Zip));
-
+            set &= aliased != nameof(Zip) ? new SelectExpression<string>(Zip, aliased) : GetInclusiveSelectExpressions()[6];
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
-
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) : GetInclusiveSelectExpressions()[7];
             aliased = alias(nameof(DateUpdated));
-            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated, aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
-
+            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated, aliased) : GetInclusiveSelectExpressions()[8];
             return set;
         }
 		
@@ -3372,6 +3375,7 @@ namespace Profiling.MsSql.dboDataService
     public partial class PersonEntity : EntityExpression<Person>
     {
         #region internals
+        private List<SelectExpression>? _inclusiveSelectExpressions;
         private SelectExpressionSet _inclusiveSelectExpressionSet;
         #endregion
 
@@ -3635,21 +3639,28 @@ namespace Profiling.MsSql.dboDataService
         public PersonEntity As(string alias)
             => new PersonEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
+        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        {
+            return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
+                {
+                    new SelectExpression<int>(Id)
+                    ,new SelectExpression<string>(FirstName)
+                    ,new SelectExpression<string>(LastName)
+                    ,new SelectExpression<DateTime?>(BirthDate)
+                    ,new SelectExpression<Profiling.MsSql.GenderType>(GenderType)
+                    ,new SelectExpression<int?>(CreditLimit)
+                    ,new SelectExpression<int?>(YearOfLastCreditLimitReview)
+                    ,new SelectExpression<DateTimeOffset>(RegistrationDate)
+                    ,new SelectExpression<DateTimeOffset?>(LastLoginDate)
+                    ,new SelectExpression<DateTime>(DateCreated)
+                    ,new SelectExpression<DateTime>(DateUpdated)
+                }
+            );
+        }
+
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
-            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new SelectExpression<int>(Id)
-                ,new SelectExpression<string>(FirstName)
-                ,new SelectExpression<string>(LastName)
-                ,new SelectExpression<DateTime?>(BirthDate)
-                ,new SelectExpression<Profiling.MsSql.GenderType>(GenderType)
-                ,new SelectExpression<int?>(CreditLimit)
-                ,new SelectExpression<int?>(YearOfLastCreditLimitReview)
-                ,new SelectExpression<DateTimeOffset>(RegistrationDate)
-                ,new SelectExpression<DateTimeOffset?>(LastLoginDate)
-                ,new SelectExpression<DateTime>(DateCreated)
-                ,new SelectExpression<DateTime>(DateUpdated)
-            ));
+            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
@@ -3661,38 +3672,27 @@ namespace Profiling.MsSql.dboDataService
             string aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
-
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
             aliased = alias(nameof(FirstName));
-            set &= aliased != nameof(FirstName) ? new SelectExpression<string>(FirstName, aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(FirstName));
-
+            set &= aliased != nameof(FirstName) ? new SelectExpression<string>(FirstName, aliased) : GetInclusiveSelectExpressions()[1];
             aliased = alias(nameof(LastName));
-            set &= aliased != nameof(LastName) ? new SelectExpression<string>(LastName, aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(LastName));
-
+            set &= aliased != nameof(LastName) ? new SelectExpression<string>(LastName, aliased) : GetInclusiveSelectExpressions()[2];
             aliased = alias(nameof(BirthDate));
-            set &= aliased != nameof(BirthDate) ? new SelectExpression<DateTime?>(BirthDate, aliased) as SelectExpression<DateTime?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(BirthDate));
-
+            set &= aliased != nameof(BirthDate) ? new SelectExpression<DateTime?>(BirthDate, aliased) : GetInclusiveSelectExpressions()[3];
             aliased = alias(nameof(GenderType));
-            set &= aliased != nameof(GenderType) ? new SelectExpression<Profiling.MsSql.GenderType>(GenderType, aliased) as SelectExpression<Profiling.MsSql.GenderType> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(GenderType));
-
+            set &= aliased != nameof(GenderType) ? new SelectExpression<Profiling.MsSql.GenderType>(GenderType, aliased) : GetInclusiveSelectExpressions()[4];
             aliased = alias(nameof(CreditLimit));
-            set &= aliased != nameof(CreditLimit) ? new SelectExpression<int?>(CreditLimit, aliased) as SelectExpression<int?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(CreditLimit));
-
+            set &= aliased != nameof(CreditLimit) ? new SelectExpression<int?>(CreditLimit, aliased) : GetInclusiveSelectExpressions()[5];
             aliased = alias(nameof(YearOfLastCreditLimitReview));
-            set &= aliased != nameof(YearOfLastCreditLimitReview) ? new SelectExpression<int?>(YearOfLastCreditLimitReview, aliased) as SelectExpression<int?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(YearOfLastCreditLimitReview));
-
+            set &= aliased != nameof(YearOfLastCreditLimitReview) ? new SelectExpression<int?>(YearOfLastCreditLimitReview, aliased) : GetInclusiveSelectExpressions()[6];
             aliased = alias(nameof(RegistrationDate));
-            set &= aliased != nameof(RegistrationDate) ? new SelectExpression<DateTimeOffset>(RegistrationDate, aliased) as SelectExpression<DateTimeOffset> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(RegistrationDate));
-
+            set &= aliased != nameof(RegistrationDate) ? new SelectExpression<DateTimeOffset>(RegistrationDate, aliased) : GetInclusiveSelectExpressions()[7];
             aliased = alias(nameof(LastLoginDate));
-            set &= aliased != nameof(LastLoginDate) ? new SelectExpression<DateTimeOffset?>(LastLoginDate, aliased) as SelectExpression<DateTimeOffset?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(LastLoginDate));
-
+            set &= aliased != nameof(LastLoginDate) ? new SelectExpression<DateTimeOffset?>(LastLoginDate, aliased) : GetInclusiveSelectExpressions()[8];
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
-
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) : GetInclusiveSelectExpressions()[9];
             aliased = alias(nameof(DateUpdated));
-            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated, aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
-
+            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated, aliased) : GetInclusiveSelectExpressions()[10];
             return set;
         }
 		
@@ -3960,6 +3960,7 @@ namespace Profiling.MsSql.dboDataService
     public partial class PersonAddressEntity : EntityExpression<PersonAddress>
     {
         #region internals
+        private List<SelectExpression>? _inclusiveSelectExpressions;
         private SelectExpressionSet _inclusiveSelectExpressionSet;
         #endregion
 
@@ -4070,14 +4071,21 @@ namespace Profiling.MsSql.dboDataService
         public PersonAddressEntity As(string alias)
             => new PersonAddressEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
+        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        {
+            return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
+                {
+                    new SelectExpression<int>(Id)
+                    ,new SelectExpression<int>(PersonId)
+                    ,new SelectExpression<int>(AddressId)
+                    ,new SelectExpression<DateTime>(DateCreated)
+                }
+            );
+        }
+
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
-            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new SelectExpression<int>(Id)
-                ,new SelectExpression<int>(PersonId)
-                ,new SelectExpression<int>(AddressId)
-                ,new SelectExpression<DateTime>(DateCreated)
-            ));
+            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
@@ -4089,17 +4097,13 @@ namespace Profiling.MsSql.dboDataService
             string aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
-
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
             aliased = alias(nameof(PersonId));
-            set &= aliased != nameof(PersonId) ? new SelectExpression<int>(PersonId, aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PersonId));
-
+            set &= aliased != nameof(PersonId) ? new SelectExpression<int>(PersonId, aliased) : GetInclusiveSelectExpressions()[1];
             aliased = alias(nameof(AddressId));
-            set &= aliased != nameof(AddressId) ? new SelectExpression<int>(AddressId, aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(AddressId));
-
+            set &= aliased != nameof(AddressId) ? new SelectExpression<int>(AddressId, aliased) : GetInclusiveSelectExpressions()[2];
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
-
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) : GetInclusiveSelectExpressions()[3];
             return set;
         }
 		
@@ -4210,6 +4214,7 @@ namespace Profiling.MsSql.dboDataService
     public partial class ProductEntity : EntityExpression<Product>
     {
         #region internals
+        private List<SelectExpression>? _inclusiveSelectExpressions;
         private SelectExpressionSet _inclusiveSelectExpressionSet;
         #endregion
 
@@ -4596,27 +4601,34 @@ namespace Profiling.MsSql.dboDataService
         public ProductEntity As(string alias)
             => new ProductEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
+        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        {
+            return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
+                {
+                    new SelectExpression<int>(Id)
+                    ,new SelectExpression<Profiling.MsSql.ProductCategoryType?>(ProductCategoryType)
+                    ,new SelectExpression<string>(Name)
+                    ,new SelectExpression<string>(Description)
+                    ,new SelectExpression<double>(ListPrice)
+                    ,new SelectExpression<double>(Price)
+                    ,new SelectExpression<int>(Quantity)
+                    ,new SelectExpression<byte[]>(Image)
+                    ,new SelectExpression<decimal?>(Height)
+                    ,new SelectExpression<decimal?>(Width)
+                    ,new SelectExpression<decimal?>(Depth)
+                    ,new SelectExpression<decimal?>(Weight)
+                    ,new SelectExpression<decimal>(ShippingWeight)
+                    ,new SelectExpression<TimeSpan?>(ValidStartTimeOfDayForPurchase)
+                    ,new SelectExpression<TimeSpan?>(ValidEndTimeOfDayForPurchase)
+                    ,new SelectExpression<DateTime>(DateCreated)
+                    ,new SelectExpression<DateTime>(DateUpdated)
+                }
+            );
+        }
+
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
-            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new SelectExpression<int>(Id)
-                ,new SelectExpression<Profiling.MsSql.ProductCategoryType?>(ProductCategoryType)
-                ,new SelectExpression<string>(Name)
-                ,new SelectExpression<string>(Description)
-                ,new SelectExpression<double>(ListPrice)
-                ,new SelectExpression<double>(Price)
-                ,new SelectExpression<int>(Quantity)
-                ,new SelectExpression<byte[]>(Image)
-                ,new SelectExpression<decimal?>(Height)
-                ,new SelectExpression<decimal?>(Width)
-                ,new SelectExpression<decimal?>(Depth)
-                ,new SelectExpression<decimal?>(Weight)
-                ,new SelectExpression<decimal>(ShippingWeight)
-                ,new SelectExpression<TimeSpan?>(ValidStartTimeOfDayForPurchase)
-                ,new SelectExpression<TimeSpan?>(ValidEndTimeOfDayForPurchase)
-                ,new SelectExpression<DateTime>(DateCreated)
-                ,new SelectExpression<DateTime>(DateUpdated)
-            ));
+            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
@@ -4628,56 +4640,39 @@ namespace Profiling.MsSql.dboDataService
             string aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
-
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
             aliased = alias(nameof(ProductCategoryType));
-            set &= aliased != nameof(ProductCategoryType) ? new SelectExpression<Profiling.MsSql.ProductCategoryType?>(ProductCategoryType, aliased) as SelectExpression<Profiling.MsSql.ProductCategoryType?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ProductCategoryType));
-
+            set &= aliased != nameof(ProductCategoryType) ? new SelectExpression<Profiling.MsSql.ProductCategoryType?>(ProductCategoryType, aliased) : GetInclusiveSelectExpressions()[1];
             aliased = alias(nameof(Name));
-            set &= aliased != nameof(Name) ? new SelectExpression<string>(Name, aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Name));
-
+            set &= aliased != nameof(Name) ? new SelectExpression<string>(Name, aliased) : GetInclusiveSelectExpressions()[2];
             aliased = alias(nameof(Description));
-            set &= aliased != nameof(Description) ? new SelectExpression<string>(Description, aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Description));
-
+            set &= aliased != nameof(Description) ? new SelectExpression<string>(Description, aliased) : GetInclusiveSelectExpressions()[3];
             aliased = alias(nameof(ListPrice));
-            set &= aliased != nameof(ListPrice) ? new SelectExpression<double>(ListPrice, aliased) as SelectExpression<double> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ListPrice));
-
+            set &= aliased != nameof(ListPrice) ? new SelectExpression<double>(ListPrice, aliased) : GetInclusiveSelectExpressions()[4];
             aliased = alias(nameof(Price));
-            set &= aliased != nameof(Price) ? new SelectExpression<double>(Price, aliased) as SelectExpression<double> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Price));
-
+            set &= aliased != nameof(Price) ? new SelectExpression<double>(Price, aliased) : GetInclusiveSelectExpressions()[5];
             aliased = alias(nameof(Quantity));
-            set &= aliased != nameof(Quantity) ? new SelectExpression<int>(Quantity, aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Quantity));
-
+            set &= aliased != nameof(Quantity) ? new SelectExpression<int>(Quantity, aliased) : GetInclusiveSelectExpressions()[6];
             aliased = alias(nameof(Image));
-            set &= aliased != nameof(Image) ? new SelectExpression<byte[]>(Image, aliased) as SelectExpression<byte[]> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Image));
-
+            set &= aliased != nameof(Image) ? new SelectExpression<byte[]>(Image, aliased) : GetInclusiveSelectExpressions()[7];
             aliased = alias(nameof(Height));
-            set &= aliased != nameof(Height) ? new SelectExpression<decimal?>(Height, aliased) as SelectExpression<decimal?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Height));
-
+            set &= aliased != nameof(Height) ? new SelectExpression<decimal?>(Height, aliased) : GetInclusiveSelectExpressions()[8];
             aliased = alias(nameof(Width));
-            set &= aliased != nameof(Width) ? new SelectExpression<decimal?>(Width, aliased) as SelectExpression<decimal?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Width));
-
+            set &= aliased != nameof(Width) ? new SelectExpression<decimal?>(Width, aliased) : GetInclusiveSelectExpressions()[9];
             aliased = alias(nameof(Depth));
-            set &= aliased != nameof(Depth) ? new SelectExpression<decimal?>(Depth, aliased) as SelectExpression<decimal?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Depth));
-
+            set &= aliased != nameof(Depth) ? new SelectExpression<decimal?>(Depth, aliased) : GetInclusiveSelectExpressions()[10];
             aliased = alias(nameof(Weight));
-            set &= aliased != nameof(Weight) ? new SelectExpression<decimal?>(Weight, aliased) as SelectExpression<decimal?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Weight));
-
+            set &= aliased != nameof(Weight) ? new SelectExpression<decimal?>(Weight, aliased) : GetInclusiveSelectExpressions()[11];
             aliased = alias(nameof(ShippingWeight));
-            set &= aliased != nameof(ShippingWeight) ? new SelectExpression<decimal>(ShippingWeight, aliased) as SelectExpression<decimal> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ShippingWeight));
-
+            set &= aliased != nameof(ShippingWeight) ? new SelectExpression<decimal>(ShippingWeight, aliased) : GetInclusiveSelectExpressions()[12];
             aliased = alias(nameof(ValidStartTimeOfDayForPurchase));
-            set &= aliased != nameof(ValidStartTimeOfDayForPurchase) ? new SelectExpression<TimeSpan?>(ValidStartTimeOfDayForPurchase, aliased) as SelectExpression<TimeSpan?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ValidStartTimeOfDayForPurchase));
-
+            set &= aliased != nameof(ValidStartTimeOfDayForPurchase) ? new SelectExpression<TimeSpan?>(ValidStartTimeOfDayForPurchase, aliased) : GetInclusiveSelectExpressions()[13];
             aliased = alias(nameof(ValidEndTimeOfDayForPurchase));
-            set &= aliased != nameof(ValidEndTimeOfDayForPurchase) ? new SelectExpression<TimeSpan?>(ValidEndTimeOfDayForPurchase, aliased) as SelectExpression<TimeSpan?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ValidEndTimeOfDayForPurchase));
-
+            set &= aliased != nameof(ValidEndTimeOfDayForPurchase) ? new SelectExpression<TimeSpan?>(ValidEndTimeOfDayForPurchase, aliased) : GetInclusiveSelectExpressions()[14];
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
-
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) : GetInclusiveSelectExpressions()[15];
             aliased = alias(nameof(DateUpdated));
-            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated, aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
-
+            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated, aliased) : GetInclusiveSelectExpressions()[16];
             return set;
         }
 		
@@ -5082,6 +5077,7 @@ namespace Profiling.MsSql.dboDataService
     public partial class PurchaseEntity : EntityExpression<Purchase>
     {
         #region internals
+        private List<SelectExpression>? _inclusiveSelectExpressions;
         private SelectExpressionSet _inclusiveSelectExpressionSet;
         #endregion
 
@@ -5384,23 +5380,30 @@ namespace Profiling.MsSql.dboDataService
         public PurchaseEntity As(string alias)
             => new PurchaseEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
+        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        {
+            return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
+                {
+                    new SelectExpression<int>(Id)
+                    ,new SelectExpression<int>(PersonId)
+                    ,new SelectExpression<string>(OrderNumber)
+                    ,new SelectExpression<string>(TotalPurchaseQuantity)
+                    ,new SelectExpression<double>(TotalPurchaseAmount)
+                    ,new SelectExpression<DateTime>(PurchaseDate)
+                    ,new SelectExpression<DateTime?>(ShipDate)
+                    ,new SelectExpression<DateTime?>(ExpectedDeliveryDate)
+                    ,new SelectExpression<Guid?>(TrackingIdentifier)
+                    ,new SelectExpression<Profiling.MsSql.PaymentMethodType>(PaymentMethodType)
+                    ,new SelectExpression<Profiling.MsSql.PaymentSourceType?>(PaymentSourceType)
+                    ,new SelectExpression<DateTime>(DateCreated)
+                    ,new SelectExpression<DateTime>(DateUpdated)
+                }
+            );
+        }
+
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
-            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new SelectExpression<int>(Id)
-                ,new SelectExpression<int>(PersonId)
-                ,new SelectExpression<string>(OrderNumber)
-                ,new SelectExpression<string>(TotalPurchaseQuantity)
-                ,new SelectExpression<double>(TotalPurchaseAmount)
-                ,new SelectExpression<DateTime>(PurchaseDate)
-                ,new SelectExpression<DateTime?>(ShipDate)
-                ,new SelectExpression<DateTime?>(ExpectedDeliveryDate)
-                ,new SelectExpression<Guid?>(TrackingIdentifier)
-                ,new SelectExpression<Profiling.MsSql.PaymentMethodType>(PaymentMethodType)
-                ,new SelectExpression<Profiling.MsSql.PaymentSourceType?>(PaymentSourceType)
-                ,new SelectExpression<DateTime>(DateCreated)
-                ,new SelectExpression<DateTime>(DateUpdated)
-            ));
+            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
@@ -5412,44 +5415,31 @@ namespace Profiling.MsSql.dboDataService
             string aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
-
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
             aliased = alias(nameof(PersonId));
-            set &= aliased != nameof(PersonId) ? new SelectExpression<int>(PersonId, aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PersonId));
-
+            set &= aliased != nameof(PersonId) ? new SelectExpression<int>(PersonId, aliased) : GetInclusiveSelectExpressions()[1];
             aliased = alias(nameof(OrderNumber));
-            set &= aliased != nameof(OrderNumber) ? new SelectExpression<string>(OrderNumber, aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(OrderNumber));
-
+            set &= aliased != nameof(OrderNumber) ? new SelectExpression<string>(OrderNumber, aliased) : GetInclusiveSelectExpressions()[2];
             aliased = alias(nameof(TotalPurchaseQuantity));
-            set &= aliased != nameof(TotalPurchaseQuantity) ? new SelectExpression<string>(TotalPurchaseQuantity, aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TotalPurchaseQuantity));
-
+            set &= aliased != nameof(TotalPurchaseQuantity) ? new SelectExpression<string>(TotalPurchaseQuantity, aliased) : GetInclusiveSelectExpressions()[3];
             aliased = alias(nameof(TotalPurchaseAmount));
-            set &= aliased != nameof(TotalPurchaseAmount) ? new SelectExpression<double>(TotalPurchaseAmount, aliased) as SelectExpression<double> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TotalPurchaseAmount));
-
+            set &= aliased != nameof(TotalPurchaseAmount) ? new SelectExpression<double>(TotalPurchaseAmount, aliased) : GetInclusiveSelectExpressions()[4];
             aliased = alias(nameof(PurchaseDate));
-            set &= aliased != nameof(PurchaseDate) ? new SelectExpression<DateTime>(PurchaseDate, aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PurchaseDate));
-
+            set &= aliased != nameof(PurchaseDate) ? new SelectExpression<DateTime>(PurchaseDate, aliased) : GetInclusiveSelectExpressions()[5];
             aliased = alias(nameof(ShipDate));
-            set &= aliased != nameof(ShipDate) ? new SelectExpression<DateTime?>(ShipDate, aliased) as SelectExpression<DateTime?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ShipDate));
-
+            set &= aliased != nameof(ShipDate) ? new SelectExpression<DateTime?>(ShipDate, aliased) : GetInclusiveSelectExpressions()[6];
             aliased = alias(nameof(ExpectedDeliveryDate));
-            set &= aliased != nameof(ExpectedDeliveryDate) ? new SelectExpression<DateTime?>(ExpectedDeliveryDate, aliased) as SelectExpression<DateTime?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ExpectedDeliveryDate));
-
+            set &= aliased != nameof(ExpectedDeliveryDate) ? new SelectExpression<DateTime?>(ExpectedDeliveryDate, aliased) : GetInclusiveSelectExpressions()[7];
             aliased = alias(nameof(TrackingIdentifier));
-            set &= aliased != nameof(TrackingIdentifier) ? new SelectExpression<Guid?>(TrackingIdentifier, aliased) as SelectExpression<Guid?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TrackingIdentifier));
-
+            set &= aliased != nameof(TrackingIdentifier) ? new SelectExpression<Guid?>(TrackingIdentifier, aliased) : GetInclusiveSelectExpressions()[8];
             aliased = alias(nameof(PaymentMethodType));
-            set &= aliased != nameof(PaymentMethodType) ? new SelectExpression<Profiling.MsSql.PaymentMethodType>(PaymentMethodType, aliased) as SelectExpression<Profiling.MsSql.PaymentMethodType> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PaymentMethodType));
-
+            set &= aliased != nameof(PaymentMethodType) ? new SelectExpression<Profiling.MsSql.PaymentMethodType>(PaymentMethodType, aliased) : GetInclusiveSelectExpressions()[9];
             aliased = alias(nameof(PaymentSourceType));
-            set &= aliased != nameof(PaymentSourceType) ? new SelectExpression<Profiling.MsSql.PaymentSourceType?>(PaymentSourceType, aliased) as SelectExpression<Profiling.MsSql.PaymentSourceType?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PaymentSourceType));
-
+            set &= aliased != nameof(PaymentSourceType) ? new SelectExpression<Profiling.MsSql.PaymentSourceType?>(PaymentSourceType, aliased) : GetInclusiveSelectExpressions()[10];
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
-
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) : GetInclusiveSelectExpressions()[11];
             aliased = alias(nameof(DateUpdated));
-            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated, aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
-
+            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated, aliased) : GetInclusiveSelectExpressions()[12];
             return set;
         }
 		
@@ -5759,6 +5749,7 @@ namespace Profiling.MsSql.dboDataService
     public partial class PurchaseLineEntity : EntityExpression<PurchaseLine>
     {
         #region internals
+        private List<SelectExpression>? _inclusiveSelectExpressions;
         private SelectExpressionSet _inclusiveSelectExpressionSet;
         #endregion
 
@@ -5935,17 +5926,24 @@ namespace Profiling.MsSql.dboDataService
         public PurchaseLineEntity As(string alias)
             => new PurchaseLineEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
+        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        {
+            return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
+                {
+                    new SelectExpression<int>(Id)
+                    ,new SelectExpression<int>(PurchaseId)
+                    ,new SelectExpression<int>(ProductId)
+                    ,new SelectExpression<decimal>(PurchasePrice)
+                    ,new SelectExpression<int>(Quantity)
+                    ,new SelectExpression<DateTime>(DateCreated)
+                    ,new SelectExpression<DateTime>(DateUpdated)
+                }
+            );
+        }
+
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
-            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new SelectExpression<int>(Id)
-                ,new SelectExpression<int>(PurchaseId)
-                ,new SelectExpression<int>(ProductId)
-                ,new SelectExpression<decimal>(PurchasePrice)
-                ,new SelectExpression<int>(Quantity)
-                ,new SelectExpression<DateTime>(DateCreated)
-                ,new SelectExpression<DateTime>(DateUpdated)
-            ));
+            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
@@ -5957,26 +5955,19 @@ namespace Profiling.MsSql.dboDataService
             string aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
-
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
             aliased = alias(nameof(PurchaseId));
-            set &= aliased != nameof(PurchaseId) ? new SelectExpression<int>(PurchaseId, aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PurchaseId));
-
+            set &= aliased != nameof(PurchaseId) ? new SelectExpression<int>(PurchaseId, aliased) : GetInclusiveSelectExpressions()[1];
             aliased = alias(nameof(ProductId));
-            set &= aliased != nameof(ProductId) ? new SelectExpression<int>(ProductId, aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ProductId));
-
+            set &= aliased != nameof(ProductId) ? new SelectExpression<int>(ProductId, aliased) : GetInclusiveSelectExpressions()[2];
             aliased = alias(nameof(PurchasePrice));
-            set &= aliased != nameof(PurchasePrice) ? new SelectExpression<decimal>(PurchasePrice, aliased) as SelectExpression<decimal> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PurchasePrice));
-
+            set &= aliased != nameof(PurchasePrice) ? new SelectExpression<decimal>(PurchasePrice, aliased) : GetInclusiveSelectExpressions()[3];
             aliased = alias(nameof(Quantity));
-            set &= aliased != nameof(Quantity) ? new SelectExpression<int>(Quantity, aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Quantity));
-
+            set &= aliased != nameof(Quantity) ? new SelectExpression<int>(Quantity, aliased) : GetInclusiveSelectExpressions()[4];
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
-
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) : GetInclusiveSelectExpressions()[5];
             aliased = alias(nameof(DateUpdated));
-            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated, aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
-
+            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated, aliased) : GetInclusiveSelectExpressions()[6];
             return set;
         }
 		
@@ -6148,6 +6139,7 @@ namespace Profiling.MsSql.dboDataService
     public partial class PersonTotalPurchasesViewEntity : EntityExpression<PersonTotalPurchasesView>
     {
         #region internals
+        private List<SelectExpression>? _inclusiveSelectExpressions;
         private SelectExpressionSet _inclusiveSelectExpressionSet;
         #endregion
 
@@ -6231,13 +6223,20 @@ namespace Profiling.MsSql.dboDataService
         public PersonTotalPurchasesViewEntity As(string alias)
             => new PersonTotalPurchasesViewEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
+        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        {
+            return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
+                {
+                    new SelectExpression<int>(Id)
+                    ,new SelectExpression<double?>(TotalAmount)
+                    ,new SelectExpression<int?>(TotalCount)
+                }
+            );
+        }
+
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
-            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new SelectExpression<int>(Id)
-                ,new SelectExpression<double?>(TotalAmount)
-                ,new SelectExpression<int?>(TotalCount)
-            ));
+            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
@@ -6249,14 +6248,11 @@ namespace Profiling.MsSql.dboDataService
             string aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
-
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
             aliased = alias(nameof(TotalAmount));
-            set &= aliased != nameof(TotalAmount) ? new SelectExpression<double?>(TotalAmount, aliased) as SelectExpression<double?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TotalAmount));
-
+            set &= aliased != nameof(TotalAmount) ? new SelectExpression<double?>(TotalAmount, aliased) : GetInclusiveSelectExpressions()[1];
             aliased = alias(nameof(TotalCount));
-            set &= aliased != nameof(TotalCount) ? new SelectExpression<int?>(TotalCount, aliased) as SelectExpression<int?> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TotalCount));
-
+            set &= aliased != nameof(TotalCount) ? new SelectExpression<int?>(TotalCount, aliased) : GetInclusiveSelectExpressions()[2];
             return set;
         }
 		
@@ -6786,6 +6782,7 @@ namespace Profiling.MsSql.secDataService
     public partial class PersonEntity : EntityExpression<Person>
     {
         #region internals
+        private List<SelectExpression>? _inclusiveSelectExpressions;
         private SelectExpressionSet _inclusiveSelectExpressionSet;
         #endregion
 
@@ -6896,14 +6893,21 @@ namespace Profiling.MsSql.secDataService
         public PersonEntity As(string alias)
             => new PersonEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
+        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        {
+            return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
+                {
+                    new SelectExpression<int>(Id)
+                    ,new SelectExpression<string>(SocialSecurityNumber)
+                    ,new SelectExpression<DateTime>(DateCreated)
+                    ,new SelectExpression<DateTime>(DateUpdated)
+                }
+            );
+        }
+
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
-            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                new SelectExpression<int>(Id)
-                ,new SelectExpression<string>(SocialSecurityNumber)
-                ,new SelectExpression<DateTime>(DateCreated)
-                ,new SelectExpression<DateTime>(DateUpdated)
-            ));
+            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
@@ -6915,17 +6919,13 @@ namespace Profiling.MsSql.secDataService
             string aliased = null;
 
             aliased = alias(nameof(Id));
-            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) as SelectExpression<int> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
-
+            set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
             aliased = alias(nameof(SocialSecurityNumber));
-            set &= aliased != nameof(SocialSecurityNumber) ? new SelectExpression<string>(SocialSecurityNumber, aliased) as SelectExpression<string> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(SocialSecurityNumber));
-
+            set &= aliased != nameof(SocialSecurityNumber) ? new SelectExpression<string>(SocialSecurityNumber, aliased) : GetInclusiveSelectExpressions()[1];
             aliased = alias(nameof(DateCreated));
-            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
-
+            set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) : GetInclusiveSelectExpressions()[2];
             aliased = alias(nameof(DateUpdated));
-            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated, aliased) as SelectExpression<DateTime> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
-
+            set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated, aliased) : GetInclusiveSelectExpressions()[3];
             return set;
         }
 		

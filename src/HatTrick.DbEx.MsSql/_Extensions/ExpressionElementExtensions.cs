@@ -37,28 +37,5 @@ namespace HatTrick.DbEx.MsSql
 
             return null;
         }
-
-        internal static SelectExpression ToSelectExpression(this AnyElement expression, ISqlDatabaseMetadataProvider metadata)
-        {
-            if (expression is null)
-                throw new ArgumentNullException(nameof(expression));
-
-            if (expression is SelectExpression select)
-                return select;
-
-            var field = expression.ToFieldExpression();
-
-            if (field is null)
-                return new SelectExpression(expression);
-
-            if (metadata is null)
-                throw new ArgumentNullException(nameof(metadata));
-
-            //ensure the actual column name in the database is used in the sql statement.  if the column name was "overriden" in configuration, supply that name as an alias
-            var dbName = metadata.GetMetadata<ISqlMetadata>((field as ISqlMetadataIdentifierProvider).Identifier)?.Name ?? throw new DbExpressionException($"Cannot resolve metadata for {expression}.");
-            var sourceName = (field as IExpressionNameProvider).Name;
-
-            return dbName == sourceName ? new SelectExpression(expression) : new SelectExpression(expression, sourceName);
-        }
     }
 }

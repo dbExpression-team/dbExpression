@@ -129,6 +129,11 @@ namespace HatTrick.DbEx.Tools.Service
             return enumerator.MoveNext() ? enumerator.Current : null;
         }
 
+        public Iterator Iterator()
+        {
+            return new Iterator();
+        }
+
         public string? GetTemplatePartial(string? shortName)
         {
             if (shortName is null) return null;
@@ -146,5 +151,12 @@ namespace HatTrick.DbEx.Tools.Service
             => field.ArgNamePsuedonyms.ContainsKey(name) ? field.ArgNamePsuedonyms[name] : name;
 
         #endregion
+    }
+
+    public class Iterator
+    {
+        private int _current;
+
+        public int Current => _current++;
     }
 }

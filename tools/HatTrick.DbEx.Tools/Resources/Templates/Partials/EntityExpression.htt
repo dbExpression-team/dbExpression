@@ -10,6 +10,7 @@
     public partial class {$.EntityExpression.Name}Entity : EntityExpression<{$.EntityExpression.Name}>
     {{
         #region internals
+        private List<SelectExpression>? _inclusiveSelectExpressions;
         private SelectExpressionSet{:nullableAnnotation} _inclusiveSelectExpressionSet;
         #endregion
 
@@ -38,15 +39,22 @@
         public {$.EntityExpression.Name}Entity As(string alias)
             => new {$.EntityExpression.Name}Entity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
-        protected override SelectExpressionSet GetInclusiveSelectExpression()
+        protected List<SelectExpression> GetInclusiveSelectExpressions()
         {{
             {?var :applyComma = false}
-            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-                {#each $.Columns}
-                {+#if :applyComma},{/if}new {$.FieldExpression.SelectExpressionTypeName}({$.FieldExpression.Name})
-                {? :applyComma = true}
-				{/each}
-            ));
+            return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
+                {{
+                    {#each $.Columns}
+                    {+#if :applyComma},{/if}new {$.FieldExpression.SelectExpressionTypeName}({$.FieldExpression.Name})
+                    {? :applyComma = true}
+				    {/each}
+                }}
+            );
+        }}
+
+        protected override SelectExpressionSet GetInclusiveSelectExpression()
+        {{
+            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }}
 
         protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> {:aliasArgName})
@@ -57,10 +65,10 @@
             SelectExpressionSet{:nullableAnnotation} set = null;
             string{:nullableAnnotation} aliased = null;
 
+            {?var:index = () => Iterator}
             {#each $.Columns}
             aliased = {:aliasArgName}(nameof({$.FieldExpression.Name}));
-            set &= aliased != nameof({$.FieldExpression.Name}) ? new {$.FieldExpression.SelectExpressionTypeName}({$.FieldExpression.Name}, aliased) as {$.FieldExpression.SelectExpressionTypeName} : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider){:nullableAnnotation}.Name == nameof({$.FieldExpression.Name}));
-
+            set &= aliased != nameof({$.FieldExpression.Name}) ? new {$.FieldExpression.SelectExpressionTypeName}({$.FieldExpression.Name}, aliased) : GetInclusiveSelectExpressions()[{:index.Current}];
             {/each}
             return set;
         }}
