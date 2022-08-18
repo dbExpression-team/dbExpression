@@ -25,17 +25,17 @@ namespace HatTrick.DbEx.Sql.Expression
         IExpressionElement<TValue>
     {
         #region constructors
-        public ParameterExpression(string identifier, string name, ParameterDirection direction) : base(identifier, name, typeof(TValue), direction)
+        public ParameterExpression(int identifier, string name, ParameterDirection direction) : base(identifier, name, typeof(TValue), direction)
         {
 
         }
 
-        public ParameterExpression(string identifier, string name, TValue value, ParameterDirection direction) : base(identifier, name, typeof(TValue), value, direction)
+        public ParameterExpression(int identifier, string name, TValue value, ParameterDirection direction) : base(identifier, name, typeof(TValue), value, direction)
         {
 
         }
 
-        public ParameterExpression(string identifier, string name, DBNull value, ParameterDirection direction) : base(identifier, name, typeof(TValue), value, direction)
+        public ParameterExpression(int identifier, string name, DBNull value, ParameterDirection direction) : base(identifier, name, typeof(TValue), value, direction)
         {
 
         }

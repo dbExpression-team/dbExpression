@@ -24,7 +24,7 @@
                 if (database is null)
                     throw new ArgumentNullException(nameof(database));
                 {-#each $.Schemas}
-                _{$.SchemaExpression.Name}StoredProcedures = new {$.SchemaExpression.Name}StoredProcedures(database, schemas.Single(s => s.Identifier == "{$.Schema.Name}"));
+                _{$.SchemaExpression.Name}StoredProcedures = new {$.SchemaExpression.Name}StoredProcedures(database, schemas.Single(s => s is {$.SchemaExpression.Name}SchemaExpression));
                 {/each}
             }}
             #endregion
@@ -57,7 +57,7 @@
             {?var:isFirstParameter = true}
             {>("StoredProcedureExpression.Documentation") => GetTemplatePartial+}
             public StoredProcedureContinuation<{:databaseName}> {$.StoredProcedureExpression.Name}({#each $.Parameters}{#if $.ParameterExpression.RequiresInput}{#if !:isFirstParameter}, {/if}{?:isFirstParameter = false}{$.ParameterExpression.Type.NullableAlias} {($.ParameterExpression.Name, "@") => TrimStart}{/if}{/each}{#if $.HasOutputParameters}{#if $.HasInputParameters}, {+/if}Action<ISqlOutputParameterList> outputParameters{/if})
-                => _database.GetBuilder().CreateStoredProcedureBuilder(new {$.StoredProcedureExpression.Name}StoredProcedure("{:schemaName}", _{:schemaExpressionName}{#each $.Parameters}{#if $.ParameterExpression.RequiresInput}, {($.ParameterExpression.Name, "@") => TrimStart}{/if}{/each}{#if $.HasOutputParameters}{#if $.HasInputParameters}, {+/if}outputParameters{/if}));
+                => _database.GetBuilder().CreateStoredProcedureBuilder(new {$.StoredProcedureExpression.Name}StoredProcedure(_{:schemaExpressionName}{#each $.Parameters}{#if $.ParameterExpression.RequiresInput}, {($.ParameterExpression.Name, "@") => TrimStart}{/if}{/each}{#if $.HasOutputParameters}{#if $.HasInputParameters}, {+/if}outputParameters{/if}));
 
             {/each}
             #endregion

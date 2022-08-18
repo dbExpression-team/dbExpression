@@ -29,7 +29,7 @@
         {{
             {#each $.Schemas}
             {?var:schemaExpressionName = $.SchemaExpression.Name}
-            var {$.SchemaExpression.Name}Schema = new _{$.SchemaExpression.Name}DataService.{$.SchemaExpression.Name}SchemaExpression("{$.Schema.Name}");
+            var {$.SchemaExpression.Name}Schema = new _{$.SchemaExpression.Name}DataService.{$.SchemaExpression.Name}SchemaExpression({$.Identifier});
             _schemas.Add({:schemaExpressionName}Schema);
             _{:schemaExpressionName}DataService.{:schemaExpressionName}.UseSchema({$.SchemaExpression.Name}Schema);
             {#each $.Entities}

@@ -4,8 +4,7 @@
     public partial class {:procedureExpressionName}StoredProcedure : StoredProcedureExpression
     {{
         public {:procedureExpressionName}StoredProcedure(
-            string identifier
-            ,Schema schema
+            Schema schema
             {#each $.Parameters}
             {#if $.ParameterExpression.RequiresInput}
             ,{$.ParameterExpression.Type.NullableAlias} {($.ParameterExpression.Name, "@") => TrimStart}
@@ -14,10 +13,10 @@
             {#if $.HasOutputParameters}
             ,Action<ISqlOutputParameterList> outputParameters
             {/if}
-        ) : base($"{{identifier}}.{:procedureName}", "{:procedureExpressionName}", schema{#if $.HasOutputParameters}, outputParameters{/if})
+        ) : base({$.Identifier}, "{:procedureExpressionName}", schema{#if $.HasOutputParameters}, outputParameters{/if})
         {{ 
             {#each $.Parameters}
-            Attributes.Parameters.Add("{($.Parameter.Name, "@") => TrimStart}", new ParameterExpression<{$.ParameterExpression.Type.NullableAlias}>($"{{identifier}}.{:procedureName}.{$.Parameter.Name}", "{($.ParameterExpression.Name, "@") => TrimStart}"{#if $.ParameterExpression.RequiresInput}, {($.ParameterExpression.Name, "@") => TrimStart}{/if}, ParameterDirection.{$.ParameterExpression.Direction}));
+            Attributes.Parameters.Add(new ParameterExpression<{$.ParameterExpression.Type.NullableAlias}>({$.Identifier}, "{($.ParameterExpression.Name, "@") => TrimStart}"{#if $.ParameterExpression.RequiresInput}, {($.ParameterExpression.Name, "@") => TrimStart}{/if}, ParameterDirection.{$.ParameterExpression.Direction}));
             {/each}
         }}
     }}

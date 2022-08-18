@@ -20,7 +20,7 @@
 {
     public interface ISqlDatabaseMetadataProvider
     {
-        TMeta? GetMetadata<TMeta>(string identifier)
+        TMeta? GetMetadata<TMeta>(int identifier)
             where TMeta : ISqlMetadata;
     }
 }

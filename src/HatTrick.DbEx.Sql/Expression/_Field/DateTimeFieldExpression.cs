@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<DateTimeFieldExpression>
     {
         #region constructors
-        protected DateTimeFieldExpression(string identifier, string name, Table entity) : base(identifier, name, typeof(DateTime), entity)
+        protected DateTimeFieldExpression(int identifier, string name, Table entity) : base(identifier, name, typeof(DateTime), entity)
         {
 
         }

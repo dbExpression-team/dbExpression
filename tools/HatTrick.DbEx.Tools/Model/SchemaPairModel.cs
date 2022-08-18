@@ -23,13 +23,15 @@ namespace HatTrick.DbEx.Tools.Model
 {
     public class SchemaPairModel
     { 
+        public int Identifier { get; }
         public SchemaModel Schema { get; }
         public SchemaExpressionModel SchemaExpression { get; }
         public IList<EntityPairModel> Entities { get; } = new List<EntityPairModel>();
         public IList<StoredProcedurePairModel> StoredProcedures { get; } = new List<StoredProcedurePairModel>();
 
-        public SchemaPairModel(SchemaModel schema, SchemaExpressionModel schemaExpression)
+        public SchemaPairModel(int identifier, SchemaModel schema, SchemaExpressionModel schemaExpression)
         {
+            Identifier = identifier;
             Schema = schema ?? throw new ArgumentNullException(nameof(schema));
             SchemaExpression = schemaExpression ?? throw new ArgumentNullException(nameof(schemaExpression));
         }

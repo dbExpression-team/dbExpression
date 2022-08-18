@@ -34,7 +34,7 @@ namespace HatTrick.DbEx.Sql
         #endregion
 
         #region methods
-        public TMeta? GetMetadata<TMeta>(string identifier)
+        public TMeta? GetMetadata<TMeta>(int identifier)
             where TMeta : ISqlMetadata
         {
             if (_database.Metadata.TryGetValue(identifier, out var meta))

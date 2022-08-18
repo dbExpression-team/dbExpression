@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<Int64FieldExpression>
     {
         #region constructors
-        protected Int64FieldExpression(string identifier, string name, Table entity) : base(identifier, name, typeof(long), entity)
+        protected Int64FieldExpression(int identifier, string name, Table entity) : base(identifier, name, typeof(long), entity)
         {
 
         }
