@@ -216,56 +216,56 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        async Task<TObject?> SelectObjectTermination<TDatabase, TObject>.ExecuteAsync(CancellationToken cancellationToken)
+        Task<TObject?> SelectObjectTermination<TDatabase, TObject>.ExecuteAsync(CancellationToken cancellationToken)
         {
-            return await ExecutePipelineAsync(
+            return ExecutePipelineAsync(
                 null,
                 null,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task<TObject?> SelectObjectTermination<TDatabase, TObject>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
+        Task<TObject?> SelectObjectTermination<TDatabase, TObject>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            return await ExecutePipelineAsync(
+            return ExecutePipelineAsync(
                 null,
                 command => command.CommandTimeout = commandTimeout,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task<TObject?> SelectObjectTermination<TDatabase, TObject>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
+        Task<TObject?> SelectObjectTermination<TDatabase, TObject>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
         {
-            return await ExecutePipelineAsync(
+            return ExecutePipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 null,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task<TObject?> SelectObjectTermination<TDatabase, TObject>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
+        Task<TObject?> SelectObjectTermination<TDatabase, TObject>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            return await ExecutePipelineAsync(
+            return ExecutePipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 command => command.CommandTimeout = commandTimeout,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
-        protected virtual TObject? ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand)
+        private TObject? ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand)
             => ExecutionPipelineFactory().ExecuteSelectValue<TObject>(Controller.Current, connection, configureCommand);
 
-        protected virtual async Task<TObject?> ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken cancellationToken)
-            => await ExecutionPipelineFactory().ExecuteSelectValueAsync<TObject>(Controller.Current, connection, configureCommand, cancellationToken).ConfigureAwait(false);
+        private Task<TObject?> ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken cancellationToken)
+            => ExecutionPipelineFactory().ExecuteSelectValueAsync<TObject>(Controller.Current, connection, configureCommand, cancellationToken);
 
         #endregion
         #endregion

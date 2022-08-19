@@ -34,9 +34,12 @@ namespace HatTrick.DbEx.Sql.Assembler
         private int _currentAliasCounter;
         #endregion
 
+        #region interface
         public IAppender Appender { get; private set; }
         public ISqlParameterBuilder Parameters { get; private set; }
+        #endregion
 
+        #region constructors
         public SqlStatementBuilder(
             ILogger<SqlStatementBuilder> logger,
             ISqlDatabaseMetadataProvider metadataProvider,
@@ -55,7 +58,9 @@ namespace HatTrick.DbEx.Sql.Assembler
             this.elementAppenderFactory = elementAppenderFactory ?? throw new ArgumentNullException(nameof(elementAppenderFactory));
             this.valueConverterFactory = valueConverterFactory ?? throw new ArgumentNullException(nameof(valueConverterFactory));
         }
+        #endregion
 
+        #region methods
         public SqlStatement CreateSqlStatement<TQuery>(TQuery expression)
             where TQuery : QueryExpression
         {
@@ -109,5 +114,6 @@ namespace HatTrick.DbEx.Sql.Assembler
 
             return converter.ConvertToDatabase(value);
         }
+        #endregion
     }
 }

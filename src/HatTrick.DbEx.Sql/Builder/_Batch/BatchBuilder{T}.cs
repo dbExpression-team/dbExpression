@@ -97,36 +97,34 @@ namespace HatTrick.DbEx.Sql.Builder
             if (batch.Count == 0)
                 return results;
 
-            using (var connection = new SqlConnector(connectionFactory))
+            using var connection = new SqlConnector(connectionFactory);
+            try
             {
-                try
+                connection.EnsureOpen();
+                connection.BeginTransaction();
+                for (var i = 0; i < batch.Count; i++)
                 {
-                    connection.EnsureOpen();
-                    connection.BeginTransaction();
-                    for (var i = 0; i < batch.Count; i++)
+                    var exp = batch[i];
+                    if (exp is DeleteEntitiesTermination<TDatabase> delete)
                     {
-                        var exp = batch[i];
-                        if (exp is DeleteEntitiesTermination<TDatabase> delete)
-                        {
-                            results.Add(i, await delete.ExecuteAsync(connection).ConfigureAwait(false));
-                        }
-                        else if (exp is UpdateEntitiesTermination<TDatabase> update)
-                        {
-                            results.Add(i, await update.ExecuteAsync(connection).ConfigureAwait(false));
-                        }
-                        else if (exp is InsertEntitiesTermination<TDatabase> insert)
-                        {
-                            await insert.ExecuteAsync(connection).ConfigureAwait(false);
-                            results.Add(i, default);
-                        }
+                        results.Add(i, await delete.ExecuteAsync(connection).ConfigureAwait(false));
                     }
-                    connection.CommitTransaction();
+                    else if (exp is UpdateEntitiesTermination<TDatabase> update)
+                    {
+                        results.Add(i, await update.ExecuteAsync(connection).ConfigureAwait(false));
+                    }
+                    else if (exp is InsertEntitiesTermination<TDatabase> insert)
+                    {
+                        await insert.ExecuteAsync(connection).ConfigureAwait(false);
+                        results.Add(i, default);
+                    }
                 }
-                catch (Exception)
-                {
-                    connection.RollbackTransaction();
-                    throw;
-                }
+                connection.CommitTransaction();
+            }
+            catch (Exception)
+            {
+                connection.RollbackTransaction();
+                throw;
             }
             return results;
         }

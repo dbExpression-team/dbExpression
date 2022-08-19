@@ -337,165 +337,165 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        async Task<IList<TObject>> SelectObjectsTermination<TDatabase, TObject>.ExecuteAsync(CancellationToken cancellationToken)
+        Task<IList<TObject>> SelectObjectsTermination<TDatabase, TObject>.ExecuteAsync(CancellationToken cancellationToken)
         {
-            return await ExecutePipelineAsync(
+            return ExecutePipelineAsync(
                 null,
                 null,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task<IList<TObject>> SelectObjectsTermination<TDatabase, TObject>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
+        Task<IList<TObject>> SelectObjectsTermination<TDatabase, TObject>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            return await ExecutePipelineAsync(
+            return ExecutePipelineAsync(
                 null,
                 command => command.CommandTimeout = commandTimeout,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task<IList<TObject>> SelectObjectsTermination<TDatabase, TObject>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
+        Task<IList<TObject>> SelectObjectsTermination<TDatabase, TObject>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
         {
-            return await ExecutePipelineAsync(
+            return ExecutePipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 null,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task<IList<TObject>> SelectObjectsTermination<TDatabase, TObject>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
+        Task<IList<TObject>> SelectObjectsTermination<TDatabase, TObject>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            return await ExecutePipelineAsync(
+            return ExecutePipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 command => command.CommandTimeout = commandTimeout,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task SelectObjectsTermination<TDatabase, TObject>.ExecuteAsync(Action<TObject?> read, CancellationToken cancellationToken)
+        Task SelectObjectsTermination<TDatabase, TObject>.ExecuteAsync(Action<TObject?> read, CancellationToken cancellationToken)
         {
-            await ExecutePipelineAsync(
+            return ExecutePipelineAsync(
                 null,
                 null,
                 read ?? throw new ArgumentNullException(nameof(read)),
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task SelectObjectsTermination<TDatabase, TObject>.ExecuteAsync(int commandTimeout, Action<TObject?> read, CancellationToken cancellationToken)
+        Task SelectObjectsTermination<TDatabase, TObject>.ExecuteAsync(int commandTimeout, Action<TObject?> read, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            await ExecutePipelineAsync(
+            return ExecutePipelineAsync(
                 null,
                 command => command.CommandTimeout = commandTimeout,
                 read ?? throw new ArgumentNullException(nameof(read)),
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task SelectObjectsTermination<TDatabase, TObject>.ExecuteAsync(ISqlConnection connection, Action<TObject?> read, CancellationToken cancellationToken)
+        Task SelectObjectsTermination<TDatabase, TObject>.ExecuteAsync(ISqlConnection connection, Action<TObject?> read, CancellationToken cancellationToken)
         {
-            await ExecutePipelineAsync(
+            return ExecutePipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 null,
                 read ?? throw new ArgumentNullException(nameof(read)),
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task SelectObjectsTermination<TDatabase, TObject>.ExecuteAsync(ISqlConnection connection, int commandTimeout, Action<TObject?> read, CancellationToken cancellationToken)
+        Task SelectObjectsTermination<TDatabase, TObject>.ExecuteAsync(ISqlConnection connection, int commandTimeout, Action<TObject?> read, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            await ExecutePipelineAsync(
+            return ExecutePipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 command => command.CommandTimeout = commandTimeout,
                 read ?? throw new ArgumentNullException(nameof(read)),
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task SelectObjectsTermination<TDatabase, TObject>.ExecuteAsync(Func<TObject?, Task> read, CancellationToken cancellationToken)
+        Task SelectObjectsTermination<TDatabase, TObject>.ExecuteAsync(Func<TObject?, Task> read, CancellationToken cancellationToken)
         {
-            await ExecutePipelineAsync(
+            return ExecutePipelineAsync(
                 null,
                 null,
                 read ?? throw new ArgumentNullException(nameof(read)),
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task SelectObjectsTermination<TDatabase, TObject>.ExecuteAsync(int commandTimeout, Func<TObject?, Task> read, CancellationToken cancellationToken)
+        Task SelectObjectsTermination<TDatabase, TObject>.ExecuteAsync(int commandTimeout, Func<TObject?, Task> read, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            await ExecutePipelineAsync(
+            return ExecutePipelineAsync(
                 null,
                 command => command.CommandTimeout = commandTimeout,
                 read ?? throw new ArgumentNullException(nameof(read)),
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task SelectObjectsTermination<TDatabase, TObject>.ExecuteAsync(ISqlConnection connection, Func<TObject?, Task> read, CancellationToken cancellationToken)
+        Task SelectObjectsTermination<TDatabase, TObject>.ExecuteAsync(ISqlConnection connection, Func<TObject?, Task> read, CancellationToken cancellationToken)
         {
-            await ExecutePipelineAsync(
+            return ExecutePipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 null,
                 read ?? throw new ArgumentNullException(nameof(read)),
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task SelectObjectsTermination<TDatabase, TObject>.ExecuteAsync(ISqlConnection connection, int commandTimeout, Func<TObject?, Task> read, CancellationToken cancellationToken)
+        Task SelectObjectsTermination<TDatabase, TObject>.ExecuteAsync(ISqlConnection connection, int commandTimeout, Func<TObject?, Task> read, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            await ExecutePipelineAsync(
+            return ExecutePipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 command => command.CommandTimeout = commandTimeout,
                 read ?? throw new ArgumentNullException(nameof(read)),
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
-        protected virtual IList<TObject> ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand)
+        private IList<TObject> ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand)
             => Controller.CreateExecutionPipeline().ExecuteSelectValueList<TObject>(Controller.SelectSetQueryExpression, connection, configureCommand);
 
-        protected virtual async Task<IList<TObject>> ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken cancellationToken)
-            => await Controller.CreateExecutionPipeline().ExecuteSelectValueListAsync<TObject>(Controller.SelectSetQueryExpression, connection, configureCommand, cancellationToken).ConfigureAwait(false);
+        private Task<IList<TObject>> ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken cancellationToken)
+            => Controller.CreateExecutionPipeline().ExecuteSelectValueListAsync<TObject>(Controller.SelectSetQueryExpression, connection, configureCommand, cancellationToken);
 
-        protected virtual void ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Action<TObject?> read)
+        private void ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Action<TObject?> read)
             => Controller.CreateExecutionPipeline().ExecuteSelectValueList<TObject>(Controller.SelectSetQueryExpression, connection, configureCommand, read);
 
-        protected virtual async Task ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Action<TObject?> read, CancellationToken cancellationToken)
-            => await Controller.CreateExecutionPipeline().ExecuteSelectValueListAsync<TObject>(Controller.SelectSetQueryExpression, connection, configureCommand, read, cancellationToken).ConfigureAwait(false);
+        private Task ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Action<TObject?> read, CancellationToken cancellationToken)
+            => Controller.CreateExecutionPipeline().ExecuteSelectValueListAsync<TObject>(Controller.SelectSetQueryExpression, connection, configureCommand, read, cancellationToken);
 
-        protected virtual async Task ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<TObject?, Task> read, CancellationToken cancellationToken)
-            => await Controller.CreateExecutionPipeline().ExecuteSelectValueListAsync<TObject>(Controller.SelectSetQueryExpression, connection, configureCommand, read, cancellationToken).ConfigureAwait(false);
+        private Task ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<TObject?, Task> read, CancellationToken cancellationToken)
+            => Controller.CreateExecutionPipeline().ExecuteSelectValueListAsync<TObject>(Controller.SelectSetQueryExpression, connection, configureCommand, read, cancellationToken);
         #endregion
         #endregion
     }

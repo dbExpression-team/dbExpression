@@ -160,56 +160,56 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-		async Task<dynamic?> SelectDynamicStoredProcedureTermination<TDatabase>.ExecuteAsync(CancellationToken cancellationToken)
+		Task<dynamic?> SelectDynamicStoredProcedureTermination<TDatabase>.ExecuteAsync(CancellationToken cancellationToken)
         {
-            return await ExecuteDynamicPipelineAsync(
+            return ExecuteDynamicPipelineAsync(
                 null,
                 null,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-		async Task<dynamic?> SelectDynamicStoredProcedureTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
+		Task<dynamic?> SelectDynamicStoredProcedureTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
         {
-            return await ExecuteDynamicPipelineAsync(
+            return ExecuteDynamicPipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 null,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-		async Task<dynamic?> SelectDynamicStoredProcedureTermination<TDatabase>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
+		Task<dynamic?> SelectDynamicStoredProcedureTermination<TDatabase>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            return await ExecuteDynamicPipelineAsync(
+            return ExecuteDynamicPipelineAsync(
                 null,
                 command => command.CommandTimeout = commandTimeout,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-		async Task<dynamic?> SelectDynamicStoredProcedureTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
+		Task<dynamic?> SelectDynamicStoredProcedureTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            return await ExecuteDynamicPipelineAsync(
+            return ExecuteDynamicPipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 command => command.CommandTimeout = commandTimeout,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         protected virtual dynamic? ExecuteDynamicPipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand)
             => ExecutionPipelineFactory().ExecuteSelectDynamic(StoredProcedureQueryExpression, connection, configureCommand);
 
-        protected virtual async Task<dynamic?> ExecuteDynamicPipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
-            => await ExecutionPipelineFactory().ExecuteSelectDynamicAsync(StoredProcedureQueryExpression, connection, configureCommand, ct).ConfigureAwait(false);
+        protected virtual Task<dynamic?> ExecuteDynamicPipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
+            => ExecutionPipelineFactory().ExecuteSelectDynamicAsync(StoredProcedureQueryExpression, connection, configureCommand, ct);
 
         #endregion
 
@@ -257,56 +257,56 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        async Task<IList<dynamic>> SelectDynamicsStoredProcedureTermination<TDatabase>.ExecuteAsync(CancellationToken cancellationToken)
+        Task<IList<dynamic>> SelectDynamicsStoredProcedureTermination<TDatabase>.ExecuteAsync(CancellationToken cancellationToken)
         {
-            return await ExecuteDynamicListPipelineAsync(
+            return ExecuteDynamicListPipelineAsync(
                 null,
                 null,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task<IList<dynamic>> SelectDynamicsStoredProcedureTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
+        Task<IList<dynamic>> SelectDynamicsStoredProcedureTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
         {
-            return await ExecuteDynamicListPipelineAsync(
+            return ExecuteDynamicListPipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 null,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task<IList<dynamic>> SelectDynamicsStoredProcedureTermination<TDatabase>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
+        Task<IList<dynamic>> SelectDynamicsStoredProcedureTermination<TDatabase>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            return await ExecuteDynamicListPipelineAsync(
+            return ExecuteDynamicListPipelineAsync(
                 null,
                 command => command.CommandTimeout = commandTimeout,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task<IList<dynamic>> SelectDynamicsStoredProcedureTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
+        Task<IList<dynamic>> SelectDynamicsStoredProcedureTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            return await ExecuteDynamicListPipelineAsync(
+            return ExecuteDynamicListPipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 command => command.CommandTimeout = commandTimeout,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
-        protected virtual IList<dynamic> ExecuteDynamicListPipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand)
+        private IList<dynamic> ExecuteDynamicListPipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand)
             => ExecutionPipelineFactory().ExecuteSelectDynamicList(StoredProcedureQueryExpression, connection, configureCommand);
 
-        protected virtual async Task<IList<dynamic>> ExecuteDynamicListPipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
-            => await ExecutionPipelineFactory().ExecuteSelectDynamicListAsync(StoredProcedureQueryExpression, connection, configureCommand, ct).ConfigureAwait(false);
+        private Task<IList<dynamic>> ExecuteDynamicListPipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
+            => ExecutionPipelineFactory().ExecuteSelectDynamicListAsync(StoredProcedureQueryExpression, connection, configureCommand, ct);
 
         #endregion
 
@@ -354,56 +354,56 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        async Task StoredProcedureTermination<TDatabase>.ExecuteAsync(CancellationToken cancellationToken)
+        Task StoredProcedureTermination<TDatabase>.ExecuteAsync(CancellationToken cancellationToken)
         {
-            await ExecutePipelineAsync(
+            return ExecutePipelineAsync(
                 null,
                 null,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task StoredProcedureTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
+        Task StoredProcedureTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
         {
-            await ExecutePipelineAsync(
+            return ExecutePipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 null,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task StoredProcedureTermination<TDatabase>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
+        Task StoredProcedureTermination<TDatabase>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            await ExecutePipelineAsync(
+            return ExecutePipelineAsync(
                 null,
                 command => command.CommandTimeout = commandTimeout,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task StoredProcedureTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
+        Task StoredProcedureTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            await ExecutePipelineAsync(
+            return ExecutePipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 command => command.CommandTimeout = commandTimeout,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
-        protected virtual void ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand)
+        private void ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand)
             => ExecutionPipelineFactory().Execute(StoredProcedureQueryExpression, connection, configureCommand);
 
-        protected virtual async Task ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
-            => await ExecutionPipelineFactory().ExecuteAsync(StoredProcedureQueryExpression, connection, configureCommand, ct).ConfigureAwait(false);
+        private Task ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
+            => ExecutionPipelineFactory().ExecuteAsync(StoredProcedureQueryExpression, connection, configureCommand, ct);
         #endregion
         #endregion
     }

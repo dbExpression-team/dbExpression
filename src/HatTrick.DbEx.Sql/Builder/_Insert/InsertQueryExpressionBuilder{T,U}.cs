@@ -140,61 +140,61 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        async Task InsertEntityTermination<TDatabase>.ExecuteAsync(CancellationToken cancellationToken)
+        Task InsertEntityTermination<TDatabase>.ExecuteAsync(CancellationToken cancellationToken)
         {
             if (!InsertQueryExpression.Inserts.Any())
-                return;
+                return Task.CompletedTask;
 
-            await ExecutePipelineAsync(
+            return ExecutePipelineAsync(
                 null,
                 null,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task InsertEntityTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
+        Task InsertEntityTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
         {
             if (!InsertQueryExpression.Inserts.Any())
-                return;
+                return Task.CompletedTask;
 
-            await ExecutePipelineAsync(
+            return ExecutePipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 null,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task InsertEntityTermination<TDatabase>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
+        Task InsertEntityTermination<TDatabase>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             if (!InsertQueryExpression.Inserts.Any())
-                return;
+                return Task.CompletedTask;
 
-            await ExecutePipelineAsync(
+            return ExecutePipelineAsync(
                 null,
                 command => command.CommandTimeout = commandTimeout,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task InsertEntityTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
+        Task InsertEntityTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             if (!InsertQueryExpression.Inserts.Any())
-                return;
+                return Task.CompletedTask;
 
-            await ExecutePipelineAsync(
+            return ExecutePipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 command => command.CommandTimeout = commandTimeout,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
         #endregion
 
@@ -254,69 +254,69 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        async Task InsertEntitiesTermination<TDatabase>.ExecuteAsync(CancellationToken cancellationToken)
+        Task InsertEntitiesTermination<TDatabase>.ExecuteAsync(CancellationToken cancellationToken)
         {
             if (!InsertQueryExpression.Inserts.Any())
-                return;
+                return Task.CompletedTask;
 
-            await ExecutePipelineAsync(
+            return ExecutePipelineAsync(
                 null,
                 null,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task InsertEntitiesTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
+        Task InsertEntitiesTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
         {
             if (!InsertQueryExpression.Inserts.Any())
-                return;
+                return Task.CompletedTask;
 
-            await ExecutePipelineAsync(
+            return ExecutePipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 null,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task InsertEntitiesTermination<TDatabase>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
+        Task InsertEntitiesTermination<TDatabase>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             if (!InsertQueryExpression.Inserts.Any())
-                return;
+                return Task.CompletedTask;
 
-            await ExecutePipelineAsync(
+            return ExecutePipelineAsync(
                 null,
                 command => command.CommandTimeout = commandTimeout,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
         
         /// <inheritdoc />
-        async Task InsertEntitiesTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
+        Task InsertEntitiesTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             if (!InsertQueryExpression.Inserts.Any())
-                return;
+                return Task.CompletedTask;
 
-            await ExecutePipelineAsync(
+            return ExecutePipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 command => command.CommandTimeout = commandTimeout,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         #endregion
-        protected virtual void ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand)
+        private void ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand)
             => ExecutionPipelineFactory().ExecuteInsert<TEntity>(InsertQueryExpression, connection, configureCommand);
 
-        protected virtual async Task ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken cancellationToken)
-            => await ExecutionPipelineFactory().ExecuteInsertAsync<TEntity>(InsertQueryExpression, connection, configureCommand, cancellationToken).ConfigureAwait(false);
+        private Task ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken cancellationToken)
+            => ExecutionPipelineFactory().ExecuteInsertAsync<TEntity>(InsertQueryExpression, connection, configureCommand, cancellationToken);
         #endregion
     }
 }
