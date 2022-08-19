@@ -28,7 +28,7 @@ using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql.Pipeline
 {
-    public class DeleteQueryExecutionPipeline : IDeleteQueryExecutionPipeline
+    public sealed class DeleteQueryExecutionPipeline : IDeleteQueryExecutionPipeline
     {
         #region internals
         private readonly ILogger<DeleteQueryExecutionPipeline> logger;
@@ -56,7 +56,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
 
         #region methods
-        public virtual int ExecuteDelete(DeleteQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand)
+        public int ExecuteDelete(DeleteQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand)
         {
             if (expression is null)
                 throw new ArgumentNullException(nameof(expression));
@@ -126,7 +126,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return rowsAffected;
         }
 
-        public virtual async Task<int> ExecuteDeleteAsync(DeleteQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
+        public async Task<int> ExecuteDeleteAsync(DeleteQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
         {
             if (expression is null)
                 throw new ArgumentNullException(nameof(expression));

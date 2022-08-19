@@ -32,7 +32,7 @@ using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql.Pipeline
 {
-    public class InsertQueryExecutionPipeline : IInsertQueryExecutionPipeline
+    public sealed class InsertQueryExecutionPipeline : IInsertQueryExecutionPipeline
     {
         #region internals
         private readonly ILogger<InsertQueryExecutionPipeline> logger;
@@ -66,7 +66,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
 
         #region methods
-        public virtual void ExecuteInsert<TEntity>(InsertQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand)
+        public void ExecuteInsert<TEntity>(InsertQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand)
             where TEntity : class, IDbEntity
         {
             if (expression is null)
@@ -166,7 +166,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
         }
 
-        public virtual async Task ExecuteInsertAsync<TEntity>(InsertQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
+        public async Task ExecuteInsertAsync<TEntity>(InsertQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
             where TEntity : class, IDbEntity
         {
             if (expression is null)

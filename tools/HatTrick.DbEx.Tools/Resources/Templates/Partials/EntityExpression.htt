@@ -10,7 +10,7 @@
     public partial class {$.EntityExpression.Name}Entity : EntityExpression<{$.EntityExpression.Name}>
     {{
         #region internals
-        private List<SelectExpression>? _inclusiveSelectExpressions;
+        private List<SelectExpression>{:nullableAnnotation} _inclusiveSelectExpressions;
         private SelectExpressionSet{:nullableAnnotation} _inclusiveSelectExpressionSet;
         #endregion
 

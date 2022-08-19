@@ -34,7 +34,7 @@ using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql.Pipeline
 {
-    public class StoredProcedureQueryExpressionExecutionPipeline : IStoredProcedureExecutionPipeline
+    public sealed class StoredProcedureQueryExpressionExecutionPipeline : IStoredProcedureExecutionPipeline
     {
         #region internals
         private readonly ILogger<StoredProcedureQueryExpressionExecutionPipeline> logger;
@@ -68,7 +68,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
 
         #region methods
-        public virtual void Execute(StoredProcedureQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand)
+        public void Execute(StoredProcedureQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand)
         {
             ExecuteStoredProcedure(
                 expression,
@@ -78,7 +78,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             );
         }
 
-        public virtual void Execute(StoredProcedureQueryExpression expression, Action<ISqlFieldReader> map, ISqlConnection? connection, Action<IDbCommand>? configureCommand)
+        public void Execute(StoredProcedureQueryExpression expression, Action<ISqlFieldReader> map, ISqlConnection? connection, Action<IDbCommand>? configureCommand)
         {
             ExecuteStoredProcedure(
                 expression,
@@ -104,7 +104,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             );
         }
 
-        public virtual Task ExecuteAsync(StoredProcedureQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
+        public Task ExecuteAsync(StoredProcedureQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
         {
             return ExecuteStoredProcedureAsync(
                 expression,
@@ -115,7 +115,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             );
         }
 
-        public virtual async Task ExecuteAsync(StoredProcedureQueryExpression expression, Action<ISqlFieldReader> map, ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
+        public async Task ExecuteAsync(StoredProcedureQueryExpression expression, Action<ISqlFieldReader> map, ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
         {
             await ExecuteStoredProcedureAsync(
                 expression,
@@ -142,7 +142,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             ).ConfigureAwait(false);
         }
         
-        public virtual dynamic? ExecuteSelectDynamic(StoredProcedureQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand)
+        public dynamic? ExecuteSelectDynamic(StoredProcedureQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand)
         {
             dynamic? value = default;
             ExecuteStoredProcedure(
@@ -164,7 +164,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return value;
         }
 
-        public virtual async Task<dynamic?> ExecuteSelectDynamicAsync(StoredProcedureQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
+        public async Task<dynamic?> ExecuteSelectDynamicAsync(StoredProcedureQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
         {
             dynamic? value = default;
             await ExecuteStoredProcedureAsync(
@@ -187,7 +187,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return value;
         }
 
-        public virtual IList<dynamic> ExecuteSelectDynamicList(StoredProcedureQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand)
+        public IList<dynamic> ExecuteSelectDynamicList(StoredProcedureQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand)
         {
             var values = new List<dynamic>();
             var mapper = mapperFactory.CreateExpandoObjectMapper();
@@ -210,7 +210,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return values;
         }
 
-        public virtual async Task<IList<dynamic>> ExecuteSelectDynamicListAsync(StoredProcedureQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
+        public async Task<IList<dynamic>> ExecuteSelectDynamicListAsync(StoredProcedureQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
         {
             var values = new List<dynamic>();
             var mapper = mapperFactory.CreateExpandoObjectMapper();
@@ -234,7 +234,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return values;
         }
 
-        public virtual T? ExecuteSelectValue<T>(StoredProcedureQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand)
+        public T? ExecuteSelectValue<T>(StoredProcedureQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand)
         {
             T? value = default;
             ExecuteStoredProcedure(
@@ -261,7 +261,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return value;
         }
 
-        public virtual async Task<T?> ExecuteSelectValueAsync<T>(StoredProcedureQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
+        public async Task<T?> ExecuteSelectValueAsync<T>(StoredProcedureQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
         {
             T? value = default;
             await ExecuteStoredProcedureAsync(
@@ -293,7 +293,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return value;
         }
 
-        public virtual IList<T> ExecuteSelectValueList<T>(StoredProcedureQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand)
+        public IList<T> ExecuteSelectValueList<T>(StoredProcedureQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand)
         {
             var values = new List<T>();
             ExecuteStoredProcedure(
@@ -324,7 +324,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return values;
         }
 
-        public virtual async Task<IList<T>> ExecuteSelectValueListAsync<T>(StoredProcedureQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
+        public async Task<IList<T>> ExecuteSelectValueListAsync<T>(StoredProcedureQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
         {
             var values = new List<T>();
             await ExecuteStoredProcedureAsync(
@@ -356,7 +356,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return values;
         }
 
-        public virtual T? ExecuteSelectObject<T>(StoredProcedureQueryExpression expression, Func<ISqlFieldReader, T> map, ISqlConnection? connection, Action<IDbCommand>? configureCommand)
+        public T? ExecuteSelectObject<T>(StoredProcedureQueryExpression expression, Func<ISqlFieldReader, T> map, ISqlConnection? connection, Action<IDbCommand>? configureCommand)
         {
             T? value = default;
             ExecuteStoredProcedure(
@@ -383,7 +383,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return value;
         }
 
-        public virtual async Task<T?> ExecuteSelectObjectAsync<T>(StoredProcedureQueryExpression expression, Func<ISqlFieldReader, T> map, ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
+        public async Task<T?> ExecuteSelectObjectAsync<T>(StoredProcedureQueryExpression expression, Func<ISqlFieldReader, T> map, ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
         {
             T? value = default;
             await ExecuteStoredProcedureAsync(
@@ -411,7 +411,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return value;
         }
 
-        public virtual IList<T> ExecuteSelectObjectList<T>(StoredProcedureQueryExpression expression, Func<ISqlFieldReader, T> map, ISqlConnection? connection, Action<IDbCommand>? configureCommand)
+        public IList<T> ExecuteSelectObjectList<T>(StoredProcedureQueryExpression expression, Func<ISqlFieldReader, T> map, ISqlConnection? connection, Action<IDbCommand>? configureCommand)
         {
             var values = new List<T>();
             ExecuteStoredProcedure(
@@ -438,7 +438,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return values;
         }
 
-        public virtual async Task<IList<T>> ExecuteSelectObjectListAsync<T>(StoredProcedureQueryExpression expression, Func<ISqlFieldReader, T> map, ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
+        public async Task<IList<T>> ExecuteSelectObjectListAsync<T>(StoredProcedureQueryExpression expression, Func<ISqlFieldReader, T> map, ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
         {
             var values = new List<T>();
             await ExecuteStoredProcedureAsync(
