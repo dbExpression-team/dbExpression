@@ -16,10 +16,10 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Connection;
 using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
+using HatTrick.DbEx.Sql.Pipeline;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -37,9 +37,9 @@ namespace HatTrick.DbEx.Sql.Builder
     {
         #region constructors
         public SelectDynamicSelectQueryExpressionBuilder(
-            SqlDatabaseRuntimeConfiguration config,
+            Func<ISelectQueryExecutionPipeline> executionPipelineFactory,
             SelectSetQueryExpressionBuilder<TDatabase> controller
-        ) : base(config, controller)
+        ) : base(executionPipelineFactory, controller)
         {
 
         }
@@ -51,7 +51,7 @@ namespace HatTrick.DbEx.Sql.Builder
         {
             Controller.ApplyUnion();
             return new SelectDynamicsSelectQueryExpressionBuilder<TDatabase>(
-                Configuration,
+                ExecutionPipelineFactory,
                 Controller
             );
         }
@@ -60,7 +60,7 @@ namespace HatTrick.DbEx.Sql.Builder
         {
             Controller.ApplyUnionAll();
             return new SelectDynamicsSelectQueryExpressionBuilder<TDatabase>(
-                Configuration,
+                ExecutionPipelineFactory,
                 Controller
             );
         }
@@ -176,9 +176,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         dynamic? SelectDynamicTermination<TDatabase>.Execute()
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
             return ExecutePipeline(
-                connection,
+                null,
                 null
             );
         }
@@ -189,9 +188,8 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
             return ExecutePipeline(
-                connection,
+                null,
                 command => command.CommandTimeout = commandTimeout
             );
         }
@@ -220,11 +218,10 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         dynamic? SelectDynamicTermination<TDatabase>.Execute(Func<ISqlFieldReader, dynamic> map)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
             return ExecutePipeline(
-                connection,
                 null,
-                map
+                null,
+                map ?? throw new ArgumentNullException(nameof(map))
             );
         }
 
@@ -234,7 +231,7 @@ namespace HatTrick.DbEx.Sql.Builder
             return ExecutePipeline(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 null,
-                map
+                map ?? throw new ArgumentNullException(nameof(map))
             );
         }
 
@@ -244,11 +241,10 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
             return ExecutePipeline(
-                connection,
+                null,
                 command => command.CommandTimeout = commandTimeout,
-                map
+                map ?? throw new ArgumentNullException(nameof(map))
             );
         }
 
@@ -261,64 +257,61 @@ namespace HatTrick.DbEx.Sql.Builder
             return ExecutePipeline(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 command => command.CommandTimeout = commandTimeout,
-                map
+                map ?? throw new ArgumentNullException(nameof(map))
             );
         }
 
         /// <inheritdoc />
-        async Task<dynamic?> SelectDynamicTermination<TDatabase>.ExecuteAsync(CancellationToken cancellationToken)
+        Task<dynamic?> SelectDynamicTermination<TDatabase>.ExecuteAsync(CancellationToken cancellationToken)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
-            return await ExecutePipelineAsync(
-                connection,
+            return ExecutePipelineAsync(
+                null,
                 null,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task<dynamic?> SelectDynamicTermination<TDatabase>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
+        Task<dynamic?> SelectDynamicTermination<TDatabase>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
-            return await ExecutePipelineAsync(
-                connection,
+            return ExecutePipelineAsync(
+                null,
                 command => command.CommandTimeout = commandTimeout,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task<dynamic?> SelectDynamicTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
+        Task<dynamic?> SelectDynamicTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
         {
-            return await ExecutePipelineAsync(
+            return ExecutePipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 null,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task<dynamic?> SelectDynamicTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
+        Task<dynamic?> SelectDynamicTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            return await ExecutePipelineAsync(
+            return ExecutePipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 command => command.CommandTimeout = commandTimeout,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
         void SelectDynamicTermination<TDatabase>.Execute(Action<ISqlFieldReader> read)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
             ExecutePipeline(
-                connection,
+                null,
                 null,
                 read ?? throw new ArgumentNullException(nameof(read))
             );
@@ -330,9 +323,8 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
             ExecutePipeline(
-                connection,
+                null,
                 command => command.CommandTimeout = commandTimeout,
                 read ?? throw new ArgumentNullException(nameof(read))
             );
@@ -362,216 +354,178 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        async Task SelectDynamicTermination<TDatabase>.ExecuteAsync(Action<ISqlFieldReader> map, CancellationToken cancellationToken)
+        Task SelectDynamicTermination<TDatabase>.ExecuteAsync(Action<ISqlFieldReader> map, CancellationToken cancellationToken)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
-            await ExecutePipelineAsync(
-                connection,
+            return ExecutePipelineAsync(
+                null,
                 null,
                 map ?? throw new ArgumentNullException(nameof(map)),
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task SelectDynamicTermination<TDatabase>.ExecuteAsync(int commandTimeout, Action<ISqlFieldReader> map, CancellationToken cancellationToken)
+        Task SelectDynamicTermination<TDatabase>.ExecuteAsync(int commandTimeout, Action<ISqlFieldReader> map, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
-            await ExecutePipelineAsync(
-                connection,
+            return ExecutePipelineAsync(
+                null,
                 command => command.CommandTimeout = commandTimeout,
                 map ?? throw new ArgumentNullException(nameof(map)),
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task SelectDynamicTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, Action<ISqlFieldReader> map, CancellationToken cancellationToken)
+        Task SelectDynamicTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, Action<ISqlFieldReader> map, CancellationToken cancellationToken)
         {
-            await ExecutePipelineAsync(
+            return ExecutePipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 null,
                 map ?? throw new ArgumentNullException(nameof(map)),
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task SelectDynamicTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, int commandTimeout, Action<ISqlFieldReader> map, CancellationToken cancellationToken)
+        Task SelectDynamicTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, int commandTimeout, Action<ISqlFieldReader> map, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            await ExecutePipelineAsync(
+            return ExecutePipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 command => command.CommandTimeout = commandTimeout,
                 map ?? throw new ArgumentNullException(nameof(map)),
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task<dynamic?> SelectDynamicTermination<TDatabase>.ExecuteAsync(Func<ISqlFieldReader, dynamic> map, CancellationToken cancellationToken)
+        Task<dynamic?> SelectDynamicTermination<TDatabase>.ExecuteAsync(Func<ISqlFieldReader, dynamic> map, CancellationToken cancellationToken)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
-            return await ExecutePipelineAsync(
-                connection,
+            return ExecutePipelineAsync(
+                null,
                 null,
                 map ?? throw new ArgumentNullException(nameof(map)),
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task<dynamic?> SelectDynamicTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, Func<ISqlFieldReader, dynamic> map, CancellationToken cancellationToken)
+        Task<dynamic?> SelectDynamicTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, Func<ISqlFieldReader, dynamic> map, CancellationToken cancellationToken)
         {
-            return await ExecutePipelineAsync(
+            return ExecutePipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 null,
                 map ?? throw new ArgumentNullException(nameof(map)),
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task<dynamic?> SelectDynamicTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, int commandTimeout, Func<ISqlFieldReader, dynamic> map, CancellationToken cancellationToken)
+        Task<dynamic?> SelectDynamicTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, int commandTimeout, Func<ISqlFieldReader, dynamic> map, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            return await ExecutePipelineAsync(
+            return ExecutePipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 command => command.CommandTimeout = commandTimeout,
                 map ?? throw new ArgumentNullException(nameof(map)),
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task SelectDynamicTermination<TDatabase>.ExecuteAsync(Func<ISqlFieldReader, Task> read, CancellationToken cancellationToken)
+        Task SelectDynamicTermination<TDatabase>.ExecuteAsync(Func<ISqlFieldReader, Task> read, CancellationToken cancellationToken)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
-            await ExecutePipelineAsync(
-                connection,
+            return ExecutePipelineAsync(
+                null,
                 null,
                 read ?? throw new ArgumentNullException(nameof(read)),
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task SelectDynamicTermination<TDatabase>.ExecuteAsync(int commandTimeout, Func<ISqlFieldReader, Task> read, CancellationToken cancellationToken)
+        Task SelectDynamicTermination<TDatabase>.ExecuteAsync(int commandTimeout, Func<ISqlFieldReader, Task> read, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
-            await ExecutePipelineAsync(
-                connection,
+            return ExecutePipelineAsync(
+                null,
                 command => command.CommandTimeout = commandTimeout,
                 read ?? throw new ArgumentNullException(nameof(read)),
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task SelectDynamicTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, Func<ISqlFieldReader, Task> read, CancellationToken cancellationToken)
+        Task SelectDynamicTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, Func<ISqlFieldReader, Task> read, CancellationToken cancellationToken)
         {
-            await ExecutePipelineAsync(
+            return ExecutePipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 null,
                 read ?? throw new ArgumentNullException(nameof(read)),
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task SelectDynamicTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, int commandTimeout, Func<ISqlFieldReader, Task> read, CancellationToken cancellationToken)
+        Task SelectDynamicTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, int commandTimeout, Func<ISqlFieldReader, Task> read, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            await ExecutePipelineAsync(
+            return ExecutePipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 command => command.CommandTimeout = commandTimeout,
                 read ?? throw new ArgumentNullException(nameof(read)),
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task<dynamic?> SelectDynamicTermination<TDatabase>.ExecuteAsync(int commandTimeout, Func<ISqlFieldReader, dynamic> map, CancellationToken cancellationToken)
+        Task<dynamic?> SelectDynamicTermination<TDatabase>.ExecuteAsync(int commandTimeout, Func<ISqlFieldReader, dynamic> map, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
-            return await ExecutePipelineAsync(
-                connection,
+            return ExecutePipelineAsync(
+                null,
                 command => command.CommandTimeout = commandTimeout,
                 map ?? throw new ArgumentNullException(nameof(map)),
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
-        protected virtual dynamic? ExecutePipeline(ISqlConnection connection, Action<IDbCommand>? configureCommand)
-        {
-            var expression = Controller.Current;
-            var pipeline = Configuration.ExecutionPipelineFactory?.CreateQueryExecutionPipeline(Configuration, expression) ?? throw new DbExpressionConfigurationException($"Could not resolve/create an execution pipeline for type '{expression.GetType()}'.");
-            return pipeline.ExecuteSelectDynamic(expression, connection, configureCommand);
-        }
+        private dynamic? ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand)
+            => ExecutionPipelineFactory().ExecuteSelectDynamic(Controller.Current, connection, configureCommand);
 
-        protected virtual dynamic? ExecutePipeline(ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, dynamic> map)
-        {
-            var expression = Controller.Current;
-            var pipeline = Configuration.ExecutionPipelineFactory?.CreateQueryExecutionPipeline(Configuration, expression) ?? throw new DbExpressionConfigurationException($"Could not resolve/create an execution pipeline for type '{expression.GetType()}'.");
-            return pipeline.ExecuteSelectObject(expression, connection, configureCommand, map);
-        }
+        private dynamic? ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, dynamic> map)
+            => ExecutionPipelineFactory().ExecuteSelectObject(Controller.Current, connection, configureCommand, map);
 
-        protected virtual void ExecutePipeline(ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> read)
-        {
-            var expression = Controller.Current;
-            var pipeline = Configuration.ExecutionPipelineFactory?.CreateQueryExecutionPipeline(Configuration, expression) ?? throw new DbExpressionConfigurationException($"Could not resolve/create an execution pipeline for type '{expression.GetType()}'.");
-            pipeline.ExecuteSelectDynamic(expression, connection, configureCommand, read);
-        }
+        private void ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> read)
+            => ExecutionPipelineFactory().ExecuteSelectDynamic(Controller.Current, connection, configureCommand, read);
 
-        protected virtual T? ExecutPipeline<T>(ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, T> map)
-        {
-            var expression = Controller.Current;
-            var pipeline = Configuration.ExecutionPipelineFactory?.CreateQueryExecutionPipeline(Configuration, expression) ?? throw new DbExpressionConfigurationException($"Could not resolve/create an execution pipeline for type '{expression.GetType()}'.");
-            return pipeline.ExecuteSelectObject(expression, connection, configureCommand, map);
-        }
+        private T? ExecutPipeline<T>(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, T> map)
+            => ExecutionPipelineFactory().ExecuteSelectObject(Controller.Current, connection, configureCommand, map);
 
-        protected virtual async Task<dynamic?> ExecutePipelineAsync(ISqlConnection connection, Action<IDbCommand>? configureCommand, CancellationToken cancellationToken)
-        {
-            var expression = Controller.Current;
-            var pipeline = Configuration.ExecutionPipelineFactory?.CreateQueryExecutionPipeline(Configuration, expression) ?? throw new DbExpressionConfigurationException($"Could not resolve/create an execution pipeline for type '{expression.GetType()}'.");
-            return await pipeline.ExecuteSelectDynamicAsync(expression, connection, configureCommand, cancellationToken).ConfigureAwait(false);
-        }
+        private Task<dynamic?> ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken cancellationToken)
+            => ExecutionPipelineFactory().ExecuteSelectDynamicAsync(Controller.Current, connection, configureCommand, cancellationToken);
 
-        protected virtual async Task ExecutePipelineAsync(ISqlConnection connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> read, CancellationToken cancellationToken)
-        {
-            var expression = Controller.Current;
-            var pipeline = Configuration.ExecutionPipelineFactory?.CreateQueryExecutionPipeline(Configuration, expression) ?? throw new DbExpressionConfigurationException($"Could not resolve/create an execution pipeline for type '{expression.GetType()}'.");
-            await pipeline.ExecuteSelectDynamicAsync(expression, connection, configureCommand, read, cancellationToken).ConfigureAwait(false);
-        }
+        private Task ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> read, CancellationToken cancellationToken)
+            => ExecutionPipelineFactory().ExecuteSelectDynamicAsync(Controller.Current, connection, configureCommand, read, cancellationToken);
 
-        protected virtual async Task ExecutePipelineAsync(ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, Task> read, CancellationToken cancellationToken)
-        {
-            var expression = Controller.Current;
-            var pipeline = Configuration.ExecutionPipelineFactory?.CreateQueryExecutionPipeline(Configuration, expression) ?? throw new DbExpressionConfigurationException($"Could not resolve/create an execution pipeline for type '{expression.GetType()}'.");
-            await pipeline.ExecuteSelectDynamicAsync(expression, connection, configureCommand, read, cancellationToken).ConfigureAwait(false);
-        }
+        private Task ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, Task> read, CancellationToken cancellationToken)
+            => ExecutionPipelineFactory().ExecuteSelectDynamicAsync(Controller.Current, connection, configureCommand, read, cancellationToken);
 
-        protected virtual async Task<dynamic?> ExecutePipelineAsync(ISqlConnection connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, dynamic> map, CancellationToken cancellationToken)
-        {
-            var expression = Controller.Current;
-            var pipeline = Configuration.ExecutionPipelineFactory?.CreateQueryExecutionPipeline(Configuration, expression) ?? throw new DbExpressionConfigurationException($"Could not resolve/create an execution pipeline for type '{expression.GetType()}'.");
-            return await pipeline.ExecuteSelectObjectAsync(expression, connection, configureCommand, map, cancellationToken).ConfigureAwait(false);
-        }
+        private Task<dynamic?> ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, dynamic> map, CancellationToken cancellationToken)
+            => ExecutionPipelineFactory().ExecuteSelectObjectAsync(Controller.Current, connection, configureCommand, map, cancellationToken);
         #endregion
         #endregion
     }

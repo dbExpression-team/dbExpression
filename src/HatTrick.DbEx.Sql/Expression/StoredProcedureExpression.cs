@@ -32,21 +32,21 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region interface
-        string ISqlMetadataIdentifierProvider.Identifier => Attributes.Identifier;
+        int ISqlMetadataIdentifierProvider.Identifier => Attributes.Identifier;
         Schema StoredProcedure.Schema => Attributes.Schema;
         string IExpressionNameProvider.Name => Attributes.Name;
-        IEnumerable<QueryParameter> StoredProcedure.Parameters => Attributes.Parameters.Values;
+        IEnumerable<QueryParameter> StoredProcedure.Parameters => Attributes.Parameters;
         Action<ISqlOutputParameterList> IOutputParameterMappingDelegateProvider.MapDelegate => Attributes.Mapping;
         Type IDatabaseEntityTypeProvider.EntityType => this.GetType();
         #endregion
 
         #region constructors
-        public StoredProcedureExpression(string identifier, string name, Schema schema)
+        public StoredProcedureExpression(int identifier, string name, Schema schema)
         {
             this.Attributes = new(identifier, name, schema, _ => { });
         }
 
-        public StoredProcedureExpression(string identifier, string name, Schema schema, Action<ISqlOutputParameterList> outputParameterMappingDelegate)
+        public StoredProcedureExpression(int identifier, string name, Schema schema, Action<ISqlOutputParameterList> outputParameterMappingDelegate)
         {
             this.Attributes = new(identifier, name, schema, outputParameterMappingDelegate ?? throw new ArgumentNullException(nameof(outputParameterMappingDelegate)));
         }
@@ -54,7 +54,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region to string
         public override string? ToString()
-            => Attributes.Identifier;
+            => Attributes.Name;
         #endregion
 
         #region operators
@@ -105,17 +105,17 @@ namespace HatTrick.DbEx.Sql.Expression
         public class StoredProcedureExpressionAttributes : IEquatable<StoredProcedureExpressionAttributes>
         {
             #region interface
-            public string Identifier { get; }
+            public int Identifier { get; }
             public string Name { get; }
             public Schema Schema { get; }
             public Action<ISqlOutputParameterList> Mapping { get; }
-            public Dictionary<string, QueryParameter> Parameters { get; } = new();
+            public HashSet<QueryParameter> Parameters { get; } = new();
             #endregion
 
             #region constructors
-            public StoredProcedureExpressionAttributes(string identifier, string name, Schema schema, Action<ISqlOutputParameterList> outputParameterMappingDelegate)
+            public StoredProcedureExpressionAttributes(int identifier, string name, Schema schema, Action<ISqlOutputParameterList> outputParameterMappingDelegate)
             {
-                this.Identifier = identifier ?? throw new ArgumentNullException(nameof(identifier));
+                this.Identifier = identifier;
                 this.Name = name ?? throw new ArgumentNullException(nameof(name));
                 this.Schema = schema ?? throw new ArgumentNullException(nameof(schema));
                 this.Mapping = outputParameterMappingDelegate ?? throw new ArgumentNullException(nameof(outputParameterMappingDelegate));
@@ -155,13 +155,12 @@ namespace HatTrick.DbEx.Sql.Expression
                     const int multiplier = 16777619;
 
                     int hash = @base;
-                    hash = (hash * multiplier) ^ (Identifier is not null ? Identifier.GetHashCode() : 0);
+                    hash = (hash * multiplier) ^ Identifier.GetHashCode();
                     hash = (hash * multiplier) ^ (Name is not null ? Name.GetHashCode() : 0);
                     hash = (hash * multiplier) ^ (Schema is not null ? Schema.GetHashCode() : 0);
                     foreach (var parameter in Parameters)
                     {
-                        hash = (hash * multiplier) ^ (parameter.Key is not null ? parameter.Key.GetHashCode() : 0);
-                        hash = (hash * multiplier) ^ (parameter.Value is not null ? parameter.Value.GetHashCode() : 0);
+                        hash = (hash * multiplier) ^ (parameter is not null ? parameter.GetHashCode() : 0);
                     }
                     return hash;
                 }

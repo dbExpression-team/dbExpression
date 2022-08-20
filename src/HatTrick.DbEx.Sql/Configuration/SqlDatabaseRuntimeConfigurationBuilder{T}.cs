@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,27 +16,46 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
+using Microsoft.Extensions.DependencyInjection;
 using System;
 
 namespace HatTrick.DbEx.Sql.Configuration
 {
-    public class SqlDatabaseRuntimeConfigurationBuilder<TConfig> : SqlDatabaseRuntimeConfigurationBuilder,
-        ISqlDatabaseRuntimeConfigurationBuilder<TConfig>
-        where TConfig : SqlDatabaseRuntimeConfiguration
+    public abstract class SqlDatabaseRuntimeConfigurationBuilder<TDatabase> :
+        ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>
+        where TDatabase : class, ISqlDatabaseRuntime
     {
         #region internals
-        private readonly TConfig configuration;
+        private IConnectionStringFactoryConfigurationBuilder<TDatabase>? _connectionString;
+        private ISqlStatementsConfigurationBuilderGrouping<TDatabase>? _assembler;
+        private IQueryExpressionFactoryConfigurationBuilder<TDatabase>? _queryExpressions;
+        private IValueConverterFactoryConfigurationBuilder<TDatabase>? _valueConverter;
+        private IQueryExecutionPipelineEventConfigurationBuilder<TDatabase>? _event;
+        private IEntitiesConfigurationBuilderGrouping<TDatabase>? _entities;
+        private ILoggingOptionsBuilder<TDatabase>? _logging;
         #endregion
 
         #region interface
-        TConfig ISqlDatabaseRuntimeConfigurationProvider<TConfig>.Configuration => configuration;
+        public IServiceCollection Services { get; private set; }
+        IConnectionStringFactoryConfigurationBuilder<TDatabase> ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>.ConnectionString => _connectionString ??= new ConnectionStringFactoryConfigurationBuilder<TDatabase>(Services);
+        IQueryExpressionFactoryConfigurationBuilder<TDatabase> ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>.QueryExpressions => _queryExpressions ??= new QueryExpressionFactoryConfigurationBuilder<TDatabase>(Services);
+        IEntitiesConfigurationBuilderGrouping<TDatabase> ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>.Entities => _entities ??= new EntitiesConfigurationBuilderGrouping<TDatabase>(Services);
+        IValueConverterFactoryConfigurationBuilder<TDatabase> ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>.Conversions => _valueConverter ??= new ValueConverterFactoryConfigurationBuilder<TDatabase>(Services);
+        ISqlStatementsConfigurationBuilderGrouping<TDatabase> ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>.SqlStatements => _assembler ??= new SqlStatementsConfigurationBuilderGrouping<TDatabase>(Services);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>.Events => _event ??= new QueryExecutionPipelineEventConfigurationBuilder<TDatabase>(Services);
+        ILoggingOptionsBuilder<TDatabase> ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>.Logging => _logging ??= new LoggingOptionsBuilder<TDatabase>(this, Services);
         #endregion
 
         #region constructors
-        protected SqlDatabaseRuntimeConfigurationBuilder(TConfig configuration) : base(configuration)
+        protected SqlDatabaseRuntimeConfigurationBuilder(IServiceCollection services)
         {
-            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            Services = services ?? throw new ArgumentNullException(nameof(services));
         }
         #endregion
+
+        public void Build()
+        { 
+            ((this as ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>).Events as QueryExecutionPipelineEventConfigurationBuilder<TDatabase>)!.Build();
+        }
     }
 }

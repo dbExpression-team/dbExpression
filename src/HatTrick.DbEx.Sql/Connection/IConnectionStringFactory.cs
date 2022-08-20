@@ -16,7 +16,7 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿namespace HatTrick.DbEx.Sql.Connection
+namespace HatTrick.DbEx.Sql.Connection
 {
     public interface IConnectionStringFactory
     {

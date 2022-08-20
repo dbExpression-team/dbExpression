@@ -19,7 +19,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             public void Does_persons_with_addresses_have_52_records(int version)
             {
                 //given
-                ConfigureForMsSqlVersion(version);
+                var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
                 var exp = db.SelectMany(dbo.Person.Id)
                     .From(dbo.Person)
@@ -38,7 +38,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             public void Can_select_values_from_one_table_while_using_a_different_table_in_the_from_clause(int version)
             {
                 //given
-                ConfigureForMsSqlVersion(version);
+                var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
                 var exp = db.SelectMany(dbo.Person.Id)
                     .From(dbo.PersonAddress)
@@ -57,7 +57,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             public void Can_select_entities_from_one_table_while_using_a_different_table_in_the_from_clause(int version)
             {
                 //given
-                ConfigureForMsSqlVersion(version);
+                var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
                 var exp = db.SelectMany<Person>()
                     .From(dbo.PersonAddress)

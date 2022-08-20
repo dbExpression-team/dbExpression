@@ -18,7 +18,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_cast_of_isnull_of_shipdate_and_purchasedate_to_varchar_succeed(int version, int expected = 15)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     db.fx.Cast(db.fx.IsNull(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate)).AsVarChar(50)
@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_cast_of_isnull_of_birthdate_and_datecreated_and_cast_to_varchar_succeed(int version, int expected = 50)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     db.fx.Cast(db.fx.IsNull(dbo.Person.BirthDate, dbo.Person.DateCreated)).AsVarChar(50)
@@ -54,7 +54,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_cast_of_isnull_of_ship_date_and_literal_date_and_cast_to_varchar_succeed(int version, int expected = 15)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     db.fx.Cast(db.fx.IsNull(dbo.Purchase.ShipDate, DateTime.Parse("1/1/2020"))).AsVarChar(50)
@@ -72,7 +72,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_isnull_of_cast_of_quantity_to_varchar_succeed(int version, int expected = 15)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     db.fx.IsNull(db.fx.Cast(dbo.Purchase.ShipDate).AsVarChar(50), "foo")

@@ -16,7 +16,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_cast_of_ceil_of_quantity_to_varchar_succeed(int version, string expected = "1")
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Cast(db.fx.Ceiling(dbo.PurchaseLine.Quantity)).AsVarChar(50)
@@ -34,7 +34,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_ceil_of_cast_of_gendertype_to_int_succeed(int version, int expected = 1)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Ceiling(db.fx.Cast(dbo.Person.GenderType).AsInt())

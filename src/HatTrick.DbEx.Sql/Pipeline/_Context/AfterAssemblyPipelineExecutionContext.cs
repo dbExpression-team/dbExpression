@@ -16,8 +16,7 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Assembler;
-using HatTrick.DbEx.Sql.Configuration;
+using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 
@@ -28,8 +27,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
         public ISqlParameterBuilder ParameterBuilder { get; private set; }
         public SqlStatement SqlStatement { get; private set; }
 
-        public AfterAssemblyPipelineExecutionContext(SqlDatabaseRuntimeConfiguration database, QueryExpression expression, ISqlParameterBuilder parameterBuilder, SqlStatement statement)
-            : base(database, expression)
+        public AfterAssemblyPipelineExecutionContext(QueryExpression expression, ISqlParameterBuilder parameterBuilder, SqlStatement statement)
+            : base(expression)
         {
             ParameterBuilder = parameterBuilder ?? throw new ArgumentNullException(nameof(parameterBuilder));
             SqlStatement = statement ?? throw new ArgumentNullException(nameof(statement));

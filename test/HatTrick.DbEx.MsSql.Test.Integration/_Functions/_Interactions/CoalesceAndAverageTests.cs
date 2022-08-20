@@ -18,7 +18,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_coalesce_of_average_of_credit_limit_and_static_value_succeed(int version, int expected = 1)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     db.fx.Coalesce<int>(db.fx.Avg(dbo.Person.CreditLimit), 1)
@@ -37,7 +37,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_coalesce_of_average_of_credit_limit_and_credit_limit_succeed(int version, int expected = 5)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     db.fx.Coalesce<int?>(db.fx.Avg(dbo.Person.CreditLimit), dbo.Person.CreditLimit)
@@ -57,7 +57,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_coalesce_of_average_of_credit_limit_and_person_id_succeed(int version, int expected = 50)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     db.fx.Coalesce<int?>(db.fx.Avg(dbo.Person.CreditLimit), dbo.Person.Id)
@@ -76,7 +76,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_average_of_coalesce_of_credit_limit_and_credit_limit_succeed(int version, int expected = 1)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     db.fx.Avg(db.fx.Coalesce<int?>(dbo.Person.CreditLimit, dbo.Person.CreditLimit))

@@ -7,7 +7,7 @@ namespace HatTrick.DbEx.Tools.Model
 {
 	public class StoredProcedureModel
 	{
-		public SchemaModel Schema { get; }
+        public SchemaModel Schema { get; }
 		public string Name { get; }
 
         public StoredProcedureModel(SchemaModel schema, MsSqlProcedure procedure)

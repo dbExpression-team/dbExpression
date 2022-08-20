@@ -19,7 +19,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Does_truncate_with_update_statement_rollback_successfully(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var tooLong = new string(Enumerable.Repeat('a', 1000).ToArray());
             var isRolledBack = false;

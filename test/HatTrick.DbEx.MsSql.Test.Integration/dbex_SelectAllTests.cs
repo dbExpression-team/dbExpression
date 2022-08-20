@@ -21,7 +21,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_use_select_all_for_person_entity_successfully(int version, int expected = 50)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     dbex.SelectAllFor(dbo.Person)
@@ -40,7 +40,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_use_select_all_for_multiple_entities_successfully(int version, int expected = 52)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
             var expectedFieldCount = 0;
             var rowCount = 0;
             var fieldCount = 0;
@@ -76,7 +76,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_use_select_all_for_multiple_entities_and_additional_field_successfully(int version, int expected = 52)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
             var expectedFieldCount = 1;
             var rowCount = 0;
             var fieldCount = 0;
@@ -113,7 +113,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_use_select_all_for_multiple_entities_and_alias_each_with_static_prefix_execute_successfully(int version, int expected = 52)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     dbex.SelectAllFor(dbo.Person, "Person_")
@@ -142,7 +142,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_use_select_all_for_multiple_entities_and_alias_only_id_fields_with_prefix_execute_successfully(int version, int expected = 52)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             static string aliasPerson(string name) => new List<string> { nameof(dbo.Person.Id), nameof(dbo.Person.DateCreated), nameof(dbo.Person.DateUpdated) }.Contains(name) ? $"{nameof(dbo.Person)}_{name}" : name;
             static string aliasAddress(string name) => new List<string> { nameof(dbo.Address.Id), nameof(dbo.Address.DateCreated), nameof(dbo.Address.DateUpdated) }.Contains(name) ? $"{nameof(dbo.Address)}_{name}" : name;
@@ -176,7 +176,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_use_select_all_for_multiple_entities_and_alias_successfully_with_overriden_data_type(int version, int expected = 15)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             static string alias(string entity, string name)
             {

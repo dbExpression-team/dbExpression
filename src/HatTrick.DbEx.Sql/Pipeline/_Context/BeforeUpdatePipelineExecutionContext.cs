@@ -17,7 +17,6 @@
 #endregion
 
 ﻿using HatTrick.DbEx.Sql.Assembler;
-using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Collections.Generic;
@@ -31,8 +30,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
         public IEnumerable<AssignmentExpression> Fields { get; private set; }
         public SqlStatement SqlStatement { get; private set; }
 
-        public BeforeUpdatePipelineExecutionContext(SqlDatabaseRuntimeConfiguration database, UpdateQueryExpression expression, SqlStatement statement, ISqlParameterBuilder parameterBuilder)
-            : base(database, expression)
+        public BeforeUpdatePipelineExecutionContext(UpdateQueryExpression expression, SqlStatement statement, ISqlParameterBuilder parameterBuilder)
+            : base(expression)
         {
             SqlStatement = statement ?? throw new ArgumentNullException(nameof(statement));
             ParameterBuilder = parameterBuilder ?? throw new ArgumentNullException(nameof(parameterBuilder));

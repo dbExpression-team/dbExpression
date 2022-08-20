@@ -16,7 +16,6 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Connection;
 using System;
 using System.Collections.Generic;
@@ -27,12 +26,12 @@ namespace HatTrick.DbEx.Sql.Builder
     public class BatchBuilder<TDatabase> : IBatchContinuationBuilder<TDatabase>
         where TDatabase : class, ISqlDatabaseRuntime
     {
-        private readonly SqlDatabaseRuntimeConfiguration configuration;
+        private readonly IDbConnectionFactory connectionFactory;
         private readonly List<INonQueryTerminationExpressionBuilder<TDatabase>> batch = new();
 
-        public BatchBuilder(SqlDatabaseRuntimeConfiguration configuration)
+        public BatchBuilder(IDbConnectionFactory connectionFactory)
         {
-            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            this.connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
         }
 
         IBatchContinuationBuilder<TDatabase> IBatchBuilder<TDatabase>.Add(params INonQueryTerminationExpressionBuilder<TDatabase>[] expressions)
@@ -58,7 +57,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (batch.Count == 0)
                 return results;
 
-            using var connection = new SqlConnector(configuration.ConnectionStringFactory, configuration.ConnectionFactory);
+            using var connection = new SqlConnector(connectionFactory);
             try
             {
                 connection.EnsureOpen();
@@ -98,36 +97,34 @@ namespace HatTrick.DbEx.Sql.Builder
             if (batch.Count == 0)
                 return results;
 
-            using (var connection = new SqlConnector(configuration.ConnectionStringFactory, configuration.ConnectionFactory))
+            using var connection = new SqlConnector(connectionFactory);
+            try
             {
-                try
+                connection.EnsureOpen();
+                connection.BeginTransaction();
+                for (var i = 0; i < batch.Count; i++)
                 {
-                    connection.EnsureOpen();
-                    connection.BeginTransaction();
-                    for (var i = 0; i < batch.Count; i++)
+                    var exp = batch[i];
+                    if (exp is DeleteEntitiesTermination<TDatabase> delete)
                     {
-                        var exp = batch[i];
-                        if (exp is DeleteEntitiesTermination<TDatabase> delete)
-                        {
-                            results.Add(i, await delete.ExecuteAsync(connection).ConfigureAwait(false));
-                        }
-                        else if (exp is UpdateEntitiesTermination<TDatabase> update)
-                        {
-                            results.Add(i, await update.ExecuteAsync(connection).ConfigureAwait(false));
-                        }
-                        else if (exp is InsertEntitiesTermination<TDatabase> insert)
-                        {
-                            await insert.ExecuteAsync(connection).ConfigureAwait(false);
-                            results.Add(i, default);
-                        }
+                        results.Add(i, await delete.ExecuteAsync(connection).ConfigureAwait(false));
                     }
-                    connection.CommitTransaction();
+                    else if (exp is UpdateEntitiesTermination<TDatabase> update)
+                    {
+                        results.Add(i, await update.ExecuteAsync(connection).ConfigureAwait(false));
+                    }
+                    else if (exp is InsertEntitiesTermination<TDatabase> insert)
+                    {
+                        await insert.ExecuteAsync(connection).ConfigureAwait(false);
+                        results.Add(i, default);
+                    }
                 }
-                catch (Exception)
-                {
-                    connection.RollbackTransaction();
-                    throw;
-                }
+                connection.CommitTransaction();
+            }
+            catch (Exception)
+            {
+                connection.RollbackTransaction();
+                throw;
             }
             return results;
         }

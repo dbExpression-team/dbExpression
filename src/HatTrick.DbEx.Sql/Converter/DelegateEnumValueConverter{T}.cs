@@ -20,7 +20,7 @@ using System;
 
 namespace HatTrick.DbEx.Sql.Converter
 {
-    public class DelegateEnumValueConverter<TEnum> : IValueConverter
+    public class DelegateEnumValueConverter<TEnum> : IValueConverter<TEnum>
     {
         private readonly Func<TEnum, object> convertToDatabase;
         private readonly Func<object, TEnum> convertFromDatabase;
@@ -40,13 +40,13 @@ namespace HatTrick.DbEx.Sql.Converter
             => value is not null ? (underlyingType, convertToDatabase((TEnum)Enum.ToObject(typeof(TEnum), Convert.ChangeType(value, underlyingType))))
                 : throw new DbExpressionException("Expected a non-null value for conversion to the database.");
 
-        public object? ConvertFromDatabase(object? value)
+        object? IValueConverter.ConvertFromDatabase(object? value)
             => convertFromDatabase(value ?? throw new DbExpressionException("Expected a non-null value from the database."));
 
-        public U? ConvertFromDatabase<U>(object? value)
+        public TEnum? ConvertFromDatabase(object? value)
         {
             if (value is null) throw new DbExpressionException("Expected a non-null value from the database.");
-            return (U?)Convert.ChangeType(convertFromDatabase(value), typeof(U));
+            return (TEnum?)Convert.ChangeType(convertFromDatabase(value), typeof(TEnum));
         }
     }
 }

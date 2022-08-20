@@ -18,7 +18,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_isnull_of_datediff_of_purchase_date_and_ship_date_and_datepart_of_purchase_date_succeed(int version, int expected = 15)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     db.fx.IsNull(db.fx.DateDiff(DateParts.Hour, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate), 1)
@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_isnull_of_datediff_of_ship_date_and_purchase_date_and_ship_date_succeed(int version, int expected = 15)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     db.fx.DateDiff(DateParts.Hour, db.fx.IsNull(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate), dbo.Purchase.DateCreated)
@@ -54,7 +54,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_isnull_of_datediff_of_purchase_date_and_expected_delivery_date_and_static_value_succeed(int version, int expected = 15)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     db.fx.IsNull(db.fx.DateDiff(DateParts.Hour, dbo.Purchase.PurchaseDate, dbo.Purchase.ExpectedDeliveryDate), 1)
@@ -72,7 +72,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_datediff_of_isnull_of_ship_date_and_expected_delivery_date_and_date_created_succeed(int version, int expected = 15)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     db.fx.DateDiff(DateParts.Hour, db.fx.IsNull(dbo.Purchase.ShipDate, dbo.Purchase.ExpectedDeliveryDate), dbo.Purchase.DateCreated)

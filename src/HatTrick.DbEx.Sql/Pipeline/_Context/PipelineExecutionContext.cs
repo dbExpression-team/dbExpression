@@ -16,7 +16,6 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 
@@ -24,12 +23,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
 {
     public abstract class PipelineExecutionContext
     {
-        public SqlDatabaseRuntimeConfiguration Database { get; private set; }
         public QueryExpression Expression { get; private set; }
 
-        protected PipelineExecutionContext(SqlDatabaseRuntimeConfiguration database, QueryExpression expression)
+        protected PipelineExecutionContext(QueryExpression expression)
         {
-            Database = database ?? throw new ArgumentNullException(nameof(database));
             Expression = expression ?? throw new ArgumentNullException(nameof(expression));
         }
     }

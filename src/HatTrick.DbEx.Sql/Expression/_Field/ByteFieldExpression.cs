@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<ByteFieldExpression>
     {
         #region constructors
-        protected ByteFieldExpression(string identifier, string name, Table entity) : base(identifier, name, typeof(string), entity)
+        protected ByteFieldExpression(int identifier, string name, Table entity) : base(identifier, name, typeof(byte), entity)
         {
 
         }

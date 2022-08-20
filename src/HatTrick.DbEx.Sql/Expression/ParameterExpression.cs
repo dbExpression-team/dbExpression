@@ -30,7 +30,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<ParameterExpression>
     {
         #region internals
-        protected readonly string identifier;
+        protected readonly int identifier;
         protected readonly Type declaredType;
         protected readonly string name;
         #endregion
@@ -38,23 +38,23 @@ namespace HatTrick.DbEx.Sql.Expression
         #region interface
         public object? Value { get; private set; }
         public ParameterDirection Direction { get; set; }
-        string ISqlMetadataIdentifierProvider.Identifier => identifier;
+        int ISqlMetadataIdentifierProvider.Identifier => identifier;
         string IExpressionNameProvider.Name => name;
         Type IExpressionTypeProvider.DeclaredType => declaredType;
         #endregion
 
         #region constructors
-        protected ParameterExpression(string identifier, string name, Type declaredType, ParameterDirection direction)
+        protected ParameterExpression(int identifier, string name, Type declaredType, ParameterDirection direction)
             : this(identifier, name, declaredType, null, direction)
         {
 
         }
 
-        protected ParameterExpression(string identifier, string name, Type declaredType, object? expression, ParameterDirection direction)
+        protected ParameterExpression(int identifier, string name, Type declaredType, object? expression, ParameterDirection direction)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException($"{nameof(name)} is required.");
-            this.identifier = identifier ?? throw new ArgumentNullException(nameof(identifier));
+            this.identifier = identifier;
             this.name = name ?? throw new ArgumentNullException(nameof(name));
             this.declaredType = declaredType ?? throw new ArgumentNullException(nameof(declaredType));
             Value = expression;
@@ -98,6 +98,7 @@ namespace HatTrick.DbEx.Sql.Expression
             if (Value is not null && !Value.Equals(obj.Value)) return false;
 
             if (!Direction.Equals(obj.Direction)) return false;
+            if (!identifier.Equals(obj.identifier)) return false;
 
             return true;
         }
@@ -113,6 +114,7 @@ namespace HatTrick.DbEx.Sql.Expression
                 const int multiplier = 16777619;
 
                 int hash = @base;
+                hash = (hash * multiplier) ^ identifier.GetHashCode();
                 hash = (hash * multiplier) ^ (name is not null ? name.GetHashCode() : 0);
                 hash = (hash * multiplier) ^ (declaredType is not null ? declaredType.GetHashCode() : 0);
                 hash = (hash * multiplier) ^ (Value is not null ? Value.GetHashCode() : 0);

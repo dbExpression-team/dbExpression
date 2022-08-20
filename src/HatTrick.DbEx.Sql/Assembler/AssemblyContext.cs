@@ -16,8 +16,7 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Configuration;
-using HatTrick.DbEx.Sql.Expression;
+using HatTrick.DbEx.Sql.Configuration;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -36,8 +35,8 @@ namespace HatTrick.DbEx.Sql.Assembler
         #region interface
         public bool IncludeSchemaName { get; set; } = true;
         public bool PrependCommaOnSelectClause { get; set; } = false;
-        public SqlStatementAssemblerConfiguration.Delimeters IdentifierDelimiter { get; set; } = new SqlStatementAssemblerConfiguration.Delimeters('[', ']');
-        public char StatementTerminator { get; set; } = ';'; 
+        public SqlStatementAssemblyOptions.Delimeters IdentifierDelimiter { get; set; } = new SqlStatementAssemblyOptions.Delimeters('[', ']');
+        public char StatementTerminator { get; set; } = ';';
         public FieldExpressionAppendStyle FieldExpressionAppendStyle => fieldStyles.FirstOrDefault();
         public EntityExpressionAppendStyle EntityExpressionAppendStyle => entityStyles.FirstOrDefault();
         public bool TrySharingExistingParameter { get; set; }

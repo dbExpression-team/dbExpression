@@ -16,7 +16,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_cast_of_standarddeviationpopulation_of_quantity_to_varchar_succeed(int version, string expectedStDevP = "0.6849")
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Cast(db.fx.StDevP(dbo.PurchaseLine.Quantity)).AsVarChar(50)
@@ -34,7 +34,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_standarddeviationpopulation_of_cast_of_gendertype_to_int_succeed(int version, float expected = .45825f)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.StDevP(db.fx.Cast(dbo.Person.GenderType).AsInt())

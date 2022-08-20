@@ -1,6 +1,8 @@
-﻿using DbEx.dboDataService;
+﻿using DbEx.DataService;
 using FluentAssertions;
+using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.Sql.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using Xunit;
 
@@ -13,8 +15,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
         public void Can_set_state_successfully(int version)
         {
             //given
-            var database = ConfigureForMsSqlVersion(version);
-            var assemblyContext = database.AssemblerConfiguration.ToAssemblyContext();
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var assemblyContext = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<SqlStatementAssemblyOptions>().ToAssemblyContext();
 
             //when
             Action setState = () => assemblyContext.SetState(new TestState());
@@ -28,8 +30,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
         public void Can_retrieve_state_successfully(int version)
         {
             //given
-            var database = ConfigureForMsSqlVersion(version);
-            var assemblyContext = database.AssemblerConfiguration.ToAssemblyContext();
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var assemblyContext = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<SqlStatementAssemblyOptions>().ToAssemblyContext();
             assemblyContext.SetState(new TestState());
 
             //when
@@ -44,8 +46,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
         public void Can_remove_state_successfully(int version)
         {
             //given
-            var database = ConfigureForMsSqlVersion(version);
-            var assemblyContext = database.AssemblerConfiguration.ToAssemblyContext();
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var assemblyContext = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<SqlStatementAssemblyOptions>().ToAssemblyContext();
             assemblyContext.SetState(new TestState());
 
             //when

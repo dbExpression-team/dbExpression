@@ -17,7 +17,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_coalesce_of_min_of_credit_limit_and_static_value_succeed(int version, int expected = 10000)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Coalesce(db.fx.Min(dbo.Person.CreditLimit), 1)
@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_coalesce_of_min_of_credit_limit_and_person_id_succeed(int version, int expected = 50)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     db.fx.Coalesce(db.fx.Min(dbo.Person.CreditLimit), dbo.Person.Id)
@@ -56,7 +56,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_min_of_coalesce_of_credit_limit_and_static_value_succeed(int version, int expected = 1)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Min(db.fx.Coalesce<int>(dbo.Person.CreditLimit, 1))
@@ -74,7 +74,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_min_of_coalesce_of_credit_limit_and_person_id_succeed(int version, int expected = 42)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Min(db.fx.Coalesce<int>(dbo.Person.CreditLimit, dbo.Person.Id))
@@ -92,7 +92,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_min_of_coalesce_of_quantity_and_year_of_last_credit_limit_review_succeed(int version, int expected = 10000)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Min(db.fx.Coalesce<int?>(dbo.Person.CreditLimit, dbo.Person.YearOfLastCreditLimitReview))

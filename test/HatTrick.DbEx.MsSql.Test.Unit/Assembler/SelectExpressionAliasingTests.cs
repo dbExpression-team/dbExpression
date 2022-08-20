@@ -1,10 +1,11 @@
 ﻿using DbEx.DataService;
 using DbEx.dboDataService;
 using FluentAssertions;
+using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Builder;
-using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
+using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
@@ -17,7 +18,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
         public void Does_a_select_expression_alias_correctly(int version, string alias = "Name")
         {
             //given
-            var database = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             ITerminationExpressionBuilder<MsSqlDb> exp =
 
@@ -25,7 +26,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
                     .From(dbo.Person);
 
             SelectQueryExpression queryExpression = ((exp as IQueryExpressionProvider)!.Expression as SelectQueryExpression)!;
-            ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, queryExpression);
+            ISqlStatementBuilder builder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlStatementBuilder>();
             var context = new AssemblyContext();
             context.PushFieldAppendStyle(FieldExpressionAppendStyle.Declaration);
 
@@ -42,7 +43,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
         public void Does_a_composite_select_expression_alias_correctly(int version, string alias = "Name")
         {
             //given
-            var database = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             ITerminationExpressionBuilder<MsSqlDb> exp =
 
@@ -50,7 +51,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
                     .From(dbo.Person);
 
             SelectQueryExpression queryExpression = ((exp as IQueryExpressionProvider)!.Expression as SelectQueryExpression)!;
-            ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, queryExpression);
+            ISqlStatementBuilder builder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlStatementBuilder>();
             var context = new AssemblyContext();
             context.PushFieldAppendStyle(FieldExpressionAppendStyle.Declaration);
 
@@ -67,7 +68,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
         public void Does_a_group_by_expression_suppress_alias_correctly(int version, string alias = "Name")
         {
             //given
-            var database = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
             var table = dbo.Person.As("dboPerson");
 
             ITerminationExpressionBuilder<MsSqlDb> exp =
@@ -77,7 +78,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
                     .GroupBy(table.FirstName);
 
             SelectQueryExpression queryExpression = ((exp as IQueryExpressionProvider)!.Expression as SelectQueryExpression)!;
-            ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, queryExpression)!;
+            ISqlStatementBuilder builder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlStatementBuilder>();
             var context = new AssemblyContext();
             context.PushFieldAppendStyle(FieldExpressionAppendStyle.Declaration);
 

@@ -20,7 +20,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_set_field_value_by_name_before_insert_assembly_event(int version, string expected = "XXX")
         {
             //given
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(nameof(dbo.Person.FirstName), expected)));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(nameof(dbo.Person.FirstName), expected)));
             var person = new Person { FirstName = "xxx", LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow };
 
             //when
@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_set_field_value_before_insert_assembly_event(int version, string expected = "XXX")
         {
             //given
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(dbo.Person.FirstName, expected)));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(dbo.Person.FirstName, expected)));
             var person = new Person { FirstName = "...", LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow };
 
             //when
@@ -52,7 +52,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_omit_setting_field_value_before_insert_assembly_event_when_inserting_an_entity_not_containing_the_field(int version, string expected = "XXX")
         {
             //given
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(dbo.Product.Name, "ZZZ")));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(dbo.Product.Name, "ZZZ")));
             var person = new Person { FirstName = expected, LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow };
 
             //when
@@ -68,7 +68,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_set_field_value_by_name_to_dbnull_before_insert_assembly_event(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(nameof(dbo.Person.BirthDate), dbex.Null)));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(nameof(dbo.Person.BirthDate), dbex.Null)));
             var person = new Person { FirstName = "...", LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow, BirthDate = DateTime.UtcNow };
 
             //when
@@ -84,8 +84,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_set_enum_field_value_to_an_enum_before_insert_assembly_event(int version, GenderType expected = GenderType.Male)
         {
             //given
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(dbo.Person.GenderType, expected)));
-            var person = new Person { FirstName = "...", LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow, BirthDate = DateTime.UtcNow };
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(dbo.Person.GenderType, expected)));
+            var person = new Person { FirstName = "...", LastName = "FIND_ME", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow, BirthDate = DateTime.UtcNow };
 
             //when
             await db.Insert(person).Into(dbo.Person).ExecuteAsync();
@@ -102,7 +102,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             AddressType? expected = AddressType.Mailing;
 
             //given
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(dbo.Address.AddressType, expected)));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(dbo.Address.AddressType, expected)));
             var address = new Address { Line1 = "...", City = "YYY", State = "TX", Zip = "55555" };
 
             //when
@@ -118,7 +118,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_set_nullable_enum_field_value_to_a_null_before_insert_assembly_event(int version, AddressType? expected = null)
         {
             //given
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(dbo.Address.AddressType, expected)));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(dbo.Address.AddressType, expected)));
             var address = new Address { AddressType = AddressType.Mailing, Line1 = "...", City = "YYY", State = "TX", Zip = "55555" };
 
             //when
@@ -134,7 +134,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_set_nullable_enum_field_value_to_dbnull_before_insert_assembly_event(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(dbo.Address.AddressType, dbex.Null)));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(dbo.Address.AddressType, dbex.Null)));
             var address = new Address { AddressType = AddressType.Mailing, Line1 = "...", City = "YYY", State = "TX", Zip = "55555" };
 
             //when
@@ -150,7 +150,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Does_setting_field_value_by_name_to_a_different_data_type_before_insert_assembly_event_fail_as_expected(int version, string expected = "uh-oh")
         {
             //given
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(nameof(dbo.Person.GenderType), expected)));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(nameof(dbo.Person.GenderType), expected)));
             var person = new Person { FirstName = "...", LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow, BirthDate = DateTime.UtcNow };
 
             //when & then
@@ -163,7 +163,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         {
             //given
             DateTime expected = DateTime.UtcNow.AddYears(-1);
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(nameof(dbo.Person.DateCreated), expected)));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(nameof(dbo.Person.DateCreated), expected)));
             var person = new Person { FirstName = "...", LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow, BirthDate = DateTime.UtcNow };
 
             //when
@@ -179,7 +179,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_set_field_values_by_name_before_insert_assembly_event_when_inserting_many(int version, string expected = "XXX")
         {
             //given
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(nameof(dbo.Person.FirstName), expected)));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(nameof(dbo.Person.FirstName), expected)));
             var person1 = new Person { FirstName = "...", LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow };
             var person2 = new Person { FirstName = "...", LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow };
             var person3 = new Person { FirstName = "..", LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow };
@@ -197,7 +197,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_set_field_values_before_insert_assembly_event_when_inserting_many(int version, string expected = "XXX")
         {
             //given
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(dbo.Person.FirstName, expected)));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(dbo.Person.FirstName, expected)));
             var person1 = new Person { FirstName = "...", LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow };
             var person2 = new Person { FirstName = "...", LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow };
             var person3 = new Person { FirstName = "..", LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow };
@@ -215,7 +215,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_omit_setting_field_values_before_insert_assembly_event_when_inserting_an_entity_not_containing_the_field_when_inserting_many(int version, string expected = "XXX")
         {
             //given
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(dbo.Product.Name, expected)));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(dbo.Product.Name, expected)));
             var person1 = new Person { FirstName = expected, LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow };
             var person2 = new Person { FirstName = expected, LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow };
             var person3 = new Person { FirstName = expected, LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow };
@@ -233,7 +233,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_set_field_values_by_name_to_dbnull_before_insert_assembly_event_when_inserting_many(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(nameof(dbo.Person.BirthDate), dbex.Null)));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(nameof(dbo.Person.BirthDate), dbex.Null)));
             var person1 = new Person { FirstName = "...", LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow, BirthDate = DateTime.UtcNow };
             var person2 = new Person { FirstName = "...", LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow, BirthDate = DateTime.UtcNow };
             var person3 = new Person { FirstName = "..", LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow, BirthDate = DateTime.UtcNow };
@@ -251,7 +251,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_set_enum_field_values_to_an_enum_before_insert_assembly_event_when_inserting_many(int version, GenderType expected = GenderType.Male)
         {
             //given
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(dbo.Person.GenderType, expected)));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(dbo.Person.GenderType, expected)));
             var person1 = new Person { FirstName = "...", LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow, BirthDate = DateTime.UtcNow };
             var person2 = new Person { FirstName = "...", LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow, BirthDate = DateTime.UtcNow };
             var person3 = new Person { FirstName = "..", LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow, BirthDate = DateTime.UtcNow };
@@ -271,7 +271,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             AddressType? expected = AddressType.Mailing;
 
             //given
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(dbo.Address.AddressType, expected)));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(dbo.Address.AddressType, expected)));
             var address1 = new Address { Line1 = "...", City = "YYY", State = "TX", Zip = "55555" };
             var address2 = new Address { Line1 = "...", City = "YYY", State = "TX", Zip = "55555" };
             var address3 = new Address { Line1 = "...", City = "YYY", State = "TX", Zip = "55555" };
@@ -289,7 +289,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_set_nullable_enum_field_values_to_a_null_before_insert_assembly_event_when_inserting_many(int version, AddressType? expected = null)
         {
             //given
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(dbo.Address.AddressType, expected)));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(dbo.Address.AddressType, expected)));
             var address1 = new Address { AddressType = AddressType.Mailing, Line1 = "...", City = "YYY", State = "TX", Zip = "55555" };
             var address2 = new Address { AddressType = AddressType.Mailing, Line1 = "...", City = "YYY", State = "TX", Zip = "55555" };
             var address3 = new Address { AddressType = AddressType.Mailing, Line1 = "...", City = "YYY", State = "TX", Zip = "55555" };
@@ -307,7 +307,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_set_nullable_enum_field_values_to_dbnull_before_insert_assembly_event_when_inserting_many(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(dbo.Address.AddressType, dbex.Null)));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(dbo.Address.AddressType, dbex.Null)));
             var address1 = new Address { AddressType = AddressType.Mailing, Line1 = "...", City = "YYY", State = "TX", Zip = "55555" };
             var address2 = new Address { AddressType = AddressType.Mailing, Line1 = "...", City = "YYY", State = "TX", Zip = "55555" };
             var address3 = new Address { AddressType = AddressType.Mailing, Line1 = "...", City = "YYY", State = "TX", Zip = "55555" };
@@ -325,7 +325,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Does_setting_field_values_by_name_to_a_different_data_type_before_insert_assembly_event_fail_as_expected_when_inserting_many(int version, string expected = "uh-oh")
         {
             //given
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(nameof(dbo.Person.GenderType), expected)));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(nameof(dbo.Person.GenderType), expected)));
             var person1 = new Person { FirstName = "...", LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow, BirthDate = DateTime.UtcNow };
             var person2 = new Person { FirstName = "...", LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow, BirthDate = DateTime.UtcNow };
             var person3 = new Person { FirstName = "...", LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow, BirthDate = DateTime.UtcNow };
@@ -340,7 +340,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         {
             //given
             DateTime expected = DateTime.UtcNow.AddYears(-1);
-            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(nameof(dbo.Person.DateCreated), expected)));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertSqlStatementAssembly(context => context.SetFieldValue(nameof(dbo.Person.DateCreated), expected)));
             var person1 = new Person { FirstName = "...", LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow, BirthDate = DateTime.UtcNow };
             var person2 = new Person { FirstName = "...", LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow, BirthDate = DateTime.UtcNow };
             var person3 = new Person { FirstName = "...", LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow, BirthDate = DateTime.UtcNow };

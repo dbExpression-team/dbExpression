@@ -17,7 +17,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_minimum_of_year_datepart_of_purchase_date_succeed(int version, int expected = 2019)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Min(db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate))
@@ -35,7 +35,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_minimum_of_year_datepart_of_ship_date_succeed(int version, int expected = 2019)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Min(db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate))

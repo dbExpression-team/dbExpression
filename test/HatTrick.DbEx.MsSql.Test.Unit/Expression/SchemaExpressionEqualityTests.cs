@@ -13,10 +13,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Schema_expressions_of_same_schema_should_be_equal(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            var exp1 = new dboSchemaExpression("this");
-            var exp2 = new dboSchemaExpression("this");
+            var exp1 = new dboSchemaExpression(1);
+            var exp2 = new dboSchemaExpression(1);
 
             //then
             Assert.True(exp1.Equals(exp2));
@@ -27,10 +27,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Schema_expressions_of_same_schema_with_different_identifiers_should_not_be_equal(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            var exp1 = new dboSchemaExpression("this");
-            var exp2 = new dboSchemaExpression("that");
+            var exp1 = new dboSchemaExpression(1);
+            var exp2 = new dboSchemaExpression(2);
 
             //then
             Assert.False(exp1.Equals(exp2));
@@ -41,10 +41,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Schema_expressions_of_different_schemas_with_same_identifier_should_not_be_equal(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            var exp1 = new dboSchemaExpression("this");
-            var exp2 = new secSchemaExpression("this");
+            var exp1 = new dboSchemaExpression(1);
+            var exp2 = new secSchemaExpression(1);
 
             //then
             Assert.False(exp1.Equals(exp2));
@@ -55,10 +55,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Schema_expressions_of_different_schemas_with_different_identifier_should_not_be_equal(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            var exp1 = new dboSchemaExpression("this");
-            var exp2 = new secSchemaExpression("that");
+            var exp1 = new dboSchemaExpression(1);
+            var exp2 = new secSchemaExpression(2);
 
             //then
             Assert.False(exp1.Equals(exp2));
@@ -69,10 +69,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Schema_expressions_of_same_schemas_should_have_same_hash_codes(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            var exp1 = new dboSchemaExpression("this");
-            var exp2 = new dboSchemaExpression("this");
+            var exp1 = new dboSchemaExpression(1);
+            var exp2 = new dboSchemaExpression(1);
 
             //when
             var hc1 = exp1.GetHashCode();
@@ -87,10 +87,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Schema_expressions_of_same_schemas_with_different_identifier_should_have_different_hash_codes(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            var exp1 = new dboSchemaExpression("this");
-            var exp2 = new dboSchemaExpression("that");
+            var exp1 = new dboSchemaExpression(1);
+            var exp2 = new dboSchemaExpression(2);
 
             //when
             var hc1 = exp1.GetHashCode();
@@ -105,10 +105,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Schema_expressions_of_different_schemas_with_same_identifier_should_have_different_hash_codes(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            var exp1 = new dboSchemaExpression("this");
-            var exp2 = new secSchemaExpression("this");
+            var exp1 = new dboSchemaExpression(1);
+            var exp2 = new secSchemaExpression(1);
 
             //when
             var hc1 = exp1.GetHashCode();
@@ -123,10 +123,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Schema_expressions_of_different_schemas_with_different_identifier_should_have_different_hash_codes(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            var exp1 = new dboSchemaExpression("this");
-            var exp2 = new secSchemaExpression("that");
+            var exp1 = new dboSchemaExpression(1);
+            var exp2 = new secSchemaExpression(2);
 
             //when
             var hc1 = exp1.GetHashCode();

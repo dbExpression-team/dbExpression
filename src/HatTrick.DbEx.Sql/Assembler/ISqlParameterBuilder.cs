@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,15 +29,15 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         ParameterizedExpression CreateInputParameter<T>(T value, AssemblyContext context);
         ParameterizedExpression CreateInputParameter(object value, Type valueType, AssemblyContext context);
-        ParameterizedExpression CreateInputParameter<T>(T value, Type declaredType, ISqlFieldMetadata meta, AssemblyContext context);
+        ParameterizedExpression CreateInputParameter<T>(T value, Type declaredType, ISqlColumnMetadata meta, AssemblyContext context);
         ParameterizedExpression CreateInputParameter<T>(T value, Type declaredType, ISqlParameterMetadata meta, AssemblyContext context);
 
         ParameterizedExpression CreateInputOutputParameter<T>(T value, AssemblyContext context);
         ParameterizedExpression CreateInputOutputParameter(object value, Type valueType, AssemblyContext context);
-        ParameterizedExpression CreateInputOutputParameter<T>(T value, Type declaredType, ISqlFieldMetadata meta, AssemblyContext context);
+        ParameterizedExpression CreateInputOutputParameter<T>(T value, Type declaredType, ISqlColumnMetadata meta, AssemblyContext context);
         ParameterizedExpression CreateInputOutputParameter<T>(T value, Type declaredType, ISqlParameterMetadata meta, AssemblyContext context);
 
-        ParameterizedExpression CreateOutputParameter(Type valueType, ISqlFieldMetadata meta, AssemblyContext context);
+        ParameterizedExpression CreateOutputParameter(Type valueType, ISqlColumnMetadata meta, AssemblyContext context);
         ParameterizedExpression CreateOutputParameter(Type valueType, ISqlParameterMetadata meta, AssemblyContext context);
     }
 }

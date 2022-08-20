@@ -23,7 +23,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         {
             //given
             var usedCommandTimeout = 0;
-            var config = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
                 c => c.Events.OnAfterSqlStatementExecution(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
             );
 
@@ -42,7 +42,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_execute_value_list_with_commandTimeout_override_succeed(int version, int expected = 50)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
@@ -60,10 +60,10 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         {
             //given
             IDbConnection? usedConnection = null;
-            var config = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
                 c => c.Events.OnBeforeSqlStatementExecution(e => usedConnection = e.DbCommand.Connection)
             );
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var conn = db.GetConnection();
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
@@ -80,8 +80,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_execute_value_list_with_connection_override_succeed(int version, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
@@ -100,14 +100,14 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //given
             IDbConnection? usedConnection = null;
             var usedCommandTimeout = 0;
-            var config = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
                 c => c.Events.OnAfterSqlStatementExecution(e =>
                 {
                     usedConnection = e.DbCommand.Connection;
                     usedCommandTimeout = e.DbCommand.CommandTimeout;
                 })
             );
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var conn = db.GetConnection();
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
@@ -125,8 +125,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_execute_value_list_with_connection_and_commandTimeout_override_succeed(int version, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
@@ -147,7 +147,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             //given
             var usedCommandTimeout = 0;
-            var config = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
                 c => c.Events.OnAfterSqlStatementExecution(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
             );
 
@@ -166,7 +166,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_execute_type_list_with_commandTimeout_override_succeed(int version, int expected = 50)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -184,10 +184,10 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         {
             //given
             IDbConnection? usedConnection = null;
-            var config = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
                 c => c.Events.OnBeforeSqlStatementExecution(e => usedConnection = e.DbCommand.Connection)
             );
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var conn = db.GetConnection();
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -204,8 +204,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_execute_type_list_with_connection_override_succeed(int version, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -224,14 +224,14 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //given
             IDbConnection? usedConnection = null;
             var usedCommandTimeout = 0;
-            var config = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
                 c => c.Events.OnAfterSqlStatementExecution(e =>
                 {
                     usedConnection = e.DbCommand.Connection;
                     usedCommandTimeout = e.DbCommand.CommandTimeout;
                 })
             );
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var conn = db.GetConnection();
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -249,8 +249,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_execute_type_list_with_connection_and_commandTimeout_overrides_succeed(int version, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -267,7 +267,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_execute_type_list_with_map_delegate_override_succeed(int version, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
             var persons = new HashSet<int>();
 
             var exp = db.SelectMany<Person>()
@@ -285,8 +285,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_execute_type_list_with_commandTimeout_and_map_delegate_overrides_succeed(int version, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
             var persons = new HashSet<int>();
 
             var exp = db.SelectMany<Person>()
@@ -304,8 +304,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_execute_type_list_with_connection_and_commandTimeout_and_map_delegate_overrides_succeed(int version, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
             var persons = new HashSet<int>();
 
             var exp = db.SelectMany<Person>()
@@ -323,7 +323,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_execute_type_list_with_map_to_entity_delegate_override_succeed(int version, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -341,7 +341,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_execute_type_list_with_commandTimeout_and_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -360,7 +360,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_execute_type_list_with_connection_and_commandTimeout_and_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -382,7 +382,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             //given
             var usedCommandTimeout = 0;
-            var config = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
                 c => c.Events.OnAfterSqlStatementExecution(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
             );
 
@@ -404,7 +404,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_execute_dynamic_list_with_commandTimeout_override_succeed(int version, int expected = 50)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -425,10 +425,10 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         {
             //given
             IDbConnection? usedConnection = null;
-            var config = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
                 c => c.Events.OnBeforeSqlStatementExecution(e => usedConnection = e.DbCommand.Connection)
             );
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var conn = db.GetConnection();
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -448,8 +448,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_execute_dynamic_list_with_connection_override_succeed(int version, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -471,14 +471,14 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //given
             IDbConnection? usedConnection = null;
             var usedCommandTimeout = 0;
-            var config = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
                 c => c.Events.OnAfterSqlStatementExecution(e =>
                 {
                     usedConnection = e.DbCommand.Connection;
                     usedCommandTimeout = e.DbCommand.CommandTimeout;
                 })
             );
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var conn = db.GetConnection();
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -499,8 +499,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_execute_dynamic_list_with_connection_and_commandTimeout_overrides_succeed(int version, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -520,7 +520,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_execute_dynamic_list_with_map_override_succeed(int version, int expected = 50)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     dbo.Person.Id, 
@@ -544,7 +544,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         {
             //given
             var usedCommandTimeout = 0;
-            var config = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
                 c => c.Events.OnAfterSqlStatementExecution(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
             );
 
@@ -572,14 +572,14 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //given
             IDbConnection? usedConnection = null;
             var usedCommandTimeout = 0;
-            var config = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
                 c => c.Events.OnBeforeSqlStatementExecution(e =>
                 {
                     usedConnection = e.DbCommand.Connection;
                     usedCommandTimeout = e.DbCommand.CommandTimeout;
                 })
             );
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var conn = db.GetConnection();
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -599,8 +599,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_execute_dynamic_list_with_connection_and_map_overrides_succeed(int version, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -625,14 +625,14 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //given
             IDbConnection? usedConnection = null;
             var usedCommandTimeout = 0;
-            var config = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
                 c => c.Events.OnAfterSqlStatementExecution(e =>
                 {
                     usedConnection = e.DbCommand.Connection;
                     usedCommandTimeout = e.DbCommand.CommandTimeout;
                 })
             );
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var conn = db.GetConnection();
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -653,8 +653,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_execute_dynamic_list_with_connection_and_commandTimeout_and_map_overrides_succeed(int version, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -680,7 +680,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         {
             //given
             var usedCommandTimeout = 0;
-            var config = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
                 c => c.Events.OnAfterSqlStatementExecution(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
             );
 
@@ -699,7 +699,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Does_execute_async_value_list_with_commandTimeout_override_succeed(int version, int expected = 50)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
@@ -717,10 +717,10 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         {
             //given
             IDbConnection? usedConnection = null;
-            var config = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
                 c => c.Events.OnBeforeSqlStatementExecution(e => usedConnection = e.DbCommand.Connection)
             );
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var conn = db.GetConnection();
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
@@ -737,8 +737,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Does_execute_async_value_list_with_connection_override_succeed(int version, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
@@ -757,14 +757,14 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //given
             IDbConnection? usedConnection = null;
             var usedCommandTimeout = 0;
-            var config = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
                 c => c.Events.OnAfterSqlStatementExecution(e =>
                 {
                     usedConnection = e.DbCommand.Connection;
                     usedCommandTimeout = e.DbCommand.CommandTimeout;
                 })
             );
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var conn = db.GetConnection();
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
@@ -782,8 +782,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Does_execute_async_value_list_with_connection_and_commandTimeout_overrides_succeed(int version, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
@@ -803,7 +803,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         {
             //given
             var usedCommandTimeout = 0;
-            var config = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
                 c => c.Events.OnAfterSqlStatementExecution(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
             );
 
@@ -822,7 +822,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Does_execute_async_type_list_with_commandTimeout_override_succeed(int version, int expected = 50)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -840,10 +840,10 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         {
             //given
             IDbConnection? usedConnection = null;
-            var config = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
                 c => c.Events.OnBeforeSqlStatementExecution(e => usedConnection = e.DbCommand.Connection)
             );
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var conn = db.GetConnection();
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -860,8 +860,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Does_execute_async_type_list_with_connection_override_succeed(int version, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -880,14 +880,14 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //given
             IDbConnection? usedConnection = null;
             var usedCommandTimeout = 0;
-            var config = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
                 c => c.Events.OnAfterSqlStatementExecution(e =>
                 {
                     usedConnection = e.DbCommand.Connection;
                     usedCommandTimeout = e.DbCommand.CommandTimeout;
                 })
             );
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var conn = db.GetConnection();
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -905,8 +905,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Does_execute_async_type_list_with_connection_and_commandTimeout_overrides_succeed(int version, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -923,7 +923,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Does_execute_async_type_list_with_map_delegate_override_succeed(int version, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
             var persons = new HashSet<int>();
 
             var exp = db.SelectMany<Person>()
@@ -941,8 +941,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Does_execute_async_type_list_with_commandTimeout_and_map_delegate_overrides_succeed(int version, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
             var persons = new HashSet<int>();
 
             var exp = db.SelectMany<Person>()
@@ -960,8 +960,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Does_execute_async_type_list_with_connection_and_map_delegate_overrides_succeed(int version, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
             var persons = new HashSet<int>();
 
             var exp = db.SelectMany<Person>()
@@ -979,8 +979,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Does_execute_async_type_list_with_connection_and_commandTimeout_and_map_delegate_overrides_succeed(int version, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
             var persons = new HashSet<int>();
 
             var exp = db.SelectMany<Person>()
@@ -998,7 +998,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Does_execute_async_type_list_with_map_to_entity_delegate_override_succeed(int version, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -1016,7 +1016,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Does_execute_async_type_list_with_commandTimeout_and_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -1034,8 +1034,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Does_execute_async_type_list_with_connection_and_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -1053,8 +1053,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Does_execute_async_type_list_with_connection_and_commandTimeout_and_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -1072,7 +1072,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Does_execute_async_type_list_with_async_map_to_entity_delegate_override_succeed(int version, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -1098,7 +1098,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Does_execute_async_type_list_with_commandTimeout_and_async_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -1124,8 +1124,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Does_execute_async_type_list_with_connection_and_async_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -1151,8 +1151,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Does_execute_async_type_list_with_connection_and_commandTimeout_and_async_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -1178,7 +1178,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Does_execute_async_type_void_with_async_map_to_entity_delegate_override_succeed(int version, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
             var persons = new List<Person>();
 
             var exp = db.SelectMany<Person>()
@@ -1206,7 +1206,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Does_execute_async_type_void_with_commandTimeout_and_async_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
             var persons = new List<Person>();
 
             var exp = db.SelectMany<Person>()
@@ -1235,8 +1235,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Does_execute_async_type_void_with_connection_and_async_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
             var persons = new List<Person>();
 
             var exp = db.SelectMany<Person>()
@@ -1264,8 +1264,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Does_execute_async_type_void_with_connection_and_commandTimeout_and_async_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
             var persons = new List<Person>();
 
             var exp = db.SelectMany<Person>()
@@ -1293,7 +1293,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Does_execute_async_type_list_with_async_map_to_factory_created_entity_delegate_override_succeed(int version, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -1316,7 +1316,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Does_execute_async_type_list_with_commandTimeout_and_async_map_to_factory_created_entity_delegate_overrides_succeed(int version, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -1339,8 +1339,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Does_execute_async_type_list_with_connection_and_async_map_to_factory_created_entity_delegate_overrides_succeed(int version, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -1363,8 +1363,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Does_execute_async_type_list_with_connection_and_commandTimeout_and_async_map_to_factory_created_entity_delegate_overrides_succeed(int version, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -1391,7 +1391,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             //given
             var usedCommandTimeout = 0;
-            var config = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
                 c => c.Events.OnAfterSqlStatementExecution(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
             );
 
@@ -1413,7 +1413,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Does_execute_async_dynamic_list_with_commandTimeout_override_succeed(int version, int expected = 50)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     dbo.Person.Id, 
@@ -1434,10 +1434,10 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         {
             //given
             IDbConnection? usedConnection = null;
-            var config = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
                 c => c.Events.OnBeforeSqlStatementExecution(e => usedConnection = e.DbCommand.Connection)
             );
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var conn = db.GetConnection();
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -1457,8 +1457,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Does_execute_async_dynamic_list_with_connection_override_succeed(int version, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -1478,8 +1478,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Does_execute_async_dynamic_list_with_connection_and_commandTimeout_overrides_succeed(int version, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -1499,7 +1499,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Does_execute_async_dynamic_list_with_map_override_succeed(int version, int expected = 50)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -1523,7 +1523,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         {
             //given
             var usedCommandTimeout = 0;
-            var config = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
                 c => c.Events.OnAfterSqlStatementExecution(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
             );
 
@@ -1549,7 +1549,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Does_execute_async_dynamic_list_with_commandTimeout_and_map_overrides_succeed(int version, int expected = 50)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -1572,8 +1572,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Does_execute_async_dynamic_list_with_connection_and_map_overrides_succeed(int version, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -1598,14 +1598,14 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //given
             IDbConnection? usedConnection = null;
             var usedCommandTimeout = 0;
-            var config = ConfigureForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
                 c => c.Events.OnAfterSqlStatementExecution(e =>
                 {
                     usedConnection = e.DbCommand.Connection;
                     usedCommandTimeout = e.DbCommand.CommandTimeout;
                 })
             );
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var conn = db.GetConnection();
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -1626,8 +1626,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Does_execute_async_dynamic_list_with_connection_and_commandTimeout_and_map_overrides_succeed(int version, int expected = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
 
             var exp = db.SelectMany(dbo.Person.Id, dbo.Person.FirstName)
                 .From(dbo.Person);

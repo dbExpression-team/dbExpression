@@ -21,7 +21,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             public void Does_persons_with_addresses_have_52_records(int version, int expected = 52)
             {
                 //given
-                ConfigureForMsSqlVersion(version);
+                var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
                 var exp = db.SelectMany(
                         dbo.Person.Id,
@@ -50,7 +50,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             public void Does_persons_with_addresses_with_aliases_set_using_variable_have_52_records(int version, int expected = 52)
             {
                 //given
-                ConfigureForMsSqlVersion(version);
+                var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
                 var t1 = dbo.PersonAddress.As("t1");
 
@@ -82,7 +82,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             public void Does_persons_with_purchase_line_equal_to_30_have_1_records(int version, int expected = 1)
             {
                 //given
-                ConfigureForMsSqlVersion(version);
+                var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
                 var exp = db.SelectMany(
                         dbo.Person.Id,
@@ -122,7 +122,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             public void Does_persons_with_purchase_line_with_aliases_set_using_variables_have_1_records(int version, int expected = 1)
             {
                 //given
-                ConfigureForMsSqlVersion(version);
+                var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
                 var purchase = dbo.Purchase.As("t0");
                 var purchaseLine = dbo.PurchaseLine.As("t1");
@@ -167,7 +167,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             public void Does_persons_with_purchase_line_using_variables_with_redundant_and_aliased_inner_join_have_1_record(int version, int expected = 1)
             {
                 //given
-                ConfigureForMsSqlVersion(version);
+                var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
                 var foo = dbo.PurchaseLine.As("foo");
 
@@ -218,7 +218,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             public void Does_persons_with_purchases_using_aliased_inner_join_with_like_where_clause_have_3_records(int version, int expected = 3)
             {
                 //given
-                ConfigureForMsSqlVersion(version);
+                var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
                 var exp = db.SelectMany(
                         dbo.Purchase.Id.As("PurchaseId"),

@@ -1,8 +1,14 @@
-﻿using DbEx.DataService;
-using DbEx.dboDataService;
+﻿using DbExAlt.DataService;
+using DbExAlt.dboAltDataService;
 using FluentAssertions;
-using HatTrick.DbEx.MsSql.Expression;
+using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.Sql;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Unit
@@ -11,54 +17,32 @@ namespace HatTrick.DbEx.MsSql.Test.Unit
     {
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Can_resolve_metadata_for_a_schema(int version, string identifier = "dbo")
+        public void Can_metadata_provider_resolve_entity_metadata_successfully_for_overridden_entity_name(int version)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version, builder => builder.SchemaMetadata.Use(new SqlDatabaseMetadataProvider(new MsSqlDbSqlDatabaseMetadata("MsSqlDb", "MsSqlDbExTest"))));
+            var (mssqldbAlt, serviceProvider) = Configure<MsSqlDbAlt>().ForMsSqlVersion(version);
 
-            var schemaMetadata = config.MetadataProvider.FindSchemaMetadata(identifier);
+            //when
+            var meta = serviceProvider.GetServiceProviderFor<MsSqlDbAlt>().GetRequiredService<ISqlDatabaseMetadataProvider>().GetMetadata<ISqlMetadata>((dboAlt.PersonAlt as ISqlMetadataIdentifierProvider).Identifier);
 
             //then
-            schemaMetadata.Should().BeOfType<dboSchemaMetadata>($"'{identifier}' is a valid identifier");
+            meta.Should().NotBeNull();
+            meta!.Name.Should().Be("Person");
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Can_resolve_metadata_for_an_entity(int version, string identifier = "dbo.Address")
+        public void Can_metadata_provider_resolve_field_metadata_successfully_for_overridden_field_name(int version)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version, builder => builder.SchemaMetadata.Use(new SqlDatabaseMetadataProvider(new MsSqlDbSqlDatabaseMetadata("MsSqlDb", "MsSqlDbExTest"))));
+            var (mssqldbAlt, serviceProvider) = Configure<MsSqlDbAlt>().ForMsSqlVersion(version);
 
-            var entityMetadata = config.MetadataProvider.FindEntityMetadata(identifier);
-
-            //then
-            entityMetadata.Should().BeOfType<AddressEntityMetadata>($"'{identifier}' is a valid identifier");
-        }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_resolve_metadata_for_an_entity_that_was_generated_with_name_override(int version, string identifier = "dbo.Person_Address")
-        {
-            //given
-            var config = ConfigureForMsSqlVersion(version, builder => builder.SchemaMetadata.Use(new SqlDatabaseMetadataProvider(new MsSqlDbSqlDatabaseMetadata("MsSqlDb", "MsSqlDbExTest"))));
-
-            var entityMetadata = config.MetadataProvider.FindEntityMetadata(identifier);
+            //when
+            var meta = serviceProvider.GetServiceProviderFor<MsSqlDbAlt>().GetRequiredService<ISqlDatabaseMetadataProvider>().GetMetadata<ISqlMetadata>((dboAlt.PersonAlt.FirstNameAlt as ISqlMetadataIdentifierProvider).Identifier);
 
             //then
-            entityMetadata.Should().BeOfType<PersonAddressEntityMetadata>($"'{identifier}' is a valid identifier");
-        }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_resolve_metadata_for_a_field(int version, string identifier = "dbo.Address.Id")
-        {
-            //given
-            var config = ConfigureForMsSqlVersion(version, builder => builder.SchemaMetadata.Use(new SqlDatabaseMetadataProvider(new MsSqlDbSqlDatabaseMetadata("MsSqlDb", "MsSqlDbExTest"))));
-
-            var fieldMetadata = config.MetadataProvider.FindFieldMetadata(identifier);
-
-            //then
-            fieldMetadata.Should().BeOfType<MsSqlFieldMetadata>($"'{identifier}' is a valid identifier");
+            meta.Should().NotBeNull();
+            meta!.Name.Should().Be("FirstName");
         }
     }
 }

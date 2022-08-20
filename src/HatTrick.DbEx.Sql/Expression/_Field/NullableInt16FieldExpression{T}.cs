@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.Sql.Expression
         where TEntity : class, IDbEntity
     {
         #region constructors
-        public NullableInt16FieldExpression(string identifier, string name, Table entity) : base(identifier, name, entity)
+        public NullableInt16FieldExpression(int identifier, string name, Table entity) : base(identifier, name, entity)
         {
 
         }

@@ -12,7 +12,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit
         public void Two_instances_of_aliased_coalesce_function_should_not_be_same_instance(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var coalesce = db.fx.Coalesce(dbo.Person.BirthDate, dbo.Person.DateUpdated);
             var coalesceAsFoo = coalesce.As("Foo");

@@ -16,7 +16,6 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Collections.Generic;
@@ -29,8 +28,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
         public SqlStatement Statement { get; private set; }
         public IEnumerable<AssignmentExpression> Fields { get; private set; }
 
-        public AfterUpdatePipelineExecutionContext(SqlDatabaseRuntimeConfiguration database, UpdateQueryExpression expression, SqlStatement statement)
-            : base(database, expression)
+        public AfterUpdatePipelineExecutionContext(UpdateQueryExpression expression, SqlStatement statement)
+            : base(expression)
         {
             Statement = statement ?? throw new ArgumentNullException(nameof(statement));
             Fields = expression.Assign.Expressions.ToList().AsReadOnly();

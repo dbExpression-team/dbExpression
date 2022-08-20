@@ -50,3 +50,4 @@ namespace HatTrick.DbEx.Sql.Mapper
         #endregion
     }
 }
+ 

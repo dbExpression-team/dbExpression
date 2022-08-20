@@ -16,27 +16,29 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using System;
+using System;
 using System.Data;
 
 namespace HatTrick.DbEx.Sql.Connection
 {
-    public class DelegateSqlConnectionFactory : ISqlConnectionFactory
+    public class DelegateSqlConnectionFactory : IDbConnectionFactory
     {
         #region internals
-        private readonly Func<string, IDbConnection> factory;
+        private readonly Func<IDbConnection> factory;
         #endregion
 
         #region constructors
-        public DelegateSqlConnectionFactory(Func<string, IDbConnection> factory)
+        public DelegateSqlConnectionFactory(Func<IDbConnection> factory)
         {
-            this.factory = factory ?? throw new DbExpressionConfigurationException($"{nameof(factory)} is required to initialize a Sql Connection."); ;
+            this.factory = factory ?? throw new ArgumentNullException(nameof(factory));
         }
         #endregion
 
         #region methods
-        public IDbConnection CreateSqlConnection(string connectionString)
-            => factory(connectionString);
+        public IDbConnection CreateSqlConnection()
+        {
+            return factory();
+        }
         #endregion
     }
 }

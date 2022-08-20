@@ -16,10 +16,15 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿namespace HatTrick.DbEx.Sql.Expression
+using System;
+
+namespace HatTrick.DbEx.Sql.Expression
 {
     public interface IQueryExpressionFactory
     {
-        T CreateQueryExpression<T>() where T : QueryExpression, new();
+        QueryExpression CreateQueryExpression(Type queryType);
+
+        TQuery CreateQueryExpression<TQuery>()
+            where TQuery : QueryExpression, new();
     }
 }

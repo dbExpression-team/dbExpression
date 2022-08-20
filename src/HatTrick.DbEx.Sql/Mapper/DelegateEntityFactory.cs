@@ -16,7 +16,7 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using System;
+using System;
 
 namespace HatTrick.DbEx.Sql.Mapper
 {
@@ -34,10 +34,6 @@ namespace HatTrick.DbEx.Sql.Mapper
         #endregion
 
         #region methods
-        public virtual void RegisterFactory<TEntity>(Func<TEntity> entityFactory)
-            where TEntity : class, IDbEntity
-            => throw new InvalidOperationException("Entity initialization is deferred to a delegate that doesn't support registration of an entity-specific factory.");
-
         public TEntity CreateEntity<TEntity>()
             where TEntity : class, IDbEntity, new()
             => factory.Invoke(typeof(TEntity)) as TEntity ?? throw new DbExpressionException($"Expected an entity of type {typeof(TEntity)} to be provided by the factory.");

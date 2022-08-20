@@ -18,29 +18,41 @@
 
 ﻿using HatTrick.DbEx.Sql.Expression;
 using System;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
     public class DelegateExpressionElementAppenderFactory : IExpressionElementAppenderFactory
     {
         #region internals
-        private readonly Func<Type, IExpressionElementAppender?> factory;
+        private readonly Func<Type, IExpressionElementAppender> factory;
+        private readonly Dictionary<Type, Type> map = new();
         #endregion
 
         #region constructors
-        public DelegateExpressionElementAppenderFactory(Func<Type, IExpressionElementAppender?> factory)
+        public DelegateExpressionElementAppenderFactory(Func<Type, IExpressionElementAppender> factory)
         {
             this.factory = factory ?? throw new ArgumentNullException(nameof(factory));
         }
         #endregion
 
         #region methods
-        public IExpressionElementAppender? CreateElementAppender(IExpressionElement element)
+        public IExpressionElementAppender CreateElementAppender(Type elementType)
         {
-            if (element is null)
-                throw new ArgumentNullException(nameof(element));
-            return factory(element.GetType());
+            if (elementType is null)
+                throw new ArgumentNullException(nameof(elementType));
+
+            if (map.ContainsKey(elementType))
+                return factory(map[elementType]);
+
+            map.Add(elementType, typeof(IExpressionElementAppender<>).MakeGenericType(new[] { elementType }));
+
+            return factory(map[elementType]);
         }
+
+        public IExpressionElementAppender<T> CreateElementAppender<T>()
+            where T : class, IExpressionElement
+            => (CreateElementAppender(typeof(T)) as IExpressionElementAppender<T>)!;
         #endregion
     }
 }

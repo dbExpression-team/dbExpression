@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,7 +22,7 @@ namespace HatTrick.DbEx.Sql.Converter
 {
     public interface IValueConverterFactory
     {
-        IValueConverter CreateConverter<T>();
+        IValueConverter<T> CreateConverter<T>();
         IValueConverter CreateConverter(Type type);
     }
 }

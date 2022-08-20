@@ -21,7 +21,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_map_nullable_enum_to_non_null_value_for_dynamic_object(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             //when
             var product = db.SelectOne(
@@ -41,7 +41,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_map_nullable_enum_to_null_value_for_dynamic_object(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             //when
             var product = db.SelectOne(
@@ -62,7 +62,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_map_isnull_of_nullable_enum_to_non_null_value_for_dynamic_object(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             //when
             var product = db.SelectOne(
@@ -82,7 +82,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_map_enum_to_value_for_dynamic_object(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             //when
             var person = db.SelectOne(
@@ -102,7 +102,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_map_nullable_enum_to_non_null_value_for_dynamic_object_list(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             //when
             var products = db.SelectMany(
@@ -122,7 +122,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_map_nullable_enum_to_null_value_for_dynamic_object_list(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             //when
             var products = db.SelectMany(
@@ -142,7 +142,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_map_enum_to_value_for_dynamic_object_list(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             //when
             var persons = db.SelectMany(
@@ -161,7 +161,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_map_nullable_enum_to_non_null_value_for_dynamic_object_when_providing_mapping_function_to_execute(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             //when
             var product = db.SelectOne(
@@ -186,7 +186,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_map_nullable_enum_to_null_value_for_dynamic_object_when_providing_mapping_function_to_execute(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             //when
             var product = db.SelectOne(
@@ -211,7 +211,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_map_enum_to_value_for_dynamic_object_when_providing_mapping_function_to_execute(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             //when
             var person = db.SelectOne(
@@ -236,7 +236,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_map_nullable_enum_to_non_null_value_for_dynamic_object_list_when_providing_mapping_function_to_execute(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             //when
             var products = db.SelectMany(
@@ -261,7 +261,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_map_nullable_enum_to_null_value_for_dynamic_object_list_when_providing_mapping_function_to_execute(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             //when
             var products = db.SelectMany(
@@ -286,7 +286,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_map_enum_to_value_for_dynamic_object_list_when_providing_mapping_function_to_execute(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             //when
             var persons = db.SelectMany(
@@ -311,7 +311,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_map_complex_dynamic_object_when_providing_mapping_function_to_execute(int version, int personId = 3)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var customer = new Customer();
 

@@ -50,7 +50,7 @@ namespace HatTrick.DbEx.Sql.Executor
         {
             var converter = FindValueConverter(this, typeof(T)) ?? throw new DbExpressionException($"Expected to find a value converter for type {typeof(T)}, but none was found.");
 
-            return converter.ConvertFromDatabase<T>(RawValue is DBNull ? null : RawValue)!;
+            return (T)converter.ConvertFromDatabase(RawValue is DBNull ? null : RawValue)!;
         }
 
         public object? GetValue()

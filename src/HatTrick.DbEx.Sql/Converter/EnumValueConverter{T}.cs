@@ -20,9 +20,23 @@ using System;
 
 namespace HatTrick.DbEx.Sql.Converter
 {
-    public class EnumValueConverter<TEnum> : EnumValueConverter
+    public class EnumValueConverter<TEnum> : EnumValueConverter, IValueConverter<TEnum>
     {
         public EnumValueConverter() : base(typeof(TEnum))
         { }
+
+        public new TEnum? ConvertFromDatabase(object? value)
+        {
+            if (value is null)
+                return default;
+
+            if (value.GetType() == typeof(TEnum))
+                return (TEnum?)value;
+
+            if (value is string)
+                return (TEnum?)StringConverter.ConvertFromDatabase(value);
+
+            return (TEnum?)Enum.ToObject(typeof(TEnum), value);
+        }
     }
 }

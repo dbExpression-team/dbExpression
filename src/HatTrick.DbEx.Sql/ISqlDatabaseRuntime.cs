@@ -16,10 +16,14 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
+using HatTrick.DbEx.Sql.Connection;
+
 namespace HatTrick.DbEx.Sql
 {
     public interface ISqlDatabaseRuntime
     {
         void InitializeStaticRuntime();
+        ISqlDatabaseMetadataProvider MetadataProvider { get; }
+        ISqlConnection GetConnection();
     }
 }

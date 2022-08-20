@@ -20,24 +20,20 @@ using System;
 
 namespace HatTrick.DbEx.Sql.Converter
 {
-    public class StringValueConverter : NullableValueConverter
+    public class StringValueConverter : IValueConverter<string>
     {
-        public StringValueConverter() : base(typeof(string))
-        {
-        }
-
-        public override object? ConvertFromDatabase(object? value)
+        public string? ConvertFromDatabase(object? value)
         {
             if (value is null)
                 return default;
 
             if (typeof(string) == value.GetType())
-                return value;
+                return value as string ?? default;
 
-            return Convert.ChangeType(value, typeof(string));
+            return value?.ToString() ?? default;
         }
 
-        public override (Type, object?) ConvertToDatabase(object? value)
+        public (Type, object?) ConvertToDatabase(object? value)
         {
             if (value is null)
                 return (typeof(string), default);
@@ -47,5 +43,8 @@ namespace HatTrick.DbEx.Sql.Converter
 
             return (typeof(string), Convert.ChangeType(value, typeof(string)));
         }
+
+        object? IValueConverter.ConvertFromDatabase(object? value)
+            => ConvertFromDatabase(value);
     }
 }

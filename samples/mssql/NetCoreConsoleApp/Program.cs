@@ -1,15 +1,16 @@
-﻿using System;
-using System.Diagnostics;
-using HatTrick.DbEx.MsSql.Configuration;
-using HatTrick.DbEx.Sql.Configuration;
+﻿using HatTrick.DbEx.MsSql.Configuration;
+using HatTrick.DbEx.Sql;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using SimpleConsole.Data;
 using SimpleConsole.DataService;
-using SimpleConsole.dboData;
+using System;
+using System.Diagnostics;
 
 namespace NetCoreConsoleApp
 {
-	class Program
+    class Program
 	{
 		#region main
 		static void Main(string[] args)
@@ -51,21 +52,33 @@ namespace NetCoreConsoleApp
                         .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
                         .Build();
 
-            dbExpression.Configure(
-                dbex => {
+            var services = new ServiceCollection();
+            services.AddLogging(builder =>
+            {
+                builder.ClearProviders();
+                builder.AddConsole();
+                builder.SetMinimumLevel(LogLevel.Debug);
+                builder.AddFilter("HatTrick.DbEx.*", level => level >= LogLevel.Debug);
+            });
+            services.AddDbExpression(dbex =>
+            {
 
-                    dbex.AddMsSql2019Database<SimpleConsoleDb>(
-                        database => {
-                            database.ConnectionString.Use(config.GetConnectionString("dbex_mssql_test"));
-                            database.SqlStatements.Assembly.ConfigureOutputSettings(x => x.PrependCommaOnSelectClause = false);
-                            database.Conversions.UseDefaultFactory(x =>
-                                x.OverrideForEnumType<PaymentMethodType>().PersistAsString()
-                                 .OverrideForEnumType<PaymentSourceType>().PersistAsString()
-                            );
-                        }
-                    );
+                dbex.AddMsSql2014Database<SimpleConsoleDb>(
+                    database =>
+                    {
+                        database.ConnectionString.Use(config.GetConnectionString("dbex_mssql_test"));
+                        database.SqlStatements.Assembly.ConfigureOutputSettings(x => x.PrependCommaOnSelectClause = false);
+                        database.Conversions.ForTypes(x =>
+                            x.ForEnumType<PaymentMethodType>().PersistAsString()
+                             .ForEnumType<PaymentSourceType>().PersistAsString()
+                        );
+                        database.Logging.ConfigureLoggingSettings(l => l.LogParameterValues = true);
+                    }
+                );
 
-                });
+            });
+            var provider = services.BuildServiceProvider();
+            provider.UseStaticRuntimeFor<SimpleConsoleDb>();
         }
         #endregion
 

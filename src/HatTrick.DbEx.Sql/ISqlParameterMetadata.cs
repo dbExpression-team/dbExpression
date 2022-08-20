@@ -20,7 +20,6 @@ namespace HatTrick.DbEx.Sql
 {
     public interface ISqlParameterMetadata : ISqlMetadata
     {
-        ISqlStoredProcedureMetadata StoredProcedure { get; }
         int? Size { get; }
         byte? Precision { get; }
         byte? Scale { get; }

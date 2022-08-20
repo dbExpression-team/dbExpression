@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,8 +16,12 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Connection;
+using HatTrick.DbEx.Sql.Configuration;
+using HatTrick.DbEx.Sql.Connection;
+using HatTrick.DbEx.Sql.Expression;
+using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
@@ -28,9 +32,24 @@ namespace HatTrick.DbEx.Sql.Executor
 {
     public class SqlStatementExecutor : ISqlStatementExecutor
     {
+        private readonly ILogger<SqlStatementExecutor> logger;
+        private readonly LoggingOptions loggingOptions;
+
+        public SqlStatementExecutor(ILogger<SqlStatementExecutor> logger, LoggingOptions loggingOptions)
+        {
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.loggingOptions = loggingOptions ?? throw new ArgumentNullException(nameof(loggingOptions));
+        }
+
         public virtual int ExecuteNonQuery(SqlStatement statement, ISqlConnection connection, Action<IDbCommand>? beforeExecution, Action<IDbCommand>? afterExecution)
         {
             int @return = 0;
+
+            if (statement is null)
+                throw new ArgumentNullException(nameof(statement));
+
+            if (connection is null)
+                throw new ArgumentNullException(nameof(connection));
 
             using IDbCommand cmd = connection.CreateCommand();
             cmd.Connection = connection.DbConnection;
@@ -44,6 +63,8 @@ namespace HatTrick.DbEx.Sql.Executor
             if (string.IsNullOrWhiteSpace(cmd.CommandText))
                 cmd.CommandText = statement.CommandTextWriter.ToString();
 
+            if (logger.IsEnabled(LogLevel.Debug))
+                logger.LogDebug("Executing query:\r\n{query}\r\n{parameters}", cmd.CommandText, ConvertParametersForLogging(statement.Parameters));
             connection.EnsureOpen();
             @return = cmd.ExecuteNonQuery();
             afterExecution?.Invoke(cmd);
@@ -54,6 +75,13 @@ namespace HatTrick.DbEx.Sql.Executor
         public virtual async Task<int> ExecuteNonQueryAsync(SqlStatement statement, ISqlConnection connection, Action<IDbCommand>? beforeExecution, Action<IDbCommand>? afterExecution, CancellationToken ct)
         {
             int @return = 0;
+
+            if (statement is null)
+                throw new ArgumentNullException(nameof(statement));
+
+            if (connection is null)
+                throw new ArgumentNullException(nameof(connection));
+
             using IDbCommand cmd = connection.CreateCommand();
             cmd.Connection = connection.DbConnection;
             cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
@@ -68,6 +96,8 @@ namespace HatTrick.DbEx.Sql.Executor
             if (string.IsNullOrWhiteSpace(cmd.CommandText))
                 cmd.CommandText = statement.CommandTextWriter.ToString();
 
+            if (logger.IsEnabled(LogLevel.Debug))
+                logger.LogDebug("Executing query:\r\n{query}\r\n{parameters}", cmd.CommandText, ConvertParametersForLogging(statement.Parameters));
             await connection.EnsureOpenAsync(ct).ConfigureAwait(false);
             @return = cmd is DbCommand dbCommand ? await dbCommand.ExecuteNonQueryAsync(ct).ConfigureAwait(false) : throw new DbExpressionException($"Async query execution requires a command of type {typeof(DbCommand)}, but a command of type {cmd.GetType()} was provided.");
 
@@ -78,6 +108,15 @@ namespace HatTrick.DbEx.Sql.Executor
 
         public virtual ISqlRowReader ExecuteQuery(SqlStatement statement, ISqlConnection connection, IValueConverterProvider finder, Action<IDbCommand>? beforeExecution, Action<IDbCommand>? afterExecution)
         {
+            if (statement is null)
+                throw new ArgumentNullException(nameof(statement));
+
+            if (connection is null)
+                throw new ArgumentNullException(nameof(connection));
+
+            if (finder is null)
+                throw new ArgumentNullException(nameof(finder));
+
             using IDbCommand cmd = connection.CreateCommand();
             cmd.Connection = connection.DbConnection;
             cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
@@ -90,6 +129,8 @@ namespace HatTrick.DbEx.Sql.Executor
             if (string.IsNullOrWhiteSpace(cmd.CommandText))
                 cmd.CommandText = statement.CommandTextWriter.ToString();
 
+            if (logger.IsEnabled(LogLevel.Debug))
+                logger.LogDebug("Executing query:\r\n{query}\r\n{parameters}", cmd.CommandText, ConvertParametersForLogging(statement.Parameters));
             connection.EnsureOpen();
             var reader = cmd.ExecuteReader();
             afterExecution?.Invoke(cmd);
@@ -98,6 +139,15 @@ namespace HatTrick.DbEx.Sql.Executor
 
         public virtual async Task<IAsyncSqlRowReader> ExecuteQueryAsync(SqlStatement statement, ISqlConnection connection, IValueConverterProvider finder, Action<IDbCommand>? beforeExecution, Action<IDbCommand>? afterExecution, CancellationToken ct)
         {
+            if (statement is null)
+                throw new ArgumentNullException(nameof(statement));
+
+            if (connection is null)
+                throw new ArgumentNullException(nameof(connection));
+
+            if (finder is null)
+                throw new ArgumentNullException(nameof(finder));
+
             using IDbCommand cmd = connection.CreateCommand();
             cmd.Connection = connection.DbConnection;
             cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
@@ -112,6 +162,8 @@ namespace HatTrick.DbEx.Sql.Executor
             if (string.IsNullOrWhiteSpace(cmd.CommandText))
                 cmd.CommandText = statement.CommandTextWriter.ToString();
 
+            if (logger.IsEnabled(LogLevel.Debug))
+                logger.LogDebug("Executing query:\r\n{query}\r\n{parameters}", cmd.CommandText, ConvertParametersForLogging(statement.Parameters));
             await connection.EnsureOpenAsync(ct).ConfigureAwait(false);
             var reader = cmd is DbCommand dbCommand ? await dbCommand.ExecuteReaderAsync(ct).ConfigureAwait(false) : throw new DbExpressionException($"Async query execution requires a command of type {typeof(DbCommand)}, but a command of type {cmd.GetType()} was provided.");
 
@@ -122,6 +174,12 @@ namespace HatTrick.DbEx.Sql.Executor
 
         public virtual T? ExecuteScalar<T>(SqlStatement statement, ISqlConnection connection, Action<IDbCommand>? beforeExecution, Action<IDbCommand>? afterExecution)
         {
+            if (statement is null)
+                throw new ArgumentNullException(nameof(statement));
+
+            if (connection is null)
+                throw new ArgumentNullException(nameof(connection));
+
             using IDbCommand cmd = connection.CreateCommand();
             cmd.Connection = connection.DbConnection;
             cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
@@ -134,6 +192,8 @@ namespace HatTrick.DbEx.Sql.Executor
             if (string.IsNullOrWhiteSpace(cmd.CommandText))
                 cmd.CommandText = statement.CommandTextWriter.ToString();
 
+            if (logger.IsEnabled(LogLevel.Debug))
+                logger.LogDebug("Executing query:\r\n{query}\r\n{parameters}", cmd.CommandText, ConvertParametersForLogging(statement.Parameters));
             connection.EnsureOpen();
             var output = cmd.ExecuteScalar();
             afterExecution?.Invoke(cmd);
@@ -156,6 +216,8 @@ namespace HatTrick.DbEx.Sql.Executor
 
             beforeExecution?.Invoke(cmd);
             ct.ThrowIfCancellationRequested();
+            if (logger.IsEnabled(LogLevel.Debug))
+                logger.LogDebug("Executing query:\r\n{query}\r\n{parameters}", cmd.CommandText, ConvertParametersForLogging(statement.Parameters));
             connection.EnsureOpen();
             var output = cmd is DbCommand dbCommand ? await dbCommand.ExecuteScalarAsync(ct).ConfigureAwait(false) : throw new DbExpressionException($"Async query execution requires a command of type {typeof(DbCommand)}, but a command of type {cmd.GetType()} was provided.");
             afterExecution?.Invoke(cmd);
@@ -165,6 +227,13 @@ namespace HatTrick.DbEx.Sql.Executor
                 return default;
 
             return (T)Convert.ChangeType(output, typeof(T));
+        }
+
+        private IEnumerable<string> ConvertParametersForLogging(IList<ParameterizedExpression> parameters)
+        {
+            if (!loggingOptions.LogParameterValues)
+                return Enumerable.Empty<string>();
+            return parameters.Select(p => $"{p.Parameter.ParameterName}={p.Parameter.Value}");
         }
     }
 }

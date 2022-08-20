@@ -16,18 +16,30 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Connection;
+using HatTrick.DbEx.Sql.Connection;
 using System;
 using System.Data;
 using System.Data.SqlClient;
 
 namespace HatTrick.DbEx.MsSql.Connection
 {
-    public class MsSqlConnectionFactory : ISqlConnectionFactory
+    public class MsSqlConnectionFactory : IDbConnectionFactory
     {
+        #region internals
+        private readonly IConnectionStringFactory connectionStringFactory;
+        #endregion
+
+        #region constructors
+        public MsSqlConnectionFactory(IConnectionStringFactory connectionStringFactory)
+        { 
+            this.connectionStringFactory = connectionStringFactory ?? throw new ArgumentNullException(nameof(connectionStringFactory));
+        }
+        #endregion
+
         #region methods
-        public IDbConnection CreateSqlConnection(string connectionString)
+        public IDbConnection CreateSqlConnection()
         {
+            var connectionString = connectionStringFactory.GetConnectionString();
             if (string.IsNullOrWhiteSpace(connectionString))
                 throw new ArgumentException("The provided connection string is null or empty.  Cannot create a database connection.");
             return new SqlConnection(connectionString);

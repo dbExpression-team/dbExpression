@@ -27,14 +27,19 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        public DelegateQueryExpressionFactory(Func<Type,QueryExpression> factory)
+        public DelegateQueryExpressionFactory(Func<Type, QueryExpression> factory)
         {
             this.factory = factory ?? throw new ArgumentNullException(nameof(factory));
         }
         #endregion
 
         #region methods
-        public T CreateQueryExpression<T>() where T : QueryExpression, new() => factory(typeof(T)) as T  ?? throw new DbExpressionException($"Expected the query expression factory to return a query expression of type {typeof (T)}.");
-        #endregion          
+        public QueryExpression CreateQueryExpression(Type queryType)
+            => factory(queryType) as QueryExpression ?? throw new DbExpressionException($"Expected query expression factory to return a query expression of type {queryType}.");
+
+        public TQuery CreateQueryExpression<TQuery>()
+            where TQuery : QueryExpression, new()
+            => CreateQueryExpression(typeof(TQuery)) as TQuery ?? throw new DbExpressionException($"Expected query expression factory to return a query expression of type {typeof(TQuery)}.");
+        #endregion
     }
 }

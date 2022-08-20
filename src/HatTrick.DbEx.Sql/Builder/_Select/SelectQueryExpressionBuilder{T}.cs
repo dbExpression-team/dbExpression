@@ -16,7 +16,6 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
 using HatTrick.DbEx.Sql.Pipeline;
 using System;
@@ -29,6 +28,7 @@ namespace HatTrick.DbEx.Sql.Builder
         where TDatabase : class, ISqlDatabaseRuntime
     {
         #region internals
+        protected Func<ISelectQueryExecutionPipeline> ExecutionPipelineFactory { get; private set; }
         protected override QueryExpression Expression => (Controller as IQueryExpressionProvider).Expression;
         #endregion
 
@@ -38,11 +38,12 @@ namespace HatTrick.DbEx.Sql.Builder
 
         #region constructors
         protected SelectQueryExpressionBuilder(
-            SqlDatabaseRuntimeConfiguration config,
+            Func<ISelectQueryExecutionPipeline> executionPipelineFactory,
             SelectSetQueryExpressionBuilder<TDatabase> controller
-        ): base(config)
+        )
         {
             Controller = controller ?? throw new ArgumentNullException(nameof(controller));
+            ExecutionPipelineFactory = executionPipelineFactory ?? throw new ArgumentNullException(nameof(executionPipelineFactory));
         }
         #endregion
 

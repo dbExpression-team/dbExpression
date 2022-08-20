@@ -1,6 +1,9 @@
 ﻿using DbEx.Data;
+using DbEx.DataService;
 using FluentAssertions;
+using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.Sql.Converter;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using Xunit;
 
@@ -13,14 +16,13 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Converter
         public void Can_register_converter_for_int_generically(int version)
         {
             //given
-            var database = ConfigureForMsSqlVersion(version);
-            (database.ValueConverterFactory as ValueConverterFactory)!.RegisterConverter<int, SomeValueConverter>();
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, database => database.Conversions.ForTypes(c => c.ForValueType<int>().Use<SomeValueConverter<int>>()));
 
             //when
-            var converter = database.ValueConverterFactory.CreateConverter<int>();
+            var converter = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IValueConverterFactory>().CreateConverter<int>();
 
             //then
-            converter.Should().BeOfType<SomeValueConverter>();
+            converter.Should().BeOfType<SomeValueConverter<int>>();
         }
 
         [Theory]
@@ -28,14 +30,13 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Converter
         public void Can_register_converter_for_nullable_int_generically(int version)
         {
             //given
-            var database = ConfigureForMsSqlVersion(version);
-            (database.ValueConverterFactory as ValueConverterFactory)!.RegisterConverter<int?, SomeValueConverter>();
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, database => database.Conversions.ForTypes(c => c.ForValueType<int>().Use<SomeValueConverter<int>>()));
 
             //when
-            var converter = database.ValueConverterFactory.CreateConverter<int?>();
+            var converter = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IValueConverterFactory>().CreateConverter<int?>();
 
             //then
-            converter.Should().BeOfType<SomeValueConverter>();
+            converter.Should().BeOfType<NullableValueConverter<int?>>();
         }
 
         [Theory]
@@ -43,14 +44,13 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Converter
         public void Can_register_converter_for_enum_generically(int version)
         {
             //given
-            var database = ConfigureForMsSqlVersion(version);
-            (database.ValueConverterFactory as ValueConverterFactory)!.RegisterConverter<AddressType, SomeValueConverter>();
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, database => database.Conversions.ForTypes(c => c.ForValueType<AddressType>().Use<SomeValueConverter<AddressType>>()));
 
             //when
-            var converter = database.ValueConverterFactory.CreateConverter<AddressType>();
+            var converter = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IValueConverterFactory>().CreateConverter<AddressType>();
 
             //then
-            converter.Should().BeOfType<SomeValueConverter>();
+            converter.Should().BeOfType<SomeValueConverter<AddressType>>();
         }
 
         [Theory]
@@ -58,14 +58,13 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Converter
         public void Can_register_converter_for_nullable_enum_generically(int version)
         {
             //given
-            var database = ConfigureForMsSqlVersion(version);
-            (database.ValueConverterFactory as ValueConverterFactory)!.RegisterConverter<AddressType?, SomeValueConverter>();
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, database => database.Conversions.ForTypes(c => c.ForEnumType<AddressType>().Use<SomeValueConverter<AddressType>>()));
 
             //when
-            var converter = database.ValueConverterFactory.CreateConverter<AddressType?>();
+            var converter = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IValueConverterFactory>().CreateConverter<AddressType?>();
 
             //then
-            converter.Should().BeOfType<SomeValueConverter>();
+            converter.Should().BeOfType<DelegateValueConverter<AddressType?>>();
         }
 
         [Theory]
@@ -73,20 +72,19 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Converter
         public void Can_register_converter_for_nullable_enum_and_retrieve_default_for_different_type(int version)
         {
             //given
-            var database = ConfigureForMsSqlVersion(version);
-            (database.ValueConverterFactory as ValueConverterFactory)!.RegisterConverter<AddressType?, SomeValueConverter>();
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, database => database.Conversions.ForTypes(c => c.ForEnumType<AddressType>().Use<SomeValueConverter<AddressType>>()));
 
             //when
-            var converter = database.ValueConverterFactory.CreateConverter<int?>();
+            var converter = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IValueConverterFactory>().CreateConverter<int?>();
 
             //then
-            converter.Should().NotBeOfType<SomeValueConverter>();
+            converter.Should().NotBeOfType<SomeValueConverter<int?>>();
         }
-        
-        private class SomeValueConverter : IValueConverter
+
+        private class SomeValueConverter<T> : IValueConverter<T>
         {
             public object? ConvertFromDatabase(object? value) => throw new NotImplementedException();
-            public T? ConvertFromDatabase<T>(object? value) => throw new NotImplementedException();
+            T? IValueConverter<T>.ConvertFromDatabase(object? value) => throw new NotImplementedException();
             public (Type, object?) ConvertToDatabase(object? value) => throw new NotImplementedException();
         }
     }

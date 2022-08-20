@@ -16,7 +16,6 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Connection;
 using HatTrick.DbEx.Sql.Expression;
 using HatTrick.DbEx.Sql.Pipeline;
@@ -35,7 +34,10 @@ namespace HatTrick.DbEx.Sql.Builder
         where TEntity : class, IDbEntity
     {
         #region constructors
-        public UpdateEntitiesUpdateQueryExpressionBuilder(UpdateQueryExpression expression, SqlDatabaseRuntimeConfiguration config) : base(expression, config)
+        public UpdateEntitiesUpdateQueryExpressionBuilder(
+            UpdateQueryExpression expression,
+            Func<IUpdateQueryExecutionPipeline> executionPipelineFactory
+        ) : base(expression, executionPipelineFactory)
         {
 
         }
@@ -97,15 +99,14 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <inheritdoc />
         UpdateEntitiesContinuation<TDatabase, TEntity> UpdateEntities<TDatabase, TEntity>.From(Table<TEntity> entity)
-            => CreateTypedBuilder(UpdateQueryExpression, Configuration, entity ?? throw new ArgumentNullException(nameof(entity)));
+            => new UpdateEntitiesUpdateQueryExpressionBuilder<TDatabase, TEntity>(UpdateQueryExpression, ExecutionPipelineFactory);
 
         #region UpdateEntitiesTermination
         /// <inheritdoc />
         int UpdateEntitiesTermination<TDatabase>.Execute()
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
             return ExecutePipeline(
-                connection,
+                null,
                 null
             );
         }
@@ -116,9 +117,8 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
             return ExecutePipeline(
-                connection,
+                null,
                 command => command.CommandTimeout = commandTimeout
             );
         }
@@ -145,63 +145,56 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        async Task<int> UpdateEntitiesTermination<TDatabase>.ExecuteAsync(CancellationToken cancellationToken)
+        Task<int> UpdateEntitiesTermination<TDatabase>.ExecuteAsync(CancellationToken cancellationToken)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
-            return await ExecutePipelineAsync(
-                connection,
+            return ExecutePipelineAsync(
+                null,
                 null,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task<int> UpdateEntitiesTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
+        Task<int> UpdateEntitiesTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
         {
-            return await ExecutePipelineAsync(
+            return ExecutePipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 null,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task<int> UpdateEntitiesTermination<TDatabase>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
+        Task<int> UpdateEntitiesTermination<TDatabase>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
-            return await ExecutePipelineAsync(
-                connection,
+            return ExecutePipelineAsync(
+                null,
                 command => command.CommandTimeout = commandTimeout,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task<int> UpdateEntitiesTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
+        Task<int> UpdateEntitiesTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            return await ExecutePipelineAsync(
+            return ExecutePipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 command => command.CommandTimeout = commandTimeout,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
-        protected virtual int ExecutePipeline(ISqlConnection connection, Action<IDbCommand>? configureCommand)
-            => CreateUpdateExecutionPipeline().ExecuteUpdate(UpdateQueryExpression, connection, configureCommand);
+        private int ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand)
+            => ExecutionPipelineFactory().ExecuteUpdate(UpdateQueryExpression, connection, configureCommand);
 
-        protected virtual async Task<int> ExecutePipelineAsync(ISqlConnection connection, Action<IDbCommand>? configureCommand, CancellationToken cancellationToken)
-            => await CreateUpdateExecutionPipeline().ExecuteUpdateAsync(UpdateQueryExpression, connection, configureCommand, cancellationToken).ConfigureAwait(false);
-
-        protected virtual IUpdateQueryExpressionExecutionPipeline CreateUpdateExecutionPipeline()
-        {
-            return Configuration.ExecutionPipelineFactory.CreateQueryExecutionPipeline(Configuration, UpdateQueryExpression);
-        }
+        private Task<int> ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken cancellationToken)
+            => ExecutionPipelineFactory().ExecuteUpdateAsync(UpdateQueryExpression, connection, configureCommand, cancellationToken);
         #endregion
         #endregion
     }

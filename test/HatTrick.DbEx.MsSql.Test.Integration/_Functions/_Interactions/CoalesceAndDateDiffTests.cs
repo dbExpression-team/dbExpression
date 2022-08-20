@@ -19,7 +19,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_coalesce_of_datediff_of_purchase_date_and_shipdate_and_datepart_of_purchase_date_succeed(int version, int expected = 15)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     db.fx.Coalesce<int>(db.fx.DateDiff(DateParts.Hour, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate), db.fx.DatePart(DateParts.Hour, dbo.Purchase.PurchaseDate))
@@ -37,7 +37,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_coalesce_of_hour_datepart_of_shipdate_and_datadiff_of_purchase_date_and_ship_date_succeed(int version, int expected = 15)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     db.fx.Coalesce<int>(db.fx.DatePart(DateParts.Hour, dbo.Purchase.ShipDate), db.fx.DateDiff(DateParts.Hour, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate), 1)
@@ -56,7 +56,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_datediff_of_hour_of_purchase_date_and_ship_date_succeed(int version, int expected = 15)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     db.fx.DateDiff(DateParts.Day, dbo.Purchase.PurchaseDate, db.fx.Coalesce<DateTime>(dbo.Purchase.ShipDate, dbo.Purchase.DateCreated))
@@ -74,7 +74,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_datediff_of_hour_of_purchase_date_and_expected_delivery_date_succeed(int version, int expected = 15)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     db.fx.DateDiff(DateParts.Day, dbo.Purchase.PurchaseDate, db.fx.Coalesce<DateTime?>(dbo.Purchase.ShipDate, dbo.Purchase.ExpectedDeliveryDate))

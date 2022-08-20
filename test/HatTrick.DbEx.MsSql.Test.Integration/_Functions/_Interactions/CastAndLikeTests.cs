@@ -19,7 +19,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_where_clause_using_cast_of_decimal_and_like_succeed(int version, int expected = 1)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     dbo.Product.Id
@@ -39,7 +39,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_where_clause_using_cast_of_nullable_decimal_and_like_succeed(int version, int expected = 2)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     dbo.Product.Id

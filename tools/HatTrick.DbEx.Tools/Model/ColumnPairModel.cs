@@ -22,11 +22,13 @@ namespace HatTrick.DbEx.Tools.Model
 {
     public class ColumnPairModel
     {
+        public int Identifier { get; }
         public ColumnModel Column { get; }
         public FieldExpressionModel FieldExpression { get; }
 
-        public ColumnPairModel(ColumnModel schema, FieldExpressionModel fieldExpression)
+        public ColumnPairModel(int identifier, ColumnModel schema, FieldExpressionModel fieldExpression)
         {
+            Identifier = identifier;
             Column = schema ?? throw new ArgumentNullException(nameof(schema));
             FieldExpression = fieldExpression ?? throw new ArgumentNullException(nameof(fieldExpression));
         }

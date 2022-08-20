@@ -20,6 +20,6 @@
 {
     public interface ISqlMetadataIdentifierProvider
     { 
-        string Identifier { get; }    
+        int Identifier { get; }    
     }
 }

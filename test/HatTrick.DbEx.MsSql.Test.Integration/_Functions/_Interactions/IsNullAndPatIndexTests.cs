@@ -18,7 +18,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_isnull_of_address_line2_and_static_value_pattern_for_patindex_of_address_line2_succeed(int version, string pattern = "A%", string line2 = "Apt. 42", long expected = 1)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.PatIndex(db.fx.IsNull(dbo.Address.Line2, pattern), dbo.Address.Line2)
@@ -37,7 +37,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void xDoes_isnull_of_address_line2_and_static_value_pattern_for_patindex_of_address_line2_succeed(int version, string pattern = "A%")
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.PatIndex(db.fx.IsNull(dbo.Address.Line2, pattern), dbo.Address.Line2)

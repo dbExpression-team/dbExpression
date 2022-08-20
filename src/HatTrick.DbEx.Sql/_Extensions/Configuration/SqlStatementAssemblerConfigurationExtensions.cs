@@ -22,7 +22,7 @@ namespace HatTrick.DbEx.Sql.Configuration
 {
     public static class SqlStatementAssemblerConfigurationExtensions
     {
-        public static AssemblyContext ToAssemblyContext(this SqlStatementAssemblerConfiguration config)
+        public static AssemblyContext ToAssemblyContext(this SqlStatementAssemblyOptions config)
         {
             return new()
             {

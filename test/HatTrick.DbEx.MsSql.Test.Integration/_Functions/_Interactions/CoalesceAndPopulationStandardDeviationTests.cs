@@ -16,7 +16,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_coalesce_of_standarddeviationpopulation_of_credit_limit_and_static_value_succeed(int version, float expected = 11282.96f)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Coalesce<float>(db.fx.StDevP(dbo.Person.CreditLimit), 1f)
@@ -34,7 +34,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_standarddeviationpopulation_of_coalesce_of_credit_limit_and_static_value_succeed(int version, float expected = 13926.691f)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.StDevP(db.fx.Coalesce<int>(dbo.Person.CreditLimit, 1))
@@ -52,7 +52,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_coalesce_of_standarddeviationpopulation_of_credit_limit_and_year_of_last_credit_review_succeed(int version, float expected = 11282.96f)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Coalesce<float>(db.fx.StDevP(dbo.Person.CreditLimit), db.fx.StDevP(dbo.Person.YearOfLastCreditLimitReview))
@@ -70,7 +70,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_standarddeviationpopulation_of_coalesce_of_credit_limit_and_year_of_last_credit_review_succeed(int version, float expected = 11282.96f)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.StDevP(db.fx.Coalesce<int?>(dbo.Person.CreditLimit, dbo.Person.YearOfLastCreditLimitReview))
@@ -88,7 +88,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_coalesce_of_standarddeviationpopulation_of_credit_limit_and_null_static_value_succeed(int version, float expected = 11282.96f)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.Coalesce<float?>(db.fx.StDevP(dbo.Person.CreditLimit), (float?)null!)
@@ -106,7 +106,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_standarddeviationpopulation_of_coalesce_of_credit_limit_and_null_static_value_succeed(int version, float expected = 11282.96f)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.StDevP(db.fx.Coalesce<int?>(dbo.Person.CreditLimit, (int?)null!))

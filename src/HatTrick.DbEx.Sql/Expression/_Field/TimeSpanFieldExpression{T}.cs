@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.Sql.Expression
         where TEntity : class, IDbEntity
     {
         #region constructors
-        public TimeSpanFieldExpression(string identifier, string name, Table entity) : base(identifier, name, entity)
+        public TimeSpanFieldExpression(int identifier, string name, Table entity) : base(identifier, name, entity)
         {
 
         }

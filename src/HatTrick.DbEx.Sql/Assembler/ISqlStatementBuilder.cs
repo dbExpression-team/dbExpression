@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,14 +29,14 @@ namespace HatTrick.DbEx.Sql.Assembler
         #endregion
 
         #region methods
-        SqlStatement CreateSqlStatement();
+        SqlStatement CreateSqlStatement<TQuery>(TQuery expression)
+           where TQuery : QueryExpression;
         void AppendElement<T>(T element, AssemblyContext context)
             where T : class, IExpressionElement;
         string GenerateAlias();
-        ISqlSchemaMetadata? FindMetadata(Schema schema);
-        ISqlEntityMetadata? FindMetadata(Table entity);
-        ISqlFieldMetadata? FindMetadata(Field field);
-        ISqlParameterMetadata? FindMetadata(QueryParameter parameter);
+        string GetPlatformName(ISqlMetadataIdentifierProvider identifier);
+        ISqlColumnMetadata GetPlatformMetadata(Field field);
+        ISqlParameterMetadata GetPlatformMetadata(QueryParameter parameter);
         (Type ConvertedType, object? ConvertedValue) ConvertValue(object? value, Field? field);
         #endregion
     }

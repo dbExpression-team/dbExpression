@@ -12,7 +12,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void In_expressions_of_same_values_should_be_equal(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp1 = dbo.Person.CreditLimit.In(1, 2, 3, 4);
             var exp2 = dbo.Person.CreditLimit.In(1, 2, 3, 4);
@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void In_expressions_of_different_values_should_not_be_equal(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp1 = dbo.Person.CreditLimit.In(1, 2, 3, 4);
             var exp2 = dbo.Person.CreditLimit.In(1, 2, 3, 5);
@@ -40,7 +40,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void In_expressions_of_same_values_in_different_order_should_be_equal(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp1 = dbo.Person.CreditLimit.In(1, 2, 3, 4);
             var exp2 = dbo.Person.CreditLimit.In(4, 3, 2, 1);
@@ -54,7 +54,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void In_expressions_of_same_values_should_have_same_hash_codes(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp1 = dbo.Person.CreditLimit.In(1, 2, 3, 4);
             var exp2 = dbo.Person.CreditLimit.In(1, 2, 3, 4);
@@ -72,7 +72,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void In_expressions_of_different_values_should_have_different_hash_codes(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp1 = dbo.Person.CreditLimit.In(1, 2, 3, 4);
             var exp2 = dbo.Person.CreditLimit.In(1, 2, 3, 5);
@@ -90,7 +90,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void In_expressions_of_same_values_in_different_order_should_have_same_hash_codes(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp1 = dbo.Person.CreditLimit.In(1, 2, 3, 4);
             var exp2 = dbo.Person.CreditLimit.In(4, 3, 2, 1);

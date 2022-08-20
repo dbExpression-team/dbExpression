@@ -16,7 +16,6 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Connection;
 using HatTrick.DbEx.Sql.Expression;
 using HatTrick.DbEx.Sql.Pipeline;
@@ -34,9 +33,13 @@ namespace HatTrick.DbEx.Sql.Builder
         where TEntity : class, IDbEntity
     {
         #region constructors
-        public DeleteEntitiesDeleteQueryExpressionBuilder(DeleteQueryExpression expression, SqlDatabaseRuntimeConfiguration config, Table<TEntity> entity) : base(expression, config, entity)
+        public DeleteEntitiesDeleteQueryExpressionBuilder(
+            DeleteQueryExpression expression,
+            Func<IDeleteQueryExecutionPipeline> executionPipelineFactory,
+            Table<TEntity> entity
+        ) : base(expression, executionPipelineFactory)
         {
-
+            expression.From = entity ?? throw new ArgumentNullException(nameof(entity));
         }
         #endregion
 
@@ -91,9 +94,8 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         int DeleteEntitiesTermination<TDatabase>.Execute()
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
             return ExecutePipeline(
-                connection,
+                null,
                 null
             );
         }
@@ -104,9 +106,8 @@ namespace HatTrick.DbEx.Sql.Builder
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
             return ExecutePipeline(
-                connection,
+                null,
                 command => command.CommandTimeout = commandTimeout
             );
         }
@@ -133,63 +134,56 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        async Task<int> DeleteEntitiesTermination<TDatabase>.ExecuteAsync(CancellationToken cancellationToken)
+        Task<int> DeleteEntitiesTermination<TDatabase>.ExecuteAsync(CancellationToken cancellationToken)
         {
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
-            return await ExecutePipelineAsync(
-                connection,
+            return ExecutePipelineAsync(
+                null,
                 null,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task<int> DeleteEntitiesTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
+        Task<int> DeleteEntitiesTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
         {
-            return await ExecutePipelineAsync(
+            return ExecutePipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 null,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task<int> DeleteEntitiesTermination<TDatabase>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
+        Task<int> DeleteEntitiesTermination<TDatabase>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            using var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory);
-            return await ExecutePipelineAsync(
-                connection,
+            return ExecutePipelineAsync(
+                null,
                 command => command.CommandTimeout = commandTimeout,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-        async Task<int> DeleteEntitiesTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
+        Task<int> DeleteEntitiesTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            return await ExecutePipelineAsync(
+            return ExecutePipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 command => command.CommandTimeout = commandTimeout,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
-        protected virtual int ExecutePipeline(ISqlConnection connection, Action<IDbCommand>? configureCommand)
-            => CreateDeleteExecutionPipeline().ExecuteDelete(DeleteQueryExpression, connection, configureCommand);
+        private int ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand)
+            => ExecutionPipelineFactory().ExecuteDelete(DeleteQueryExpression, connection, configureCommand);
 
-        protected virtual async Task<int> ExecutePipelineAsync(ISqlConnection connection, Action<IDbCommand>? configureCommand, CancellationToken cancellationToken)
-            => await CreateDeleteExecutionPipeline().ExecuteDeleteAsync(DeleteQueryExpression, connection, configureCommand, cancellationToken).ConfigureAwait(false);
-
-        protected virtual IDeleteQueryExpressionExecutionPipeline CreateDeleteExecutionPipeline()
-        {
-            return Configuration.ExecutionPipelineFactory.CreateQueryExecutionPipeline(Configuration, DeleteQueryExpression);
-        }
+        private Task<int> ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken cancellationToken)
+            => ExecutionPipelineFactory().ExecuteDeleteAsync(DeleteQueryExpression, connection, configureCommand, cancellationToken);
         #endregion
         #endregion
     }

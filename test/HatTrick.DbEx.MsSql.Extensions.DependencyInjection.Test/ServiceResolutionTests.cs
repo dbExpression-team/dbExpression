@@ -1,6 +1,6 @@
 using DbEx.DataService;
 using FluentAssertions;
-using HatTrick.DbEx.Sql;
+using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
@@ -11,7 +11,7 @@ namespace HatTrick.DbEx.MsSql.Extensions.DependencyInjection.Tests
     public class ServiceResolutionTests
     {
         [Fact]
-        public void Does_a_database_registered_service_get_resolved_correctly()
+        public void Does_a_registered_instance_query_expression_factory_get_resolved_correctly()
         {
             //given
             var services = new ServiceCollection();
@@ -20,74 +20,70 @@ namespace HatTrick.DbEx.MsSql.Extensions.DependencyInjection.Tests
             services.AddDbExpression(
                 dbex => {
 
-                    dbex.AddMsSql2019Database<MsSqlDb>(
-                        (serviceProvider, database) => { },
-                        databaseServiceCollection: services => services.AddSingleton(sp => queryFactory)
-                    );
+                    dbex.AddMsSql2019Database<MsSqlDb>(c => 
+                        {
+                            c.QueryExpressions.Use(queryFactory);
+                        });
                 }
             );
 
-            var serviceProvider = services.BuildServiceProvider();
+            var provider = services.BuildServiceProvider();
 
             //when
-            var iocService = serviceProvider.GetService<DatabaseService<MsSqlDb, IQueryExpressionFactory>>();
+            var resolved = provider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IQueryExpressionFactory>();
 
             //then
-            iocService?.Service.Should().Be(queryFactory);
+            resolved?.Should().Be(queryFactory);
         }
 
         [Fact]
-        public void Does_a_database_registered_service_get_ignored_when_resolving_at_root()
+        public void Does_a_generically_registered_query_expression_factory_get_resolved_correctly()
         {
             //given
             var services = new ServiceCollection();
-            var queryFactory = Substitute.For<IQueryExpressionFactory>();
 
             services.AddDbExpression(
                 dbex => {
 
-                    dbex.AddMsSql2019Database<MsSqlDb>(
-                        (serviceProvider, database) => { },
-                        databaseServiceCollection: services => services.AddSingleton(sp => queryFactory)
-                    );
+                    dbex.AddMsSql2019Database<MsSqlDb>(c => c.ConnectionString.Use("foo"));
                 }
             );
 
-            var serviceProvider = services.BuildServiceProvider();
-
+            var provider = services.BuildServiceProvider();
+            
             //when
-            var iocService = serviceProvider.GetService<IQueryExpressionFactory>();
+            var db = provider.GetRequiredService<MsSqlDb>();
+            var resolved = provider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IQueryExpressionFactory>();
 
             //then
-            iocService.Should().NotBe(queryFactory);
+            resolved.Should().NotBeNull();
         }
 
         [Fact]
-        public void Does_a_database_registered_service_override_a_root_registered_service()
+        public void Does_a_registered_factory_for_query_expression_factory_get_resolved_correctly()
         {
             //given
             var services = new ServiceCollection();
-            var rootQueryFactory = Substitute.For<IQueryExpressionFactory>();
-            var dbQueryFactory = Substitute.For<IQueryExpressionFactory>();
+            SelectQueryExpression exp = new();
 
-            services.AddSingleton(rootQueryFactory);
             services.AddDbExpression(
                 dbex => {
 
-                    dbex.AddMsSql2019Database<MsSqlDb>(
-                        (serviceProvider, database) => { },
-                        databaseServiceCollection: services => services.AddSingleton(sp => dbQueryFactory)
-                    );
+                    dbex.AddMsSql2019Database<MsSqlDb>(c =>
+                    {
+                        c.QueryExpressions.ForQueryTypes(x => x.ForQueryType<SelectQueryExpression>().Use(sp => exp));
+                    });
                 }
             );
 
-            var serviceProvider = services.BuildServiceProvider();
+            var provider = services.BuildServiceProvider();
 
             //when
-            var iocService = serviceProvider.GetService<DatabaseService<MsSqlDb, IQueryExpressionFactory>>();
+            var factory = provider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IQueryExpressionFactory>();
+            var resolved = factory.CreateQueryExpression<SelectQueryExpression>();
 
             //then
-            iocService?.Service.Should().Be(dbQueryFactory);
+            resolved?.Should().Be(exp);
         }
     }
 }

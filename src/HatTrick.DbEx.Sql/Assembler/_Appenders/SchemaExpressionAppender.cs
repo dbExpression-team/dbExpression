@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         {
             builder.Appender
                 .Write(context.IdentifierDelimiter.Begin)
-                .Write((builder.FindMetadata(expression) ?? throw new DbExpressionException($"Expected to find metadata for {expression}, but metadata is actually null.")).Name)
+                .Write(builder.GetPlatformName(expression))
                 .Write(context.IdentifierDelimiter.End);
         }
     }

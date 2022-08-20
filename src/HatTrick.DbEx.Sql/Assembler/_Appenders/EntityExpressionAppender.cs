@@ -40,12 +40,12 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (context.IncludeSchemaName)
             {
                 builder.AppendElement((expression as Table).Schema, context);
-                builder.Appender.Write(".");
+                builder.Appender.Write('.');
             }
 
             builder.Appender
                 .Write(context.IdentifierDelimiter.Begin)
-                .Write((builder.FindMetadata(expression) ?? throw new DbExpressionException($"Expected to find metadata for {expression}, but metadata is actually null.")).Name)
+                .Write(builder.GetPlatformName(expression))
                 .Write(context.IdentifierDelimiter.End);
 
             AppendAlias(expression, builder, context);

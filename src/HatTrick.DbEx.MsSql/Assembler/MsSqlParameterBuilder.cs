@@ -16,9 +16,8 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql;
+using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Assembler;
-using HatTrick.DbEx.Sql.Converter;
 using HatTrick.DbEx.Sql.Expression;
 using HatTrick.DbEx.Sql.Types;
 using System;
@@ -49,7 +48,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
         public virtual ParameterizedExpression CreateInputParameter(object value, Type valueType, AssemblyContext context)
             => CreateParameter(CreateParameterName(), value, valueType, context, ParameterDirection.Input);
 
-        public virtual ParameterizedExpression CreateInputParameter<T>(T value, Type declaredType, ISqlFieldMetadata meta, AssemblyContext context)
+        public virtual ParameterizedExpression CreateInputParameter<T>(T value, Type declaredType, ISqlColumnMetadata meta, AssemblyContext context)
             => CreateParameter(CreateParameterName(), value, declaredType, (SqlDbType)meta.DbType, meta, meta.Size, meta.Precision, meta.Scale, context, ParameterDirection.Input);
 
         public virtual ParameterizedExpression CreateInputParameter<T>(T value, Type declaredType, ISqlParameterMetadata meta, AssemblyContext context)
@@ -64,7 +63,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
         public virtual ParameterizedExpression CreateInputOutputParameter(object value, Type valueType, AssemblyContext context)
             => CreateParameter(CreateParameterName(), value, valueType, context, ParameterDirection.InputOutput);
 
-        public virtual ParameterizedExpression CreateInputOutputParameter<T>(T value, Type declaredType, ISqlFieldMetadata meta, AssemblyContext context)
+        public virtual ParameterizedExpression CreateInputOutputParameter<T>(T value, Type declaredType, ISqlColumnMetadata meta, AssemblyContext context)
             => CreateParameter(CreateParameterName(), value, declaredType, (SqlDbType) meta.DbType, meta, meta.Size, meta.Precision, meta.Scale, context, ParameterDirection.InputOutput);
 
         public virtual ParameterizedExpression CreateInputOutputParameter<T>(T value, Type declaredType, ISqlParameterMetadata meta, AssemblyContext context)
@@ -76,7 +75,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
         #endregion
 
         #region direction = output
-        public ParameterizedExpression CreateOutputParameter(Type valueType, ISqlFieldMetadata meta, AssemblyContext context)
+        public ParameterizedExpression CreateOutputParameter(Type valueType, ISqlColumnMetadata meta, AssemblyContext context)
             => CreateParameter(CreateParameterName(), valueType, (SqlDbType)meta.DbType, meta.Size, meta.Precision, meta.Scale, ParameterDirection.Output);
 
         public ParameterizedExpression CreateOutputParameter(Type valueType, ISqlParameterMetadata meta, AssemblyContext context)

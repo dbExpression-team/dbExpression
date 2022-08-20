@@ -18,7 +18,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_charindex_of_person_first_name_with_static_value_for_pattern_succeed(int version, string pattern = "y", string firstName = "Kenny", long expected = 5)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.CharIndex(pattern, dbo.Person.FirstName)
@@ -37,7 +37,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_charindex_of_person_first_name_with_static_value_for_pattern_and_static_long_value_for_start_succeed(int version, string pattern = "y", string firstName = "Kenny", long start = 1, long expected = 5)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.CharIndex(pattern, dbo.Person.FirstName, start)
@@ -56,7 +56,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_charindex_of_person_first_name_with_static_value_for_pattern_and_static_int_value_for_start_succeed(int version, string pattern = "y", string firstName = "Kenny", int start = 1, long expected = 5)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.CharIndex(pattern, dbo.Person.FirstName, start)
@@ -75,7 +75,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_charindex_of_person_first_name_with_static_value_for_pattern_and_int_expression_for_start_succeed(int version, string pattern = "y", string firstName = "Kenny", long expected = 5)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.CharIndex(pattern, dbo.Person.FirstName, dbo.Person.Id) //kenny's id is 1
@@ -94,7 +94,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_charindex_of_person_first_name_with_expression_for_pattern_succeed(int version, string firstName = "Kenny", long expected = 1)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.CharIndex(dbo.Person.FirstName, dbo.Person.FirstName)
@@ -113,7 +113,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_charindex_of_person_first_name_with_expression_for_pattern_and_static_long_value_for_start_succeed(int version, string firstName = "Kenny", long start = 1, long expected = 1)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.CharIndex(dbo.Person.FirstName, dbo.Person.FirstName, start)
@@ -132,7 +132,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_charindex_of_person_first_name_with_expression_for_pattern_and_static_int_value_for_start_succeed(int version, string firstName = "Kenny", int start = 1, long expected = 1)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.CharIndex(dbo.Person.FirstName, dbo.Person.FirstName, start)
@@ -151,7 +151,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_charindex_of_person_first_name_with_expression_for_pattern_and_int_expression_for_start_succeed(int version, string firstName = "Kenny", long expected = 1)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.CharIndex(dbo.Person.FirstName, dbo.Person.FirstName, dbo.Person.Id) //kenny's id is 1
@@ -170,7 +170,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_charindex_of_address_line2_with_static_value_for_pattern_succeed(int version, string pattern = "4", string line2 = "Apt. 42", long expected = 6)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.CharIndex(pattern, dbo.Address.Line2)
@@ -189,7 +189,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_charindex_of_address_line2_with_static_value_for_pattern_and_static_long_value_for_start_succeed(int version, string pattern = "4", string line2 = "Apt. 42", long start = 5, long expected = 6)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.CharIndex(pattern, dbo.Address.Line2, start)
@@ -208,7 +208,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_charindex_of_address_line2_with_static_value_for_pattern_and_static_int_value_for_start_succeed(int version, string pattern = "4", string line2 = "Apt. 42", int start = 5, long expected = 6)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.CharIndex(pattern, dbo.Address.Line2, start)
@@ -227,7 +227,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_charindex_of_address_line2_with_expression_for_pattern_and_int_expression_for_start_succeed(int version, string line2 = "Box 13", int start = 1, long expected = 0)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.CharIndex(dbo.Address.State, dbo.Address.Line2, start)
@@ -246,7 +246,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_charindex_of_address_line2_with_static_value_for_pattern_and_int_static_value_for_start_succeed(int version, string pattern = "13", string line2 = "Box 13", int start = 1, long expected = 5)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.CharIndex(pattern, dbo.Address.Line2, start)
@@ -265,7 +265,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_charindex_of_address_line2_with_static_value_for_pattern_and_int_expression_for_start_succeed(int version, string pattern = "o", string line2 = "Box 13", long expected = 0)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.CharIndex(pattern, dbo.Address.Line2, dbo.Address.Id) //id=3 for 'Box 13'
@@ -284,7 +284,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_charindex_of_address_line1_with_static_value_for_pattern_and_int_expression_for_start_succeed(int version, string pattern = " ", string line2 = "Box 13", long expected = 3)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.CharIndex(pattern, dbo.Address.Line1, dbo.Address.Id) //id=3 for 'Box 13'
@@ -303,7 +303,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_charindex_of_address_line2_with_null_expression_value_for_pattern_and_int_expression_for_start_succeed(int version, string line2 = "Box 13", long expected = 0)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.CharIndex(dbo.Address.Line2, dbo.Address.Line2, dbo.Address.Id) //id=3 for 'Box 13'
@@ -323,7 +323,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_charindex_of_aliased_field_succeed(int version, int expected = 0)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(
                     db.fx.CharIndex("P%", ("_address", "Line1")).As("address_line1")

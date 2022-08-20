@@ -16,12 +16,15 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Expression;
+using HatTrick.DbEx.Sql.Expression;
+using System;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
     public interface IExpressionElementAppenderFactory
     {
-        IExpressionElementAppender? CreateElementAppender(IExpressionElement element);
+        IExpressionElementAppender CreateElementAppender(Type elementType);
+        IExpressionElementAppender<TElement> CreateElementAppender<TElement>() 
+            where TElement : class, IExpressionElement;
     }
 }

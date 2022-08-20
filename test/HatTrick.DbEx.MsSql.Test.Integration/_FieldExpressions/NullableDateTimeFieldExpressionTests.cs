@@ -20,7 +20,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Are_there_3_purchase_records_with_null_ship_date(int version, int expected = 3)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany(dbo.Purchase.ShipDate)
                 .From(dbo.Purchase)
@@ -39,7 +39,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Are_there_12_purchase_records_with_not_null_ship_date(int version, int expected = 12)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany(dbo.Purchase.ShipDate)
                 .From(dbo.Purchase)
@@ -58,7 +58,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Doas_a_purchase_record_with_null_ship_date_select_successfully(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectOne(dbo.Purchase.ShipDate)
                 .From(dbo.Purchase)
@@ -77,7 +77,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_update_a_purchase_record_with_null_ship_date_to_get_date_function(int version, int expected = 15)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.Update(dbo.Purchase.ShipDate.Set(db.fx.GetDate()))
                 .From(dbo.Purchase)
@@ -96,7 +96,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_update_a_purchase_record_with_null_ship_date_to_current_date(int version, int expected = 15)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.Update(dbo.Purchase.ShipDate.Set(DateTime.Now))
                 .From(dbo.Purchase)
@@ -115,7 +115,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_insert_a_purchase_record_with_null_ship_date(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.Insert(
                 new Purchase 

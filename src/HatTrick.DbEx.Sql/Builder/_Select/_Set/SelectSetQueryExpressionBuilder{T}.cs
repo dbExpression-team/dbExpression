@@ -16,12 +16,10 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
 using HatTrick.DbEx.Sql.Pipeline;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Builder
@@ -32,10 +30,14 @@ namespace HatTrick.DbEx.Sql.Builder
         where TDatabase : class, ISqlDatabaseRuntime
     {
         #region internals
-        private readonly SelectSetQueryExpression _expression;
+        private readonly SelectSetQueryExpression _expression = new();
+        private readonly Func<ISelectSetQueryExecutionPipeline> selectSetQueryExpressionExecutionPipelineFactory;
+        private readonly Func<SelectQueryExpression> typedQueryExpressionFactory;
         protected override QueryExpression Expression => 
             _expression.Expressions.Count > 1 && _expression.Expressions.ElementAt(0).ConcatenationExpression is not null 
                 ? _expression : Current;
+
+        protected Func<ISelectQueryExecutionPipeline> SelectQueryExpressionExecutionPipelineFactory { get; private set; }
         #endregion
 
         #region interface
@@ -45,17 +47,22 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
 
         #region constructors
-        public SelectSetQueryExpressionBuilder(SelectSetQueryExpression expression, SqlDatabaseRuntimeConfiguration config)
-            : base(config)
+        public SelectSetQueryExpressionBuilder(
+            Func<SelectQueryExpression> typedQueryExpressionFactory,
+            Func<ISelectSetQueryExecutionPipeline> selectSetQueryExpressionExecutionPipelineFactory,
+            Func<ISelectQueryExecutionPipeline> selectQueryExpressionExecutionPipelineFactory
+        )
         {
-            _expression = expression ?? throw new ArgumentNullException(nameof(expression));
+            this.typedQueryExpressionFactory = typedQueryExpressionFactory ?? throw new ArgumentNullException(nameof(typedQueryExpressionFactory));
+            this.selectSetQueryExpressionExecutionPipelineFactory = selectSetQueryExpressionExecutionPipelineFactory ?? throw new ArgumentNullException(nameof(selectSetQueryExpressionExecutionPipelineFactory));
+            this.SelectQueryExpressionExecutionPipelineFactory = selectQueryExpressionExecutionPipelineFactory ?? throw new ArgumentNullException(nameof(selectQueryExpressionExecutionPipelineFactory));
         }
         #endregion
 
         #region methods
         public SelectQueryExpression StartNew()
         {
-            var exp = Configuration.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>();
+            var exp = typedQueryExpressionFactory();
             SelectSetQueryExpression.Expressions.Add(new(exp));
             return exp;
         }
@@ -376,10 +383,10 @@ namespace HatTrick.DbEx.Sql.Builder
         #region create select many builder
         protected virtual SelectValues<TDatabase, T> CreateSelectValuesBuilder<T>(AnyElement element)
         {
-            StartNew().Select = new SelectExpressionSet(element?.ToSelectExpression(Configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(element)));
+            StartNew().Select = new SelectExpressionSet(element?.ToSelectExpression() ?? throw new ArgumentNullException(nameof(element)));
             
             return new SelectValuesSelectQueryExpressionBuilder<TDatabase, T>(
-                Configuration, 
+                SelectQueryExpressionExecutionPipelineFactory,
                 this
             );
         }
@@ -387,30 +394,30 @@ namespace HatTrick.DbEx.Sql.Builder
         protected virtual SelectObjects<TDatabase, TObject> CreateSelectObjectsBuilder<TObject>(AnyElement field)
             where TObject : class?
         {
-            StartNew().Select = new SelectExpressionSet(field?.ToSelectExpression(Configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(field)));
+            StartNew().Select = new SelectExpressionSet(field?.ToSelectExpression() ?? throw new ArgumentNullException(nameof(field)));
 
             return new SelectObjectsSelectQueryExpressionBuilder<TDatabase, TObject>(
-                Configuration,
+                SelectQueryExpressionExecutionPipelineFactory,
                 this
             );
         }
 
         protected virtual SelectDynamics<TDatabase> CreateSelectDynamicsBuilder(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
         {
-            StartNew().Select = new(elements.Concat(additionalElements).Select(element => element.ToSelectExpression(Configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(element))));
+            StartNew().Select = new(elements.Concat(additionalElements).Select(element => element.ToSelectExpression() ?? throw new ArgumentNullException(nameof(element))));
 
             return new SelectDynamicsSelectQueryExpressionBuilder<TDatabase>(
-                Configuration, 
+                SelectQueryExpressionExecutionPipelineFactory,
                 this
             );
         }
 
         protected virtual SelectDynamics<TDatabase> CreateSelectDynamicsBuilder(IEnumerable<AnyElement> elements)
         {
-            StartNew().Select = new(new List<SelectExpression>(elements.Select(element => element.ToSelectExpression(Configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(element)))));
+            StartNew().Select = new(new List<SelectExpression>(elements.Select(element => element.ToSelectExpression() ?? throw new ArgumentNullException(nameof(element)))));
 
             return new SelectDynamicsSelectQueryExpressionBuilder<TDatabase>(
-                Configuration, 
+                SelectQueryExpressionExecutionPipelineFactory,
                 this
             );
         }
@@ -419,12 +426,12 @@ namespace HatTrick.DbEx.Sql.Builder
         {
             StartNew().Select = new(new List<SelectExpression>(elements.Length + 2)
             {
-                element1?.ToSelectExpression(Configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(element1)),
-                element2?.ToSelectExpression(Configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(element2))
-            }.Concat(elements.Select(x => x.ToSelectExpression(Configuration.MetadataProvider))));
+                element1?.ToSelectExpression() ?? throw new ArgumentNullException(nameof(element1)),
+                element2?.ToSelectExpression() ?? throw new ArgumentNullException(nameof(element2))
+            }.Concat(elements.Select(x => x.ToSelectExpression())));
 
             return new SelectDynamicsSelectQueryExpressionBuilder<TDatabase>(
-                Configuration, 
+                SelectQueryExpressionExecutionPipelineFactory,
                 this
             );
         }
@@ -439,10 +446,10 @@ namespace HatTrick.DbEx.Sql.Builder
         {
             var exp = StartNew();
             exp.Top = 1;
-            exp.Select = new SelectExpressionSet(element?.ToSelectExpression(Configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(element)));
+            exp.Select = new SelectExpressionSet(element?.ToSelectExpression() ?? throw new ArgumentNullException(nameof(element)));
 
             return new SelectValueSelectQueryExpressionBuilder<TDatabase, T>(
-                Configuration,
+                SelectQueryExpressionExecutionPipelineFactory,
                 this
             );
         }
@@ -451,10 +458,10 @@ namespace HatTrick.DbEx.Sql.Builder
         {
             var exp = StartNew();
             exp.Top = 1;
-            exp.Select = new SelectExpressionSet(element?.ToSelectExpression(Configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(element)));
+            exp.Select = new SelectExpressionSet(element?.ToSelectExpression() ?? throw new ArgumentNullException(nameof(element)));
 
             return new SelectValueSelectQueryExpressionBuilder<TDatabase, TValue>(
-                Configuration,
+                SelectQueryExpressionExecutionPipelineFactory,
                 this
             );
         }
@@ -464,10 +471,10 @@ namespace HatTrick.DbEx.Sql.Builder
         {
             var exp = StartNew();
             exp.Top = 1;
-            exp.Select = new SelectExpressionSet(element?.ToSelectExpression(Configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(element)));
+            exp.Select = new SelectExpressionSet(element?.ToSelectExpression() ?? throw new ArgumentNullException(nameof(element)));
 
             return new SelectObjectSelectQueryExpressionBuilder<TDatabase, TObject>(
-                Configuration,
+                SelectQueryExpressionExecutionPipelineFactory,
                 this
             );
         }
@@ -480,10 +487,10 @@ namespace HatTrick.DbEx.Sql.Builder
         {
             var exp = StartNew();
             exp.Top = 1;
-            exp.Select = new SelectExpressionSet(elements.Concat(additionalElements).Select(element => element.ToSelectExpression(Configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(element))));
+            exp.Select = new SelectExpressionSet(elements.Concat(additionalElements).Select(element => element.ToSelectExpression() ?? throw new ArgumentNullException(nameof(element))));
 
             return new SelectDynamicSelectQueryExpressionBuilder<TDatabase>(
-                Configuration,
+                SelectQueryExpressionExecutionPipelineFactory,
                 this
             );
         }
@@ -492,10 +499,10 @@ namespace HatTrick.DbEx.Sql.Builder
         {
             var exp = StartNew();
             exp.Top = 1;
-            exp.Select = new SelectExpressionSet(elements.Select(element => element.ToSelectExpression(Configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(element))));
+            exp.Select = new SelectExpressionSet(elements.Select(element => element.ToSelectExpression() ?? throw new ArgumentNullException(nameof(element))));
 
             return new SelectDynamicSelectQueryExpressionBuilder<TDatabase>(
-                Configuration,
+                SelectQueryExpressionExecutionPipelineFactory,
                 this
             );
         }
@@ -506,20 +513,20 @@ namespace HatTrick.DbEx.Sql.Builder
             exp.Top = 1;
             exp.Select = new(new List<SelectExpression>(elements.Length + 2)
             {
-                element1?.ToSelectExpression(Configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(element1)),
-                element2?.ToSelectExpression(Configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(element2))
-            }.Concat(elements.Select(x => x.ToSelectExpression(Configuration.MetadataProvider))));
+                element1?.ToSelectExpression() ?? throw new ArgumentNullException(nameof(element1)),
+                element2?.ToSelectExpression() ?? throw new ArgumentNullException(nameof(element2))
+            }.Concat(elements.Select(x => x.ToSelectExpression())));
 
             return new SelectDynamicSelectQueryExpressionBuilder<TDatabase>(
-                Configuration,
+                SelectQueryExpressionExecutionPipelineFactory,
                 this
             );
         }
         #endregion
         #endregion
 
-        public ISelectSetQueryExpressionExecutionPipeline CreateExecutionPipeline()
-            => Configuration.ExecutionPipelineFactory?.CreateQueryExecutionPipeline(Configuration, SelectSetQueryExpression) 
+        public ISelectSetQueryExecutionPipeline CreateExecutionPipeline()
+            => selectSetQueryExpressionExecutionPipelineFactory() 
                     ?? throw new DbExpressionConfigurationException($"Could not resolve/create an execution pipeline for type '{SelectSetQueryExpression.GetType()}'.");
         #endregion
     }

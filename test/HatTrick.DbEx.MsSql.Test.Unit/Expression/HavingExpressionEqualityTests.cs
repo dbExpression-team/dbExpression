@@ -13,7 +13,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Having_expressions_of_same_values_should_be_equal(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp1 = new HavingExpression(dbo.Person.CreditLimit > 1);
             var exp2 = new HavingExpression(dbo.Person.CreditLimit > 1);
@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Having_expressions_of_different_values_should_not_be_equal(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp1 = new HavingExpression(dbo.Person.CreditLimit > 1);
             var exp2 = new HavingExpression(dbo.Person.CreditLimit > 2);
@@ -41,7 +41,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Having_expressions_of_same_values_and_different_operators_should_not_be_equal(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp1 = new HavingExpression(dbo.Person.CreditLimit > 1);
             var exp2 = new HavingExpression(dbo.Person.CreditLimit < 1);
@@ -55,7 +55,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Having_expressions_with_same_values_and_same_logical_operators_should_be_equal(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp1 = new HavingExpression(dbo.Person.CreditLimit > 1 & dbo.Person.Id == 1);
             var exp2 = new HavingExpression(dbo.Person.CreditLimit > 1 & dbo.Person.Id == 1);
@@ -69,7 +69,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Having_expressions_with_same_values_and_different_logical_operators_should_not_be_equal(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp1 = new HavingExpression(dbo.Person.CreditLimit > 1 & dbo.Person.Id == 1);
             var exp2 = new HavingExpression(dbo.Person.CreditLimit > 1 | dbo.Person.Id == 1);
@@ -83,7 +83,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Having_expressions_of_same_values_should_have_same_hash_codes(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp1 = new HavingExpression(dbo.Person.CreditLimit > 1);
             var exp2 = new HavingExpression(dbo.Person.CreditLimit > 1);
@@ -101,7 +101,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Having_expressions_of_different_values_should_have_different_hash_codes(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp1 = new HavingExpression(dbo.Person.CreditLimit > 1);
             var exp2 = new HavingExpression(dbo.Person.CreditLimit > 2);
@@ -119,7 +119,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Having_expressions_of_same_values_and_different_operators_should_have_different_hash_codes(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp1 = new HavingExpression(dbo.Person.CreditLimit > 1);
             var exp2 = new HavingExpression(dbo.Person.CreditLimit < 1);
@@ -137,7 +137,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Having_expressions_with_same_values_and_same_logical_operators_should_have_same_hash_code(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp1 = new HavingExpression(dbo.Person.CreditLimit > 1 & dbo.Person.Id == 1);
             var exp2 = new HavingExpression(dbo.Person.CreditLimit > 1 & dbo.Person.Id == 1);
@@ -155,7 +155,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         public void Having_expressions_with_same_values_and_different_logical_operators_should_have_different_hash_codes(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp1 = new HavingExpression(dbo.Person.CreditLimit > 1 & dbo.Person.Id == 1);
             var exp2 = new HavingExpression(dbo.Person.CreditLimit > 1 | dbo.Person.Id == 1);

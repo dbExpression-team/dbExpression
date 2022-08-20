@@ -19,7 +19,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_coalesce_of_isnull_of_ship_date_and_expected_delivery_date_and_static_date_succeed(int version, int expected = 15)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     db.fx.Coalesce<DateTime>(db.fx.IsNull(dbo.Purchase.ShipDate, dbo.Purchase.ExpectedDeliveryDate), DateTime.Now)
@@ -38,7 +38,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_isnull_of_coalesce_of_shipdate_and_purchasedate_and_static_date_succeed(int version, int expected = 15)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     db.fx.IsNull(dbo.Purchase.ShipDate, db.fx.Coalesce<DateTime>(dbo.Purchase.ShipDate, dbo.Purchase.ExpectedDeliveryDate, DateTime.Now))
@@ -57,7 +57,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_coalesce_of_isnull_of_ship_date_and_expected_delivery_date_and_null_static_date_succeed(int version, int expected = 15)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     db.fx.Coalesce<DateTime?>(db.fx.IsNull(dbo.Purchase.ShipDate, dbo.Purchase.ExpectedDeliveryDate), (DateTime?)null!)
@@ -76,7 +76,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_selecting_isnull_of_coalesce_of_shipdate_and_purchasedate_and_static_null_date_succeed(int version, int expected = 15)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             var exp = db.SelectMany(
                     db.fx.IsNull(dbo.Purchase.ShipDate, db.fx.Coalesce<DateTime?>(dbo.Purchase.ShipDate, dbo.Purchase.ExpectedDeliveryDate, (DateTime?)null!))

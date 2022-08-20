@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<NullableInt64FieldExpression>
     {
         #region constructors
-        protected NullableInt64FieldExpression(string identifier, string name, Table entity) : base(identifier, name, entity)
+        protected NullableInt64FieldExpression(int identifier, string name, Table entity) : base(identifier, name, entity)
         {
 
         }

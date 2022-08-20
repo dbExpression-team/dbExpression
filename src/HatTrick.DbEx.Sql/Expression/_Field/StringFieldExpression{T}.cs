@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.Sql.Expression
         where TEntity : class, IDbEntity
     {
         #region constructors
-        public StringFieldExpression(string identifier, string name, Table entity) : base(identifier, name, entity)
+        public StringFieldExpression(int identifier, string name, Table entity) : base(identifier, name, entity)
         {
 
         }
