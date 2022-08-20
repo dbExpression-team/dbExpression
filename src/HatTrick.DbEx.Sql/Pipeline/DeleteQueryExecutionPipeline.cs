@@ -32,7 +32,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
     {
         #region internals
         private readonly ILogger<DeleteQueryExecutionPipeline> logger;
-        private readonly ISqlConnectionFactory connectionFactory;
+        private readonly IDbConnectionFactory connectionFactory;
         private readonly ISqlStatementExecutor statementExecutor;
         private readonly ISqlStatementBuilder statementBuilder;
         private readonly PipelineEventHooks events;
@@ -41,7 +41,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #region constructors
         public DeleteQueryExecutionPipeline(
             ILogger<DeleteQueryExecutionPipeline> logger,
-            ISqlConnectionFactory connectionFactory,
+            IDbConnectionFactory connectionFactory,
             ISqlStatementExecutor statementExecutor,
             ISqlStatementBuilder statementBuilder,
             PipelineEventHooks events

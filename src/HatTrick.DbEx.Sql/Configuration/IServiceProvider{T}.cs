@@ -22,6 +22,8 @@ namespace HatTrick.DbEx.Sql.Configuration
 {
     public interface IServiceProvider<TDatabase> : IServiceProvider
     {
-
+        bool IsRegistered<T>()
+            where T : class;
+        bool IsRegistered(Type type);
     }
 }

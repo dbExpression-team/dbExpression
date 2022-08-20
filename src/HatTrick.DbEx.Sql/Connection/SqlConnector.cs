@@ -48,7 +48,7 @@ namespace HatTrick.DbEx.Sql.Connection
 
         public bool IsTransactional => DbTransaction is not null;
 
-        public SqlConnector(ISqlConnectionFactory connectionFactory)
+        public SqlConnector(IDbConnectionFactory connectionFactory)
         {
             _connectionFactory = new Func<IDbConnection>(() => (connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory))).CreateSqlConnection());
         }

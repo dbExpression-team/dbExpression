@@ -23,7 +23,7 @@ using System.Data.SqlClient;
 
 namespace HatTrick.DbEx.MsSql.Connection
 {
-    public class MsSqlConnectionFactory : ISqlConnectionFactory
+    public class MsSqlConnectionFactory : IDbConnectionFactory
     {
         #region internals
         private readonly IConnectionStringFactory connectionStringFactory;

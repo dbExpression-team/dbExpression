@@ -19,6 +19,7 @@
 using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Connection;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 
@@ -52,12 +53,30 @@ namespace HatTrick.DbEx.Sql
             try
             {
                 runtime!.InitializeStaticRuntime();
+                var logger = provider.GetService(typeof(ILogger<>).MakeGenericType(new[] { database })) as ILogger;
+                if (logger is not null)
+                    logger.LogInformation("{database} can be used statically with dbExpression.", database.Name);
+
                 return;
             }
             catch (Exception e)
             {
                 throw new DbExpressionException($"The database {database} could not be initialized, see inner exception for details.", e);
             }
+        }
+
+        public static bool IsRegisteredIn<TDatabase, T>(this IServiceProvider provider)
+            where TDatabase : class, ISqlDatabaseRuntime
+            where T : class
+            => provider.IsRegisteredIn<TDatabase>(typeof(T));
+
+        public static bool IsRegisteredIn<TDatabase>(this IServiceProvider provider, Type type)
+            where TDatabase : class, ISqlDatabaseRuntime
+        {
+            if (provider is IServiceProvider<TDatabase> sp)
+                return sp.IsRegistered(type);
+
+            return false;
         }
     }
 }

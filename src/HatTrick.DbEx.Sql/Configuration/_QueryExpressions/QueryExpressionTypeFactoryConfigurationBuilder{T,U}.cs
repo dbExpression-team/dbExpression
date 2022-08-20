@@ -48,6 +48,14 @@ namespace HatTrick.DbEx.Sql.Configuration
         }
 
         /// <inheritdoc />
+        public IQueryExpressionFactoryContinuationConfigurationBuilder<TDatabase> Use<T>(Func<T> factory)
+            where T : TQuery
+        {
+            services.TryAddSingleton<TQuery>(sp => factory());
+            return caller;
+        }
+
+        /// <inheritdoc />
         public IQueryExpressionFactoryContinuationConfigurationBuilder<TDatabase> Use<T>(Func<IServiceProvider, T> factory)
             where T : TQuery
         {

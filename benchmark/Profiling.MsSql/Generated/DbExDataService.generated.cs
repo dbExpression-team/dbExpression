@@ -1104,7 +1104,7 @@ namespace Profiling.MsSql.DataService
         private static readonly List<SchemaExpression> _schemas = new List<SchemaExpression>();
         private static readonly Dictionary<Type, Table> _entityTypeToTableMap = new Dictionary<Type, Table>();
         private readonly IQueryExpressionBuilderFactory<ProfilingDatabase> _queryExpressionBuilderFactory;
-        private readonly ISqlConnectionFactory _connectionFactory;
+        private readonly IDbConnectionFactory _connectionFactory;
         private ProfilingDatabaseStoredProcedures _sp;
         #endregion
 
@@ -1138,7 +1138,7 @@ namespace Profiling.MsSql.DataService
 
         public ProfilingDatabase(
             IQueryExpressionBuilderFactory<ProfilingDatabase> queryExpressionBuilderFactory,
-            ISqlConnectionFactory connectionFactory        
+            IDbConnectionFactory connectionFactory        
         )
         {
             _queryExpressionBuilderFactory = queryExpressionBuilderFactory ?? throw new ArgumentNullException(nameof(queryExpressionBuilderFactory));

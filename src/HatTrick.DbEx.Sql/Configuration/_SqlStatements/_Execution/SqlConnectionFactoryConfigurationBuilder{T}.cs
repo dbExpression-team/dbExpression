@@ -24,7 +24,7 @@ using System.Data;
 
 namespace HatTrick.DbEx.Sql.Configuration
 {
-    public class SqlConnectionFactoryConfigurationBuilder<TDatabase> : ISqlConnectionFactoryConfigurationBuilder<TDatabase>
+    public class SqlConnectionFactoryConfigurationBuilder<TDatabase> : IDbConnectionFactoryConfigurationBuilder<TDatabase>
         where TDatabase : class, ISqlDatabaseRuntime
     {
         #region internals
@@ -42,46 +42,46 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         #region methods
         /// <inheritdoc />
-        public ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(ISqlConnectionFactory factory)
+        public ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(IDbConnectionFactory factory)
         {
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            services.TryAddSingleton<ISqlConnectionFactory>(factory);
+            services.TryAddSingleton<IDbConnectionFactory>(factory);
 
             return caller;
         }
 
         /// <inheritdoc />
-        public ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(Func<IServiceProvider, ISqlConnectionFactory> factory)
+        public ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(Func<IServiceProvider, IDbConnectionFactory> factory)
         {
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            services.TryAddSingleton<ISqlConnectionFactory>(factory);
+            services.TryAddSingleton<IDbConnectionFactory>(factory);
 
             return caller;
         }
 
         /// <inheritdoc />
         public ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use<TSqlConnectionFactory>()
-            where TSqlConnectionFactory : class, ISqlConnectionFactory
+            where TSqlConnectionFactory : class, IDbConnectionFactory
         {
-            services.TryAddSingleton<ISqlConnectionFactory, TSqlConnectionFactory>();
+            services.TryAddSingleton<IDbConnectionFactory, TSqlConnectionFactory>();
             return caller;
         }
 
         /// <inheritdoc />
-        public ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(Func<ISqlConnection> factory)
+        public ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(Func<IDbConnection> factory)
         {
-            services.TryAddSingleton<ISqlConnectionFactory>(new DelegateSqlConnectionFactory(factory));
+            services.TryAddSingleton<IDbConnectionFactory>(new DelegateSqlConnectionFactory(factory));
             return caller;
         }
 
         /// <inheritdoc />
-        public ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(Func<IServiceProvider, ISqlConnection> factory)
+        public ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(Func<IServiceProvider, IDbConnection> factory)
         {
-            services.TryAddSingleton<ISqlConnectionFactory>(sp => new DelegateSqlConnectionFactory(() => factory(sp)));
+            services.TryAddSingleton<IDbConnectionFactory>(sp => new DelegateSqlConnectionFactory(() => factory(sp)));
             return caller;
         }
         #endregion

@@ -66,13 +66,27 @@ namespace HatTrick.DbEx.Sql.Configuration
         }
 
         /// <inheritdoc />
-        public IEntitiesConfigurationBuilderMappingGrouping<TDatabase> Use(Func<IServiceProvider, Type, IDbEntity> factory)
+        public IEntitiesConfigurationBuilderMappingGrouping<TDatabase> Use(Func<Type, IDbEntity> factory)
         {
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
             services.TryAddSingleton<IEntityFactory>(sp => new DefaultEntityFactoryWithFallbackConstruction(
                     sp.GetRequiredService<ILogger<DefaultEntityFactoryWithFallbackConstruction>>(), 
+                    t => factory(t)
+                )
+            );
+            return caller;
+        }
+
+        /// <inheritdoc />
+        public IEntitiesConfigurationBuilderMappingGrouping<TDatabase> Use(Func<IServiceProvider, Type, IDbEntity> factory)
+        {
+            if (factory is null)
+                throw new ArgumentNullException(nameof(factory));
+
+            services.TryAddSingleton<IEntityFactory>(sp => new DefaultEntityFactoryWithFallbackConstruction(
+                    sp.GetRequiredService<ILogger<DefaultEntityFactoryWithFallbackConstruction>>(),
                     t => factory(sp, t)
                 )
             );

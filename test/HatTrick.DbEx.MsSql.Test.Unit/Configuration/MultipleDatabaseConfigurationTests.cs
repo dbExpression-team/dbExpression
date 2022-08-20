@@ -180,5 +180,31 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
             p2.Should().NotBe(query);
             usedCount.Should().Be(1);
         }
+
+        [Fact]
+        public void Does_configuration_of_two_databases_sharing_a_service_provider_and_registration_of_root_factory_ignore_registration()
+        {
+            //given
+            var factory = Substitute.For<IQueryExpressionFactory>();
+            factory.CreateQueryExpression(typeof(UpdateQueryExpression)).Returns(new UpdateQueryExpression());
+
+            var services = new ServiceCollection();
+            services.AddDbExpression(
+                dbex => dbex.AddMsSql2019Database<MsSqlDb>(c => c.ConnectionString.Use("foo")),
+                dbex => dbex.AddMsSql2019Database<MsSqlDbAlt>(c => c.ConnectionString.Use("foo"))
+            );
+            services.AddSingleton<IQueryExpressionFactory>(factory);
+            var serviceProvider = services.BuildServiceProvider();
+
+            var mssqldb = serviceProvider.GetRequiredService<MsSqlDb>();
+            var mssqldbAlt = serviceProvider.GetRequiredService<MsSqlDbAlt>();
+
+            //when
+            var p1 = mssqldb.Update(dbo.Person.FirstName.Set("foo")).From(dbo.Person);
+            var p2 = mssqldbAlt.Update(dboAlt.PersonAlt.FirstNameAlt.Set("bar")).From(dboAlt.PersonAlt);
+
+            //then
+            factory.Received(0).CreateQueryExpression(typeof(UpdateQueryExpression));
+        }
     }
 }

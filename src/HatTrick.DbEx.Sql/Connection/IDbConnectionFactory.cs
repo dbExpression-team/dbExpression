@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,23 +16,12 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using System;
+using System.Data;
 
-namespace HatTrick.DbEx.Sql.Configuration
+namespace HatTrick.DbEx.Sql.Connection
 {
-    internal class DatabaseServiceProvider<TDatabase> : IServiceProvider<TDatabase>
-        where TDatabase : class, ISqlDatabaseRuntime
+    public interface IDbConnectionFactory
     {
-        private readonly IServiceProvider _inner;
-
-        public DatabaseServiceProvider(IServiceProvider container)
-        { 
-            _inner = container ?? throw new ArgumentNullException(nameof(container));
-        }
-
-        public object? GetService(Type serviceType)
-        {
-            return _inner.GetService(serviceType);
-        }
+        IDbConnection CreateSqlConnection();
     }
 }

@@ -26,10 +26,10 @@ namespace HatTrick.DbEx.Sql.Builder
     public class BatchBuilder<TDatabase> : IBatchContinuationBuilder<TDatabase>
         where TDatabase : class, ISqlDatabaseRuntime
     {
-        private readonly ISqlConnectionFactory connectionFactory;
+        private readonly IDbConnectionFactory connectionFactory;
         private readonly List<INonQueryTerminationExpressionBuilder<TDatabase>> batch = new();
 
-        public BatchBuilder(ISqlConnectionFactory connectionFactory)
+        public BatchBuilder(IDbConnectionFactory connectionFactory)
         {
             this.connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
         }

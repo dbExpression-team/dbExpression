@@ -32,7 +32,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         #endregion
 
         #region constructors
-        public DefaultExpressionElementAppenderFactoryWithDiscovery(ILogger<DefaultExpressionElementAppenderFactoryWithDiscovery> logger, Func<Type, IExpressionElementAppender> overrides)
+        public DefaultExpressionElementAppenderFactoryWithDiscovery(ILogger<DefaultExpressionElementAppenderFactoryWithDiscovery> logger, Func<Type, IExpressionElementAppender?> overrides)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.overrides = overrides ?? throw new ArgumentNullException(nameof(overrides));

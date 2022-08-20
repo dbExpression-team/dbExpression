@@ -1,7 +1,15 @@
-﻿using System;
+﻿using HatTrick.DbEx.Sql;
+using HatTrick.DbEx.Sql.Configuration;
+using System;
 
 namespace TinyIoC
 {
+    partial class TinyIoCContainer<TDatabase> : TinyIoCContainer, IServiceProvider<TDatabase>
+        where TDatabase : class, ISqlDatabaseRuntime
+    {
+
+    }
+
     partial class TinyIoCContainer : IServiceProvider
     {
         public object? GetService(Type serviceType)
@@ -12,6 +20,13 @@ namespace TinyIoC
             }
             return null;
         }
+
+        public bool IsRegistered<T>()
+            where T : class
+            => IsRegistered(typeof(T));
+
+        public bool IsRegistered(Type type)
+           => _RegisteredTypes.ContainsKey(type);
 
         private bool TryResolveFromRoot(Type serviceType, out object? service)
         {

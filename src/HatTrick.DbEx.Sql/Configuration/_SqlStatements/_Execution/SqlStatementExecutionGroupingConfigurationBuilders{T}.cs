@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         private readonly IServiceCollection services;
         private ISqlStatementExecutorFactoryConfigurationBuilder<TDatabase>? _executors;
         private IQueryExecutionPipelineFactoryConfigurationBuilder<TDatabase>? _pipelines;
-        private ISqlConnectionFactoryConfigurationBuilder<TDatabase>? _connections;
+        private IDbConnectionFactoryConfigurationBuilder<TDatabase>? _connections;
         #endregion
 
         #region interface
@@ -38,7 +38,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         /// <inheritdoc />
         public IQueryExecutionPipelineFactoryConfigurationBuilder<TDatabase> Pipeline => _pipelines ??= new QueryExecutionPipelineFactoryConfigurationBuilder<TDatabase>(this, services);
         /// <inheritdoc />
-        public ISqlConnectionFactoryConfigurationBuilder<TDatabase> Connection => _connections ??= new SqlConnectionFactoryConfigurationBuilder<TDatabase>(this, services);
+        public IDbConnectionFactoryConfigurationBuilder<TDatabase> Connection => _connections ??= new SqlConnectionFactoryConfigurationBuilder<TDatabase>(this, services);
         /// <inheritdoc />
         public ISqlStatementAssemblyGroupingConfigurationBuilders<TDatabase> Assembly => caller.Assembly;
         #endregion

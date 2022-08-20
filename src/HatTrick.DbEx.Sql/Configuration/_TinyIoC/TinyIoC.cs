@@ -624,7 +624,7 @@ namespace TinyIoC
     }
     #endregion
 
-    internal sealed partial class TinyIoCContainer : IDisposable
+    internal partial class TinyIoCContainer : IDisposable
     {
         #region "Fluent" API
         /// <summary>
