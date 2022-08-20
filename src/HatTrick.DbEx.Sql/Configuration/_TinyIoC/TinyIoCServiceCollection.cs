@@ -26,14 +26,14 @@ namespace HatTrick.DbEx.Sql.Configuration
     public class TinyIoCServiceCollection<TDatabase> : List<ServiceDescriptor>, IServiceCollection
         where TDatabase : class, ISqlDatabaseRuntime
     {
-        private readonly TinyIoCContainer container = new();
+        private readonly TinyIoCContainer<TDatabase> container = new();
 
         public IServiceProvider<TDatabase> BuildServiceProvider(IServiceProvider root)
         {
             var adapter = new TinyIoCServiceCollectionAdapter(this, container);
             adapter.AdaptServiceDescriptors();
             container.Register<IServiceProvider>(root);
-            return new DatabaseServiceProvider<TDatabase>(container);
+            return container;
         }
     }
 }

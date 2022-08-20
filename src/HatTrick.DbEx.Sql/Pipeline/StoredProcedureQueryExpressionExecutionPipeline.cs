@@ -38,7 +38,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
     {
         #region internals
         private readonly ILogger<StoredProcedureQueryExpressionExecutionPipeline> logger;
-        private readonly ISqlConnectionFactory connectionFactory;
+        private readonly IDbConnectionFactory connectionFactory;
         private readonly ISqlStatementExecutor statementExecutor;
         private readonly IValueConverterFactory valueConverterFactory;
         private readonly IMapperFactory mapperFactory;
@@ -49,7 +49,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #region constructors
         public StoredProcedureQueryExpressionExecutionPipeline(
             ILogger<StoredProcedureQueryExpressionExecutionPipeline> logger,
-            ISqlConnectionFactory connectionFactory,
+            IDbConnectionFactory connectionFactory,
             ISqlStatementExecutor statementExecutor,
             IValueConverterFactory valueConverterFactory,
             IMapperFactory mapperFactory,

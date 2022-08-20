@@ -36,6 +36,13 @@ namespace HatTrick.DbEx.Sql.Configuration
         /// For queries requiring a <typeparamref name="TQuery"/>, use the provided query expression. 
         /// </summary>
         /// <param name="factory">The delegate to use to create a query expression to use in place of <typeparamref name="TQuery"/>.</param>
+        IQueryExpressionFactoryContinuationConfigurationBuilder<TDatabase> Use<T>(Func<T> factory)
+            where T : TQuery;
+
+        /// <summary>
+        /// For queries requiring a <typeparamref name="TQuery"/>, use the provided query expression. 
+        /// </summary>
+        /// <param name="factory">The delegate to use to create a query expression to use in place of <typeparamref name="TQuery"/>.</param>
         IQueryExpressionFactoryContinuationConfigurationBuilder<TDatabase> Use<T>(Func<IServiceProvider, T> factory)
             where T : TQuery;
     }

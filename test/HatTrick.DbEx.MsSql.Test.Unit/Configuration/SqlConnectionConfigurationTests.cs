@@ -17,11 +17,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void A_sql_connector_factory_registered_using_instance_should_be_the_same_factory(int version)
         {
             //given
-            var factory = Substitute.For<ISqlConnectionFactory>();
+            var factory = Substitute.For<IDbConnectionFactory>();
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Connection.Use(factory));
 
             //when
-            var resolved = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<ISqlConnectionFactory>();
+            var resolved = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<IDbConnectionFactory>();
 
             //then
             resolved.Should().Be(factory);
@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Connection.Use(sp => sqlConnector));
 
             //when
-            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<ISqlConnectionFactory>();
+            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<IDbConnectionFactory>();
 
             //then
             factory.Should().BeOfType<DelegateSqlConnectionFactory>();
@@ -50,7 +50,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Connection.Use<NoOpSqlConnectionFactory>());
 
             //when
-            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlConnectionFactory>();
+            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IDbConnectionFactory>();
 
             //then
             factory.Should().NotBeNull().And.BeOfType<NoOpSqlConnectionFactory>();
@@ -63,7 +63,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
             //given
             var sqlConnector = Substitute.For<ISqlConnection>();
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Connection.Use(() => sqlConnector));
-            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlConnectionFactory>();
+            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IDbConnectionFactory>();
 
             //when
             var factorySqlConnector = factory.CreateSqlConnection();
@@ -79,7 +79,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
             //given
             var sqlConnector = Substitute.For<ISqlConnection>();
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Connection.Use(sp => sqlConnector));
-            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlConnectionFactory>();
+            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IDbConnectionFactory>();
 
             //when
             var factorySqlConnector = factory.CreateSqlConnection();
@@ -96,7 +96,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
             var connectionStringFactory = Substitute.For<IConnectionStringFactory>();
             connectionStringFactory.GetConnectionString().Returns(ConfigurationProvider.ConnectionString);
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Connection.Use(new MsSqlConnectionFactory(connectionStringFactory)));
-            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlConnectionFactory>();
+            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IDbConnectionFactory>();
 
             //when
             var a1 = factory.CreateSqlConnection();
@@ -112,7 +112,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         {
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Connection.Use(sp => Substitute.For<ISqlConnection>()));
-            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlConnectionFactory>();
+            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IDbConnectionFactory>();
 
             //when
             var a1 = factory.CreateSqlConnection();
@@ -128,7 +128,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         {
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Connection.Use(() => Substitute.For<ISqlConnection>()));
-            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlConnectionFactory>();
+            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IDbConnectionFactory>();
 
             //when
             var a1 = factory.CreateSqlConnection();
@@ -145,7 +145,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
             //given
             var sqlConnector = Substitute.For<ISqlConnection>();
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Connection.Use(sp => sqlConnector));
-            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlConnectionFactory>();
+            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IDbConnectionFactory>();
 
             //when
             var factorySqlConnector = factory.CreateSqlConnection();
@@ -154,7 +154,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
             factorySqlConnector.Should().Be(sqlConnector);
         }
 
-        private class NoOpSqlConnectionFactory : ISqlConnectionFactory
+        private class NoOpSqlConnectionFactory : IDbConnectionFactory
         {
             public IDbConnection CreateSqlConnection()
             {

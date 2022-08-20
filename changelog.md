@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.9.2] - 2022-08-19
+## [0.9.2] - 2022-08-20
 
 ### Added
 - Internal service resolution for dbExpression services are now provided by dependency injection.  Each database has it's own set of services, through separate containers.  Database container use Microsoft's dependency injection service provider as a fallback to services not registered in each container (i.e. services.AddLogging).

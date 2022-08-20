@@ -21,14 +21,14 @@ using System.Data;
 
 namespace HatTrick.DbEx.Sql.Connection
 {
-    public class DelegateSqlConnectionFactory : ISqlConnectionFactory
+    public class DelegateSqlConnectionFactory : IDbConnectionFactory
     {
         #region internals
-        private readonly Func<ISqlConnection> factory;
+        private readonly Func<IDbConnection> factory;
         #endregion
 
         #region constructors
-        public DelegateSqlConnectionFactory(Func<ISqlConnection> factory)
+        public DelegateSqlConnectionFactory(Func<IDbConnection> factory)
         {
             this.factory = factory ?? throw new ArgumentNullException(nameof(factory));
         }

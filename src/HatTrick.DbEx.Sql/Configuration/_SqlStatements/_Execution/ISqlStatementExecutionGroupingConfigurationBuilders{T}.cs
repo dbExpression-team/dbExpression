@@ -38,6 +38,6 @@ namespace HatTrick.DbEx.Sql.Configuration
         /// <summary>
         /// Configure the factory used for creating an <see cref="IDbConnection"/> used to execute sql statements against the target database.  
         /// </summary>
-        ISqlConnectionFactoryConfigurationBuilder<TDatabase> Connection { get; }
+        IDbConnectionFactoryConfigurationBuilder<TDatabase> Connection { get; }
     }
 }

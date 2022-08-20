@@ -1126,7 +1126,7 @@ namespace DbExAlt.DataService
         private static readonly List<SchemaExpression> _schemas = new List<SchemaExpression>();
         private static readonly Dictionary<Type, Table> _entityTypeToTableMap = new Dictionary<Type, Table>();
         private readonly IQueryExpressionBuilderFactory<MsSqlDbAlt> _queryExpressionBuilderFactory;
-        private readonly ISqlConnectionFactory _connectionFactory;
+        private readonly IDbConnectionFactory _connectionFactory;
         private MsSqlDbAltStoredProcedures? _sp;
         #endregion
 
@@ -1170,7 +1170,7 @@ namespace DbExAlt.DataService
 
         public MsSqlDbAlt(
             IQueryExpressionBuilderFactory<MsSqlDbAlt> queryExpressionBuilderFactory,
-            ISqlConnectionFactory connectionFactory        
+            IDbConnectionFactory connectionFactory        
         )
         {
             _queryExpressionBuilderFactory = queryExpressionBuilderFactory ?? throw new ArgumentNullException(nameof(queryExpressionBuilderFactory));

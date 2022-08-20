@@ -1130,7 +1130,7 @@ namespace DbEx.DataService
         private static readonly List<SchemaExpression> _schemas = new List<SchemaExpression>();
         private static readonly Dictionary<Type, Table> _entityTypeToTableMap = new Dictionary<Type, Table>();
         private readonly IQueryExpressionBuilderFactory<MsSqlDb> _queryExpressionBuilderFactory;
-        private readonly ISqlConnectionFactory _connectionFactory;
+        private readonly IDbConnectionFactory _connectionFactory;
         private MsSqlDbStoredProcedures? _sp;
         #endregion
 
@@ -1174,7 +1174,7 @@ namespace DbEx.DataService
 
         public MsSqlDb(
             IQueryExpressionBuilderFactory<MsSqlDb> queryExpressionBuilderFactory,
-            ISqlConnectionFactory connectionFactory        
+            IDbConnectionFactory connectionFactory        
         )
         {
             _queryExpressionBuilderFactory = queryExpressionBuilderFactory ?? throw new ArgumentNullException(nameof(queryExpressionBuilderFactory));

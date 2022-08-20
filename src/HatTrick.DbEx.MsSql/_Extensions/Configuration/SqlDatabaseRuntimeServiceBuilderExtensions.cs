@@ -277,11 +277,18 @@ namespace HatTrick.DbEx.MsSql.Configuration
                 {
                     try
                     {
-                        return (TDatabase)Activator.CreateInstance(
+                        var logger = sp.GetService<ILogger<TDatabase>>();
+
+                        var db = (TDatabase)Activator.CreateInstance(
                             typeof(TDatabase),
                             sp.GetServiceProviderFor<TDatabase>().GetRequiredService<IQueryExpressionBuilderFactory<TDatabase>>(),
-                            sp.GetServiceProviderFor<TDatabase>().GetRequiredService<ISqlConnectionFactory>()
+                            sp.GetServiceProviderFor<TDatabase>().GetRequiredService<IDbConnectionFactory>()
                         )!;
+
+                        if (logger is not null)
+                            logger.LogInformation("{database} is ready for use with dbExpression.", typeof(TDatabase).Name);
+
+                        return db;
                     }
                     catch (Exception e)
                     {
@@ -310,7 +317,12 @@ namespace HatTrick.DbEx.MsSql.Configuration
         {
             builder.Use(sp => new DefaultQueryExpressionFactoryWithDiscovery(
                     sp.GetRequiredService<ILogger<DefaultQueryExpressionFactoryWithDiscovery>>(),
-                    t => sp.GetService(t) as QueryExpression //null returns are managed by the factory
+                    t =>
+                    {
+                        if (sp.IsRegisteredIn<TDatabase>(t))
+                            return sp.GetService(t) as QueryExpression; //null returns are managed by the factory
+                        return null;
+                    }
                 ),
                 x => x.WithDefaults()
             );
@@ -321,7 +333,12 @@ namespace HatTrick.DbEx.MsSql.Configuration
         {
             builder.Creation.Use(sp => new DefaultEntityFactoryWithFallbackConstruction(
                     sp.GetRequiredService<ILogger<DefaultEntityFactoryWithFallbackConstruction>>(),
-                    t => sp.GetService(t) as IDbEntity //null returns are managed by the factory
+                    t =>
+                    {
+                        if (sp.IsRegisteredIn<TDatabase>(t))
+                            return sp.GetService(t) as IDbEntity; //null returns are managed by the factory
+                        return null;
+                    }
                 ) 
             );
             return builder;
@@ -333,7 +350,12 @@ namespace HatTrick.DbEx.MsSql.Configuration
             builder.Mapping.Use(
                 sp => new DefaultMapperFactoryWithDiscovery(
                     sp.GetRequiredService<ILogger<DefaultMapperFactoryWithDiscovery>>(),
-                    t => (sp.GetService(t) as IEntityMapper)!, //null returns are managed by the factory
+                    t =>
+                    {
+                        if (sp.IsRegisteredIn<TDatabase>(t))
+                            return sp.GetService(t) as IEntityMapper; //null returns are managed by the factory
+                        return null;
+                    },
                     () => sp.GetService<IExpandoObjectMapper>() ?? throw CreateNullServiceException("Entities", typeof(IExpandoObjectMapper))
                 )
             );
@@ -345,7 +367,12 @@ namespace HatTrick.DbEx.MsSql.Configuration
         {
             builder.Use(sp => new DefaultValueConverterFactoryWithDiscovery(
                     sp.GetRequiredService<ILogger<DefaultValueConverterFactoryWithDiscovery>>(),
-                    t => sp.GetService(t) as IValueConverter //null returns are managed by the factory
+                    t =>
+                    {
+                        if (sp.IsRegisteredIn<TDatabase>(t))
+                            return sp.GetService(t) as IValueConverter; //null returns are managed by the factory
+                        return null;
+                    }
                 ),
                 x => x.WithDefaults()
             );
@@ -356,9 +383,14 @@ namespace HatTrick.DbEx.MsSql.Configuration
         {
             builder.Assembly.ElementAppender.Use(sp => new DefaultExpressionElementAppenderFactoryWithDiscovery(
                     sp.GetRequiredService<ILogger<DefaultExpressionElementAppenderFactoryWithDiscovery>>(),
-                    t => (sp.GetService(t) as IExpressionElementAppender)! //null returns are managed by the factory
+                    t =>
+                    {
+                        if (sp.IsRegisteredIn<TDatabase>(t))
+                            return sp.GetService(t) as IExpressionElementAppender; //null returns are managed by the factory
+                        return null;
+                    }
                 ),
-                x => MsSqlServices.WithDefaults(x)
+                x => WithDefaults(x)
             );
             return builder;
         }
