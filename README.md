@@ -2,7 +2,9 @@
 
 dbExpression is a Microsoft SQL Server database connector that enables fluent composition and execution of type safe SQL queries directly within compiled code.
 
-**dbExpression supports Microsoft SQL Server versions 2005+.**  
+**dbExpression supports Microsoft SQL Server versions 2005+.**
+
+The docs can be found at [docs.dbexpression.com](https://docs.dbexpression.com).  
 
 ## Build Status
 
@@ -86,7 +88,7 @@ dbExpression is quick and easy to get up and running using two packages availabl
 1) [dbExpression Microsoft SQL Server package](https://www.nuget.org/packages/HatTrick.DbEx.MsSql/)
 2) [dbExpression dotnet CLI tool](https://www.nuget.org/packages/HatTrick.DbEx.Tools/)
 
-Jump to the [docs](https://github.com/HatTrickLabs/dbExpression/wiki) for installation and configuration instructions and how to author and execute beautiful queries.
+Jump to the [docs](https://docs.dbexpression.com) for installation and configuration instructions and how to author and execute beautiful queries.
 
 ## Performance
 As dbExpression progresses towards version 1.0, performance is our primary focus.  The following shows how we're doing compared to [EF Core](https://github.com/dotnet/efcore) and [Dapper](https://github.com/DapperLib/Dapper).  The benchmarks
