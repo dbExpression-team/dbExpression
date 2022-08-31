@@ -211,6 +211,26 @@ namespace HatTrick.DbEx.MsSql.Configuration
         }
         #endregion
 
+        #region 2022
+        /// <summary>
+        /// Configures <typeparamref name="TDatabase"/> as a Microsoft Sql Server 2022 database for runtime use with dbExpression.
+        /// </summary>
+        /// <param name="builder">A <see cref="ISqlDatabaseRuntimeServicesBuilder" />, the fluent entry point for configuring the runtime environment for a database.</param>
+        /// <param name="configureRuntime">A delegate to provide additional configuration of the runtime environment for the <typeparam name="TDatabase">database</typeparam>.</param>        
+        /// <typeparam name="TDatabase">The database to configure.</typeparam>
+        public static void AddMsSql2022Database<TDatabase>(this ISqlDatabaseRuntimeServicesBuilder builder, Action<ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>> configureRuntime)
+            where TDatabase : class, ISqlDatabaseRuntime
+        {
+            if (configureRuntime is null)
+                throw new ArgumentNullException(nameof(configureRuntime));
+
+            var dbRegistrar = builder as ISqlDatabaseRuntimeServicesRegistrar
+                ?? throw new DbExpressionConfigurationException($"Expected builder to also be of type {typeof(ISqlDatabaseRuntimeServicesRegistrar)}.");
+
+            dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase>(configureRuntime);
+        }
+        #endregion
+
         #region common
         private static void AddMsSqlCommon<TDatabase>(
             this SqlDatabaseRuntimeRegistrar registrar,

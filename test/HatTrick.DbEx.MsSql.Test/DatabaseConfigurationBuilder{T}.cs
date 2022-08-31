@@ -52,6 +52,7 @@ namespace HatTrick.DbEx.MsSql.Test
                 case 2016: services.AddDbExpression(c => c.AddMsSql2016Database<TDatabase>(configureRuntime)); break;
                 case 2017: services.AddDbExpression(c => c.AddMsSql2017Database<TDatabase>(configureRuntime)); break;
                 case 2019: services.AddDbExpression(c => c.AddMsSql2019Database<TDatabase>(configureRuntime)); break;
+                case 2022: services.AddDbExpression(c => c.AddMsSql2022Database<TDatabase>(configureRuntime)); break;
                 default: throw new NotImplementedException($"MsSql version {version} has not been implemented");
             };
 
