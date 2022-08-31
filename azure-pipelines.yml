@@ -97,7 +97,7 @@ stages:
         buildTemplatesPath: $(Pipeline.Workspace)/$(stageLocationName)/build/mssql
         buildConfiguration: $(buildConfiguration)
         targetFrameworkMoniker: net$(netCoreVersion)
-        mssqlVersions: ['2017','2019']
+        mssqlVersions: ['2017','2019', 2022']
     
   - stage: Test_MsSql_Dependency_Injection
     dependsOn: Build
