@@ -1,6 +1,9 @@
 ﻿{?var:nullableAnnotation = $.DatabaseExpression.LanguageFeatures.Nullable.Annotation}
 {?var:databaseExpressionName = $.DatabaseExpression.Name}    
     #region {:databaseExpressionName}
+#if !NET7_0_OR_GREATER
+    [PlatformVersion("{$.Platform.Version}")]
+#endif
     public class {:databaseExpressionName} : ISqlDatabaseRuntime, 
         SelectOneInitiation<{:databaseExpressionName}>, 
         SelectManyInitiation<{:databaseExpressionName}>,
@@ -10,7 +13,7 @@
     {{
         #region internals
         private static readonly SqlDatabaseMetadataProvider _metadata = new SqlDatabaseMetadataProvider(new {:databaseExpressionName}SqlDatabaseMetadata("{:databaseExpressionName}"));
-        private static readonly {$.Platform}FunctionExpressionBuilder _fx = new {$.Platform}FunctionExpressionBuilder();
+        private static readonly {$.Platform.Key}FunctionExpressionBuilder _fx = new {$.Platform.Key}FunctionExpressionBuilder();
         private static readonly List<SchemaExpression> _schemas = new List<SchemaExpression>();
         private static readonly Dictionary<Type, Table> _entityTypeToTableMap = new Dictionary<Type, Table>();
         private readonly IQueryExpressionBuilderFactory<{:databaseExpressionName}> _queryExpressionBuilderFactory;
@@ -20,7 +23,8 @@
 
         #region interface
         ISqlDatabaseMetadataProvider ISqlDatabaseRuntime.MetadataProvider => _metadata;
-        public {$.Platform}FunctionExpressionBuilder fx => _fx;
+        public static string Version => "{$.Platform.Version}";
+        public {$.Platform.Key}FunctionExpressionBuilder fx => _fx;
         public {:databaseExpressionName}StoredProcedures sp => _sp ?? (_sp = new {:databaseExpressionName}StoredProcedures(this, _schemas));
         #endregion
 

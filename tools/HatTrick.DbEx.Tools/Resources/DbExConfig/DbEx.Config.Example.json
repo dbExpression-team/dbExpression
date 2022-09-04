@@ -1,7 +1,10 @@
 ﻿{
   "nullable": "{enable|disable} (if property isn't provided, no directive is emitted)",
   "source": {
-    "type": "MsSql",
+    "platform": {
+      "key": "MsSql",
+      "version": "{msSqlVersion}"
+    },
     "connectionString": {
       "value": "{connectionString}"
     }

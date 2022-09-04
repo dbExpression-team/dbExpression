@@ -43,18 +43,7 @@ namespace HatTrick.DbEx.MsSql.Test
                 }
             }
 
-            switch (version)
-            {
-                case 2005: services.AddDbExpression(c => c.AddMsSql2005Database<TDatabase>(configureRuntime)); break;
-                case 2008: services.AddDbExpression(c => c.AddMsSql2008Database<TDatabase>(configureRuntime)); break;
-                case 2012: services.AddDbExpression(c => c.AddMsSql2012Database<TDatabase>(configureRuntime)); break;
-                case 2014: services.AddDbExpression(c => c.AddMsSql2014Database<TDatabase>(configureRuntime)); break;
-                case 2016: services.AddDbExpression(c => c.AddMsSql2016Database<TDatabase>(configureRuntime)); break;
-                case 2017: services.AddDbExpression(c => c.AddMsSql2017Database<TDatabase>(configureRuntime)); break;
-                case 2019: services.AddDbExpression(c => c.AddMsSql2019Database<TDatabase>(configureRuntime)); break;
-                case 2022: services.AddDbExpression(c => c.AddMsSql2022Database<TDatabase>(configureRuntime)); break;
-                default: throw new NotImplementedException($"MsSql version {version} has not been implemented");
-            };
+            services.AddDbExpression(c => c.AddDatabase<TDatabase>(configureRuntime, version.ToString()));
 
             var serviceProvider = services.BuildServiceProvider();
             return (serviceProvider.GetRequiredService<TDatabase>(), serviceProvider);

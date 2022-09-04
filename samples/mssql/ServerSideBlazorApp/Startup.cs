@@ -36,10 +36,10 @@ namespace ServerSideBlazorApp
             services.AddDbExpression(
                 dbex => {
 
-                    dbex.AddMsSql2019Database<CRMDatabase>(
+                    dbex.AddDatabase<CRMDatabase>(
                         database =>
                             {
-                                database.ConnectionString.Use(Configuration.GetConnectionString("Default"));
+                                database.ConnectionString.Use(Configuration.GetConnectionString("Default")!);
 
                                 database.Conversions.ForTypes(x =>
                                     x.ForEnumType<PaymentMethodType>().PersistAsString()

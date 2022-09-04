@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Data;
 using Profiling.MsSql.dboDataService;
 using Profiling.MsSql.secDataService;
-
+#nullable enable
 namespace Profiling.MsSql.DataService
 {
     public class ProfilingDatabaseSqlDatabaseMetadata : ISqlDatabaseMetadata

@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark
             var services = new ServiceCollection();
             services.AddDbExpression(dbex =>
             {
-                dbex.AddMsSql2019Database<BenchmarkDatabase>(database => database.ConnectionString.Use(Constants.ConnectionString));
+                dbex.AddDatabase<BenchmarkDatabase>(database => database.ConnectionString.Use(Constants.ConnectionString));
             });
             var provider = services.BuildServiceProvider();
             provider.UseStaticRuntimeFor<BenchmarkDatabase>(); 

@@ -13,7 +13,9 @@ using HatTrick.DbEx.Sql;
 namespace ServerSideBlazorApp.dboData
 {
     #region address
+
     public partial class Address : IDbEntity
+
     {
         #region interface
         public virtual int Id { get; set; }
@@ -36,7 +38,9 @@ namespace ServerSideBlazorApp.dboData
     #endregion
 
     #region customer
+
     public partial class Customer : IDbEntity
+
     {
         #region interface
         public virtual int Id { get; set; }
@@ -61,7 +65,9 @@ namespace ServerSideBlazorApp.dboData
     #endregion
 
     #region customer address
+
     public partial class CustomerAddress : IDbEntity
+
     {
         #region interface
         public virtual int Id { get; set; }
@@ -79,7 +85,9 @@ namespace ServerSideBlazorApp.dboData
     #endregion
 
     #region product
+
     public partial class Product : IDbEntity
+
     {
         #region interface
         public virtual int Id { get; set; }
@@ -110,7 +118,9 @@ namespace ServerSideBlazorApp.dboData
     #endregion
 
     #region purchase
+
     public partial class Purchase : IDbEntity
+
     {
         #region interface
         public virtual int Id { get; set; }
@@ -137,7 +147,9 @@ namespace ServerSideBlazorApp.dboData
     #endregion
 
     #region purchase line
+
     public partial class PurchaseLine : IDbEntity
+
     {
         #region interface
         public virtual int Id { get; set; }
@@ -158,7 +170,9 @@ namespace ServerSideBlazorApp.dboData
     #endregion
 
     #region person total purchases view
+
     public partial class PersonTotalPurchasesView : IDbEntity
+
     {
         #region interface
         public virtual int Id { get; set; }
@@ -178,7 +192,9 @@ namespace ServerSideBlazorApp.dboData
 namespace ServerSideBlazorApp.secData
 {
     #region person
+
     public partial class Person : IDbEntity
+
     {
         #region interface
         public virtual int Id { get; set; }
