@@ -99,7 +99,7 @@ stages:
     jobs:
     - job:
       steps:
-      -  step:
+      - step:
       # remove this task when .NET 7.0 is included with windows-latest vmImage
         - task: UseDotNet@2
           displayName: 'Install .NET 7.0 SDK'
