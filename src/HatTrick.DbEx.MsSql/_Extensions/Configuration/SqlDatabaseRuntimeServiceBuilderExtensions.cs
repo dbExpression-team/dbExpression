@@ -38,9 +38,10 @@ using Microsoft.Extensions.Logging.Abstractions;
 using System;
 using System.Data;
 using System.Reflection;
-
+using System.Runtime.CompilerServices;
 using MsSqlServices = HatTrick.DbEx.MsSql.Configuration.SqlDatabaseRuntimeServiceBuilderExtensions;
 
+[assembly:System.Runtime.CompilerServices.InternalsVisibleTo("HatTrick.DbEx.MsSql.Test")]
 namespace HatTrick.DbEx.MsSql.Configuration
 {
     public static partial class SqlDatabaseRuntimeServiceBuilderExtensions
@@ -76,9 +77,9 @@ namespace HatTrick.DbEx.MsSql.Configuration
         /// <param name="builder">A <see cref="ISqlDatabaseRuntimeServicesBuilder" />, the fluent entry point for configuring the runtime environment for a database.</param>
         /// <param name="configureRuntime">A delegate to provide additional configuration of the runtime environment for the <typeparam name="TDatabase">database</typeparam>.</param>        
         /// <param name="platformVersionOverride">Provide a supported platform version (i.e. "2008", "2019", etc.) if your runtime should use a different Microsoft SQL Server version 
-        /// than the version used in code scaffolding.  NOTE:This parameter is used in rare/advanced cases and should typically not be used - please use <see cref="AddDatabase{TDatabase}(ISqlDatabaseRuntimeServicesBuilder, Action{ISqlDatabaseRuntimeConfigurationBuilder{TDatabase}})"/> </param>        
+        /// than the version used in code scaffolding.</param>        
         /// <typeparam name="TDatabase">The database to configure.</typeparam>
-        public static void AddDatabase<TDatabase>(this ISqlDatabaseRuntimeServicesBuilder builder, Action<ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>> configureRuntime, string platformVersionOverride)
+        internal static void AddDatabase<TDatabase>(this ISqlDatabaseRuntimeServicesBuilder builder, Action<ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>> configureRuntime, string platformVersionOverride)
             where TDatabase : class, ISqlDatabaseRuntime
         {
             if (configureRuntime is null)
@@ -276,26 +277,6 @@ namespace HatTrick.DbEx.MsSql.Configuration
         /// <param name="configureRuntime">A delegate to provide additional configuration of the runtime environment for the <typeparam name="TDatabase">database</typeparam>.</param>        
         /// <typeparam name="TDatabase">The database to configure.</typeparam>
         private static void AddMsSql2022Database<TDatabase>(this ISqlDatabaseRuntimeServicesBuilder builder, Action<ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>> configureRuntime)
-            where TDatabase : class, ISqlDatabaseRuntime
-        {
-            if (configureRuntime is null)
-                throw new ArgumentNullException(nameof(configureRuntime));
-
-            var dbRegistrar = builder as ISqlDatabaseRuntimeServicesRegistrar
-                ?? throw new DbExpressionConfigurationException($"Expected builder to also be of type {typeof(ISqlDatabaseRuntimeServicesRegistrar)}.");
-
-            dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase>(configureRuntime);
-        }
-        #endregion
-
-        #region 2022
-        /// <summary>
-        /// Configures <typeparamref name="TDatabase"/> as a Microsoft Sql Server 2022 database for runtime use with dbExpression.
-        /// </summary>
-        /// <param name="builder">A <see cref="ISqlDatabaseRuntimeServicesBuilder" />, the fluent entry point for configuring the runtime environment for a database.</param>
-        /// <param name="configureRuntime">A delegate to provide additional configuration of the runtime environment for the <typeparam name="TDatabase">database</typeparam>.</param>        
-        /// <typeparam name="TDatabase">The database to configure.</typeparam>
-        public static void AddMsSql2022Database<TDatabase>(this ISqlDatabaseRuntimeServicesBuilder builder, Action<ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>> configureRuntime)
             where TDatabase : class, ISqlDatabaseRuntime
         {
             if (configureRuntime is null)
