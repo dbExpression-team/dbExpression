@@ -11,7 +11,7 @@ trigger:
   - release/*
 
 pool:
-  vmImage: 'windows-2022'
+  vmImage: 'windows-latest'
 
 name: $[ variables['branchName'] ]
 
@@ -37,8 +37,9 @@ stages:
     - job:
       displayName: 'Build Solution and Publish Assets'
       steps:
+      # remove this task when .NET 7.0 is included with windows-latest vmImage
       - task: UseDotNet@2
-        displayName: 'Install .NET Core sdk 7.0'
+        displayName: 'Install .NET 7.0 SDK'
         inputs:
           packageType: sdk
           version: 7.0.100-preview.7.22377.5
