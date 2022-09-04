@@ -98,13 +98,15 @@ stages:
     displayName: 'Test MSSQL Platforms'
     jobs:
     - job:
-     # remove this task when .NET 7.0 is included with windows-latest vmImage
-      - task: UseDotNet@2
-        displayName: 'Install .NET 7.0 SDK'
-        inputs:
-          packageType: sdk
-          version: 7.0.100-preview.7.22377.5
-          installationPath: $(Agent.ToolsDirectory)/dotnet
+      steps:
+      -  step:
+      # remove this task when .NET 7.0 is included with windows-latest vmImage
+        - task: UseDotNet@2
+          displayName: 'Install .NET 7.0 SDK'
+          inputs:
+            packageType: sdk
+            version: 7.0.100-preview.7.22377.5
+            installationPath: $(Agent.ToolsDirectory)/dotnet
     - template: build/mssql/mssql-integration-testing-template.yml
       parameters:
         artifact: $(stageLocationName)
