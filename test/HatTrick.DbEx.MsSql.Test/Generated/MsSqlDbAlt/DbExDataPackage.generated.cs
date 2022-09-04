@@ -13,7 +13,9 @@ using HatTrick.DbEx.Sql;
 namespace DbExAlt.dboAltData
 {
     #region access audit log
+
     public partial class AccessAuditLog : IDbEntity
+
     {
         #region interface
         public virtual int Id { get; set; }
@@ -31,7 +33,9 @@ namespace DbExAlt.dboAltData
     #endregion
 
     #region address
+
     public partial class Address : IDbEntity
+
     {
         #region interface
         public virtual int Id { get; set; }
@@ -54,7 +58,9 @@ namespace DbExAlt.dboAltData
     #endregion
 
     #region person alt
+
     public partial class PersonAlt : IDbEntity
+
     {
         #region interface
         public virtual int Id { get; set; }
@@ -79,7 +85,9 @@ namespace DbExAlt.dboAltData
     #endregion
 
     #region person_ address
+
     public partial class Person_Address : IDbEntity
+
     {
         #region interface
         public virtual int Id { get; set; }
@@ -97,7 +105,9 @@ namespace DbExAlt.dboAltData
     #endregion
 
     #region product
+
     public partial class Product : IDbEntity
+
     {
         #region interface
         public virtual int Id { get; set; }
@@ -128,7 +138,9 @@ namespace DbExAlt.dboAltData
     #endregion
 
     #region purchase
+
     public partial class Purchase : IDbEntity
+
     {
         #region interface
         public virtual int Id { get; set; }
@@ -155,7 +167,9 @@ namespace DbExAlt.dboAltData
     #endregion
 
     #region purchase line
+
     public partial class PurchaseLine : IDbEntity
+
     {
         #region interface
         public virtual int Id { get; set; }
@@ -176,7 +190,9 @@ namespace DbExAlt.dboAltData
     #endregion
 
     #region person total purchases view
+
     public partial class PersonTotalPurchasesView : IDbEntity
+
     {
         #region interface
         public virtual int Id { get; set; }
@@ -196,7 +212,15 @@ namespace DbExAlt.dboAltData
 namespace DbExAlt.unit_testData
 {
     #region alias
+#if NET7_0_OR_GREATER
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters
+#endif
+
     public partial class alias : IDbEntity
+#if NET7_0_OR_GREATER
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters
+#endif
+
     {
         #region interface
         public virtual string? identifier { get; set; } = null;
@@ -224,7 +248,15 @@ namespace DbExAlt.unit_testData
     #endregion
 
     #region entity
+#if NET7_0_OR_GREATER
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters
+#endif
+
     public partial class entity : IDbEntity
+#if NET7_0_OR_GREATER
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters
+#endif
+
     {
         #region interface
         public virtual string? identifier { get; set; } = null;
@@ -252,7 +284,9 @@ namespace DbExAlt.unit_testData
     #endregion
 
     #region expression element type
+
     public partial class ExpressionElementType : IDbEntity
+
     {
         #region interface
         public virtual int Id { get; set; }
@@ -295,7 +329,15 @@ namespace DbExAlt.unit_testData
     #endregion
 
     #region identifier
+#if NET7_0_OR_GREATER
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters
+#endif
+
     public partial class identifier : IDbEntity
+#if NET7_0_OR_GREATER
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters
+#endif
+
     {
         #region interface
         public virtual string? _identifier { get; set; } = null;
@@ -323,7 +365,15 @@ namespace DbExAlt.unit_testData
     #endregion
 
     #region name
+#if NET7_0_OR_GREATER
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters
+#endif
+
     public partial class name : IDbEntity
+#if NET7_0_OR_GREATER
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters
+#endif
+
     {
         #region interface
         public virtual string? identifier { get; set; } = null;
@@ -351,7 +401,15 @@ namespace DbExAlt.unit_testData
     #endregion
 
     #region schema
+#if NET7_0_OR_GREATER
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters
+#endif
+
     public partial class schema : IDbEntity
+#if NET7_0_OR_GREATER
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters
+#endif
+
     {
         #region interface
         public virtual string? identifier { get; set; } = null;
@@ -382,7 +440,9 @@ namespace DbExAlt.unit_testData
 namespace DbExAlt.secData
 {
     #region person
+
     public partial class Person : IDbEntity
+
     {
         #region interface
         public virtual int Id { get; set; }

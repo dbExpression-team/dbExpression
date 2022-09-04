@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Data;
 using HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService;
 using HatTrick.DbEx.MsSql.Benchmark.dbExpression.secDataService;
-
+#nullable enable
 namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
 {
     public class BenchmarkDatabaseSqlDatabaseMetadata : ISqlDatabaseMetadata

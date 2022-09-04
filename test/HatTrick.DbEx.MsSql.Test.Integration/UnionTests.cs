@@ -470,9 +470,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             IList<GenderType> results = exp.Execute();
 
             //then
+            //net462, can't compile with Enum.GetValues<GenderType>()
+            var genderTypes = new List<GenderType>((GenderType[])Enum.GetValues(typeof(GenderType)));
             results.Should().HaveCount(expected);
-            Enum.GetValues<GenderType>().Should().HaveCount(expected);  //ensure test fails if new enum value is added
-            results.Should().OnlyHaveUniqueItems().And.OnlyContain(x => Enum.GetValues<GenderType>().Contains(x));
+            genderTypes.Should().HaveCount(expected);  //ensure test fails if new enum value is added
+            results.Should().OnlyHaveUniqueItems().And.OnlyContain(x => ((genderTypes).Contains(x)));
         }
 
         [Theory]
@@ -495,8 +497,10 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             IList<GenderType> results = exp.Execute();
 
             //then
+            //net462, can't compile with Enum.GetValues<GenderType>()
+            var genderTypes = new List<GenderType>((GenderType[])Enum.GetValues(typeof(GenderType)));
             results.Should().HaveCount(expected);
-            results.Should().OnlyContain(x => Enum.GetValues<GenderType>().Contains(x));
+            results.Should().AllSatisfy(x => genderTypes.Contains(x));
         }
 
         [Theory]

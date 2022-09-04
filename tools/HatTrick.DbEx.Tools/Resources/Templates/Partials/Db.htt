@@ -1,7 +1,9 @@
 ﻿{?var:nullableAnnotation = $.DatabaseExpression.LanguageFeatures.Nullable.Annotation}
 {?var:databaseExpressionName = $.DatabaseExpression.Name}
     #region {$.DatabaseExpression.AccessorName}
+{("disable", $.DatabaseExpression.AccessorName) => CS8981PragmaWarning}
     public static class {$.DatabaseExpression.AccessorName}
+{("restore", $.DatabaseExpression.AccessorName) => CS8981PragmaWarning}
     {{
         #region internals
         private static {:databaseExpressionName}{:nullableAnnotation} _{($.DatabaseExpression.Name) => ToLower};
@@ -9,7 +11,7 @@
         #endregion
 
         #region interface
-        public static {$.Platform}FunctionExpressionBuilder fx => {:databaseExpressionName}.fx;
+        public static {$.Platform.Key}FunctionExpressionBuilder fx => {:databaseExpressionName}.fx;
         public static {:databaseExpressionName}.{:databaseExpressionName}StoredProcedures sp => {:databaseExpressionName}.sp;
         #endregion
 

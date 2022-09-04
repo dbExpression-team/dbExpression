@@ -18,8 +18,10 @@
 
 using HatTrick.DbEx.Tools.Configuration;
 using HatTrick.DbEx.Tools.Model;
+using HatTrick.DbEx.Tools.Resources;
 using HatTrick.Model.MsSql;
 using HatTrick.Reflection;
+using HatTrick.Text.Templating;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
@@ -141,6 +143,17 @@ namespace HatTrick.DbEx.Tools.Service
             return resource.Value;
         }
 
+        public string? CS8981PragmaWarning(string disable, string value)
+        {
+            if (!IsLowercase(value))
+                return null;
+
+            TemplateEngine engine = new TemplateEngine(GetTemplatePartial("CS8981PragmaWarning"));
+            engine.TrimWhitespace = true;
+
+            return engine.Merge(new { Disable = disable, Code = "CS8981", Description = "The type name only contains lower-cased ascii characters" });
+        }
+
         public string GetSchemaArgName(string name, SchemaExpressionModel schema)
             => schema.ArgNamePsuedonyms.ContainsKey(name) ? schema.ArgNamePsuedonyms[name] : name;
 
@@ -150,6 +163,15 @@ namespace HatTrick.DbEx.Tools.Service
         public string GetFieldArgName(string name, FieldExpressionModel field)
             => field.ArgNamePsuedonyms.ContainsKey(name) ? field.ArgNamePsuedonyms[name] : name;
 
+        public bool IsLowercase(string value)
+        {
+            foreach (var c in value)
+            {
+                if (c < 97 || c > 122)
+                    return false;
+            }
+            return true;
+        }
         #endregion
     }
 

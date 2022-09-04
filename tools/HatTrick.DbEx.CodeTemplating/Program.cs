@@ -1,7 +1,7 @@
 ﻿using HatTrick.DbEx.CodeTemplating.CodeGenerator;
 using HatTrick.DbEx.CodeTemplating.Model;
 
-using generator = HatTrick.DbEx.CodeTemplating.CodeGenerator.CodeGenerator;
+using Generator = HatTrick.DbEx.CodeTemplating.CodeGenerator.CodeGenerator;
 
 namespace HatTrick.DbEx.CodeTemplating
 {
@@ -18,7 +18,7 @@ namespace HatTrick.DbEx.CodeTemplating
 
         static void Main(string[] args)
         {
-            generator.CreateGenerator()
+            Generator.CreateGenerator()
                  //mediator
                 .Generate<ExpressionMediatorCodeGenerator, TemplateModel>($@"{templateDirectory}\_Mediator\TypedExpressionMediator.htt", $@"{sqlSrcDirectory}\_Mediator")
                 .Generate<NullableExpressionMediatorCodeGenerator, TemplateModel>($@"{templateDirectory}\_Mediator\NullableTypedExpressionMediator.htt", $@"{sqlSrcDirectory}\_Mediator")

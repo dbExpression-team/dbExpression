@@ -28,7 +28,15 @@ namespace ServerSideBlazorApp.DataService
 	using _secDataService = ServerSideBlazorApp.secDataService;
 
     #region db
+#if NET7_0_OR_GREATER
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters
+#endif
+
     public static class db
+#if NET7_0_OR_GREATER
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters
+#endif
+
     {
         #region internals
         private static CRMDatabase? _crmdatabase;
@@ -1091,6 +1099,9 @@ namespace ServerSideBlazorApp.DataService
     #endregion
 
     #region CRMDatabase
+#if !NET7_0_OR_GREATER
+    [PlatformVersion("2019")]
+#endif
     public class CRMDatabase : ISqlDatabaseRuntime, 
         SelectOneInitiation<CRMDatabase>, 
         SelectManyInitiation<CRMDatabase>,
@@ -1110,6 +1121,7 @@ namespace ServerSideBlazorApp.DataService
 
         #region interface
         ISqlDatabaseMetadataProvider ISqlDatabaseRuntime.MetadataProvider => _metadata;
+        public static string Version { get { return "2019"; }}
         public MsSqlFunctionExpressionBuilder fx => _fx;
         public CRMDatabaseStoredProcedures sp => _sp ?? (_sp = new CRMDatabaseStoredProcedures(this, _schemas));
         #endregion
@@ -6305,11 +6317,11 @@ namespace ServerSideBlazorApp.dboDataService
     #endregion
 
     #region dbo
-#pragma warning disable CA1052 // Static holder types should be Static or NotInheritable
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
 #pragma warning disable IDE1006 // Naming Styles
     public partial class dbo
 #pragma warning restore IDE1006 // Naming Styles
-#pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
+#pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     {
         private static dboSchemaExpression? schema;
 
@@ -6768,11 +6780,11 @@ namespace ServerSideBlazorApp.secDataService
     #endregion
 
     #region sec
-#pragma warning disable CA1052 // Static holder types should be Static or NotInheritable
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
 #pragma warning disable IDE1006 // Naming Styles
     public partial class sec
 #pragma warning restore IDE1006 // Naming Styles
-#pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
+#pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     {
         private static secSchemaExpression? schema;
 

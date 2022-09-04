@@ -48,9 +48,14 @@ namespace HatTrick.DbEx.Tools.Configuration
 
     public class Source
     {
-        public string Type { get; set; } = "MsSql";
-
+        public Platform? Platform { get; set; }
         public ConnectionString? ConnectionString { get; set; }
+    }
+
+    public class Platform
+    {
+        public string Key { get; set; } = "MsSql";
+        public string? Version { get; set; }
     }
 
     public class ConnectionString

@@ -13,7 +13,9 @@ using HatTrick.DbEx.Sql;
 namespace SimpleConsole.dboData
 {
     #region access audit log
+
     public partial class AccessAuditLog : IDbEntity, NetCoreConsoleApp.Data.IUpdateableEntity
+
     {
         #region interface
         public virtual int Id { get; set; }
@@ -31,7 +33,9 @@ namespace SimpleConsole.dboData
     #endregion
 
     #region address
+
     public partial class Address : IDbEntity, NetCoreConsoleApp.Data.IUpdateableEntity
+
     {
         #region interface
         public virtual int Id { get; set; }
@@ -54,7 +58,9 @@ namespace SimpleConsole.dboData
     #endregion
 
     #region person
+
     public partial class Person : IDbEntity, NetCoreConsoleApp.Data.IUpdateableEntity
+
     {
         #region interface
         public virtual int Id { get; set; }
@@ -79,7 +85,9 @@ namespace SimpleConsole.dboData
     #endregion
 
     #region person address
+
     public partial class PersonAddress : IDbEntity
+
     {
         #region interface
         public virtual int Id { get; set; }
@@ -97,7 +105,9 @@ namespace SimpleConsole.dboData
     #endregion
 
     #region product
+
     public partial class Product : IDbEntity, NetCoreConsoleApp.Data.IUpdateableEntity
+
     {
         #region interface
         public virtual int Id { get; set; }
@@ -128,7 +138,9 @@ namespace SimpleConsole.dboData
     #endregion
 
     #region purchase
+
     public partial class Purchase : IDbEntity, NetCoreConsoleApp.Data.IUpdateableEntity
+
     {
         #region interface
         public virtual int Id { get; set; }
@@ -155,7 +167,9 @@ namespace SimpleConsole.dboData
     #endregion
 
     #region purchase line
+
     public partial class PurchaseLine : IDbEntity, NetCoreConsoleApp.Data.IUpdateableEntity
+
     {
         #region interface
         public virtual int Id { get; set; }
@@ -176,7 +190,9 @@ namespace SimpleConsole.dboData
     #endregion
 
     #region person total purchases view
+
     public partial class PersonTotalPurchasesView : IDbEntity
+
     {
         #region interface
         public virtual int Id { get; set; }
@@ -196,7 +212,9 @@ namespace SimpleConsole.dboData
 namespace SimpleConsole.secData
 {
     #region person
+
     public partial class Person : IDbEntity, NetCoreConsoleApp.Data.IUpdateableEntity
+
     {
         #region interface
         public virtual int Id { get; set; }

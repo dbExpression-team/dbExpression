@@ -1,17 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
-        <LangVersion>9.0</LangVersion>
+		<TargetFrameworks>netstandard2.0;net6.0;net7.0</TargetFrameworks>
+		<LangVersion>preview</LangVersion>
 		<Nullable>enable</Nullable>
         <IsPackable>true</IsPackable>
         <Company>HatTrick Labs, LLC</Company>
         <Authors>gwgrubbs,jerrod.eiman</Authors>
-        <Description>dbExpression is a database connector that enables fluent composition and execution of type safe SQL queries directly from Microsoft .NET.  This package is an abstract package not meant for direct references.  Reference platform specific packages (i.e. HatTrick.DbEx.MsSql) to use dbExpression.
+        <Description>dbExpression is a database connector that enables fluent composition and execution of type safe SQL queries directly from Microsoft .NET.  This package is an abstract package not meant for direct references.  To use dbExpression, reference platform specific packages (i.e. HatTrick.DbEx.MsSql).
         </Description>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-        <PackageProjectUrl>https://github.com/HatTrickLabs/dbExpression</PackageProjectUrl>
+        <PackageProjectUrl>https://www.dbexpression.com</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/HatTrickLabs/dbExpression</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>

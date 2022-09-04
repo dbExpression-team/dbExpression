@@ -25,8 +25,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
 
             //when & then
             Assert.Throws<DbExpressionConfigurationException>(() => services.AddDbExpression(
-                dbex => dbex.AddMsSql2019Database<MsSqlDb>(c => c.ConnectionString.Use("foo")),
-                dbex => dbex.AddMsSql2019Database<MsSqlDb>(c => c.ConnectionString.Use("foo"))
+                dbex => dbex.AddDatabase<MsSqlDb>(c => c.ConnectionString.Use("foo")),
+                dbex => dbex.AddDatabase<MsSqlDb>(c => c.ConnectionString.Use("foo"))
             ));
         }
 
@@ -115,8 +115,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
             var usedCount = 0;
             var services = new ServiceCollection();
             services.AddDbExpression(
-                dbex => dbex.AddMsSql2019Database<MsSqlDb>(c => { c.ConnectionString.Use("foo"); c.QueryExpressions.ForQueryTypes(x => x.ForSelect().Use(() => { usedCount++; return query; })); }),
-                dbex => dbex.AddMsSql2019Database<MsSqlDbAlt>(c => c.ConnectionString.Use("foo"))
+                dbex => dbex.AddDatabase<MsSqlDb>(c => { c.ConnectionString.Use("foo"); c.QueryExpressions.ForQueryTypes(x => x.ForSelect().Use(() => { usedCount++; return query; })); }),
+                dbex => dbex.AddDatabase<MsSqlDbAlt>(c => c.ConnectionString.Use("foo"))
             );
             var serviceProvider = services.BuildServiceProvider();
 
@@ -139,8 +139,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
             //given
             var services = new ServiceCollection();
             services.AddDbExpression(
-                dbex => dbex.AddMsSql2019Database<MsSqlDb>(c => c.ConnectionString.Use("foo")),
-                dbex => dbex.AddMsSql2019Database<MsSqlDbAlt>(c => c.ConnectionString.Use("foo"))
+                dbex => dbex.AddDatabase<MsSqlDb>(c => c.ConnectionString.Use("foo")),
+                dbex => dbex.AddDatabase<MsSqlDbAlt>(c => c.ConnectionString.Use("foo"))
             );
             var serviceProvider = services.BuildServiceProvider();
 
@@ -163,8 +163,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
             var usedCount = 0;
             var services = new ServiceCollection();
             services.AddDbExpression(
-                dbex => dbex.AddMsSql2019Database<MsSqlDb>(c => { c.ConnectionString.Use("foo"); c.QueryExpressions.ForQueryTypes(x => x.ForQueryType<StoredProcedureQueryExpression>().Use(() => { usedCount++; return query; })); }),
-                dbex => dbex.AddMsSql2019Database<MsSqlDbAlt>(c => c.ConnectionString.Use("foo"))
+                dbex => dbex.AddDatabase<MsSqlDb>(c => { c.ConnectionString.Use("foo"); c.QueryExpressions.ForQueryTypes(x => x.ForQueryType<StoredProcedureQueryExpression>().Use(() => { usedCount++; return query; })); }),
+                dbex => dbex.AddDatabase<MsSqlDbAlt>(c => c.ConnectionString.Use("foo"))
             );
             var serviceProvider = services.BuildServiceProvider();
 
@@ -190,8 +190,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
 
             var services = new ServiceCollection();
             services.AddDbExpression(
-                dbex => dbex.AddMsSql2019Database<MsSqlDb>(c => c.ConnectionString.Use("foo")),
-                dbex => dbex.AddMsSql2019Database<MsSqlDbAlt>(c => c.ConnectionString.Use("foo"))
+                dbex => dbex.AddDatabase<MsSqlDb>(c => c.ConnectionString.Use("foo")),
+                dbex => dbex.AddDatabase<MsSqlDbAlt>(c => c.ConnectionString.Use("foo"))
             );
             services.AddSingleton<IQueryExpressionFactory>(factory);
             var serviceProvider = services.BuildServiceProvider();

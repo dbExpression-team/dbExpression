@@ -4,6 +4,7 @@ using DbEx.dboDataService;
 using DbExAlt.DataService;
 using DbExAlt.dboAltData;
 using FluentAssertions;
+using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Expression;
 using NSubstitute;
@@ -12,7 +13,7 @@ using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Integration
 {
-    public class MultipleDatabaseTests : TestBase
+    public class MultipleDatabaseTests : ExecutorTestBase
     {
         [Theory]
         [MsSqlVersions.AllVersions]
@@ -84,7 +85,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var (mssqldb, mssqldbServiceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
             var (mssqldbAlt, mssqldbAltServiceProvider) = Configure<MsSqlDbAlt>().ForMsSqlVersion(version);
 
-            //whe
+            //when
             int? p1 = mssqldb.sp.dbo.SelectPerson_As_Dynamic_With_Input(P1: 1).GetValue().Execute()?.Id;
             int? p2 = mssqldbAlt.sp.dboAlt.SelectPerson_As_Dynamic_With_InputAlt(P1Alt: 1).GetValue().Execute()?.Id;
 

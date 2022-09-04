@@ -25,5 +25,9 @@ namespace HatTrick.DbEx.Sql
         void InitializeStaticRuntime();
         ISqlDatabaseMetadataProvider MetadataProvider { get; }
         ISqlConnection GetConnection();
+
+#if NET7_0_OR_GREATER
+        static abstract string? Version { get; }
+#endif
     }
 }
