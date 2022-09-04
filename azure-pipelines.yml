@@ -42,7 +42,7 @@ stages:
         displayName: 'Install .NET 7.0 SDK'
         inputs:
           packageType: sdk
-          version: 7.0.100-preview.7.22377.5
+          version: 7.0.0-preview.7.22375.6
           installationPath: $(Agent.ToolsDirectory)/dotnet
       - task: PowerShell@2
         displayName: 'Build and Package Solution'
