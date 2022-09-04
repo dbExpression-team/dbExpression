@@ -20,6 +20,7 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   netCoreVersion: '6.0'
+  net7PreviewVersion: '7.0.100-preview.7.22377.5'
   system.debug: true
   stageLocationName: db-ex
   disable.coverage.autogenerate: 'true'
@@ -42,7 +43,7 @@ stages:
         displayName: 'Install .NET 7.0 SDK'
         inputs:
           packageType: sdk
-          version: 7.0.100-preview.7.22377.5
+          version: $(net7PreviewVersion)
           installationPath: $(Agent.ToolsDirectory)/dotnet
       - task: PowerShell@2
         displayName: 'Build and Package Solution'
@@ -62,6 +63,12 @@ stages:
     - job:
       displayName: 'Test MSSQL'
       steps:
+      - task: UseDotNet@2
+        displayName: 'Install .NET 7.0 SDK'
+        inputs:
+          packageType: sdk
+          version: $(net7PreviewVersion)
+          installationPath: $(Agent.ToolsDirectory)/dotnet
       - checkout: none
       - download: current
         artifact: $(stageLocationName)
@@ -98,13 +105,14 @@ stages:
     displayName: 'Test MSSQL Platforms'
     jobs:
     - job:
+      displayName: 'Install .NET 7.0 SDK'
       steps:
-      # remove this task when .NET 7.0 is included with windows-latest vmImage
+      # remove this task when .NET 7.0 is included with ubuntu-latest vmImage
       - task: UseDotNet@2
         displayName: 'Install .NET 7.0 SDK'
         inputs:
           packageType: sdk
-          version: 7.0.100-preview.7.22377.5
+          version: $(net7PreviewVersion)
           installationPath: $(Agent.ToolsDirectory)/dotnet
     - template: build/mssql/mssql-integration-testing-template.yml
       parameters:
