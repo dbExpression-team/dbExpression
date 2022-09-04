@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFrameworks>netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
-		<LangVersion>9.0</LangVersion>
+        <TargetFrameworks>netcoreapp3.1;net6.0</TargetFrameworks>
+		<LangVersion>10.0</LangVersion>
 		<Nullable>enable</Nullable>
         <ToolCommandName>dbex</ToolCommandName>
         <PackAsTool>true</PackAsTool>
@@ -25,6 +25,7 @@
         <None Remove="Resources\Templates\DbExDataPackage._cs.htt" />
         <None Remove="Resources\Templates\DbExDataService._cs.htt" />
         <None Remove="Resources\Templates\DbExMetadata._cs.htt" />
+        <None Remove="Resources\Templates\Partials\CS8981PragmaWarning.htt" />
         <None Remove="Resources\Templates\Partials\DataPackage.htt" />
         <None Remove="Resources\Templates\Partials\Db.htt" />
         <None Remove="Resources\Templates\Partials\EntityExpression.Documentation.htt" />
@@ -56,6 +57,7 @@
         <EmbeddedResource Include="Resources\Templates\Partials\SchemaExpression.htt" />
         <EmbeddedResource Include="Resources\Templates\Partials\StoredProcedure.htt" />
         <EmbeddedResource Include="Resources\Templates\Partials\StoredProcedureExpression.Documentation.htt" />
+        <EmbeddedResource Include="Resources\Templates\Partials\CS8981PragmaWarning.htt" />
     </ItemGroup>
 
     <ItemGroup>

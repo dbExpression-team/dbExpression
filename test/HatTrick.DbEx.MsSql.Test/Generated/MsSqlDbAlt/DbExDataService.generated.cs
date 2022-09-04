@@ -30,7 +30,9 @@ namespace DbExAlt.DataService
 	using _secDataService = DbExAlt.secDataService;
 
     #region dbAlt
+
     public static class dbAlt
+
     {
         #region internals
         private static MsSqlDbAlt? _mssqldbalt;
@@ -1113,6 +1115,9 @@ namespace DbExAlt.DataService
     #endregion
 
     #region MsSqlDbAlt
+#if !NET7_0_OR_GREATER
+    [PlatformVersion("2019")]
+#endif
     public class MsSqlDbAlt : ISqlDatabaseRuntime, 
         SelectOneInitiation<MsSqlDbAlt>, 
         SelectManyInitiation<MsSqlDbAlt>,
@@ -1132,6 +1137,7 @@ namespace DbExAlt.DataService
 
         #region interface
         ISqlDatabaseMetadataProvider ISqlDatabaseRuntime.MetadataProvider => _metadata;
+        public static string Version { get { return "2019"; }}
         public MsSqlFunctionExpressionBuilder fx => _fx;
         public MsSqlDbAltStoredProcedures sp => _sp ?? (_sp = new MsSqlDbAltStoredProcedures(this, _schemas));
         #endregion
@@ -6624,11 +6630,11 @@ namespace DbExAlt.dboAltDataService
     #endregion
 
     #region dboAlt
-#pragma warning disable CA1052 // Static holder types should be Static or NotInheritable
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
 #pragma warning disable IDE1006 // Naming Styles
     public partial class dboAlt
 #pragma warning restore IDE1006 // Naming Styles
-#pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
+#pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     {
         private static dboAltSchemaExpression? schema;
 
@@ -11863,11 +11869,11 @@ namespace DbExAlt.unit_testDataService
     #endregion
 
     #region unit_test
-#pragma warning disable CA1052 // Static holder types should be Static or NotInheritable
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
 #pragma warning disable IDE1006 // Naming Styles
     public partial class unit_test
 #pragma warning restore IDE1006 // Naming Styles
-#pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
+#pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     {
         private static unit_testSchemaExpression? _schema;
 
@@ -12236,11 +12242,11 @@ namespace DbExAlt.secDataService
     #endregion
 
     #region sec
-#pragma warning disable CA1052 // Static holder types should be Static or NotInheritable
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
 #pragma warning disable IDE1006 // Naming Styles
     public partial class sec
 #pragma warning restore IDE1006 // Naming Styles
-#pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
+#pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     {
         private static secSchemaExpression? schema;
 

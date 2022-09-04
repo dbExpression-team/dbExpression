@@ -1,7 +1,9 @@
 using HatTrick.DbEx.MsSql.Test.Database;
+using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Executor
 {
+    [Collection("Sequential")]
     public abstract class ExecutorTestBase : TestBase
     {
         protected ExecutorTestBase()

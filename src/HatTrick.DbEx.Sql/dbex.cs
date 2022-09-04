@@ -26,7 +26,14 @@ using System.Linq;
 namespace HatTrick.DbEx.Sql
 {
 #pragma warning disable IDE1006 // Naming Styles
+#if NET7_0_OR_GREATER
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
+#endif
     public static class dbex
+#if NET7_0_OR_GREATER
+#pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
+#endif
+#pragma warning restore IDE1006 // Naming Styles
     {
         private static readonly NullElement _null = new NullExpression();
 
@@ -304,5 +311,4 @@ namespace HatTrick.DbEx.Sql
             return entity.HydrateEntity;
         }
     }
-#pragma warning restore IDE1006 // Naming Styles
 }

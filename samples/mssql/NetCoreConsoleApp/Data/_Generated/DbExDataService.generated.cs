@@ -28,7 +28,15 @@ namespace SimpleConsole.DataService
 	using _secDataService = SimpleConsole.secDataService;
 
     #region db
+#if NET7_0_OR_GREATER
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters
+#endif
+
     public static class db
+#if NET7_0_OR_GREATER
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters
+#endif
+
     {
         #region internals
         private static SimpleConsoleDb _simpleconsoledb;
@@ -1091,6 +1099,9 @@ namespace SimpleConsole.DataService
     #endregion
 
     #region SimpleConsoleDb
+#if !NET7_0_OR_GREATER
+    [PlatformVersion("2019")]
+#endif
     public class SimpleConsoleDb : ISqlDatabaseRuntime, 
         SelectOneInitiation<SimpleConsoleDb>, 
         SelectManyInitiation<SimpleConsoleDb>,
@@ -1110,6 +1121,7 @@ namespace SimpleConsole.DataService
 
         #region interface
         ISqlDatabaseMetadataProvider ISqlDatabaseRuntime.MetadataProvider => _metadata;
+        public static string Version { get { return "2019"; }}
         public MsSqlFunctionExpressionBuilder fx => _fx;
         public SimpleConsoleDbStoredProcedures sp => _sp ?? (_sp = new SimpleConsoleDbStoredProcedures(this, _schemas));
         #endregion
@@ -6562,11 +6574,11 @@ namespace SimpleConsole.dboDataService
     #endregion
 
     #region dbo
-#pragma warning disable CA1052 // Static holder types should be Static or NotInheritable
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
 #pragma warning disable IDE1006 // Naming Styles
     public partial class dbo
 #pragma warning restore IDE1006 // Naming Styles
-#pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
+#pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     {
         private static dboSchemaExpression schema;
 
@@ -7050,11 +7062,11 @@ namespace SimpleConsole.secDataService
     #endregion
 
     #region sec
-#pragma warning disable CA1052 // Static holder types should be Static or NotInheritable
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
 #pragma warning disable IDE1006 // Naming Styles
     public partial class sec
 #pragma warning restore IDE1006 // Naming Styles
-#pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
+#pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     {
         private static secSchemaExpression schema;
 

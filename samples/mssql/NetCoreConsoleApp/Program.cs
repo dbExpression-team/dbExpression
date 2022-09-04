@@ -63,7 +63,7 @@ namespace NetCoreConsoleApp
             services.AddDbExpression(dbex =>
             {
 
-                dbex.AddMsSql2014Database<SimpleConsoleDb>(
+                dbex.AddDatabase<SimpleConsoleDb>(
                     database =>
                     {
                         database.ConnectionString.Use(config.GetConnectionString("dbex_mssql_test"));
