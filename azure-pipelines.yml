@@ -55,48 +55,50 @@ stages:
       - publish: $(Build.SourcesDirectory)
         displayName: 'Publish to Staging Location'
         artifact: $(stageLocationName)
+        
+        # add --no-build to test args
 
-  - stage: Test_MsSql_Unit
-    dependsOn: Build
-    displayName: 'Test MSSQL Core'
-    jobs:
-    - job:
-      displayName: 'Test MSSQL'
-      steps:
-      - task: UseDotNet@2
-        displayName: 'Install .NET 7.0 SDK'
-        inputs:
-          packageType: sdk
-          version: $(net7PreviewVersion)
-          installationPath: $(Agent.ToolsDirectory)/dotnet
-      - checkout: none
-      - download: current
-        artifact: $(stageLocationName)
-      - task: DotNetCoreCLI@2
-        displayName: 'Execute Tests'
-        inputs:
-          command: test
-          projects: $(Pipeline.Workspace)\$(stageLocationName)\test\HatTrick.DbEx.MsSql.Test.Unit\*.csproj
-          arguments: '--configuration $(buildConfiguration) --logger "trx;LogFileName=mssql-core.tests.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Include="[HatTrick.DbEx.*Sql*]*" /p:Exclude="[*Test]*"'
-      - task: PublishTestResults@2
-        displayName: 'Publish Test Results to Temp'
-        inputs:
-          testResultsFormat: xUnit
-          testResultsFiles: $(Pipeline.Workspace)\$(stageLocationName)\TestResults\mssql-core.tests.trx
-          testRunTitle: 'MSSQL (Core)'
-          mergeTestResults: true
-          failTaskOnFailedTests: true
-      - task: CopyFiles@2
-        displayName: 'Copy Code Coverage Files to Temp'
-        inputs:
-          contents: '*.cobertura.xml'
-          sourceFolder: $(Pipeline.Workspace)\$(stageLocationName)\test\HatTrick.DbEx.MsSql.Test.Unit
-          targetFolder: $(Pipeline.Workspace)\$(stageLocationName)\tmp
-      - task: PublishPipelineArtifact@1
-        displayName: 'Publish Code Coverage Files to Staging Location'
-        inputs:
-          targetPath: $(Pipeline.Workspace)\$(stageLocationName)\tmp
-          artifactName: mssql-core-results
+# - stage: Test_MsSql_Unit
+#   dependsOn: Build
+#   displayName: 'Test MSSQL Core'
+#   jobs:
+#   - job:
+#     displayName: 'Test MSSQL'
+#     steps:
+#     - task: UseDotNet@2
+#       displayName: 'Install .NET 7.0 SDK'
+#       inputs:
+#         packageType: sdk
+#         version: $(net7PreviewVersion)
+#         installationPath: $(Agent.ToolsDirectory)/dotnet
+#     - checkout: none
+#     - download: current
+#       artifact: $(stageLocationName)
+#     - task: DotNetCoreCLI@2
+#       displayName: 'Execute Tests'
+#       inputs:
+#         command: test
+#         projects: $(Pipeline.Workspace)\$(stageLocationName)\test\HatTrick.DbEx.MsSql.Test.Unit\*.csproj
+#         arguments: '--configuration $(buildConfiguration) --no-build --logger "trx;LogFileName=mssql-core.tests.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Include="[HatTrick.DbEx.*Sql*]*" /p:Exclude="[*Test]*"'
+#     - task: PublishTestResults@2
+#       displayName: 'Publish Test Results to Temp'
+#       inputs:
+#         testResultsFormat: xUnit
+#         testResultsFiles: $(Pipeline.Workspace)\$(stageLocationName)\TestResults\mssql-core.tests.trx
+#         testRunTitle: 'MSSQL (Core)'
+#         mergeTestResults: true
+#         failTaskOnFailedTests: true
+#     - task: CopyFiles@2
+#       displayName: 'Copy Code Coverage Files to Temp'
+#       inputs:
+#         contents: '*.cobertura.xml'
+#         sourceFolder: $(Pipeline.Workspace)\$(stageLocationName)\test\HatTrick.DbEx.MsSql.Test.Unit
+#         targetFolder: $(Pipeline.Workspace)\$(stageLocationName)\tmp
+#     - task: PublishPipelineArtifact@1
+#       displayName: 'Publish Code Coverage Files to Staging Location'
+#       inputs:
+#         targetPath: $(Pipeline.Workspace)\$(stageLocationName)\tmp
+#         artifactName: mssql-core-results
  
   - stage: Test_MsSql_Integration
     pool:
@@ -104,16 +106,6 @@ stages:
     dependsOn: Build
     displayName: 'Test MSSQL Platforms'
     jobs:
-    - job:
-      displayName: 'Install .NET 7.0 SDK'
-      steps:
-      # remove this task when .NET 7.0 is included with ubuntu-latest vmImage
-      - task: UseDotNet@2
-        displayName: 'Install .NET 7.0 SDK'
-        inputs:
-          packageType: sdk
-          version: $(net7PreviewVersion)
-          installationPath: $(Agent.ToolsDirectory)/dotnet
     - template: build/mssql/mssql-integration-testing-template.yml
       parameters:
         artifact: $(stageLocationName)
@@ -125,7 +117,7 @@ stages:
     
   - stage: Publish_Reports
     dependsOn:
-      - Test_MsSql_Unit
+#      - Test_MsSql_Unit
       - Test_MsSql_Integration
     displayName: 'Publish Reports'
     jobs:
@@ -138,7 +130,8 @@ stages:
         displayName: 'Correct Source Paths in Coverage Files'
         inputs:
           filePath: $(Pipeline.Workspace)\$(stageLocationName)\build\fix-code-coverage-files.ps1
-          arguments: '-CodeCoverageFilePaths "$(Pipeline.Workspace)\mssql-core-results\coverage.net6.0.cobertura.xml;$(Pipeline.Workspace)\mssql-2017-results\coverage.net6.0.cobertura.xml;$(Pipeline.Workspace)\mssql-2019-results\coverage.net6.0.cobertura.xml;$(Pipeline.Workspace)\mssql-2022-results\coverage.net6.0.cobertura.xml" -PathToSourceFiles "$(Pipeline.Workspace)\$(stageLocationName)\src\"'
+#          arguments: '-CodeCoverageFilePaths "$(Pipeline.Workspace)\mssql-core-results\coverage.net6.0.cobertura.xml;$(Pipeline.Workspace)\mssql-2017-results\coverage.net6.0.cobertura.xml;$(Pipeline.Workspace)\mssql-2019-results\coverage.net6.0.cobertura.xml;$(Pipeline.Workspace)\mssql-2022-results\coverage.net6.0.cobertura.xml" -PathToSourceFiles "$(Pipeline.Workspace)\$(stageLocationName)\src\"'
+          arguments: '-CodeCoverageFilePaths "$(Pipeline.Workspace)\mssql-2017-results\coverage.net6.0.cobertura.xml;$(Pipeline.Workspace)\mssql-2019-results\coverage.net6.0.cobertura.xml;$(Pipeline.Workspace)\mssql-2022-results\coverage.net6.0.cobertura.xml" -PathToSourceFiles "$(Pipeline.Workspace)\$(stageLocationName)\src\"'
           workingDirectory: $(Pipeline.Workspace)\$(stageLocationName)\build
           pwsh: true
       - task: reportgenerator@5
