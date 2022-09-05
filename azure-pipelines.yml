@@ -43,6 +43,12 @@ stages:
           packageType: sdk
           version: '6.0.400'
           installationPath: $(Agent.ToolsDirectory)/dotnet
+      - task: UseDotNet@2
+        displayName: 'Install .NET 7.0 SDK'
+        inputs:
+          packageType: sdk
+          version: $(net7PreviewVersion)
+          installationPath: $(Agent.ToolsDirectory)/dotnet
       - task: PowerShell@2
         displayName: 'Build and Package Solution'
         inputs:
