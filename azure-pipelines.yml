@@ -33,7 +33,7 @@ variables:
 stages:
 
   - stage: Build_and_Test
-    displayName: 'Build and Package'
+    displayName: 'Build, Test and Package'
     jobs:
     - job:
       displayName: 'Build, Test, and Publish'
@@ -59,27 +59,25 @@ stages:
         displayName: 'Execute Unit Tests'
         inputs:
           command: test
-          projects: $(Pipeline.Workspace)\$(stageLocationName)\test\HatTrick.DbEx.MsSql.Test.Unit\*.csproj
+          projects: $(Build.SourcesDirectory)/test/HatTrick.DbEx.MsSql.Test.Unit/*.csproj
           arguments: '--configuration $(buildConfiguration) --logger --no--build "trx;LogFileName=mssql-core.tests.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Include="[HatTrick.DbEx.*Sql*]*" /p:Exclude="[*Test]*"'
       - task: PublishTestResults@2
         displayName: 'Publish Test Results to Temp'
         inputs:
           testResultsFormat: xUnit
-          testResultsFiles: $(Pipeline.Workspace)\$(stageLocationName)\TestResults\mssql-core.tests.trx
+          testResultsFiles: $(Build.SourcesDirectory)\TestResults\mssql-core.tests.trx
           testRunTitle: 'MSSQL (Core)'
           mergeTestResults: true
           failTaskOnFailedTests: true
-      - task: CopyFiles@2
-        displayName: 'Copy Code Coverage Files to Temp'
-        inputs:
-          contents: '*.cobertura.xml'
-          sourceFolder: $(Pipeline.Workspace)\$(stageLocationName)\test\HatTrick.DbEx.MsSql.Test.Unit
-          targetFolder: $(Pipeline.Workspace)\$(stageLocationName)\tmp
       - task: PublishPipelineArtifact@1
         displayName: 'Publish Code Coverage Files to Staging Location'
         inputs:
-          targetPath: $(Pipeline.Workspace)\$(stageLocationName)\tmp
+          targetPath: $(Build.SourcesDirectory)/test/HatTrick.DbEx.MsSql.Test.Unit
           artifactName: mssql-core-results
+      - publish: $(Build.SourcesDirectory)
+        displayName: 'Publish to Staging Location'
+        artifact: $(stageLocationName)
+      
  
   - stage: Test_MsSql_Integration
     pool:
