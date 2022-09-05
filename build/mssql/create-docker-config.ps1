@@ -2,11 +2,11 @@ Param
     (
         [Parameter(Mandatory,ValueFromPipelineByPropertyName)]
         [string]$MSSQL_VERSION,		
-		[Parameter(Mandatory,ValueFromPipelineByPropertyName)]
+        [Parameter(Mandatory,ValueFromPipelineByPropertyName)]
         [string]$BUILD_CONFIGURATION,		
-		[Parameter(Mandatory,ValueFromPipelineByPropertyName)]
+        [Parameter(Mandatory,ValueFromPipelineByPropertyName)]
         [string]$TARGET_FRAMEWORK_MONIKER,		
-		[Parameter(Mandatory,ValueFromPipelineByPropertyName)]
+        [Parameter(Mandatory,ValueFromPipelineByPropertyName)]
         [string]$ROOT_PATH
     )
 
