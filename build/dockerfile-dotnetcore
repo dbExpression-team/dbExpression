@@ -1,13 +1,4 @@
-ARG TARGET_FRAMEWORK_MONIKER
-
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS unit_test_build
-
-COPY build/dotnet-install.sh .
-RUN chmod +x /dotnet-install.sh
-sed $'s/\r$//' ./dotnet-install.sh > ./dotnet-install.unix.sh
-RUN chmod +x /dotnet-install.unix.sh
-RUN ./dotnet-install.unix.sh -c 7.0.100-preview.7.22377.5
-RUN ./dotnet-install.unix.sh -c net462
 
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.5.0/wait /wait
 RUN chmod +x /wait
