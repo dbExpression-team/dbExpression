@@ -84,7 +84,7 @@ stages:
   - stage: Test_MsSql_Integration
     pool:
       vmImage: 'ubuntu-latest'
-    dependsOn: Build
+    dependsOn: Build_and_Test
     displayName: 'Test MSSQL Platforms'
     jobs:
     - template: build/mssql/mssql-integration-testing-template.yml
