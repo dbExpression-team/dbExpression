@@ -57,7 +57,7 @@ stages:
         inputs:
           command: test
           projects: $(Build.SourcesDirectory)/test/HatTrick.DbEx.MsSql.Test.Unit/HatTrick.DbEx.MsSql.Test.Unit.csproj
-          arguments: '--configuration $(buildConfiguration) --no--build --logger "trx;LogFileName=mssql-core.tests.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Include="[HatTrick.DbEx.*Sql*]*" /p:Exclude="[*Test]*"'
+          arguments: '--configuration $(buildConfiguration) --logger "trx;LogFileName=mssql-core.tests.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Include="[HatTrick.DbEx.*Sql*]*" /p:Exclude="[*Test]*"'
       - task: PublishTestResults@2
         displayName: 'Publish Test Results to Temp'
         inputs:
