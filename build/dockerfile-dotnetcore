@@ -1,5 +1,9 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS unit_test_build
 
+COPY build/dotnet-install.sh .
+
+RUN ./dotnet-install.sh -c 7.0.100-preview.7.22377.5
+
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.5.0/wait /wait
 RUN chmod +x /wait 
 
