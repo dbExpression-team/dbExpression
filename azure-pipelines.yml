@@ -38,6 +38,12 @@ stages:
     - job:
       displayName: 'Build, Test, and Publish'
       steps:
+      - task: UseDotNet@2
+        displayName: 'Install .NET 6.0 SDK'
+        inputs:
+          packageType: sdk
+          version: '6.0.400'
+          installationPath: $(Agent.ToolsDirectory)/dotnet
       # remove this task when .NET 7.0 is included with windows-latest vmImage
       - task: UseDotNet@2
         displayName: 'Install .NET 7.0 SDK'
@@ -73,8 +79,7 @@ stages:
           artifactName: mssql-core-results
       - publish: $(Build.SourcesDirectory)
         displayName: 'Publish to Staging Location'
-        artifact: $(stageLocationName)
-      
+        artifact: $(stageLocationName)      
  
   - stage: Test_MsSql_Integration
     pool:
