@@ -41,7 +41,6 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using MsSqlServices = HatTrick.DbEx.MsSql.Configuration.SqlDatabaseRuntimeServiceBuilderExtensions;
 
-[assembly:System.Runtime.CompilerServices.InternalsVisibleTo("HatTrick.DbEx.MsSql.Test")]
 namespace HatTrick.DbEx.MsSql.Configuration
 {
     public static partial class SqlDatabaseRuntimeServiceBuilderExtensions

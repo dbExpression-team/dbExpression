@@ -1121,7 +1121,7 @@ namespace Profiling.MsSql.DataService
 
         #region interface
         ISqlDatabaseMetadataProvider ISqlDatabaseRuntime.MetadataProvider => _metadata;
-        public static string Version { get { return "2019"; }}
+        public static string Version => "2019";
         public MsSqlFunctionExpressionBuilder fx => _fx;
         public ProfilingDatabaseStoredProcedures sp => _sp ?? (_sp = new ProfilingDatabaseStoredProcedures(this, _schemas));
         #endregion

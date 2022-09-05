@@ -1147,7 +1147,7 @@ namespace DbEx.DataService
 
         #region interface
         ISqlDatabaseMetadataProvider ISqlDatabaseRuntime.MetadataProvider => _metadata;
-        public static string Version { get { return "2019"; }}
+        public static string Version => "2019";
         public MsSqlFunctionExpressionBuilder fx => _fx;
         public MsSqlDbStoredProcedures sp => _sp ?? (_sp = new MsSqlDbStoredProcedures(this, _schemas));
         #endregion

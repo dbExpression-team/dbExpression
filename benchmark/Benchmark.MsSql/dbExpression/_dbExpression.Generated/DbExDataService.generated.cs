@@ -1121,7 +1121,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
 
         #region interface
         ISqlDatabaseMetadataProvider ISqlDatabaseRuntime.MetadataProvider => _metadata;
-        public static string Version { get { return "2019"; }}
+        public static string Version => "2019";
         public MsSqlFunctionExpressionBuilder fx => _fx;
         public BenchmarkDatabaseStoredProcedures sp => _sp ?? (_sp = new BenchmarkDatabaseStoredProcedures(this, _schemas));
         #endregion

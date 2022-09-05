@@ -1121,7 +1121,7 @@ namespace ServerSideBlazorApp.DataService
 
         #region interface
         ISqlDatabaseMetadataProvider ISqlDatabaseRuntime.MetadataProvider => _metadata;
-        public static string Version { get { return "2019"; }}
+        public static string Version => "2019";
         public MsSqlFunctionExpressionBuilder fx => _fx;
         public CRMDatabaseStoredProcedures sp => _sp ?? (_sp = new CRMDatabaseStoredProcedures(this, _schemas));
         #endregion
