@@ -1163,7 +1163,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
             => db.UseDatabase(this);
 
         protected IQueryExpressionBuilder<BenchmarkDatabase> GetBuilder()
-            => _queryExpressionBuilderFactory.CreateQueryExpressionBuilder(this);
+            => _queryExpressionBuilderFactory.CreateQueryExpressionBuilder();
 
         #region select one
         /// <summary>

@@ -1163,7 +1163,7 @@ namespace Profiling.MsSql.DataService
             => db.UseDatabase(this);
 
         protected IQueryExpressionBuilder<ProfilingDatabase> GetBuilder()
-            => _queryExpressionBuilderFactory.CreateQueryExpressionBuilder(this);
+            => _queryExpressionBuilderFactory.CreateQueryExpressionBuilder();
 
         #region select one
         /// <summary>

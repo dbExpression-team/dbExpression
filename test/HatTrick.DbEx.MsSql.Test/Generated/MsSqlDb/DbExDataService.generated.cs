@@ -1199,7 +1199,7 @@ namespace DbEx.DataService
             => db.UseDatabase(this);
 
         protected IQueryExpressionBuilder<MsSqlDb> GetBuilder()
-            => _queryExpressionBuilderFactory.CreateQueryExpressionBuilder(this);
+            => _queryExpressionBuilderFactory.CreateQueryExpressionBuilder();
 
         #region select one
         /// <summary>
