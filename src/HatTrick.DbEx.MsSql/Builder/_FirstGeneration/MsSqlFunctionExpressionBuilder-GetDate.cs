@@ -24,15 +24,16 @@ using System;
 
 namespace HatTrick.DbEx.MsSql.Builder
 {
-    public partial class MsSqlFunctionExpressionBuilder
+    public partial class FirstGenerationMsSqlFunctionExpressionBuilder
     {
-        private static readonly NewIdFunctionExpression newId = new();
+        private static readonly GetDateFunctionExpression getDate = new();
+
         /// <summary>
-        /// Construct an expression for the NEWID transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/sysutcdatetimeoffset-transact-sql">Microsoft docs on NEWID</see></para>
+        /// Construct an expression for the GETDATE transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/getdate-transact-sql">Microsoft docs on GETDATE</see></para>
         /// </summary>
-        /// <returns><see cref="NewIdFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Guid}"/>.</returns>
-        public NewIdFunctionExpression NewId()
-             => newId;
+        /// <returns><see cref="GetDateFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{DateTime}"/>.</returns>
+        public GetDateFunctionExpression GetDate()
+            => getDate;
     }
 }

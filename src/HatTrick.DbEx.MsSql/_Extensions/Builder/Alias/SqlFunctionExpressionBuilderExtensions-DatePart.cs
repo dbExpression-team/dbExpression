@@ -32,7 +32,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
         /// <param name="datePart">A <see cref="DateParts"/> specifying the date value to extract from <paramref name="element"/>.</param>
         /// <param name="element">An alias of an expression to return the <paramref name="datePart"/> from.</param>
         /// <returns><see cref="NullableInt32DatePartFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{DateTime}"/>?.</returns>
-        public static NullableInt32DatePartFunctionExpression DatePart(this MsSqlFunctionExpressionBuilder _, DateParts datePart, (string TableName, string FieldName) element)
+        public static NullableInt32DatePartFunctionExpression DatePart(this FirstGenerationMsSqlFunctionExpressionBuilder _, DateParts datePart, (string TableName, string FieldName) element)
             => new(new DatePartsExpression<DateParts>(datePart), new AliasExpression<DateTime?>(element));        
     }
 }

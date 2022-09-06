@@ -24,16 +24,16 @@ using System;
 
 namespace HatTrick.DbEx.MsSql.Builder
 {
-    public partial class MsSqlFunctionExpressionBuilder
+    public partial class FirstGenerationMsSqlFunctionExpressionBuilder
     {
-        private static readonly SysUtcDateTimeFunctionExpression sysUtcDateTime = new();
+        private static readonly SysDateTimeFunctionExpression sysDateTime = new();
 
         /// <summary>
-        /// Construct an expression for the SYSUTCDATETIME transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/sysutcdatetimeoffset-transact-sql">Microsoft docs on SYSUTCDATETIME</see></para>
+        /// Construct an expression for the SYSDATETIME transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/sysdatetime-transact-sql">Microsoft docs on SYSDATETIME</see></para>
         /// </summary>
-        /// <returns><see cref="SysUtcDateTimeFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{DateTime}"/>.</returns>
-        public SysUtcDateTimeFunctionExpression SysUtcDateTime()
-            => sysUtcDateTime;
+        /// <returns><see cref="SysDateTimeFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{DateTime}"/>.</returns>
+        public SysDateTimeFunctionExpression SysDateTime()
+            => sysDateTime;
     }
 }

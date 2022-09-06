@@ -31,7 +31,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
         /// </summary>
         /// <param name="element">An alias of an expression for determining the number of characters, excluding trailing spaces.</param>
         /// <returns><see cref="Int64LengthFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>.</returns>
-        public static NullableInt64LengthFunctionExpression Len(this MsSqlFunctionExpressionBuilder _, (string TableName, string FieldName) element)
+        public static NullableInt64LengthFunctionExpression Len(this FirstGenerationMsSqlFunctionExpressionBuilder _, (string TableName, string FieldName) element)
             => new(new AliasExpression<string?>(element));        
     }
 }

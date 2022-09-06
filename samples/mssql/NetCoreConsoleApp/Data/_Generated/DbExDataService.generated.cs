@@ -7,6 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using HatTrick.DbEx.MsSql.Builder;
+using HatTrick.DbEx.MsSql.Builder.v2019;
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Builder;
 using HatTrick.DbEx.Sql.Connection;
