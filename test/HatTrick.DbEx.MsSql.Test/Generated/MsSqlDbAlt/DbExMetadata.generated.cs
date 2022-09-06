@@ -30,276 +30,1642 @@ namespace DbExAlt.DataService
         static MsSqlDbAltSqlDatabaseMetadata()
         {
             #region dbo schema
-            _metadata.Add(1, new SqlSchemaMetadata("dbo"));
+            _metadata.Add(1, new SqlSchemaMetadata(name:"dbo"));
             
             #region dbo entities
             #region dbo.AccessAuditLog
-            _metadata.Add(2, new SqlTableMetadata("AccessAuditLog"));
-            _metadata.Add(3, new MsSqlColumnMetadata("Id", SqlDbType.Int) { IsIdentity = true });
-            _metadata.Add(4, new MsSqlColumnMetadata("PersonId", SqlDbType.Int));
-            _metadata.Add(5, new MsSqlColumnMetadata("AccessResult", SqlDbType.Int));
-            _metadata.Add(6, new MsSqlColumnMetadata("DateCreated", SqlDbType.DateTime));
+            // dbo.AccessAuditLog
+            _metadata.Add(2, new SqlTableMetadata(name:"AccessAuditLog"));
+
+            // dbo.AccessAuditLog.Id
+            _metadata.Add(3, new MsSqlColumnMetadata(
+                        name:"Id", 
+                        dbType:SqlDbType.Int
+                    ) 
+                    { 
+                        IsIdentity = true 
+                    }
+                );
+
+            // dbo.AccessAuditLog.PersonId
+            _metadata.Add(4, new MsSqlColumnMetadata(
+                        name:"PersonId", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.AccessAuditLog.AccessResult
+            _metadata.Add(5, new MsSqlColumnMetadata(
+                        name:"AccessResult", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.AccessAuditLog.DateCreated
+            _metadata.Add(6, new MsSqlColumnMetadata(
+                        name:"DateCreated", 
+                        dbType:SqlDbType.DateTime
+                    )
+                );
+
             #endregion
 
             #region dbo.Address
-            _metadata.Add(7, new SqlTableMetadata("Address"));
-            _metadata.Add(8, new MsSqlColumnMetadata("Id", SqlDbType.Int) { IsIdentity = true });
-            _metadata.Add(9, new MsSqlColumnMetadata("AddressType", SqlDbType.Int));
-            _metadata.Add(10, new MsSqlColumnMetadata("Line1", SqlDbType.VarChar, 50));
-            _metadata.Add(11, new MsSqlColumnMetadata("Line2", SqlDbType.VarChar, 50));
-            _metadata.Add(12, new MsSqlColumnMetadata("City", SqlDbType.VarChar, 60));
-            _metadata.Add(13, new MsSqlColumnMetadata("State", SqlDbType.Char, 2));
-            _metadata.Add(14, new MsSqlColumnMetadata("Zip", SqlDbType.VarChar, 10));
-            _metadata.Add(15, new MsSqlColumnMetadata("DateCreated", SqlDbType.DateTime));
-            _metadata.Add(16, new MsSqlColumnMetadata("DateUpdated", SqlDbType.DateTime));
+            // dbo.Address
+            _metadata.Add(7, new SqlTableMetadata(name:"Address"));
+
+            // dbo.Address.Id
+            _metadata.Add(8, new MsSqlColumnMetadata(
+                        name:"Id", 
+                        dbType:SqlDbType.Int
+                    ) 
+                    { 
+                        IsIdentity = true 
+                    }
+                );
+
+            // dbo.Address.AddressType
+            _metadata.Add(9, new MsSqlColumnMetadata(
+                        name:"AddressType", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.Address.Line1
+            _metadata.Add(10, new MsSqlColumnMetadata(
+                        name:"Line1", 
+                        dbType:SqlDbType.VarChar, 
+                        size:50
+                    )
+                );
+
+            // dbo.Address.Line2
+            _metadata.Add(11, new MsSqlColumnMetadata(
+                        name:"Line2", 
+                        dbType:SqlDbType.VarChar, 
+                        size:50
+                    )
+                );
+
+            // dbo.Address.City
+            _metadata.Add(12, new MsSqlColumnMetadata(
+                        name:"City", 
+                        dbType:SqlDbType.VarChar, 
+                        size:60
+                    )
+                );
+
+            // dbo.Address.State
+            _metadata.Add(13, new MsSqlColumnMetadata(
+                        name:"State", 
+                        dbType:SqlDbType.Char, 
+                        size:2
+                    )
+                );
+
+            // dbo.Address.Zip
+            _metadata.Add(14, new MsSqlColumnMetadata(
+                        name:"Zip", 
+                        dbType:SqlDbType.VarChar, 
+                        size:10
+                    )
+                );
+
+            // dbo.Address.DateCreated
+            _metadata.Add(15, new MsSqlColumnMetadata(
+                        name:"DateCreated", 
+                        dbType:SqlDbType.DateTime
+                    )
+                );
+
+            // dbo.Address.DateUpdated
+            _metadata.Add(16, new MsSqlColumnMetadata(
+                        name:"DateUpdated", 
+                        dbType:SqlDbType.DateTime
+                    )
+                );
+
             #endregion
 
             #region dbo.Person
-            _metadata.Add(17, new SqlTableMetadata("Person"));
-            _metadata.Add(18, new MsSqlColumnMetadata("Id", SqlDbType.Int) { IsIdentity = true });
-            _metadata.Add(19, new MsSqlColumnMetadata("FirstName", SqlDbType.VarChar, 20));
-            _metadata.Add(20, new MsSqlColumnMetadata("LastName", SqlDbType.VarChar, 20));
-            _metadata.Add(21, new MsSqlColumnMetadata("BirthDate", SqlDbType.Date));
-            _metadata.Add(22, new MsSqlColumnMetadata("GenderType", SqlDbType.Int));
-            _metadata.Add(23, new MsSqlColumnMetadata("CreditLimit", SqlDbType.Int));
-            _metadata.Add(24, new MsSqlColumnMetadata("YearOfLastCreditLimitReview", SqlDbType.Int));
-            _metadata.Add(25, new MsSqlColumnMetadata("RegistrationDate", SqlDbType.DateTimeOffset, 10));
-            _metadata.Add(26, new MsSqlColumnMetadata("LastLoginDate", SqlDbType.DateTimeOffset, 10));
-            _metadata.Add(27, new MsSqlColumnMetadata("DateCreated", SqlDbType.DateTime));
-            _metadata.Add(28, new MsSqlColumnMetadata("DateUpdated", SqlDbType.DateTime));
+            // dbo.Person
+            _metadata.Add(17, new SqlTableMetadata(name:"Person"));
+
+            // dbo.Person.Id
+            _metadata.Add(18, new MsSqlColumnMetadata(
+                        name:"Id", 
+                        dbType:SqlDbType.Int
+                    ) 
+                    { 
+                        IsIdentity = true 
+                    }
+                );
+
+            // dbo.Person.FirstName
+            _metadata.Add(19, new MsSqlColumnMetadata(
+                        name:"FirstName", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // dbo.Person.LastName
+            _metadata.Add(20, new MsSqlColumnMetadata(
+                        name:"LastName", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // dbo.Person.BirthDate
+            _metadata.Add(21, new MsSqlColumnMetadata(
+                        name:"BirthDate", 
+                        dbType:SqlDbType.Date
+                    )
+                );
+
+            // dbo.Person.GenderType
+            _metadata.Add(22, new MsSqlColumnMetadata(
+                        name:"GenderType", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.Person.CreditLimit
+            _metadata.Add(23, new MsSqlColumnMetadata(
+                        name:"CreditLimit", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.Person.YearOfLastCreditLimitReview
+            _metadata.Add(24, new MsSqlColumnMetadata(
+                        name:"YearOfLastCreditLimitReview", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.Person.RegistrationDate
+            _metadata.Add(25, new MsSqlColumnMetadata(
+                        name:"RegistrationDate", 
+                        dbType:SqlDbType.DateTimeOffset, 
+                        size:10
+                    )
+                );
+
+            // dbo.Person.LastLoginDate
+            _metadata.Add(26, new MsSqlColumnMetadata(
+                        name:"LastLoginDate", 
+                        dbType:SqlDbType.DateTimeOffset, 
+                        size:10
+                    )
+                );
+
+            // dbo.Person.DateCreated
+            _metadata.Add(27, new MsSqlColumnMetadata(
+                        name:"DateCreated", 
+                        dbType:SqlDbType.DateTime
+                    )
+                );
+
+            // dbo.Person.DateUpdated
+            _metadata.Add(28, new MsSqlColumnMetadata(
+                        name:"DateUpdated", 
+                        dbType:SqlDbType.DateTime
+                    )
+                );
+
             #endregion
 
             #region dbo.Person_Address
-            _metadata.Add(29, new SqlTableMetadata("Person_Address"));
-            _metadata.Add(30, new MsSqlColumnMetadata("Id", SqlDbType.Int) { IsIdentity = true });
-            _metadata.Add(31, new MsSqlColumnMetadata("PersonId", SqlDbType.Int));
-            _metadata.Add(32, new MsSqlColumnMetadata("AddressId", SqlDbType.Int));
-            _metadata.Add(33, new MsSqlColumnMetadata("DateCreated", SqlDbType.DateTime));
+            // dbo.Person_Address
+            _metadata.Add(29, new SqlTableMetadata(name:"Person_Address"));
+
+            // dbo.Person_Address.Id
+            _metadata.Add(30, new MsSqlColumnMetadata(
+                        name:"Id", 
+                        dbType:SqlDbType.Int
+                    ) 
+                    { 
+                        IsIdentity = true 
+                    }
+                );
+
+            // dbo.Person_Address.PersonId
+            _metadata.Add(31, new MsSqlColumnMetadata(
+                        name:"PersonId", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.Person_Address.AddressId
+            _metadata.Add(32, new MsSqlColumnMetadata(
+                        name:"AddressId", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.Person_Address.DateCreated
+            _metadata.Add(33, new MsSqlColumnMetadata(
+                        name:"DateCreated", 
+                        dbType:SqlDbType.DateTime
+                    )
+                );
+
             #endregion
 
             #region dbo.Product
-            _metadata.Add(34, new SqlTableMetadata("Product"));
-            _metadata.Add(35, new MsSqlColumnMetadata("Id", SqlDbType.Int) { IsIdentity = true });
-            _metadata.Add(36, new MsSqlColumnMetadata("ProductCategoryType", SqlDbType.Int));
-            _metadata.Add(37, new MsSqlColumnMetadata("Name", SqlDbType.VarChar, 80));
-            _metadata.Add(38, new MsSqlColumnMetadata("Description", SqlDbType.NVarChar, 4000));
-            _metadata.Add(39, new MsSqlColumnMetadata("ListPrice", SqlDbType.Money));
-            _metadata.Add(40, new MsSqlColumnMetadata("Price", SqlDbType.Money));
-            _metadata.Add(41, new MsSqlColumnMetadata("Quantity", SqlDbType.Int));
-            _metadata.Add(42, new MsSqlColumnMetadata("Image", SqlDbType.VarBinary, -1));
-            _metadata.Add(43, new MsSqlColumnMetadata("Height", SqlDbType.Decimal, 4, 1));
-            _metadata.Add(44, new MsSqlColumnMetadata("Width", SqlDbType.Decimal, 4, 1));
-            _metadata.Add(45, new MsSqlColumnMetadata("Depth", SqlDbType.Decimal, 4, 1));
-            _metadata.Add(46, new MsSqlColumnMetadata("Weight", SqlDbType.Decimal, 4, 1));
-            _metadata.Add(47, new MsSqlColumnMetadata("ShippingWeight", SqlDbType.Decimal, 4, 1));
-            _metadata.Add(48, new MsSqlColumnMetadata("ValidStartTimeOfDayForPurchase", SqlDbType.Time, 5));
-            _metadata.Add(49, new MsSqlColumnMetadata("ValidEndTimeOfDayForPurchase", SqlDbType.Time, 5));
-            _metadata.Add(50, new MsSqlColumnMetadata("DateCreated", SqlDbType.DateTime));
-            _metadata.Add(51, new MsSqlColumnMetadata("DateUpdated", SqlDbType.DateTime));
+            // dbo.Product
+            _metadata.Add(34, new SqlTableMetadata(name:"Product"));
+
+            // dbo.Product.Id
+            _metadata.Add(35, new MsSqlColumnMetadata(
+                        name:"Id", 
+                        dbType:SqlDbType.Int
+                    ) 
+                    { 
+                        IsIdentity = true 
+                    }
+                );
+
+            // dbo.Product.ProductCategoryType
+            _metadata.Add(36, new MsSqlColumnMetadata(
+                        name:"ProductCategoryType", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.Product.Name
+            _metadata.Add(37, new MsSqlColumnMetadata(
+                        name:"Name", 
+                        dbType:SqlDbType.VarChar, 
+                        size:80
+                    )
+                );
+
+            // dbo.Product.Description
+            _metadata.Add(38, new MsSqlColumnMetadata(
+                        name:"Description", 
+                        dbType:SqlDbType.NVarChar, 
+                        size:4000
+                    )
+                );
+
+            // dbo.Product.ListPrice
+            _metadata.Add(39, new MsSqlColumnMetadata(
+                        name:"ListPrice", 
+                        dbType:SqlDbType.Money
+                    )
+                );
+
+            // dbo.Product.Price
+            _metadata.Add(40, new MsSqlColumnMetadata(
+                        name:"Price", 
+                        dbType:SqlDbType.Money
+                    )
+                );
+
+            // dbo.Product.Quantity
+            _metadata.Add(41, new MsSqlColumnMetadata(
+                        name:"Quantity", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.Product.Image
+            _metadata.Add(42, new MsSqlColumnMetadata(
+                        name:"Image", 
+                        dbType:SqlDbType.VarBinary, 
+                        size:-1
+                    )
+                );
+
+            // dbo.Product.Height
+            _metadata.Add(43, new MsSqlColumnMetadata(
+                        name:"Height", 
+                        dbType:SqlDbType.Decimal, 
+                        precision:4, 
+                        scale:1
+                    )
+                );
+
+            // dbo.Product.Width
+            _metadata.Add(44, new MsSqlColumnMetadata(
+                        name:"Width", 
+                        dbType:SqlDbType.Decimal, 
+                        precision:4, 
+                        scale:1
+                    )
+                );
+
+            // dbo.Product.Depth
+            _metadata.Add(45, new MsSqlColumnMetadata(
+                        name:"Depth", 
+                        dbType:SqlDbType.Decimal, 
+                        precision:4, 
+                        scale:1
+                    )
+                );
+
+            // dbo.Product.Weight
+            _metadata.Add(46, new MsSqlColumnMetadata(
+                        name:"Weight", 
+                        dbType:SqlDbType.Decimal, 
+                        precision:4, 
+                        scale:1
+                    )
+                );
+
+            // dbo.Product.ShippingWeight
+            _metadata.Add(47, new MsSqlColumnMetadata(
+                        name:"ShippingWeight", 
+                        dbType:SqlDbType.Decimal, 
+                        precision:4, 
+                        scale:1
+                    )
+                );
+
+            // dbo.Product.ValidStartTimeOfDayForPurchase
+            _metadata.Add(48, new MsSqlColumnMetadata(
+                        name:"ValidStartTimeOfDayForPurchase", 
+                        dbType:SqlDbType.Time, 
+                        size:5
+                    )
+                );
+
+            // dbo.Product.ValidEndTimeOfDayForPurchase
+            _metadata.Add(49, new MsSqlColumnMetadata(
+                        name:"ValidEndTimeOfDayForPurchase", 
+                        dbType:SqlDbType.Time, 
+                        size:5
+                    )
+                );
+
+            // dbo.Product.DateCreated
+            _metadata.Add(50, new MsSqlColumnMetadata(
+                        name:"DateCreated", 
+                        dbType:SqlDbType.DateTime
+                    )
+                );
+
+            // dbo.Product.DateUpdated
+            _metadata.Add(51, new MsSqlColumnMetadata(
+                        name:"DateUpdated", 
+                        dbType:SqlDbType.DateTime
+                    )
+                );
+
             #endregion
 
             #region dbo.Purchase
-            _metadata.Add(52, new SqlTableMetadata("Purchase"));
-            _metadata.Add(53, new MsSqlColumnMetadata("Id", SqlDbType.Int) { IsIdentity = true });
-            _metadata.Add(54, new MsSqlColumnMetadata("PersonId", SqlDbType.Int));
-            _metadata.Add(55, new MsSqlColumnMetadata("OrderNumber", SqlDbType.VarChar, 20));
-            _metadata.Add(56, new MsSqlColumnMetadata("TotalPurchaseQuantity", SqlDbType.Int));
-            _metadata.Add(57, new MsSqlColumnMetadata("TotalPurchaseAmount", SqlDbType.Money));
-            _metadata.Add(58, new MsSqlColumnMetadata("PurchaseDate", SqlDbType.DateTime));
-            _metadata.Add(59, new MsSqlColumnMetadata("ShipDate", SqlDbType.DateTime));
-            _metadata.Add(60, new MsSqlColumnMetadata("ExpectedDeliveryDate", SqlDbType.DateTime));
-            _metadata.Add(61, new MsSqlColumnMetadata("TrackingIdentifier", SqlDbType.UniqueIdentifier));
-            _metadata.Add(62, new MsSqlColumnMetadata("PaymentMethodType", SqlDbType.VarChar, 20));
-            _metadata.Add(63, new MsSqlColumnMetadata("PaymentSourceType", SqlDbType.VarChar, 20));
-            _metadata.Add(64, new MsSqlColumnMetadata("DateCreated", SqlDbType.DateTime));
-            _metadata.Add(65, new MsSqlColumnMetadata("DateUpdated", SqlDbType.DateTime));
+            // dbo.Purchase
+            _metadata.Add(52, new SqlTableMetadata(name:"Purchase"));
+
+            // dbo.Purchase.Id
+            _metadata.Add(53, new MsSqlColumnMetadata(
+                        name:"Id", 
+                        dbType:SqlDbType.Int
+                    ) 
+                    { 
+                        IsIdentity = true 
+                    }
+                );
+
+            // dbo.Purchase.PersonId
+            _metadata.Add(54, new MsSqlColumnMetadata(
+                        name:"PersonId", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.Purchase.OrderNumber
+            _metadata.Add(55, new MsSqlColumnMetadata(
+                        name:"OrderNumber", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // dbo.Purchase.TotalPurchaseQuantity
+            _metadata.Add(56, new MsSqlColumnMetadata(
+                        name:"TotalPurchaseQuantity", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.Purchase.TotalPurchaseAmount
+            _metadata.Add(57, new MsSqlColumnMetadata(
+                        name:"TotalPurchaseAmount", 
+                        dbType:SqlDbType.Money
+                    )
+                );
+
+            // dbo.Purchase.PurchaseDate
+            _metadata.Add(58, new MsSqlColumnMetadata(
+                        name:"PurchaseDate", 
+                        dbType:SqlDbType.DateTime
+                    )
+                );
+
+            // dbo.Purchase.ShipDate
+            _metadata.Add(59, new MsSqlColumnMetadata(
+                        name:"ShipDate", 
+                        dbType:SqlDbType.DateTime
+                    )
+                );
+
+            // dbo.Purchase.ExpectedDeliveryDate
+            _metadata.Add(60, new MsSqlColumnMetadata(
+                        name:"ExpectedDeliveryDate", 
+                        dbType:SqlDbType.DateTime
+                    )
+                );
+
+            // dbo.Purchase.TrackingIdentifier
+            _metadata.Add(61, new MsSqlColumnMetadata(
+                        name:"TrackingIdentifier", 
+                        dbType:SqlDbType.UniqueIdentifier
+                    )
+                );
+
+            // dbo.Purchase.PaymentMethodType
+            _metadata.Add(62, new MsSqlColumnMetadata(
+                        name:"PaymentMethodType", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // dbo.Purchase.PaymentSourceType
+            _metadata.Add(63, new MsSqlColumnMetadata(
+                        name:"PaymentSourceType", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // dbo.Purchase.DateCreated
+            _metadata.Add(64, new MsSqlColumnMetadata(
+                        name:"DateCreated", 
+                        dbType:SqlDbType.DateTime
+                    )
+                );
+
+            // dbo.Purchase.DateUpdated
+            _metadata.Add(65, new MsSqlColumnMetadata(
+                        name:"DateUpdated", 
+                        dbType:SqlDbType.DateTime
+                    )
+                );
+
             #endregion
 
             #region dbo.PurchaseLine
-            _metadata.Add(66, new SqlTableMetadata("PurchaseLine"));
-            _metadata.Add(67, new MsSqlColumnMetadata("Id", SqlDbType.Int) { IsIdentity = true });
-            _metadata.Add(68, new MsSqlColumnMetadata("PurchaseId", SqlDbType.Int));
-            _metadata.Add(69, new MsSqlColumnMetadata("ProductId", SqlDbType.Int));
-            _metadata.Add(70, new MsSqlColumnMetadata("PurchasePrice", SqlDbType.Decimal, 12, 2));
-            _metadata.Add(71, new MsSqlColumnMetadata("Quantity", SqlDbType.Int));
-            _metadata.Add(72, new MsSqlColumnMetadata("DateCreated", SqlDbType.DateTime));
-            _metadata.Add(73, new MsSqlColumnMetadata("DateUpdated", SqlDbType.DateTime));
+            // dbo.PurchaseLine
+            _metadata.Add(66, new SqlTableMetadata(name:"PurchaseLine"));
+
+            // dbo.PurchaseLine.Id
+            _metadata.Add(67, new MsSqlColumnMetadata(
+                        name:"Id", 
+                        dbType:SqlDbType.Int
+                    ) 
+                    { 
+                        IsIdentity = true 
+                    }
+                );
+
+            // dbo.PurchaseLine.PurchaseId
+            _metadata.Add(68, new MsSqlColumnMetadata(
+                        name:"PurchaseId", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.PurchaseLine.ProductId
+            _metadata.Add(69, new MsSqlColumnMetadata(
+                        name:"ProductId", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.PurchaseLine.PurchasePrice
+            _metadata.Add(70, new MsSqlColumnMetadata(
+                        name:"PurchasePrice", 
+                        dbType:SqlDbType.Decimal, 
+                        precision:12, 
+                        scale:2
+                    )
+                );
+
+            // dbo.PurchaseLine.Quantity
+            _metadata.Add(71, new MsSqlColumnMetadata(
+                        name:"Quantity", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.PurchaseLine.DateCreated
+            _metadata.Add(72, new MsSqlColumnMetadata(
+                        name:"DateCreated", 
+                        dbType:SqlDbType.DateTime
+                    )
+                );
+
+            // dbo.PurchaseLine.DateUpdated
+            _metadata.Add(73, new MsSqlColumnMetadata(
+                        name:"DateUpdated", 
+                        dbType:SqlDbType.DateTime
+                    )
+                );
+
             #endregion
 
             #region dbo.PersonTotalPurchasesView
-            _metadata.Add(74, new SqlTableMetadata("PersonTotalPurchasesView"));
-            _metadata.Add(75, new MsSqlColumnMetadata("Id", SqlDbType.Int));
-            _metadata.Add(76, new MsSqlColumnMetadata("TotalAmount", SqlDbType.Money));
-            _metadata.Add(77, new MsSqlColumnMetadata("TotalCount", SqlDbType.Int));
+            // dbo.PersonTotalPurchasesView
+            _metadata.Add(74, new SqlTableMetadata(name:"PersonTotalPurchasesView"));
+
+            // dbo.PersonTotalPurchasesView.Id
+            _metadata.Add(75, new MsSqlColumnMetadata(
+                        name:"Id", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.PersonTotalPurchasesView.TotalAmount
+            _metadata.Add(76, new MsSqlColumnMetadata(
+                        name:"TotalAmount", 
+                        dbType:SqlDbType.Money
+                    )
+                );
+
+            // dbo.PersonTotalPurchasesView.TotalCount
+            _metadata.Add(77, new MsSqlColumnMetadata(
+                        name:"TotalCount", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
             #endregion
 
             #endregion
 
             #region dbo stored procedures
-            _metadata.Add(78, new StoredProcedureMetadata("SelectPerson_As_Dynamic_With_Input"));
-            _metadata.Add(79, new MsSqlParameterMetadata("@P1", SqlDbType.Int));
-            _metadata.Add(80, new StoredProcedureMetadata("SelectPerson_As_Dynamic_With_Input_And_InputOutput"));
-            _metadata.Add(81, new MsSqlParameterMetadata("@P1", SqlDbType.Int));
-            _metadata.Add(82, new MsSqlParameterMetadata("@CreditLimit", SqlDbType.Int));
-            _metadata.Add(83, new StoredProcedureMetadata("SelectPerson_As_Dynamic_With_Input_And_Output"));
-            _metadata.Add(84, new MsSqlParameterMetadata("@P1", SqlDbType.Int));
-            _metadata.Add(85, new MsSqlParameterMetadata("@Count", SqlDbType.Int));
-            _metadata.Add(86, new StoredProcedureMetadata("SelectPerson_As_DynamicList_With_Input"));
-            _metadata.Add(87, new MsSqlParameterMetadata("@P1", SqlDbType.Int));
-            _metadata.Add(88, new StoredProcedureMetadata("SelectPerson_As_DynamicList_With_Input_And_InputOutput"));
-            _metadata.Add(89, new MsSqlParameterMetadata("@P1", SqlDbType.Int));
-            _metadata.Add(90, new MsSqlParameterMetadata("@CreditLimit", SqlDbType.Int));
-            _metadata.Add(91, new StoredProcedureMetadata("SelectPerson_As_DynamicList_With_Input_And_Output"));
-            _metadata.Add(92, new MsSqlParameterMetadata("@P1", SqlDbType.Int));
-            _metadata.Add(93, new MsSqlParameterMetadata("@Count", SqlDbType.Int));
-            _metadata.Add(94, new StoredProcedureMetadata("SelectPersonId_As_ScalarValue_With_Input"));
-            _metadata.Add(95, new MsSqlParameterMetadata("@P1", SqlDbType.Int));
-            _metadata.Add(96, new StoredProcedureMetadata("SelectPersonId_As_ScalarValue_With_Input_And_Default_Value"));
-            _metadata.Add(97, new StoredProcedureMetadata("SelectPersonId_As_ScalarValue_With_Input_And_InputOutput"));
-            _metadata.Add(98, new MsSqlParameterMetadata("@P1", SqlDbType.Int));
-            _metadata.Add(99, new MsSqlParameterMetadata("@CreditLimit", SqlDbType.Int));
-            _metadata.Add(100, new StoredProcedureMetadata("SelectPersonId_As_ScalarValue_With_Input_And_Output"));
-            _metadata.Add(101, new MsSqlParameterMetadata("@P1", SqlDbType.Int));
-            _metadata.Add(102, new MsSqlParameterMetadata("@Count", SqlDbType.Int));
-            _metadata.Add(103, new StoredProcedureMetadata("SelectPersonId_As_ScalarValueList_With_Input"));
-            _metadata.Add(104, new MsSqlParameterMetadata("@P1", SqlDbType.Int));
-            _metadata.Add(105, new StoredProcedureMetadata("SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput"));
-            _metadata.Add(106, new MsSqlParameterMetadata("@P1", SqlDbType.Int));
-            _metadata.Add(107, new MsSqlParameterMetadata("@CreditLimit", SqlDbType.Int));
-            _metadata.Add(108, new StoredProcedureMetadata("SelectPersonId_As_ScalarValueList_With_Input_And_Output"));
-            _metadata.Add(109, new MsSqlParameterMetadata("@P1", SqlDbType.Int));
-            _metadata.Add(110, new MsSqlParameterMetadata("@Count", SqlDbType.Int));
-            _metadata.Add(111, new StoredProcedureMetadata("UpdatePersonCreditLimit_With_Inputs"));
-            _metadata.Add(112, new MsSqlParameterMetadata("@P1", SqlDbType.Int));
-            _metadata.Add(113, new MsSqlParameterMetadata("@CreditLimit", SqlDbType.Int));
+            #region dbo.SelectPerson_As_Dynamic_With_Input
+            // dbo.SelectPerson_As_Dynamic_With_Input
+            _metadata.Add(78, new StoredProcedureMetadata(name:"SelectPerson_As_Dynamic_With_Input"));
+
+            // dbo.SelectPerson_As_Dynamic_With_Input.@P1
+            _metadata.Add(79, new MsSqlParameterMetadata(
+                        name:"@P1", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            #endregion
+
+            #region dbo.SelectPerson_As_Dynamic_With_Input_And_InputOutput
+            // dbo.SelectPerson_As_Dynamic_With_Input_And_InputOutput
+            _metadata.Add(80, new StoredProcedureMetadata(name:"SelectPerson_As_Dynamic_With_Input_And_InputOutput"));
+
+            // dbo.SelectPerson_As_Dynamic_With_Input_And_InputOutput.@P1
+            _metadata.Add(81, new MsSqlParameterMetadata(
+                        name:"@P1", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.SelectPerson_As_Dynamic_With_Input_And_InputOutput.@CreditLimit
+            _metadata.Add(82, new MsSqlParameterMetadata(
+                        name:"@CreditLimit", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            #endregion
+
+            #region dbo.SelectPerson_As_Dynamic_With_Input_And_Output
+            // dbo.SelectPerson_As_Dynamic_With_Input_And_Output
+            _metadata.Add(83, new StoredProcedureMetadata(name:"SelectPerson_As_Dynamic_With_Input_And_Output"));
+
+            // dbo.SelectPerson_As_Dynamic_With_Input_And_Output.@P1
+            _metadata.Add(84, new MsSqlParameterMetadata(
+                        name:"@P1", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.SelectPerson_As_Dynamic_With_Input_And_Output.@Count
+            _metadata.Add(85, new MsSqlParameterMetadata(
+                        name:"@Count", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            #endregion
+
+            #region dbo.SelectPerson_As_DynamicList_With_Input
+            // dbo.SelectPerson_As_DynamicList_With_Input
+            _metadata.Add(86, new StoredProcedureMetadata(name:"SelectPerson_As_DynamicList_With_Input"));
+
+            // dbo.SelectPerson_As_DynamicList_With_Input.@P1
+            _metadata.Add(87, new MsSqlParameterMetadata(
+                        name:"@P1", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            #endregion
+
+            #region dbo.SelectPerson_As_DynamicList_With_Input_And_InputOutput
+            // dbo.SelectPerson_As_DynamicList_With_Input_And_InputOutput
+            _metadata.Add(88, new StoredProcedureMetadata(name:"SelectPerson_As_DynamicList_With_Input_And_InputOutput"));
+
+            // dbo.SelectPerson_As_DynamicList_With_Input_And_InputOutput.@P1
+            _metadata.Add(89, new MsSqlParameterMetadata(
+                        name:"@P1", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.SelectPerson_As_DynamicList_With_Input_And_InputOutput.@CreditLimit
+            _metadata.Add(90, new MsSqlParameterMetadata(
+                        name:"@CreditLimit", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            #endregion
+
+            #region dbo.SelectPerson_As_DynamicList_With_Input_And_Output
+            // dbo.SelectPerson_As_DynamicList_With_Input_And_Output
+            _metadata.Add(91, new StoredProcedureMetadata(name:"SelectPerson_As_DynamicList_With_Input_And_Output"));
+
+            // dbo.SelectPerson_As_DynamicList_With_Input_And_Output.@P1
+            _metadata.Add(92, new MsSqlParameterMetadata(
+                        name:"@P1", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.SelectPerson_As_DynamicList_With_Input_And_Output.@Count
+            _metadata.Add(93, new MsSqlParameterMetadata(
+                        name:"@Count", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            #endregion
+
+            #region dbo.SelectPersonId_As_ScalarValue_With_Input
+            // dbo.SelectPersonId_As_ScalarValue_With_Input
+            _metadata.Add(94, new StoredProcedureMetadata(name:"SelectPersonId_As_ScalarValue_With_Input"));
+
+            // dbo.SelectPersonId_As_ScalarValue_With_Input.@P1
+            _metadata.Add(95, new MsSqlParameterMetadata(
+                        name:"@P1", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            #endregion
+
+            #region dbo.SelectPersonId_As_ScalarValue_With_Input_And_Default_Value
+            // dbo.SelectPersonId_As_ScalarValue_With_Input_And_Default_Value
+            _metadata.Add(96, new StoredProcedureMetadata(name:"SelectPersonId_As_ScalarValue_With_Input_And_Default_Value"));
+
+            #endregion
+
+            #region dbo.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput
+            // dbo.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput
+            _metadata.Add(97, new StoredProcedureMetadata(name:"SelectPersonId_As_ScalarValue_With_Input_And_InputOutput"));
+
+            // dbo.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput.@P1
+            _metadata.Add(98, new MsSqlParameterMetadata(
+                        name:"@P1", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput.@CreditLimit
+            _metadata.Add(99, new MsSqlParameterMetadata(
+                        name:"@CreditLimit", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            #endregion
+
+            #region dbo.SelectPersonId_As_ScalarValue_With_Input_And_Output
+            // dbo.SelectPersonId_As_ScalarValue_With_Input_And_Output
+            _metadata.Add(100, new StoredProcedureMetadata(name:"SelectPersonId_As_ScalarValue_With_Input_And_Output"));
+
+            // dbo.SelectPersonId_As_ScalarValue_With_Input_And_Output.@P1
+            _metadata.Add(101, new MsSqlParameterMetadata(
+                        name:"@P1", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.SelectPersonId_As_ScalarValue_With_Input_And_Output.@Count
+            _metadata.Add(102, new MsSqlParameterMetadata(
+                        name:"@Count", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            #endregion
+
+            #region dbo.SelectPersonId_As_ScalarValueList_With_Input
+            // dbo.SelectPersonId_As_ScalarValueList_With_Input
+            _metadata.Add(103, new StoredProcedureMetadata(name:"SelectPersonId_As_ScalarValueList_With_Input"));
+
+            // dbo.SelectPersonId_As_ScalarValueList_With_Input.@P1
+            _metadata.Add(104, new MsSqlParameterMetadata(
+                        name:"@P1", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            #endregion
+
+            #region dbo.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput
+            // dbo.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput
+            _metadata.Add(105, new StoredProcedureMetadata(name:"SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput"));
+
+            // dbo.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput.@P1
+            _metadata.Add(106, new MsSqlParameterMetadata(
+                        name:"@P1", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput.@CreditLimit
+            _metadata.Add(107, new MsSqlParameterMetadata(
+                        name:"@CreditLimit", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            #endregion
+
+            #region dbo.SelectPersonId_As_ScalarValueList_With_Input_And_Output
+            // dbo.SelectPersonId_As_ScalarValueList_With_Input_And_Output
+            _metadata.Add(108, new StoredProcedureMetadata(name:"SelectPersonId_As_ScalarValueList_With_Input_And_Output"));
+
+            // dbo.SelectPersonId_As_ScalarValueList_With_Input_And_Output.@P1
+            _metadata.Add(109, new MsSqlParameterMetadata(
+                        name:"@P1", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.SelectPersonId_As_ScalarValueList_With_Input_And_Output.@Count
+            _metadata.Add(110, new MsSqlParameterMetadata(
+                        name:"@Count", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            #endregion
+
+            #region dbo.UpdatePersonCreditLimit_With_Inputs
+            // dbo.UpdatePersonCreditLimit_With_Inputs
+            _metadata.Add(111, new StoredProcedureMetadata(name:"UpdatePersonCreditLimit_With_Inputs"));
+
+            // dbo.UpdatePersonCreditLimit_With_Inputs.@P1
+            _metadata.Add(112, new MsSqlParameterMetadata(
+                        name:"@P1", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.UpdatePersonCreditLimit_With_Inputs.@CreditLimit
+            _metadata.Add(113, new MsSqlParameterMetadata(
+                        name:"@CreditLimit", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            #endregion
+
             #endregion
             #endregion
 
             #region unit_test schema
-            _metadata.Add(114, new SqlSchemaMetadata("unit_test"));
+            _metadata.Add(114, new SqlSchemaMetadata(name:"unit_test"));
             
             #region unit_test entities
             #region unit_test.alias
-            _metadata.Add(115, new SqlTableMetadata("alias"));
-            _metadata.Add(116, new MsSqlColumnMetadata("identifier", SqlDbType.VarChar, 20));
-            _metadata.Add(117, new MsSqlColumnMetadata("_identifier", SqlDbType.VarChar, 20));
-            _metadata.Add(118, new MsSqlColumnMetadata("__identifier", SqlDbType.VarChar, 20));
-            _metadata.Add(119, new MsSqlColumnMetadata("name", SqlDbType.VarChar, 20));
-            _metadata.Add(120, new MsSqlColumnMetadata("_name", SqlDbType.VarChar, 20));
-            _metadata.Add(121, new MsSqlColumnMetadata("__name", SqlDbType.VarChar, 20));
-            _metadata.Add(122, new MsSqlColumnMetadata("schema", SqlDbType.VarChar, 20));
-            _metadata.Add(123, new MsSqlColumnMetadata("_schema", SqlDbType.VarChar, 20));
-            _metadata.Add(124, new MsSqlColumnMetadata("__schema", SqlDbType.VarChar, 20));
-            _metadata.Add(125, new MsSqlColumnMetadata("_alias", SqlDbType.VarChar, 20));
-            _metadata.Add(126, new MsSqlColumnMetadata("__alias", SqlDbType.VarChar, 20));
-            _metadata.Add(127, new MsSqlColumnMetadata("entity", SqlDbType.VarChar, 20));
-            _metadata.Add(128, new MsSqlColumnMetadata("_entity", SqlDbType.VarChar, 20));
-            _metadata.Add(129, new MsSqlColumnMetadata("__entity", SqlDbType.VarChar, 20));
+            // unit_test.alias
+            _metadata.Add(115, new SqlTableMetadata(name:"alias"));
+
+            // unit_test.alias.identifier
+            _metadata.Add(116, new MsSqlColumnMetadata(
+                        name:"identifier", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.alias._identifier
+            _metadata.Add(117, new MsSqlColumnMetadata(
+                        name:"_identifier", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.alias.__identifier
+            _metadata.Add(118, new MsSqlColumnMetadata(
+                        name:"__identifier", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.alias.name
+            _metadata.Add(119, new MsSqlColumnMetadata(
+                        name:"name", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.alias._name
+            _metadata.Add(120, new MsSqlColumnMetadata(
+                        name:"_name", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.alias.__name
+            _metadata.Add(121, new MsSqlColumnMetadata(
+                        name:"__name", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.alias.schema
+            _metadata.Add(122, new MsSqlColumnMetadata(
+                        name:"schema", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.alias._schema
+            _metadata.Add(123, new MsSqlColumnMetadata(
+                        name:"_schema", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.alias.__schema
+            _metadata.Add(124, new MsSqlColumnMetadata(
+                        name:"__schema", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.alias._alias
+            _metadata.Add(125, new MsSqlColumnMetadata(
+                        name:"_alias", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.alias.__alias
+            _metadata.Add(126, new MsSqlColumnMetadata(
+                        name:"__alias", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.alias.entity
+            _metadata.Add(127, new MsSqlColumnMetadata(
+                        name:"entity", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.alias._entity
+            _metadata.Add(128, new MsSqlColumnMetadata(
+                        name:"_entity", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.alias.__entity
+            _metadata.Add(129, new MsSqlColumnMetadata(
+                        name:"__entity", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
             #endregion
 
             #region unit_test.entity
-            _metadata.Add(130, new SqlTableMetadata("entity"));
-            _metadata.Add(131, new MsSqlColumnMetadata("identifier", SqlDbType.VarChar, 20));
-            _metadata.Add(132, new MsSqlColumnMetadata("_identifier", SqlDbType.VarChar, 20));
-            _metadata.Add(133, new MsSqlColumnMetadata("__identifier", SqlDbType.VarChar, 20));
-            _metadata.Add(134, new MsSqlColumnMetadata("name", SqlDbType.VarChar, 20));
-            _metadata.Add(135, new MsSqlColumnMetadata("_name", SqlDbType.VarChar, 20));
-            _metadata.Add(136, new MsSqlColumnMetadata("__name", SqlDbType.VarChar, 20));
-            _metadata.Add(137, new MsSqlColumnMetadata("schema", SqlDbType.VarChar, 20));
-            _metadata.Add(138, new MsSqlColumnMetadata("_schema", SqlDbType.VarChar, 20));
-            _metadata.Add(139, new MsSqlColumnMetadata("__schema", SqlDbType.VarChar, 20));
-            _metadata.Add(140, new MsSqlColumnMetadata("alias", SqlDbType.VarChar, 20));
-            _metadata.Add(141, new MsSqlColumnMetadata("_alias", SqlDbType.VarChar, 20));
-            _metadata.Add(142, new MsSqlColumnMetadata("__alias", SqlDbType.VarChar, 20));
-            _metadata.Add(143, new MsSqlColumnMetadata("_entity", SqlDbType.VarChar, 20));
-            _metadata.Add(144, new MsSqlColumnMetadata("__entity", SqlDbType.VarChar, 20));
+            // unit_test.entity
+            _metadata.Add(130, new SqlTableMetadata(name:"entity"));
+
+            // unit_test.entity.identifier
+            _metadata.Add(131, new MsSqlColumnMetadata(
+                        name:"identifier", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.entity._identifier
+            _metadata.Add(132, new MsSqlColumnMetadata(
+                        name:"_identifier", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.entity.__identifier
+            _metadata.Add(133, new MsSqlColumnMetadata(
+                        name:"__identifier", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.entity.name
+            _metadata.Add(134, new MsSqlColumnMetadata(
+                        name:"name", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.entity._name
+            _metadata.Add(135, new MsSqlColumnMetadata(
+                        name:"_name", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.entity.__name
+            _metadata.Add(136, new MsSqlColumnMetadata(
+                        name:"__name", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.entity.schema
+            _metadata.Add(137, new MsSqlColumnMetadata(
+                        name:"schema", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.entity._schema
+            _metadata.Add(138, new MsSqlColumnMetadata(
+                        name:"_schema", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.entity.__schema
+            _metadata.Add(139, new MsSqlColumnMetadata(
+                        name:"__schema", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.entity.alias
+            _metadata.Add(140, new MsSqlColumnMetadata(
+                        name:"alias", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.entity._alias
+            _metadata.Add(141, new MsSqlColumnMetadata(
+                        name:"_alias", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.entity.__alias
+            _metadata.Add(142, new MsSqlColumnMetadata(
+                        name:"__alias", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.entity._entity
+            _metadata.Add(143, new MsSqlColumnMetadata(
+                        name:"_entity", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.entity.__entity
+            _metadata.Add(144, new MsSqlColumnMetadata(
+                        name:"__entity", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
             #endregion
 
             #region unit_test.ExpressionElementType
-            _metadata.Add(145, new SqlTableMetadata("ExpressionElementType"));
-            _metadata.Add(146, new MsSqlColumnMetadata("Id", SqlDbType.Int));
-            _metadata.Add(147, new MsSqlColumnMetadata("Boolean", SqlDbType.Bit));
-            _metadata.Add(148, new MsSqlColumnMetadata("NullableBoolean", SqlDbType.Bit));
-            _metadata.Add(149, new MsSqlColumnMetadata("Byte", SqlDbType.TinyInt));
-            _metadata.Add(150, new MsSqlColumnMetadata("NullableByte", SqlDbType.TinyInt));
-            _metadata.Add(151, new MsSqlColumnMetadata("ByteArray", SqlDbType.VarBinary, -1));
-            _metadata.Add(152, new MsSqlColumnMetadata("NullableByteArray", SqlDbType.VarBinary, -1));
-            _metadata.Add(153, new MsSqlColumnMetadata("DateTime", SqlDbType.DateTime2, 8));
-            _metadata.Add(154, new MsSqlColumnMetadata("NullableDateTime", SqlDbType.DateTime2, 8));
-            _metadata.Add(155, new MsSqlColumnMetadata("DateTimeOffset", SqlDbType.DateTimeOffset, 10));
-            _metadata.Add(156, new MsSqlColumnMetadata("NullableDateTimeOffset", SqlDbType.DateTimeOffset, 10));
-            _metadata.Add(157, new MsSqlColumnMetadata("Decimal", SqlDbType.Decimal, 5, 4));
-            _metadata.Add(158, new MsSqlColumnMetadata("NullableDecimal", SqlDbType.Decimal, 5, 4));
-            _metadata.Add(159, new MsSqlColumnMetadata("Double", SqlDbType.Money));
-            _metadata.Add(160, new MsSqlColumnMetadata("NullableDouble", SqlDbType.Money));
-            _metadata.Add(161, new MsSqlColumnMetadata("Guid", SqlDbType.UniqueIdentifier));
-            _metadata.Add(162, new MsSqlColumnMetadata("NullableGuid", SqlDbType.UniqueIdentifier));
-            _metadata.Add(163, new MsSqlColumnMetadata("Int16", SqlDbType.SmallInt));
-            _metadata.Add(164, new MsSqlColumnMetadata("NullableInt16", SqlDbType.SmallInt));
-            _metadata.Add(165, new MsSqlColumnMetadata("Int32", SqlDbType.Int));
-            _metadata.Add(166, new MsSqlColumnMetadata("NullableInt32", SqlDbType.Int));
-            _metadata.Add(167, new MsSqlColumnMetadata("Int64", SqlDbType.BigInt));
-            _metadata.Add(168, new MsSqlColumnMetadata("NullableInt64", SqlDbType.BigInt));
-            _metadata.Add(169, new MsSqlColumnMetadata("Single", SqlDbType.Real));
-            _metadata.Add(170, new MsSqlColumnMetadata("NullableSingle", SqlDbType.Real));
-            _metadata.Add(171, new MsSqlColumnMetadata("String", SqlDbType.VarChar, 20));
-            _metadata.Add(172, new MsSqlColumnMetadata("NullableString", SqlDbType.VarChar, 20));
-            _metadata.Add(173, new MsSqlColumnMetadata("TimeSpan", SqlDbType.Time, 5));
-            _metadata.Add(174, new MsSqlColumnMetadata("NullableTimeSpan", SqlDbType.Time, 5));
+            // unit_test.ExpressionElementType
+            _metadata.Add(145, new SqlTableMetadata(name:"ExpressionElementType"));
+
+            // unit_test.ExpressionElementType.Id
+            _metadata.Add(146, new MsSqlColumnMetadata(
+                        name:"Id", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // unit_test.ExpressionElementType.Boolean
+            _metadata.Add(147, new MsSqlColumnMetadata(
+                        name:"Boolean", 
+                        dbType:SqlDbType.Bit
+                    )
+                );
+
+            // unit_test.ExpressionElementType.NullableBoolean
+            _metadata.Add(148, new MsSqlColumnMetadata(
+                        name:"NullableBoolean", 
+                        dbType:SqlDbType.Bit
+                    )
+                );
+
+            // unit_test.ExpressionElementType.Byte
+            _metadata.Add(149, new MsSqlColumnMetadata(
+                        name:"Byte", 
+                        dbType:SqlDbType.TinyInt
+                    )
+                );
+
+            // unit_test.ExpressionElementType.NullableByte
+            _metadata.Add(150, new MsSqlColumnMetadata(
+                        name:"NullableByte", 
+                        dbType:SqlDbType.TinyInt
+                    )
+                );
+
+            // unit_test.ExpressionElementType.ByteArray
+            _metadata.Add(151, new MsSqlColumnMetadata(
+                        name:"ByteArray", 
+                        dbType:SqlDbType.VarBinary, 
+                        size:-1
+                    )
+                );
+
+            // unit_test.ExpressionElementType.NullableByteArray
+            _metadata.Add(152, new MsSqlColumnMetadata(
+                        name:"NullableByteArray", 
+                        dbType:SqlDbType.VarBinary, 
+                        size:-1
+                    )
+                );
+
+            // unit_test.ExpressionElementType.DateTime
+            _metadata.Add(153, new MsSqlColumnMetadata(
+                        name:"DateTime", 
+                        dbType:SqlDbType.DateTime2, 
+                        size:8
+                    )
+                );
+
+            // unit_test.ExpressionElementType.NullableDateTime
+            _metadata.Add(154, new MsSqlColumnMetadata(
+                        name:"NullableDateTime", 
+                        dbType:SqlDbType.DateTime2, 
+                        size:8
+                    )
+                );
+
+            // unit_test.ExpressionElementType.DateTimeOffset
+            _metadata.Add(155, new MsSqlColumnMetadata(
+                        name:"DateTimeOffset", 
+                        dbType:SqlDbType.DateTimeOffset, 
+                        size:10
+                    )
+                );
+
+            // unit_test.ExpressionElementType.NullableDateTimeOffset
+            _metadata.Add(156, new MsSqlColumnMetadata(
+                        name:"NullableDateTimeOffset", 
+                        dbType:SqlDbType.DateTimeOffset, 
+                        size:10
+                    )
+                );
+
+            // unit_test.ExpressionElementType.Decimal
+            _metadata.Add(157, new MsSqlColumnMetadata(
+                        name:"Decimal", 
+                        dbType:SqlDbType.Decimal, 
+                        precision:5, 
+                        scale:4
+                    )
+                );
+
+            // unit_test.ExpressionElementType.NullableDecimal
+            _metadata.Add(158, new MsSqlColumnMetadata(
+                        name:"NullableDecimal", 
+                        dbType:SqlDbType.Decimal, 
+                        precision:5, 
+                        scale:4
+                    )
+                );
+
+            // unit_test.ExpressionElementType.Double
+            _metadata.Add(159, new MsSqlColumnMetadata(
+                        name:"Double", 
+                        dbType:SqlDbType.Money
+                    )
+                );
+
+            // unit_test.ExpressionElementType.NullableDouble
+            _metadata.Add(160, new MsSqlColumnMetadata(
+                        name:"NullableDouble", 
+                        dbType:SqlDbType.Money
+                    )
+                );
+
+            // unit_test.ExpressionElementType.Guid
+            _metadata.Add(161, new MsSqlColumnMetadata(
+                        name:"Guid", 
+                        dbType:SqlDbType.UniqueIdentifier
+                    )
+                );
+
+            // unit_test.ExpressionElementType.NullableGuid
+            _metadata.Add(162, new MsSqlColumnMetadata(
+                        name:"NullableGuid", 
+                        dbType:SqlDbType.UniqueIdentifier
+                    )
+                );
+
+            // unit_test.ExpressionElementType.Int16
+            _metadata.Add(163, new MsSqlColumnMetadata(
+                        name:"Int16", 
+                        dbType:SqlDbType.SmallInt
+                    )
+                );
+
+            // unit_test.ExpressionElementType.NullableInt16
+            _metadata.Add(164, new MsSqlColumnMetadata(
+                        name:"NullableInt16", 
+                        dbType:SqlDbType.SmallInt
+                    )
+                );
+
+            // unit_test.ExpressionElementType.Int32
+            _metadata.Add(165, new MsSqlColumnMetadata(
+                        name:"Int32", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // unit_test.ExpressionElementType.NullableInt32
+            _metadata.Add(166, new MsSqlColumnMetadata(
+                        name:"NullableInt32", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // unit_test.ExpressionElementType.Int64
+            _metadata.Add(167, new MsSqlColumnMetadata(
+                        name:"Int64", 
+                        dbType:SqlDbType.BigInt
+                    )
+                );
+
+            // unit_test.ExpressionElementType.NullableInt64
+            _metadata.Add(168, new MsSqlColumnMetadata(
+                        name:"NullableInt64", 
+                        dbType:SqlDbType.BigInt
+                    )
+                );
+
+            // unit_test.ExpressionElementType.Single
+            _metadata.Add(169, new MsSqlColumnMetadata(
+                        name:"Single", 
+                        dbType:SqlDbType.Real
+                    )
+                );
+
+            // unit_test.ExpressionElementType.NullableSingle
+            _metadata.Add(170, new MsSqlColumnMetadata(
+                        name:"NullableSingle", 
+                        dbType:SqlDbType.Real
+                    )
+                );
+
+            // unit_test.ExpressionElementType.String
+            _metadata.Add(171, new MsSqlColumnMetadata(
+                        name:"String", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.ExpressionElementType.NullableString
+            _metadata.Add(172, new MsSqlColumnMetadata(
+                        name:"NullableString", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.ExpressionElementType.TimeSpan
+            _metadata.Add(173, new MsSqlColumnMetadata(
+                        name:"TimeSpan", 
+                        dbType:SqlDbType.Time, 
+                        size:5
+                    )
+                );
+
+            // unit_test.ExpressionElementType.NullableTimeSpan
+            _metadata.Add(174, new MsSqlColumnMetadata(
+                        name:"NullableTimeSpan", 
+                        dbType:SqlDbType.Time, 
+                        size:5
+                    )
+                );
+
             #endregion
 
             #region unit_test.identifier
-            _metadata.Add(175, new SqlTableMetadata("identifier"));
-            _metadata.Add(176, new MsSqlColumnMetadata("_identifier", SqlDbType.VarChar, 20));
-            _metadata.Add(177, new MsSqlColumnMetadata("__identifier", SqlDbType.VarChar, 20));
-            _metadata.Add(178, new MsSqlColumnMetadata("name", SqlDbType.VarChar, 20));
-            _metadata.Add(179, new MsSqlColumnMetadata("_name", SqlDbType.VarChar, 20));
-            _metadata.Add(180, new MsSqlColumnMetadata("__name", SqlDbType.VarChar, 20));
-            _metadata.Add(181, new MsSqlColumnMetadata("schema", SqlDbType.VarChar, 20));
-            _metadata.Add(182, new MsSqlColumnMetadata("_schema", SqlDbType.VarChar, 20));
-            _metadata.Add(183, new MsSqlColumnMetadata("__schema", SqlDbType.VarChar, 20));
-            _metadata.Add(184, new MsSqlColumnMetadata("alias", SqlDbType.VarChar, 20));
-            _metadata.Add(185, new MsSqlColumnMetadata("_alias", SqlDbType.VarChar, 20));
-            _metadata.Add(186, new MsSqlColumnMetadata("__alias", SqlDbType.VarChar, 20));
-            _metadata.Add(187, new MsSqlColumnMetadata("entity", SqlDbType.VarChar, 20));
-            _metadata.Add(188, new MsSqlColumnMetadata("_entity", SqlDbType.VarChar, 20));
-            _metadata.Add(189, new MsSqlColumnMetadata("__entity", SqlDbType.VarChar, 20));
+            // unit_test.identifier
+            _metadata.Add(175, new SqlTableMetadata(name:"identifier"));
+
+            // unit_test.identifier._identifier
+            _metadata.Add(176, new MsSqlColumnMetadata(
+                        name:"_identifier", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.identifier.__identifier
+            _metadata.Add(177, new MsSqlColumnMetadata(
+                        name:"__identifier", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.identifier.name
+            _metadata.Add(178, new MsSqlColumnMetadata(
+                        name:"name", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.identifier._name
+            _metadata.Add(179, new MsSqlColumnMetadata(
+                        name:"_name", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.identifier.__name
+            _metadata.Add(180, new MsSqlColumnMetadata(
+                        name:"__name", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.identifier.schema
+            _metadata.Add(181, new MsSqlColumnMetadata(
+                        name:"schema", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.identifier._schema
+            _metadata.Add(182, new MsSqlColumnMetadata(
+                        name:"_schema", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.identifier.__schema
+            _metadata.Add(183, new MsSqlColumnMetadata(
+                        name:"__schema", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.identifier.alias
+            _metadata.Add(184, new MsSqlColumnMetadata(
+                        name:"alias", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.identifier._alias
+            _metadata.Add(185, new MsSqlColumnMetadata(
+                        name:"_alias", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.identifier.__alias
+            _metadata.Add(186, new MsSqlColumnMetadata(
+                        name:"__alias", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.identifier.entity
+            _metadata.Add(187, new MsSqlColumnMetadata(
+                        name:"entity", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.identifier._entity
+            _metadata.Add(188, new MsSqlColumnMetadata(
+                        name:"_entity", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.identifier.__entity
+            _metadata.Add(189, new MsSqlColumnMetadata(
+                        name:"__entity", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
             #endregion
 
             #region unit_test.name
-            _metadata.Add(190, new SqlTableMetadata("name"));
-            _metadata.Add(191, new MsSqlColumnMetadata("identifier", SqlDbType.VarChar, 20));
-            _metadata.Add(192, new MsSqlColumnMetadata("_identifier", SqlDbType.VarChar, 20));
-            _metadata.Add(193, new MsSqlColumnMetadata("__identifier", SqlDbType.VarChar, 20));
-            _metadata.Add(194, new MsSqlColumnMetadata("_name", SqlDbType.VarChar, 20));
-            _metadata.Add(195, new MsSqlColumnMetadata("__name", SqlDbType.VarChar, 20));
-            _metadata.Add(196, new MsSqlColumnMetadata("schema", SqlDbType.VarChar, 20));
-            _metadata.Add(197, new MsSqlColumnMetadata("_schema", SqlDbType.VarChar, 20));
-            _metadata.Add(198, new MsSqlColumnMetadata("__schema", SqlDbType.VarChar, 20));
-            _metadata.Add(199, new MsSqlColumnMetadata("alias", SqlDbType.VarChar, 20));
-            _metadata.Add(200, new MsSqlColumnMetadata("_alias", SqlDbType.VarChar, 20));
-            _metadata.Add(201, new MsSqlColumnMetadata("__alias", SqlDbType.VarChar, 20));
-            _metadata.Add(202, new MsSqlColumnMetadata("entity", SqlDbType.VarChar, 20));
-            _metadata.Add(203, new MsSqlColumnMetadata("_entity", SqlDbType.VarChar, 20));
-            _metadata.Add(204, new MsSqlColumnMetadata("__entity", SqlDbType.VarChar, 20));
+            // unit_test.name
+            _metadata.Add(190, new SqlTableMetadata(name:"name"));
+
+            // unit_test.name.identifier
+            _metadata.Add(191, new MsSqlColumnMetadata(
+                        name:"identifier", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.name._identifier
+            _metadata.Add(192, new MsSqlColumnMetadata(
+                        name:"_identifier", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.name.__identifier
+            _metadata.Add(193, new MsSqlColumnMetadata(
+                        name:"__identifier", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.name._name
+            _metadata.Add(194, new MsSqlColumnMetadata(
+                        name:"_name", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.name.__name
+            _metadata.Add(195, new MsSqlColumnMetadata(
+                        name:"__name", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.name.schema
+            _metadata.Add(196, new MsSqlColumnMetadata(
+                        name:"schema", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.name._schema
+            _metadata.Add(197, new MsSqlColumnMetadata(
+                        name:"_schema", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.name.__schema
+            _metadata.Add(198, new MsSqlColumnMetadata(
+                        name:"__schema", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.name.alias
+            _metadata.Add(199, new MsSqlColumnMetadata(
+                        name:"alias", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.name._alias
+            _metadata.Add(200, new MsSqlColumnMetadata(
+                        name:"_alias", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.name.__alias
+            _metadata.Add(201, new MsSqlColumnMetadata(
+                        name:"__alias", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.name.entity
+            _metadata.Add(202, new MsSqlColumnMetadata(
+                        name:"entity", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.name._entity
+            _metadata.Add(203, new MsSqlColumnMetadata(
+                        name:"_entity", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.name.__entity
+            _metadata.Add(204, new MsSqlColumnMetadata(
+                        name:"__entity", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
             #endregion
 
             #region unit_test.schema
-            _metadata.Add(205, new SqlTableMetadata("schema"));
-            _metadata.Add(206, new MsSqlColumnMetadata("identifier", SqlDbType.VarChar, 20));
-            _metadata.Add(207, new MsSqlColumnMetadata("_identifier", SqlDbType.VarChar, 20));
-            _metadata.Add(208, new MsSqlColumnMetadata("__identifier", SqlDbType.VarChar, 20));
-            _metadata.Add(209, new MsSqlColumnMetadata("name", SqlDbType.VarChar, 20));
-            _metadata.Add(210, new MsSqlColumnMetadata("_name", SqlDbType.VarChar, 20));
-            _metadata.Add(211, new MsSqlColumnMetadata("__name", SqlDbType.VarChar, 20));
-            _metadata.Add(212, new MsSqlColumnMetadata("_schema", SqlDbType.VarChar, 20));
-            _metadata.Add(213, new MsSqlColumnMetadata("__schema", SqlDbType.VarChar, 20));
-            _metadata.Add(214, new MsSqlColumnMetadata("alias", SqlDbType.VarChar, 20));
-            _metadata.Add(215, new MsSqlColumnMetadata("_alias", SqlDbType.VarChar, 20));
-            _metadata.Add(216, new MsSqlColumnMetadata("__alias", SqlDbType.VarChar, 20));
-            _metadata.Add(217, new MsSqlColumnMetadata("entity", SqlDbType.VarChar, 20));
-            _metadata.Add(218, new MsSqlColumnMetadata("_entity", SqlDbType.VarChar, 20));
-            _metadata.Add(219, new MsSqlColumnMetadata("__entity", SqlDbType.VarChar, 20));
+            // unit_test.schema
+            _metadata.Add(205, new SqlTableMetadata(name:"schema"));
+
+            // unit_test.schema.identifier
+            _metadata.Add(206, new MsSqlColumnMetadata(
+                        name:"identifier", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.schema._identifier
+            _metadata.Add(207, new MsSqlColumnMetadata(
+                        name:"_identifier", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.schema.__identifier
+            _metadata.Add(208, new MsSqlColumnMetadata(
+                        name:"__identifier", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.schema.name
+            _metadata.Add(209, new MsSqlColumnMetadata(
+                        name:"name", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.schema._name
+            _metadata.Add(210, new MsSqlColumnMetadata(
+                        name:"_name", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.schema.__name
+            _metadata.Add(211, new MsSqlColumnMetadata(
+                        name:"__name", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.schema._schema
+            _metadata.Add(212, new MsSqlColumnMetadata(
+                        name:"_schema", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.schema.__schema
+            _metadata.Add(213, new MsSqlColumnMetadata(
+                        name:"__schema", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.schema.alias
+            _metadata.Add(214, new MsSqlColumnMetadata(
+                        name:"alias", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.schema._alias
+            _metadata.Add(215, new MsSqlColumnMetadata(
+                        name:"_alias", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.schema.__alias
+            _metadata.Add(216, new MsSqlColumnMetadata(
+                        name:"__alias", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.schema.entity
+            _metadata.Add(217, new MsSqlColumnMetadata(
+                        name:"entity", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.schema._entity
+            _metadata.Add(218, new MsSqlColumnMetadata(
+                        name:"_entity", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // unit_test.schema.__entity
+            _metadata.Add(219, new MsSqlColumnMetadata(
+                        name:"__entity", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
             #endregion
 
             #endregion
@@ -309,15 +1675,42 @@ namespace DbExAlt.DataService
             #endregion
 
             #region sec schema
-            _metadata.Add(220, new SqlSchemaMetadata("sec"));
+            _metadata.Add(220, new SqlSchemaMetadata(name:"sec"));
             
             #region sec entities
             #region sec.Person
-            _metadata.Add(221, new SqlTableMetadata("Person"));
-            _metadata.Add(222, new MsSqlColumnMetadata("Id", SqlDbType.Int));
-            _metadata.Add(223, new MsSqlColumnMetadata("SSN", SqlDbType.Char, 11));
-            _metadata.Add(224, new MsSqlColumnMetadata("DateCreated", SqlDbType.DateTime));
-            _metadata.Add(225, new MsSqlColumnMetadata("DateUpdated", SqlDbType.DateTime));
+            // sec.Person
+            _metadata.Add(221, new SqlTableMetadata(name:"Person"));
+
+            // sec.Person.Id
+            _metadata.Add(222, new MsSqlColumnMetadata(
+                        name:"Id", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // sec.Person.SSN
+            _metadata.Add(223, new MsSqlColumnMetadata(
+                        name:"SSN", 
+                        dbType:SqlDbType.Char, 
+                        size:11
+                    )
+                );
+
+            // sec.Person.DateCreated
+            _metadata.Add(224, new MsSqlColumnMetadata(
+                        name:"DateCreated", 
+                        dbType:SqlDbType.DateTime
+                    )
+                );
+
+            // sec.Person.DateUpdated
+            _metadata.Add(225, new MsSqlColumnMetadata(
+                        name:"DateUpdated", 
+                        dbType:SqlDbType.DateTime
+                    )
+                );
+
             #endregion
 
             #endregion
