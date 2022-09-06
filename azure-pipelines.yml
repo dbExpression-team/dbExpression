@@ -11,7 +11,7 @@ trigger:
   - release/*
 
 pool:
-  vmImage: 'windows-2022'
+  vmImage: 'windows-latest'
 
 name: $[ variables['branchName'] ]
 
@@ -20,6 +20,7 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   netCoreVersion: '6.0'
+  net7PreviewVersion: '7.0.100-preview.7.22377.5'
   system.debug: true
   stageLocationName: db-ex
   disable.coverage.autogenerate: 'true'
@@ -31,12 +32,24 @@ variables:
 
 stages:
 
-  - stage: Build
-    displayName: 'Build and Package'
+  - stage: Build_and_Test
+    displayName: 'Build, Test and Package'
     jobs:
     - job:
-      displayName: 'Build Solution and Publish Assets'
+      displayName: 'Build, Test, and Publish'
       steps:
+      - task: UseDotNet@2
+        displayName: 'Install .NET 6.0 SDK'
+        inputs:
+          packageType: sdk
+          version: '6.0.400'
+          installationPath: $(Agent.ToolsDirectory)/dotnet
+      - task: UseDotNet@2
+        displayName: 'Install .NET 7.0 SDK'
+        inputs:
+          packageType: sdk
+          version: $(net7PreviewVersion)
+          installationPath: $(Agent.ToolsDirectory)/dotnet
       - task: PowerShell@2
         displayName: 'Build and Package Solution'
         inputs:
@@ -44,50 +57,33 @@ stages:
           arguments: '-Configuration $(buildConfiguration) -BranchName $(branchName) -CommitSHA $(Build.SourceVersion) -BuildIdentifier $(Build.BuildNumber) -PropertiesPath $(Build.SourcesDirectory)/Directory.Build.props -UseBranchNameInPackageSuffixWhenNotSpecified'
           workingDirectory: $(Build.SourcesDirectory)
           pwsh: true
-      - publish: $(Build.SourcesDirectory)
-        displayName: 'Publish to Staging Location'
-        artifact: $(stageLocationName)
-
-  - stage: Test_MsSql_Unit
-    dependsOn: Build
-    displayName: 'Test MSSQL Core'
-    jobs:
-    - job:
-      displayName: 'Test MSSQL'
-      steps:
-      - checkout: none
-      - download: current
-        artifact: $(stageLocationName)
       - task: DotNetCoreCLI@2
-        displayName: 'Execute Tests'
+        displayName: 'Execute Unit Tests'
         inputs:
           command: test
-          projects: $(Pipeline.Workspace)\$(stageLocationName)\test\HatTrick.DbEx.MsSql.Test.Unit\*.csproj
+          projects: $(Build.SourcesDirectory)/test/HatTrick.DbEx.MsSql.Test.Unit/HatTrick.DbEx.MsSql.Test.Unit.csproj
           arguments: '--configuration $(buildConfiguration) --logger "trx;LogFileName=mssql-core.tests.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Include="[HatTrick.DbEx.*Sql*]*" /p:Exclude="[*Test]*"'
       - task: PublishTestResults@2
         displayName: 'Publish Test Results to Temp'
         inputs:
           testResultsFormat: xUnit
-          testResultsFiles: $(Pipeline.Workspace)\$(stageLocationName)\TestResults\mssql-core.tests.trx
+          testResultsFiles: $(Build.SourcesDirectory)/TestResults/mssql-core.tests.trx
           testRunTitle: 'MSSQL (Core)'
           mergeTestResults: true
           failTaskOnFailedTests: true
-      - task: CopyFiles@2
-        displayName: 'Copy Code Coverage Files to Temp'
-        inputs:
-          contents: '*.cobertura.xml'
-          sourceFolder: $(Pipeline.Workspace)\$(stageLocationName)\test\HatTrick.DbEx.MsSql.Test.Unit
-          targetFolder: $(Pipeline.Workspace)\$(stageLocationName)\tmp
       - task: PublishPipelineArtifact@1
         displayName: 'Publish Code Coverage Files to Staging Location'
         inputs:
-          targetPath: $(Pipeline.Workspace)\$(stageLocationName)\tmp
+          targetPath: $(Build.SourcesDirectory)/test/HatTrick.DbEx.MsSql.Test.Unit
           artifactName: mssql-core-results
+      - publish: $(Build.SourcesDirectory)
+        displayName: 'Publish to Staging Location'
+        artifact: $(stageLocationName)      
  
   - stage: Test_MsSql_Integration
     pool:
       vmImage: 'ubuntu-latest'
-    dependsOn: Build
+    dependsOn: Build_and_Test
     displayName: 'Test MSSQL Platforms'
     jobs:
     - template: build/mssql/mssql-integration-testing-template.yml
@@ -97,49 +93,12 @@ stages:
         buildTemplatesPath: $(Pipeline.Workspace)/$(stageLocationName)/build/mssql
         buildConfiguration: $(buildConfiguration)
         targetFrameworkMoniker: net$(netCoreVersion)
-        mssqlVersions: ['2017','2019']
-    
-  - stage: Test_MsSql_Dependency_Injection
-    dependsOn: Build
-    displayName: 'Test Dependency Injection'
-    jobs:
-    - job:
-      displayName: 'Test MSSQL Dependency Injection'
-      steps:
-      - checkout: none
-      - download: current
-        artifact: $(stageLocationName)
-      - task: DotNetCoreCLI@2
-        displayName: 'Execute Tests'
-        inputs:
-          command: test
-          projects: $(Pipeline.Workspace)\$(stageLocationName)\test\HatTrick.DbEx.MsSql.Extensions.DependencyInjection.Test\*.csproj
-          arguments: '--configuration $(buildConfiguration) --logger "trx;LogFileName=mssql-dependency-injection.tests.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Include="[HatTrick.DbEx.*Sql.*]*" /p:Exclude="[*Test]*"'
-      - task: PublishTestResults@2
-        displayName: 'Publish Test Results to Temp'
-        inputs:
-          testResultsFormat: xUnit
-          testResultsFiles: $(Pipeline.Workspace)\$(stageLocationName)\TestResults\mssql-dependency-injection.tests.trx
-          testRunTitle: 'MSSQL (Dependency Injection)'
-          mergeTestResults: true
-          failTaskOnFailedTests: true
-      - task: CopyFiles@2
-        displayName: 'Copy Code Coverage Files to Temp'
-        inputs:
-          contents: '*.cobertura.xml'
-          sourceFolder: $(Pipeline.Workspace)\$(stageLocationName)\test\HatTrick.DbEx.MsSql.Extensions.DependencyInjection.Test
-          targetFolder: $(Pipeline.Workspace)\$(stageLocationName)\tmp
-      - task: PublishPipelineArtifact@1
-        displayName: 'Publish Code Coverage Files to Staging Location'
-        inputs:
-          targetPath: $(Pipeline.Workspace)\$(stageLocationName)\tmp
-          artifactName: mssql-dependency-injection-results    
+        mssqlVersions: ['2017','2019','2022']    
     
   - stage: Publish_Reports
     dependsOn:
-      - Test_MsSql_Unit
+      - Build_and_Test
       - Test_MsSql_Integration
-      - Test_MsSql_Dependency_Injection
     displayName: 'Publish Reports'
     jobs:
     - job:
@@ -150,20 +109,20 @@ stages:
       - task: PowerShell@2
         displayName: 'Correct Source Paths in Coverage Files'
         inputs:
-          filePath: $(Pipeline.Workspace)\$(stageLocationName)\build\fix-code-coverage-files.ps1
-          arguments: '-CodeCoverageFilePaths "$(Pipeline.Workspace)\mssql-core-results\coverage.net6.0.cobertura.xml;$(Pipeline.Workspace)\mssql-2017-results\coverage.net6.0.cobertura.xml;$(Pipeline.Workspace)\mssql-2019-results\coverage.net6.0.cobertura.xml;$(Pipeline.Workspace)\mssql-dependency-injection-results\coverage.net6.0.cobertura.xml" -PathToSourceFiles "$(Pipeline.Workspace)\$(stageLocationName)\src\"'
-          workingDirectory: $(Pipeline.Workspace)\$(stageLocationName)\build
+          filePath: $(Pipeline.Workspace)/$(stageLocationName)/build/fix-code-coverage-files.ps1
+          arguments: '-CodeCoverageFilePaths "$(Pipeline.Workspace)\mssql-core-results\coverage.net6.0.cobertura.xml;$(Pipeline.Workspace)\mssql-2017-results\coverage.net6.0.cobertura.xml;$(Pipeline.Workspace)\mssql-2019-results\coverage.net6.0.cobertura.xml;$(Pipeline.Workspace)\mssql-2022-results\coverage.net6.0.cobertura.xml" -PathToSourceFiles "$(Pipeline.Workspace)\$(stageLocationName)\src\"'
+          workingDirectory: $(Pipeline.Workspace)/$(stageLocationName)\build
           pwsh: true
       - task: reportgenerator@5
         displayName: 'Merge Code Coverage Reports'
         inputs:
-          reports: $(Pipeline.Workspace)\mssql*\*coverage*.xml
-          targetdir: $(Pipeline.Workspace)\mssql-merged-results
+          reports: $(Pipeline.Workspace)/mssql*/*coverage*.xml
+          targetdir: $(Pipeline.Workspace)/mssql-merged-results
           reporttypes: 'HtmlInline_AzurePipelines;Cobertura;Badges'
       - task: PublishCodeCoverageResults@1
         displayName: 'Publish Code Coverage Reports'
         inputs:
           codeCoverageTool: Cobertura
-          pathToSources: $(Pipeline.Workspace)\$(stageLocationName)\src
-          summaryFileLocation: $(Pipeline.Workspace)\mssql-merged-results\cobertura.xml
-          reportDirectory: '$(Pipeline.Workspace)\mssql-merged-results'
+          pathToSources: $(Pipeline.Workspace)/$(stageLocationName)/src
+          summaryFileLocation: $(Pipeline.Workspace)/mssql-merged-results/cobertura.xml
+          reportDirectory: '$(Pipeline.Workspace)/mssql-merged-results'

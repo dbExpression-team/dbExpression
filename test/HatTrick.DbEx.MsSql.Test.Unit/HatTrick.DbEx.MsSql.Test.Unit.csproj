@@ -1,10 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks Condition="Exists('$(TARGET_NET_FRAMEWORK)')">net462</TargetFrameworks>
-		<TargetFrameworks Condition="!Exists('$(TARGET_NET_FRAMEWORK)')">net6.0;net7.0</TargetFrameworks>
-		<LangVersion Condition="Exists('$(TARGET_NET_FRAMEWORK)')">7.3</LangVersion>
-		<LangVersion Condition="!Exists('$(TARGET_NET_FRAMEWORK)')">preview</LangVersion>
+		<TargetFrameworks>net6.0</TargetFrameworks>
+		<LangVersion>10.0</LangVersion>
 		<Nullable>enable</Nullable>
 		<IsPackable>false</IsPackable>
 	</PropertyGroup>
@@ -39,7 +37,7 @@
 		<NoStdLib>true</NoStdLib>
 	</PropertyGroup>
 
-	<ItemGroup Condition=" ('$(TargetFrameworkIdentifier)' == '.NETFramework') And ('$(TargetFrameworkVersion)' == 'v4.6.1') ">
+	<ItemGroup Condition=" ('$(TargetFrameworkIdentifier)' == '.NETFramework') And ('$(TargetFrameworkVersion)' == 'v4.6.2') ">
 		<Reference Include="mscorlib" Pack="false" />
 	</ItemGroup>
 
@@ -57,7 +55,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Expression\_Function\" />
+		<Folder Include="Expression\_Function\" />
 	</ItemGroup>
 
 </Project>
