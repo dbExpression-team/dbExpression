@@ -1163,7 +1163,7 @@ namespace SimpleConsole.DataService
             => db.UseDatabase(this);
 
         protected IQueryExpressionBuilder<SimpleConsoleDb> GetBuilder()
-            => _queryExpressionBuilderFactory.CreateQueryExpressionBuilder(this);
+            => _queryExpressionBuilderFactory.CreateQueryExpressionBuilder();
 
         #region select one
         /// <summary>

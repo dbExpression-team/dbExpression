@@ -1189,7 +1189,7 @@ namespace DbExAlt.DataService
             => dbAlt.UseDatabase(this);
 
         protected IQueryExpressionBuilder<MsSqlDbAlt> GetBuilder()
-            => _queryExpressionBuilderFactory.CreateQueryExpressionBuilder(this);
+            => _queryExpressionBuilderFactory.CreateQueryExpressionBuilder();
 
         #region select one
         /// <summary>

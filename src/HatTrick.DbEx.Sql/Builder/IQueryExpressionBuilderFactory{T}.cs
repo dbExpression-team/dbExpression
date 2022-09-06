@@ -22,6 +22,6 @@ namespace HatTrick.DbEx.Sql.Builder
     public interface IQueryExpressionBuilderFactory<TDatabase>
         where TDatabase : class, ISqlDatabaseRuntime
     {
-        IQueryExpressionBuilder<TDatabase> CreateQueryExpressionBuilder(ISqlDatabaseRuntime database);
+        IQueryExpressionBuilder<TDatabase> CreateQueryExpressionBuilder();
     }
 }

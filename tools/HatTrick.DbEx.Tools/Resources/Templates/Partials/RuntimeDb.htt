@@ -58,7 +58,7 @@
             => {$.DatabaseExpression.AccessorName}.UseDatabase(this);
 
         protected IQueryExpressionBuilder<{:databaseExpressionName}> GetBuilder()
-            => _queryExpressionBuilderFactory.CreateQueryExpressionBuilder(this);
+            => _queryExpressionBuilderFactory.CreateQueryExpressionBuilder();
 
         #region select one
         /// <summary>

@@ -1162,7 +1162,7 @@ namespace ServerSideBlazorApp.DataService
             => db.UseDatabase(this);
 
         protected IQueryExpressionBuilder<CRMDatabase> GetBuilder()
-            => _queryExpressionBuilderFactory.CreateQueryExpressionBuilder(this);
+            => _queryExpressionBuilderFactory.CreateQueryExpressionBuilder();
 
         #region select one
         /// <summary>
