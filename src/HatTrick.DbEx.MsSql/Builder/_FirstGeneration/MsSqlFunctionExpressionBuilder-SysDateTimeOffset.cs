@@ -16,19 +16,24 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
+using HatTrick.DbEx.MsSql.Expression;
+using HatTrick.DbEx.Sql;
+using HatTrick.DbEx.Sql.Builder;
 using HatTrick.DbEx.Sql.Expression;
+using System;
 
-namespace HatTrick.DbEx.MsSql.Builder.Alias
+namespace HatTrick.DbEx.MsSql.Builder
 {
-    public static partial class SqlFunctionExpressionBuilderExtensions
+    public partial class FirstGenerationMsSqlFunctionExpressionBuilder
     {
+        private static readonly SysDateTimeOffsetFunctionExpression sysDateTimeOffset = new();
+
         /// <summary>
-        /// Construct an expression for the CAST transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql">Microsoft docs on CAST</see></para>
+        /// Construct an expression for the SYSDATETIMEOFFSET transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/sysdatetimeoffset-transact-sql">Microsoft docs on SYSDATETIMEOFFSET</see></para>
         /// </summary>
-        /// <param name="element">An alias of an expression to convert to a different sql data type.</param>
-        /// <returns><see cref="MsSqlCast"/> to specify the sql data type to convert to.</returns>
-        public static MsSqlCast Cast(this FirstGenerationMsSqlFunctionExpressionBuilder _, (string TableName, string FieldName) element)
-            => new MsSqlCastFunctionExpressionBuilder(new AliasExpression<object>(element));        
+        /// <returns><see cref="SysDateTimeOffsetFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{DateTime}"/>.</returns>
+        public SysDateTimeOffsetFunctionExpression SysDateTimeOffset()
+            => sysDateTimeOffset;
     }
 }

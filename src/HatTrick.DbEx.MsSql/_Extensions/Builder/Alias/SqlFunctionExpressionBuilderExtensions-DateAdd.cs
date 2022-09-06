@@ -33,7 +33,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
         /// <param name="value">An alias expression of a value to add to <paramref name="element"/> to add to <paramref name="element"/>.</param>
         /// <param name="element">Any expression of type <see cref="AnyElement{DateTime}"/>? to add <paramref name="value"/> to.</param>
         /// <returns><see cref="NullableDateTimeDateAddFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{DateTime}"/>?.</returns>
-        public static NullableDateTimeDateAddFunctionExpression DateAdd(this MsSqlFunctionExpressionBuilder _, DateParts datePart, (string TableName, string FieldName) value, AnyElement<DateTime?> element)
+        public static NullableDateTimeDateAddFunctionExpression DateAdd(this FirstGenerationMsSqlFunctionExpressionBuilder _, DateParts datePart, (string TableName, string FieldName) value, AnyElement<DateTime?> element)
             => new(new DatePartsExpression<DateParts>(datePart), new AliasExpression<int?>(value), element);
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
         /// <param name="value">An alias expression of a value to add to <paramref name="element"/> to add to <paramref name="element"/>.</param>
         /// <param name="element">Any expression of type <see cref="AnyElement{DateTime}"/> to add <paramref name="value"/> to.</param>
         /// <returns><see cref="NullableDateTimeDateAddFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{DateTime}"/>?.</returns>
-        public static NullableDateTimeDateAddFunctionExpression DateAdd(this MsSqlFunctionExpressionBuilder _, DateParts datePart, (string TableName, string FieldName) value, AnyElement<DateTime> element)
+        public static NullableDateTimeDateAddFunctionExpression DateAdd(this FirstGenerationMsSqlFunctionExpressionBuilder _, DateParts datePart, (string TableName, string FieldName) value, AnyElement<DateTime> element)
             => new(new DatePartsExpression<DateParts>(datePart), new AliasExpression<int?>(value), element);
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
         /// <param name="value">The value to add to <paramref name="element"/> to add to <paramref name="element"/>.</param>
         /// <param name="element">An alias of an expression to add <paramref name="value"/> to.</param>
         /// <returns><see cref="NullableDateTimeDateAddFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{DateTime}"/>?.</returns>
-        public static NullableDateTimeDateAddFunctionExpression DateAdd(this MsSqlFunctionExpressionBuilder _, DateParts datePart, int value, (string TableName, string FieldName) element)
+        public static NullableDateTimeDateAddFunctionExpression DateAdd(this FirstGenerationMsSqlFunctionExpressionBuilder _, DateParts datePart, int value, (string TableName, string FieldName) element)
             => new(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<int>(value), new AliasExpression<DateTime?>(element));
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
         /// <param name="value">The value to add to <paramref name="element"/> to add to <paramref name="element"/>.</param>
         /// <param name="element">An alias of an expression to add <paramref name="value"/> to.</param>
         /// <returns><see cref="NullableDateTimeDateAddFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{DateTime}"/>?.</returns>
-        public static NullableDateTimeDateAddFunctionExpression DateAdd(this MsSqlFunctionExpressionBuilder _, DateParts datePart, int? value, (string TableName, string FieldName) element)
+        public static NullableDateTimeDateAddFunctionExpression DateAdd(this FirstGenerationMsSqlFunctionExpressionBuilder _, DateParts datePart, int? value, (string TableName, string FieldName) element)
             => new(new DatePartsExpression<DateParts>(datePart), new LiteralExpression<int?>(value), new AliasExpression<DateTime?>(element));
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
         /// <param name="value">An alias of the value to add to <paramref name="element"/> to add to <paramref name="element"/>.</param>
         /// <param name="element">An alias of an expression to add <paramref name="value"/> to.</param>
         /// <returns><see cref="NullableDateTimeDateAddFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{DateTime}"/>?.</returns>
-        public static NullableDateTimeDateAddFunctionExpression DateAdd(this MsSqlFunctionExpressionBuilder _, DateParts datePart, (string TableName, string FieldName) value, (string TableName, string FieldName) element)
+        public static NullableDateTimeDateAddFunctionExpression DateAdd(this FirstGenerationMsSqlFunctionExpressionBuilder _, DateParts datePart, (string TableName, string FieldName) value, (string TableName, string FieldName) element)
             => new(new DatePartsExpression<DateParts>(datePart), new AliasExpression<int?>(value), new AliasExpression<DateTime?>(element));
     }
 }

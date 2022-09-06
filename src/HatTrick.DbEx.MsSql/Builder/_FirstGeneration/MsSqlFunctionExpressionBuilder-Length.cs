@@ -24,7 +24,7 @@ using System;
 
 namespace HatTrick.DbEx.MsSql.Builder
 {
-    public partial class MsSqlFunctionExpressionBuilder
+    public partial class FirstGenerationMsSqlFunctionExpressionBuilder
     {
         /// <summary>
         /// Construct an expression for the LEN transact sql function.

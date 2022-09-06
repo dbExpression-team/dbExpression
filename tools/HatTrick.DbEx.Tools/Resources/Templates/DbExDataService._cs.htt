@@ -7,6 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using HatTrick.DbEx.{$.Platform.Key}.Builder;
+using HatTrick.DbEx.{$.Platform.Key}.Builder.v{$.Platform.Version};
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Builder;
 using HatTrick.DbEx.Sql.Connection;

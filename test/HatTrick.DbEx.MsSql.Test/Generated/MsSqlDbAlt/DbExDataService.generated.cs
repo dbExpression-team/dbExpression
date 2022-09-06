@@ -7,6 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using HatTrick.DbEx.MsSql.Builder;
+using HatTrick.DbEx.MsSql.Builder.v2022;
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Builder;
 using HatTrick.DbEx.Sql.Connection;
@@ -1116,7 +1117,7 @@ namespace DbExAlt.DataService
 
     #region MsSqlDbAlt
 #if !NET7_0_OR_GREATER
-    [PlatformVersion("2019")]
+    [PlatformVersion("2022")]
 #endif
     public class MsSqlDbAlt : ISqlDatabaseRuntime, 
         SelectOneInitiation<MsSqlDbAlt>, 
@@ -1137,7 +1138,7 @@ namespace DbExAlt.DataService
 
         #region interface
         ISqlDatabaseMetadataProvider ISqlDatabaseRuntime.MetadataProvider => _metadata;
-        public static string Version => "2019";
+        public static string Version => "2022";
         public MsSqlFunctionExpressionBuilder fx => _fx;
         public MsSqlDbAltStoredProcedures sp => _sp ?? (_sp = new MsSqlDbAltStoredProcedures(this, _schemas));
         #endregion

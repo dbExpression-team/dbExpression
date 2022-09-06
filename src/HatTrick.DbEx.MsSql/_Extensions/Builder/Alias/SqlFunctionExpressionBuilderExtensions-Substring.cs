@@ -19,7 +19,7 @@
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Expression;
 
-using __ = HatTrick.DbEx.MsSql.Builder.MsSqlFunctionExpressionBuilder;
+using __ = HatTrick.DbEx.MsSql.Builder.FirstGenerationMsSqlFunctionExpressionBuilder;
 
 namespace HatTrick.DbEx.MsSql.Builder.Alias
 {

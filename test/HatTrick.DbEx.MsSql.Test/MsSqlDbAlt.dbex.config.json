@@ -3,7 +3,7 @@
 	"source": {
 		"platform": {
 			"key": "MsSql",
-			"version": "2019"
+			"version": "2022"
 		},
 		"connectionString": {
 			"value": "Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=MsSqlDbExTest;Integrated Security=true;Connect Timeout=30"

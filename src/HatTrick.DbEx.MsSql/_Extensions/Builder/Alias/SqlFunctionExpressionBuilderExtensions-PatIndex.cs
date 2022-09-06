@@ -31,7 +31,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
         /// <param name="pattern">A <see cref="StringElement"/> that contains the expression to be found in <paramref name="element"/>.</param>
         /// <param name="element">An alias of an expression to search for <paramref name="pattern"/>.</param>
         /// <returns><see cref="NullableInt64PatIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>.</returns>
-        public static NullableInt64PatIndexFunctionExpression PatIndex(this MsSqlFunctionExpressionBuilder _, string? pattern, (string TableName, string FieldName) element)
+        public static NullableInt64PatIndexFunctionExpression PatIndex(this FirstGenerationMsSqlFunctionExpressionBuilder _, string? pattern, (string TableName, string FieldName) element)
             => new(new LiteralExpression<string?>(pattern), new AliasExpression<long?>(element));
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
         /// <param name="pattern">An alias of an expression that contains the expression to be found in <paramref name="element"/>.</param>
         /// <param name="element">A <see cref="AnyElement{String}"/> the expression to search for <paramref name="pattern"/>.</param>
         /// <returns><see cref="NullableInt64PatIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>.</returns>
-        public static NullableInt64PatIndexFunctionExpression PatIndex(this MsSqlFunctionExpressionBuilder _, (string TableName, string FieldName) pattern, string? element)
+        public static NullableInt64PatIndexFunctionExpression PatIndex(this FirstGenerationMsSqlFunctionExpressionBuilder _, (string TableName, string FieldName) pattern, string? element)
             => new(new AliasExpression<string?>(pattern), new LiteralExpression<string?>(element));
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
         /// <param name="pattern">A <see cref="StringElement"/> that contains the expression to be found in <paramref name="element"/>.</param>
         /// <param name="element">An alias of an expression to search for <paramref name="pattern"/>.</param>
         /// <returns><see cref="NullableInt64PatIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>.</returns>
-        public static NullableInt64PatIndexFunctionExpression PatIndex(this MsSqlFunctionExpressionBuilder _, AnyStringElement pattern, (string TableName, string FieldName) element)
+        public static NullableInt64PatIndexFunctionExpression PatIndex(this FirstGenerationMsSqlFunctionExpressionBuilder _, AnyStringElement pattern, (string TableName, string FieldName) element)
             => new(pattern, new AliasExpression<string?>(element));
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
         /// <param name="pattern">A <see cref="StringElement"/> that contains the expression to be found in <paramref name="element"/>.</param>
         /// <param name="element">A <see cref="AnyElement{String}"/> the expression to search for <paramref name="pattern"/>.</param>
         /// <returns><see cref="NullableInt64PatIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>.</returns>
-        public static NullableInt64PatIndexFunctionExpression PatIndex(this MsSqlFunctionExpressionBuilder _, (string TableName, string FieldName) pattern, AnyStringElement element)
+        public static NullableInt64PatIndexFunctionExpression PatIndex(this FirstGenerationMsSqlFunctionExpressionBuilder _, (string TableName, string FieldName) pattern, AnyStringElement element)
             => new(new AliasExpression<string?>(pattern), element);
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
         /// <param name="pattern">A <see cref="StringElement"/> that contains the expression to be found in <paramref name="element"/>.</param>
         /// <param name="element">An alias of an expression to search for <paramref name="pattern"/>.</param>
         /// <returns><see cref="NullableInt64PatIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>.</returns>
-        public static NullableInt64PatIndexFunctionExpression PatIndex(this MsSqlFunctionExpressionBuilder _, (string TableName, string FieldName) pattern, (string TableName, string FieldName) element)
+        public static NullableInt64PatIndexFunctionExpression PatIndex(this FirstGenerationMsSqlFunctionExpressionBuilder _, (string TableName, string FieldName) pattern, (string TableName, string FieldName) element)
             => new(new AliasExpression<string?>(pattern), new AliasExpression<string?>(element));
     }
 }

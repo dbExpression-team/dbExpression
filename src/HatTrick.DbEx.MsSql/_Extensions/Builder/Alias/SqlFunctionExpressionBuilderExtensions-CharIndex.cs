@@ -31,7 +31,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
         /// <param name="pattern">A <see cref="StringElement"/> to search for in <paramref name="element"/>.</param>
         /// <param name="element">An alias of the expression to search.</param>
         /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>?.</returns>
-        public static NullableInt64CharIndexFunctionExpression CharIndex(this MsSqlFunctionExpressionBuilder _, string pattern, (string TableName, string FieldName) element)
+        public static NullableInt64CharIndexFunctionExpression CharIndex(this FirstGenerationMsSqlFunctionExpressionBuilder _, string pattern, (string TableName, string FieldName) element)
             => new(new NullableStringExpressionMediator(new LiteralExpression<string?>(pattern)), new NullableStringExpressionMediator(new AliasExpression<string?>(element)));
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
         /// <param name="element">An alias of the expression to search.</param>
         /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
         /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>?.</returns>
-        public static NullableInt64CharIndexFunctionExpression CharIndex(this MsSqlFunctionExpressionBuilder _, string pattern, (string TableName, string FieldName) element, long startSearchPosition)
+        public static NullableInt64CharIndexFunctionExpression CharIndex(this FirstGenerationMsSqlFunctionExpressionBuilder _, string pattern, (string TableName, string FieldName) element, long startSearchPosition)
             => new(new NullableStringExpressionMediator(new LiteralExpression<string?>(pattern)), new NullableStringExpressionMediator(new AliasExpression<string?>(element)), new LiteralExpression<long>(startSearchPosition));
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
         /// <param name="element">An alias of the expression to search.</param>
         /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
         /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a<see cref="AnyElement{Int64}"/>?.</returns>
-        public static NullableInt64CharIndexFunctionExpression CharIndex(this MsSqlFunctionExpressionBuilder _, string pattern, (string TableName, string FieldName) element, int startSearchPosition)
+        public static NullableInt64CharIndexFunctionExpression CharIndex(this FirstGenerationMsSqlFunctionExpressionBuilder _, string pattern, (string TableName, string FieldName) element, int startSearchPosition)
             => new(new NullableStringExpressionMediator(new LiteralExpression<string?>(pattern)), new NullableStringExpressionMediator(new AliasExpression<string?>(element)), new LiteralExpression<int>(startSearchPosition));
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
         /// <param name="element">An alias of the expression to search.</param>
         /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
         /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>?.</returns>
-        public static NullableInt64CharIndexFunctionExpression CharIndex(this MsSqlFunctionExpressionBuilder _, string pattern, (string TableName, string FieldName) element, AnyElement<int> startSearchPosition)
+        public static NullableInt64CharIndexFunctionExpression CharIndex(this FirstGenerationMsSqlFunctionExpressionBuilder _, string pattern, (string TableName, string FieldName) element, AnyElement<int> startSearchPosition)
             => new(new NullableStringExpressionMediator(new LiteralExpression<string?>(pattern)), new NullableStringExpressionMediator(new AliasExpression<string?>(element)), startSearchPosition);
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
         /// <param name="element">An alias of the expression to search.</param>
         /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
         /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>?.</returns>
-        public static NullableInt64CharIndexFunctionExpression CharIndex(this MsSqlFunctionExpressionBuilder _, string pattern, (string TableName, string FieldName) element, AnyElement<long> startSearchPosition)
+        public static NullableInt64CharIndexFunctionExpression CharIndex(this FirstGenerationMsSqlFunctionExpressionBuilder _, string pattern, (string TableName, string FieldName) element, AnyElement<long> startSearchPosition)
             => new(new NullableStringExpressionMediator(new LiteralExpression<string?>(pattern)), new NullableStringExpressionMediator(new AliasExpression<string?>(element)), startSearchPosition);
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
         /// <param name="element">An alias of the expression to search.</param>
         /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
         /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>?.</returns>
-        public static NullableInt64CharIndexFunctionExpression CharIndex(this MsSqlFunctionExpressionBuilder _, string pattern, (string TableName, string FieldName) element, AnyElement<int?> startSearchPosition)
+        public static NullableInt64CharIndexFunctionExpression CharIndex(this FirstGenerationMsSqlFunctionExpressionBuilder _, string pattern, (string TableName, string FieldName) element, AnyElement<int?> startSearchPosition)
             => new(new NullableStringExpressionMediator(new LiteralExpression<string?>(pattern)), new NullableStringExpressionMediator(new AliasExpression<string?>(element)), startSearchPosition);
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
         /// <param name="element">An alias of the expression to search.</param>
         /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
         /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>?.</returns>
-        public static NullableInt64CharIndexFunctionExpression CharIndex(this MsSqlFunctionExpressionBuilder _, string pattern, (string TableName, string FieldName) element, AnyElement<long?> startSearchPosition)
+        public static NullableInt64CharIndexFunctionExpression CharIndex(this FirstGenerationMsSqlFunctionExpressionBuilder _, string pattern, (string TableName, string FieldName) element, AnyElement<long?> startSearchPosition)
             => new(new NullableStringExpressionMediator(new LiteralExpression<string?>(pattern)), new NullableStringExpressionMediator(new AliasExpression<string?>(element)), startSearchPosition);
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
         /// <param name="pattern">An alias of the search pattern to search for in <paramref name="element"/>.</param>
         /// <param name="element">A <see cref="AnyElement{String}"/>? the expression to search.</param>
         /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>?.</returns>
-        public static NullableInt64CharIndexFunctionExpression CharIndex(this MsSqlFunctionExpressionBuilder _, (string TableName, string FieldName) pattern, AnyStringElement element)
+        public static NullableInt64CharIndexFunctionExpression CharIndex(this FirstGenerationMsSqlFunctionExpressionBuilder _, (string TableName, string FieldName) pattern, AnyStringElement element)
             => new(new NullableStringExpressionMediator(new AliasExpression<string>(pattern)), element);
 
         /// <summary>
@@ -118,7 +118,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
         /// <param name="element">A <see cref="AnyElement{String}"/>? the expression to search.</param>
         /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
         /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>?.</returns>
-        public static NullableInt64CharIndexFunctionExpression CharIndex(this MsSqlFunctionExpressionBuilder _, (string TableName, string FieldName) pattern, AnyStringElement element, long startSearchPosition)
+        public static NullableInt64CharIndexFunctionExpression CharIndex(this FirstGenerationMsSqlFunctionExpressionBuilder _, (string TableName, string FieldName) pattern, AnyStringElement element, long startSearchPosition)
             => new(new NullableStringExpressionMediator(new AliasExpression<string>(pattern)), element, new LiteralExpression<long>(startSearchPosition));
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
         /// <param name="element">A <see cref="AnyElement{String}"/>? the expression to search.</param>
         /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
         /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>?.</returns>
-        public static NullableInt64CharIndexFunctionExpression CharIndex(this MsSqlFunctionExpressionBuilder _, (string TableName, string FieldName) pattern, AnyStringElement element, int startSearchPosition)
+        public static NullableInt64CharIndexFunctionExpression CharIndex(this FirstGenerationMsSqlFunctionExpressionBuilder _, (string TableName, string FieldName) pattern, AnyStringElement element, int startSearchPosition)
             => new(new NullableStringExpressionMediator(new AliasExpression<string>(pattern)), element, new LiteralExpression<int>(startSearchPosition));
 
         /// <summary>
@@ -140,7 +140,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
         /// <param name="element">A <see cref="AnyElement{String}"/>? the expression to search.</param>
         /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
         /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>?.</returns>
-        public static NullableInt64CharIndexFunctionExpression CharIndex(this MsSqlFunctionExpressionBuilder _, (string TableName, string FieldName) pattern, AnyStringElement element, AnyElement<int> startSearchPosition)
+        public static NullableInt64CharIndexFunctionExpression CharIndex(this FirstGenerationMsSqlFunctionExpressionBuilder _, (string TableName, string FieldName) pattern, AnyStringElement element, AnyElement<int> startSearchPosition)
             => new(new NullableStringExpressionMediator(new AliasExpression<string>(pattern)), element, startSearchPosition);
 
         /// <summary>
@@ -151,7 +151,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
         /// <param name="element">A <see cref="AnyElement{String}"/>? the expression to search.</param>
         /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
         /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>?.</returns>
-        public static NullableInt64CharIndexFunctionExpression CharIndex(this MsSqlFunctionExpressionBuilder _, (string TableName, string FieldName) pattern, AnyStringElement element, AnyElement<long> startSearchPosition)
+        public static NullableInt64CharIndexFunctionExpression CharIndex(this FirstGenerationMsSqlFunctionExpressionBuilder _, (string TableName, string FieldName) pattern, AnyStringElement element, AnyElement<long> startSearchPosition)
             => new(new NullableStringExpressionMediator(new AliasExpression<string>(pattern)), element, startSearchPosition);
 
         /// <summary>
@@ -162,7 +162,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
         /// <param name="element">A <see cref="AnyElement{String}"/>? the expression to search.</param>
         /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
         /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>?.</returns>
-        public static NullableInt64CharIndexFunctionExpression CharIndex(this MsSqlFunctionExpressionBuilder _, (string TableName, string FieldName) pattern, AnyStringElement element, AnyElement<int?> startSearchPosition)
+        public static NullableInt64CharIndexFunctionExpression CharIndex(this FirstGenerationMsSqlFunctionExpressionBuilder _, (string TableName, string FieldName) pattern, AnyStringElement element, AnyElement<int?> startSearchPosition)
             => new(new NullableStringExpressionMediator(new AliasExpression<string>(pattern)), element, startSearchPosition);
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
         /// <param name="element">A <see cref="AnyElement{String}"/>? the expression to search.</param>
         /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
         /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>?.</returns>
-        public static NullableInt64CharIndexFunctionExpression CharIndex(this MsSqlFunctionExpressionBuilder _, (string TableName, string FieldName) pattern, AnyStringElement element, AnyElement<long?> startSearchPosition)
+        public static NullableInt64CharIndexFunctionExpression CharIndex(this FirstGenerationMsSqlFunctionExpressionBuilder _, (string TableName, string FieldName) pattern, AnyStringElement element, AnyElement<long?> startSearchPosition)
             => new(new NullableStringExpressionMediator(new AliasExpression<string>(pattern)), element, startSearchPosition);
 
         /// <summary>
@@ -183,7 +183,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
         /// <param name="pattern">A <see cref="StringElement"/> to search for in <paramref name="element"/>.</param>
         /// <param name="element">An alias of the expression to search.</param>
         /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>?.</returns>
-        public static NullableInt64CharIndexFunctionExpression CharIndex(this MsSqlFunctionExpressionBuilder _, AnyStringElement pattern, (string TableName, string FieldName) element)
+        public static NullableInt64CharIndexFunctionExpression CharIndex(this FirstGenerationMsSqlFunctionExpressionBuilder _, AnyStringElement pattern, (string TableName, string FieldName) element)
             => new(pattern, new NullableStringExpressionMediator(new AliasExpression<string?>(element)));
 
         /// <summary>
@@ -194,7 +194,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
         /// <param name="element">An alias of the expression to search.</param>
         /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
         /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>?.</returns>
-        public static NullableInt64CharIndexFunctionExpression CharIndex(this MsSqlFunctionExpressionBuilder _, AnyStringElement pattern, (string TableName, string FieldName) element, long startSearchPosition)
+        public static NullableInt64CharIndexFunctionExpression CharIndex(this FirstGenerationMsSqlFunctionExpressionBuilder _, AnyStringElement pattern, (string TableName, string FieldName) element, long startSearchPosition)
             => new(pattern, new NullableStringExpressionMediator(new AliasExpression<string?>(element)), new LiteralExpression<long>(startSearchPosition));
 
         /// <summary>
@@ -205,7 +205,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
         /// <param name="element">An alias of the expression to search.</param>
         /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
         /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a<see cref="AnyElement{Int64}"/>?.</returns>
-        public static NullableInt64CharIndexFunctionExpression CharIndex(this MsSqlFunctionExpressionBuilder _, AnyStringElement pattern, (string TableName, string FieldName) element, int startSearchPosition)
+        public static NullableInt64CharIndexFunctionExpression CharIndex(this FirstGenerationMsSqlFunctionExpressionBuilder _, AnyStringElement pattern, (string TableName, string FieldName) element, int startSearchPosition)
             => new(pattern, new NullableStringExpressionMediator(new AliasExpression<string?>(element)), new LiteralExpression<int>(startSearchPosition));
 
         /// <summary>
@@ -216,7 +216,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
         /// <param name="element">An alias of the expression to search.</param>
         /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
         /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>?.</returns>
-        public static NullableInt64CharIndexFunctionExpression CharIndex(this MsSqlFunctionExpressionBuilder _, AnyStringElement pattern, (string TableName, string FieldName) element, AnyElement<int> startSearchPosition)
+        public static NullableInt64CharIndexFunctionExpression CharIndex(this FirstGenerationMsSqlFunctionExpressionBuilder _, AnyStringElement pattern, (string TableName, string FieldName) element, AnyElement<int> startSearchPosition)
             => new(pattern, new NullableStringExpressionMediator(new AliasExpression<string?>(element)), startSearchPosition);
 
         /// <summary>
@@ -227,7 +227,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
         /// <param name="element">An alias of the expression to search.</param>
         /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
         /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>?.</returns>
-        public static NullableInt64CharIndexFunctionExpression CharIndex(this MsSqlFunctionExpressionBuilder _, AnyStringElement pattern, (string TableName, string FieldName) element, AnyElement<long> startSearchPosition)
+        public static NullableInt64CharIndexFunctionExpression CharIndex(this FirstGenerationMsSqlFunctionExpressionBuilder _, AnyStringElement pattern, (string TableName, string FieldName) element, AnyElement<long> startSearchPosition)
             => new(pattern, new NullableStringExpressionMediator(new AliasExpression<string?>(element)), startSearchPosition);
 
         /// <summary>
@@ -238,7 +238,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
         /// <param name="element">An alias of the expression to search.</param>
         /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
         /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>?.</returns>
-        public static NullableInt64CharIndexFunctionExpression CharIndex(this MsSqlFunctionExpressionBuilder _, AnyStringElement pattern, (string TableName, string FieldName) element, AnyElement<int?> startSearchPosition)
+        public static NullableInt64CharIndexFunctionExpression CharIndex(this FirstGenerationMsSqlFunctionExpressionBuilder _, AnyStringElement pattern, (string TableName, string FieldName) element, AnyElement<int?> startSearchPosition)
             => new(pattern, new NullableStringExpressionMediator(new AliasExpression<string?>(element)), startSearchPosition);
 
         /// <summary>
@@ -249,7 +249,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
         /// <param name="element"An alias of the expression to search.</param>
         /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
         /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>?.</returns>
-        public static NullableInt64CharIndexFunctionExpression CharIndex(this MsSqlFunctionExpressionBuilder _, AnyStringElement pattern, (string TableName, string FieldName) element, AnyElement<long?> startSearchPosition)
+        public static NullableInt64CharIndexFunctionExpression CharIndex(this FirstGenerationMsSqlFunctionExpressionBuilder _, AnyStringElement pattern, (string TableName, string FieldName) element, AnyElement<long?> startSearchPosition)
             => new(pattern, new NullableStringExpressionMediator(new AliasExpression<string?>(element)), startSearchPosition);
     }
 }
