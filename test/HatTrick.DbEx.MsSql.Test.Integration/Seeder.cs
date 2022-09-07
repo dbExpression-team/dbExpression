@@ -30,5 +30,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database
             server.ConnectionContext.ExecuteNonQuery(resetScriptReader.ReadToEnd());
             serverConn.Disconnect();
         }
+
+        public void Run(string command)
+        {
+            using var conn = new SqlConnection(connectionString);
+            var serverConn = new ServerConnection(conn);
+            var server = new Server(serverConn);
+            server.ConnectionContext.ExecuteNonQuery(command);
+            serverConn.Disconnect();
+        }
     }
 }

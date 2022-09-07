@@ -20,7 +20,6 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   netCoreVersion: '6.0'
-  net7PreviewVersion: '7.0.100-preview.7.22377.5'
   system.debug: true
   stageLocationName: db-ex
   disable.coverage.autogenerate: 'true'
@@ -38,18 +37,6 @@ stages:
     - job:
       displayName: 'Build, Test, and Publish'
       steps:
-      - task: UseDotNet@2
-        displayName: 'Install .NET 6.0 SDK'
-        inputs:
-          packageType: sdk
-          version: '6.0.400'
-          installationPath: $(Agent.ToolsDirectory)/dotnet
-      - task: UseDotNet@2
-        displayName: 'Install .NET 7.0 SDK'
-        inputs:
-          packageType: sdk
-          version: $(net7PreviewVersion)
-          installationPath: $(Agent.ToolsDirectory)/dotnet
       - task: PowerShell@2
         displayName: 'Build and Package Solution'
         inputs:
@@ -62,7 +49,7 @@ stages:
         inputs:
           command: test
           projects: $(Build.SourcesDirectory)/test/HatTrick.DbEx.MsSql.Test.Unit/HatTrick.DbEx.MsSql.Test.Unit.csproj
-          arguments: '--configuration $(buildConfiguration) --logger "trx;LogFileName=mssql-core.tests.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Include="[HatTrick.DbEx.*Sql*]*" /p:Exclude="[*Test]*"'
+          arguments: '--configuration $(buildConfiguration) --framework net$(netCoreVersion) --logger "trx;LogFileName=mssql-core.tests.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Include="[HatTrick.DbEx.*Sql*]*" /p:Exclude="[*Test]*"'
       - task: PublishTestResults@2
         displayName: 'Publish Test Results to Temp'
         inputs:
@@ -93,7 +80,7 @@ stages:
         buildTemplatesPath: $(Pipeline.Workspace)/$(stageLocationName)/build/mssql
         buildConfiguration: $(buildConfiguration)
         targetFrameworkMoniker: net$(netCoreVersion)
-        mssqlVersions: ['2017','2019','2022']    
+        mssqlVersions: ['2017','2019','2022'] 
     
   - stage: Publish_Reports
     dependsOn:
@@ -110,7 +97,7 @@ stages:
         displayName: 'Correct Source Paths in Coverage Files'
         inputs:
           filePath: $(Pipeline.Workspace)/$(stageLocationName)/build/fix-code-coverage-files.ps1
-          arguments: '-CodeCoverageFilePaths "$(Pipeline.Workspace)\mssql-core-results\coverage.net6.0.cobertura.xml;$(Pipeline.Workspace)\mssql-2017-results\coverage.net6.0.cobertura.xml;$(Pipeline.Workspace)\mssql-2019-results\coverage.net6.0.cobertura.xml;$(Pipeline.Workspace)\mssql-2022-results\coverage.net6.0.cobertura.xml" -PathToSourceFiles "$(Pipeline.Workspace)\$(stageLocationName)\src\"'
+          arguments: '-CodeCoverageFilePaths "$(Pipeline.Workspace)\mssql-core-results\coverage.net$(netCoreVersion).cobertura.xml;$(Pipeline.Workspace)\mssql-2017-results\coverage.net$(netCoreVersion).cobertura.xml;$(Pipeline.Workspace)\mssql-2019-results\coverage.net$(netCoreVersion).cobertura.xml;$(Pipeline.Workspace)\mssql-2022-results\coverage.net$(netCoreVersion).cobertura.xml" -PathToSourceFiles "$(Pipeline.Workspace)\$(stageLocationName)\src\"'
           workingDirectory: $(Pipeline.Workspace)/$(stageLocationName)\build
           pwsh: true
       - task: reportgenerator@5
