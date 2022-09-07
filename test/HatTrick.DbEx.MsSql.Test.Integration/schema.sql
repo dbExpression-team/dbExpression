@@ -3,6 +3,8 @@
 USE [MsSqlDbExTest];
 GO
 
+ALTER DATABASE [MsSqlDbExTest] SET RECOVERY SIMPLE;
+
 DECLARE @SQL as varchar(4000)
 DECLARE @SchemaName as varchar(500)
 DECLARE @SchemaIndex as int
@@ -95,7 +97,7 @@ FOR SELECT SQLStatement
   EXEC(@statement)
  
  
- FETCH statement_cursor INTO @statement  
+FETCH statement_cursor INTO @statement  
 END
  
 CLOSE statement_cursor
