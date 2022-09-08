@@ -20,7 +20,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         {
             //given & when & then
             var services = new ServiceCollection();
-            services.AddDbExpression(dbex => dbex.AddMsSql2019Database<MsSqlDb>(c => { }));
+            services.AddDbExpression(dbex => dbex.AddDatabase<MsSqlDb>(c => { }));
             var serviceProvider = services.BuildServiceProvider();
             Assert.Throws<DbExpressionConfigurationException>(() => serviceProvider.GetRequiredService<MsSqlDb>());
         }

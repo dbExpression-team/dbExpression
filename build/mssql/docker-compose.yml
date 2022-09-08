@@ -25,6 +25,7 @@ services:
       CONNECTIONSTRINGS__HATTRICK_DBEX_MSSQL_TEST: server=mssql,1433;database=MsSqlDbExTest;uid=sa;pwd=${MSSQL_PWD};
       MSSQL_VERSION: ${MSSQL_VERSION}
       BUILD_CONFIGURATION: ${BUILD_CONFIGURATION}
+      TARGET_FRAMEWORK_MONIKER: ${TARGET_FRAMEWORK_MONIKER}
     volumes:
       - ${ROOT_PATH}:/db-ex
     depends_on:

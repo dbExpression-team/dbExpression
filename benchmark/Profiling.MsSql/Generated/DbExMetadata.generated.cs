@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Data;
 using Profiling.MsSql.dboDataService;
 using Profiling.MsSql.secDataService;
-
+#nullable enable
 namespace Profiling.MsSql.DataService
 {
     public class ProfilingDatabaseSqlDatabaseMetadata : ISqlDatabaseMetadata
@@ -29,161 +29,864 @@ namespace Profiling.MsSql.DataService
         static ProfilingDatabaseSqlDatabaseMetadata()
         {
             #region dbo schema
-            _metadata.Add(1, new SqlSchemaMetadata("dbo"));
+            _metadata.Add(1, new SqlSchemaMetadata(name:"dbo"));
             
             #region dbo entities
             #region dbo.AccessAuditLog
-            _metadata.Add(2, new SqlTableMetadata("AccessAuditLog"));
-            _metadata.Add(3, new MsSqlColumnMetadata("Id", SqlDbType.Int) { IsIdentity = true });
-            _metadata.Add(4, new MsSqlColumnMetadata("PersonId", SqlDbType.Int));
-            _metadata.Add(5, new MsSqlColumnMetadata("AccessResult", SqlDbType.Int));
-            _metadata.Add(6, new MsSqlColumnMetadata("DateCreated", SqlDbType.DateTime));
+            // dbo.AccessAuditLog
+            _metadata.Add(2, new SqlTableMetadata(name:"AccessAuditLog"));
+
+            // dbo.AccessAuditLog.Id
+            _metadata.Add(3, new MsSqlColumnMetadata(
+                        name:"Id", 
+                        dbType:SqlDbType.Int
+                    ) 
+                    { 
+                        IsIdentity = true 
+                    }
+                );
+
+            // dbo.AccessAuditLog.PersonId
+            _metadata.Add(4, new MsSqlColumnMetadata(
+                        name:"PersonId", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.AccessAuditLog.AccessResult
+            _metadata.Add(5, new MsSqlColumnMetadata(
+                        name:"AccessResult", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.AccessAuditLog.DateCreated
+            _metadata.Add(6, new MsSqlColumnMetadata(
+                        name:"DateCreated", 
+                        dbType:SqlDbType.DateTime
+                    )
+                );
+
             #endregion
 
             #region dbo.Address
-            _metadata.Add(7, new SqlTableMetadata("Address"));
-            _metadata.Add(8, new MsSqlColumnMetadata("Id", SqlDbType.Int) { IsIdentity = true });
-            _metadata.Add(9, new MsSqlColumnMetadata("AddressType", SqlDbType.Int));
-            _metadata.Add(10, new MsSqlColumnMetadata("Line1", SqlDbType.VarChar, 50));
-            _metadata.Add(11, new MsSqlColumnMetadata("Line2", SqlDbType.VarChar, 50));
-            _metadata.Add(12, new MsSqlColumnMetadata("City", SqlDbType.VarChar, 60));
-            _metadata.Add(13, new MsSqlColumnMetadata("State", SqlDbType.Char, 2));
-            _metadata.Add(14, new MsSqlColumnMetadata("Zip", SqlDbType.VarChar, 10));
-            _metadata.Add(15, new MsSqlColumnMetadata("DateCreated", SqlDbType.DateTime));
-            _metadata.Add(16, new MsSqlColumnMetadata("DateUpdated", SqlDbType.DateTime));
+            // dbo.Address
+            _metadata.Add(7, new SqlTableMetadata(name:"Address"));
+
+            // dbo.Address.Id
+            _metadata.Add(8, new MsSqlColumnMetadata(
+                        name:"Id", 
+                        dbType:SqlDbType.Int
+                    ) 
+                    { 
+                        IsIdentity = true 
+                    }
+                );
+
+            // dbo.Address.AddressType
+            _metadata.Add(9, new MsSqlColumnMetadata(
+                        name:"AddressType", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.Address.Line1
+            _metadata.Add(10, new MsSqlColumnMetadata(
+                        name:"Line1", 
+                        dbType:SqlDbType.VarChar, 
+                        size:50
+                    )
+                );
+
+            // dbo.Address.Line2
+            _metadata.Add(11, new MsSqlColumnMetadata(
+                        name:"Line2", 
+                        dbType:SqlDbType.VarChar, 
+                        size:50
+                    )
+                );
+
+            // dbo.Address.City
+            _metadata.Add(12, new MsSqlColumnMetadata(
+                        name:"City", 
+                        dbType:SqlDbType.VarChar, 
+                        size:60
+                    )
+                );
+
+            // dbo.Address.State
+            _metadata.Add(13, new MsSqlColumnMetadata(
+                        name:"State", 
+                        dbType:SqlDbType.Char, 
+                        size:2
+                    )
+                );
+
+            // dbo.Address.Zip
+            _metadata.Add(14, new MsSqlColumnMetadata(
+                        name:"Zip", 
+                        dbType:SqlDbType.VarChar, 
+                        size:10
+                    )
+                );
+
+            // dbo.Address.DateCreated
+            _metadata.Add(15, new MsSqlColumnMetadata(
+                        name:"DateCreated", 
+                        dbType:SqlDbType.DateTime
+                    )
+                );
+
+            // dbo.Address.DateUpdated
+            _metadata.Add(16, new MsSqlColumnMetadata(
+                        name:"DateUpdated", 
+                        dbType:SqlDbType.DateTime
+                    )
+                );
+
             #endregion
 
             #region dbo.Person
-            _metadata.Add(17, new SqlTableMetadata("Person"));
-            _metadata.Add(18, new MsSqlColumnMetadata("Id", SqlDbType.Int) { IsIdentity = true });
-            _metadata.Add(19, new MsSqlColumnMetadata("FirstName", SqlDbType.VarChar, 20));
-            _metadata.Add(20, new MsSqlColumnMetadata("LastName", SqlDbType.VarChar, 20));
-            _metadata.Add(21, new MsSqlColumnMetadata("BirthDate", SqlDbType.Date));
-            _metadata.Add(22, new MsSqlColumnMetadata("GenderType", SqlDbType.Int));
-            _metadata.Add(23, new MsSqlColumnMetadata("CreditLimit", SqlDbType.Int));
-            _metadata.Add(24, new MsSqlColumnMetadata("YearOfLastCreditLimitReview", SqlDbType.Int));
-            _metadata.Add(25, new MsSqlColumnMetadata("RegistrationDate", SqlDbType.DateTimeOffset, 10));
-            _metadata.Add(26, new MsSqlColumnMetadata("LastLoginDate", SqlDbType.DateTimeOffset, 10));
-            _metadata.Add(27, new MsSqlColumnMetadata("DateCreated", SqlDbType.DateTime));
-            _metadata.Add(28, new MsSqlColumnMetadata("DateUpdated", SqlDbType.DateTime));
+            // dbo.Person
+            _metadata.Add(17, new SqlTableMetadata(name:"Person"));
+
+            // dbo.Person.Id
+            _metadata.Add(18, new MsSqlColumnMetadata(
+                        name:"Id", 
+                        dbType:SqlDbType.Int
+                    ) 
+                    { 
+                        IsIdentity = true 
+                    }
+                );
+
+            // dbo.Person.FirstName
+            _metadata.Add(19, new MsSqlColumnMetadata(
+                        name:"FirstName", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // dbo.Person.LastName
+            _metadata.Add(20, new MsSqlColumnMetadata(
+                        name:"LastName", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // dbo.Person.BirthDate
+            _metadata.Add(21, new MsSqlColumnMetadata(
+                        name:"BirthDate", 
+                        dbType:SqlDbType.Date
+                    )
+                );
+
+            // dbo.Person.GenderType
+            _metadata.Add(22, new MsSqlColumnMetadata(
+                        name:"GenderType", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.Person.CreditLimit
+            _metadata.Add(23, new MsSqlColumnMetadata(
+                        name:"CreditLimit", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.Person.YearOfLastCreditLimitReview
+            _metadata.Add(24, new MsSqlColumnMetadata(
+                        name:"YearOfLastCreditLimitReview", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.Person.RegistrationDate
+            _metadata.Add(25, new MsSqlColumnMetadata(
+                        name:"RegistrationDate", 
+                        dbType:SqlDbType.DateTimeOffset, 
+                        size:10
+                    )
+                );
+
+            // dbo.Person.LastLoginDate
+            _metadata.Add(26, new MsSqlColumnMetadata(
+                        name:"LastLoginDate", 
+                        dbType:SqlDbType.DateTimeOffset, 
+                        size:10
+                    )
+                );
+
+            // dbo.Person.DateCreated
+            _metadata.Add(27, new MsSqlColumnMetadata(
+                        name:"DateCreated", 
+                        dbType:SqlDbType.DateTime
+                    )
+                );
+
+            // dbo.Person.DateUpdated
+            _metadata.Add(28, new MsSqlColumnMetadata(
+                        name:"DateUpdated", 
+                        dbType:SqlDbType.DateTime
+                    )
+                );
+
             #endregion
 
             #region dbo.Person_Address
-            _metadata.Add(29, new SqlTableMetadata("Person_Address"));
-            _metadata.Add(30, new MsSqlColumnMetadata("Id", SqlDbType.Int) { IsIdentity = true });
-            _metadata.Add(31, new MsSqlColumnMetadata("PersonId", SqlDbType.Int));
-            _metadata.Add(32, new MsSqlColumnMetadata("AddressId", SqlDbType.Int));
-            _metadata.Add(33, new MsSqlColumnMetadata("DateCreated", SqlDbType.DateTime));
+            // dbo.Person_Address
+            _metadata.Add(29, new SqlTableMetadata(name:"Person_Address"));
+
+            // dbo.Person_Address.Id
+            _metadata.Add(30, new MsSqlColumnMetadata(
+                        name:"Id", 
+                        dbType:SqlDbType.Int
+                    ) 
+                    { 
+                        IsIdentity = true 
+                    }
+                );
+
+            // dbo.Person_Address.PersonId
+            _metadata.Add(31, new MsSqlColumnMetadata(
+                        name:"PersonId", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.Person_Address.AddressId
+            _metadata.Add(32, new MsSqlColumnMetadata(
+                        name:"AddressId", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.Person_Address.DateCreated
+            _metadata.Add(33, new MsSqlColumnMetadata(
+                        name:"DateCreated", 
+                        dbType:SqlDbType.DateTime
+                    )
+                );
+
             #endregion
 
             #region dbo.Product
-            _metadata.Add(34, new SqlTableMetadata("Product"));
-            _metadata.Add(35, new MsSqlColumnMetadata("Id", SqlDbType.Int) { IsIdentity = true });
-            _metadata.Add(36, new MsSqlColumnMetadata("ProductCategoryType", SqlDbType.Int));
-            _metadata.Add(37, new MsSqlColumnMetadata("Name", SqlDbType.VarChar, 80));
-            _metadata.Add(38, new MsSqlColumnMetadata("Description", SqlDbType.NVarChar, 4000));
-            _metadata.Add(39, new MsSqlColumnMetadata("ListPrice", SqlDbType.Money));
-            _metadata.Add(40, new MsSqlColumnMetadata("Price", SqlDbType.Money));
-            _metadata.Add(41, new MsSqlColumnMetadata("Quantity", SqlDbType.Int));
-            _metadata.Add(42, new MsSqlColumnMetadata("Image", SqlDbType.VarBinary, -1));
-            _metadata.Add(43, new MsSqlColumnMetadata("Height", SqlDbType.Decimal, 4, 1));
-            _metadata.Add(44, new MsSqlColumnMetadata("Width", SqlDbType.Decimal, 4, 1));
-            _metadata.Add(45, new MsSqlColumnMetadata("Depth", SqlDbType.Decimal, 4, 1));
-            _metadata.Add(46, new MsSqlColumnMetadata("Weight", SqlDbType.Decimal, 4, 1));
-            _metadata.Add(47, new MsSqlColumnMetadata("ShippingWeight", SqlDbType.Decimal, 4, 1));
-            _metadata.Add(48, new MsSqlColumnMetadata("ValidStartTimeOfDayForPurchase", SqlDbType.Time, 5));
-            _metadata.Add(49, new MsSqlColumnMetadata("ValidEndTimeOfDayForPurchase", SqlDbType.Time, 5));
-            _metadata.Add(50, new MsSqlColumnMetadata("DateCreated", SqlDbType.DateTime));
-            _metadata.Add(51, new MsSqlColumnMetadata("DateUpdated", SqlDbType.DateTime));
+            // dbo.Product
+            _metadata.Add(34, new SqlTableMetadata(name:"Product"));
+
+            // dbo.Product.Id
+            _metadata.Add(35, new MsSqlColumnMetadata(
+                        name:"Id", 
+                        dbType:SqlDbType.Int
+                    ) 
+                    { 
+                        IsIdentity = true 
+                    }
+                );
+
+            // dbo.Product.ProductCategoryType
+            _metadata.Add(36, new MsSqlColumnMetadata(
+                        name:"ProductCategoryType", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.Product.Name
+            _metadata.Add(37, new MsSqlColumnMetadata(
+                        name:"Name", 
+                        dbType:SqlDbType.VarChar, 
+                        size:80
+                    )
+                );
+
+            // dbo.Product.Description
+            _metadata.Add(38, new MsSqlColumnMetadata(
+                        name:"Description", 
+                        dbType:SqlDbType.NVarChar, 
+                        size:4000
+                    )
+                );
+
+            // dbo.Product.ListPrice
+            _metadata.Add(39, new MsSqlColumnMetadata(
+                        name:"ListPrice", 
+                        dbType:SqlDbType.Money
+                    )
+                );
+
+            // dbo.Product.Price
+            _metadata.Add(40, new MsSqlColumnMetadata(
+                        name:"Price", 
+                        dbType:SqlDbType.Money
+                    )
+                );
+
+            // dbo.Product.Quantity
+            _metadata.Add(41, new MsSqlColumnMetadata(
+                        name:"Quantity", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.Product.Image
+            _metadata.Add(42, new MsSqlColumnMetadata(
+                        name:"Image", 
+                        dbType:SqlDbType.VarBinary, 
+                        size:-1
+                    )
+                );
+
+            // dbo.Product.Height
+            _metadata.Add(43, new MsSqlColumnMetadata(
+                        name:"Height", 
+                        dbType:SqlDbType.Decimal, 
+                        precision:4, 
+                        scale:1
+                    )
+                );
+
+            // dbo.Product.Width
+            _metadata.Add(44, new MsSqlColumnMetadata(
+                        name:"Width", 
+                        dbType:SqlDbType.Decimal, 
+                        precision:4, 
+                        scale:1
+                    )
+                );
+
+            // dbo.Product.Depth
+            _metadata.Add(45, new MsSqlColumnMetadata(
+                        name:"Depth", 
+                        dbType:SqlDbType.Decimal, 
+                        precision:4, 
+                        scale:1
+                    )
+                );
+
+            // dbo.Product.Weight
+            _metadata.Add(46, new MsSqlColumnMetadata(
+                        name:"Weight", 
+                        dbType:SqlDbType.Decimal, 
+                        precision:4, 
+                        scale:1
+                    )
+                );
+
+            // dbo.Product.ShippingWeight
+            _metadata.Add(47, new MsSqlColumnMetadata(
+                        name:"ShippingWeight", 
+                        dbType:SqlDbType.Decimal, 
+                        precision:4, 
+                        scale:1
+                    )
+                );
+
+            // dbo.Product.ValidStartTimeOfDayForPurchase
+            _metadata.Add(48, new MsSqlColumnMetadata(
+                        name:"ValidStartTimeOfDayForPurchase", 
+                        dbType:SqlDbType.Time, 
+                        size:5
+                    )
+                );
+
+            // dbo.Product.ValidEndTimeOfDayForPurchase
+            _metadata.Add(49, new MsSqlColumnMetadata(
+                        name:"ValidEndTimeOfDayForPurchase", 
+                        dbType:SqlDbType.Time, 
+                        size:5
+                    )
+                );
+
+            // dbo.Product.DateCreated
+            _metadata.Add(50, new MsSqlColumnMetadata(
+                        name:"DateCreated", 
+                        dbType:SqlDbType.DateTime
+                    )
+                );
+
+            // dbo.Product.DateUpdated
+            _metadata.Add(51, new MsSqlColumnMetadata(
+                        name:"DateUpdated", 
+                        dbType:SqlDbType.DateTime
+                    )
+                );
+
             #endregion
 
             #region dbo.Purchase
-            _metadata.Add(52, new SqlTableMetadata("Purchase"));
-            _metadata.Add(53, new MsSqlColumnMetadata("Id", SqlDbType.Int) { IsIdentity = true });
-            _metadata.Add(54, new MsSqlColumnMetadata("PersonId", SqlDbType.Int));
-            _metadata.Add(55, new MsSqlColumnMetadata("OrderNumber", SqlDbType.VarChar, 20));
-            _metadata.Add(56, new MsSqlColumnMetadata("TotalPurchaseQuantity", SqlDbType.Int));
-            _metadata.Add(57, new MsSqlColumnMetadata("TotalPurchaseAmount", SqlDbType.Money));
-            _metadata.Add(58, new MsSqlColumnMetadata("PurchaseDate", SqlDbType.DateTime));
-            _metadata.Add(59, new MsSqlColumnMetadata("ShipDate", SqlDbType.DateTime));
-            _metadata.Add(60, new MsSqlColumnMetadata("ExpectedDeliveryDate", SqlDbType.DateTime));
-            _metadata.Add(61, new MsSqlColumnMetadata("TrackingIdentifier", SqlDbType.UniqueIdentifier));
-            _metadata.Add(62, new MsSqlColumnMetadata("PaymentMethodType", SqlDbType.VarChar, 20));
-            _metadata.Add(63, new MsSqlColumnMetadata("PaymentSourceType", SqlDbType.VarChar, 20));
-            _metadata.Add(64, new MsSqlColumnMetadata("DateCreated", SqlDbType.DateTime));
-            _metadata.Add(65, new MsSqlColumnMetadata("DateUpdated", SqlDbType.DateTime));
+            // dbo.Purchase
+            _metadata.Add(52, new SqlTableMetadata(name:"Purchase"));
+
+            // dbo.Purchase.Id
+            _metadata.Add(53, new MsSqlColumnMetadata(
+                        name:"Id", 
+                        dbType:SqlDbType.Int
+                    ) 
+                    { 
+                        IsIdentity = true 
+                    }
+                );
+
+            // dbo.Purchase.PersonId
+            _metadata.Add(54, new MsSqlColumnMetadata(
+                        name:"PersonId", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.Purchase.OrderNumber
+            _metadata.Add(55, new MsSqlColumnMetadata(
+                        name:"OrderNumber", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // dbo.Purchase.TotalPurchaseQuantity
+            _metadata.Add(56, new MsSqlColumnMetadata(
+                        name:"TotalPurchaseQuantity", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.Purchase.TotalPurchaseAmount
+            _metadata.Add(57, new MsSqlColumnMetadata(
+                        name:"TotalPurchaseAmount", 
+                        dbType:SqlDbType.Money
+                    )
+                );
+
+            // dbo.Purchase.PurchaseDate
+            _metadata.Add(58, new MsSqlColumnMetadata(
+                        name:"PurchaseDate", 
+                        dbType:SqlDbType.DateTime
+                    )
+                );
+
+            // dbo.Purchase.ShipDate
+            _metadata.Add(59, new MsSqlColumnMetadata(
+                        name:"ShipDate", 
+                        dbType:SqlDbType.DateTime
+                    )
+                );
+
+            // dbo.Purchase.ExpectedDeliveryDate
+            _metadata.Add(60, new MsSqlColumnMetadata(
+                        name:"ExpectedDeliveryDate", 
+                        dbType:SqlDbType.DateTime
+                    )
+                );
+
+            // dbo.Purchase.TrackingIdentifier
+            _metadata.Add(61, new MsSqlColumnMetadata(
+                        name:"TrackingIdentifier", 
+                        dbType:SqlDbType.UniqueIdentifier
+                    )
+                );
+
+            // dbo.Purchase.PaymentMethodType
+            _metadata.Add(62, new MsSqlColumnMetadata(
+                        name:"PaymentMethodType", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // dbo.Purchase.PaymentSourceType
+            _metadata.Add(63, new MsSqlColumnMetadata(
+                        name:"PaymentSourceType", 
+                        dbType:SqlDbType.VarChar, 
+                        size:20
+                    )
+                );
+
+            // dbo.Purchase.DateCreated
+            _metadata.Add(64, new MsSqlColumnMetadata(
+                        name:"DateCreated", 
+                        dbType:SqlDbType.DateTime
+                    )
+                );
+
+            // dbo.Purchase.DateUpdated
+            _metadata.Add(65, new MsSqlColumnMetadata(
+                        name:"DateUpdated", 
+                        dbType:SqlDbType.DateTime
+                    )
+                );
+
             #endregion
 
             #region dbo.PurchaseLine
-            _metadata.Add(66, new SqlTableMetadata("PurchaseLine"));
-            _metadata.Add(67, new MsSqlColumnMetadata("Id", SqlDbType.Int) { IsIdentity = true });
-            _metadata.Add(68, new MsSqlColumnMetadata("PurchaseId", SqlDbType.Int));
-            _metadata.Add(69, new MsSqlColumnMetadata("ProductId", SqlDbType.Int));
-            _metadata.Add(70, new MsSqlColumnMetadata("PurchasePrice", SqlDbType.Decimal, 12, 2));
-            _metadata.Add(71, new MsSqlColumnMetadata("Quantity", SqlDbType.Int));
-            _metadata.Add(72, new MsSqlColumnMetadata("DateCreated", SqlDbType.DateTime));
-            _metadata.Add(73, new MsSqlColumnMetadata("DateUpdated", SqlDbType.DateTime));
+            // dbo.PurchaseLine
+            _metadata.Add(66, new SqlTableMetadata(name:"PurchaseLine"));
+
+            // dbo.PurchaseLine.Id
+            _metadata.Add(67, new MsSqlColumnMetadata(
+                        name:"Id", 
+                        dbType:SqlDbType.Int
+                    ) 
+                    { 
+                        IsIdentity = true 
+                    }
+                );
+
+            // dbo.PurchaseLine.PurchaseId
+            _metadata.Add(68, new MsSqlColumnMetadata(
+                        name:"PurchaseId", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.PurchaseLine.ProductId
+            _metadata.Add(69, new MsSqlColumnMetadata(
+                        name:"ProductId", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.PurchaseLine.PurchasePrice
+            _metadata.Add(70, new MsSqlColumnMetadata(
+                        name:"PurchasePrice", 
+                        dbType:SqlDbType.Decimal, 
+                        precision:12, 
+                        scale:2
+                    )
+                );
+
+            // dbo.PurchaseLine.Quantity
+            _metadata.Add(71, new MsSqlColumnMetadata(
+                        name:"Quantity", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.PurchaseLine.DateCreated
+            _metadata.Add(72, new MsSqlColumnMetadata(
+                        name:"DateCreated", 
+                        dbType:SqlDbType.DateTime
+                    )
+                );
+
+            // dbo.PurchaseLine.DateUpdated
+            _metadata.Add(73, new MsSqlColumnMetadata(
+                        name:"DateUpdated", 
+                        dbType:SqlDbType.DateTime
+                    )
+                );
+
             #endregion
 
             #region dbo.PersonTotalPurchasesView
-            _metadata.Add(74, new SqlTableMetadata("PersonTotalPurchasesView"));
-            _metadata.Add(75, new MsSqlColumnMetadata("Id", SqlDbType.Int));
-            _metadata.Add(76, new MsSqlColumnMetadata("TotalAmount", SqlDbType.Money));
-            _metadata.Add(77, new MsSqlColumnMetadata("TotalCount", SqlDbType.Int));
+            // dbo.PersonTotalPurchasesView
+            _metadata.Add(74, new SqlTableMetadata(name:"PersonTotalPurchasesView"));
+
+            // dbo.PersonTotalPurchasesView.Id
+            _metadata.Add(75, new MsSqlColumnMetadata(
+                        name:"Id", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.PersonTotalPurchasesView.TotalAmount
+            _metadata.Add(76, new MsSqlColumnMetadata(
+                        name:"TotalAmount", 
+                        dbType:SqlDbType.Money
+                    )
+                );
+
+            // dbo.PersonTotalPurchasesView.TotalCount
+            _metadata.Add(77, new MsSqlColumnMetadata(
+                        name:"TotalCount", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
             #endregion
 
             #endregion
 
             #region dbo stored procedures
-            _metadata.Add(78, new StoredProcedureMetadata("SelectPerson_As_Dynamic_With_Input"));
-            _metadata.Add(79, new MsSqlParameterMetadata("@P1", SqlDbType.Int));
-            _metadata.Add(80, new StoredProcedureMetadata("SelectPerson_As_Dynamic_With_Input_And_InputOutput"));
-            _metadata.Add(81, new MsSqlParameterMetadata("@P1", SqlDbType.Int));
-            _metadata.Add(82, new MsSqlParameterMetadata("@CreditLimit", SqlDbType.Int));
-            _metadata.Add(83, new StoredProcedureMetadata("SelectPerson_As_Dynamic_With_Input_And_Output"));
-            _metadata.Add(84, new MsSqlParameterMetadata("@P1", SqlDbType.Int));
-            _metadata.Add(85, new MsSqlParameterMetadata("@Count", SqlDbType.Int));
-            _metadata.Add(86, new StoredProcedureMetadata("SelectPerson_As_DynamicList_With_Input"));
-            _metadata.Add(87, new MsSqlParameterMetadata("@P1", SqlDbType.Int));
-            _metadata.Add(88, new StoredProcedureMetadata("SelectPerson_As_DynamicList_With_Input_And_InputOutput"));
-            _metadata.Add(89, new MsSqlParameterMetadata("@P1", SqlDbType.Int));
-            _metadata.Add(90, new MsSqlParameterMetadata("@CreditLimit", SqlDbType.Int));
-            _metadata.Add(91, new StoredProcedureMetadata("SelectPerson_As_DynamicList_With_Input_And_Output"));
-            _metadata.Add(92, new MsSqlParameterMetadata("@P1", SqlDbType.Int));
-            _metadata.Add(93, new MsSqlParameterMetadata("@Count", SqlDbType.Int));
-            _metadata.Add(94, new StoredProcedureMetadata("SelectPersonId_As_ScalarValue_With_Input"));
-            _metadata.Add(95, new MsSqlParameterMetadata("@P1", SqlDbType.Int));
-            _metadata.Add(96, new StoredProcedureMetadata("SelectPersonId_As_ScalarValue_With_Input_And_Default_Value"));
-            _metadata.Add(97, new StoredProcedureMetadata("SelectPersonId_As_ScalarValue_With_Input_And_InputOutput"));
-            _metadata.Add(98, new MsSqlParameterMetadata("@P1", SqlDbType.Int));
-            _metadata.Add(99, new MsSqlParameterMetadata("@CreditLimit", SqlDbType.Int));
-            _metadata.Add(100, new StoredProcedureMetadata("SelectPersonId_As_ScalarValue_With_Input_And_Output"));
-            _metadata.Add(101, new MsSqlParameterMetadata("@P1", SqlDbType.Int));
-            _metadata.Add(102, new MsSqlParameterMetadata("@Count", SqlDbType.Int));
-            _metadata.Add(103, new StoredProcedureMetadata("SelectPersonId_As_ScalarValueList_With_Input"));
-            _metadata.Add(104, new MsSqlParameterMetadata("@P1", SqlDbType.Int));
-            _metadata.Add(105, new StoredProcedureMetadata("SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput"));
-            _metadata.Add(106, new MsSqlParameterMetadata("@P1", SqlDbType.Int));
-            _metadata.Add(107, new MsSqlParameterMetadata("@CreditLimit", SqlDbType.Int));
-            _metadata.Add(108, new StoredProcedureMetadata("SelectPersonId_As_ScalarValueList_With_Input_And_Output"));
-            _metadata.Add(109, new MsSqlParameterMetadata("@P1", SqlDbType.Int));
-            _metadata.Add(110, new MsSqlParameterMetadata("@Count", SqlDbType.Int));
-            _metadata.Add(111, new StoredProcedureMetadata("UpdatePersonCreditLimit_With_Inputs"));
-            _metadata.Add(112, new MsSqlParameterMetadata("@P1", SqlDbType.Int));
-            _metadata.Add(113, new MsSqlParameterMetadata("@CreditLimit", SqlDbType.Int));
+            #region dbo.SelectPerson_As_Dynamic_With_Input
+            // dbo.SelectPerson_As_Dynamic_With_Input
+            _metadata.Add(78, new StoredProcedureMetadata(name:"SelectPerson_As_Dynamic_With_Input"));
+
+            // dbo.SelectPerson_As_Dynamic_With_Input.@P1
+            _metadata.Add(79, new MsSqlParameterMetadata(
+                        name:"@P1", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            #endregion
+
+            #region dbo.SelectPerson_As_Dynamic_With_Input_And_InputOutput
+            // dbo.SelectPerson_As_Dynamic_With_Input_And_InputOutput
+            _metadata.Add(80, new StoredProcedureMetadata(name:"SelectPerson_As_Dynamic_With_Input_And_InputOutput"));
+
+            // dbo.SelectPerson_As_Dynamic_With_Input_And_InputOutput.@P1
+            _metadata.Add(81, new MsSqlParameterMetadata(
+                        name:"@P1", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.SelectPerson_As_Dynamic_With_Input_And_InputOutput.@CreditLimit
+            _metadata.Add(82, new MsSqlParameterMetadata(
+                        name:"@CreditLimit", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            #endregion
+
+            #region dbo.SelectPerson_As_Dynamic_With_Input_And_Output
+            // dbo.SelectPerson_As_Dynamic_With_Input_And_Output
+            _metadata.Add(83, new StoredProcedureMetadata(name:"SelectPerson_As_Dynamic_With_Input_And_Output"));
+
+            // dbo.SelectPerson_As_Dynamic_With_Input_And_Output.@P1
+            _metadata.Add(84, new MsSqlParameterMetadata(
+                        name:"@P1", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.SelectPerson_As_Dynamic_With_Input_And_Output.@Count
+            _metadata.Add(85, new MsSqlParameterMetadata(
+                        name:"@Count", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            #endregion
+
+            #region dbo.SelectPerson_As_DynamicList_With_Input
+            // dbo.SelectPerson_As_DynamicList_With_Input
+            _metadata.Add(86, new StoredProcedureMetadata(name:"SelectPerson_As_DynamicList_With_Input"));
+
+            // dbo.SelectPerson_As_DynamicList_With_Input.@P1
+            _metadata.Add(87, new MsSqlParameterMetadata(
+                        name:"@P1", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            #endregion
+
+            #region dbo.SelectPerson_As_DynamicList_With_Input_And_InputOutput
+            // dbo.SelectPerson_As_DynamicList_With_Input_And_InputOutput
+            _metadata.Add(88, new StoredProcedureMetadata(name:"SelectPerson_As_DynamicList_With_Input_And_InputOutput"));
+
+            // dbo.SelectPerson_As_DynamicList_With_Input_And_InputOutput.@P1
+            _metadata.Add(89, new MsSqlParameterMetadata(
+                        name:"@P1", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.SelectPerson_As_DynamicList_With_Input_And_InputOutput.@CreditLimit
+            _metadata.Add(90, new MsSqlParameterMetadata(
+                        name:"@CreditLimit", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            #endregion
+
+            #region dbo.SelectPerson_As_DynamicList_With_Input_And_Output
+            // dbo.SelectPerson_As_DynamicList_With_Input_And_Output
+            _metadata.Add(91, new StoredProcedureMetadata(name:"SelectPerson_As_DynamicList_With_Input_And_Output"));
+
+            // dbo.SelectPerson_As_DynamicList_With_Input_And_Output.@P1
+            _metadata.Add(92, new MsSqlParameterMetadata(
+                        name:"@P1", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.SelectPerson_As_DynamicList_With_Input_And_Output.@Count
+            _metadata.Add(93, new MsSqlParameterMetadata(
+                        name:"@Count", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            #endregion
+
+            #region dbo.SelectPersonId_As_ScalarValue_With_Input
+            // dbo.SelectPersonId_As_ScalarValue_With_Input
+            _metadata.Add(94, new StoredProcedureMetadata(name:"SelectPersonId_As_ScalarValue_With_Input"));
+
+            // dbo.SelectPersonId_As_ScalarValue_With_Input.@P1
+            _metadata.Add(95, new MsSqlParameterMetadata(
+                        name:"@P1", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            #endregion
+
+            #region dbo.SelectPersonId_As_ScalarValue_With_Input_And_Default_Value
+            // dbo.SelectPersonId_As_ScalarValue_With_Input_And_Default_Value
+            _metadata.Add(96, new StoredProcedureMetadata(name:"SelectPersonId_As_ScalarValue_With_Input_And_Default_Value"));
+
+            #endregion
+
+            #region dbo.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput
+            // dbo.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput
+            _metadata.Add(97, new StoredProcedureMetadata(name:"SelectPersonId_As_ScalarValue_With_Input_And_InputOutput"));
+
+            // dbo.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput.@P1
+            _metadata.Add(98, new MsSqlParameterMetadata(
+                        name:"@P1", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput.@CreditLimit
+            _metadata.Add(99, new MsSqlParameterMetadata(
+                        name:"@CreditLimit", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            #endregion
+
+            #region dbo.SelectPersonId_As_ScalarValue_With_Input_And_Output
+            // dbo.SelectPersonId_As_ScalarValue_With_Input_And_Output
+            _metadata.Add(100, new StoredProcedureMetadata(name:"SelectPersonId_As_ScalarValue_With_Input_And_Output"));
+
+            // dbo.SelectPersonId_As_ScalarValue_With_Input_And_Output.@P1
+            _metadata.Add(101, new MsSqlParameterMetadata(
+                        name:"@P1", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.SelectPersonId_As_ScalarValue_With_Input_And_Output.@Count
+            _metadata.Add(102, new MsSqlParameterMetadata(
+                        name:"@Count", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            #endregion
+
+            #region dbo.SelectPersonId_As_ScalarValueList_With_Input
+            // dbo.SelectPersonId_As_ScalarValueList_With_Input
+            _metadata.Add(103, new StoredProcedureMetadata(name:"SelectPersonId_As_ScalarValueList_With_Input"));
+
+            // dbo.SelectPersonId_As_ScalarValueList_With_Input.@P1
+            _metadata.Add(104, new MsSqlParameterMetadata(
+                        name:"@P1", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            #endregion
+
+            #region dbo.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput
+            // dbo.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput
+            _metadata.Add(105, new StoredProcedureMetadata(name:"SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput"));
+
+            // dbo.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput.@P1
+            _metadata.Add(106, new MsSqlParameterMetadata(
+                        name:"@P1", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput.@CreditLimit
+            _metadata.Add(107, new MsSqlParameterMetadata(
+                        name:"@CreditLimit", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            #endregion
+
+            #region dbo.SelectPersonId_As_ScalarValueList_With_Input_And_Output
+            // dbo.SelectPersonId_As_ScalarValueList_With_Input_And_Output
+            _metadata.Add(108, new StoredProcedureMetadata(name:"SelectPersonId_As_ScalarValueList_With_Input_And_Output"));
+
+            // dbo.SelectPersonId_As_ScalarValueList_With_Input_And_Output.@P1
+            _metadata.Add(109, new MsSqlParameterMetadata(
+                        name:"@P1", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.SelectPersonId_As_ScalarValueList_With_Input_And_Output.@Count
+            _metadata.Add(110, new MsSqlParameterMetadata(
+                        name:"@Count", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            #endregion
+
+            #region dbo.UpdatePersonCreditLimit_With_Inputs
+            // dbo.UpdatePersonCreditLimit_With_Inputs
+            _metadata.Add(111, new StoredProcedureMetadata(name:"UpdatePersonCreditLimit_With_Inputs"));
+
+            // dbo.UpdatePersonCreditLimit_With_Inputs.@P1
+            _metadata.Add(112, new MsSqlParameterMetadata(
+                        name:"@P1", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.UpdatePersonCreditLimit_With_Inputs.@CreditLimit
+            _metadata.Add(113, new MsSqlParameterMetadata(
+                        name:"@CreditLimit", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            #endregion
+
             #endregion
             #endregion
 
             #region sec schema
-            _metadata.Add(114, new SqlSchemaMetadata("sec"));
+            _metadata.Add(114, new SqlSchemaMetadata(name:"sec"));
             
             #region sec entities
             #region sec.Person
-            _metadata.Add(115, new SqlTableMetadata("Person"));
-            _metadata.Add(116, new MsSqlColumnMetadata("Id", SqlDbType.Int));
-            _metadata.Add(117, new MsSqlColumnMetadata("SSN", SqlDbType.Char, 11));
-            _metadata.Add(118, new MsSqlColumnMetadata("DateCreated", SqlDbType.DateTime));
-            _metadata.Add(119, new MsSqlColumnMetadata("DateUpdated", SqlDbType.DateTime));
+            // sec.Person
+            _metadata.Add(115, new SqlTableMetadata(name:"Person"));
+
+            // sec.Person.Id
+            _metadata.Add(116, new MsSqlColumnMetadata(
+                        name:"Id", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // sec.Person.SSN
+            _metadata.Add(117, new MsSqlColumnMetadata(
+                        name:"SSN", 
+                        dbType:SqlDbType.Char, 
+                        size:11
+                    )
+                );
+
+            // sec.Person.DateCreated
+            _metadata.Add(118, new MsSqlColumnMetadata(
+                        name:"DateCreated", 
+                        dbType:SqlDbType.DateTime
+                    )
+                );
+
+            // sec.Person.DateUpdated
+            _metadata.Add(119, new MsSqlColumnMetadata(
+                        name:"DateUpdated", 
+                        dbType:SqlDbType.DateTime
+                    )
+                );
+
             #endregion
 
             #endregion

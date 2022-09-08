@@ -59,7 +59,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark
         public void ConfigureDbExpression()
         {
             var services = new ServiceCollection();
-            services.AddDbExpression(dbex => dbex.AddMsSql2019Database<BenchmarkDatabase>(c => c.ConnectionString.Use(connectionString)));
+            services.AddDbExpression(dbex => dbex.AddDatabase<BenchmarkDatabase>(c => c.ConnectionString.Use(connectionString)));
             serviceProvider = services.BuildServiceProvider();
         }
 

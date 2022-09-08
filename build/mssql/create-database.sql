@@ -2,13 +2,13 @@ CREATE DATABASE [MsSqlDbExTest]
 	CONTAINMENT = NONE
 	ON  PRIMARY 
 	( 
-		NAME = N'MsSqlDbExTest', FILENAME = N'/var/opt/mssql/data/MsSqlDbExtTest.mdf' , SIZE = 8192KB , MAXSIZE = 128MB, FILEGROWTH = 8192KB )
+		NAME = N'MsSqlDbExTest', FILENAME = N'/var/opt/mssql/data/MsSqlDbExtTest.mdf' , SIZE = 8192KB , MAXSIZE = 256MB, FILEGROWTH = 8192KB )
 		LOG ON 
 		( 
 			NAME = N'MsSqlDbExTest_log', 
 			FILENAME = N'/var/opt/mssql/data/MsSqlDbExtTest.ldf', 
 			SIZE = 8192KB , 
-			MAXSIZE = 128MB , 
+			MAXSIZE = 256MB , 
 			FILEGROWTH = 8192KB 
 		)
 GO
@@ -101,6 +101,9 @@ ALTER DATABASE [MsSqlDbExTest] SET DELAYED_DURABILITY = DISABLED
 GO
 
 ALTER DATABASE [MsSqlDbExTest] SET QUERY_STORE = OFF
+GO
+
+ALTER DATABASE [MsSqlDbExTest] SET RECOVERY SIMPLE
 GO
 
 USE [MsSqlDbExTest]

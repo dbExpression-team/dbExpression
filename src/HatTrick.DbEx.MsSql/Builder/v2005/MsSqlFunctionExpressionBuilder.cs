@@ -18,10 +18,10 @@
 
 using HatTrick.DbEx.Sql.Builder;
 
-namespace HatTrick.DbEx.MsSql.Builder
+namespace HatTrick.DbEx.MsSql.Builder.v2005
 {
     /// <inheritdoc/>
-    public partial class MsSqlFunctionExpressionBuilder : SqlFunctionExpressionBuilder
+    public partial class MsSqlFunctionExpressionBuilder : FirstGenerationMsSqlFunctionExpressionBuilder
     {
 
     }

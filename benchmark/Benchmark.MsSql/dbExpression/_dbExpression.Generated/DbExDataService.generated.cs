@@ -7,6 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using HatTrick.DbEx.MsSql.Builder;
+using HatTrick.DbEx.MsSql.Builder.v2019;
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Builder;
 using HatTrick.DbEx.Sql.Connection;
@@ -16,7 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
-
+#nullable enable
 #pragma warning disable IDE1006 // Naming Styles
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 #pragma warning disable CA1034 // Nested types should not be visible
@@ -28,10 +29,18 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
 	using _secDataService = HatTrick.DbEx.MsSql.Benchmark.dbExpression.secDataService;
 
     #region db
+#if NET7_0_OR_GREATER
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters
+#endif
+
     public static class db
+#if NET7_0_OR_GREATER
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters
+#endif
+
     {
         #region internals
-        private static BenchmarkDatabase _benchmarkdatabase;
+        private static BenchmarkDatabase? _benchmarkdatabase;
         private static BenchmarkDatabase BenchmarkDatabase => _benchmarkdatabase ?? throw new DbExpressionConfigurationException("the database 'BenchmarkDatabase' has not been properly configured for runtime use with dbExpression.");
         #endregion
 
@@ -99,19 +108,19 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// <param name="element">An expression of type <see cref="ObjectElement" />
         /// </param>
         /// <returns><see cref="SelectValue{BenchmarkDatabase, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<BenchmarkDatabase, object> SelectOne(ObjectElement element)
+        public static SelectValue<BenchmarkDatabase, object>? SelectOne(ObjectElement element)
             => BenchmarkDatabase.SelectOne(element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/> value.
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/>? value.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableObjectElement" />
         /// </param>
-        /// <returns><see cref="SelectValue{BenchmarkDatabase, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<BenchmarkDatabase, object> SelectOne(NullableObjectElement element)
+        /// <returns><see cref="SelectValue{BenchmarkDatabase, object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<BenchmarkDatabase, object?> SelectOne(NullableObjectElement element)
             => BenchmarkDatabase.SelectOne(element);
 
         /// <summary>
@@ -125,7 +134,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// <returns><see cref="SelectValue{BenchmarkDatabase, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the object to select.</typeparam>
         public static SelectObject<BenchmarkDatabase, T> SelectOne<T>(ObjectElement<T> element)
-            where T : class
+            where T : class?
             => BenchmarkDatabase.SelectOne<T>(element);
 
         /// <summary>
@@ -429,12 +438,12 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
             => BenchmarkDatabase.SelectOne(element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <see cref="string" /> value.
+        /// Start constructing a sql SELECT query expression for a single <see cref="string" />? value.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{String}" />
+        /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         ///</param>
         /// <returns><see cref="SelectValue{BenchmarkDatabase, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
@@ -442,16 +451,16 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
             => BenchmarkDatabase.SelectOne(element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <see cref="string" /> value.
+        /// Start constructing a sql SELECT query expression for a single <see cref="string" />? value.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{String}" />
+        /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         ///</param>
-        /// <returns><see cref="SelectValue{BenchmarkDatabase, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<BenchmarkDatabase, string> SelectOne(NullableStringElement element) 
+        /// <returns><see cref="SelectValue{BenchmarkDatabase, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<BenchmarkDatabase, string?> SelectOne(NullableStringElement element) 
             => BenchmarkDatabase.SelectOne(element);
 
         /// <summary>
@@ -570,19 +579,19 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// <param name="element">An expression of type <see cref="ObjectElement" />
         /// </param>
         /// <returns><see cref="SelectValues{BenchmarkDatabase, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<BenchmarkDatabase, object> SelectMany(ObjectElement element)
+        public static SelectValues<BenchmarkDatabase, object>? SelectMany(ObjectElement element)
             => BenchmarkDatabase.SelectMany(element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/> values.
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/>? values.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableObjectElement" />
         /// </param>
-        /// <returns><see cref="SelectValues{BenchmarkDatabase, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<BenchmarkDatabase, object> SelectMany(NullableObjectElement element)
+        /// <returns><see cref="SelectValues{BenchmarkDatabase, object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<BenchmarkDatabase, object?> SelectMany(NullableObjectElement element)
             => BenchmarkDatabase.SelectMany(element);
 
         /// <summary>
@@ -596,7 +605,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// <returns><see cref="SelectValues{BenchmarkDatabase, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the object to select.</typeparam>
         public static SelectObjects<BenchmarkDatabase, T> SelectMany<T>(ObjectElement<T> element)
-            where T : class
+            where T : class?
             => BenchmarkDatabase.SelectMany<T>(element);
 
         /// <summary>
@@ -900,29 +909,29 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
             => BenchmarkDatabase.SelectMany(element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a list of <see cref="string" /> values.
+        /// Start constructing a sql SELECT query expression for a list of <see cref="string" />? values.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{String}" />
+        /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         ///</param>
-        /// <returns><see cref="SelectValues{BenchmarkDatabase, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{BenchmarkDatabase, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<BenchmarkDatabase, string> SelectMany(StringElement element)
             => BenchmarkDatabase.SelectMany(element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a list of <see cref="string" /> values.
+        /// Start constructing a sql SELECT query expression for a list of <see cref="string" />? values.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{String}" />
+        /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         ///</param>
-        /// <returns><see cref="SelectValues{BenchmarkDatabase, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<BenchmarkDatabase, string> SelectMany(NullableStringElement element)
+        /// <returns><see cref="SelectValues{BenchmarkDatabase, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<BenchmarkDatabase, string?> SelectMany(NullableStringElement element)
             => BenchmarkDatabase.SelectMany(element);
 
         /// <summary>
@@ -1091,6 +1100,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
     #endregion
 
     #region BenchmarkDatabase
+#if !NET7_0_OR_GREATER
+    [PlatformVersion("2019")]
+#endif
     public class BenchmarkDatabase : ISqlDatabaseRuntime, 
         SelectOneInitiation<BenchmarkDatabase>, 
         SelectManyInitiation<BenchmarkDatabase>,
@@ -1105,11 +1117,12 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         private static readonly Dictionary<Type, Table> _entityTypeToTableMap = new Dictionary<Type, Table>();
         private readonly IQueryExpressionBuilderFactory<BenchmarkDatabase> _queryExpressionBuilderFactory;
         private readonly IDbConnectionFactory _connectionFactory;
-        private BenchmarkDatabaseStoredProcedures _sp;
+        private BenchmarkDatabaseStoredProcedures? _sp;
         #endregion
 
         #region interface
         ISqlDatabaseMetadataProvider ISqlDatabaseRuntime.MetadataProvider => _metadata;
+        public static string Version => "2019";
         public MsSqlFunctionExpressionBuilder fx => _fx;
         public BenchmarkDatabaseStoredProcedures sp => _sp ?? (_sp = new BenchmarkDatabaseStoredProcedures(this, _schemas));
         #endregion
@@ -1151,7 +1164,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
             => db.UseDatabase(this);
 
         protected IQueryExpressionBuilder<BenchmarkDatabase> GetBuilder()
-            => _queryExpressionBuilderFactory.CreateQueryExpressionBuilder(this);
+            => _queryExpressionBuilderFactory.CreateQueryExpressionBuilder();
 
         #region select one
         /// <summary>
@@ -1208,19 +1221,19 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// <param name="element">An expression of type <see cref="ObjectElement" />
         /// </param>
         /// <returns><see cref="SelectValue{BenchmarkDatabase, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<BenchmarkDatabase, object> SelectOne(ObjectElement element)
+        public SelectValue<BenchmarkDatabase, object>? SelectOne(ObjectElement element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/> value.
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/>? value.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableObjectElement" />
         /// </param>
-        /// <returns><see cref="SelectValue{BenchmarkDatabase, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<BenchmarkDatabase, object> SelectOne(NullableObjectElement element)
+        /// <returns><see cref="SelectValue{BenchmarkDatabase, object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<BenchmarkDatabase, object?> SelectOne(NullableObjectElement element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1234,7 +1247,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// <returns><see cref="SelectValues{BenchmarkDatabase, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the object to select.</typeparam>
         public SelectObject<BenchmarkDatabase, T> SelectOne<T>(ObjectElement<T> element)
-            where T : class
+            where T : class?
             => GetBuilder().CreateSelectValueBuilder<T>(element);
 
         /// <summary>
@@ -1537,12 +1550,12 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <see cref="string" /> value.
+        /// Start constructing a sql SELECT query expression for a single <see cref="string" />? value.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{String}" />
+        /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         /// </param>
         /// <returns><see cref="SelectValue{BenchmarkDatabase, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
@@ -1550,16 +1563,16 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <see cref="string" /> value.
+        /// Start constructing a sql SELECT query expression for a single <see cref="string" />? value.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{String}" />
+        /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         /// </param>
-        /// <returns><see cref="SelectValue{BenchmarkDatabase, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<BenchmarkDatabase, string> SelectOne(NullableStringElement element) 
+        /// <returns><see cref="SelectValue{BenchmarkDatabase, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<BenchmarkDatabase, string?> SelectOne(NullableStringElement element) 
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1678,19 +1691,19 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// <param name="element">An expression of type <see cref="ObjectElement" />
         /// </param>
         /// <returns><see cref="SelectValues{BenchmarkDatabase, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<BenchmarkDatabase, object> SelectMany(ObjectElement element)
+        public SelectValues<BenchmarkDatabase, object>? SelectMany(ObjectElement element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/> values.
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/>? values.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableObjectElement" />
         /// </param>
-        /// <returns><see cref="SelectValues{BenchmarkDatabase, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<BenchmarkDatabase, object> SelectMany(NullableObjectElement element)
+        /// <returns><see cref="SelectValues{BenchmarkDatabase, object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<BenchmarkDatabase, object?> SelectMany(NullableObjectElement element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1704,7 +1717,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// <returns><see cref="SelectValues{BenchmarkDatabase, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the object to select.</typeparam>
         public SelectObjects<BenchmarkDatabase, T> SelectMany<T>(ObjectElement<T> element)
-            where T : class
+            where T : class?
             => GetBuilder().CreateSelectValuesBuilder<T>(element);
 
         /// <summary>
@@ -2007,29 +2020,29 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a list of <see cref="string" /> values.
+        /// Start constructing a sql SELECT query expression for a list of <see cref="string" />? values.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{String}" />
+        /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         /// </param>
-        /// <returns><see cref="SelectValues{BenchmarkDatabase, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{BenchmarkDatabase, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<BenchmarkDatabase, string> SelectMany(StringElement element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a list of <see cref="string" /> values.
+        /// Start constructing a sql SELECT query expression for a list of <see cref="string" />? values.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{String}" />
+        /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         /// </param>
-        /// <returns><see cref="SelectValues{BenchmarkDatabase, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<BenchmarkDatabase, string> SelectMany(NullableStringElement element)
+        /// <returns><see cref="SelectValues{BenchmarkDatabase, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<BenchmarkDatabase, string?> SelectMany(NullableStringElement element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -2637,8 +2650,8 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
     public partial class AccessAuditLogEntity : EntityExpression<AccessAuditLog>
     {
         #region internals
-        private List<SelectExpression> _inclusiveSelectExpressions;
-        private SelectExpressionSet _inclusiveSelectExpressionSet;
+        private List<SelectExpression>? _inclusiveSelectExpressions;
+        private SelectExpressionSet? _inclusiveSelectExpressionSet;
         #endregion
 
         #region interface
@@ -2735,7 +2748,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         {
         }
 
-        private AccessAuditLogEntity(int identifier, string name, Schema schema, string alias) : base(identifier, name, schema, alias)
+        private AccessAuditLogEntity(int identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
         {
             Attributes.Fields.Add(Id = new IdField(3, "Id", this));
             Attributes.Fields.Add(PersonId = new PersonIdField(4, "PersonId", this));
@@ -2770,8 +2783,8 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             if (alias is null)
                 throw new ArgumentNullException(nameof(alias));
 
-            SelectExpressionSet set = null;
-            string aliased = null;
+            SelectExpressionSet? set = null;
+            string? aliased = null;
 
             aliased = alias(nameof(Id));
             set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
@@ -2803,10 +2816,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, AccessAuditLog entity)
         {
-            entity.Id = reader.ReadField().GetValue<int>();
-            entity.PersonId = reader.ReadField().GetValue<int>();
-            entity.AccessResult = reader.ReadField().GetValue<int>();
-            entity.DateCreated = reader.ReadField().GetValue<DateTime>();
+            entity.Id = reader.ReadField()!.GetValue<int>();
+            entity.PersonId = reader.ReadField()!.GetValue<int>();
+            entity.AccessResult = reader.ReadField()!.GetValue<int>();
+            entity.DateCreated = reader.ReadField()!.GetValue<DateTime>();
         }
 		#endregion
 
@@ -2891,8 +2904,8 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
     public partial class AddressEntity : EntityExpression<Address>
     {
         #region internals
-        private List<SelectExpression> _inclusiveSelectExpressions;
-        private SelectExpressionSet _inclusiveSelectExpressionSet;
+        private List<SelectExpression>? _inclusiveSelectExpressions;
+        private SelectExpressionSet? _inclusiveSelectExpressionSet;
         #endregion
 
         #region interface
@@ -3092,7 +3105,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         {
         }
 
-        private AddressEntity(int identifier, string name, Schema schema, string alias) : base(identifier, name, schema, alias)
+        private AddressEntity(int identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
         {
             Attributes.Fields.Add(Id = new IdField(8, "Id", this));
             Attributes.Fields.Add(AddressType = new AddressTypeField(9, "AddressType", this));
@@ -3117,7 +3130,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
                     new SelectExpression<int>(Id)
                     ,new SelectExpression<HatTrick.DbEx.MsSql.Benchmark.AddressType?>(AddressType)
                     ,new SelectExpression<string>(Line1)
-                    ,new SelectExpression<string>(Line2)
+                    ,new SelectExpression<string?>(Line2)
                     ,new SelectExpression<string>(City)
                     ,new SelectExpression<string>(State)
                     ,new SelectExpression<string>(Zip)
@@ -3137,8 +3150,8 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             if (alias is null)
                 throw new ArgumentNullException(nameof(alias));
 
-            SelectExpressionSet set = null;
-            string aliased = null;
+            SelectExpressionSet? set = null;
+            string? aliased = null;
 
             aliased = alias(nameof(Id));
             set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
@@ -3147,7 +3160,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             aliased = alias(nameof(Line1));
             set &= aliased != nameof(Line1) ? new SelectExpression<string>(Line1, aliased) : GetInclusiveSelectExpressions()[2];
             aliased = alias(nameof(Line2));
-            set &= aliased != nameof(Line2) ? new SelectExpression<string>(Line2, aliased) : GetInclusiveSelectExpressions()[3];
+            set &= aliased != nameof(Line2) ? new SelectExpression<string?>(Line2, aliased) : GetInclusiveSelectExpressions()[3];
             aliased = alias(nameof(City));
             set &= aliased != nameof(City) ? new SelectExpression<string>(City, aliased) : GetInclusiveSelectExpressions()[4];
             aliased = alias(nameof(State));
@@ -3166,7 +3179,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             return new InsertExpressionSet<Address>(entity 
                 ,new InsertExpression<HatTrick.DbEx.MsSql.Benchmark.AddressType?>(entity.AddressType, AddressType)
                 ,new InsertExpression<string>(entity.Line1, Line1)
-                ,new InsertExpression<string>(entity.Line2, Line2)
+                ,new InsertExpression<string?>(entity.Line2, Line2)
                 ,new InsertExpression<string>(entity.City, City)
                 ,new InsertExpression<string>(entity.State, State)
                 ,new InsertExpression<string>(entity.Zip, Zip)
@@ -3188,15 +3201,15 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, Address entity)
         {
-            entity.Id = reader.ReadField().GetValue<int>();
-            entity.AddressType = reader.ReadField().GetValue<HatTrick.DbEx.MsSql.Benchmark.AddressType?>();
-            entity.Line1 = reader.ReadField().GetValue<string>();
-            entity.Line2 = reader.ReadField().GetValue<string>();
-            entity.City = reader.ReadField().GetValue<string>();
-            entity.State = reader.ReadField().GetValue<string>();
-            entity.Zip = reader.ReadField().GetValue<string>();
-            entity.DateCreated = reader.ReadField().GetValue<DateTime>();
-            entity.DateUpdated = reader.ReadField().GetValue<DateTime>();
+            entity.Id = reader.ReadField()!.GetValue<int>();
+            entity.AddressType = reader.ReadField()!.GetValue<HatTrick.DbEx.MsSql.Benchmark.AddressType?>();
+            entity.Line1 = reader.ReadField()!.GetValue<string>();
+            entity.Line2 = reader.ReadField()!.GetValue<string?>();
+            entity.City = reader.ReadField()!.GetValue<string>();
+            entity.State = reader.ReadField()!.GetValue<string>();
+            entity.Zip = reader.ReadField()!.GetValue<string>();
+            entity.DateCreated = reader.ReadField()!.GetValue<DateTime>();
+            entity.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
         }
 		#endregion
 
@@ -3269,9 +3282,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -3375,8 +3388,8 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
     public partial class PersonEntity : EntityExpression<Person>
     {
         #region internals
-        private List<SelectExpression> _inclusiveSelectExpressions;
-        private SelectExpressionSet _inclusiveSelectExpressionSet;
+        private List<SelectExpression>? _inclusiveSelectExpressions;
+        private SelectExpressionSet? _inclusiveSelectExpressionSet;
         #endregion
 
         #region interface
@@ -3619,7 +3632,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         {
         }
 
-        private PersonEntity(int identifier, string name, Schema schema, string alias) : base(identifier, name, schema, alias)
+        private PersonEntity(int identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
         {
             Attributes.Fields.Add(Id = new IdField(18, "Id", this));
             Attributes.Fields.Add(FirstName = new FirstNameField(19, "FirstName", this));
@@ -3668,8 +3681,8 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             if (alias is null)
                 throw new ArgumentNullException(nameof(alias));
 
-            SelectExpressionSet set = null;
-            string aliased = null;
+            SelectExpressionSet? set = null;
+            string? aliased = null;
 
             aliased = alias(nameof(Id));
             set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
@@ -3727,17 +3740,17 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, Person entity)
         {
-            entity.Id = reader.ReadField().GetValue<int>();
-            entity.FirstName = reader.ReadField().GetValue<string>();
-            entity.LastName = reader.ReadField().GetValue<string>();
-            entity.BirthDate = reader.ReadField().GetValue<DateTime?>();
-            entity.GenderType = reader.ReadField().GetValue<HatTrick.DbEx.MsSql.Benchmark.GenderType>();
-            entity.CreditLimit = reader.ReadField().GetValue<int?>();
-            entity.YearOfLastCreditLimitReview = reader.ReadField().GetValue<int?>();
-            entity.RegistrationDate = reader.ReadField().GetValue<DateTimeOffset>();
-            entity.LastLoginDate = reader.ReadField().GetValue<DateTimeOffset?>();
-            entity.DateCreated = reader.ReadField().GetValue<DateTime>();
-            entity.DateUpdated = reader.ReadField().GetValue<DateTime>();
+            entity.Id = reader.ReadField()!.GetValue<int>();
+            entity.FirstName = reader.ReadField()!.GetValue<string>();
+            entity.LastName = reader.ReadField()!.GetValue<string>();
+            entity.BirthDate = reader.ReadField()!.GetValue<DateTime?>();
+            entity.GenderType = reader.ReadField()!.GetValue<HatTrick.DbEx.MsSql.Benchmark.GenderType>();
+            entity.CreditLimit = reader.ReadField()!.GetValue<int?>();
+            entity.YearOfLastCreditLimitReview = reader.ReadField()!.GetValue<int?>();
+            entity.RegistrationDate = reader.ReadField()!.GetValue<DateTimeOffset>();
+            entity.LastLoginDate = reader.ReadField()!.GetValue<DateTimeOffset?>();
+            entity.DateCreated = reader.ReadField()!.GetValue<DateTime>();
+            entity.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
         }
 		#endregion
 
@@ -3960,8 +3973,8 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
     public partial class PersonAddressEntity : EntityExpression<PersonAddress>
     {
         #region internals
-        private List<SelectExpression> _inclusiveSelectExpressions;
-        private SelectExpressionSet _inclusiveSelectExpressionSet;
+        private List<SelectExpression>? _inclusiveSelectExpressions;
+        private SelectExpressionSet? _inclusiveSelectExpressionSet;
         #endregion
 
         #region interface
@@ -4058,7 +4071,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         {
         }
 
-        private PersonAddressEntity(int identifier, string name, Schema schema, string alias) : base(identifier, name, schema, alias)
+        private PersonAddressEntity(int identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
         {
             Attributes.Fields.Add(Id = new IdField(30, "Id", this));
             Attributes.Fields.Add(PersonId = new PersonIdField(31, "PersonId", this));
@@ -4093,8 +4106,8 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             if (alias is null)
                 throw new ArgumentNullException(nameof(alias));
 
-            SelectExpressionSet set = null;
-            string aliased = null;
+            SelectExpressionSet? set = null;
+            string? aliased = null;
 
             aliased = alias(nameof(Id));
             set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
@@ -4126,10 +4139,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, PersonAddress entity)
         {
-            entity.Id = reader.ReadField().GetValue<int>();
-            entity.PersonId = reader.ReadField().GetValue<int>();
-            entity.AddressId = reader.ReadField().GetValue<int>();
-            entity.DateCreated = reader.ReadField().GetValue<DateTime>();
+            entity.Id = reader.ReadField()!.GetValue<int>();
+            entity.PersonId = reader.ReadField()!.GetValue<int>();
+            entity.AddressId = reader.ReadField()!.GetValue<int>();
+            entity.DateCreated = reader.ReadField()!.GetValue<DateTime>();
         }
 		#endregion
 
@@ -4214,8 +4227,8 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
     public partial class ProductEntity : EntityExpression<Product>
     {
         #region internals
-        private List<SelectExpression> _inclusiveSelectExpressions;
-        private SelectExpressionSet _inclusiveSelectExpressionSet;
+        private List<SelectExpression>? _inclusiveSelectExpressions;
+        private SelectExpressionSet? _inclusiveSelectExpressionSet;
         #endregion
 
         #region interface
@@ -4575,7 +4588,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         {
         }
 
-        private ProductEntity(int identifier, string name, Schema schema, string alias) : base(identifier, name, schema, alias)
+        private ProductEntity(int identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
         {
             Attributes.Fields.Add(Id = new IdField(35, "Id", this));
             Attributes.Fields.Add(ProductCategoryType = new ProductCategoryTypeField(36, "ProductCategoryType", this));
@@ -4608,11 +4621,11 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
                     new SelectExpression<int>(Id)
                     ,new SelectExpression<HatTrick.DbEx.MsSql.Benchmark.ProductCategoryType?>(ProductCategoryType)
                     ,new SelectExpression<string>(Name)
-                    ,new SelectExpression<string>(Description)
+                    ,new SelectExpression<string?>(Description)
                     ,new SelectExpression<double>(ListPrice)
                     ,new SelectExpression<double>(Price)
                     ,new SelectExpression<int>(Quantity)
-                    ,new SelectExpression<byte[]>(Image)
+                    ,new SelectExpression<byte[]?>(Image)
                     ,new SelectExpression<decimal?>(Height)
                     ,new SelectExpression<decimal?>(Width)
                     ,new SelectExpression<decimal?>(Depth)
@@ -4636,8 +4649,8 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             if (alias is null)
                 throw new ArgumentNullException(nameof(alias));
 
-            SelectExpressionSet set = null;
-            string aliased = null;
+            SelectExpressionSet? set = null;
+            string? aliased = null;
 
             aliased = alias(nameof(Id));
             set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
@@ -4646,7 +4659,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             aliased = alias(nameof(Name));
             set &= aliased != nameof(Name) ? new SelectExpression<string>(Name, aliased) : GetInclusiveSelectExpressions()[2];
             aliased = alias(nameof(Description));
-            set &= aliased != nameof(Description) ? new SelectExpression<string>(Description, aliased) : GetInclusiveSelectExpressions()[3];
+            set &= aliased != nameof(Description) ? new SelectExpression<string?>(Description, aliased) : GetInclusiveSelectExpressions()[3];
             aliased = alias(nameof(ListPrice));
             set &= aliased != nameof(ListPrice) ? new SelectExpression<double>(ListPrice, aliased) : GetInclusiveSelectExpressions()[4];
             aliased = alias(nameof(Price));
@@ -4654,7 +4667,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             aliased = alias(nameof(Quantity));
             set &= aliased != nameof(Quantity) ? new SelectExpression<int>(Quantity, aliased) : GetInclusiveSelectExpressions()[6];
             aliased = alias(nameof(Image));
-            set &= aliased != nameof(Image) ? new SelectExpression<byte[]>(Image, aliased) : GetInclusiveSelectExpressions()[7];
+            set &= aliased != nameof(Image) ? new SelectExpression<byte[]?>(Image, aliased) : GetInclusiveSelectExpressions()[7];
             aliased = alias(nameof(Height));
             set &= aliased != nameof(Height) ? new SelectExpression<decimal?>(Height, aliased) : GetInclusiveSelectExpressions()[8];
             aliased = alias(nameof(Width));
@@ -4681,11 +4694,11 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             return new InsertExpressionSet<Product>(entity 
                 ,new InsertExpression<HatTrick.DbEx.MsSql.Benchmark.ProductCategoryType?>(entity.ProductCategoryType, ProductCategoryType)
                 ,new InsertExpression<string>(entity.Name, Name)
-                ,new InsertExpression<string>(entity.Description, Description)
+                ,new InsertExpression<string?>(entity.Description, Description)
                 ,new InsertExpression<double>(entity.ListPrice, ListPrice)
                 ,new InsertExpression<double>(entity.Price, Price)
                 ,new InsertExpression<int>(entity.Quantity, Quantity)
-                ,new InsertExpression<byte[]>(entity.Image, Image)
+                ,new InsertExpression<byte[]?>(entity.Image, Image)
                 ,new InsertExpression<decimal?>(entity.Height, Height)
                 ,new InsertExpression<decimal?>(entity.Width, Width)
                 ,new InsertExpression<decimal?>(entity.Depth, Depth)
@@ -4719,23 +4732,23 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, Product entity)
         {
-            entity.Id = reader.ReadField().GetValue<int>();
-            entity.ProductCategoryType = reader.ReadField().GetValue<HatTrick.DbEx.MsSql.Benchmark.ProductCategoryType?>();
-            entity.Name = reader.ReadField().GetValue<string>();
-            entity.Description = reader.ReadField().GetValue<string>();
-            entity.ListPrice = reader.ReadField().GetValue<double>();
-            entity.Price = reader.ReadField().GetValue<double>();
-            entity.Quantity = reader.ReadField().GetValue<int>();
-            entity.Image = reader.ReadField().GetValue<byte[]>();
-            entity.Height = reader.ReadField().GetValue<decimal?>();
-            entity.Width = reader.ReadField().GetValue<decimal?>();
-            entity.Depth = reader.ReadField().GetValue<decimal?>();
-            entity.Weight = reader.ReadField().GetValue<decimal?>();
-            entity.ShippingWeight = reader.ReadField().GetValue<decimal>();
-            entity.ValidStartTimeOfDayForPurchase = reader.ReadField().GetValue<TimeSpan?>();
-            entity.ValidEndTimeOfDayForPurchase = reader.ReadField().GetValue<TimeSpan?>();
-            entity.DateCreated = reader.ReadField().GetValue<DateTime>();
-            entity.DateUpdated = reader.ReadField().GetValue<DateTime>();
+            entity.Id = reader.ReadField()!.GetValue<int>();
+            entity.ProductCategoryType = reader.ReadField()!.GetValue<HatTrick.DbEx.MsSql.Benchmark.ProductCategoryType?>();
+            entity.Name = reader.ReadField()!.GetValue<string>();
+            entity.Description = reader.ReadField()!.GetValue<string?>();
+            entity.ListPrice = reader.ReadField()!.GetValue<double>();
+            entity.Price = reader.ReadField()!.GetValue<double>();
+            entity.Quantity = reader.ReadField()!.GetValue<int>();
+            entity.Image = reader.ReadField()!.GetValue<byte[]?>();
+            entity.Height = reader.ReadField()!.GetValue<decimal?>();
+            entity.Width = reader.ReadField()!.GetValue<decimal?>();
+            entity.Depth = reader.ReadField()!.GetValue<decimal?>();
+            entity.Weight = reader.ReadField()!.GetValue<decimal?>();
+            entity.ShippingWeight = reader.ReadField()!.GetValue<decimal>();
+            entity.ValidStartTimeOfDayForPurchase = reader.ReadField()!.GetValue<TimeSpan?>();
+            entity.ValidEndTimeOfDayForPurchase = reader.ReadField()!.GetValue<TimeSpan?>();
+            entity.DateCreated = reader.ReadField()!.GetValue<DateTime>();
+            entity.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
         }
 		#endregion
 
@@ -4808,9 +4821,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
-            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -4881,10 +4894,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<byte[]>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<byte[]>(value, this));
-            public AssignmentExpression Set(byte[] value) => new AssignmentExpression(this, new LiteralExpression<byte[]>(value, this));
-            public AssignmentExpression Set(AnyElement<byte[]> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<byte[]?>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<byte[]?>(value, this));
+            public AssignmentExpression Set(byte[]? value) => new AssignmentExpression(this, new LiteralExpression<byte[]?>(value, this));
+            public AssignmentExpression Set(AnyElement<byte[]?> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -5077,8 +5090,8 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
     public partial class PurchaseEntity : EntityExpression<Purchase>
     {
         #region internals
-        private List<SelectExpression> _inclusiveSelectExpressions;
-        private SelectExpressionSet _inclusiveSelectExpressionSet;
+        private List<SelectExpression>? _inclusiveSelectExpressions;
+        private SelectExpressionSet? _inclusiveSelectExpressionSet;
         #endregion
 
         #region interface
@@ -5358,7 +5371,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         {
         }
 
-        private PurchaseEntity(int identifier, string name, Schema schema, string alias) : base(identifier, name, schema, alias)
+        private PurchaseEntity(int identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
         {
             Attributes.Fields.Add(Id = new IdField(53, "Id", this));
             Attributes.Fields.Add(PersonId = new PersonIdField(54, "PersonId", this));
@@ -5411,8 +5424,8 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             if (alias is null)
                 throw new ArgumentNullException(nameof(alias));
 
-            SelectExpressionSet set = null;
-            string aliased = null;
+            SelectExpressionSet? set = null;
+            string? aliased = null;
 
             aliased = alias(nameof(Id));
             set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
@@ -5478,19 +5491,19 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, Purchase entity)
         {
-            entity.Id = reader.ReadField().GetValue<int>();
-            entity.PersonId = reader.ReadField().GetValue<int>();
-            entity.OrderNumber = reader.ReadField().GetValue<string>();
-            entity.TotalPurchaseQuantity = reader.ReadField().GetValue<string>();
-            entity.TotalPurchaseAmount = reader.ReadField().GetValue<double>();
-            entity.PurchaseDate = reader.ReadField().GetValue<DateTime>();
-            entity.ShipDate = reader.ReadField().GetValue<DateTime?>();
-            entity.ExpectedDeliveryDate = reader.ReadField().GetValue<DateTime?>();
-            entity.TrackingIdentifier = reader.ReadField().GetValue<Guid?>();
-            entity.PaymentMethodType = reader.ReadField().GetValue<HatTrick.DbEx.MsSql.Benchmark.PaymentMethodType>();
-            entity.PaymentSourceType = reader.ReadField().GetValue<HatTrick.DbEx.MsSql.Benchmark.PaymentSourceType?>();
-            entity.DateCreated = reader.ReadField().GetValue<DateTime>();
-            entity.DateUpdated = reader.ReadField().GetValue<DateTime>();
+            entity.Id = reader.ReadField()!.GetValue<int>();
+            entity.PersonId = reader.ReadField()!.GetValue<int>();
+            entity.OrderNumber = reader.ReadField()!.GetValue<string>();
+            entity.TotalPurchaseQuantity = reader.ReadField()!.GetValue<string>();
+            entity.TotalPurchaseAmount = reader.ReadField()!.GetValue<double>();
+            entity.PurchaseDate = reader.ReadField()!.GetValue<DateTime>();
+            entity.ShipDate = reader.ReadField()!.GetValue<DateTime?>();
+            entity.ExpectedDeliveryDate = reader.ReadField()!.GetValue<DateTime?>();
+            entity.TrackingIdentifier = reader.ReadField()!.GetValue<Guid?>();
+            entity.PaymentMethodType = reader.ReadField()!.GetValue<HatTrick.DbEx.MsSql.Benchmark.PaymentMethodType>();
+            entity.PaymentSourceType = reader.ReadField()!.GetValue<HatTrick.DbEx.MsSql.Benchmark.PaymentSourceType?>();
+            entity.DateCreated = reader.ReadField()!.GetValue<DateTime>();
+            entity.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
         }
 		#endregion
 
@@ -5749,8 +5762,8 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
     public partial class PurchaseLineEntity : EntityExpression<PurchaseLine>
     {
         #region internals
-        private List<SelectExpression> _inclusiveSelectExpressions;
-        private SelectExpressionSet _inclusiveSelectExpressionSet;
+        private List<SelectExpression>? _inclusiveSelectExpressions;
+        private SelectExpressionSet? _inclusiveSelectExpressionSet;
         #endregion
 
         #region interface
@@ -5910,7 +5923,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         {
         }
 
-        private PurchaseLineEntity(int identifier, string name, Schema schema, string alias) : base(identifier, name, schema, alias)
+        private PurchaseLineEntity(int identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
         {
             Attributes.Fields.Add(Id = new IdField(67, "Id", this));
             Attributes.Fields.Add(PurchaseId = new PurchaseIdField(68, "PurchaseId", this));
@@ -5951,8 +5964,8 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             if (alias is null)
                 throw new ArgumentNullException(nameof(alias));
 
-            SelectExpressionSet set = null;
-            string aliased = null;
+            SelectExpressionSet? set = null;
+            string? aliased = null;
 
             aliased = alias(nameof(Id));
             set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
@@ -5994,13 +6007,13 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, PurchaseLine entity)
         {
-            entity.Id = reader.ReadField().GetValue<int>();
-            entity.PurchaseId = reader.ReadField().GetValue<int>();
-            entity.ProductId = reader.ReadField().GetValue<int>();
-            entity.PurchasePrice = reader.ReadField().GetValue<decimal>();
-            entity.Quantity = reader.ReadField().GetValue<int>();
-            entity.DateCreated = reader.ReadField().GetValue<DateTime>();
-            entity.DateUpdated = reader.ReadField().GetValue<DateTime>();
+            entity.Id = reader.ReadField()!.GetValue<int>();
+            entity.PurchaseId = reader.ReadField()!.GetValue<int>();
+            entity.ProductId = reader.ReadField()!.GetValue<int>();
+            entity.PurchasePrice = reader.ReadField()!.GetValue<decimal>();
+            entity.Quantity = reader.ReadField()!.GetValue<int>();
+            entity.DateCreated = reader.ReadField()!.GetValue<DateTime>();
+            entity.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
         }
 		#endregion
 
@@ -6139,8 +6152,8 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
     public partial class PersonTotalPurchasesViewEntity : EntityExpression<PersonTotalPurchasesView>
     {
         #region internals
-        private List<SelectExpression> _inclusiveSelectExpressions;
-        private SelectExpressionSet _inclusiveSelectExpressionSet;
+        private List<SelectExpression>? _inclusiveSelectExpressions;
+        private SelectExpressionSet? _inclusiveSelectExpressionSet;
         #endregion
 
         #region interface
@@ -6211,7 +6224,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         {
         }
 
-        private PersonTotalPurchasesViewEntity(int identifier, string name, Schema schema, string alias) : base(identifier, name, schema, alias)
+        private PersonTotalPurchasesViewEntity(int identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
         {
             Attributes.Fields.Add(Id = new IdField(75, "Id", this));
             Attributes.Fields.Add(TotalAmount = new TotalAmountField(76, "TotalAmount", this));
@@ -6244,8 +6257,8 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             if (alias is null)
                 throw new ArgumentNullException(nameof(alias));
 
-            SelectExpressionSet set = null;
-            string aliased = null;
+            SelectExpressionSet? set = null;
+            string? aliased = null;
 
             aliased = alias(nameof(Id));
             set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
@@ -6271,9 +6284,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, PersonTotalPurchasesView entity)
         {
-            entity.Id = reader.ReadField().GetValue<int>();
-            entity.TotalAmount = reader.ReadField().GetValue<double?>();
-            entity.TotalCount = reader.ReadField().GetValue<int?>();
+            entity.Id = reader.ReadField()!.GetValue<int>();
+            entity.TotalAmount = reader.ReadField()!.GetValue<double?>();
+            entity.TotalCount = reader.ReadField()!.GetValue<int?>();
         }
 		#endregion
 
@@ -6545,13 +6558,13 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
     #endregion
 
     #region dbo
-#pragma warning disable CA1052 // Static holder types should be Static or NotInheritable
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
 #pragma warning disable IDE1006 // Naming Styles
     public partial class dbo
 #pragma warning restore IDE1006 // Naming Styles
-#pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
+#pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     {
-        private static dboSchemaExpression schema;
+        private static dboSchemaExpression? schema;
 
         #region interface
         /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.AccessAuditLogEntity"/> representing the "dbo.AccessAuditLog" table in the database.
@@ -6576,7 +6589,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static AccessAuditLogEntity AccessAuditLog { get; private set; }
+        public static AccessAuditLogEntity AccessAuditLog { get; private set; } = null!;
 
         /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity"/> representing the "dbo.Address" table in the database.
         /// <para>Properties:
@@ -6600,7 +6613,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static AddressEntity Address { get; private set; }
+        public static AddressEntity Address { get; private set; } = null!;
 
         /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity"/> representing the "dbo.Person" table in the database.
         /// <para>Properties:
@@ -6624,7 +6637,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static PersonEntity Person { get; private set; }
+        public static PersonEntity Person { get; private set; } = null!;
 
         /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonAddressEntity"/> representing the "dbo.Person_Address" table in the database.
         /// <para>Properties:
@@ -6648,7 +6661,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static PersonAddressEntity PersonAddress { get; private set; }
+        public static PersonAddressEntity PersonAddress { get; private set; } = null!;
 
         /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity"/> representing the "dbo.Product" table in the database.
         /// <para>Properties:
@@ -6672,7 +6685,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static ProductEntity Product { get; private set; }
+        public static ProductEntity Product { get; private set; } = null!;
 
         /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity"/> representing the "dbo.Purchase" table in the database.
         /// <para>Properties:
@@ -6696,7 +6709,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static PurchaseEntity Purchase { get; private set; }
+        public static PurchaseEntity Purchase { get; private set; } = null!;
 
         /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseLineEntity"/> representing the "dbo.PurchaseLine" table in the database.
         /// <para>Properties:
@@ -6720,7 +6733,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static PurchaseLineEntity PurchaseLine { get; private set; }
+        public static PurchaseLineEntity PurchaseLine { get; private set; } = null!;
 
         /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonTotalPurchasesViewEntity"/> representing the "dbo.PersonTotalPurchasesView" view in the database.
         /// <para>Properties:
@@ -6731,7 +6744,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static PersonTotalPurchasesViewEntity PersonTotalPurchasesView { get; private set; }
+        public static PersonTotalPurchasesViewEntity PersonTotalPurchasesView { get; private set; } = null!;
 
         #endregion
 
@@ -6782,8 +6795,8 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.secDataService
     public partial class PersonEntity : EntityExpression<Person>
     {
         #region internals
-        private List<SelectExpression> _inclusiveSelectExpressions;
-        private SelectExpressionSet _inclusiveSelectExpressionSet;
+        private List<SelectExpression>? _inclusiveSelectExpressions;
+        private SelectExpressionSet? _inclusiveSelectExpressionSet;
         #endregion
 
         #region interface
@@ -6880,7 +6893,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.secDataService
         {
         }
 
-        private PersonEntity(int identifier, string name, Schema schema, string alias) : base(identifier, name, schema, alias)
+        private PersonEntity(int identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
         {
             Attributes.Fields.Add(Id = new IdField(116, "Id", this));
             Attributes.Fields.Add(SocialSecurityNumber = new SocialSecurityNumberField(117, "SocialSecurityNumber", this));
@@ -6915,8 +6928,8 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.secDataService
             if (alias is null)
                 throw new ArgumentNullException(nameof(alias));
 
-            SelectExpressionSet set = null;
-            string aliased = null;
+            SelectExpressionSet? set = null;
+            string? aliased = null;
 
             aliased = alias(nameof(Id));
             set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
@@ -6948,10 +6961,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.secDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, Person entity)
         {
-            entity.Id = reader.ReadField().GetValue<int>();
-            entity.SocialSecurityNumber = reader.ReadField().GetValue<string>();
-            entity.DateCreated = reader.ReadField().GetValue<DateTime>();
-            entity.DateUpdated = reader.ReadField().GetValue<DateTime>();
+            entity.Id = reader.ReadField()!.GetValue<int>();
+            entity.SocialSecurityNumber = reader.ReadField()!.GetValue<string>();
+            entity.DateCreated = reader.ReadField()!.GetValue<DateTime>();
+            entity.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
         }
 		#endregion
 
@@ -7033,13 +7046,13 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.secDataService
     #endregion
 
     #region sec
-#pragma warning disable CA1052 // Static holder types should be Static or NotInheritable
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
 #pragma warning disable IDE1006 // Naming Styles
     public partial class sec
 #pragma warning restore IDE1006 // Naming Styles
-#pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
+#pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     {
-        private static secSchemaExpression schema;
+        private static secSchemaExpression? schema;
 
         #region interface
         /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.secDataService.PersonEntity"/> representing the "sec.Person" table in the database.
@@ -7064,7 +7077,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.secDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static PersonEntity Person { get; private set; }
+        public static PersonEntity Person { get; private set; } = null!;
 
         #endregion
 

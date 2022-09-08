@@ -35,8 +35,8 @@ jobs:
       displayName: 'Publish Test Results'
       inputs:
         testResultsFormat: VSTest # MUST be VSTest.  If xUnit is used the publish task will report "No Result Found to Publish", even though the file exists
-        testResultsFiles: ${{ parameters.rootPath }}/test/HatTrick.DbEx.MsSql.Test.Integration/TestResults/mssql-${{ mssqlVersion }}.tests.trx
-        testRunTitle: 'MSSQL ${{ mssqlVersion }}'
+        testResultsFiles: ${{ parameters.rootPath }}/test/HatTrick.DbEx.MsSql.Test.Integration/TestResults/${{ parameters.targetFrameworkMoniker }}.tests.trx
+        testRunTitle: 'MSSQL ${{ mssqlVersion }} - ${{ parameters.targetFrameworkMoniker }}'
         mergeTestResults: true
         failTaskOnFailedTests: true
       

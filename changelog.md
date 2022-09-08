@@ -1,5 +1,40 @@
 # Changelog
 
+## [0.9.3] - 2022-09-08
+
+### Added
+- Added comments and property names to methods that construct metadata.  Makes source control diffs easier as the property name and comments provide clarity.
+
+- Added support for MsSql 2022
+	- Parity with version 2019, no 2022 version specific functionality
+
+- Platform version specific services enabling version specific functionality
+	- Scaffolding config now requires the platform version, which is generated into data services
+		- Validate that scaffolding config for source.platform.version is a supported MsSql version.
+	- Version specific function builders.  For example, in MsSql 2022 the [Trim function](https://docs.microsoft.com/en-us/sql/t-sql/functions/trim-transact-sql?view=sql-server-ver16) has additional method parameters.  With version specific function builders, dExpression can handle these specific cases.
+	- This supports the removal of version specific configuration methods in favor of a single method:
+		- dbex.AddMsSql2019Database<MyDatabase>(...) -> dbex.AddDatabase<MyDatabase>(...).
+
+- Implemented preview version of .NET 7.0
+	- Added static abstract interface method on ISqlDatabaseRuntime that enforces the runtime version of MsSql.
+	- Added PlatformVersion attribute to shim this for pre .NET 7.0, with conditional compilation statements where necessary.
+	- DID NOT target .NET 7.0 in projects as it causes issues with build pipeline.  Will target on release of .NET 7.0.
+	- Microsoft introduced build warning CS8981, which impacts dbExpression.   This build warning states that all variables, classes, keywords, etc. that are lowercase ASCII should be changed as they should be reserved for C# (took 22 years for Microsoft to decide this?). Code generation now emits pragma warnings, will have to let the compiler catch issues with database schema naming that conflicts with “future” language keywords.  
+		
+### Changed
+- Removed unused arg (ISqlDatabaseRuntime) from query expression builder factory.
+- Removed dependency injection test project as all tests were recreations of those in other test projects.
+
+### Fixed
+
+### Breaking Changes
+- TOOLS UPDATE IS REQUIRED
+- Runtime configuration removes version specific configuration.  Any use of .Add{Platform}{Version}Database(...) (i.e. .AddMsSql2019Database(...)) must be changed to .AddDatabase(...).
+- Scaffolding configuration
+	- Changed "source" to be a complex object with "version" and "key".
+	- "type" property name changed to "key" (source.platform.key).
+	- Platform version is required and must be a supported version (source.platform.version).
+
 ## [0.9.2] - 2022-08-20
 
 ### Added

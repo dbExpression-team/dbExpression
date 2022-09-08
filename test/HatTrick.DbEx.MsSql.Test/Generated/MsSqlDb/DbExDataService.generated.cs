@@ -7,6 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using HatTrick.DbEx.MsSql.Builder;
+using HatTrick.DbEx.MsSql.Builder.v2019;
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Builder;
 using HatTrick.DbEx.Sql.Connection;
@@ -30,7 +31,15 @@ namespace DbEx.DataService
 	using _secDataService = DbEx.secDataService;
 
     #region db
+#if NET7_0_OR_GREATER
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters
+#endif
+
     public static class db
+#if NET7_0_OR_GREATER
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters
+#endif
+
     {
         #region internals
         private static MsSqlDb? _mssqldb;
@@ -1117,6 +1126,9 @@ namespace DbEx.DataService
     #endregion
 
     #region MsSqlDb
+#if !NET7_0_OR_GREATER
+    [PlatformVersion("2019")]
+#endif
     public class MsSqlDb : ISqlDatabaseRuntime, 
         SelectOneInitiation<MsSqlDb>, 
         SelectManyInitiation<MsSqlDb>,
@@ -1136,6 +1148,7 @@ namespace DbEx.DataService
 
         #region interface
         ISqlDatabaseMetadataProvider ISqlDatabaseRuntime.MetadataProvider => _metadata;
+        public static string Version => "2019";
         public MsSqlFunctionExpressionBuilder fx => _fx;
         public MsSqlDbStoredProcedures sp => _sp ?? (_sp = new MsSqlDbStoredProcedures(this, _schemas));
         #endregion
@@ -1187,7 +1200,7 @@ namespace DbEx.DataService
             => db.UseDatabase(this);
 
         protected IQueryExpressionBuilder<MsSqlDb> GetBuilder()
-            => _queryExpressionBuilderFactory.CreateQueryExpressionBuilder(this);
+            => _queryExpressionBuilderFactory.CreateQueryExpressionBuilder();
 
         #region select one
         /// <summary>
@@ -6634,11 +6647,11 @@ namespace DbEx.dboDataService
     #endregion
 
     #region dbo
-#pragma warning disable CA1052 // Static holder types should be Static or NotInheritable
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
 #pragma warning disable IDE1006 // Naming Styles
     public partial class dbo
 #pragma warning restore IDE1006 // Naming Styles
-#pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
+#pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     {
         private static dboSchemaExpression? schema;
 
@@ -11873,11 +11886,11 @@ namespace DbEx.unit_testDataService
     #endregion
 
     #region unit_test
-#pragma warning disable CA1052 // Static holder types should be Static or NotInheritable
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
 #pragma warning disable IDE1006 // Naming Styles
     public partial class unit_test
 #pragma warning restore IDE1006 // Naming Styles
-#pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
+#pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     {
         private static unit_testSchemaExpression? _schema;
 
@@ -12246,11 +12259,11 @@ namespace DbEx.secDataService
     #endregion
 
     #region sec
-#pragma warning disable CA1052 // Static holder types should be Static or NotInheritable
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
 #pragma warning disable IDE1006 // Naming Styles
     public partial class sec
 #pragma warning restore IDE1006 // Naming Styles
-#pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
+#pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     {
         private static secSchemaExpression? schema;
 

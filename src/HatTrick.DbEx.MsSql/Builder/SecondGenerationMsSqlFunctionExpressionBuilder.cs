@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,24 +16,13 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using HatTrick.DbEx.MsSql.Expression;
-using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Builder;
-using HatTrick.DbEx.Sql.Expression;
-using System;
 
 namespace HatTrick.DbEx.MsSql.Builder
 {
-    public partial class MsSqlFunctionExpressionBuilder
+    /// <inheritdoc/>
+    public abstract partial class SecondGenerationMsSqlFunctionExpressionBuilder : FirstGenerationMsSqlFunctionExpressionBuilder
     {
-        private static readonly GetDateFunctionExpression getDate = new();
 
-        /// <summary>
-        /// Construct an expression for the GETDATE transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/getdate-transact-sql">Microsoft docs on GETDATE</see></para>
-        /// </summary>
-        /// <returns><see cref="GetDateFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{DateTime}"/>.</returns>
-        public GetDateFunctionExpression GetDate()
-            => getDate;
     }
 }

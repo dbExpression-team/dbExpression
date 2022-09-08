@@ -18,7 +18,7 @@ using IProfileTarget sut = new SelectOneQueryExpressionProfileTarget();
 var services = new ServiceCollection();
 services.AddDbExpression(dbex =>
 {
-    dbex.AddMsSql2019Database<ProfilingDatabase>(db => { db.ConnectionString.Use(connectionString); sut.Configure(db); });
+    dbex.AddDatabase<ProfilingDatabase>(db => { db.ConnectionString.Use(connectionString); sut.Configure(db); });
 });
 var provider = services.BuildServiceProvider();
 provider.UseStaticRuntimeFor<ProfilingDatabase>();

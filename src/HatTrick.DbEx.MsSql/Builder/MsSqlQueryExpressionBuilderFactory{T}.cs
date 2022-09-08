@@ -44,7 +44,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         #endregion
 
         #region methods
-        public IQueryExpressionBuilder<TDatabase> CreateQueryExpressionBuilder(ISqlDatabaseRuntime database)
+        public IQueryExpressionBuilder<TDatabase> CreateQueryExpressionBuilder()
             => new MsSqlQueryExpressionBuilder<TDatabase>(queryExpressionFactory, executionPipelineFactory);
         #endregion
     }

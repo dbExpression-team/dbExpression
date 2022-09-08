@@ -1,4 +1,6 @@
 ﻿{
   "$schema": "https://xunit.net/schema/current/xunit.runner.schema.json",
-  "parallelizeTestCollections":  false
+  "parallelizeTestCollections": false
 }
+
+///p:DefineConstants="TARGET_NET_FRAMEWORK"

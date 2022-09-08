@@ -28,7 +28,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
         /// </summary>
         /// <param name="element">An alias of an expression to convert to a different sql data type.</param>
         /// <returns><see cref="MsSqlCast"/> to specify the sql data type to convert to.</returns>
-        public static MsSqlCast Cast(this MsSqlFunctionExpressionBuilder _, (string TableName, string FieldName) element)
+        public static MsSqlCast Cast(this FirstGenerationMsSqlFunctionExpressionBuilder _, (string TableName, string FieldName) element)
             => new MsSqlCastFunctionExpressionBuilder(new AliasExpression<object>(element));        
     }
 }

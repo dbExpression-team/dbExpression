@@ -1,19 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
-        <LangVersion>9.0</LangVersion>
+		<TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
+		<LangVersion>preview</LangVersion>
 		<Nullable>enable</Nullable>
         <RootNamespace>Microsoft.Extensions.DependencyInjection</RootNamespace>
         <IsPackable>true</IsPackable>
         <Company>HatTrick Labs, LLC</Company>
         <Authors>gwgrubbs,jerrod.eiman</Authors>
-        <Description>Extensions for configuring dbExpression for use with ASP.NET Core and Microsoft SQL Server.
+        <Description>Extensions for configuring dbExpression for use with ASP.NET Core.
         </Description>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-        <PackageProjectUrl>https://github.com/HatTrickLabs/dbExpression</PackageProjectUrl>
-		<RepositoryUrl>https://github.com/HatTrickLabs/dbExpression</RepositoryUrl>
+        <PackageProjectUrl>https://www.dbexpression.com</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/HatTrickLabs/dbExpression</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<PackageTags>microsoft sqlserver sql sql-server orm dependency-injection</PackageTags>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
