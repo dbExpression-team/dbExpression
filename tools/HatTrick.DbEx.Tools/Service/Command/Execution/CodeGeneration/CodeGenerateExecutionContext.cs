@@ -52,6 +52,8 @@ namespace HatTrick.DbEx.Tools.Service
         private readonly string DEFAULT_CONFIG_NAME = "dbex.config.json";
         private readonly string DEFAULT_OUTPUT_PATH = "./DbEx";
         private readonly char[] INVALID_FILENAME_CHARS = Path.GetInvalidFileNameChars();
+
+        private readonly HashSet<string> mssqlVersions = new () { "2005", "2008", "2012", "2014", "2016", "2017", "2019", "2022" };
         #endregion
 
         #region interface
@@ -365,10 +367,13 @@ namespace HatTrick.DbEx.Tools.Service
         #endregion
 
         #region ensure render safe
-        private static void EnsureRenderSafe(DbExConfig config, MsSqlModel model)
+        private void EnsureRenderSafe(DbExConfig config, MsSqlModel model)
         {
             if (config?.Source?.Platform?.Key != "MsSql")
-                throw new CommandException($"dbex.config error: source.platform.key: dbExpression only supports a value of MsSql.");
+                throw new CommandException("dbex.config error: source.platform.key: dbExpression only supports a value of MsSql.");
+
+            if (!mssqlVersions.Contains(config?.Source?.Platform?.Version!))
+                throw new CommandException($"dbex.config error: source.platform.version: dbExpression only supports MsSql versions {String.Join(',', mssqlVersions)}.");
 
             if (config.Overrides is null)
                 return;
