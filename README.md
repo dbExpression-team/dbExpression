@@ -81,7 +81,7 @@ GROUP BY
 ```
 
 dbExpression was designed to work in either static or instance required scenarios.  The decision for which to use is typically based on the type of project, the team environment, and just what works best for you - it's your choice!
-* Statically using a static database accessor to fluently build and execute queries.  This is great for environments or projects where this works best.
+* Statically using a static database accessor to fluently build and execute queries.
 * Instance based via dependency injection where an instance of the database accessor is used to fluently build and execute queries.  Perfect for environments that use dependency injection.
 
 ## Use dbExpression
