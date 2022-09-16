@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.9.4]
+
+### Added
+	
+### Changed
+
+### Fixed
+
+### Breaking Changes
+
 ## [0.9.3] - 2022-09-08
 
 ### Added
