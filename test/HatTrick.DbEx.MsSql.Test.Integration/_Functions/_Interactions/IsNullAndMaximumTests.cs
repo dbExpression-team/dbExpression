@@ -10,7 +10,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     [Trait("Function", "ISNULL")]
     [Trait("Function", "MAX")]
-    public partial class IsNullAndMaximumTests : ExecutorTestBase
+    public partial class IsNullAndMaximumTests : ResetDatabaseNotRequired
     {
         [Theory]
         [MsSqlVersions.AllVersions]

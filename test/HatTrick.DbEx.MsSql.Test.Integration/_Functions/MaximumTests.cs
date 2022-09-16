@@ -11,7 +11,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     [Trait("Statement", "SELECT")]
     [Trait("Function", "MAX")]
-    public partial class MaximumTests : ExecutorTestBase
+    public partial class MaximumTests : ResetDatabaseNotRequired
     {
         [Theory]
         [MsSqlVersions.AllVersions]

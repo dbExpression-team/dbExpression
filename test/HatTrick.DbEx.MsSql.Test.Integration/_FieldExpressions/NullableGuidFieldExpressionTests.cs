@@ -11,7 +11,7 @@ using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Integration
 {
-    public partial class NullableGuidFieldExpressionTests : ExecutorTestBase
+    public partial class NullableGuidFieldExpressionTests : ResetDatabaseAfterEveryTest
     {
         [Theory]
         [MsSqlVersions.AllVersions]

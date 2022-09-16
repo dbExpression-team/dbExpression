@@ -2,6 +2,7 @@ using DbEx.DataService;
 using DbEx.dboData;
 using DbEx.dboDataService;
 using FluentAssertions;
+using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Threading;
@@ -10,7 +11,7 @@ using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Integration.Events
 {
-    public class EventCompositionTests : TestBase
+    public class EventCompositionTests : ResetDatabaseAfterEveryTest
     {
         [Theory]
         [MsSqlVersions.AllVersions]

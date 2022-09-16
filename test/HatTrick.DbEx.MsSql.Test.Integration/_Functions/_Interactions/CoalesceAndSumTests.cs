@@ -11,7 +11,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     [Trait("Function", "COALESCE")]
     [Trait("Function", "SUM")]
-    public partial class CoalesceAndSumTests : ExecutorTestBase
+    public partial class CoalesceAndSumTests : ResetDatabaseNotRequired
     {
         [Theory]
         [MsSqlVersions.AllVersions]

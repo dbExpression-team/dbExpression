@@ -11,7 +11,7 @@ using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Integration
 {
-    public partial class ClrTypeOverrideTests : ExecutorTestBase
+    public partial class ClrTypeOverrideTests : ResetDatabaseAfterEveryTest
     {
         [Theory]
         [MsSqlVersions.AllVersions]

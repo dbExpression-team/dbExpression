@@ -15,7 +15,7 @@ using Xunit;
 namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     [Trait("Statement", "SELECT")]
-    public partial class SelectOneTests : ExecutorTestBase
+    public partial class SelectOneTests : ResetDatabaseNotRequired
     {
         [Theory]
         [MsSqlVersions.AllVersions]

@@ -12,7 +12,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     [Trait("Function", "COALESCE")]
     [Trait("Function", "DATEADD")]
-    public partial class CoalesceAndDateAddTests : ExecutorTestBase
+    public partial class CoalesceAndDateAddTests : ResetDatabaseNotRequired
     {
         [Theory]
         [MsSqlVersions.AllVersions]

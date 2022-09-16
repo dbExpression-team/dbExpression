@@ -9,7 +9,7 @@ using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Integration.Experimental.Batch
 {
-    public partial class BatchTests : ExecutorTestBase
+    public partial class BatchTests : ResetDatabaseAfterEveryTest
     {
         [Theory]
         [MsSqlVersions.AllVersions]

@@ -12,7 +12,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     [Trait("Statement", "SELECT")]
     [Trait("Function", "AVG")]
-    public partial class AverageTests : ExecutorTestBase
+    public partial class AverageTests : ResetDatabaseNotRequired
     {
         [Theory]
         [MsSqlVersions.AllVersions]

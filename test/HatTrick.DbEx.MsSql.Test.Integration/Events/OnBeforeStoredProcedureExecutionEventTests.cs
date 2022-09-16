@@ -10,7 +10,7 @@ using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Integration.Events
 {
-    public class OnBeforeStoredProcedureExecutionEventTests : ExecutorTestBase
+    public class OnBeforeStoredProcedureExecutionEventTests : ResetDatabaseNotRequired
     {
         [Theory]
         [MsSqlVersions.AllVersions]

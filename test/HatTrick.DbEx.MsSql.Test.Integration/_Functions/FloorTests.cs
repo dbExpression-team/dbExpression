@@ -11,7 +11,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     [Trait("Statement", "SELECT")]
     [Trait("Function", "FLOOR")]
-    public partial class FloorTests : ExecutorTestBase
+    public partial class FloorTests : ResetDatabaseNotRequired
     {
         [Theory]
         [MsSqlVersions.AllVersions]

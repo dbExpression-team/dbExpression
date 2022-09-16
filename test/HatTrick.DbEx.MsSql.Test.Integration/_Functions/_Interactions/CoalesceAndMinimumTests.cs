@@ -10,7 +10,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     [Trait("Function", "COALESCE")]
     [Trait("Function", "MIN")]
-    public partial class CoalesceAndMinimumTests : ExecutorTestBase
+    public partial class CoalesceAndMinimumTests : ResetDatabaseNotRequired
     {
         [Theory]
         [MsSqlVersions.AllVersions]

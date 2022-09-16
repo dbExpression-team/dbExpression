@@ -11,7 +11,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     [Trait("Function", "CAST")]
     [Trait("Function", "CONCAT")]
-    public partial class ConcatAndCastTests : ExecutorTestBase
+    public partial class ConcatAndCastTests : ResetDatabaseNotRequired
     {
         [Theory]
         [MsSqlVersions.AllVersions]

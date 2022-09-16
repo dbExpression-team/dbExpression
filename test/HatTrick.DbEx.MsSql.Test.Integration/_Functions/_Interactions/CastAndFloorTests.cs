@@ -9,7 +9,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     [Trait("Function", "CAST")]
     [Trait("Function", "FLOOR")]
-    public partial class CastAndFloorTests : ExecutorTestBase
+    public partial class CastAndFloorTests : ResetDatabaseNotRequired
     {
         [Theory]
         [MsSqlVersions.AllVersions]

@@ -11,7 +11,7 @@ using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Integration.Events
 {
-    public class OnAfterDeleteQueryExecutionEventTests : ExecutorTestBase
+    public class OnAfterDeleteQueryExecutionEventTests : ResetDatabaseNotRequired
     {
         [Theory]
         [MsSqlVersions.AllVersions]

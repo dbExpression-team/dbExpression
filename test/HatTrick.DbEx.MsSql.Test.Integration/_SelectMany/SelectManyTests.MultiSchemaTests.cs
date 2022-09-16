@@ -12,7 +12,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     [Trait("Statement", "SELECT")]
     public partial class SelectManyTests
     {
-        public class MultiSchemaTests : ExecutorTestBase
+        public class MultiSchemaTests : ResetDatabaseNotRequired
         {
             [Theory]
             [MsSqlVersions.AllVersions]

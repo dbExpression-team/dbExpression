@@ -14,7 +14,7 @@ using Xunit;
 namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     [Trait("Operation", "UNION")]
-    public partial class UnionTests : ExecutorTestBase
+    public partial class UnionTests : ResetDatabaseNotRequired
     {
         [Theory]
         [MsSqlVersions.AllVersions]

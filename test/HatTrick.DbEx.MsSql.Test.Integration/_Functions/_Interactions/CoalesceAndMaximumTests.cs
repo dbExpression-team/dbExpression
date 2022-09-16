@@ -11,7 +11,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     [Trait("Function", "COALESCE")]
     [Trait("Function", "MAX")]
-    public partial class CoalesceAndMaximumTests : ExecutorTestBase
+    public partial class CoalesceAndMaximumTests : ResetDatabaseNotRequired
     {
         [Theory]
         [MsSqlVersions.AllVersions]

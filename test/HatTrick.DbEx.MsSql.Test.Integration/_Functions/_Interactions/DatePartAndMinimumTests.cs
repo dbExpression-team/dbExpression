@@ -10,7 +10,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     [Trait("Function", "DATEPART")]
     [Trait("Function", "MIN")]
-    public partial class DatePartAndMinimumTests : ExecutorTestBase
+    public partial class DatePartAndMinimumTests : ResetDatabaseNotRequired
     {
         [Theory]
         [MsSqlVersions.AllVersions]

@@ -10,7 +10,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     [Trait("Function", "ISNULL")]
     [Trait("Function", "VARP")]
-    public partial class IsNullAndPopulationVarianceTests : ExecutorTestBase
+    public partial class IsNullAndPopulationVarianceTests : ResetDatabaseNotRequired
     {
         [Theory]
         [MsSqlVersions.AllVersions]

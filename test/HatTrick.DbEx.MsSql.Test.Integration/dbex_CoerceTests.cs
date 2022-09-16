@@ -9,7 +9,7 @@ using Xunit;
 namespace HatTrick.DbEx.MsSql.Test.Integration
 {
 #pragma warning disable IDE1006 // Naming Styles
-    public class dbex_CoerceTests : ExecutorTestBase
+    public class dbex_CoerceTests : ResetDatabaseNotRequired
 #pragma warning restore IDE1006 // Naming Styles
     {
         [Theory]

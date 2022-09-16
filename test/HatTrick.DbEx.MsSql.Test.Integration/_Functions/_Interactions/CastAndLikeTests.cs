@@ -11,7 +11,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     [Trait("Statement", "SELECT")]
     [Trait("Function", "CAST")]
     [Trait("Function", "LIKE")]
-    public partial class CastAndLikeTests : ExecutorTestBase
+    public partial class CastAndLikeTests : ResetDatabaseNotRequired
     {
         [Theory]
         [Trait("Operation", "LIKE")]

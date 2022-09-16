@@ -16,7 +16,7 @@ using Xunit;
 namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     [Trait("Statement", "STORED_PROCEDURE")]
-    public partial class StoredProcedureTests : ExecutorTestBase
+    public partial class StoredProcedureTests : ResetDatabaseAfterEveryTest
     {
 
         [Theory]
