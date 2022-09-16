@@ -5,26 +5,10 @@
 		<LangVersion>preview</LangVersion>
 		<Nullable>enable</Nullable>
         <IsPackable>true</IsPackable>
-        <Company>HatTrick Labs, LLC</Company>
-        <Authors>gwgrubbs,jerrod.eiman</Authors>
         <Description>dbExpression is a Microsoft SQL Server database connector that enables fluent composition and execution of type safe SQL queries directly from Microsoft .NET.  dbExpression tooling and workflows provide efficiencies, uniformity and consistency between database schema and your application code.
         </Description>
-        <IncludeSymbols>true</IncludeSymbols>
-        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-		<PackageProjectUrl>https://www.dbexpression.com</PackageProjectUrl>
-		<RepositoryUrl>https://github.com/HatTrickLabs/dbExpression</RepositoryUrl>
-		<RepositoryType>git</RepositoryType>
 		<PackageTags>microsoft sqlserver sql sql-server orm</PackageTags>
-		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-		<Copyright>HatTrick Labs, LLC</Copyright>
-		<PublishRepositoryUrl>true</PublishRepositoryUrl>
-		<EmbedUntrackedSources>true</EmbedUntrackedSources>
-		<DebugType>embedded</DebugType>
     </PropertyGroup>
-
-	<PropertyGroup Condition="'$(TF_BUILD)' == 'true'">
-		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-	</PropertyGroup>
 
 	<ItemGroup>
 	  <None Include="..\..\.editorconfig" Link=".editorconfig" />
