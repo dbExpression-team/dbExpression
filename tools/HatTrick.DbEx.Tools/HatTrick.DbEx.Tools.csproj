@@ -7,18 +7,11 @@
         <ToolCommandName>dbex</ToolCommandName>
         <PackAsTool>true</PackAsTool>
         <IsPackable>true</IsPackable>
-        <Company>HatTrick Labs, LLC</Company>
-        <Authors>gwgrubbs,jerrod.eiman</Authors>
-        <Description>dbExpression is a database connector that enables fluent composition and execution of type safe SQL queries directly from Microsoft .NET.  This tool provides for generation of code scaffolding for use with dbExpression.
+		<DebugType>full</DebugType>
+		<Description>dbExpression is a database connector that enables fluent composition and execution of type safe SQL queries directly from Microsoft .NET.  This tool provides for generation of code scaffolding for use with dbExpression.
         </Description>
-        <IncludeSymbols>true</IncludeSymbols>
-        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-        <PackageProjectUrl>https://github.com/HatTrickLabs/dbExpression</PackageProjectUrl>
-		<RepositoryUrl>https://github.com/HatTrickLabs/dbExpression</RepositoryUrl>
-		<RepositoryType>git</RepositoryType>
-		<PackageTags>microsoft sqlserver sql sql-server orm dotnet tool dotnet-tool</PackageTags>
+        <PackageTags>microsoft sqlserver sql sql-server orm dotnet tool dotnet-tool</PackageTags>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-		<Copyright>HatTrick Labs, LLC</Copyright>
     </PropertyGroup>
     <ItemGroup>
         <None Remove="Resources\DbExConfig\DbEx.Config.Example.json" />
