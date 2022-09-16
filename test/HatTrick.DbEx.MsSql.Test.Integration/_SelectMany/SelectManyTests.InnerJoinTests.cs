@@ -11,7 +11,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     public partial class SelectManyTests
     {
-        public partial class InnerJoinTests : ExecutorTestBase
+        public partial class InnerJoinTests : ResetDatabaseNotRequired
         {
             [Theory]
             [MsSqlVersions.AllVersions]

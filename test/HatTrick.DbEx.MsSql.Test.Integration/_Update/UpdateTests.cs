@@ -14,7 +14,7 @@ using Xunit;
 namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     [Trait("Statement", "UPDATE")]
-    public partial class UpdateTests : ExecutorTestBase
+    public partial class UpdateTests : ResetDatabaseAfterEveryTest
     {
         [Theory]
         [MsSqlVersions.AllVersions]

@@ -15,7 +15,7 @@ using HatTrick.DbEx.Sql.Builder.Alias;
 
 namespace HatTrick.DbEx.MsSql.Test.Integration
 {
-    public class dbex_AliasTests : ExecutorTestBase
+    public class dbex_AliasTests : ResetDatabaseNotRequired
     {
         [Theory]
         [Trait("Operation", "SUBQUERY")]

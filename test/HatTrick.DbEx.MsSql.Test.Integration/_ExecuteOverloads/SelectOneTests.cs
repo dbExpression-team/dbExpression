@@ -11,7 +11,7 @@ using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Integration
 {
-    public partial class SelectOneTests : ExecutorTestBase
+    public partial class SelectOneTests : ResetDatabaseNotRequired
     {
         #region value
         [Theory]

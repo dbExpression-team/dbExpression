@@ -9,7 +9,7 @@ using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Integration
 {
-    public class StringFieldExpressionTests : ExecutorTestBase
+    public class StringFieldExpressionTests : ResetDatabaseNotRequired
     {
         [Theory]
         [Trait("Operation", "LIKE")]

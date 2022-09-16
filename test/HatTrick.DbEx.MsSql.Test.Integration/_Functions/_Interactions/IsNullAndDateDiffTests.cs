@@ -11,7 +11,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     [Trait("Function", "ISNULL")]
     [Trait("Function", "DATEDIFF")]
-    public partial class IsNullAndDateDiffTests : ExecutorTestBase
+    public partial class IsNullAndDateDiffTests : ResetDatabaseNotRequired
     {
         [Theory]
         [MsSqlVersions.AllVersions]

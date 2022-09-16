@@ -10,7 +10,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     [Trait("Function", "COUNT")]
     [Trait("Function", "DATEDIFF")]
-    public partial class CountAndDateDiffTests : ExecutorTestBase
+    public partial class CountAndDateDiffTests : ResetDatabaseNotRequired
     {
         [Theory]
         [MsSqlVersions.AllVersions]

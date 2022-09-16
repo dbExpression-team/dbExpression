@@ -12,7 +12,7 @@ using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Integration
 {
-    public class StringEnumValueConverterTests : ExecutorTestBase
+    public class StringEnumValueConverterTests : ResetDatabaseAfterEveryTest
     {
         [Theory]
         [Trait("Configuration", "StringEnumValueConverter")]

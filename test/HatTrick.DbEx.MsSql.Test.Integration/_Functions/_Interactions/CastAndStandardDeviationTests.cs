@@ -9,7 +9,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     [Trait("Function", "CAST")]
     [Trait("Function", "STDEV")]
-    public partial class CastAndStandardDeviationTests : ExecutorTestBase
+    public partial class CastAndStandardDeviationTests : ResetDatabaseNotRequired
     {
         [Theory]
         [MsSqlVersions.AllVersions]

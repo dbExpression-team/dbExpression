@@ -8,7 +8,7 @@ using Xunit;
 namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     [Trait("Statement", "DELETE")]
-    public partial class DeleteTests : ExecutorTestBase
+    public class DeleteTests : ResetDatabaseAfterEveryTest
     {
         [Theory]
         [MsSqlVersions.AllVersions]

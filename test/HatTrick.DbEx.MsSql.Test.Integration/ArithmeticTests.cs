@@ -13,7 +13,7 @@ using Xunit.Sdk;
 namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     [Trait("Statement", "SELECT")]
-    public partial class ArithmeticTests : ExecutorTestBase
+    public partial class ArithmeticTests : ResetDatabaseNotRequired
     {
         [Theory]
         [MsSqlVersions.AllVersions]

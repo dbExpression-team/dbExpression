@@ -12,7 +12,7 @@ using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Integration
 {
-    public partial class NullableDateTimeFieldExpressionTests : ExecutorTestBase
+    public partial class NullableDateTimeFieldExpressionTests : ResetDatabaseAfterEveryTest
     {
         [Theory]
         [MsSqlVersions.AllVersions]

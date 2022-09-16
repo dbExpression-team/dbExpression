@@ -15,7 +15,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     [Trait("Statement", "INSERT")]
     [Trait("Platform-Version", "v2005")]
-    public partial class InsertTests : ExecutorTestBase
+    public partial class InsertTests : ResetDatabaseAfterEveryTest
     {
         [Fact]
         public async Task Does_inserting_single_person_succeed_for_v2005()

@@ -11,7 +11,7 @@ using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Integration
 {
-    public class DelegateEnumValueConverterTests : ExecutorTestBase
+    public class DelegateEnumValueConverterTests : ResetDatabaseNotRequired
     {
         [Theory]
         [Trait("Configuration", "DelegateEnumValueConverter")]

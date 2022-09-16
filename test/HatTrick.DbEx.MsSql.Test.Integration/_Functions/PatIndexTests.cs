@@ -13,7 +13,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     [Trait("Statement", "SELECT")]
     [Trait("Function", "PATINDEX")]
-    public partial class PatIndexTests : ExecutorTestBase
+    public partial class PatIndexTests : ResetDatabaseNotRequired
     {
         [Theory]
         [MsSqlVersions.AllVersions]

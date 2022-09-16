@@ -14,7 +14,7 @@ using System;
 
 namespace HatTrick.DbEx.MsSql.Test.Integration
 {
-    public partial class SelectManyTests : ExecutorTestBase
+    public partial class SelectManyTests : ResetDatabaseNotRequired
     {
         #region value list
         [Theory]
