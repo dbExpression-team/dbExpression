@@ -111,6 +111,6 @@ Write-Host "Building solution" $SolutionPath
 dotnet build $SolutionPath --configuration $Configuration
 
 Write-Host "Creating NuGet packages for " $SolutionPath
-dotnet pack $SolutionPath --output $NuGetOutputPath --configuration $Configuration
+dotnet pack $SolutionPath --output $NuGetOutputPath --configuration $Configuration --no-build --include-symbols
 
 Write-Host "Build complete for" $SolutionPath
