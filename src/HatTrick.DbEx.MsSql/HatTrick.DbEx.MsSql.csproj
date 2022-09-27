@@ -27,8 +27,4 @@
         <ProjectReference Include="..\HatTrick.DbEx.Sql\HatTrick.DbEx.Sql.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Builder\_SecondGeneration\" />
-    </ItemGroup>
-
 </Project>

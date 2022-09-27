@@ -123,7 +123,6 @@ namespace HatTrick.DbEx.MsSql.Configuration
                 b.SqlStatements.Assembly.ElementAppender.ForElementTypes(x => x
                     .ForElementType<InsertQueryExpression>().Use<HatTrick.DbEx.MsSql.Assembler.v2005.MsSqlInsertQueryExpressionAppender>()
                     .ForElementType<SelectQueryExpression>().Use<HatTrick.DbEx.MsSql.Assembler.v2005.MsSqlSelectQueryExpressionAppender>()
-                    .ForElementType<TrimFunctionExpression>().Use<HatTrick.DbEx.MsSql.Assembler.v2005.TrimFunctionExpressionAppender>()
                 );
             });
         }
@@ -150,7 +149,6 @@ namespace HatTrick.DbEx.MsSql.Configuration
                 configureRuntime.Invoke(b);
                 b.SqlStatements.Assembly.ElementAppender.ForElementTypes(x => x
                     .ForElementType<SelectQueryExpression>().Use<HatTrick.DbEx.MsSql.Assembler.v2008.MsSqlSelectQueryExpressionAppender>()
-                    .ForElementType<TrimFunctionExpression>().Use<HatTrick.DbEx.MsSql.Assembler.v2008.TrimFunctionExpressionAppender>()
                 );
             });
         }
@@ -171,12 +169,8 @@ namespace HatTrick.DbEx.MsSql.Configuration
 
             var dbRegistrar = builder as ISqlDatabaseRuntimeServicesRegistrar
                 ?? throw new DbExpressionConfigurationException($"Expected builder to also be of type {typeof(ISqlDatabaseRuntimeServicesRegistrar)}.");
-            
-            dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase>(b =>
-            {
-                configureRuntime.Invoke(b);
-                b.SqlStatements.Assembly.ElementAppender.ForElementTypes(x => x.ForElementType<TrimFunctionExpression>().Use<HatTrick.DbEx.MsSql.Assembler.v2012.TrimFunctionExpressionAppender>());
-            });
+
+            dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase>(configureRuntime);
         }
         #endregion
 
@@ -196,11 +190,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             var dbRegistrar = builder as ISqlDatabaseRuntimeServicesRegistrar
                 ?? throw new DbExpressionConfigurationException($"Expected builder to also be of type {typeof(ISqlDatabaseRuntimeServicesRegistrar)}.");
 
-            dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase>(b =>
-            {
-                configureRuntime.Invoke(b);
-                b.SqlStatements.Assembly.ElementAppender.ForElementTypes(x => x.ForElementType<TrimFunctionExpression>().Use<HatTrick.DbEx.MsSql.Assembler.v2014.TrimFunctionExpressionAppender>());
-            });
+            dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase>(configureRuntime);
         }
         #endregion
 
@@ -220,11 +210,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             var dbRegistrar = builder as ISqlDatabaseRuntimeServicesRegistrar
                 ?? throw new DbExpressionConfigurationException($"Expected builder to also be of type {typeof(ISqlDatabaseRuntimeServicesRegistrar)}.");
 
-            dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase>(b =>
-            {
-                configureRuntime.Invoke(b);
-                b.SqlStatements.Assembly.ElementAppender.ForElementTypes(x => x.ForElementType<TrimFunctionExpression>().Use<HatTrick.DbEx.MsSql.Assembler.v2016.TrimFunctionExpressionAppender>());
-            });
+            dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase>(configureRuntime);
         }
         #endregion
 
