@@ -103,8 +103,6 @@ namespace HatTrick.DbEx.Sql.Builder
         {
             if (string.IsNullOrWhiteSpace(pattern))
                 throw new ArgumentException($"{nameof(pattern)} cannot be null or empty.", nameof(pattern));
-            if (string.IsNullOrWhiteSpace(replacement))
-                throw new ArgumentException($"{nameof(replacement)} cannot be null or empty.", nameof(replacement));
             return new(element, new LiteralExpression<string>(pattern), new LiteralExpression<string>(replacement));
         }
 
@@ -118,8 +116,6 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <returns><see cref="StringReplaceFunctionExpression"/> for use with any operation accepting a <see cref="StringElement"/>.</returns>
         public virtual StringReplaceFunctionExpression Replace(StringElement element, StringElement pattern, string replacement)
         {
-            if (string.IsNullOrWhiteSpace(replacement))
-                throw new ArgumentException($"{nameof(replacement)} cannot be null or empty.", nameof(replacement));
             return new(element, pattern, new LiteralExpression<string>(replacement));
         }
 

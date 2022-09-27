@@ -20,7 +20,7 @@
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public abstract class AbsFunctionExpression : AggregateFunctionExpression,
+    public abstract class AbsFunctionExpression : DataTypeFunctionExpression,
         IExpressionProvider<IExpressionElement>,
         IEquatable<AbsFunctionExpression>
     {
