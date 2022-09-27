@@ -53,9 +53,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{decimal}"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
         /// <returns><see cref="DecimalRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{decimal}"/>.</returns>
-        public virtual DecimalRoundFunctionExpression Round(AnyElement<decimal> expression, IntegralNumericElement length)
+        public virtual DecimalRoundFunctionExpression Round(AnyElement<decimal> expression, AnyNumericElement length)
             => new(expression, length);
 
         /// <summary>
@@ -63,10 +63,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{decimal}"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
         /// <param name="function">The type of operation to perform.</param>
         /// <returns><see cref="DecimalRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{decimal}"/>.</returns>
-        public virtual DecimalRoundFunctionExpression Round(AnyElement<decimal> expression, IntegralNumericElement length, int function)
+        public virtual DecimalRoundFunctionExpression Round(AnyElement<decimal> expression, AnyNumericElement length, int function)
             => new(expression, length, new LiteralExpression<int>(function));
 
         /// <summary>
@@ -75,9 +75,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{decimal}"/> to round.</param>
         /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
+        /// <param name="function">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
         /// <returns><see cref="DecimalRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{decimal}"/>.</returns>
-        public virtual DecimalRoundFunctionExpression Round(AnyElement<decimal> expression, int length, IntegralNumericElement function)
+        public virtual DecimalRoundFunctionExpression Round(AnyElement<decimal> expression, int length, AnyNumericElement function)
             => new(expression, new LiteralExpression<int>(length), function);
 
         /// <summary>
@@ -85,10 +85,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{decimal}"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
         /// <returns><see cref="DecimalRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{decimal}"/>.</returns>
-        public virtual DecimalRoundFunctionExpression Round(AnyElement<decimal> expression, IntegralNumericElement length, IntegralNumericElement function)
+        public virtual DecimalRoundFunctionExpression Round(AnyElement<decimal> expression, AnyNumericElement length, AnyNumericElement function)
             => new(expression, length, function);
 
         /// <summary>
@@ -117,9 +117,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<decimal?>"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
         /// <returns><see cref="NullableDecimalRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{decimal}"/>?.</returns>
-        public virtual NullableDecimalRoundFunctionExpression Round(AnyElement<decimal?> expression, IntegralNumericElement length)
+        public virtual NullableDecimalRoundFunctionExpression Round(AnyElement<decimal?> expression, AnyNumericElement length)
             => new(expression, length);
 
         /// <summary>
@@ -127,9 +127,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<decimal?>"/> to round.</param>
-        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="length">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
         /// <returns><see cref="NullableDecimalRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{decimal}"/>?.</returns>
-        public virtual NullableDecimalRoundFunctionExpression Round(AnyElement<decimal?> expression, NullableIntegralNumericElement length)
+        public virtual NullableDecimalRoundFunctionExpression Round(AnyElement<decimal?> expression, NullableAnyNumericElement length)
             => new(expression, length);
 
         /// <summary>
@@ -137,10 +137,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<decimal?>"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
         /// <param name="function">The type of operation to perform.</param>
         /// <returns><see cref="NullableDecimalRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{decimal}"/>?.</returns>
-        public virtual NullableDecimalRoundFunctionExpression Round(AnyElement<decimal?> expression, IntegralNumericElement length, int function)
+        public virtual NullableDecimalRoundFunctionExpression Round(AnyElement<decimal?> expression, AnyNumericElement length, int function)
             => new(expression, length, new LiteralExpression<int>(function));
 
         /// <summary>
@@ -148,10 +148,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<decimal?>"/> to round.</param>
-        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="length">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
         /// <param name="function">The type of operation to perform.</param>
         /// <returns><see cref="NullableDecimalRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{decimal}"/>?.</returns>
-        public virtual NullableDecimalRoundFunctionExpression Round(AnyElement<decimal?> expression, NullableIntegralNumericElement length, int function)
+        public virtual NullableDecimalRoundFunctionExpression Round(AnyElement<decimal?> expression, NullableAnyNumericElement length, int function)
             => new(expression, length, new LiteralExpression<int>(function));
 
         /// <summary>
@@ -160,9 +160,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<decimal?>"/> to round.</param>
         /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
+        /// <param name="function">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
         /// <returns><see cref="NullableDecimalRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{decimal}"/>?.</returns>
-        public virtual NullableDecimalRoundFunctionExpression Round(AnyElement<decimal?> expression, int length, IntegralNumericElement function)
+        public virtual NullableDecimalRoundFunctionExpression Round(AnyElement<decimal?> expression, int length, AnyNumericElement function)
             => new(expression, new LiteralExpression<int>(length), function);
 
         /// <summary>
@@ -171,9 +171,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<decimal?>"/> to round.</param>
         /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?) indicating the type of operation to perform.</param>
+        /// <param name="function">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?) indicating the type of operation to perform.</param>
         /// <returns><see cref="NullableDecimalRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{decimal}"/>?.</returns>
-        public virtual NullableDecimalRoundFunctionExpression Round(AnyElement<decimal?> expression, int length, NullableIntegralNumericElement function)
+        public virtual NullableDecimalRoundFunctionExpression Round(AnyElement<decimal?> expression, int length, NullableAnyNumericElement function)
             => new(expression, new LiteralExpression<int>(length), function);
 
         /// <summary>
@@ -181,10 +181,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<decimal?>"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
         /// <returns><see cref="NullableDecimalRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{decimal}"/>?.</returns>
-        public virtual NullableDecimalRoundFunctionExpression Round(AnyElement<decimal?> expression, IntegralNumericElement length, IntegralNumericElement function)
+        public virtual NullableDecimalRoundFunctionExpression Round(AnyElement<decimal?> expression, AnyNumericElement length, AnyNumericElement function)
             => new(expression, length, function);
 
         /// <summary>
@@ -192,10 +192,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<decimal?>"/> to round.</param>
-        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
+        /// <param name="length">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
         /// <returns><see cref="NullableDecimalRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{decimal}"/>?.</returns>
-        public virtual NullableDecimalRoundFunctionExpression Round(AnyElement<decimal?> expression, NullableIntegralNumericElement length, IntegralNumericElement function)
+        public virtual NullableDecimalRoundFunctionExpression Round(AnyElement<decimal?> expression, NullableAnyNumericElement length, AnyNumericElement function)
             => new(expression, length, function);
 
         /// <summary>
@@ -203,10 +203,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<decimal?>"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?) indicating the type of operation to perform.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?) indicating the type of operation to perform.</param>
         /// <returns><see cref="NullableDecimalRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{decimal}"/>?.</returns>
-        public virtual NullableDecimalRoundFunctionExpression Round(AnyElement<decimal?> expression, IntegralNumericElement length, NullableIntegralNumericElement function)
+        public virtual NullableDecimalRoundFunctionExpression Round(AnyElement<decimal?> expression, AnyNumericElement length, NullableAnyNumericElement function)
             => new(expression, length, function);
 
         /// <summary>
@@ -214,10 +214,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<decimal?>"/> to round.</param>
-        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?) indicating the type of operation to perform.</param>
+        /// <param name="length">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?) indicating the type of operation to perform.</param>
         /// <returns><see cref="NullableDecimalRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{decimal}"/>?.</returns>
-        public virtual NullableDecimalRoundFunctionExpression Round(AnyElement<decimal?> expression, NullableIntegralNumericElement length, NullableIntegralNumericElement function)
+        public virtual NullableDecimalRoundFunctionExpression Round(AnyElement<decimal?> expression, NullableAnyNumericElement length, NullableAnyNumericElement function)
             => new(expression, length, function);
         #endregion
 
@@ -248,9 +248,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{double}"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
         /// <returns><see cref="DoubleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{double}"/>.</returns>
-        public virtual DoubleRoundFunctionExpression Round(AnyElement<double> expression, IntegralNumericElement length)
+        public virtual DoubleRoundFunctionExpression Round(AnyElement<double> expression, AnyNumericElement length)
             => new(expression, length);
 
         /// <summary>
@@ -258,10 +258,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{double}"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
         /// <param name="function">The type of operation to perform.</param>
         /// <returns><see cref="DoubleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{double}"/>.</returns>
-        public virtual DoubleRoundFunctionExpression Round(AnyElement<double> expression, IntegralNumericElement length, int function)
+        public virtual DoubleRoundFunctionExpression Round(AnyElement<double> expression, AnyNumericElement length, int function)
             => new(expression, length, new LiteralExpression<int>(function));
 
         /// <summary>
@@ -270,9 +270,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{double}"/> to round.</param>
         /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
+        /// <param name="function">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
         /// <returns><see cref="DoubleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{double}"/>.</returns>
-        public virtual DoubleRoundFunctionExpression Round(AnyElement<double> expression, int length, IntegralNumericElement function)
+        public virtual DoubleRoundFunctionExpression Round(AnyElement<double> expression, int length, AnyNumericElement function)
             => new(expression, new LiteralExpression<int>(length), function);
 
         /// <summary>
@@ -280,10 +280,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{double}"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
         /// <returns><see cref="DoubleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{double}"/>.</returns>
-        public virtual DoubleRoundFunctionExpression Round(AnyElement<double> expression, IntegralNumericElement length, IntegralNumericElement function)
+        public virtual DoubleRoundFunctionExpression Round(AnyElement<double> expression, AnyNumericElement length, AnyNumericElement function)
             => new(expression, length, function);
 
         /// <summary>
@@ -312,9 +312,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<double?>"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
         /// <returns><see cref="NullableDoubleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{double}"/>?.</returns>
-        public virtual NullableDoubleRoundFunctionExpression Round(AnyElement<double?> expression, IntegralNumericElement length)
+        public virtual NullableDoubleRoundFunctionExpression Round(AnyElement<double?> expression, AnyNumericElement length)
             => new(expression, length);
 
         /// <summary>
@@ -322,9 +322,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<double?>"/> to round.</param>
-        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="length">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
         /// <returns><see cref="NullableDoubleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{double}"/>?.</returns>
-        public virtual NullableDoubleRoundFunctionExpression Round(AnyElement<double?> expression, NullableIntegralNumericElement length)
+        public virtual NullableDoubleRoundFunctionExpression Round(AnyElement<double?> expression, NullableAnyNumericElement length)
             => new(expression, length);
 
         /// <summary>
@@ -332,10 +332,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<double?>"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
         /// <param name="function">The type of operation to perform.</param>
         /// <returns><see cref="NullableDoubleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{double}"/>?.</returns>
-        public virtual NullableDoubleRoundFunctionExpression Round(AnyElement<double?> expression, IntegralNumericElement length, int function)
+        public virtual NullableDoubleRoundFunctionExpression Round(AnyElement<double?> expression, AnyNumericElement length, int function)
             => new(expression, length, new LiteralExpression<int>(function));
 
         /// <summary>
@@ -343,10 +343,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<double?>"/> to round.</param>
-        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="length">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
         /// <param name="function">The type of operation to perform.</param>
         /// <returns><see cref="NullableDoubleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{double}"/>?.</returns>
-        public virtual NullableDoubleRoundFunctionExpression Round(AnyElement<double?> expression, NullableIntegralNumericElement length, int function)
+        public virtual NullableDoubleRoundFunctionExpression Round(AnyElement<double?> expression, NullableAnyNumericElement length, int function)
             => new(expression, length, new LiteralExpression<int>(function));
 
         /// <summary>
@@ -355,9 +355,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<double?>"/> to round.</param>
         /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
+        /// <param name="function">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
         /// <returns><see cref="NullableDoubleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{double}"/>?.</returns>
-        public virtual NullableDoubleRoundFunctionExpression Round(AnyElement<double?> expression, int length, IntegralNumericElement function)
+        public virtual NullableDoubleRoundFunctionExpression Round(AnyElement<double?> expression, int length, AnyNumericElement function)
             => new(expression, new LiteralExpression<int>(length), function);
 
         /// <summary>
@@ -366,9 +366,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<double?>"/> to round.</param>
         /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?) indicating the type of operation to perform.</param>
+        /// <param name="function">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?) indicating the type of operation to perform.</param>
         /// <returns><see cref="NullableDoubleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{double}"/>?.</returns>
-        public virtual NullableDoubleRoundFunctionExpression Round(AnyElement<double?> expression, int length, NullableIntegralNumericElement function)
+        public virtual NullableDoubleRoundFunctionExpression Round(AnyElement<double?> expression, int length, NullableAnyNumericElement function)
             => new(expression, new LiteralExpression<int>(length), function);
 
         /// <summary>
@@ -376,10 +376,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<double?>"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
         /// <returns><see cref="NullableDoubleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{double}"/>?.</returns>
-        public virtual NullableDoubleRoundFunctionExpression Round(AnyElement<double?> expression, IntegralNumericElement length, IntegralNumericElement function)
+        public virtual NullableDoubleRoundFunctionExpression Round(AnyElement<double?> expression, AnyNumericElement length, AnyNumericElement function)
             => new(expression, length, function);
 
         /// <summary>
@@ -387,10 +387,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<double?>"/> to round.</param>
-        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
+        /// <param name="length">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
         /// <returns><see cref="NullableDoubleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{double}"/>?.</returns>
-        public virtual NullableDoubleRoundFunctionExpression Round(AnyElement<double?> expression, NullableIntegralNumericElement length, IntegralNumericElement function)
+        public virtual NullableDoubleRoundFunctionExpression Round(AnyElement<double?> expression, NullableAnyNumericElement length, AnyNumericElement function)
             => new(expression, length, function);
 
         /// <summary>
@@ -398,10 +398,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<double?>"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?) indicating the type of operation to perform.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?) indicating the type of operation to perform.</param>
         /// <returns><see cref="NullableDoubleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{double}"/>?.</returns>
-        public virtual NullableDoubleRoundFunctionExpression Round(AnyElement<double?> expression, IntegralNumericElement length, NullableIntegralNumericElement function)
+        public virtual NullableDoubleRoundFunctionExpression Round(AnyElement<double?> expression, AnyNumericElement length, NullableAnyNumericElement function)
             => new(expression, length, function);
 
         /// <summary>
@@ -409,10 +409,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<double?>"/> to round.</param>
-        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?) indicating the type of operation to perform.</param>
+        /// <param name="length">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?) indicating the type of operation to perform.</param>
         /// <returns><see cref="NullableDoubleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{double}"/>?.</returns>
-        public virtual NullableDoubleRoundFunctionExpression Round(AnyElement<double?> expression, NullableIntegralNumericElement length, NullableIntegralNumericElement function)
+        public virtual NullableDoubleRoundFunctionExpression Round(AnyElement<double?> expression, NullableAnyNumericElement length, NullableAnyNumericElement function)
             => new(expression, length, function);
         #endregion
 
@@ -443,9 +443,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{byte}"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
         /// <returns><see cref="Int32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{int}"/>.</returns>
-        public virtual Int32RoundFunctionExpression Round(AnyElement<byte> expression, IntegralNumericElement length)
+        public virtual Int32RoundFunctionExpression Round(AnyElement<byte> expression, AnyNumericElement length)
             => new(expression, length);
 
         /// <summary>
@@ -453,10 +453,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{byte}"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
         /// <param name="function">The type of operation to perform.</param>
         /// <returns><see cref="Int32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{int}"/>.</returns>
-        public virtual Int32RoundFunctionExpression Round(AnyElement<byte> expression, IntegralNumericElement length, int function)
+        public virtual Int32RoundFunctionExpression Round(AnyElement<byte> expression, AnyNumericElement length, int function)
             => new(expression, length, new LiteralExpression<int>(function));
 
         /// <summary>
@@ -465,9 +465,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{byte}"/> to round.</param>
         /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
+        /// <param name="function">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
         /// <returns><see cref="Int32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{int}"/>.</returns>
-        public virtual Int32RoundFunctionExpression Round(AnyElement<byte> expression, int length, IntegralNumericElement function)
+        public virtual Int32RoundFunctionExpression Round(AnyElement<byte> expression, int length, AnyNumericElement function)
             => new(expression, new LiteralExpression<int>(length), function);
 
         /// <summary>
@@ -475,10 +475,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{byte}"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
         /// <returns><see cref="Int32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{int}"/>.</returns>
-        public virtual Int32RoundFunctionExpression Round(AnyElement<byte> expression, IntegralNumericElement length, IntegralNumericElement function)
+        public virtual Int32RoundFunctionExpression Round(AnyElement<byte> expression, AnyNumericElement length, AnyNumericElement function)
             => new(expression, length, function);
 
         /// <summary>
@@ -507,9 +507,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<byte?>"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
         /// <returns><see cref="NullableInt32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{int}"/>?.</returns>
-        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<byte?> expression, IntegralNumericElement length)
+        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<byte?> expression, AnyNumericElement length)
             => new(expression, length);
 
         /// <summary>
@@ -517,9 +517,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<byte?>"/> to round.</param>
-        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="length">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
         /// <returns><see cref="NullableInt32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{int}"/>?.</returns>
-        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<byte?> expression, NullableIntegralNumericElement length)
+        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<byte?> expression, NullableAnyNumericElement length)
             => new(expression, length);
 
         /// <summary>
@@ -527,10 +527,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<byte?>"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
         /// <param name="function">The type of operation to perform.</param>
         /// <returns><see cref="NullableInt32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{int}"/>?.</returns>
-        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<byte?> expression, IntegralNumericElement length, int function)
+        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<byte?> expression, AnyNumericElement length, int function)
             => new(expression, length, new LiteralExpression<int>(function));
 
         /// <summary>
@@ -538,10 +538,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<byte?>"/> to round.</param>
-        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="length">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
         /// <param name="function">The type of operation to perform.</param>
         /// <returns><see cref="NullableInt32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{int}"/>?.</returns>
-        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<byte?> expression, NullableIntegralNumericElement length, int function)
+        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<byte?> expression, NullableAnyNumericElement length, int function)
             => new(expression, length, new LiteralExpression<int>(function));
 
         /// <summary>
@@ -550,9 +550,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<byte?>"/> to round.</param>
         /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
+        /// <param name="function">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
         /// <returns><see cref="NullableInt32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{int}"/>?.</returns>
-        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<byte?> expression, int length, IntegralNumericElement function)
+        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<byte?> expression, int length, AnyNumericElement function)
             => new(expression, new LiteralExpression<int>(length), function);
 
         /// <summary>
@@ -561,9 +561,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<byte?>"/> to round.</param>
         /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?) indicating the type of operation to perform.</param>
+        /// <param name="function">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?) indicating the type of operation to perform.</param>
         /// <returns><see cref="NullableInt32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{int}"/>?.</returns>
-        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<byte?> expression, int length, NullableIntegralNumericElement function)
+        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<byte?> expression, int length, NullableAnyNumericElement function)
             => new(expression, new LiteralExpression<int>(length), function);
 
         /// <summary>
@@ -571,10 +571,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<byte?>"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
         /// <returns><see cref="NullableInt32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{int}"/>?.</returns>
-        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<byte?> expression, IntegralNumericElement length, IntegralNumericElement function)
+        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<byte?> expression, AnyNumericElement length, AnyNumericElement function)
             => new(expression, length, function);
 
         /// <summary>
@@ -582,10 +582,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<byte?>"/> to round.</param>
-        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
+        /// <param name="length">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
         /// <returns><see cref="NullableInt32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{int}"/>?.</returns>
-        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<byte?> expression, NullableIntegralNumericElement length, IntegralNumericElement function)
+        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<byte?> expression, NullableAnyNumericElement length, AnyNumericElement function)
             => new(expression, length, function);
 
         /// <summary>
@@ -593,10 +593,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<byte?>"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?) indicating the type of operation to perform.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?) indicating the type of operation to perform.</param>
         /// <returns><see cref="NullableInt32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{int}"/>?.</returns>
-        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<byte?> expression, IntegralNumericElement length, NullableIntegralNumericElement function)
+        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<byte?> expression, AnyNumericElement length, NullableAnyNumericElement function)
             => new(expression, length, function);
 
         /// <summary>
@@ -604,10 +604,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<byte?>"/> to round.</param>
-        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?) indicating the type of operation to perform.</param>
+        /// <param name="length">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?) indicating the type of operation to perform.</param>
         /// <returns><see cref="NullableInt32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{int}"/>?.</returns>
-        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<byte?> expression, NullableIntegralNumericElement length, NullableIntegralNumericElement function)
+        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<byte?> expression, NullableAnyNumericElement length, NullableAnyNumericElement function)
             => new(expression, length, function);
         #endregion
 
@@ -638,9 +638,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{short}"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
         /// <returns><see cref="Int32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{int}"/>.</returns>
-        public virtual Int32RoundFunctionExpression Round(AnyElement<short> expression, IntegralNumericElement length)
+        public virtual Int32RoundFunctionExpression Round(AnyElement<short> expression, AnyNumericElement length)
             => new(expression, length);
 
         /// <summary>
@@ -648,10 +648,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{short}"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
         /// <param name="function">The type of operation to perform.</param>
         /// <returns><see cref="Int32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{int}"/>.</returns>
-        public virtual Int32RoundFunctionExpression Round(AnyElement<short> expression, IntegralNumericElement length, int function)
+        public virtual Int32RoundFunctionExpression Round(AnyElement<short> expression, AnyNumericElement length, int function)
             => new(expression, length, new LiteralExpression<int>(function));
 
         /// <summary>
@@ -660,9 +660,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{short}"/> to round.</param>
         /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
+        /// <param name="function">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
         /// <returns><see cref="Int32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{int}"/>.</returns>
-        public virtual Int32RoundFunctionExpression Round(AnyElement<short> expression, int length, IntegralNumericElement function)
+        public virtual Int32RoundFunctionExpression Round(AnyElement<short> expression, int length, AnyNumericElement function)
             => new(expression, new LiteralExpression<int>(length), function);
 
         /// <summary>
@@ -670,10 +670,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{short}"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
         /// <returns><see cref="Int32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{int}"/>.</returns>
-        public virtual Int32RoundFunctionExpression Round(AnyElement<short> expression, IntegralNumericElement length, IntegralNumericElement function)
+        public virtual Int32RoundFunctionExpression Round(AnyElement<short> expression, AnyNumericElement length, AnyNumericElement function)
             => new(expression, length, function);
 
         /// <summary>
@@ -702,9 +702,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<short?>"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
         /// <returns><see cref="NullableInt32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{int}"/>?.</returns>
-        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<short?> expression, IntegralNumericElement length)
+        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<short?> expression, AnyNumericElement length)
             => new(expression, length);
 
         /// <summary>
@@ -712,9 +712,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<short?>"/> to round.</param>
-        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="length">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
         /// <returns><see cref="NullableInt32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{int}"/>?.</returns>
-        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<short?> expression, NullableIntegralNumericElement length)
+        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<short?> expression, NullableAnyNumericElement length)
             => new(expression, length);
 
         /// <summary>
@@ -722,10 +722,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<short?>"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
         /// <param name="function">The type of operation to perform.</param>
         /// <returns><see cref="NullableInt32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{int}"/>?.</returns>
-        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<short?> expression, IntegralNumericElement length, int function)
+        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<short?> expression, AnyNumericElement length, int function)
             => new(expression, length, new LiteralExpression<int>(function));
 
         /// <summary>
@@ -733,10 +733,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<short?>"/> to round.</param>
-        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="length">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
         /// <param name="function">The type of operation to perform.</param>
         /// <returns><see cref="NullableInt32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{int}"/>?.</returns>
-        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<short?> expression, NullableIntegralNumericElement length, int function)
+        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<short?> expression, NullableAnyNumericElement length, int function)
             => new(expression, length, new LiteralExpression<int>(function));
 
         /// <summary>
@@ -745,9 +745,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<short?>"/> to round.</param>
         /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
+        /// <param name="function">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
         /// <returns><see cref="NullableInt32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{int}"/>?.</returns>
-        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<short?> expression, int length, IntegralNumericElement function)
+        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<short?> expression, int length, AnyNumericElement function)
             => new(expression, new LiteralExpression<int>(length), function);
 
         /// <summary>
@@ -756,9 +756,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<short?>"/> to round.</param>
         /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?) indicating the type of operation to perform.</param>
+        /// <param name="function">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?) indicating the type of operation to perform.</param>
         /// <returns><see cref="NullableInt32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{int}"/>?.</returns>
-        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<short?> expression, int length, NullableIntegralNumericElement function)
+        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<short?> expression, int length, NullableAnyNumericElement function)
             => new(expression, new LiteralExpression<int>(length), function);
 
         /// <summary>
@@ -766,10 +766,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<short?>"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
         /// <returns><see cref="NullableInt32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{int}"/>?.</returns>
-        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<short?> expression, IntegralNumericElement length, IntegralNumericElement function)
+        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<short?> expression, AnyNumericElement length, AnyNumericElement function)
             => new(expression, length, function);
 
         /// <summary>
@@ -777,10 +777,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<short?>"/> to round.</param>
-        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
+        /// <param name="length">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
         /// <returns><see cref="NullableInt32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{int}"/>?.</returns>
-        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<short?> expression, NullableIntegralNumericElement length, IntegralNumericElement function)
+        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<short?> expression, NullableAnyNumericElement length, AnyNumericElement function)
             => new(expression, length, function);
 
         /// <summary>
@@ -788,10 +788,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<short?>"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?) indicating the type of operation to perform.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?) indicating the type of operation to perform.</param>
         /// <returns><see cref="NullableInt32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{int}"/>?.</returns>
-        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<short?> expression, IntegralNumericElement length, NullableIntegralNumericElement function)
+        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<short?> expression, AnyNumericElement length, NullableAnyNumericElement function)
             => new(expression, length, function);
 
         /// <summary>
@@ -799,10 +799,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<short?>"/> to round.</param>
-        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?) indicating the type of operation to perform.</param>
+        /// <param name="length">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?) indicating the type of operation to perform.</param>
         /// <returns><see cref="NullableInt32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{int}"/>?.</returns>
-        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<short?> expression, NullableIntegralNumericElement length, NullableIntegralNumericElement function)
+        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<short?> expression, NullableAnyNumericElement length, NullableAnyNumericElement function)
             => new(expression, length, function);
         #endregion
 
@@ -833,9 +833,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{int}"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
         /// <returns><see cref="Int32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{int}"/>.</returns>
-        public virtual Int32RoundFunctionExpression Round(AnyElement<int> expression, IntegralNumericElement length)
+        public virtual Int32RoundFunctionExpression Round(AnyElement<int> expression, AnyNumericElement length)
             => new(expression, length);
 
         /// <summary>
@@ -843,10 +843,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{int}"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
         /// <param name="function">The type of operation to perform.</param>
         /// <returns><see cref="Int32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{int}"/>.</returns>
-        public virtual Int32RoundFunctionExpression Round(AnyElement<int> expression, IntegralNumericElement length, int function)
+        public virtual Int32RoundFunctionExpression Round(AnyElement<int> expression, AnyNumericElement length, int function)
             => new(expression, length, new LiteralExpression<int>(function));
 
         /// <summary>
@@ -855,9 +855,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{int}"/> to round.</param>
         /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
+        /// <param name="function">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
         /// <returns><see cref="Int32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{int}"/>.</returns>
-        public virtual Int32RoundFunctionExpression Round(AnyElement<int> expression, int length, IntegralNumericElement function)
+        public virtual Int32RoundFunctionExpression Round(AnyElement<int> expression, int length, AnyNumericElement function)
             => new(expression, new LiteralExpression<int>(length), function);
 
         /// <summary>
@@ -865,10 +865,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{int}"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
         /// <returns><see cref="Int32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{int}"/>.</returns>
-        public virtual Int32RoundFunctionExpression Round(AnyElement<int> expression, IntegralNumericElement length, IntegralNumericElement function)
+        public virtual Int32RoundFunctionExpression Round(AnyElement<int> expression, AnyNumericElement length, AnyNumericElement function)
             => new(expression, length, function);
 
         /// <summary>
@@ -897,9 +897,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<int?>"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
         /// <returns><see cref="NullableInt32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{int}"/>?.</returns>
-        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<int?> expression, IntegralNumericElement length)
+        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<int?> expression, AnyNumericElement length)
             => new(expression, length);
 
         /// <summary>
@@ -907,9 +907,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<int?>"/> to round.</param>
-        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="length">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
         /// <returns><see cref="NullableInt32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{int}"/>?.</returns>
-        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<int?> expression, NullableIntegralNumericElement length)
+        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<int?> expression, NullableAnyNumericElement length)
             => new(expression, length);
 
         /// <summary>
@@ -917,10 +917,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<int?>"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
         /// <param name="function">The type of operation to perform.</param>
         /// <returns><see cref="NullableInt32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{int}"/>?.</returns>
-        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<int?> expression, IntegralNumericElement length, int function)
+        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<int?> expression, AnyNumericElement length, int function)
             => new(expression, length, new LiteralExpression<int>(function));
 
         /// <summary>
@@ -928,10 +928,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<int?>"/> to round.</param>
-        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="length">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
         /// <param name="function">The type of operation to perform.</param>
         /// <returns><see cref="NullableInt32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{int}"/>?.</returns>
-        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<int?> expression, NullableIntegralNumericElement length, int function)
+        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<int?> expression, NullableAnyNumericElement length, int function)
             => new(expression, length, new LiteralExpression<int>(function));
 
         /// <summary>
@@ -940,9 +940,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<int?>"/> to round.</param>
         /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
+        /// <param name="function">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
         /// <returns><see cref="NullableInt32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{int}"/>?.</returns>
-        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<int?> expression, int length, IntegralNumericElement function)
+        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<int?> expression, int length, AnyNumericElement function)
             => new(expression, new LiteralExpression<int>(length), function);
 
         /// <summary>
@@ -951,9 +951,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<int?>"/> to round.</param>
         /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?) indicating the type of operation to perform.</param>
+        /// <param name="function">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?) indicating the type of operation to perform.</param>
         /// <returns><see cref="NullableInt32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{int}"/>?.</returns>
-        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<int?> expression, int length, NullableIntegralNumericElement function)
+        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<int?> expression, int length, NullableAnyNumericElement function)
             => new(expression, new LiteralExpression<int>(length), function);
 
         /// <summary>
@@ -961,10 +961,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<int?>"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
         /// <returns><see cref="NullableInt32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{int}"/>?.</returns>
-        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<int?> expression, IntegralNumericElement length, IntegralNumericElement function)
+        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<int?> expression, AnyNumericElement length, AnyNumericElement function)
             => new(expression, length, function);
 
         /// <summary>
@@ -972,10 +972,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<int?>"/> to round.</param>
-        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
+        /// <param name="length">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
         /// <returns><see cref="NullableInt32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{int}"/>?.</returns>
-        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<int?> expression, NullableIntegralNumericElement length, IntegralNumericElement function)
+        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<int?> expression, NullableAnyNumericElement length, AnyNumericElement function)
             => new(expression, length, function);
 
         /// <summary>
@@ -983,10 +983,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<int?>"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?) indicating the type of operation to perform.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?) indicating the type of operation to perform.</param>
         /// <returns><see cref="NullableInt32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{int}"/>?.</returns>
-        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<int?> expression, IntegralNumericElement length, NullableIntegralNumericElement function)
+        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<int?> expression, AnyNumericElement length, NullableAnyNumericElement function)
             => new(expression, length, function);
 
         /// <summary>
@@ -994,10 +994,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<int?>"/> to round.</param>
-        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?) indicating the type of operation to perform.</param>
+        /// <param name="length">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?) indicating the type of operation to perform.</param>
         /// <returns><see cref="NullableInt32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{int}"/>?.</returns>
-        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<int?> expression, NullableIntegralNumericElement length, NullableIntegralNumericElement function)
+        public virtual NullableInt32RoundFunctionExpression Round(AnyElement<int?> expression, NullableAnyNumericElement length, NullableAnyNumericElement function)
             => new(expression, length, function);
         #endregion
 
@@ -1028,9 +1028,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{long}"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
         /// <returns><see cref="Int64RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{long}"/>.</returns>
-        public virtual Int64RoundFunctionExpression Round(AnyElement<long> expression, IntegralNumericElement length)
+        public virtual Int64RoundFunctionExpression Round(AnyElement<long> expression, AnyNumericElement length)
             => new(expression, length);
 
         /// <summary>
@@ -1038,10 +1038,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{long}"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
         /// <param name="function">The type of operation to perform.</param>
         /// <returns><see cref="Int64RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{long}"/>.</returns>
-        public virtual Int64RoundFunctionExpression Round(AnyElement<long> expression, IntegralNumericElement length, int function)
+        public virtual Int64RoundFunctionExpression Round(AnyElement<long> expression, AnyNumericElement length, int function)
             => new(expression, length, new LiteralExpression<int>(function));
 
         /// <summary>
@@ -1050,9 +1050,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{long}"/> to round.</param>
         /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
+        /// <param name="function">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
         /// <returns><see cref="Int64RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{long}"/>.</returns>
-        public virtual Int64RoundFunctionExpression Round(AnyElement<long> expression, int length, IntegralNumericElement function)
+        public virtual Int64RoundFunctionExpression Round(AnyElement<long> expression, int length, AnyNumericElement function)
             => new(expression, new LiteralExpression<int>(length), function);
 
         /// <summary>
@@ -1060,10 +1060,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{long}"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
         /// <returns><see cref="Int64RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{long}"/>.</returns>
-        public virtual Int64RoundFunctionExpression Round(AnyElement<long> expression, IntegralNumericElement length, IntegralNumericElement function)
+        public virtual Int64RoundFunctionExpression Round(AnyElement<long> expression, AnyNumericElement length, AnyNumericElement function)
             => new(expression, length, function);
 
         /// <summary>
@@ -1092,9 +1092,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<long?>"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
         /// <returns><see cref="NullableInt64RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{long}"/>?.</returns>
-        public virtual NullableInt64RoundFunctionExpression Round(AnyElement<long?> expression, IntegralNumericElement length)
+        public virtual NullableInt64RoundFunctionExpression Round(AnyElement<long?> expression, AnyNumericElement length)
             => new(expression, length);
 
         /// <summary>
@@ -1102,9 +1102,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<long?>"/> to round.</param>
-        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="length">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
         /// <returns><see cref="NullableInt64RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{long}"/>?.</returns>
-        public virtual NullableInt64RoundFunctionExpression Round(AnyElement<long?> expression, NullableIntegralNumericElement length)
+        public virtual NullableInt64RoundFunctionExpression Round(AnyElement<long?> expression, NullableAnyNumericElement length)
             => new(expression, length);
 
         /// <summary>
@@ -1112,10 +1112,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<long?>"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
         /// <param name="function">The type of operation to perform.</param>
         /// <returns><see cref="NullableInt64RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{long}"/>?.</returns>
-        public virtual NullableInt64RoundFunctionExpression Round(AnyElement<long?> expression, IntegralNumericElement length, int function)
+        public virtual NullableInt64RoundFunctionExpression Round(AnyElement<long?> expression, AnyNumericElement length, int function)
             => new(expression, length, new LiteralExpression<int>(function));
 
         /// <summary>
@@ -1123,10 +1123,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<long?>"/> to round.</param>
-        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="length">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
         /// <param name="function">The type of operation to perform.</param>
         /// <returns><see cref="NullableInt64RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{long}"/>?.</returns>
-        public virtual NullableInt64RoundFunctionExpression Round(AnyElement<long?> expression, NullableIntegralNumericElement length, int function)
+        public virtual NullableInt64RoundFunctionExpression Round(AnyElement<long?> expression, NullableAnyNumericElement length, int function)
             => new(expression, length, new LiteralExpression<int>(function));
 
         /// <summary>
@@ -1135,9 +1135,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<long?>"/> to round.</param>
         /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
+        /// <param name="function">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
         /// <returns><see cref="NullableInt64RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{long}"/>?.</returns>
-        public virtual NullableInt64RoundFunctionExpression Round(AnyElement<long?> expression, int length, IntegralNumericElement function)
+        public virtual NullableInt64RoundFunctionExpression Round(AnyElement<long?> expression, int length, AnyNumericElement function)
             => new(expression, new LiteralExpression<int>(length), function);
 
         /// <summary>
@@ -1146,9 +1146,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<long?>"/> to round.</param>
         /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?) indicating the type of operation to perform.</param>
+        /// <param name="function">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?) indicating the type of operation to perform.</param>
         /// <returns><see cref="NullableInt64RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{long}"/>?.</returns>
-        public virtual NullableInt64RoundFunctionExpression Round(AnyElement<long?> expression, int length, NullableIntegralNumericElement function)
+        public virtual NullableInt64RoundFunctionExpression Round(AnyElement<long?> expression, int length, NullableAnyNumericElement function)
             => new(expression, new LiteralExpression<int>(length), function);
 
         /// <summary>
@@ -1156,10 +1156,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<long?>"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
         /// <returns><see cref="NullableInt64RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{long}"/>?.</returns>
-        public virtual NullableInt64RoundFunctionExpression Round(AnyElement<long?> expression, IntegralNumericElement length, IntegralNumericElement function)
+        public virtual NullableInt64RoundFunctionExpression Round(AnyElement<long?> expression, AnyNumericElement length, AnyNumericElement function)
             => new(expression, length, function);
 
         /// <summary>
@@ -1167,10 +1167,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<long?>"/> to round.</param>
-        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
+        /// <param name="length">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
         /// <returns><see cref="NullableInt64RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{long}"/>?.</returns>
-        public virtual NullableInt64RoundFunctionExpression Round(AnyElement<long?> expression, NullableIntegralNumericElement length, IntegralNumericElement function)
+        public virtual NullableInt64RoundFunctionExpression Round(AnyElement<long?> expression, NullableAnyNumericElement length, AnyNumericElement function)
             => new(expression, length, function);
 
         /// <summary>
@@ -1178,10 +1178,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<long?>"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?) indicating the type of operation to perform.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?) indicating the type of operation to perform.</param>
         /// <returns><see cref="NullableInt64RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{long}"/>?.</returns>
-        public virtual NullableInt64RoundFunctionExpression Round(AnyElement<long?> expression, IntegralNumericElement length, NullableIntegralNumericElement function)
+        public virtual NullableInt64RoundFunctionExpression Round(AnyElement<long?> expression, AnyNumericElement length, NullableAnyNumericElement function)
             => new(expression, length, function);
 
         /// <summary>
@@ -1189,10 +1189,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<long?>"/> to round.</param>
-        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?) indicating the type of operation to perform.</param>
+        /// <param name="length">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?) indicating the type of operation to perform.</param>
         /// <returns><see cref="NullableInt64RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{long}"/>?.</returns>
-        public virtual NullableInt64RoundFunctionExpression Round(AnyElement<long?> expression, NullableIntegralNumericElement length, NullableIntegralNumericElement function)
+        public virtual NullableInt64RoundFunctionExpression Round(AnyElement<long?> expression, NullableAnyNumericElement length, NullableAnyNumericElement function)
             => new(expression, length, function);
         #endregion
 
@@ -1223,9 +1223,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{float}"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
         /// <returns><see cref="SingleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{float}"/>.</returns>
-        public virtual SingleRoundFunctionExpression Round(AnyElement<float> expression, IntegralNumericElement length)
+        public virtual SingleRoundFunctionExpression Round(AnyElement<float> expression, AnyNumericElement length)
             => new(expression, length);
 
         /// <summary>
@@ -1233,10 +1233,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{float}"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
         /// <param name="function">The type of operation to perform.</param>
         /// <returns><see cref="SingleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{float}"/>.</returns>
-        public virtual SingleRoundFunctionExpression Round(AnyElement<float> expression, IntegralNumericElement length, int function)
+        public virtual SingleRoundFunctionExpression Round(AnyElement<float> expression, AnyNumericElement length, int function)
             => new(expression, length, new LiteralExpression<int>(function));
 
         /// <summary>
@@ -1245,9 +1245,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{float}"/> to round.</param>
         /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
+        /// <param name="function">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
         /// <returns><see cref="SingleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{float}"/>.</returns>
-        public virtual SingleRoundFunctionExpression Round(AnyElement<float> expression, int length, IntegralNumericElement function)
+        public virtual SingleRoundFunctionExpression Round(AnyElement<float> expression, int length, AnyNumericElement function)
             => new(expression, new LiteralExpression<int>(length), function);
 
         /// <summary>
@@ -1255,10 +1255,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{float}"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
         /// <returns><see cref="SingleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{float}"/>.</returns>
-        public virtual SingleRoundFunctionExpression Round(AnyElement<float> expression, IntegralNumericElement length, IntegralNumericElement function)
+        public virtual SingleRoundFunctionExpression Round(AnyElement<float> expression, AnyNumericElement length, AnyNumericElement function)
             => new(expression, length, function);
 
         /// <summary>
@@ -1287,9 +1287,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<float?>"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
         /// <returns><see cref="NullableSingleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{float}"/>?.</returns>
-        public virtual NullableSingleRoundFunctionExpression Round(AnyElement<float?> expression, IntegralNumericElement length)
+        public virtual NullableSingleRoundFunctionExpression Round(AnyElement<float?> expression, AnyNumericElement length)
             => new(expression, length);
 
         /// <summary>
@@ -1297,9 +1297,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<float?>"/> to round.</param>
-        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="length">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
         /// <returns><see cref="NullableSingleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{float}"/>?.</returns>
-        public virtual NullableSingleRoundFunctionExpression Round(AnyElement<float?> expression, NullableIntegralNumericElement length)
+        public virtual NullableSingleRoundFunctionExpression Round(AnyElement<float?> expression, NullableAnyNumericElement length)
             => new(expression, length);
 
         /// <summary>
@@ -1307,10 +1307,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<float?>"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
         /// <param name="function">The type of operation to perform.</param>
         /// <returns><see cref="NullableSingleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{float}"/>?.</returns>
-        public virtual NullableSingleRoundFunctionExpression Round(AnyElement<float?> expression, IntegralNumericElement length, int function)
+        public virtual NullableSingleRoundFunctionExpression Round(AnyElement<float?> expression, AnyNumericElement length, int function)
             => new(expression, length, new LiteralExpression<int>(function));
 
         /// <summary>
@@ -1318,10 +1318,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<float?>"/> to round.</param>
-        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="length">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
         /// <param name="function">The type of operation to perform.</param>
         /// <returns><see cref="NullableSingleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{float}"/>?.</returns>
-        public virtual NullableSingleRoundFunctionExpression Round(AnyElement<float?> expression, NullableIntegralNumericElement length, int function)
+        public virtual NullableSingleRoundFunctionExpression Round(AnyElement<float?> expression, NullableAnyNumericElement length, int function)
             => new(expression, length, new LiteralExpression<int>(function));
 
         /// <summary>
@@ -1330,9 +1330,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<float?>"/> to round.</param>
         /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
+        /// <param name="function">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
         /// <returns><see cref="NullableSingleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{float}"/>?.</returns>
-        public virtual NullableSingleRoundFunctionExpression Round(AnyElement<float?> expression, int length, IntegralNumericElement function)
+        public virtual NullableSingleRoundFunctionExpression Round(AnyElement<float?> expression, int length, AnyNumericElement function)
             => new(expression, new LiteralExpression<int>(length), function);
 
         /// <summary>
@@ -1341,9 +1341,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<float?>"/> to round.</param>
         /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?) indicating the type of operation to perform.</param>
+        /// <param name="function">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?) indicating the type of operation to perform.</param>
         /// <returns><see cref="NullableSingleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{float}"/>?.</returns>
-        public virtual NullableSingleRoundFunctionExpression Round(AnyElement<float?> expression, int length, NullableIntegralNumericElement function)
+        public virtual NullableSingleRoundFunctionExpression Round(AnyElement<float?> expression, int length, NullableAnyNumericElement function)
             => new(expression, new LiteralExpression<int>(length), function);
 
         /// <summary>
@@ -1351,10 +1351,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<float?>"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
         /// <returns><see cref="NullableSingleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{float}"/>?.</returns>
-        public virtual NullableSingleRoundFunctionExpression Round(AnyElement<float?> expression, IntegralNumericElement length, IntegralNumericElement function)
+        public virtual NullableSingleRoundFunctionExpression Round(AnyElement<float?> expression, AnyNumericElement length, AnyNumericElement function)
             => new(expression, length, function);
 
         /// <summary>
@@ -1362,10 +1362,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<float?>"/> to round.</param>
-        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
+        /// <param name="length">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />) indicating the type of operation to perform.</param>
         /// <returns><see cref="NullableSingleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{float}"/>?.</returns>
-        public virtual NullableSingleRoundFunctionExpression Round(AnyElement<float?> expression, NullableIntegralNumericElement length, IntegralNumericElement function)
+        public virtual NullableSingleRoundFunctionExpression Round(AnyElement<float?> expression, NullableAnyNumericElement length, AnyNumericElement function)
             => new(expression, length, function);
 
         /// <summary>
@@ -1373,10 +1373,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<float?>"/> to round.</param>
-        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?) indicating the type of operation to perform.</param>
+        /// <param name="length">A <see cref="AnyNumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?) indicating the type of operation to perform.</param>
         /// <returns><see cref="NullableSingleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{float}"/>?.</returns>
-        public virtual NullableSingleRoundFunctionExpression Round(AnyElement<float?> expression, IntegralNumericElement length, NullableIntegralNumericElement function)
+        public virtual NullableSingleRoundFunctionExpression Round(AnyElement<float?> expression, AnyNumericElement length, NullableAnyNumericElement function)
             => new(expression, length, function);
 
         /// <summary>
@@ -1384,10 +1384,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement<float?>"/> to round.</param>
-        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
-        /// <param name="function">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?) indicating the type of operation to perform.</param>
+        /// <param name="length">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="NullableAnyNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?) indicating the type of operation to perform.</param>
         /// <returns><see cref="NullableSingleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{float}"/>?.</returns>
-        public virtual NullableSingleRoundFunctionExpression Round(AnyElement<float?> expression, NullableIntegralNumericElement length, NullableIntegralNumericElement function)
+        public virtual NullableSingleRoundFunctionExpression Round(AnyElement<float?> expression, NullableAnyNumericElement length, NullableAnyNumericElement function)
             => new(expression, length, function);
         #endregion
     }

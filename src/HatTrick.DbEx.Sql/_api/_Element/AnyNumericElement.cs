@@ -21,7 +21,7 @@ using HatTrick.DbEx.Sql.Expression;
 namespace HatTrick.DbEx.Sql
 {
 #pragma warning disable IDE1006 // Naming Styles
-    public interface NullableIntegralNumericElement : AnyElement
+    public interface AnyNumericElement : AnyElement
 #pragma warning restore IDE1006 // Naming Styles
     {
 
