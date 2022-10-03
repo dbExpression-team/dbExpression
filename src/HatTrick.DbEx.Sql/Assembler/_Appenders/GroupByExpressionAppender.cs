@@ -28,7 +28,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             context.TrySharingExistingParameter = true;
             try
             {
-                builder.AppendElement((expression as IExpressionProvider<IExpressionElement>).Expression, context);
+                builder.AppendElement((expression as IExpressionProvider<IExpressionElement>).Expression!, context);
             }
             finally
             {

@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.Sql.Assembler
 
             AppendDistinct(expression, builder, context);
 
-            builder.AppendElement((expression as IExpressionProvider<IExpressionElement>).Expression, context);
+            builder.AppendElement((expression as IExpressionProvider<IExpressionElement>).Expression!, context);
             builder.Appender.Write(")");
         }
         #endregion

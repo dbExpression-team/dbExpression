@@ -48,7 +48,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             FilterExpressionSet exp = sec.Person.Id > 0 & sec.Person.SocialSecurityNumber == "XXX";
 
             //then
-            FilterExpressionSet.FilterExpressionSetElements leftArg = (exp as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>)!.Expression;
+            FilterExpressionSet.FilterExpressionSetElements leftArg = (exp as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>)!.Expression!;
 
             FilterExpression idFilter = (leftArg.Args[0] as FilterExpression)!;
             FilterExpression ssnFilter = (leftArg.Args[1] as FilterExpression)!;
@@ -90,7 +90,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             FilterExpressionSet exp = sec.Person.Id > 0 & sec.Person.SocialSecurityNumber == "XXX" & sec.Person.DateCreated != now;
 
             //then
-            FilterExpressionSet.FilterExpressionSetElements leftArg = (exp as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>).Expression;
+            FilterExpressionSet.FilterExpressionSetElements leftArg = (exp as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>).Expression!;
 
             FilterExpression idFilter = (leftArg.Args[0]! as FilterExpression)!;
             FilterExpression ssnFilter = (leftArg.Args[1]! as FilterExpression)!;
@@ -144,7 +144,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
 
             //then
             var whereClause = exp as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>;
-            var args = whereClause.Expression.Args!;
+            var args = whereClause.Expression!.Args!;
 
             whereClause.Expression.ConditionalOperator.Should().Be(ConditionalExpressionOperator.And);
             args.Count.Should().Be(5);
@@ -172,7 +172,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
 
             // (dbo.Person.FirstName == "Kyle" | dbo.Person.LastName == "Stan")
             var arg3 = (args[3] as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>)!;
-            arg3.Expression.ConditionalOperator.Should().Be(ConditionalExpressionOperator.Or);
+            arg3.Expression!.ConditionalOperator.Should().Be(ConditionalExpressionOperator.Or);
             var arg3_0 = (arg3!.Expression.Args[0] as FilterExpression)!;
             arg3_0.Negate.Should().BeFalse();
             arg3_0.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
@@ -205,7 +205,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
 
             //then
             var whereClause = exp as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>;
-            var andArgs = whereClause.Expression.Args!;
+            var andArgs = whereClause.Expression!.Args!;
 
             whereClause.Expression.ConditionalOperator.Should().Be(ConditionalExpressionOperator.And);
             andArgs.Count.Should().Be(4);
@@ -219,7 +219,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
 
             // !(dbo.Person.LastName == "Cartman" | !(dbo.Person.CreditLimit == 10000))
             var arg1 = (andArgs[1] as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>)!;
-            arg1.Expression.ConditionalOperator.Should().Be(ConditionalExpressionOperator.Or);
+            arg1.Expression!.ConditionalOperator.Should().Be(ConditionalExpressionOperator.Or);
             arg1.Expression.Negate.Should().BeTrue();
             var arg1_0 = (arg1!.Expression.Args[0] as FilterExpression)!;
             arg1_0.Negate.Should().BeFalse();
@@ -235,7 +235,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
 
             // (dbo.Person.FirstName == "Kyle" | dbo.Person.LastName == "Stan")
             var arg2 = (andArgs[2] as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>)!;
-            arg2.Expression.ConditionalOperator.Should().Be(ConditionalExpressionOperator.Or);
+            arg2.Expression!.ConditionalOperator.Should().Be(ConditionalExpressionOperator.Or);
             arg2.Expression.Negate.Should().BeFalse();
             var arg2_0 = (arg2!.Expression.Args[0] as FilterExpression)!;
             arg2_0.Negate.Should().BeFalse();

@@ -49,7 +49,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region to string
         public override string? ToString()
         {
-            var value = Expression is QueryExpression ? $"({Expression})" : Expression.ToString();
+            var value = Expression is QueryExpression ? $"FROM ({Expression})" : Expression.ToString();
             if (!string.IsNullOrWhiteSpace(alias))
                 return $"{value} AS {alias}";
             return value;

@@ -34,7 +34,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #region constructors
         public SelectValueStoredProcedureQueryExpressionBuilder(
             StoredProcedureQueryExpression expression,
-            Func<IStoredProcedureExecutionPipeline> executionPipelineFactory
+            Func<IStoredProcedureExpressionExecutionPipeline> executionPipelineFactory
         ) : base(expression, executionPipelineFactory)
         {
 

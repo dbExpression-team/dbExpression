@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         public override void AppendElement(LTrimFunctionExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             builder.Appender.Write("LTRIM(");
-            builder.AppendElement((expression as IExpressionProvider<IExpressionElement>).Expression, context);
+            builder.AppendElement((expression as IExpressionProvider<IExpressionElement>).Expression!, context);
             builder.Appender.Write(")");
         }
         #endregion

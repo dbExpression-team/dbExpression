@@ -34,8 +34,8 @@ using System.Threading.Tasks;
 namespace HatTrick.DbEx.Sql.Pipeline
 {
     public sealed class SelectQueryExpressionExecutionPipeline : 
-        ISelectQueryExecutionPipeline,
-        ISelectSetQueryExecutionPipeline
+        ISelectQueryExpressionExecutionPipeline,
+        ISelectSetQueryExpressionExecutionPipeline
     {
         #region internals
         private readonly ILogger<SelectQueryExpressionExecutionPipeline> logger;

@@ -103,7 +103,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Double}"/>, the value to use for calculating the population variance function result.</param>
         /// <returns><see cref="SinglePopulationVarianceFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
-        public SinglePopulationVarianceFunctionExpression VarP(DoubleElement element)
+        public SinglePopulationVarianceFunctionExpression VarP(AnyElement<double> element)
             => new(element);
 
         /// <summary>

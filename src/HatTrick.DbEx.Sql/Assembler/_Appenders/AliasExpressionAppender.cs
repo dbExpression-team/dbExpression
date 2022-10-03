@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Assembler
     {
         public override void AppendElement(AliasExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            var alias = (expression as IExpressionProvider<AliasExpression.AliasExpressionElements>).Expression;
+            var alias = (expression as IExpressionProvider<AliasExpression.AliasExpressionElements>).Expression!;
             if (!string.IsNullOrWhiteSpace(alias.TableAlias))
             {
                 builder.Appender

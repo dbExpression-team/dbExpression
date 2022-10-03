@@ -26,9 +26,9 @@ namespace HatTrick.DbEx.Sql.Assembler
         public override void AppendElement(LeftFunctionExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             builder.Appender.Write("LEFT(");
-            builder.AppendElement((expression as IExpressionProvider<IExpressionElement>).Expression, context);
+            builder.AppendElement((expression as IExpressionProvider<IExpressionElement>).Expression!, context);
             builder.Appender.Write(", ");
-            builder.AppendElement((expression as IExpressionProvider<AnyElement>).Expression, context);
+            builder.AppendElement((expression as IExpressionProvider<AnyElement>).Expression!, context);
             builder.Appender.Write(")");
         }
         #endregion

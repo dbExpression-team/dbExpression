@@ -103,7 +103,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Double}"/>, the value to use for calculating the variance function result.</param>
         /// <returns><see cref="SingleVarianceFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
-        public SingleVarianceFunctionExpression Var(DoubleElement element)
+        public SingleVarianceFunctionExpression Var(AnyElement<double> element)
             => new(element);
 
         /// <summary>

@@ -28,7 +28,7 @@ namespace HatTrick.DbEx.Sql.Builder
         where TDatabase : class, ISqlDatabaseRuntime
     {
         #region internals
-        protected Func<ISelectQueryExecutionPipeline> ExecutionPipelineFactory { get; private set; }
+        protected Func<ISelectQueryExpressionExecutionPipeline> ExecutionPipelineFactory { get; private set; }
         protected override QueryExpression Expression => (Controller as IQueryExpressionProvider).Expression;
         #endregion
 
@@ -38,7 +38,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         #region constructors
         protected SelectQueryExpressionBuilder(
-            Func<ISelectQueryExecutionPipeline> executionPipelineFactory,
+            Func<ISelectQueryExpressionExecutionPipeline> executionPipelineFactory,
             SelectSetQueryExpressionBuilder<TDatabase> controller
         )
         {

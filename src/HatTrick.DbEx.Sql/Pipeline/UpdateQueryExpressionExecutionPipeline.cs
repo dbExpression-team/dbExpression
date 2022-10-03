@@ -28,7 +28,7 @@ using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql.Pipeline
 {
-    public sealed class UpdateQueryExpressionExecutionPipeline : IUpdateQueryExecutionPipeline
+    public sealed class UpdateQueryExpressionExecutionPipeline : IUpdateQueryExpressionExecutionPipeline
     {
         #region internals
         private readonly ILogger<UpdateQueryExpressionExecutionPipeline> logger;

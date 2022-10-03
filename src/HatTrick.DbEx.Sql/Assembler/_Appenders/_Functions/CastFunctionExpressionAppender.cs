@@ -25,10 +25,10 @@ namespace HatTrick.DbEx.Sql.Assembler
         #region methods
         public override void AppendElement(CastFunctionExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            var options = (expression as IExpressionProvider<CastFunctionExpression.CastFunctionExpressionOptions>).Expression;
+            var options = (expression as IExpressionProvider<CastFunctionExpression.CastFunctionExpressionOptions>).Expression!;
 
             builder.Appender.Write("CAST(");
-            builder.AppendElement((expression as IExpressionProvider<IExpressionElement>).Expression, context);
+            builder.AppendElement((expression as IExpressionProvider<IExpressionElement>).Expression!, context);
             builder.Appender.Write(" AS ");
 
             builder.AppendElement(options.ConvertToDbType, context);

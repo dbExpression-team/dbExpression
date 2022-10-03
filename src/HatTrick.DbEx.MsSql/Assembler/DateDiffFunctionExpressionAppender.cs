@@ -28,7 +28,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
         #region methods
         public override void AppendElement(DateDiffFunctionExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            var datePart = (expression as IExpressionProvider<DatePartsExpression>).Expression;
+            var datePart = (expression as IExpressionProvider<DatePartsExpression>).Expression!;
             var dates = (expression as IExpressionListProvider<IExpressionElement>).Expressions;
 
             var value = datePart.Expression.ToString()?.ToLower();

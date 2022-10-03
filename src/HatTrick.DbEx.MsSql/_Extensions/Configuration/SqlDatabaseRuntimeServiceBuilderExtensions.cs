@@ -65,7 +65,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             var version = typeof(TDatabase).GetCustomAttribute<PlatformVersionAttribute>()!.PlatformVersion!;
 #endif
             if (string.IsNullOrWhiteSpace(version))
-                throw new DbExpressionConfigurationException($"An MsSql version cannot be resolved.  Ensure you have provided a supported version in the Platform property of your scaffolding configuration (see https://docs.dbexpression.com/rtd/mssql/versions).");
+                throw new DbExpressionConfigurationException($"An MsSql version cannot be resolved.  Ensure you have provided a supported version in the Platform property of your scaffolding configuration (see https://docs.dbexpression.com/rtd/reference/mssql/versions).");
 
             builder.AddDatabase(configureRuntime, version);
         }
@@ -461,8 +461,8 @@ namespace HatTrick.DbEx.MsSql.Configuration
         private static ISqlStatementsConfigurationBuilderGrouping<TDatabase> UseDelegateQueryExecutionPipelineFactoryWithDefaults<TDatabase>(this ISqlStatementsConfigurationBuilderGrouping<TDatabase> builder)
             where TDatabase : class, ISqlDatabaseRuntime
         {
-            builder.Assembly.QueryExecution.Pipeline.Use(sp => new DelegateQueryExecutionPipelineFactory(
-                t => sp.GetService(t) as IQueryExecutionPipeline
+            builder.Assembly.QueryExecution.Pipeline.Use(sp => new DelegateQueryExpressionExecutionPipelineFactory(
+                t => sp.GetService(t) as IQueryExpressionExecutionPipeline
                         ?? throw CreateNullServiceException(nameof(builder.Assembly.QueryExecution.Pipeline), t)
                 ),
                 x => x.WithDefaults()

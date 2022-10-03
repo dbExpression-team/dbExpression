@@ -42,12 +42,12 @@ namespace HatTrick.DbEx.Sql.Configuration
             where TDatabase : class, ISqlDatabaseRuntime
         {
             builder
-                .ForPipelineType<ISelectSetQueryExecutionPipeline>().Use<SelectQueryExpressionExecutionPipeline>()
-                .ForPipelineType<IStoredProcedureExecutionPipeline>().Use<StoredProcedureQueryExpressionExecutionPipeline>()
+                .ForPipelineType<ISelectSetQueryExpressionExecutionPipeline>().Use<SelectQueryExpressionExecutionPipeline>()
+                .ForPipelineType<IStoredProcedureExpressionExecutionPipeline>().Use<StoredProcedureQueryExpressionExecutionPipeline>()
                 .ForSelect().Use<SelectQueryExpressionExecutionPipeline>()
-                .ForInsert().Use<InsertQueryExecutionPipeline>()
+                .ForInsert().Use<InsertQueryExpressionExecutionPipeline>()
                 .ForUpdate().Use<UpdateQueryExpressionExecutionPipeline>()
-                .ForDelete().Use<DeleteQueryExecutionPipeline>();
+                .ForDelete().Use<DeleteQueryExpressionExecutionPipeline>();
         }
 
         public static void WithDefaults<TDatabase>(this IValueConverterFactoryContinuationConfigurationBuilder<TDatabase> builder)
@@ -149,7 +149,18 @@ namespace HatTrick.DbEx.Sql.Configuration
                 .ForElementType<ParameterExpression>().Use<ParameterExpressionAppender>()
                 .ForElementType<UnionExpression>().Use<UnionExpressionAppender>()
                 .ForElementType<UnionAllExpression>().Use<UnionAllExpressionAppender>()
-                .ForElementType<NullExpression>().Use<NullExpressionAppender>();
+                .ForElementType<NullExpression>().Use<NullExpressionAppender>()
+                .ForElementType<SinFunctionExpression>().Use<SinFunctionExpressionAppender>()
+                .ForElementType<ASinFunctionExpression>().Use<ASinFunctionExpressionAppender>()
+                .ForElementType<TanFunctionExpression>().Use<TanFunctionExpressionAppender>()
+                .ForElementType<ATanFunctionExpression>().Use<ATanFunctionExpressionAppender>()
+                .ForElementType<CosFunctionExpression>().Use<CosFunctionExpressionAppender>()
+                .ForElementType<ACosFunctionExpression>().Use<ACosFunctionExpressionAppender>()
+                .ForElementType<CotFunctionExpression>().Use<CotFunctionExpressionAppender>()
+                .ForElementType<SqrtFunctionExpression>().Use<SqrtFunctionExpressionAppender>()
+                .ForElementType<ExpFunctionExpression>().Use<ExpFunctionExpressionAppender>()
+                .ForElementType<RandFunctionExpression>().Use<RandFunctionExpressionAppender>()
+                .ForElementType<SquareFunctionExpression>().Use<SquareFunctionExpressionAppender>();
         }
     }
 }
