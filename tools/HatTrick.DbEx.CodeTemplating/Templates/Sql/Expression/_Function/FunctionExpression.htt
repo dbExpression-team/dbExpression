@@ -69,7 +69,7 @@ namespace {Namespace}
         {-#each Operations-}
         public static {:mediatorType.Name}ExpressionMediator operator {ArithmeticOperatorSymbol}({:functionName}FunctionExpression a, {:mediatorType.Name}ExpressionMediator b) 
         {{
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.{ArithmeticOperatorName})
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.{ArithmeticOperatorName})
             {{
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -83,7 +83,7 @@ namespace {Namespace}
         {-#if :mediatorType.IsNullable-}
         public static Nullable{:mediatorType.Name}ExpressionMediator operator {ArithmeticOperatorSymbol}({:functionName}FunctionExpression a, Nullable{:mediatorType.Name}ExpressionMediator b) 
         {{
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.{ArithmeticOperatorName})
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.{ArithmeticOperatorName})
             {{
                 be.Expression.Args.Insert(0, a);
                 return b;

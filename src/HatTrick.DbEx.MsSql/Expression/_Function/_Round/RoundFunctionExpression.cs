@@ -21,7 +21,7 @@ using HatTrick.DbEx.Sql.Expression;
 
 namespace HatTrick.DbEx.MsSql.Expression
 {
-    public abstract class RoundFunctionExpression : ConversionFunctionExpression,
+    public abstract class RoundFunctionExpression : MathematicalFunctionExpression,
         IExpressionProvider<RoundFunctionExpression.RoundFunctionExpressionElements>,
         IEquatable<RoundFunctionExpression>
     {

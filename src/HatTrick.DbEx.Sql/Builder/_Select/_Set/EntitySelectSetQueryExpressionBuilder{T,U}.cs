@@ -33,8 +33,8 @@ namespace HatTrick.DbEx.Sql.Builder
         #region constructors
         public EntitySelectSetQueryExpressionBuilder(
             Func<SelectQueryExpression> queryExpressionFactory,
-            Func<ISelectSetQueryExecutionPipeline> selectSetExecutionPipelineFactory,
-            Func<ISelectQueryExecutionPipeline> selectExecutionPipelineFactory,
+            Func<ISelectSetQueryExpressionExecutionPipeline> selectSetExecutionPipelineFactory,
+            Func<ISelectQueryExpressionExecutionPipeline> selectExecutionPipelineFactory,
             Table<TEntity> table
         ) : base(queryExpressionFactory, selectSetExecutionPipelineFactory, selectExecutionPipelineFactory)
         {

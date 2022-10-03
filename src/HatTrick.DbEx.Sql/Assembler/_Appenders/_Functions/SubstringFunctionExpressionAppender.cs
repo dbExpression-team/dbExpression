@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         #region methods
         public override void AppendElement(SubstringFunctionExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            var elements = (expression as IExpressionProvider<SubstringFunctionExpression.SubstringFunctionExpressionElements>).Expression;
+            var elements = (expression as IExpressionProvider<SubstringFunctionExpression.SubstringFunctionExpressionElements>).Expression!;
 
             builder.Appender.Write("SUBSTRING(");
             builder.AppendElement(elements.Expression, context);

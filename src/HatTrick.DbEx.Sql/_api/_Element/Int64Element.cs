@@ -19,7 +19,7 @@
 ﻿namespace HatTrick.DbEx.Sql
 {
 #pragma warning disable IDE1006 // Naming Styles
-    public interface Int64Element : AnyElement<long>, AnyNumericElement
+    public interface Int64Element : AnyElement<long>, NumericElement
 #pragma warning restore IDE1006 // Naming Styles
     {
 

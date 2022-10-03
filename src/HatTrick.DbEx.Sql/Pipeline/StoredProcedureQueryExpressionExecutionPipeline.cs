@@ -34,7 +34,7 @@ using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql.Pipeline
 {
-    public sealed class StoredProcedureQueryExpressionExecutionPipeline : IStoredProcedureExecutionPipeline
+    public sealed class StoredProcedureQueryExpressionExecutionPipeline : IStoredProcedureExpressionExecutionPipeline
     {
         #region internals
         private readonly ILogger<StoredProcedureQueryExpressionExecutionPipeline> logger;

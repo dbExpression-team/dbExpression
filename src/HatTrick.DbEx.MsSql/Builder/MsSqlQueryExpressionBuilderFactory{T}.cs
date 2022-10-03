@@ -29,13 +29,13 @@ namespace HatTrick.DbEx.MsSql.Builder
     {
         #region internals
         private readonly IQueryExpressionFactory queryExpressionFactory;
-        private readonly IQueryExecutionPipelineFactory executionPipelineFactory;
+        private readonly IQueryExpressionExecutionPipelineFactory executionPipelineFactory;
         #endregion
 
         #region constructors
         public MsSqlQueryExpressionBuilderFactory(
             IQueryExpressionFactory queryExpressionFactory,
-            IQueryExecutionPipelineFactory executionPipelineFactory
+            IQueryExpressionExecutionPipelineFactory executionPipelineFactory
         )
         {
             this.queryExpressionFactory = queryExpressionFactory ?? throw new ArgumentNullException(nameof(queryExpressionFactory));

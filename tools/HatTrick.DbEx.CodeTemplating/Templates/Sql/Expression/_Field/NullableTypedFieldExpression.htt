@@ -98,7 +98,7 @@ namespace {Namespace}
         //here
         public static Nullable{:mediatorType.Name}ExpressionMediator operator {ArithmeticOperatorSymbol}(Nullable{:fieldExpressionType.Name}FieldExpression a, {:operationType.Name}ExpressionMediator b)
         {{
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.{ArithmeticOperatorName})
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.{ArithmeticOperatorName})
             {{
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -111,7 +111,7 @@ namespace {Namespace}
         {-#each Operations-}
         public static Nullable{:mediatorType.Name}ExpressionMediator operator {ArithmeticOperatorSymbol}(Nullable{:fieldExpressionType.Name}FieldExpression a, Nullable{:operationType.Name}ExpressionMediator b)
         {{
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.{ArithmeticOperatorName})
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.{ArithmeticOperatorName})
             {{
                 be.Expression.Args.Insert(0, a);
                 return {#if (:mediatorType, :operationType) => IsNotSameType}new({/if}b{#if (:mediatorType, :operationType) => IsNotSameType}.Expression){/if};

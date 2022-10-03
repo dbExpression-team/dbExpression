@@ -44,7 +44,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         #region constructors
         public SelectEntitiesSelectQueryExpressionBuilder(
-            Func<ISelectQueryExecutionPipeline> executionPipelineFactory,
+            Func<ISelectQueryExpressionExecutionPipeline> executionPipelineFactory,
             SelectSetQueryExpressionBuilder<TDatabase> controller,
             Table<TEntity> table
         ) : base(executionPipelineFactory, controller)

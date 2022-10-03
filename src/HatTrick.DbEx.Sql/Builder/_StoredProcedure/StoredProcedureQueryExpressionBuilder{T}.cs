@@ -37,7 +37,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #region internals
         private readonly StoredProcedureQueryExpression _expression;
         private readonly StoredProcedure _entity;
-        protected Func<IStoredProcedureExecutionPipeline> ExecutionPipelineFactory { get; private set; }
+        protected Func<IStoredProcedureExpressionExecutionPipeline> ExecutionPipelineFactory { get; private set; }
         protected override QueryExpression Expression => StoredProcedureQueryExpression;
         public StoredProcedureQueryExpression StoredProcedureQueryExpression => _expression;
         #endregion
@@ -45,7 +45,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #region constructors
         public StoredProcedureQueryExpressionBuilder(
             StoredProcedureQueryExpression expression,
-            Func<IStoredProcedureExecutionPipeline> executionPipelineFactory
+            Func<IStoredProcedureExpressionExecutionPipeline> executionPipelineFactory
         )
         {
             _expression = expression ?? throw new ArgumentNullException(nameof(expression));
@@ -56,7 +56,7 @@ namespace HatTrick.DbEx.Sql.Builder
         public StoredProcedureQueryExpressionBuilder(
             StoredProcedureQueryExpression expression,
             StoredProcedure entity,
-            Func<IStoredProcedureExecutionPipeline> executionPipelineFactory
+            Func<IStoredProcedureExpressionExecutionPipeline> executionPipelineFactory
         )
         {
             _expression = expression ?? throw new ArgumentNullException(nameof(expression));

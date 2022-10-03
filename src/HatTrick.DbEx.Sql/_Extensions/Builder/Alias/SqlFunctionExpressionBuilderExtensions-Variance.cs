@@ -29,6 +29,6 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
         /// <param name="element">An alias of an expression, the value to use for calculating the variance function result.</param>
         /// <returns><see cref="NullableSingleVarianceFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>?.</returns>
         public static NullableSingleVarianceFunctionExpression Var(this SqlFunctionExpressionBuilder _, (string TableName, string FieldName) element)
-            => new(new NullableSingleExpressionMediator(new AliasExpression<float?>(element)));
+            => new(new AliasExpression<float?>(element));
     }
 }

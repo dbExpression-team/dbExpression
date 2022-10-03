@@ -38,22 +38,22 @@ namespace HatTrick.DbEx.MsSql.Expression
 
         }
 
-        public NullableObjectRoundFunctionExpression(AnyElement expression, AnyNumericElement length) : base(expression, length)
+        public NullableObjectRoundFunctionExpression(AnyElement expression, NumericElement length) : base(expression, length)
         {
 
         }
 
-        public NullableObjectRoundFunctionExpression(AnyElement expression, AnyNumericElement length, AnyElement function) : base(expression, length, function)
+        public NullableObjectRoundFunctionExpression(AnyElement expression, NumericElement length, AnyElement function) : base(expression, length, function)
         {
 
         }
 
-        public NullableObjectRoundFunctionExpression(AnyElement expression, AnyNumericElement length, AnyNumericElement function) : base(expression, length, function)
+        public NullableObjectRoundFunctionExpression(AnyElement expression, NumericElement length, NumericElement function) : base(expression, length, function)
         {
 
         }
 
-        public NullableObjectRoundFunctionExpression(AnyElement expression, AnyElement length, NullableAnyNumericElement function) : base(expression, length, function)
+        public NullableObjectRoundFunctionExpression(AnyElement expression, AnyElement length, NullableNumericElement function) : base(expression, length, function)
         {
 
         }

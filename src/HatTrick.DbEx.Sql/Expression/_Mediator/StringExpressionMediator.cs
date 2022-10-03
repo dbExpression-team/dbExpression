@@ -61,7 +61,7 @@ namespace HatTrick.DbEx.Sql.Expression
         {
             if (a.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> ae)
             {
-                if (ae.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+                if (ae.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
                 {
                     ae.Expression.Args.Add(b);
                     return a;
@@ -69,7 +69,7 @@ namespace HatTrick.DbEx.Sql.Expression
             }
             if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be)
             {
-                if (be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+                if (be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
                 {
                     be.Expression.Args.Insert(0, a);
                     return b;

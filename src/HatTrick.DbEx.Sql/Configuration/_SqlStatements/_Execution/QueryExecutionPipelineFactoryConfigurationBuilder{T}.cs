@@ -43,7 +43,7 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         #region methods
         /// <inheritdoc />
-        public ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(IQueryExecutionPipelineFactory factory)
+        public ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(IQueryExpressionExecutionPipelineFactory factory)
         {
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
@@ -54,25 +54,25 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         /// <inheritdoc />
         public ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use<TQueryExecutionPipelineFactory>()
-            where TQueryExecutionPipelineFactory : class, IQueryExecutionPipelineFactory
+            where TQueryExecutionPipelineFactory : class, IQueryExpressionExecutionPipelineFactory
         {
-            services.TryAddSingleton<IQueryExecutionPipelineFactory, TQueryExecutionPipelineFactory>();
+            services.TryAddSingleton<IQueryExpressionExecutionPipelineFactory, TQueryExecutionPipelineFactory>();
             return caller;
         }
 
         /// <inheritdoc />
-        public ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(Func<IQueryExecutionPipelineFactory> factory)
+        public ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(Func<IQueryExpressionExecutionPipelineFactory> factory)
         {
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            services.TryAddSingleton<IQueryExecutionPipelineFactory>(sp => factory());
+            services.TryAddSingleton<IQueryExpressionExecutionPipelineFactory>(sp => factory());
 
             return caller;
         }
 
         /// <inheritdoc />
-        public ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(Func<IQueryExecutionPipelineFactory> factory, Action<IQueryExecutionPipelineFactoryContinuationConfigurationBuilder<TDatabase>> configureFactory)
+        public ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(Func<IQueryExpressionExecutionPipelineFactory> factory, Action<IQueryExecutionPipelineFactoryContinuationConfigurationBuilder<TDatabase>> configureFactory)
         {
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
@@ -80,24 +80,24 @@ namespace HatTrick.DbEx.Sql.Configuration
             if (configureFactory is null)
                 throw new ArgumentNullException(nameof(configureFactory));
 
-            services.TryAddSingleton<IQueryExecutionPipelineFactory>(sp => factory());
+            services.TryAddSingleton<IQueryExpressionExecutionPipelineFactory>(sp => factory());
             configureFactory(this);
             return caller;
         }
 
         /// <inheritdoc />
-        public ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(Func<IServiceProvider, IQueryExecutionPipelineFactory> factory)
+        public ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(Func<IServiceProvider, IQueryExpressionExecutionPipelineFactory> factory)
         {
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            services.TryAddSingleton<IQueryExecutionPipelineFactory>(factory);
+            services.TryAddSingleton<IQueryExpressionExecutionPipelineFactory>(factory);
 
             return caller;
         }
 
         /// <inheritdoc />
-        public ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(Func<IServiceProvider, IQueryExecutionPipelineFactory> factory, Action<IQueryExecutionPipelineFactoryContinuationConfigurationBuilder<TDatabase>> configureFactory)
+        public ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use(Func<IServiceProvider, IQueryExpressionExecutionPipelineFactory> factory, Action<IQueryExecutionPipelineFactoryContinuationConfigurationBuilder<TDatabase>> configureFactory)
         {
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
@@ -105,14 +105,14 @@ namespace HatTrick.DbEx.Sql.Configuration
             if (configureFactory is null)
                 throw new ArgumentNullException(nameof(configureFactory));
 
-            services.TryAddSingleton<IQueryExecutionPipelineFactory>(factory);
+            services.TryAddSingleton<IQueryExpressionExecutionPipelineFactory>(factory);
             configureFactory(this);
             return caller;
         }
 
         /// <inheritdoc />
         public IQueryExecutionPipelineFactoryContinuationConfigurationBuilder<TDatabase, TPipeline> ForPipelineType<TPipeline>()
-            where TPipeline : class, IQueryExecutionPipeline
+            where TPipeline : class, IQueryExpressionExecutionPipeline
         {
             return new QueryExecutionPipelineFactoryConfigurationBuilder<TDatabase, TPipeline>(this, services);
         }
@@ -128,27 +128,27 @@ namespace HatTrick.DbEx.Sql.Configuration
         }
 
         /// <inheritdoc />
-        public IQueryExecutionPipelineFactoryContinuationConfigurationBuilder<TDatabase, ISelectQueryExecutionPipeline> ForSelect()
+        public IQueryExecutionPipelineFactoryContinuationConfigurationBuilder<TDatabase, ISelectQueryExpressionExecutionPipeline> ForSelect()
         {
-            return new QueryExecutionPipelineFactoryConfigurationBuilder<TDatabase, ISelectQueryExecutionPipeline>(this, services);
+            return new QueryExecutionPipelineFactoryConfigurationBuilder<TDatabase, ISelectQueryExpressionExecutionPipeline>(this, services);
         }
 
         /// <inheritdoc />
-        public IQueryExecutionPipelineFactoryContinuationConfigurationBuilder<TDatabase, IInsertQueryExecutionPipeline> ForInsert()
+        public IQueryExecutionPipelineFactoryContinuationConfigurationBuilder<TDatabase, IInsertQueryExpressionExecutionPipeline> ForInsert()
         {
-            return new QueryExecutionPipelineFactoryConfigurationBuilder<TDatabase, IInsertQueryExecutionPipeline>(this, services);
+            return new QueryExecutionPipelineFactoryConfigurationBuilder<TDatabase, IInsertQueryExpressionExecutionPipeline>(this, services);
         }
 
         /// <inheritdoc />
-        public IQueryExecutionPipelineFactoryContinuationConfigurationBuilder<TDatabase, IUpdateQueryExecutionPipeline> ForUpdate()
+        public IQueryExecutionPipelineFactoryContinuationConfigurationBuilder<TDatabase, IUpdateQueryExpressionExecutionPipeline> ForUpdate()
         {
-            return new QueryExecutionPipelineFactoryConfigurationBuilder<TDatabase, IUpdateQueryExecutionPipeline>(this, services);
+            return new QueryExecutionPipelineFactoryConfigurationBuilder<TDatabase, IUpdateQueryExpressionExecutionPipeline>(this, services);
         }
 
         /// <inheritdoc />
-        public IQueryExecutionPipelineFactoryContinuationConfigurationBuilder<TDatabase, IDeleteQueryExecutionPipeline> ForDelete()
+        public IQueryExecutionPipelineFactoryContinuationConfigurationBuilder<TDatabase, IDeleteQueryExpressionExecutionPipeline> ForDelete()
         {
-            return new QueryExecutionPipelineFactoryConfigurationBuilder<TDatabase, IDeleteQueryExecutionPipeline>(this, services);
+            return new QueryExecutionPipelineFactoryConfigurationBuilder<TDatabase, IDeleteQueryExpressionExecutionPipeline>(this, services);
         }
         #endregion
     }

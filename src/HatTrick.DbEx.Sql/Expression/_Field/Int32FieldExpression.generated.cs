@@ -389,7 +389,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region byte
         public static Int32ExpressionMediator operator +(Int32FieldExpression a, ByteExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -399,7 +399,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static Int32ExpressionMediator operator -(Int32FieldExpression a, ByteExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -409,7 +409,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static Int32ExpressionMediator operator *(Int32FieldExpression a, ByteExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Multiply)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Multiply)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -419,7 +419,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static Int32ExpressionMediator operator /(Int32FieldExpression a, ByteExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Divide)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Divide)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -429,7 +429,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static Int32ExpressionMediator operator %(Int32FieldExpression a, ByteExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Modulo)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Modulo)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -439,7 +439,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableInt32ExpressionMediator operator +(Int32FieldExpression a, NullableByteExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -449,7 +449,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableInt32ExpressionMediator operator -(Int32FieldExpression a, NullableByteExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -459,7 +459,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableInt32ExpressionMediator operator *(Int32FieldExpression a, NullableByteExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Multiply)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Multiply)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -469,7 +469,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableInt32ExpressionMediator operator /(Int32FieldExpression a, NullableByteExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Divide)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Divide)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -479,7 +479,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableInt32ExpressionMediator operator %(Int32FieldExpression a, NullableByteExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Modulo)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Modulo)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -492,7 +492,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region decimal
         public static DecimalExpressionMediator operator +(Int32FieldExpression a, DecimalExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -502,7 +502,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static DecimalExpressionMediator operator -(Int32FieldExpression a, DecimalExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -512,7 +512,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static DecimalExpressionMediator operator *(Int32FieldExpression a, DecimalExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Multiply)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Multiply)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -522,7 +522,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static DecimalExpressionMediator operator /(Int32FieldExpression a, DecimalExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Divide)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Divide)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -532,7 +532,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static DecimalExpressionMediator operator %(Int32FieldExpression a, DecimalExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Modulo)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Modulo)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -542,7 +542,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableDecimalExpressionMediator operator +(Int32FieldExpression a, NullableDecimalExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -552,7 +552,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableDecimalExpressionMediator operator -(Int32FieldExpression a, NullableDecimalExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -562,7 +562,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableDecimalExpressionMediator operator *(Int32FieldExpression a, NullableDecimalExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Multiply)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Multiply)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -572,7 +572,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableDecimalExpressionMediator operator /(Int32FieldExpression a, NullableDecimalExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Divide)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Divide)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -582,7 +582,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableDecimalExpressionMediator operator %(Int32FieldExpression a, NullableDecimalExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Modulo)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Modulo)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -595,7 +595,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region DateTime
         public static DateTimeExpressionMediator operator +(Int32FieldExpression a, DateTimeExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -605,7 +605,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static DateTimeExpressionMediator operator -(Int32FieldExpression a, DateTimeExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -615,7 +615,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableDateTimeExpressionMediator operator +(Int32FieldExpression a, NullableDateTimeExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -625,7 +625,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableDateTimeExpressionMediator operator -(Int32FieldExpression a, NullableDateTimeExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -638,7 +638,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region DateTimeOffset
         public static DateTimeOffsetExpressionMediator operator +(Int32FieldExpression a, DateTimeOffsetExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -648,7 +648,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static DateTimeOffsetExpressionMediator operator -(Int32FieldExpression a, DateTimeOffsetExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -658,7 +658,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableDateTimeOffsetExpressionMediator operator +(Int32FieldExpression a, NullableDateTimeOffsetExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -668,7 +668,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableDateTimeOffsetExpressionMediator operator -(Int32FieldExpression a, NullableDateTimeOffsetExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -681,7 +681,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region double
         public static DoubleExpressionMediator operator +(Int32FieldExpression a, DoubleExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -691,7 +691,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static DoubleExpressionMediator operator -(Int32FieldExpression a, DoubleExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -701,7 +701,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static DoubleExpressionMediator operator *(Int32FieldExpression a, DoubleExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Multiply)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Multiply)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -711,7 +711,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static DoubleExpressionMediator operator /(Int32FieldExpression a, DoubleExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Divide)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Divide)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -721,7 +721,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static DoubleExpressionMediator operator %(Int32FieldExpression a, DoubleExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Modulo)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Modulo)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -731,7 +731,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableDoubleExpressionMediator operator +(Int32FieldExpression a, NullableDoubleExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -741,7 +741,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableDoubleExpressionMediator operator -(Int32FieldExpression a, NullableDoubleExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -751,7 +751,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableDoubleExpressionMediator operator *(Int32FieldExpression a, NullableDoubleExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Multiply)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Multiply)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -761,7 +761,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableDoubleExpressionMediator operator /(Int32FieldExpression a, NullableDoubleExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Divide)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Divide)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -771,7 +771,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableDoubleExpressionMediator operator %(Int32FieldExpression a, NullableDoubleExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Modulo)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Modulo)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -784,7 +784,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region float
         public static SingleExpressionMediator operator +(Int32FieldExpression a, SingleExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -794,7 +794,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static SingleExpressionMediator operator -(Int32FieldExpression a, SingleExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -804,7 +804,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static SingleExpressionMediator operator *(Int32FieldExpression a, SingleExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Multiply)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Multiply)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -814,7 +814,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static SingleExpressionMediator operator /(Int32FieldExpression a, SingleExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Divide)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Divide)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -824,7 +824,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static SingleExpressionMediator operator %(Int32FieldExpression a, SingleExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Modulo)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Modulo)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -834,7 +834,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableSingleExpressionMediator operator +(Int32FieldExpression a, NullableSingleExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -844,7 +844,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableSingleExpressionMediator operator -(Int32FieldExpression a, NullableSingleExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -854,7 +854,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableSingleExpressionMediator operator *(Int32FieldExpression a, NullableSingleExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Multiply)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Multiply)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -864,7 +864,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableSingleExpressionMediator operator /(Int32FieldExpression a, NullableSingleExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Divide)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Divide)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -874,7 +874,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableSingleExpressionMediator operator %(Int32FieldExpression a, NullableSingleExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Modulo)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Modulo)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -887,7 +887,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region short
         public static Int32ExpressionMediator operator +(Int32FieldExpression a, Int16ExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -897,7 +897,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static Int32ExpressionMediator operator -(Int32FieldExpression a, Int16ExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -907,7 +907,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static Int32ExpressionMediator operator *(Int32FieldExpression a, Int16ExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Multiply)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Multiply)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -917,7 +917,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static Int32ExpressionMediator operator /(Int32FieldExpression a, Int16ExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Divide)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Divide)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -927,7 +927,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static Int32ExpressionMediator operator %(Int32FieldExpression a, Int16ExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Modulo)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Modulo)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -937,7 +937,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableInt32ExpressionMediator operator +(Int32FieldExpression a, NullableInt16ExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -947,7 +947,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableInt32ExpressionMediator operator -(Int32FieldExpression a, NullableInt16ExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -957,7 +957,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableInt32ExpressionMediator operator *(Int32FieldExpression a, NullableInt16ExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Multiply)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Multiply)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -967,7 +967,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableInt32ExpressionMediator operator /(Int32FieldExpression a, NullableInt16ExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Divide)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Divide)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -977,7 +977,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableInt32ExpressionMediator operator %(Int32FieldExpression a, NullableInt16ExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Modulo)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Modulo)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -990,7 +990,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region int
         public static Int32ExpressionMediator operator +(Int32FieldExpression a, Int32ExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -1000,7 +1000,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static Int32ExpressionMediator operator -(Int32FieldExpression a, Int32ExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -1010,7 +1010,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static Int32ExpressionMediator operator *(Int32FieldExpression a, Int32ExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Multiply)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Multiply)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -1020,7 +1020,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static Int32ExpressionMediator operator /(Int32FieldExpression a, Int32ExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Divide)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Divide)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -1030,7 +1030,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static Int32ExpressionMediator operator %(Int32FieldExpression a, Int32ExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Modulo)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Modulo)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -1040,7 +1040,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableInt32ExpressionMediator operator +(Int32FieldExpression a, NullableInt32ExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -1050,7 +1050,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableInt32ExpressionMediator operator -(Int32FieldExpression a, NullableInt32ExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -1060,7 +1060,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableInt32ExpressionMediator operator *(Int32FieldExpression a, NullableInt32ExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Multiply)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Multiply)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -1070,7 +1070,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableInt32ExpressionMediator operator /(Int32FieldExpression a, NullableInt32ExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Divide)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Divide)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -1080,7 +1080,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableInt32ExpressionMediator operator %(Int32FieldExpression a, NullableInt32ExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Modulo)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Modulo)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -1093,7 +1093,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region long
         public static Int64ExpressionMediator operator +(Int32FieldExpression a, Int64ExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -1103,7 +1103,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static Int64ExpressionMediator operator -(Int32FieldExpression a, Int64ExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -1113,7 +1113,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static Int64ExpressionMediator operator *(Int32FieldExpression a, Int64ExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Multiply)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Multiply)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -1123,7 +1123,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static Int64ExpressionMediator operator /(Int32FieldExpression a, Int64ExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Divide)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Divide)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -1133,7 +1133,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static Int64ExpressionMediator operator %(Int32FieldExpression a, Int64ExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Modulo)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Modulo)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -1143,7 +1143,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableInt64ExpressionMediator operator +(Int32FieldExpression a, NullableInt64ExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -1153,7 +1153,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableInt64ExpressionMediator operator -(Int32FieldExpression a, NullableInt64ExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -1163,7 +1163,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableInt64ExpressionMediator operator *(Int32FieldExpression a, NullableInt64ExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Multiply)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Multiply)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -1173,7 +1173,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableInt64ExpressionMediator operator /(Int32FieldExpression a, NullableInt64ExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Divide)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Divide)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -1183,7 +1183,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableInt64ExpressionMediator operator %(Int32FieldExpression a, NullableInt64ExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Modulo)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Modulo)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;

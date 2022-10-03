@@ -267,7 +267,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region byte
         public static DateTimeExpressionMediator operator +(DateTimeCastFunctionExpression a, ByteExpressionMediator b) 
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -277,7 +277,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static DateTimeExpressionMediator operator -(DateTimeCastFunctionExpression a, ByteExpressionMediator b) 
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -287,7 +287,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableDateTimeExpressionMediator operator +(DateTimeCastFunctionExpression a, NullableByteExpressionMediator b) 
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -297,7 +297,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableDateTimeExpressionMediator operator -(DateTimeCastFunctionExpression a, NullableByteExpressionMediator b) 
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -309,7 +309,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region decimal
         public static DateTimeExpressionMediator operator +(DateTimeCastFunctionExpression a, DecimalExpressionMediator b) 
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -319,7 +319,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static DateTimeExpressionMediator operator -(DateTimeCastFunctionExpression a, DecimalExpressionMediator b) 
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -329,7 +329,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableDateTimeExpressionMediator operator +(DateTimeCastFunctionExpression a, NullableDecimalExpressionMediator b) 
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -339,7 +339,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableDateTimeExpressionMediator operator -(DateTimeCastFunctionExpression a, NullableDecimalExpressionMediator b) 
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -351,7 +351,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region DateTime
         public static DateTimeExpressionMediator operator +(DateTimeCastFunctionExpression a, DateTimeExpressionMediator b) 
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -361,7 +361,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static DateTimeExpressionMediator operator -(DateTimeCastFunctionExpression a, DateTimeExpressionMediator b) 
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -371,7 +371,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableDateTimeExpressionMediator operator +(DateTimeCastFunctionExpression a, NullableDateTimeExpressionMediator b) 
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -381,7 +381,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableDateTimeExpressionMediator operator -(DateTimeCastFunctionExpression a, NullableDateTimeExpressionMediator b) 
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -393,7 +393,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region DateTimeOffset
         public static DateTimeOffsetExpressionMediator operator +(DateTimeCastFunctionExpression a, DateTimeOffsetExpressionMediator b) 
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -403,7 +403,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static DateTimeOffsetExpressionMediator operator -(DateTimeCastFunctionExpression a, DateTimeOffsetExpressionMediator b) 
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -413,7 +413,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableDateTimeOffsetExpressionMediator operator +(DateTimeCastFunctionExpression a, NullableDateTimeOffsetExpressionMediator b) 
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -423,7 +423,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableDateTimeOffsetExpressionMediator operator -(DateTimeCastFunctionExpression a, NullableDateTimeOffsetExpressionMediator b) 
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
@@ -435,7 +435,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region double
         public static DateTimeExpressionMediator operator +(DateTimeCastFunctionExpression a, DoubleExpressionMediator b) 
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -445,7 +445,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static DateTimeExpressionMediator operator -(DateTimeCastFunctionExpression a, DoubleExpressionMediator b) 
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -455,7 +455,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableDateTimeExpressionMediator operator +(DateTimeCastFunctionExpression a, NullableDoubleExpressionMediator b) 
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -465,7 +465,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableDateTimeExpressionMediator operator -(DateTimeCastFunctionExpression a, NullableDoubleExpressionMediator b) 
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -477,7 +477,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region float
         public static DateTimeExpressionMediator operator +(DateTimeCastFunctionExpression a, SingleExpressionMediator b) 
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -487,7 +487,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static DateTimeExpressionMediator operator -(DateTimeCastFunctionExpression a, SingleExpressionMediator b) 
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -497,7 +497,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableDateTimeExpressionMediator operator +(DateTimeCastFunctionExpression a, NullableSingleExpressionMediator b) 
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -507,7 +507,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableDateTimeExpressionMediator operator -(DateTimeCastFunctionExpression a, NullableSingleExpressionMediator b) 
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -521,7 +521,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region short
         public static DateTimeExpressionMediator operator +(DateTimeCastFunctionExpression a, Int16ExpressionMediator b) 
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -531,7 +531,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static DateTimeExpressionMediator operator -(DateTimeCastFunctionExpression a, Int16ExpressionMediator b) 
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -541,7 +541,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableDateTimeExpressionMediator operator +(DateTimeCastFunctionExpression a, NullableInt16ExpressionMediator b) 
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -551,7 +551,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableDateTimeExpressionMediator operator -(DateTimeCastFunctionExpression a, NullableInt16ExpressionMediator b) 
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -563,7 +563,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region int
         public static DateTimeExpressionMediator operator +(DateTimeCastFunctionExpression a, Int32ExpressionMediator b) 
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -573,7 +573,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static DateTimeExpressionMediator operator -(DateTimeCastFunctionExpression a, Int32ExpressionMediator b) 
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -583,7 +583,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableDateTimeExpressionMediator operator +(DateTimeCastFunctionExpression a, NullableInt32ExpressionMediator b) 
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -593,7 +593,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableDateTimeExpressionMediator operator -(DateTimeCastFunctionExpression a, NullableInt32ExpressionMediator b) 
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -605,7 +605,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region long
         public static DateTimeExpressionMediator operator +(DateTimeCastFunctionExpression a, Int64ExpressionMediator b) 
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -615,7 +615,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static DateTimeExpressionMediator operator -(DateTimeCastFunctionExpression a, Int64ExpressionMediator b) 
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -625,7 +625,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableDateTimeExpressionMediator operator +(DateTimeCastFunctionExpression a, NullableInt64ExpressionMediator b) 
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -635,7 +635,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableDateTimeExpressionMediator operator -(DateTimeCastFunctionExpression a, NullableInt64ExpressionMediator b) 
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Subtract)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);

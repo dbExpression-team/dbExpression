@@ -30,7 +30,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/stdevp-transact-sql">Microsoft docs on STDEVP</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}"/>, the value to use for calculating the population standard deviation function result.</param>
-        /// <returns><see cref="SinglePopulationStandardDeviationFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Byte}"/>.</returns>
+        /// <returns><see cref="SinglePopulationStandardDeviationFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
         public SinglePopulationStandardDeviationFunctionExpression StDevP(AnyElement<byte> element)
             => new(element);
 

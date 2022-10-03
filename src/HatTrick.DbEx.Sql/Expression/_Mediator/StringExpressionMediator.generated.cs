@@ -63,7 +63,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region string?
         public static StringExpressionMediator operator +(StringExpressionMediator a, string? b)
         {
-            if (a.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> ae && ae.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (a.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> ae && ae.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 ae.Expression.Args.Add(new LiteralExpression<string?>(b));
                 return a;
@@ -73,7 +73,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static StringExpressionMediator operator +(string? a, StringExpressionMediator b) 
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 be.Expression.Args.Insert(0, new LiteralExpression<string?>(a));
                 return b;
@@ -92,7 +92,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region string?
         public static StringExpressionMediator operator +(StringExpressionMediator a, StringFieldExpression b) 
         {
-            if (a.Expression is ArithmeticExpression am && am is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> ae && ae.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (a.Expression is ArithmeticExpression am && am is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> ae && ae.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 ae.Expression.Args.Add(b);
                 return a;
@@ -102,7 +102,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableStringExpressionMediator operator +(StringExpressionMediator a, NullableStringFieldExpression b)
         {
-            if (a.Expression is ArithmeticExpression am && am is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> ae && ae.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (a.Expression is ArithmeticExpression am && am is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> ae && ae.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 ae.Expression.Args.Add(b);
                 return new(a.Expression);
@@ -120,7 +120,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region alias
         public static StringExpressionMediator operator +(StringExpressionMediator a, AliasExpression b) 
         {
-            if (a.Expression is ArithmeticExpression am && am is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> ae && ae.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (a.Expression is ArithmeticExpression am && am is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> ae && ae.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 ae.Expression.Args.Add(b);
                 return a;
@@ -131,7 +131,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static StringExpressionMediator operator +(StringExpressionMediator a, (string TableAlias, string FieldAlias) b)
         {
-            if (a.Expression is ArithmeticExpression am && am is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> ae && ae.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (a.Expression is ArithmeticExpression am && am is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> ae && ae.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 ae.Expression.Args.Add(new AliasExpression<string?>(b));
                 return a;

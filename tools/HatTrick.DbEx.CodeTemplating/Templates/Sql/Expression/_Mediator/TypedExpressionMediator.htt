@@ -38,7 +38,7 @@ namespace {Namespace}
         {-#each Operations-}
         public static {:returnMediatorType.Name}ExpressionMediator operator {ArithmeticOperatorSymbol}({:mediatorType.Name}ExpressionMediator a, {:operationType.Alias} b)
         {{
-            if (a.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> ae && ae.Expression.ArithmeticOperator == ArithmeticExpressionOperator.{ArithmeticOperatorName})
+            if (a.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> ae && ae.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.{ArithmeticOperatorName})
             {{
                 ae.Expression.Args.Add(new LiteralExpression<{:operationType.Alias}>(b));
                 {-#if (:returnMediatorType, :mediatorType) => IsSameType-}
@@ -55,7 +55,7 @@ namespace {Namespace}
         {-#each Operations-}
         public static {:returnMediatorType.Name}ExpressionMediator operator {ArithmeticOperatorSymbol}({:operationType.Alias} a, {:mediatorType.Name}ExpressionMediator b) 
         {{
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.{ArithmeticOperatorName})
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.{ArithmeticOperatorName})
             {{
                 be.Expression.Args.Insert(0, new LiteralExpression<{:operationType.Alias}>(a));
                 {-#if (:returnMediatorType, :mediatorType) => IsSameType-}
@@ -73,7 +73,7 @@ namespace {Namespace}
         {-#each Operations-}
         public static {:returnMediatorType.Name}ExpressionMediator operator {ArithmeticOperatorSymbol}({:mediatorType.Name}ExpressionMediator a, {:operationType.NullableAlias} b) 
         {{
-            if (a.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> ae && ae.Expression.ArithmeticOperator == ArithmeticExpressionOperator.{ArithmeticOperatorName})
+            if (a.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> ae && ae.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.{ArithmeticOperatorName})
             {{
                 ae.Expression.Args.Add(new LiteralExpression<{:operationType.NullableAlias}>(b));
                 {-#if (:returnMediatorType, :mediatorType) => IsSameType-}
@@ -90,7 +90,7 @@ namespace {Namespace}
         {-#each Operations-}
         public static {:returnMediatorType.Name}ExpressionMediator operator {ArithmeticOperatorSymbol}({:operationType.NullableAlias} a, {:mediatorType.Name}ExpressionMediator b) 
         {{
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.{ArithmeticOperatorName})
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.{ArithmeticOperatorName})
             {{
                 be.Expression.Args.Insert(0, new LiteralExpression<{:operationType.NullableAlias}>(a));
                 {-#if (:returnMediatorType, :mediatorType) => IsSameType-}
@@ -119,7 +119,7 @@ namespace {Namespace}
         {-#each Operations-}
         public static {:returnMediatorType.Name}ExpressionMediator operator {ArithmeticOperatorSymbol}({:mediatorType.Name}ExpressionMediator a, {:operationType.Name}FieldExpression b) 
         {{
-            if (a.Expression is ArithmeticExpression am && am is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> ae && ae.Expression.ArithmeticOperator == ArithmeticExpressionOperator.{ArithmeticOperatorName})
+            if (a.Expression is ArithmeticExpression am && am is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> ae && ae.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.{ArithmeticOperatorName})
             {{
                 ae.Expression.Args.Add(b);
                 {-#if (:returnMediatorType, :mediatorType) => IsSameType-}
@@ -136,7 +136,7 @@ namespace {Namespace}
         {-#each Operations-}
         public static Nullable{:returnMediatorType.Name}ExpressionMediator operator {ArithmeticOperatorSymbol}({:mediatorType.Name}ExpressionMediator a, Nullable{:operationType.Name}FieldExpression b)
         {{
-            if (a.Expression is ArithmeticExpression am && am is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> ae && ae.Expression.ArithmeticOperator == ArithmeticExpressionOperator.{ArithmeticOperatorName})
+            if (a.Expression is ArithmeticExpression am && am is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> ae && ae.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.{ArithmeticOperatorName})
             {{
                 ae.Expression.Args.Add(b);
                 return new(a.Expression);
@@ -160,7 +160,7 @@ namespace {Namespace}
         {-#each Operations-}
         public static {:returnMediatorType.Name}ExpressionMediator operator {ArithmeticOperatorSymbol}({:mediatorType.Name}ExpressionMediator a, {:operationType.Name}ExpressionMediator b) 
         {{
-            if (a.Expression is ArithmeticExpression am && am is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> ae && ae.Expression.ArithmeticOperator == ArithmeticExpressionOperator.{ArithmeticOperatorName})
+            if (a.Expression is ArithmeticExpression am && am is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> ae && ae.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.{ArithmeticOperatorName})
             {{
                 ae.Expression.Args.Add(b);
                 {-#if (:returnMediatorType, :mediatorType) => IsSameType-}
@@ -170,7 +170,7 @@ namespace {Namespace}
                 return new(a.Expression);
                 {-/if-}
             }}
-            if (b.Expression is ArithmeticExpression bm && bm is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.{ArithmeticOperatorName})
+            if (b.Expression is ArithmeticExpression bm && bm is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.{ArithmeticOperatorName})
             {{
                 be.Expression.Args.Insert(0, a);
                 {-#if (:returnMediatorType, :operationType) => IsSameType-}
@@ -188,12 +188,12 @@ namespace {Namespace}
         {-#each Operations-}
         public static Nullable{:returnMediatorType.Name}ExpressionMediator operator {ArithmeticOperatorSymbol}({:mediatorType.Name}ExpressionMediator a, Nullable{:operationType.Name}ExpressionMediator b) 
         {{
-            if (a.Expression is ArithmeticExpression am && am is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> ae && ae.Expression.ArithmeticOperator == ArithmeticExpressionOperator.{ArithmeticOperatorName})
+            if (a.Expression is ArithmeticExpression am && am is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> ae && ae.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.{ArithmeticOperatorName})
             {{
                 ae.Expression.Args.Add(b);
                 return new(a.Expression);
             }}
-            if (b.Expression is ArithmeticExpression bm && bm is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.{ArithmeticOperatorName})
+            if (b.Expression is ArithmeticExpression bm && bm is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.{ArithmeticOperatorName})
             {{
                 be.Expression.Args.Insert(0, a);
                 {-#if (:returnMediatorType, :operationType) => IsSameType-}
@@ -218,7 +218,7 @@ namespace {Namespace}
         {-#each ($.ArithmeticOperations, :mediatorType.Type) => GetArithmeticOperationsForType-}
         public static {:mediatorType.Name}ExpressionMediator operator {ArithmeticOperatorSymbol}({:mediatorType.Name}ExpressionMediator a, AliasExpression b) 
         {{
-            if (a.Expression is ArithmeticExpression am && am is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> ae && ae.Expression.ArithmeticOperator == ArithmeticExpressionOperator.{ArithmeticOperatorName})
+            if (a.Expression is ArithmeticExpression am && am is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> ae && ae.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.{ArithmeticOperatorName})
             {{
                 ae.Expression.Args.Add(b);
                 return a;
@@ -231,7 +231,7 @@ namespace {Namespace}
         {-#each ($.ArithmeticOperations, :mediatorType.Type) => GetArithmeticOperationsForType-}
         public static {:mediatorType.Name}ExpressionMediator operator {ArithmeticOperatorSymbol}({:mediatorType.Name}ExpressionMediator a, (string TableAlias, string FieldAlias) b)
         {{
-            if (a.Expression is ArithmeticExpression am && am is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> ae && ae.Expression.ArithmeticOperator == ArithmeticExpressionOperator.{ArithmeticOperatorName})
+            if (a.Expression is ArithmeticExpression am && am is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> ae && ae.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.{ArithmeticOperatorName})
             {{
                 ae.Expression.Args.Add(new AliasExpression<{:mediatorType.Alias}>(b));
                 return a;

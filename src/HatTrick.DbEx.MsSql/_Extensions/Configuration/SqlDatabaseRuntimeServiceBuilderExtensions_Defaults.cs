@@ -49,7 +49,8 @@ namespace HatTrick.DbEx.MsSql.Configuration
                 .ForElementType<LengthFunctionExpression>().Use<LengthFunctionExpressionAppender>()
                 .ForElementType<PatIndexFunctionExpression>().Use<PatIndexFunctionExpressionAppender>()
                 .ForElementType<CharIndexFunctionExpression>().Use<CharIndexFunctionExpressionAppender>()
-                .ForElementType<RoundFunctionExpression>().Use<RoundFunctionExpressionAppender>();
+                .ForElementType<RoundFunctionExpression>().Use<RoundFunctionExpressionAppender>()
+                .ForElementType<LogFunctionExpression>().Use<LogFunctionExpressionAppender>();
 
             Sql.Configuration.SqlDatabaseRuntimeServiceBuilderExtensions.WithDefaults(builder);
         }

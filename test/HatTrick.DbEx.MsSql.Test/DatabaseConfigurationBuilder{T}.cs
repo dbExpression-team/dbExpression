@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.MsSql.Test
                 database.ConnectionString.Use(connectionString);
 
                 database.SqlStatements.Assembly.ConfigureOutputSettings(
-                    x => x.PrependCommaOnSelectClause = true
+                    x => x.PrependCommaOnSelectClause = false
                 );
 
                 if (typeof(TDatabase) == typeof(MsSqlDb))

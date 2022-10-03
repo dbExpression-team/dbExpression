@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #region constructors
         public UpdateEntitiesUpdateQueryExpressionBuilder(
             UpdateQueryExpression expression,
-            Func<IUpdateQueryExecutionPipeline> executionPipelineFactory
+            Func<IUpdateQueryExpressionExecutionPipeline> executionPipelineFactory
         ) : base(expression, executionPipelineFactory)
         {
 

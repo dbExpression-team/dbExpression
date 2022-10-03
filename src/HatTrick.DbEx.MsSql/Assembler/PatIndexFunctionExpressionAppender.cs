@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
         #region methods
         public override void AppendElement(PatIndexFunctionExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            var elements = (expression as IExpressionProvider<PatIndexFunctionExpression.PatIndexFunctionExpressionElements>).Expression;
+            var elements = (expression as IExpressionProvider<PatIndexFunctionExpression.PatIndexFunctionExpressionElements>).Expression!;
             builder.Appender.Write("PATINDEX(");
             builder.AppendElement(elements.Pattern, context);
             builder.Appender.Write(", ");

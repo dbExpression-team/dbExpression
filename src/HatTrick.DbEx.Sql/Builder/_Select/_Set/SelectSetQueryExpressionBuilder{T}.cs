@@ -31,13 +31,13 @@ namespace HatTrick.DbEx.Sql.Builder
     {
         #region internals
         private readonly SelectSetQueryExpression _expression = new();
-        private readonly Func<ISelectSetQueryExecutionPipeline> selectSetQueryExpressionExecutionPipelineFactory;
+        private readonly Func<ISelectSetQueryExpressionExecutionPipeline> selectSetQueryExpressionExecutionPipelineFactory;
         private readonly Func<SelectQueryExpression> typedQueryExpressionFactory;
         protected override QueryExpression Expression => 
             _expression.Expressions.Count > 1 && _expression.Expressions.ElementAt(0).ConcatenationExpression is not null 
                 ? _expression : Current;
 
-        protected Func<ISelectQueryExecutionPipeline> SelectQueryExpressionExecutionPipelineFactory { get; private set; }
+        protected Func<ISelectQueryExpressionExecutionPipeline> SelectQueryExpressionExecutionPipelineFactory { get; private set; }
         #endregion
 
         #region interface
@@ -49,8 +49,8 @@ namespace HatTrick.DbEx.Sql.Builder
         #region constructors
         public SelectSetQueryExpressionBuilder(
             Func<SelectQueryExpression> typedQueryExpressionFactory,
-            Func<ISelectSetQueryExecutionPipeline> selectSetQueryExpressionExecutionPipelineFactory,
-            Func<ISelectQueryExecutionPipeline> selectQueryExpressionExecutionPipelineFactory
+            Func<ISelectSetQueryExpressionExecutionPipeline> selectSetQueryExpressionExecutionPipelineFactory,
+            Func<ISelectQueryExpressionExecutionPipeline> selectQueryExpressionExecutionPipelineFactory
         )
         {
             this.typedQueryExpressionFactory = typedQueryExpressionFactory ?? throw new ArgumentNullException(nameof(typedQueryExpressionFactory));
@@ -525,7 +525,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
         #endregion
 
-        public ISelectSetQueryExecutionPipeline CreateExecutionPipeline()
+        public ISelectSetQueryExpressionExecutionPipeline CreateExecutionPipeline()
             => selectSetQueryExpressionExecutionPipelineFactory() 
                     ?? throw new DbExpressionConfigurationException($"Could not resolve/create an execution pipeline for type '{SelectSetQueryExpression.GetType()}'.");
         #endregion

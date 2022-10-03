@@ -27,13 +27,13 @@ namespace HatTrick.DbEx.MsSql.Assembler
         #region methods
         public override void AppendElement(CharIndexFunctionExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            var elements = (expression as IExpressionProvider<CharIndexFunctionExpression.CharIndexFunctionExpressionElements>).Expression;
+            var elements = (expression as IExpressionProvider<CharIndexFunctionExpression.CharIndexFunctionExpressionElements>).Expression!;
             builder.Appender.Write("CHARINDEX(");
             builder.AppendElement(elements.Pattern, context);
             builder.Appender.Write(", ");
             builder.AppendElement(elements.ToSearch, context);
 
-            if (elements.StartSearchPosition is object)
+            if (elements.StartSearchPosition is not null)
             {
                 builder.Appender.Write(", ");
                 builder.AppendElement(elements.StartSearchPosition, context);

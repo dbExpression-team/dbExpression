@@ -26,6 +26,11 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<NullableSingleVarianceFunctionExpression>
     {
         #region constructors
+        public NullableSingleVarianceFunctionExpression(NullableNumericElement expression) : base(expression)
+        {
+
+        }
+
         public NullableSingleVarianceFunctionExpression(AnyElement<byte?> expression) : base(expression)
         {
 

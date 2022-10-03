@@ -30,7 +30,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/stdev-transact-sql">Microsoft docs on STDEV</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}"/>, the value to use for calculating the standard deviation function result.</param>
-        /// <returns><see cref="SingleStandardDeviationFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Byte}"/>.</returns>
+        /// <returns><see cref="SingleStandardDeviationFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
         public virtual SingleStandardDeviationFunctionExpression StDev(AnyElement<byte> element)
             => new(element);
 

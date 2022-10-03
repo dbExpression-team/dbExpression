@@ -153,7 +153,7 @@ namespace HatTrick.DbEx.Sql.Expression
         //here
         public static NullableStringExpressionMediator operator +(NullableStringFieldExpression a, StringExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -164,7 +164,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableStringExpressionMediator operator +(NullableStringFieldExpression a, NullableStringExpressionMediator b)
         {
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.Add)
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
             {
                 be.Expression.Args.Insert(0, a);
                 return b;
