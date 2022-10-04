@@ -1,5 +1,4 @@
 ﻿{?var:identifierArgName = ("identifier", $.SchemaExpression) => GetSchemaArgName}
-{?var:identifierInterpolationArgName = ("{{x}}", "x", :identifierArgName) => Replace}
     #region {$.SchemaExpression.Name} schema expression
     public class {$.SchemaExpression.Name}SchemaExpression : SchemaExpression
     {{

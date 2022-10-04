@@ -1014,7 +1014,7 @@
         /// <param name="element">An expression of type <see cref="AnyElement{{Int32}}" />?
         {#if $.Documentation.AnyColumnOfTypeNullableInt32}  
         {?var:column = $.Documentation.AnyColumnOfTypeNullableInt32}
-        ///, for example "{:column.Entity.Schema.Name}.:column.Entity.Name}.{:column.Name}"
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
         {/if}
         ///</param>
         /// <returns><see cref="SelectValues{{{:databaseExpressionName}, Int32}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>

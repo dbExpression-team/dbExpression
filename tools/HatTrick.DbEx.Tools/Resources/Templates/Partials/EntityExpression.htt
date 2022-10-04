@@ -5,7 +5,6 @@
 {?var:schemaArgName = ("schema", $.EntityExpression) => GetEntityArgName}
 {?var:aliasArgName = ("alias", $.EntityExpression) => GetEntityArgName}
 {?var:entityArgName = ("entity", $.EntityExpression) => GetEntityArgName}
-{?var:identifierInterpolationArgName = ("{{x}}", "x", :identifierArgName) => Replace}
     #region {($.EntityExpression.Name) => InsertSpaceOnCapitalizationAndToLower} entity expression
     public partial class {$.EntityExpression.Name}Entity : EntityExpression<{$.EntityExpression.Name}>
     {{
