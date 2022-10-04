@@ -54,7 +54,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="HatTrick.Model.MsSql" Version="2.2.2" />
+        <PackageReference Include="HatTrick.Model.MsSql" Version="2.3.0" />
         <PackageReference Include="HatTrick.Reflection" Version="1.0.6" />
         <PackageReference Include="HatTrick.Text.Templating" Version="2.2.0" />
         <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
