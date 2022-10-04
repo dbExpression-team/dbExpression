@@ -209,6 +209,29 @@ namespace DbExAlt.dboAltData
     #endregion
 
 }
+namespace DbExAlt.secData
+{
+    #region person
+
+    public partial class Person : IDbEntity
+
+    {
+        #region interface
+        public virtual int Id { get; set; }
+        public virtual string SSN { get; set; } = string.Empty;
+        public virtual DateTime DateCreated { get; set; }
+        public virtual DateTime DateUpdated { get; set; }
+        #endregion
+
+        #region constructor
+        public Person()
+        {
+        }
+        #endregion
+    }
+    #endregion
+
+}
 namespace DbExAlt.unit_testData
 {
     #region alias
@@ -430,29 +453,6 @@ namespace DbExAlt.unit_testData
 
         #region constructor
         public schema()
-        {
-        }
-        #endregion
-    }
-    #endregion
-
-}
-namespace DbExAlt.secData
-{
-    #region person
-
-    public partial class Person : IDbEntity
-
-    {
-        #region interface
-        public virtual int Id { get; set; }
-        public virtual string SSN { get; set; } = string.Empty;
-        public virtual DateTime DateCreated { get; set; }
-        public virtual DateTime DateUpdated { get; set; }
-        #endregion
-
-        #region constructor
-        public Person()
         {
         }
         #endregion

@@ -854,7 +854,7 @@ namespace ServerSideBlazorApp.DataService
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />?
-        ///, for example "dbo.:column.Entity.Name}.CreditLimit"
+        ///, for example "dbo.Person.CreditLimit"
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, int?> SelectMany(AnyElement<int?> element)
@@ -1964,7 +1964,7 @@ namespace ServerSideBlazorApp.DataService
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />?
-        ///, for example "dbo.:column.Entity.Name}.CreditLimit"
+        ///, for example "dbo.Person.CreditLimit"
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, int?> SelectMany(AnyElement<int?> element)

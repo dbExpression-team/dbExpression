@@ -375,7 +375,7 @@ namespace HatTrick.DbEx.Tools.Service
             if (!mssqlVersions.Contains(config?.Source?.Platform?.Version!))
                 throw new CommandException($"dbex.config error: source.platform.version: dbExpression only supports MsSql versions {String.Join(',', mssqlVersions)}.");
 
-            if (config.Overrides is null)
+            if (config?.Overrides is null)
                 return;
 
             if (!config.Overrides.Any(ov => ov.Apply.To.Path == "."))

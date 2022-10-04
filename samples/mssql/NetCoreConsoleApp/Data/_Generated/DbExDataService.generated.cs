@@ -854,7 +854,7 @@ namespace SimpleConsole.DataService
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />?
-        ///, for example "dbo.:column.Entity.Name}.CreditLimit"
+        ///, for example "dbo.Person.CreditLimit"
         ///</param>
         /// <returns><see cref="SelectValues{SimpleConsoleDb, Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<SimpleConsoleDb, int?> SelectMany(AnyElement<int?> element)
@@ -1965,7 +1965,7 @@ namespace SimpleConsole.DataService
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />?
-        ///, for example "dbo.:column.Entity.Name}.CreditLimit"
+        ///, for example "dbo.Person.CreditLimit"
         /// </param>
         /// <returns><see cref="SelectValues{SimpleConsoleDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<SimpleConsoleDb, int?> SelectMany(AnyElement<int?> element)
