@@ -55,8 +55,8 @@
 
     <ItemGroup>
         <PackageReference Include="HatTrick.Model.MsSql" Version="2.2.2" />
-        <PackageReference Include="HatTrick.Reflection" Version="1.0.5" />
-        <PackageReference Include="HatTrick.Text.Templating" Version="2.1.3" />
+        <PackageReference Include="HatTrick.Reflection" Version="1.0.6" />
+        <PackageReference Include="HatTrick.Text.Templating" Version="2.2.0" />
         <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
