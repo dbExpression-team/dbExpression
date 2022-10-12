@@ -47,6 +47,6 @@ namespace HatTrick.DbEx.Sql.Configuration
         /// Configure the settings used to construct a sql statement.
         /// </summary>
         /// <param name="configure">Configure the settings used while constructing sql statements.</param>
-        ISqlStatementAssemblyGroupingConfigurationBuilders<TDatabase> ConfigureOutputSettings(Action<SqlStatementAssemblyOptions> configure);
+        ISqlStatementAssemblyGroupingConfigurationBuilders<TDatabase> ConfigureAssemblyOptions(Action<SqlStatementAssemblyOptions> configure);
     }
 }

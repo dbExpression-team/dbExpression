@@ -50,6 +50,11 @@ namespace HatTrick.DbEx.Sql.Configuration
         /// <summary>
         /// Use a custom factory for creating an expression element appender for appending the element's state to a sql statement writer.
         /// </summary>
+        ISqlStatementAssemblyGroupingConfigurationBuilders<TDatabase> Use(Func<IExpressionElementAppenderFactory> factory);
+
+        /// <summary>
+        /// Use a custom factory for creating an expression element appender for appending the element's state to a sql statement writer.
+        /// </summary>
         ISqlStatementAssemblyGroupingConfigurationBuilders<TDatabase> Use(Func<IServiceProvider, IExpressionElementAppenderFactory> factory);
 
         /// <summary>

@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.MsSql.Test
 
                 database.ConnectionString.Use(connectionString);
 
-                database.SqlStatements.Assembly.ConfigureOutputSettings(
+                database.SqlStatements.Assembly.ConfigureAssemblyOptions(
                     x => x.PrependCommaOnSelectClause = false
                 );
 

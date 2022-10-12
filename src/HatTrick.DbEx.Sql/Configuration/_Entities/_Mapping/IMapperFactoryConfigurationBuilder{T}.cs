@@ -16,7 +16,7 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Mapper;
+using HatTrick.DbEx.Sql.Mapper;
 using System;
 
 namespace HatTrick.DbEx.Sql.Configuration
@@ -25,15 +25,20 @@ namespace HatTrick.DbEx.Sql.Configuration
         where TDatabase : class, ISqlDatabaseRuntime
     {
         /// <summary>
-        /// Use a custom factory to create a <see cref="IEntityMapper"/> used to map data retrieved from the target database.
+        /// Use a custom factory to create a <see cref="IMapperFactory"/> used to map data retrieved from the target database.
         /// </summary>
         IEntitiesConfigurationBuilderCreationGrouping<TDatabase> Use(IMapperFactory factory);
 
         /// <summary>
-        /// Use a custom factory to create a <see cref="IEntityMapper"/> used to map data retrieved from the target database.
+        /// Use a custom <see cref="IMapperFactory"/> to map data retrieved from the target database.
         /// </summary>
         IEntitiesConfigurationBuilderCreationGrouping<TDatabase> Use<TMapperFactory>()
             where TMapperFactory : class, IMapperFactory;
+
+        /// <summary>
+        /// Use a custom <see cref="IMapperFactory"/>.
+        /// </summary>
+        IEntitiesConfigurationBuilderCreationGrouping<TDatabase> Use(Func<IMapperFactory> factory);
 
         /// <summary>
         /// Use a custom factory to create a <see cref="IEntityMapper"/> used to map data retrieved from the target database.
@@ -48,9 +53,15 @@ namespace HatTrick.DbEx.Sql.Configuration
         IEntitiesConfigurationBuilderCreationGrouping<TDatabase> Use(Func<IServiceProvider, Type, IEntityMapper> factory);
 
         /// <summary>
-        /// Use a custom factory to create a <see cref="IEntityMapper"/> used to map data retrieved from the target database.
+        /// Use the service provider to resolve a <see cref="IMapperFactory"/>.
         /// </summary>
-        /// <param name="factory">A delegate responsible for creating an <see cref="IEntityMapper"/>.</param>
+        /// <param name="factory">A delegate responsible for creating an <see cref="IMapperFactory"/>.</param>
         IEntitiesConfigurationBuilderCreationGrouping<TDatabase> Use(Func<IServiceProvider, IMapperFactory> factory);
+
+        /// <summary>
+        /// Override the default behaviour of mapping retrieved rowsets from the database for specific entity types. 
+        /// </summary>
+        /// <param name="configureEntityTypes">The delegate to configure mapping for specific entity types.</typeparam>
+        IEntityMapperContinuationConfigurationBuilder<TDatabase> ForEntityTypes(Action<IEntityMapperContinuationConfigurationBuilder<TDatabase>> configureEntityTypes);
     }
 }
