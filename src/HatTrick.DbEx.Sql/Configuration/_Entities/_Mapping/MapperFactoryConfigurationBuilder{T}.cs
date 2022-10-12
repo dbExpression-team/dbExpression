@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.Sql.Configuration
 {
     public class MapperFactoryConfigurationBuilder<TDatabase> :
         IMapperFactoryConfigurationBuilder<TDatabase>,
-        IMapperFactoryContinuationConfigurationBuilder<TDatabase>
+        IEntityMapperContinuationConfigurationBuilder<TDatabase>
         where TDatabase : class, ISqlDatabaseRuntime
     {
         #region internals
@@ -57,6 +57,16 @@ namespace HatTrick.DbEx.Sql.Configuration
             return caller;
         }
 
+        /// <inheritdoc />
+        public IEntitiesConfigurationBuilderCreationGrouping<TDatabase> Use(Func<IMapperFactory> factory)
+        {
+            if (factory is null)
+                throw new ArgumentNullException(nameof(factory));
+
+            services.TryAddSingleton(factory);
+            return caller;
+        }
+        
         /// <inheritdoc />
         public IEntitiesConfigurationBuilderCreationGrouping<TDatabase> Use<TMapperFactory>()
             where TMapperFactory : class, IMapperFactory
@@ -96,14 +106,21 @@ namespace HatTrick.DbEx.Sql.Configuration
         }
 
         /// <inheritdoc />
-        public IMapperFactoryContinuationConfigurationBuilder<TDatabase> ForEntityType<TEntity>(Action<ISqlFieldReader, TEntity> mapping)
+        public IEntityMapperContinuationConfigurationBuilder<TDatabase> ForEntityTypes(Action<IEntityMapperContinuationConfigurationBuilder<TDatabase>> configureEntityTypes)
+        {
+            if (configureEntityTypes is null)
+                throw new ArgumentNullException(nameof(configureEntityTypes));
+
+            configureEntityTypes.Invoke(this);
+
+            return this;
+        }
+
+        /// <inheritdoc />
+        public IEntityTypeMapperContinuationConfigurationBuilder<TDatabase, TEntity> ForEntityType<TEntity>()
             where TEntity : class, IDbEntity
         {
-            if (mapping is null)
-                throw new ArgumentNullException(nameof(mapping));
-
-            services.TryAddSingleton<IEntityMapper<TEntity>>(new EntityMapper<TEntity>(mapping));
-            return this;
+            return new EntityTypeMapperContinuationConfigurationBuilder<TDatabase, TEntity>(this, services);
         }
         #endregion
     }

@@ -58,6 +58,16 @@ namespace HatTrick.DbEx.Sql.Configuration
         }
 
         /// <inheritdoc />
+        public IEntitiesConfigurationBuilderMappingGrouping<TDatabase> Use(Func<IEntityFactory> factory)
+        {
+            if (factory is null)
+                throw new ArgumentNullException(nameof(factory));
+
+            services.TryAddSingleton(factory);
+            return caller;
+        }
+
+        /// <inheritdoc />
         public IEntitiesConfigurationBuilderMappingGrouping<TDatabase> Use<TEntityFactory>()
             where TEntityFactory : class, IEntityFactory
         {

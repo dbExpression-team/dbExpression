@@ -17,11 +17,12 @@
 #endregion
 
 ﻿using HatTrick.DbEx.Sql.Executor;
+using HatTrick.DbEx.Sql.Mapper;
 using System;
 
 namespace HatTrick.DbEx.Sql.Configuration
 {
-    public interface IMapperFactoryContinuationConfigurationBuilder<TDatabase>
+    public interface IEntityMapperContinuationConfigurationBuilder<TDatabase>
         where TDatabase : class, ISqlDatabaseRuntime
     {
         /// <summary>
@@ -29,7 +30,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         /// </summary>
         /// <typeparam name="TEntity">The type of the entity.</typeparam>
         /// <param name="mapping">The delegate that iterates a field reader and maps the field values to <typeparamref name="TEntity"/> properties.</typeparam>
-        IMapperFactoryContinuationConfigurationBuilder<TDatabase> ForEntityType<TEntity>(Action<ISqlFieldReader, TEntity> mapping)
+        IEntityTypeMapperContinuationConfigurationBuilder<TDatabase, TEntity> ForEntityType<TEntity>()
             where TEntity : class, IDbEntity;        
     }
 }

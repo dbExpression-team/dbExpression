@@ -41,7 +41,7 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         #region methods
         /// <inheritdoc />
-        public ISqlDatabaseRuntimeConfigurationBuilder<TDatabase> ConfigureLoggingSettings(Action<LoggingOptions> configure)
+        public ISqlDatabaseRuntimeConfigurationBuilder<TDatabase> ConfigureLoggingOptions(Action<LoggingOptions> configure)
         {
             if (configure is null)
                 throw new ArgumentNullException(nameof(configure));

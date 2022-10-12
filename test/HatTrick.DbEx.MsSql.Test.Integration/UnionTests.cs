@@ -450,6 +450,28 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
         [Theory]
         [MsSqlVersions.AllVersions]
+        public void Can_union_two_select_one_queries_successfully(int version, int personId = 1)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            IList<Person> persons = db.SelectOne<Person>()
+             .From(dbo.Person)
+             .Where(dbo.Person.Id == personId)
+             .UnionAll()
+             .SelectOne()
+             .From(dbo.Person)
+             .Where(dbo.Person.Id == personId)
+             .Execute();
+
+            //then
+            persons.Count().Should().Be(2);
+            persons.Should().Match(p => p.All(x => x.Id == personId));
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
         public void Can_union_two_enums_successfully(int version, int expected = 2)
         {
             //given
