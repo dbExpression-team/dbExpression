@@ -329,7 +329,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             dbServices.TryAddSingleton<IDbTypeMapFactory<SqlDbType>, MsSqlTypeMapFactory>();
             dbServices.TryAddSingleton<IQueryExpressionBuilderFactory<TDatabase>, MsSqlQueryExpressionBuilderFactory<TDatabase>>();
             dbServices.TryAddTransient<AssemblyContext>(sp => sp.GetRequiredService<SqlStatementAssemblyOptions>().ToAssemblyContext());
-            dbServices.TryAddSingleton<PipelineEventHooks>();
+            dbServices.TryAddSingleton<PipelineEventSubscriptions>();
             dbServices.TryAddSingleton<IExpandoObjectMapper, ExpandoObjectMapper>();
             dbServices.TryAddSingleton<ISqlDatabaseMetadataProvider>(sp => sp.GetRequiredService<TDatabase>().MetadataProvider);
 

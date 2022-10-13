@@ -95,7 +95,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         {
             //given
             int commandTimeout = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.Events.OnAfterSqlStatementExecution(context => commandTimeout = context.DbCommand.CommandTimeout));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.Events.OnAfterCommand(context => commandTimeout = context.DbCommand.CommandTimeout));
 
             //when               
             var persons = db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues(row => new Person { Id = row.ReadField()!.GetValue<int>() }).Execute(expectedCommandTimeout);
@@ -126,7 +126,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         {
             //given
             int commandTimeout = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.Events.OnAfterSqlStatementExecution(context => commandTimeout = context.DbCommand.CommandTimeout));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.Events.OnAfterCommand(context => commandTimeout = context.DbCommand.CommandTimeout));
 
             //when               
             using var connection = db.GetConnection();
@@ -158,7 +158,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         {
             //given
             int commandTimeout = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.Events.OnAfterSqlStatementExecution(context => commandTimeout = context.DbCommand.CommandTimeout));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.Events.OnAfterCommand(context => commandTimeout = context.DbCommand.CommandTimeout));
 
             //when               
             var person = db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue(row => new Person { Id = row.ReadField()!.GetValue<int>() }).Execute(expectedCommandTimeout);
@@ -191,7 +191,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         {
             //given
             int commandTimeout = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.Events.OnAfterSqlStatementExecution(context => commandTimeout = context.DbCommand.CommandTimeout));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.Events.OnAfterCommand(context => commandTimeout = context.DbCommand.CommandTimeout));
 
             //when               
             using var connection = db.GetConnection();
@@ -481,7 +481,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         {
             //given
             int commandTimeout = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.Events.OnAfterSqlStatementExecution(context => commandTimeout = context.DbCommand.CommandTimeout));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.Events.OnAfterCommand(context => commandTimeout = context.DbCommand.CommandTimeout));
 
             //when               
             var persons = await db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues(row => new Person { Id = row.ReadField()!.GetValue<int>() }).ExecuteAsync(expectedCommandTimeout);
@@ -512,7 +512,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         {
             //given
             int commandTimeout = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.Events.OnAfterSqlStatementExecution(context => commandTimeout = context.DbCommand.CommandTimeout));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.Events.OnAfterCommand(context => commandTimeout = context.DbCommand.CommandTimeout));
 
             //when               
             using var connection = db.GetConnection();
@@ -710,7 +710,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         {
             //given
             int commandTimeout = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.Events.OnAfterSqlStatementExecution(context => commandTimeout = context.DbCommand.CommandTimeout));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.Events.OnAfterCommand(context => commandTimeout = context.DbCommand.CommandTimeout));
 
             //when               
             var person = await db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue(row => new Person { Id = row.ReadField()!.GetValue<int>() }).ExecuteAsync(expectedCommandTimeout);
@@ -743,7 +743,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         {
             //given
             int commandTimeout = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.Events.OnAfterSqlStatementExecution(context => commandTimeout = context.DbCommand.CommandTimeout));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.Events.OnAfterCommand(context => commandTimeout = context.DbCommand.CommandTimeout));
 
             //when               
             using var connection = db.GetConnection();
