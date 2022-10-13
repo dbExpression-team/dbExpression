@@ -41,7 +41,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         private readonly IValueConverterFactory valueConverterFactory;
         private readonly IMapperFactory mapperFactory;
         private readonly ISqlStatementBuilder statementBuilder;
-        private readonly PipelineEventHooks events;
+        private readonly PipelineEventSubscriptions events;
         #endregion
 
         #region constructors
@@ -52,7 +52,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             IValueConverterFactory valueConverterFactory,
             IMapperFactory mapperFactory,
             ISqlStatementBuilder statementBuilder,
-            PipelineEventHooks events
+            PipelineEventSubscriptions events
         )
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -72,38 +72,42 @@ namespace HatTrick.DbEx.Sql.Pipeline
             if (expression is null)
                 throw new ArgumentNullException(nameof(expression));
 
-            if (events.BeforeAssembly is not null)
+            #region before start events
+            if (events.OnBeforeStart is not null)
             {
                 if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking before assembly events for insert query.");
-                events.BeforeAssembly?.Invoke(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(expression, statementBuilder.Parameters)));
+                    logger.LogTrace("Invoking before start events for the insert query.");
+                events.OnBeforeStart?.Invoke(new Lazy<BeforeStartPipelineEventContext>(() => new BeforeStartPipelineEventContext(expression, statementBuilder.Parameters)));
             }
 
-            if (events.BeforeInsertAssembly is not null)
+            if (events.OnBeforeInsertStart is not null)
             {
                 if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking before insert assembly events for insert query.");
-                events.BeforeInsertAssembly?.Invoke(new Lazy<BeforeInsertAssemblyPipelineExecutionContext>(() => new BeforeInsertAssemblyPipelineExecutionContext(expression, statementBuilder.Parameters)));
+                    logger.LogTrace("Invoking before insert start events for each entity in the insert query.");
+                foreach (var insert in expression.Inserts.Values)
+                    events.OnBeforeInsertStart?.Invoke(new Lazy<BeforeInsertStartPipelineEventContext>(() => new BeforeInsertStartPipelineEventContext(expression, statementBuilder.Parameters, insert.Entity)));
             }
+            #endregion
 
             if (logger.IsEnabled(LogLevel.Trace))
                 logger.LogTrace("Creating sql statement for insert query.");
             var statement = statementBuilder.CreateSqlStatement(expression) ?? throw new DbExpressionException("The sql statement builder returned a null value, cannot execute an insert query without a sql statement.");
 
-            if (events.AfterAssembly is not null)
+            #region after assembly events
+            if (events.OnAfterInsertAssembly is not null)
             {
                 if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after assembly events for insert query.");
-                events.AfterAssembly?.Invoke(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(expression, statementBuilder.Parameters, statement)));
-            }
-
-            if (events.BeforeInsert is not null)
-            {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking before insert events for each entity in the insert query.");
+                    logger.LogTrace("Invoking after insert assembly events for each entity in the insert query.");
                 foreach (var insert in expression.Inserts.Values)
-                    events.BeforeInsert?.Invoke(new Lazy<BeforeInsertPipelineExecutionContext>(() => new BeforeInsertPipelineExecutionContext(expression, insert.Entity, statementBuilder.Parameters, statement)));
+                    events.OnAfterInsertAssembly.Invoke(new Lazy<AfterInsertAssemblyPipelineEventContext>(() => new AfterInsertAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement, insert.Entity)));
             }
+            if (events.OnAfterAssembly is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking after assembly events for each entity in the insert query.");
+                events.OnAfterAssembly.Invoke(new Lazy<AfterAssemblyPipelineEventContext>(() => new AfterAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement)));
+            }
+            #endregion
 
             var fields = new List<FieldExpression?> { null }.Concat(expression.Outputs).ToList();
 
@@ -115,19 +119,41 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     local,
                     new SqlStatementValueConverterProvider(valueConverterFactory, fields),
                     cmd => {
-                        if (logger.IsEnabled(LogLevel.Trace))
-                            logger.LogTrace("Invoking before execution events for insert query.");
-                        events.BeforeExecution?.Invoke(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(expression, cmd, statement)));
+                        #region before command events
+                        if (events.OnBeforeCommand is not null)
+                        {
+                            if (logger.IsEnabled(LogLevel.Trace))
+                                logger.LogTrace("Invoking before command events for each entity in the insert query.");
+                            events.OnBeforeCommand?.Invoke(new Lazy<BeforeCommandPipelineEventContext>(() => new BeforeCommandPipelineEventContext(expression, cmd, statement)));
+                        }
+                        if (events.OnBeforeInsertCommand is not null)
+                        {
+                            if (logger.IsEnabled(LogLevel.Trace))
+                                logger.LogTrace("Invoking before insert command events for each entity in the insert query.");
+                            foreach (var insert in expression.Inserts.Values)
+                                events.OnBeforeInsertCommand?.Invoke(new Lazy<BeforeInsertCommandPipelineEventContext>(() => new BeforeInsertCommandPipelineEventContext(expression, cmd, statement, insert.Entity)));
+                        }                        
+                        #endregion
+
                         configureCommand?.Invoke(cmd);
                     },
                     cmd =>
                     {
-                        if (events.AfterExecution is not null)
+                        #region after command events
+                        if (events.OnAfterInsertCommand is not null)
                         {
                             if (logger.IsEnabled(LogLevel.Trace))
-                                logger.LogTrace("Invoking after execution events for insert query.");
-                            events.AfterExecution?.Invoke(new Lazy<AfterExecutionPipelineExecutionContext>(() => new AfterExecutionPipelineExecutionContext(expression, cmd)));
+                                logger.LogTrace("Invoking after insert command events for each entity in the insert query.");
+                            foreach (var insert in expression.Inserts.Values)
+                                events.OnAfterInsertCommand?.Invoke(new Lazy<AfterInsertCommandPipelineEventContext>(() => new AfterInsertCommandPipelineEventContext(expression, cmd, insert.Entity)));
                         }
+                        if (events.OnAfterCommand is not null)
+                        {
+                            if (logger.IsEnabled(LogLevel.Trace))
+                                logger.LogTrace("Invoking after command events for each entity in the insert query.");
+                            events.OnAfterCommand?.Invoke(new Lazy<AfterCommandPipelineEventContext>(() => new AfterCommandPipelineEventContext(expression, cmd)));
+                        }
+                        #endregion
                     }
                 );
 
@@ -157,13 +183,21 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     local.Dispose();
             }
 
-            if (events.AfterInsert is not null)
+            #region after complete events
+            if (events.OnAfterInsertComplete is not null)
             {
                 if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after insert events for each entity in the insert query.");
+                    logger.LogTrace("Invoking after insert command events for each entity in the insert query.");
                 foreach (var insert in expression.Inserts.Values)
-                    events.AfterInsert?.Invoke(new Lazy<AfterInsertPipelineExecutionContext>(() => new AfterInsertPipelineExecutionContext(expression, insert.Entity)));
+                    events.OnAfterInsertComplete?.Invoke(new Lazy<AfterInsertCompletePipelineEventContext>(() => new AfterInsertCompletePipelineEventContext(expression, insert.Entity)));
             }
+            if (events.OnAfterComplete is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking after command events for each entity in the insert query.");
+                events.OnAfterComplete?.Invoke(new Lazy<AfterCompletePipelineEventContext>(() => new AfterCompletePipelineEventContext(expression)));
+            }
+            #endregion
         }
 
         public async Task ExecuteInsertAsync<TEntity>(InsertQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
@@ -172,44 +206,50 @@ namespace HatTrick.DbEx.Sql.Pipeline
             if (expression is null)
                 throw new ArgumentNullException(nameof(expression));
 
-            if (events.BeforeAssembly is not null)
+            #region before assembly events
+            if (events.OnBeforeStart is not null)
             {
                 if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking before assembly events for insert query.");
-                await events.BeforeAssembly.InvokeAsync(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(expression, statementBuilder.Parameters)), ct).ConfigureAwait(false);
+                    logger.LogTrace("Invoking before start events for the insert query.");
+                await events.OnBeforeStart.InvokeAsync(new Lazy<BeforeStartPipelineEventContext>(() => new BeforeStartPipelineEventContext(expression, statementBuilder.Parameters)), ct).ConfigureAwait(false);
                 ct.ThrowIfCancellationRequested();
             }
 
-            if (events.BeforeInsertAssembly is not null)
+            if (events.OnBeforeInsertStart is not null)
             {
                 if (logger.IsEnabled(LogLevel.Trace))
                     logger.LogTrace("Invoking before insert assembly events for insert query.");
-                await events.BeforeInsertAssembly.InvokeAsync(new Lazy<BeforeInsertAssemblyPipelineExecutionContext>(() => new BeforeInsertAssemblyPipelineExecutionContext(expression, statementBuilder.Parameters)), ct).ConfigureAwait(false);
-                ct.ThrowIfCancellationRequested();
+                foreach (var insert in expression.Inserts.Values)
+                {
+                    await events.OnBeforeInsertStart.InvokeAsync(new Lazy<BeforeInsertStartPipelineEventContext>(() => new BeforeInsertStartPipelineEventContext(expression, statementBuilder.Parameters, insert.Entity)), ct).ConfigureAwait(false);
+                    ct.ThrowIfCancellationRequested();
+                }
             }
+            #endregion
 
             if (logger.IsEnabled(LogLevel.Trace))
                 logger.LogTrace("Creating sql statement for insert query.");
             var statement = statementBuilder.CreateSqlStatement(expression) ?? throw new DbExpressionException("The sql statement builder returned a null value, cannot execute an insert query without a sql statement.");
-            
-            if (events.AfterAssembly is not null)
-            {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after assembly events for insert query.");
-                await events.AfterAssembly.InvokeAsync(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(expression, statementBuilder.Parameters, statement)), ct).ConfigureAwait(false);
-                ct.ThrowIfCancellationRequested();
-            }
 
-            if (events.BeforeInsert is not null)
+            #region after assembly events
+            if (events.OnAfterInsertAssembly is not null)
             {
                 if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking before insert events for each entity in the insert query.");
+                    logger.LogTrace("Invoking after insert assembly events for the insert query.");
                 foreach (var insert in expression.Inserts.Values)
                 {
-                    await events.BeforeInsert.InvokeAsync(new Lazy<BeforeInsertPipelineExecutionContext>(() => new BeforeInsertPipelineExecutionContext(expression, insert.Entity, statementBuilder.Parameters, statement)), ct).ConfigureAwait(false);
+                    await events.OnAfterInsertAssembly.InvokeAsync(new Lazy<AfterInsertAssemblyPipelineEventContext>(() => new AfterInsertAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement, insert.Entity)), ct).ConfigureAwait(false);
                     ct.ThrowIfCancellationRequested();
                 }
             }
+            if (events.OnAfterAssembly is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking after assembly events for the insert query.");
+                await events.OnAfterAssembly.InvokeAsync(new Lazy<AfterAssemblyPipelineEventContext>(() => new AfterAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement)), ct).ConfigureAwait(false);
+                ct.ThrowIfCancellationRequested();
+            }
+            #endregion
 
             var local = connection ?? new SqlConnector(connectionFactory);
             try
@@ -220,29 +260,53 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     new SqlStatementValueConverterProvider(valueConverterFactory, new List<FieldExpression?> { null }.Concat(expression.Outputs).ToList()),
                     async cmd =>
                     {
-                        if (events.BeforeExecution is not null)
+                        #region before execution events
+                        if (events.OnBeforeCommand is not null)
                         {
                             if (logger.IsEnabled(LogLevel.Trace))
-                                logger.LogTrace("Invoking before execution events for insert query.");
-                            await events.BeforeExecution.InvokeAsync(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(expression, cmd, statement)), ct).ConfigureAwait(false);
+                                logger.LogTrace("Invoking before command events for the insert query.");
+                            await events.OnBeforeCommand.InvokeAsync(new Lazy<BeforeCommandPipelineEventContext>(() => new BeforeCommandPipelineEventContext(expression, cmd, statement)), ct).ConfigureAwait(false);
                         }
-                        configureCommand?.Invoke(cmd);
+                        if (events.OnBeforeInsertCommand is not null && !ct.IsCancellationRequested)
+                        {
+                            if (logger.IsEnabled(LogLevel.Trace))
+                                logger.LogTrace("Invoking before insert command events for each entity in the insert query.");
+                            foreach (var insert in expression.Inserts.Values)
+                            {
+                                await events.OnBeforeInsertCommand.InvokeAsync(new Lazy<BeforeInsertCommandPipelineEventContext>(() => new BeforeInsertCommandPipelineEventContext(expression, cmd, statement, insert.Entity)), ct).ConfigureAwait(false);
+                            }
+                        }
+                        #endregion
+                        
+                        if (!ct.IsCancellationRequested)
+                            configureCommand?.Invoke(cmd);
                     },
                     async cmd =>
                     {
-                        if (events.AfterExecution is not null)
+                        #region after execution events
+                        if (events.OnAfterInsertCommand is not null)
                         {
                             if (logger.IsEnabled(LogLevel.Trace))
-                                logger.LogTrace("Invoking after execution events for insert query.");
-                            await events.AfterExecution.InvokeAsync(new Lazy<AfterExecutionPipelineExecutionContext>(() => new AfterExecutionPipelineExecutionContext(expression, cmd)), ct).ConfigureAwait(false);
+                                logger.LogTrace("Invoking after insert command events for each entity in the insert query.");
+                            foreach (var insert in expression.Inserts.Values)
+                            {
+                                await events.OnAfterInsertCommand.InvokeAsync(new Lazy<AfterInsertCommandPipelineEventContext>(() => new AfterInsertCommandPipelineEventContext(expression, cmd, insert.Entity)), ct).ConfigureAwait(false);
+                            }
                         }
+                        if (events.OnAfterCommand is not null && !ct.IsCancellationRequested)
+                        {
+                            if (logger.IsEnabled(LogLevel.Trace))
+                                logger.LogTrace("Invoking after command events for insert query.");
+                            await events.OnAfterCommand.InvokeAsync(new Lazy<AfterCommandPipelineEventContext>(() => new AfterCommandPipelineEventContext(expression, cmd)), ct).ConfigureAwait(false);
+                        }
+                        #endregion
                     },
                     ct
                 ).ConfigureAwait(false);
 
                 ct.ThrowIfCancellationRequested();
 
-                var mapper = mapperFactory.CreateEntityMapper(expression.Into as Table<TEntity> ?? throw new InvalidOperationException($"Expected base entity to be type {typeof(Table<TEntity>)}.")) 
+                var mapper = mapperFactory.CreateEntityMapper(expression.Into as Table<TEntity> ?? throw new InvalidOperationException($"Expected base entity to be type {typeof(Table<TEntity>)}."))
                     ?? throw new DbExpressionException("The mapper is null, cannot execute an insert query without a mapper to map return values to entity instances.");
 
                 ISqlFieldReader? row;
@@ -269,16 +333,25 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     local.Dispose();
             }
 
-            if (events.AfterInsert is not null)
+            #region after complete events
+            if (events.OnAfterInsertComplete is not null)
             {
                 if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after insert events for each entity in the insert query.");
+                    logger.LogTrace("Invoking after insert complete events for each entity in the insert query.");
                 foreach (var insert in expression.Inserts.Values)
                 {
-                    await events.AfterInsert.InvokeAsync(new Lazy<AfterInsertPipelineExecutionContext>(() => new AfterInsertPipelineExecutionContext(expression, insert.Entity)), ct).ConfigureAwait(false);
+                    await events.OnAfterInsertComplete.InvokeAsync(new Lazy<AfterInsertCompletePipelineEventContext>(() => new AfterInsertCompletePipelineEventContext(expression, insert.Entity)), ct).ConfigureAwait(false);
+                    ct.ThrowIfCancellationRequested();
                 }
+            }
+            if (events.OnAfterComplete is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking after complete events for insert query.");
+                await events.OnAfterComplete.InvokeAsync(new Lazy<AfterCompletePipelineEventContext>(() => new AfterCompletePipelineEventContext(expression)), ct).ConfigureAwait(false);
                 ct.ThrowIfCancellationRequested();
             }
+            #endregion
         }
         #endregion
     }

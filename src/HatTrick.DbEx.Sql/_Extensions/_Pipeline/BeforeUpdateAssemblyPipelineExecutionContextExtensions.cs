@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.Sql
 {
     public static class BeforeUpdateAssemblyPipelineExecutionContextExtensions
     {
-        public static void SetFieldValue<T>(this BeforeUpdateAssemblyPipelineExecutionContext context, string fieldName, T value, bool overrideExistingAssignment = false)
+        public static void SetFieldValue<T>(this BeforeUpdateStartPipelineEventContext context, string fieldName, T value, bool overrideExistingAssignment = false)
         {
             if (string.IsNullOrWhiteSpace(fieldName))
                 throw new ArgumentException($"{nameof(fieldName)} parameter is required.");
@@ -34,7 +34,7 @@ namespace HatTrick.DbEx.Sql
                 throw new DbExpressionException($"A field with name {fieldName} is not a field on entity {context.Expression.From?.Name ?? "[UNKNOWN]"}.");
         }
 
-        public static void SetFieldValue<T>(this BeforeUpdateAssemblyPipelineExecutionContext context, string fieldName, NullElement value, bool overrideExistingAssignment = false)
+        public static void SetFieldValue<T>(this BeforeUpdateStartPipelineEventContext context, string fieldName, NullElement value, bool overrideExistingAssignment = false)
         {
             if (string.IsNullOrWhiteSpace(fieldName))
                 throw new ArgumentException($"{nameof(fieldName)} parameter is required.");
@@ -43,7 +43,7 @@ namespace HatTrick.DbEx.Sql
                 throw new DbExpressionException($"A field with name {fieldName} is not a field on entity {context.Expression.From?.Name ?? "[UNKNOWN]"}.");
         }
 
-        public static void SetFieldValue<T>(this BeforeUpdateAssemblyPipelineExecutionContext context, EnumFieldExpression<T> fieldExpression, T value, bool overrideExistingAssignment = false)
+        public static void SetFieldValue<T>(this BeforeUpdateStartPipelineEventContext context, EnumFieldExpression<T> fieldExpression, T value, bool overrideExistingAssignment = false)
             where T : struct, Enum, IComparable
         {
             if (fieldExpression is null)
@@ -53,7 +53,7 @@ namespace HatTrick.DbEx.Sql
                 throw new DbExpressionException($"A field with name {fieldExpression} is not a field on entity {context.Expression.From?.Name ?? "[UNKNOWN]"}.");
         }
 
-        public static void SetFieldValue<T>(this BeforeUpdateAssemblyPipelineExecutionContext context, NullableEnumFieldExpression<T> fieldExpression, T? value, bool overrideExistingAssignment = false)
+        public static void SetFieldValue<T>(this BeforeUpdateStartPipelineEventContext context, NullableEnumFieldExpression<T> fieldExpression, T? value, bool overrideExistingAssignment = false)
            where T : struct, Enum, IComparable
         {
             if (fieldExpression is null)
@@ -63,7 +63,7 @@ namespace HatTrick.DbEx.Sql
                 throw new DbExpressionException($"A field with name {fieldExpression} is not a field on entity {context.Expression.From?.Name ?? "[UNKNOWN]"}.");
         }
 
-        public static void SetFieldValue<T>(this BeforeUpdateAssemblyPipelineExecutionContext context, NullableEnumFieldExpression<T> fieldExpression, NullElement value, bool overrideExistingAssignment = false)
+        public static void SetFieldValue<T>(this BeforeUpdateStartPipelineEventContext context, NullableEnumFieldExpression<T> fieldExpression, NullElement value, bool overrideExistingAssignment = false)
             where T : struct, Enum, IComparable
         {
             if (fieldExpression is null)
@@ -73,7 +73,7 @@ namespace HatTrick.DbEx.Sql
                 throw new DbExpressionException($"A field with name {fieldExpression} is not a field on entity {context.Expression.From?.Name ?? "[UNKNOWN]"}.");
         }
 
-        public static void SetFieldValue<T>(this BeforeUpdateAssemblyPipelineExecutionContext context, FieldExpression<T> fieldExpression, T value, bool overrideExistingAssignment = false)
+        public static void SetFieldValue<T>(this BeforeUpdateStartPipelineEventContext context, FieldExpression<T> fieldExpression, T value, bool overrideExistingAssignment = false)
         {
             if (fieldExpression is null)
                 throw new ArgumentNullException(nameof(fieldExpression));
@@ -82,7 +82,7 @@ namespace HatTrick.DbEx.Sql
                 throw new DbExpressionException($"A field with name {fieldExpression} is not a field on entity {context.Expression.From?.Name ?? "[UNKNOWN]"}.");
         }
 
-        public static bool TrySetFieldValue<T>(this BeforeUpdateAssemblyPipelineExecutionContext context, string fieldName, T value, bool overrideExistingAssignment = false)
+        public static bool TrySetFieldValue<T>(this BeforeUpdateStartPipelineEventContext context, string fieldName, T value, bool overrideExistingAssignment = false)
         {
             if (string.IsNullOrWhiteSpace(fieldName))
                 return false;
@@ -102,30 +102,30 @@ namespace HatTrick.DbEx.Sql
             }
         }
 
-        public static bool TrySetFieldValue<T>(this BeforeUpdateAssemblyPipelineExecutionContext context, FieldExpression<T> fieldExpression, T value, bool overrideExistingAssignment = false)
+        public static bool TrySetFieldValue<T>(this BeforeUpdateStartPipelineEventContext context, FieldExpression<T> fieldExpression, T value, bool overrideExistingAssignment = false)
         {
             return DoTrySetFieldValue(context, fieldExpression, value, overrideExistingAssignment);
         }
 
-        public static bool TrySetFieldValue<T>(this BeforeUpdateAssemblyPipelineExecutionContext context, EnumFieldExpression<T> fieldExpression, T value, bool overrideExistingAssignment = false)
+        public static bool TrySetFieldValue<T>(this BeforeUpdateStartPipelineEventContext context, EnumFieldExpression<T> fieldExpression, T value, bool overrideExistingAssignment = false)
            where T : struct, Enum, IComparable
         {
             return DoTrySetFieldValue(context, fieldExpression, value, overrideExistingAssignment);
         }
 
-        public static bool TrySetFieldValue<T>(this BeforeUpdateAssemblyPipelineExecutionContext context, NullableEnumFieldExpression<T> fieldExpression, T? value, bool overrideExistingAssignment = false)
+        public static bool TrySetFieldValue<T>(this BeforeUpdateStartPipelineEventContext context, NullableEnumFieldExpression<T> fieldExpression, T? value, bool overrideExistingAssignment = false)
             where T : struct, Enum, IComparable
         {
             return DoTrySetFieldValue(context, fieldExpression, value, overrideExistingAssignment);
         }
 
-        public static bool TrySetFieldValue<T>(this BeforeUpdateAssemblyPipelineExecutionContext context, NullableEnumFieldExpression<T> fieldExpression, NullElement value, bool overrideExistingAssignment = false)
+        public static bool TrySetFieldValue<T>(this BeforeUpdateStartPipelineEventContext context, NullableEnumFieldExpression<T> fieldExpression, NullElement value, bool overrideExistingAssignment = false)
             where T : struct, Enum, IComparable
         {
             return DoTrySetFieldValue(context, fieldExpression, value, overrideExistingAssignment);
         }
 
-        private static bool DoTrySetFieldValue<T>(BeforeUpdateAssemblyPipelineExecutionContext context, FieldExpression fieldExpression, T value, bool overwrite)
+        private static bool DoTrySetFieldValue<T>(BeforeUpdateStartPipelineEventContext context, FieldExpression fieldExpression, T value, bool overwrite)
         {
             if (fieldExpression is null)
                 return false;

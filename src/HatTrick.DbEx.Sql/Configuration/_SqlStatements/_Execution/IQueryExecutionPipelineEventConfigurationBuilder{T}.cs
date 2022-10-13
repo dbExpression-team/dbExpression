@@ -26,551 +26,1006 @@ namespace HatTrick.DbEx.Sql.Configuration
     public interface IQueryExecutionPipelineEventConfigurationBuilder<TDatabase>
         where TDatabase : class, ISqlDatabaseRuntime
     {
-        #region assembly
+        #region common
         /// <summary>
         /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression.
         /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeSqlStatementAssembly(Action<BeforeAssemblyPipelineExecutionContext> action);
-
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression.
-        /// </summary>
-        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeSqlStatementAssembly(Action<BeforeAssemblyPipelineExecutionContext> action, Predicate<BeforeAssemblyPipelineExecutionContext> predicate);
-
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression.
-        /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeSqlStatementAssembly(Func<BeforeAssemblyPipelineExecutionContext, Task> action);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeStart(Action<BeforeStartPipelineEventContext> action);
 
         /// <summary>
         /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression.
         /// </summary>
         /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeSqlStatementAssembly(Func<BeforeAssemblyPipelineExecutionContext, Task> action, Predicate<BeforeAssemblyPipelineExecutionContext> predicate);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeStart(Action<BeforeStartPipelineEventContext> action, Predicate<BeforeStartPipelineEventContext> predicate);
 
         /// <summary>
         /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression.
         /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeSqlStatementAssembly(Func<BeforeAssemblyPipelineExecutionContext, CancellationToken, Task> action);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeStart(Func<BeforeStartPipelineEventContext, Task> action);
 
         /// <summary>
         /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression.
         /// </summary>
         /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeSqlStatementAssembly(Func<BeforeAssemblyPipelineExecutionContext, CancellationToken, Task> action, Predicate<BeforeAssemblyPipelineExecutionContext> predicate);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeStart(Func<BeforeStartPipelineEventContext, Task> action, Predicate<BeforeStartPipelineEventContext> predicate);
 
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> after assembling a sql statement from a query expression.
+        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression.
         /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterSqlStatementAssembly(Action<AfterAssemblyPipelineExecutionContext> action);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeStart(Func<BeforeStartPipelineEventContext, CancellationToken, Task> action);
 
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> after assembling a sql statement from a query expression.
-        /// </summary>
-        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterSqlStatementAssembly(Action<AfterAssemblyPipelineExecutionContext> action, Predicate<AfterAssemblyPipelineExecutionContext> predicate);
-
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> after assembling a sql statement from a query expression.
-        /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterSqlStatementAssembly(Func<AfterAssemblyPipelineExecutionContext, Task> action);
-
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> after assembling a sql statement from a query expression.
+        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression.
         /// </summary>
         /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterSqlStatementAssembly(Func<AfterAssemblyPipelineExecutionContext, Task> action, Predicate<AfterAssemblyPipelineExecutionContext> predicate);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeStart(Func<BeforeStartPipelineEventContext, CancellationToken, Task> action, Predicate<BeforeStartPipelineEventContext> predicate);
 
         /// <summary>
         /// Execute the delegate <paramref name="action"/> after assembling a sql statement from a query expression.
         /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterSqlStatementAssembly(Func<AfterAssemblyPipelineExecutionContext, CancellationToken, Task> action);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterAssembly(Action<AfterAssemblyPipelineEventContext> action);
 
         /// <summary>
         /// Execute the delegate <paramref name="action"/> after assembling a sql statement from a query expression.
         /// </summary>
         /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterSqlStatementAssembly(Func<AfterAssemblyPipelineExecutionContext, CancellationToken, Task> action, Predicate<AfterAssemblyPipelineExecutionContext> predicate);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterAssembly(Action<AfterAssemblyPipelineEventContext> action, Predicate<AfterAssemblyPipelineEventContext> predicate);
 
-        #region update
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for an UPDATE operation.
+        /// Execute the delegate <paramref name="action"/> after assembling a sql statement from a query expression.
         /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeUpdateSqlStatementAssembly(Action<BeforeUpdateAssemblyPipelineExecutionContext> action);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterAssembly(Func<AfterAssemblyPipelineEventContext, Task> action);
 
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for an UPDATE operation.
-        /// </summary>
-        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeUpdateSqlStatementAssembly(Action<BeforeUpdateAssemblyPipelineExecutionContext> action, Predicate<BeforeUpdateAssemblyPipelineExecutionContext> predicate);
-
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for an UPDATE operation.
-        /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeUpdateSqlStatementAssembly(Func<BeforeUpdateAssemblyPipelineExecutionContext, Task> action);
-
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for an UPDATE operation.
+        /// Execute the delegate <paramref name="action"/> after assembling a sql statement from a query expression.
         /// </summary>
         /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeUpdateSqlStatementAssembly(Func<BeforeUpdateAssemblyPipelineExecutionContext, Task> action, Predicate<BeforeUpdateAssemblyPipelineExecutionContext> predicate);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterAssembly(Func<AfterAssemblyPipelineEventContext, Task> action, Predicate<AfterAssemblyPipelineEventContext> predicate);
 
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for an UPDATE operation.
+        /// Execute the delegate <paramref name="action"/> after assembling a sql statement from a query expression.
         /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeUpdateSqlStatementAssembly(Func<BeforeUpdateAssemblyPipelineExecutionContext, CancellationToken, Task> action);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterAssembly(Func<AfterAssemblyPipelineEventContext, CancellationToken, Task> action);
 
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for an UPDATE operation.
-        /// </summary>
-        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeUpdateSqlStatementAssembly(Func<BeforeUpdateAssemblyPipelineExecutionContext, CancellationToken, Task> action, Predicate<BeforeUpdateAssemblyPipelineExecutionContext> predicate);
-
-        #endregion
-
-        #region insert
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for an UPDATE operation.
-        /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeInsertSqlStatementAssembly(Action<BeforeInsertAssemblyPipelineExecutionContext> action);
-
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for an UPDATE operation.
+        /// Execute the delegate <paramref name="action"/> after assembling a sql statement from a query expression.
         /// </summary>
         /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeInsertSqlStatementAssembly(Action<BeforeInsertAssemblyPipelineExecutionContext> action, Predicate<BeforeInsertAssemblyPipelineExecutionContext> predicate);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterAssembly(Func<AfterAssemblyPipelineEventContext, CancellationToken, Task> action, Predicate<AfterAssemblyPipelineEventContext> predicate);
 
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for an UPDATE operation.
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement.
         /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeInsertSqlStatementAssembly(Func<BeforeInsertAssemblyPipelineExecutionContext, Task> action);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeCommand(Action<BeforeCommandPipelineEventContext> action);
 
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for an UPDATE operation.
-        /// </summary>
-        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeInsertSqlStatementAssembly(Func<BeforeInsertAssemblyPipelineExecutionContext, Task> action, Predicate<BeforeInsertAssemblyPipelineExecutionContext> predicate);
-
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for an UPDATE operation.
-        /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeInsertSqlStatementAssembly(Func<BeforeInsertAssemblyPipelineExecutionContext, CancellationToken, Task> action);
-
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for an UPDATE operation.
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement.
         /// </summary>
         /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeInsertSqlStatementAssembly(Func<BeforeInsertAssemblyPipelineExecutionContext, CancellationToken, Task> action, Predicate<BeforeInsertAssemblyPipelineExecutionContext> predicate);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeCommand(Action<BeforeCommandPipelineEventContext> action, Predicate<BeforeCommandPipelineEventContext> predicate);
 
-        #endregion
-        #endregion
-
-        #region insert
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to executing an INSERT sql statement against the target database.
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement.
         /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeInsertQueryExecution(Action<BeforeInsertPipelineExecutionContext> action);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeCommand(Func<BeforeCommandPipelineEventContext, Task> action);
 
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to executing an INSERT sql statement against the target database.
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement.
         /// </summary>
         /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeInsertQueryExecution(Action<BeforeInsertPipelineExecutionContext> action, Predicate<BeforeInsertPipelineExecutionContext> predicate);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeCommand(Func<BeforeCommandPipelineEventContext, Task> action, Predicate<BeforeCommandPipelineEventContext> predicate);
 
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to executing an INSERT sql statement against the target database.
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement.
         /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeInsertQueryExecution(Func<BeforeInsertPipelineExecutionContext, Task> action);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeCommand(Func<BeforeCommandPipelineEventContext, CancellationToken, Task> action);
 
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to executing an INSERT sql statement against the target database.
-        /// </summary>
-        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeInsertQueryExecution(Func<BeforeInsertPipelineExecutionContext, Task> action, Predicate<BeforeInsertPipelineExecutionContext> predicate);
-
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to executing an INSERT sql statement against the target database.
-        /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeInsertQueryExecution(Func<BeforeInsertPipelineExecutionContext, CancellationToken, Task> action);
-
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to executing an INSERT sql statement against the target database.
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement.
         /// </summary>
         /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeInsertQueryExecution(Func<BeforeInsertPipelineExecutionContext, CancellationToken, Task> action, Predicate<BeforeInsertPipelineExecutionContext> predicate);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeCommand(Func<BeforeCommandPipelineEventContext, CancellationToken, Task> action, Predicate<BeforeCommandPipelineEventContext> predicate);
 
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> after executing an INSERT sql statement against the target database.
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement.
         /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterInsertQueryExecution(Action<AfterInsertPipelineExecutionContext> action);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterCommand(Action<AfterCommandPipelineEventContext> action);
 
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> after executing an INSERT sql statement against the target database.
-        /// </summary>
-        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterInsertQueryExecution(Action<AfterInsertPipelineExecutionContext> action, Predicate<AfterInsertPipelineExecutionContext> predicate);
-
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> after executing an INSERT sql statement against the target database.
-        /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterInsertQueryExecution(Func<AfterInsertPipelineExecutionContext, Task> action);
-
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> after executing an INSERT sql statement against the target database.
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement.
         /// </summary>
         /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterInsertQueryExecution(Func<AfterInsertPipelineExecutionContext, Task> action, Predicate<AfterInsertPipelineExecutionContext> predicate);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterCommand(Action<AfterCommandPipelineEventContext> action, Predicate<AfterCommandPipelineEventContext> predicate);
 
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> after executing an INSERT sql statement against the target database.
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement.
         /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterInsertQueryExecution(Func<AfterInsertPipelineExecutionContext, CancellationToken, Task> action);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterCommand(Func<AfterCommandPipelineEventContext, Task> action);
 
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> after executing an INSERT sql statement against the target database.
-        /// </summary>
-        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterInsertQueryExecution(Func<AfterInsertPipelineExecutionContext, CancellationToken, Task> action, Predicate<AfterInsertPipelineExecutionContext> predicate);
-        #endregion
-
-        #region update
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to executing an UPDATE sql statement against the target database.
-        /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeUpdateQueryExecution(Action<BeforeUpdatePipelineExecutionContext> action);
-
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to executing an UPDATE sql statement against the target database.
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement.
         /// </summary>
         /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeUpdateQueryExecution(Action<BeforeUpdatePipelineExecutionContext> action, Predicate<BeforeUpdatePipelineExecutionContext> predicate);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterCommand(Func<AfterCommandPipelineEventContext, Task> action, Predicate<AfterCommandPipelineEventContext> predicate);
 
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to executing an UPDATE sql statement against the target database.
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement.
         /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeUpdateQueryExecution(Func<BeforeUpdatePipelineExecutionContext, Task> action);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterCommand(Func<AfterCommandPipelineEventContext, CancellationToken, Task> action);
 
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to executing an UPDATE sql statement against the target database.
-        /// </summary>
-        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeUpdateQueryExecution(Func<BeforeUpdatePipelineExecutionContext, Task> action, Predicate<BeforeUpdatePipelineExecutionContext> predicate);
-
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to executing an UPDATE sql statement against the target database.
-        /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeUpdateQueryExecution(Func<BeforeUpdatePipelineExecutionContext, CancellationToken, Task> action);
-
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to executing an UPDATE sql statement against the target database.
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement.
         /// </summary>
         /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeUpdateQueryExecution(Func<BeforeUpdatePipelineExecutionContext, CancellationToken, Task> action, Predicate<BeforeUpdatePipelineExecutionContext> predicate);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterCommand(Func<AfterCommandPipelineEventContext, CancellationToken, Task> action, Predicate<AfterCommandPipelineEventContext> predicate);
 
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> after executing an UPDATE sql statement against the target database.
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement.
         /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterUpdateQueryExecution(Action<AfterUpdatePipelineExecutionContext> action);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterComplete(Action<AfterCompletePipelineEventContext> action);
 
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> after executing an UPDATE sql statement against the target database.
-        /// </summary>
-        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterUpdateQueryExecution(Action<AfterUpdatePipelineExecutionContext> action, Predicate<AfterUpdatePipelineExecutionContext> predicate);
-
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> after executing an UPDATE sql statement against the target database.
-        /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterUpdateQueryExecution(Func<AfterUpdatePipelineExecutionContext, Task> action);
-
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> after executing an UPDATE sql statement against the target database.
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement.
         /// </summary>
         /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterUpdateQueryExecution(Func<AfterUpdatePipelineExecutionContext, Task> action, Predicate<AfterUpdatePipelineExecutionContext> predicate);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterComplete(Action<AfterCompletePipelineEventContext> action, Predicate<AfterCompletePipelineEventContext> predicate);
 
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> after executing an UPDATE sql statement against the target database.
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement.
         /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterUpdateQueryExecution(Func<AfterUpdatePipelineExecutionContext, CancellationToken, Task> action);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterComplete(Func<AfterCompletePipelineEventContext, Task> action);
 
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> after executing an UPDATE sql statement against the target database.
-        /// </summary>
-        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterUpdateQueryExecution(Func<AfterUpdatePipelineExecutionContext, CancellationToken, Task> action, Predicate<AfterUpdatePipelineExecutionContext> predicate);
-        #endregion
-
-        #region delete
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to executing an DELETE sql statement against the target database.
-        /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeDeleteQueryExecution(Action<BeforeDeletePipelineExecutionContext> action);
-
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to executing an DELETE sql statement against the target database.
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement.
         /// </summary>
         /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeDeleteQueryExecution(Action<BeforeDeletePipelineExecutionContext> action, Predicate<BeforeDeletePipelineExecutionContext> predicate);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterComplete(Func<AfterCompletePipelineEventContext, Task> action, Predicate<AfterCompletePipelineEventContext> predicate);
 
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to executing an DELETE sql statement against the target database.
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement.
         /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeDeleteQueryExecution(Func<BeforeDeletePipelineExecutionContext, Task> action);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterComplete(Func<AfterCompletePipelineEventContext, CancellationToken, Task> action);
 
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to executing an DELETE sql statement against the target database.
-        /// </summary>
-        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeDeleteQueryExecution(Func<BeforeDeletePipelineExecutionContext, Task> action, Predicate<BeforeDeletePipelineExecutionContext> predicate);
-
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to executing an DELETE sql statement against the target database.
-        /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeDeleteQueryExecution(Func<BeforeDeletePipelineExecutionContext, CancellationToken, Task> action);
-
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to executing an DELETE sql statement against the target database.
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement.
         /// </summary>
         /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeDeleteQueryExecution(Func<BeforeDeletePipelineExecutionContext, CancellationToken, Task> action, Predicate<BeforeDeletePipelineExecutionContext> predicate);
-
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> after executing an DELETE sql statement against the target database.
-        /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterDeleteQueryExecution(Action<AfterDeletePipelineExecutionContext> action);
-
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> after executing an DELETE sql statement against the target database.
-        /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterDeleteQueryExecution(Action<AfterDeletePipelineExecutionContext> action, Predicate<AfterDeletePipelineExecutionContext> predicate);
-
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> after executing an DELETE sql statement against the target database.
-        /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterDeleteQueryExecution(Func<AfterDeletePipelineExecutionContext, Task> action);
-
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> after executing an DELETE sql statement against the target database.
-        /// </summary>
-        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterDeleteQueryExecution(Func<AfterDeletePipelineExecutionContext, Task> action, Predicate<AfterDeletePipelineExecutionContext> predicate);
-
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> after executing an DELETE sql statement against the target database.
-        /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterDeleteQueryExecution(Func<AfterDeletePipelineExecutionContext, CancellationToken, Task> action);
-
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> after executing an DELETE sql statement against the target database.
-        /// </summary>
-        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterDeleteQueryExecution(Func<AfterDeletePipelineExecutionContext, CancellationToken, Task> action, Predicate<AfterDeletePipelineExecutionContext> predicate);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterComplete(Func<AfterCompletePipelineEventContext, CancellationToken, Task> action, Predicate<AfterCompletePipelineEventContext> predicate);
         #endregion
 
         #region select
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to executing an SELECT sql statement against the target database.
+        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for a SELECT operation.
         /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeSelectQueryExecution(Action<BeforeSelectPipelineExecutionContext> action);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeSelectStart(Action<BeforeSelectStartPipelineEventContext> action);
 
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to executing an SELECT sql statement against the target database.
+        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for a SELECT operation.
         /// </summary>
         /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeSelectQueryExecution(Action<BeforeSelectPipelineExecutionContext> action, Predicate<BeforeSelectPipelineExecutionContext> predicate);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeSelectStart(Action<BeforeSelectStartPipelineEventContext> action, Predicate<BeforeSelectStartPipelineEventContext> predicate);
 
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to executing an SELECT sql statement against the target database.
+        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for a SELECT operation.
         /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeSelectQueryExecution(Func<BeforeSelectPipelineExecutionContext, Task> action);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeSelectStart(Func<BeforeSelectStartPipelineEventContext, Task> action);
 
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to executing an SELECT sql statement against the target database.
-        /// </summary>
-        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeSelectQueryExecution(Func<BeforeSelectPipelineExecutionContext, Task> action, Predicate<BeforeSelectPipelineExecutionContext> predicate);
-
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to executing an SELECT sql statement against the target database.
-        /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeSelectQueryExecution(Func<BeforeSelectPipelineExecutionContext, CancellationToken, Task> action);
-
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to executing an SELECT sql statement against the target database.
+        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for a SELECT operation.
         /// </summary>
         /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeSelectQueryExecution(Func<BeforeSelectPipelineExecutionContext, CancellationToken, Task> action, Predicate<BeforeSelectPipelineExecutionContext> predicate);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeSelectStart(Func<BeforeSelectStartPipelineEventContext, Task> action, Predicate<BeforeSelectStartPipelineEventContext> predicate);
 
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> after executing an SELECT sql statement against the target database.
+        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for a SELECT operation.
         /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterSelectQueryExecution(Action<AfterSelectPipelineExecutionContext> action);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeSelectStart(Func<BeforeSelectStartPipelineEventContext, CancellationToken, Task> action);
 
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> after executing an SELECT sql statement against the target database.
-        /// </summary>
-        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterSelectQueryExecution(Action<AfterSelectPipelineExecutionContext> action, Predicate<AfterSelectPipelineExecutionContext> predicate);
-
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> after executing an SELECT sql statement against the target database.
-        /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterSelectQueryExecution(Func<AfterSelectPipelineExecutionContext, Task> action);
-
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> after executing an SELECT sql statement against the target database.
+        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for a SELECT operation.
         /// </summary>
         /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterSelectQueryExecution(Func<AfterSelectPipelineExecutionContext, Task> action, Predicate<AfterSelectPipelineExecutionContext> predicate);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeSelectStart(Func<BeforeSelectStartPipelineEventContext, CancellationToken, Task> action, Predicate<BeforeSelectStartPipelineEventContext> predicate);
 
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> after executing an SELECT sql statement against the target database.
+        /// Execute the delegate <paramref name="action"/> after assembling a sql statement from a query expression for a SELECT operation.
         /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterSelectQueryExecution(Func<AfterSelectPipelineExecutionContext, CancellationToken, Task> action);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterSelectAssembly(Action<AfterSelectAssemblyPipelineEventContext> action);
 
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> after executing an SELECT sql statement against the target database.
+        /// Execute the delegate <paramref name="action"/> after assembling a sql statement from a query expression for a SELECT operation.
         /// </summary>
         /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterSelectQueryExecution(Func<AfterSelectPipelineExecutionContext, CancellationToken, Task> action, Predicate<AfterSelectPipelineExecutionContext> predicate);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterSelectAssembly(Action<AfterSelectAssemblyPipelineEventContext> action, Predicate<AfterSelectAssemblyPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after assembling a sql statement from a query expression for a SELECT operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterSelectAssembly(Func<AfterSelectAssemblyPipelineEventContext, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after assembling a sql statement from a query expression for a SELECT operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterSelectAssembly(Func<AfterSelectAssemblyPipelineEventContext, Task> action, Predicate<AfterSelectAssemblyPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after assembling a sql statement from a query expression for a SELECT operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterSelectAssembly(Func<AfterSelectAssemblyPipelineEventContext, CancellationToken, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after assembling a sql statement from a query expression for a SELECT operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterSelectAssembly(Func<AfterSelectAssemblyPipelineEventContext, CancellationToken, Task> action, Predicate<AfterSelectAssemblyPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement for a SELECT operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeSelectCommand(Action<BeforeSelectCommandPipelineEventContext> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement for a SELECT operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeSelectCommand(Action<BeforeSelectCommandPipelineEventContext> action, Predicate<BeforeSelectCommandPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement for a SELECT operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeSelectCommand(Func<BeforeSelectCommandPipelineEventContext, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement for a SELECT operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeSelectCommand(Func<BeforeSelectCommandPipelineEventContext, Task> action, Predicate<BeforeSelectCommandPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement for a SELECT operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeSelectCommand(Func<BeforeSelectCommandPipelineEventContext, CancellationToken, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement for a SELECT operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeSelectCommand(Func<BeforeSelectCommandPipelineEventContext, CancellationToken, Task> action, Predicate<BeforeSelectCommandPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after executing a sql statement for a SELECT operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterSelectCommand(Action<AfterSelectCommandPipelineEventContext> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after executing a sql statement for a SELECT operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterSelectCommand(Action<AfterSelectCommandPipelineEventContext> action, Predicate<AfterSelectCommandPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after executing a sql statement for a SELECT operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterSelectCommand(Func<AfterSelectCommandPipelineEventContext, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after executing a sql statement for a SELECT operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterSelectCommand(Func<AfterSelectCommandPipelineEventContext, Task> action, Predicate<AfterSelectCommandPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after executing a sql statement for a SELECT operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterSelectCommand(Func<AfterSelectCommandPipelineEventContext, CancellationToken, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after executing a sql statement for a SELECT operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterSelectCommand(Func<AfterSelectCommandPipelineEventContext, CancellationToken, Task> action, Predicate<AfterSelectCommandPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after all activities for a SELECT operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterSelectComplete(Action<AfterSelectCompletePipelineEventContext> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after all activities for a SELECT operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterSelectComplete(Action<AfterSelectCompletePipelineEventContext> action, Predicate<AfterSelectCompletePipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after all activities for a SELECT operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterSelectComplete(Func<AfterSelectCompletePipelineEventContext, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after all activities for a SELECT operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterSelectComplete(Func<AfterSelectCompletePipelineEventContext, Task> action, Predicate<AfterSelectCompletePipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after all activities for a SELECT operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterSelectComplete(Func<AfterSelectCompletePipelineEventContext, CancellationToken, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after all activities for a SELECT operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterSelectComplete(Func<AfterSelectCompletePipelineEventContext, CancellationToken, Task> action, Predicate<AfterSelectCompletePipelineEventContext> predicate);
+        #endregion
+
+        #region insert
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for an INSERT operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeInsertStart(Action<BeforeInsertStartPipelineEventContext> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for an INSERT operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeInsertStart(Action<BeforeInsertStartPipelineEventContext> action, Predicate<BeforeInsertStartPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for an INSERT operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeInsertStart(Func<BeforeInsertStartPipelineEventContext, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for an INSERT operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeInsertStart(Func<BeforeInsertStartPipelineEventContext, Task> action, Predicate<BeforeInsertStartPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for an INSERT operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeInsertStart(Func<BeforeInsertStartPipelineEventContext, CancellationToken, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for an INSERT operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeInsertStart(Func<BeforeInsertStartPipelineEventContext, CancellationToken, Task> action, Predicate<BeforeInsertStartPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after assembling a sql statement from a query expression for an INSERT operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterInsertAssembly(Action<AfterInsertAssemblyPipelineEventContext> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after assembling a sql statement from a query expression for an INSERT operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterInsertAssembly(Action<AfterInsertAssemblyPipelineEventContext> action, Predicate<AfterInsertAssemblyPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after assembling a sql statement from a query expression for an INSERT operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterInsertAssembly(Func<AfterInsertAssemblyPipelineEventContext, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after assembling a sql statement from a query expression for an INSERT operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterInsertAssembly(Func<AfterInsertAssemblyPipelineEventContext, Task> action, Predicate<AfterInsertAssemblyPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after assembling a sql statement from a query expression for an INSERT operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterInsertAssembly(Func<AfterInsertAssemblyPipelineEventContext, CancellationToken, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after assembling a sql statement from a query expression for an INSERT operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterInsertAssembly(Func<AfterInsertAssemblyPipelineEventContext, CancellationToken, Task> action, Predicate<AfterInsertAssemblyPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement for an INSERT operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeInsertCommand(Action<BeforeInsertCommandPipelineEventContext> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement for an INSERT operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeInsertCommand(Action<BeforeInsertCommandPipelineEventContext> action, Predicate<BeforeInsertCommandPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement for an INSERT operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeInsertCommand(Func<BeforeInsertCommandPipelineEventContext, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement for an INSERT operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeInsertCommand(Func<BeforeInsertCommandPipelineEventContext, Task> action, Predicate<BeforeInsertCommandPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement for an INSERT operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeInsertCommand(Func<BeforeInsertCommandPipelineEventContext, CancellationToken, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement for an INSERT operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeInsertCommand(Func<BeforeInsertCommandPipelineEventContext, CancellationToken, Task> action, Predicate<BeforeInsertCommandPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after executing a sql statement for an INSERT operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterInsertCommand(Action<AfterInsertCommandPipelineEventContext> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after executing a sql statement for an INSERT operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterInsertCommand(Action<AfterInsertCommandPipelineEventContext> action, Predicate<AfterInsertCommandPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after executing a sql statement for an INSERT operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterInsertCommand(Func<AfterInsertCommandPipelineEventContext, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after executing a sql statement for an INSERT operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterInsertCommand(Func<AfterInsertCommandPipelineEventContext, Task> action, Predicate<AfterInsertCommandPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after executing a sql statement for an INSERT operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterInsertCommand(Func<AfterInsertCommandPipelineEventContext, CancellationToken, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after executing a sql statement for an INSERT operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterInsertCommand(Func<AfterInsertCommandPipelineEventContext, CancellationToken, Task> action, Predicate<AfterInsertCommandPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after all activities for an INSERT operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterInsertComplete(Action<AfterInsertCompletePipelineEventContext> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after all activities for an INSERT operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterInsertComplete(Action<AfterInsertCompletePipelineEventContext> action, Predicate<AfterInsertCompletePipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after all activities for an INSERT operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterInsertComplete(Func<AfterInsertCompletePipelineEventContext, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after all activities for an INSERT operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterInsertComplete(Func<AfterInsertCompletePipelineEventContext, Task> action, Predicate<AfterInsertCompletePipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after all activities for an INSERT operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterInsertComplete(Func<AfterInsertCompletePipelineEventContext, CancellationToken, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after all activities for an INSERT operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterInsertComplete(Func<AfterInsertCompletePipelineEventContext, CancellationToken, Task> action, Predicate<AfterInsertCompletePipelineEventContext> predicate);
+        #endregion
+
+        #region update
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for a UPDATE operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeUpdateStart(Action<BeforeUpdateStartPipelineEventContext> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for a UPDATE operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeUpdateStart(Action<BeforeUpdateStartPipelineEventContext> action, Predicate<BeforeUpdateStartPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for a UPDATE operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeUpdateStart(Func<BeforeUpdateStartPipelineEventContext, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for a UPDATE operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeUpdateStart(Func<BeforeUpdateStartPipelineEventContext, Task> action, Predicate<BeforeUpdateStartPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for a UPDATE operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeUpdateStart(Func<BeforeUpdateStartPipelineEventContext, CancellationToken, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for a UPDATE operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeUpdateStart(Func<BeforeUpdateStartPipelineEventContext, CancellationToken, Task> action, Predicate<BeforeUpdateStartPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after assembling a sql statement from a query expression for a DELETE operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterUpdateAssembly(Action<AfterUpdateAssemblyPipelineEventContext> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after assembling a sql statement from a query expression for a DELETE operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterUpdateAssembly(Action<AfterUpdateAssemblyPipelineEventContext> action, Predicate<AfterUpdateAssemblyPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after assembling a sql statement from a query expression for a DELETE operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterUpdateAssembly(Func<AfterUpdateAssemblyPipelineEventContext, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after assembling a sql statement from a query expression for a DELETE operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterUpdateAssembly(Func<AfterUpdateAssemblyPipelineEventContext, Task> action, Predicate<AfterUpdateAssemblyPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after assembling a sql statement from a query expression for a DELETE operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterUpdateAssembly(Func<AfterUpdateAssemblyPipelineEventContext, CancellationToken, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after assembling a sql statement from a query expression for a DELETE operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterUpdateAssembly(Func<AfterUpdateAssemblyPipelineEventContext, CancellationToken, Task> action, Predicate<AfterUpdateAssemblyPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement for a UPDATE operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeUpdateCommand(Action<BeforeUpdateCommandPipelineEventContext> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement for a UPDATE operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeUpdateCommand(Action<BeforeUpdateCommandPipelineEventContext> action, Predicate<BeforeUpdateCommandPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement for a UPDATE operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeUpdateCommand(Func<BeforeUpdateCommandPipelineEventContext, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement for a UPDATE operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeUpdateCommand(Func<BeforeUpdateCommandPipelineEventContext, Task> action, Predicate<BeforeUpdateCommandPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement for a UPDATE operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeUpdateCommand(Func<BeforeUpdateCommandPipelineEventContext, CancellationToken, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement for a UPDATE operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeUpdateCommand(Func<BeforeUpdateCommandPipelineEventContext, CancellationToken, Task> action, Predicate<BeforeUpdateCommandPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after executing a sql statement for a UPDATE operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterUpdateCommand(Action<AfterUpdateCommandPipelineEventContext> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after executing a sql statement for a UPDATE operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterUpdateCommand(Action<AfterUpdateCommandPipelineEventContext> action, Predicate<AfterUpdateCommandPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after executing a sql statement for a UPDATE operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterUpdateCommand(Func<AfterUpdateCommandPipelineEventContext, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after executing a sql statement for a UPDATE operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterUpdateCommand(Func<AfterUpdateCommandPipelineEventContext, Task> action, Predicate<AfterUpdateCommandPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after executing a sql statement for a UPDATE operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterUpdateCommand(Func<AfterUpdateCommandPipelineEventContext, CancellationToken, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after executing a sql statement for a UPDATE operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterUpdateCommand(Func<AfterUpdateCommandPipelineEventContext, CancellationToken, Task> action, Predicate<AfterUpdateCommandPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after all activities for a UPDATE operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterUpdateComplete(Action<AfterUpdateCompletePipelineEventContext> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after all activities for a UPDATE operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterUpdateComplete(Action<AfterUpdateCompletePipelineEventContext> action, Predicate<AfterUpdateCompletePipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after all activities for a UPDATE operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterUpdateComplete(Func<AfterUpdateCompletePipelineEventContext, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after all activities for a UPDATE operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterUpdateComplete(Func<AfterUpdateCompletePipelineEventContext, Task> action, Predicate<AfterUpdateCompletePipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after all activities for a UPDATE operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterUpdateComplete(Func<AfterUpdateCompletePipelineEventContext, CancellationToken, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after all activities for a UPDATE operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterUpdateComplete(Func<AfterUpdateCompletePipelineEventContext, CancellationToken, Task> action, Predicate<AfterUpdateCompletePipelineEventContext> predicate);
+        #endregion
+
+        #region delete
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for a DELETE operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeDeleteStart(Action<BeforeDeleteStartPipelineEventContext> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for a DELETE operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeDeleteStart(Action<BeforeDeleteStartPipelineEventContext> action, Predicate<BeforeDeleteStartPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for a DELETE operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeDeleteStart(Func<BeforeDeleteStartPipelineEventContext, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for a DELETE operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeDeleteStart(Func<BeforeDeleteStartPipelineEventContext, Task> action, Predicate<BeforeDeleteStartPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for a DELETE operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeDeleteStart(Func<BeforeDeleteStartPipelineEventContext, CancellationToken, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for a DELETE operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeDeleteStart(Func<BeforeDeleteStartPipelineEventContext, CancellationToken, Task> action, Predicate<BeforeDeleteStartPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after assembling a sql statement from a query expression for a DELETE operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterDeleteAssembly(Action<AfterDeleteAssemblyPipelineEventContext> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after assembling a sql statement from a query expression for a DELETE operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterDeleteAssembly(Action<AfterDeleteAssemblyPipelineEventContext> action, Predicate<AfterDeleteAssemblyPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after assembling a sql statement from a query expression for a DELETE operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterDeleteAssembly(Func<AfterDeleteAssemblyPipelineEventContext, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after assembling a sql statement from a query expression for a DELETE operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterDeleteAssembly(Func<AfterDeleteAssemblyPipelineEventContext, Task> action, Predicate<AfterDeleteAssemblyPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after assembling a sql statement from a query expression for a DELETE operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterDeleteAssembly(Func<AfterDeleteAssemblyPipelineEventContext, CancellationToken, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after assembling a sql statement from a query expression for a DELETE operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterDeleteAssembly(Func<AfterDeleteAssemblyPipelineEventContext, CancellationToken, Task> action, Predicate<AfterDeleteAssemblyPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement for a DELETE operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeDeleteCommand(Action<BeforeDeleteCommandPipelineEventContext> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement for a DELETE operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeDeleteCommand(Action<BeforeDeleteCommandPipelineEventContext> action, Predicate<BeforeDeleteCommandPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement for a DELETE operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeDeleteCommand(Func<BeforeDeleteCommandPipelineEventContext, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement for a DELETE operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeDeleteCommand(Func<BeforeDeleteCommandPipelineEventContext, Task> action, Predicate<BeforeDeleteCommandPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement for a DELETE operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeDeleteCommand(Func<BeforeDeleteCommandPipelineEventContext, CancellationToken, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement for a DELETE operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeDeleteCommand(Func<BeforeDeleteCommandPipelineEventContext, CancellationToken, Task> action, Predicate<BeforeDeleteCommandPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after executing a sql statement for a DELETE operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterDeleteCommand(Action<AfterDeleteCommandPipelineEventContext> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after executing a sql statement for a DELETE operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterDeleteCommand(Action<AfterDeleteCommandPipelineEventContext> action, Predicate<AfterDeleteCommandPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after executing a sql statement for a DELETE operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterDeleteCommand(Func<AfterDeleteCommandPipelineEventContext, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after executing a sql statement for a DELETE operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterDeleteCommand(Func<AfterDeleteCommandPipelineEventContext, Task> action, Predicate<AfterDeleteCommandPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after executing a sql statement for a DELETE operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterDeleteCommand(Func<AfterDeleteCommandPipelineEventContext, CancellationToken, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after executing a sql statement for a DELETE operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterDeleteCommand(Func<AfterDeleteCommandPipelineEventContext, CancellationToken, Task> action, Predicate<AfterDeleteCommandPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after all activities for a DELETE operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterDeleteComplete(Action<AfterDeleteCompletePipelineEventContext> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after all activities for a DELETE operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterDeleteComplete(Action<AfterDeleteCompletePipelineEventContext> action, Predicate<AfterDeleteCompletePipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after all activities for a DELETE operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterDeleteComplete(Func<AfterDeleteCompletePipelineEventContext, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after all activities for a DELETE operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterDeleteComplete(Func<AfterDeleteCompletePipelineEventContext, Task> action, Predicate<AfterDeleteCompletePipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after all activities for a DELETE operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterDeleteComplete(Func<AfterDeleteCompletePipelineEventContext, CancellationToken, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after all activities for a DELETE operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterDeleteComplete(Func<AfterDeleteCompletePipelineEventContext, CancellationToken, Task> action, Predicate<AfterDeleteCompletePipelineEventContext> predicate);
         #endregion
 
         #region stored procedure
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to executing a stored procedure against the target database.
+        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for a stored procedure.
         /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeStoredProcedureExecution(Action<BeforeStoredProcedurePipelineExecutionContext> action);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeStoredProcedureStart(Action<BeforeStoredProcedureStartPipelineEventContext> action);
 
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to executing a stored procedure against the target database.
+        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for a stored procedure.
         /// </summary>
         /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeStoredProcedureExecution(Action<BeforeStoredProcedurePipelineExecutionContext> action, Predicate<BeforeStoredProcedurePipelineExecutionContext> predicate);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeStoredProcedureStart(Action<BeforeStoredProcedureStartPipelineEventContext> action, Predicate<BeforeStoredProcedureStartPipelineEventContext> predicate);
 
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to executing a stored procedure against the target database.
+        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for a stored procedure.
         /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeStoredProcedureExecution(Func<BeforeStoredProcedurePipelineExecutionContext, Task> action);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeStoredProcedureStart(Func<BeforeStoredProcedureStartPipelineEventContext, Task> action);
 
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to executing a stored procedure against the target database.
-        /// </summary>
-        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeStoredProcedureExecution(Func<BeforeStoredProcedurePipelineExecutionContext, Task> action, Predicate<BeforeStoredProcedurePipelineExecutionContext> predicate);
-
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to executing a stored procedure against the target database.
-        /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeStoredProcedureExecution(Func<BeforeStoredProcedurePipelineExecutionContext, CancellationToken, Task> action);
-
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to executing a stored procedure against the target database.
+        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for a stored procedure.
         /// </summary>
         /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeStoredProcedureExecution(Func<BeforeStoredProcedurePipelineExecutionContext, CancellationToken, Task> action, Predicate<BeforeStoredProcedurePipelineExecutionContext> predicate);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeStoredProcedureStart(Func<BeforeStoredProcedureStartPipelineEventContext, Task> action, Predicate<BeforeStoredProcedureStartPipelineEventContext> predicate);
 
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> after executing a stored procedure against the target database.
+        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for a stored procedure.
         /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterStoredProcedureExecution(Action<AfterStoredProcedurePipelineExecutionContext> action);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeStoredProcedureStart(Func<BeforeStoredProcedureStartPipelineEventContext, CancellationToken, Task> action);
 
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> after executing a stored procedure against the target database.
-        /// </summary>
-        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterStoredProcedureExecution(Action<AfterStoredProcedurePipelineExecutionContext> action, Predicate<AfterStoredProcedurePipelineExecutionContext> predicate);
-
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> after executing a stored procedure against the target database.
-        /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterStoredProcedureExecution(Func<AfterStoredProcedurePipelineExecutionContext, Task> action);
-
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> after executing a stored procedure against the target database.
+        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for a stored procedure.
         /// </summary>
         /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterStoredProcedureExecution(Func<AfterStoredProcedurePipelineExecutionContext, Task> action, Predicate<AfterStoredProcedurePipelineExecutionContext> predicate);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeStoredProcedureStart(Func<BeforeStoredProcedureStartPipelineEventContext, CancellationToken, Task> action, Predicate<BeforeStoredProcedureStartPipelineEventContext> predicate);
 
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> after executing a stored procedure against the target database.
+        /// Execute the delegate <paramref name="action"/> after assembling a sql statement from a query expression for a DELETE operation.
         /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterStoredProcedureExecution(Func<AfterStoredProcedurePipelineExecutionContext, CancellationToken, Task> action);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterStoredProcedureAssembly(Action<AfterStoredProcedureAssemblyPipelineEventContext> action);
 
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> after executing a stored procedure against the target database.
-        /// </summary>
-        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterStoredProcedureExecution(Func<AfterStoredProcedurePipelineExecutionContext, CancellationToken, Task> action, Predicate<AfterStoredProcedurePipelineExecutionContext> predicate);
-        #endregion
-
-        #region execution
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to executing any sql statement against the target database.
-        /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeSqlStatementExecution(Action<BeforeExecutionPipelineExecutionContext> action);
-
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to executing any sql statement against the target database.
+        /// Execute the delegate <paramref name="action"/> after assembling a sql statement from a query expression for a DELETE operation.
         /// </summary>
         /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeSqlStatementExecution(Action<BeforeExecutionPipelineExecutionContext> action, Predicate<BeforeExecutionPipelineExecutionContext> predicate);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterStoredProcedureAssembly(Action<AfterStoredProcedureAssemblyPipelineEventContext> action, Predicate<AfterStoredProcedureAssemblyPipelineEventContext> predicate);
 
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to executing any sql statement against the target database.
+        /// Execute the delegate <paramref name="action"/> after assembling a sql statement from a query expression for a DELETE operation.
         /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeSqlStatementExecution(Func<BeforeExecutionPipelineExecutionContext, Task> action);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterStoredProcedureAssembly(Func<AfterStoredProcedureAssemblyPipelineEventContext, Task> action);
 
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to executing any sql statement against the target database.
-        /// </summary>
-        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeSqlStatementExecution(Func<BeforeExecutionPipelineExecutionContext, Task> action, Predicate<BeforeExecutionPipelineExecutionContext> predicate);
-
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to executing any sql statement against the target database.
-        /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeSqlStatementExecution(Func<BeforeExecutionPipelineExecutionContext, CancellationToken, Task> action);
-
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> prior to executing any sql statement against the target database.
+        /// Execute the delegate <paramref name="action"/> after assembling a sql statement from a query expression for a DELETE operation.
         /// </summary>
         /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeSqlStatementExecution(Func<BeforeExecutionPipelineExecutionContext, CancellationToken, Task> action, Predicate<BeforeExecutionPipelineExecutionContext> predicate);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterStoredProcedureAssembly(Func<AfterStoredProcedureAssemblyPipelineEventContext, Task> action, Predicate<AfterStoredProcedureAssemblyPipelineEventContext> predicate);
 
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> after executing any sql statement against the target database.
+        /// Execute the delegate <paramref name="action"/> after assembling a sql statement from a query expression for a DELETE operation.
         /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterSqlStatementExecution(Action<AfterExecutionPipelineExecutionContext> action);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterStoredProcedureAssembly(Func<AfterStoredProcedureAssemblyPipelineEventContext, CancellationToken, Task> action);
 
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> after executing any sql statement against the target database.
-        /// </summary>
-        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterSqlStatementExecution(Action<AfterExecutionPipelineExecutionContext> action, Predicate<AfterExecutionPipelineExecutionContext> predicate);
-
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> after executing any sql statement against the target database.
-        /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterSqlStatementExecution(Func<AfterExecutionPipelineExecutionContext, Task> action);
-
-        /// <summary>
-        /// Execute the delegate <paramref name="action"/> after executing any sql statement against the target database.
+        /// Execute the delegate <paramref name="action"/> after assembling a sql statement from a query expression for a stored procedure.
         /// </summary>
         /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterSqlStatementExecution(Func<AfterExecutionPipelineExecutionContext, Task> action, Predicate<AfterExecutionPipelineExecutionContext> predicate);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterStoredProcedureAssembly(Func<AfterStoredProcedureAssemblyPipelineEventContext, CancellationToken, Task> action, Predicate<AfterStoredProcedureAssemblyPipelineEventContext> predicate);
 
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> after executing any sql statement against the target database.
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement for a stored procedure.
         /// </summary>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterSqlStatementExecution(Func<AfterExecutionPipelineExecutionContext, CancellationToken, Task> action);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeStoredProcedureCommand(Action<BeforeStoredProcedureCommandPipelineEventContext> action);
 
         /// <summary>
-        /// Execute the delegate <paramref name="action"/> after executing any sql statement against the target database.
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement for a stored procedure.
         /// </summary>
         /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
-        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterSqlStatementExecution(Func<AfterExecutionPipelineExecutionContext, CancellationToken, Task> action, Predicate<AfterExecutionPipelineExecutionContext> predicate);
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeStoredProcedureCommand(Action<BeforeStoredProcedureCommandPipelineEventContext> action, Predicate<BeforeStoredProcedureCommandPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement for a stored procedure.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeStoredProcedureCommand(Func<BeforeStoredProcedureCommandPipelineEventContext, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement for a stored procedure.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeStoredProcedureCommand(Func<BeforeStoredProcedureCommandPipelineEventContext, Task> action, Predicate<BeforeStoredProcedureCommandPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement for a stored procedure.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeStoredProcedureCommand(Func<BeforeStoredProcedureCommandPipelineEventContext, CancellationToken, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to executing a sql statement for a stored procedure.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnBeforeStoredProcedureCommand(Func<BeforeStoredProcedureCommandPipelineEventContext, CancellationToken, Task> action, Predicate<BeforeStoredProcedureCommandPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after executing a sql statement for a stored procedure.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterStoredProcedureCommand(Action<AfterStoredProcedureCommandPipelineEventContext> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after executing a sql statement for a stored procedure.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterStoredProcedureCommand(Action<AfterStoredProcedureCommandPipelineEventContext> action, Predicate<AfterStoredProcedureCommandPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after executing a sql statement for a stored procedure.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterStoredProcedureCommand(Func<AfterStoredProcedureCommandPipelineEventContext, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after executing a sql statement for a stored procedure.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterStoredProcedureCommand(Func<AfterStoredProcedureCommandPipelineEventContext, Task> action, Predicate<AfterStoredProcedureCommandPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after executing a sql statement for a stored procedure.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterStoredProcedureCommand(Func<AfterStoredProcedureCommandPipelineEventContext, CancellationToken, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after executing a sql statement for a stored procedure.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterStoredProcedureCommand(Func<AfterStoredProcedureCommandPipelineEventContext, CancellationToken, Task> action, Predicate<AfterStoredProcedureCommandPipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after all activities for a UPDATE operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterStoredProcedureComplete(Action<AfterStoredProcedureCompletePipelineEventContext> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after all activities for a UPDATE operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterStoredProcedureComplete(Action<AfterStoredProcedureCompletePipelineEventContext> action, Predicate<AfterStoredProcedureCompletePipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after all activities for a UPDATE operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterStoredProcedureComplete(Func<AfterStoredProcedureCompletePipelineEventContext, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after all activities for a stored procedure.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterStoredProcedureComplete(Func<AfterStoredProcedureCompletePipelineEventContext, Task> action, Predicate<AfterStoredProcedureCompletePipelineEventContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after all activities for a UPDATE operation.
+        /// </summary>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterStoredProcedureComplete(Func<AfterStoredProcedureCompletePipelineEventContext, CancellationToken, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after all activities for a UPDATE operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IQueryExecutionPipelineEventConfigurationBuilder<TDatabase> OnAfterStoredProcedureComplete(Func<AfterStoredProcedureCompletePipelineEventContext, CancellationToken, Task> action, Predicate<AfterStoredProcedureCompletePipelineEventContext> predicate);
         #endregion
     }
 }
