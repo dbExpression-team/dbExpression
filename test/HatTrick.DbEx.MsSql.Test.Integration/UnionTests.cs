@@ -636,6 +636,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
         [Theory]
         [MsSqlVersions.AllVersions]
+        [Trait("Operation", "SUBQUERY")]
         public void Can_select_with_union_all_of_value_subquery_with_ordering_execute_successfully(int version, int expected = 100)
         {
             //given
@@ -670,6 +671,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
         [Theory]
         [MsSqlVersions.AllVersions]
+        [Trait("Operation", "SUBQUERY")]
         public void Can_pivot_select_statements_using_union_all_and_aggregation_execute_successfully(int version, int expected = 16)
         {
             //given

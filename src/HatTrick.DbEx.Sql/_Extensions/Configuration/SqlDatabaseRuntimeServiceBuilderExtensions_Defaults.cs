@@ -31,7 +31,6 @@ namespace HatTrick.DbEx.Sql.Configuration
         {
             builder
                 .ForQueryType<StoredProcedureQueryExpression>().Use<StoredProcedureQueryExpression>()
-                .ForQueryType<SelectSetQueryExpression>().Use<SelectSetQueryExpression>()
                 .ForSelect().Use<SelectQueryExpression>()
                 .ForInsert().Use<InsertQueryExpression>()
                 .ForUpdate().Use<UpdateQueryExpression>()
@@ -42,7 +41,6 @@ namespace HatTrick.DbEx.Sql.Configuration
             where TDatabase : class, ISqlDatabaseRuntime
         {
             builder
-                .ForPipelineType<ISelectSetQueryExpressionExecutionPipeline>().Use<SelectQueryExpressionExecutionPipeline>()
                 .ForPipelineType<IStoredProcedureExpressionExecutionPipeline>().Use<StoredProcedureQueryExpressionExecutionPipeline>()
                 .ForSelect().Use<SelectQueryExpressionExecutionPipeline>()
                 .ForInsert().Use<InsertQueryExpressionExecutionPipeline>()
@@ -93,10 +91,10 @@ namespace HatTrick.DbEx.Sql.Configuration
             where TDatabase : class, ISqlDatabaseRuntime
         {
             builder
-                .ForElementType<SelectSetQueryExpression>().Use<SelectSetQueryExpressionAppender>()
                 .ForElementType<SelectQueryExpression>().Use<SelectQueryExpressionAppender>()
                 .ForElementType<UpdateQueryExpression>().Use<UpdateQueryExpressionAppender>()
                 .ForElementType<DeleteQueryExpression>().Use<DeleteQueryExpressionAppender>()
+                .ForElementType<QueryExpressionContinuationExpression>().Use<QueryExpressionContinuationExpressionAppender>()
                 .ForElementType<SchemaExpression>().Use<SchemaExpressionAppender>()
                 .ForElementType<EntityExpression>().Use<EntityExpressionAppender>()
                 .ForElementType<FieldExpression>().Use<FieldExpressionAppender>()

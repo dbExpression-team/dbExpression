@@ -25,12 +25,14 @@ namespace HatTrick.DbEx.Sql.Pipeline
 {
     public class BeforeSelectCommandPipelineEventContext : BeforeCommandPipelineEventContext, IPipelineEventContext
     {
-        #region constructors
-        public BeforeSelectCommandPipelineEventContext(QueryExpression expression, IDbCommand command, SqlStatement statement)
+        private readonly SelectQueryExpression _expression;
+
+        public new SelectQueryExpression Expression => _expression;
+
+        public BeforeSelectCommandPipelineEventContext(SelectQueryExpression expression, IDbCommand command, SqlStatement statement)
             : base(expression, command, statement)
         {
-
+            _expression = expression ?? throw new ArgumentNullException(nameof(expression));
         }
-        #endregion
     }
 }

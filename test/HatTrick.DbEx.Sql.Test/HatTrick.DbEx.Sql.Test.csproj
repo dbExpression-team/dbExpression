@@ -41,10 +41,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Assembler\" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<ProjectReference Include="..\..\src\HatTrick.DbEx.Sql\HatTrick.DbEx.Sql.csproj" />
 	</ItemGroup>
 

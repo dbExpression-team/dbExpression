@@ -33,6 +33,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             AppendGroupByClause(expression, builder, context);
             AppendHavingClause(expression, builder, context);
             AppendOrderByClause(expression, builder, context);
+            AppendContinuationExpression(expression, builder, context);
         }
 
         protected virtual void AppendSelectClause(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
@@ -174,6 +175,14 @@ namespace HatTrick.DbEx.Sql.Assembler
             }
 
             builder.Appender.Indentation--;
+        }
+
+        protected virtual void AppendContinuationExpression(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
+        {
+            if (expression.ContinuationExpression is null || expression.ContinuationExpression.ContinuationExpression is null || expression.ContinuationExpression.Expression is null)
+                return;
+
+            builder.AppendElement(expression.ContinuationExpression, context);
         }
     }
 }

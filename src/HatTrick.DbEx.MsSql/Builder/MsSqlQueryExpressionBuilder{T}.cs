@@ -23,6 +23,7 @@ using HatTrick.DbEx.Sql.Pipeline;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 
 namespace HatTrick.DbEx.MsSql.Builder
 {
@@ -49,251 +50,280 @@ namespace HatTrick.DbEx.MsSql.Builder
         public virtual SelectEntity<TDatabase, TEntity> CreateSelectEntityBuilder<TEntity>(Table<TEntity> table)
             where TEntity : class, IDbEntity, new()
         {
-            return (new EntitySelectSetQueryExpressionBuilder<TDatabase, TEntity>(
+            var builder = new SelectEntitySelectQueryExpressionBuilder<TDatabase, TEntity>(
                 queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>,
-                executionPipelineFactory.CreateSelectSetQueryExecutionPipeline,
                 executionPipelineFactory.CreateSelectQueryExecutionPipeline,
                 table
-            ) as SelectOneInitiation<TDatabase>)!.SelectOne<TEntity>();
+            );
+            builder.SelectQueryExpression.Select = table.BuildInclusiveSelectExpression() ?? throw new DbExpressionException($"Select expressions for entity {typeof(TEntity)} were not provided.");
+            return builder;
         }
 
         public virtual SelectDynamic<TDatabase> CreateSelectDynamicBuilder(AnyElement element1, AnyElement element2, params AnyElement[] elements)
-            => CreateSelectBuilder<SelectOneInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element1, element2, elements);
+        {
+            return (new SelectDynamicSelectQueryExpressionBuilder<TDatabase>(
+                queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>,
+                executionPipelineFactory.CreateSelectQueryExecutionPipeline
+            ) as SelectOneInitiation<TDatabase>).SelectOne(element1, element2, elements);
+        }
 
         public virtual SelectDynamic<TDatabase> CreateSelectDynamicBuilder(IEnumerable<AnyElement> elements)
-            => CreateSelectBuilder<SelectOneInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(elements);
+        {
+            return (new SelectDynamicSelectQueryExpressionBuilder<TDatabase>(
+                queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>,
+                executionPipelineFactory.CreateSelectQueryExecutionPipeline
+            ) as SelectOneInitiation<TDatabase>).SelectOne(elements);
+        }
 
         public virtual SelectValue<TDatabase, TEnum> CreateSelectValueBuilder<TEnum>(AnyElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
-            => CreateSelectBuilder<SelectOneInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
+            => CreateSelectValueBuilder<TEnum>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
 
         public virtual SelectValue<TDatabase, TEnum?> CreateSelectValueBuilder<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable
-            => CreateSelectBuilder<SelectOneInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
+            => CreateSelectValueBuilder<TEnum?>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
 
         public virtual SelectValue<TDatabase, object> CreateSelectValueBuilder(ObjectElement element)
-            => CreateSelectBuilder<SelectOneInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element)!;
+            => CreateSelectValueBuilder<object>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element)!;
 
         public virtual SelectValue<TDatabase, object?> CreateSelectValueBuilder(NullableObjectElement element)
-           => CreateSelectBuilder<SelectOneInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
+            => CreateSelectValueBuilder<object?>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
 
         public virtual SelectObject<TDatabase, T> CreateSelectValueBuilder<T>(ObjectElement<T> element)
             where T : class?
-            => CreateSelectBuilder<SelectOneInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
+            => CreateSelectValueBuilder<T>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
 
         public virtual SelectValue<TDatabase, T> CreateSelectValueBuilder<T>(AliasedElement<T> element)
-            => CreateSelectBuilder<SelectOneInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
+            => CreateSelectValueBuilder<T>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
 
         public virtual SelectValue<TDatabase, bool> CreateSelectValueBuilder(AnyElement<bool> element)
-            => CreateSelectBuilder<SelectOneInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
+            => CreateSelectValueBuilder<bool>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
 
         public virtual SelectValue<TDatabase, bool?> CreateSelectValueBuilder(AnyElement<bool?> element)
-            => CreateSelectBuilder<SelectOneInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
+            => CreateSelectValueBuilder<bool?>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
 
         public virtual SelectValue<TDatabase, byte> CreateSelectValueBuilder(AnyElement<byte> element)
-            => CreateSelectBuilder<SelectOneInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
+            => CreateSelectValueBuilder<byte>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
 
         public virtual SelectValue<TDatabase, byte?> CreateSelectValueBuilder(AnyElement<byte?> element)
-            => CreateSelectBuilder<SelectOneInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
+            => CreateSelectValueBuilder<byte?>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
 
         public virtual SelectValue<TDatabase, byte[]> CreateSelectValueBuilder(AnyElement<byte[]> element)
-            => CreateSelectBuilder<SelectOneInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
+            => CreateSelectValueBuilder<byte[]>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
 
         public virtual SelectValue<TDatabase, DateTime> CreateSelectValueBuilder(AnyElement<DateTime> element)
-            => CreateSelectBuilder<SelectOneInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
+            => CreateSelectValueBuilder<DateTime>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
 
         public virtual SelectValue<TDatabase, DateTime?> CreateSelectValueBuilder(AnyElement<DateTime?> element)
-            => CreateSelectBuilder<SelectOneInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
+            => CreateSelectValueBuilder<DateTime?>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
 
         public virtual SelectValue<TDatabase, DateTimeOffset> CreateSelectValueBuilder(AnyElement<DateTimeOffset> element)
-            => CreateSelectBuilder<SelectOneInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
+            => CreateSelectValueBuilder<DateTimeOffset>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
 
         public virtual SelectValue<TDatabase, DateTimeOffset?> CreateSelectValueBuilder(AnyElement<DateTimeOffset?> element)
-            => CreateSelectBuilder<SelectOneInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
+            => CreateSelectValueBuilder<DateTimeOffset?>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
 
         public virtual SelectValue<TDatabase, decimal> CreateSelectValueBuilder(AnyElement<decimal> element)
-            => CreateSelectBuilder<SelectOneInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
+            => CreateSelectValueBuilder<decimal>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
 
         public virtual SelectValue<TDatabase, decimal?> CreateSelectValueBuilder(AnyElement<decimal?> element)
-            => CreateSelectBuilder<SelectOneInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
+            => CreateSelectValueBuilder<decimal?>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
 
         public virtual SelectValue<TDatabase, double> CreateSelectValueBuilder(AnyElement<double> element)
-            => CreateSelectBuilder<SelectOneInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
+            => CreateSelectValueBuilder<double>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
 
         public virtual SelectValue<TDatabase, double?> CreateSelectValueBuilder(AnyElement<double?> element)
-            => CreateSelectBuilder<SelectOneInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
+            => CreateSelectValueBuilder<double?>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
 
         public virtual SelectValue<TDatabase, Guid> CreateSelectValueBuilder(AnyElement<Guid> element)
-            => CreateSelectBuilder<SelectOneInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
+            => CreateSelectValueBuilder<Guid>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
 
         public virtual SelectValue<TDatabase, Guid?> CreateSelectValueBuilder(AnyElement<Guid?> element)
-            => CreateSelectBuilder<SelectOneInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
+            => CreateSelectValueBuilder<Guid?>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
 
         public virtual SelectValue<TDatabase, short> CreateSelectValueBuilder(AnyElement<short> element)
-            => CreateSelectBuilder<SelectOneInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
+            => CreateSelectValueBuilder<short>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
 
         public virtual SelectValue<TDatabase, short?> CreateSelectValueBuilder(AnyElement<short?> element)
-            => CreateSelectBuilder<SelectOneInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
+            => CreateSelectValueBuilder<short?>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
 
         public virtual SelectValue<TDatabase, int> CreateSelectValueBuilder(AnyElement<int> element)
-            => CreateSelectBuilder<SelectOneInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
+            => CreateSelectValueBuilder<int>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
 
         public virtual SelectValue<TDatabase, int?> CreateSelectValueBuilder(AnyElement<int?> element)
-            => CreateSelectBuilder<SelectOneInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
+            => CreateSelectValueBuilder<int?>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
 
         public virtual SelectValue<TDatabase, long> CreateSelectValueBuilder(AnyElement<long> element)
-            => CreateSelectBuilder<SelectOneInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
+            => CreateSelectValueBuilder<long>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
 
         public virtual SelectValue<TDatabase, long?> CreateSelectValueBuilder(AnyElement<long?> element)
-            => CreateSelectBuilder<SelectOneInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
+            => CreateSelectValueBuilder<long?>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
 
         public virtual SelectValue<TDatabase, float> CreateSelectValueBuilder(AnyElement<float> element)
-            => CreateSelectBuilder<SelectOneInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
+            => CreateSelectValueBuilder<float>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
 
         public virtual SelectValue<TDatabase, float?> CreateSelectValueBuilder(AnyElement<float?> element)
-            => CreateSelectBuilder<SelectOneInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
+            => CreateSelectValueBuilder<float?>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
 
         public virtual SelectValue<TDatabase, string> CreateSelectValueBuilder(StringElement element)
-            => CreateSelectBuilder<SelectOneInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
+            => CreateSelectValueBuilder<TimeSpan?>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
 
         public virtual SelectValue<TDatabase, string?> CreateSelectValueBuilder(NullableStringElement element)
-            => CreateSelectBuilder<SelectOneInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
+            => CreateSelectValueBuilder<string?>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
 
         public virtual SelectValue<TDatabase, TimeSpan> CreateSelectValueBuilder(AnyElement<TimeSpan> element)
-            => CreateSelectBuilder<SelectOneInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
+            => CreateSelectValueBuilder<TimeSpan>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
 
         public virtual SelectValue<TDatabase, TimeSpan?> CreateSelectValueBuilder(AnyElement<TimeSpan?> element)
-            => CreateSelectBuilder<SelectOneInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
+            => CreateSelectValueBuilder<TimeSpan?>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
         #endregion
 
         #region select many
         public virtual SelectEntities<TDatabase, TEntity> CreateSelectEntitiesBuilder<TEntity>(Table<TEntity> table)
             where TEntity : class, IDbEntity, new()
         {
-            return (new EntitySelectSetQueryExpressionBuilder<TDatabase, TEntity>(
+            var builder = new SelectEntitiesSelectQueryExpressionBuilder<TDatabase, TEntity>(
                 queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>,
-                executionPipelineFactory.CreateSelectSetQueryExecutionPipeline,
                 executionPipelineFactory.CreateSelectQueryExecutionPipeline,
                 table
-            ) as SelectManyInitiation<TDatabase>)!.SelectMany<TEntity>();
+            );
+            builder.SelectQueryExpression.Select = table.BuildInclusiveSelectExpression() ?? throw new DbExpressionException($"Select expressions for entity {typeof(TEntity)} were not provided.");
+            return builder;
         }
 
         public virtual SelectDynamics<TDatabase> CreateSelectDynamicsBuilder(AnyElement element1, AnyElement element2, params AnyElement[] elements)
-            => CreateSelectBuilder<SelectManyInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element1, element2, elements);
+        {
+            return (new SelectDynamicsSelectQueryExpressionBuilder<TDatabase>(
+                queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>,
+                executionPipelineFactory.CreateSelectQueryExecutionPipeline
+            ) as SelectManyInitiation<TDatabase>).SelectMany(element1, element2, elements);
+        }
 
         public virtual SelectDynamics<TDatabase> CreateSelectDynamicsBuilder(IEnumerable<AnyElement> elements)
-            => CreateSelectBuilder<SelectManyInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(elements);
+        {
+            return (new SelectDynamicsSelectQueryExpressionBuilder<TDatabase>(
+                queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>,
+                executionPipelineFactory.CreateSelectQueryExecutionPipeline
+            ) as SelectManyInitiation<TDatabase>).SelectMany(elements);
+        }
 
         public virtual SelectValues<TDatabase, TEnum> CreateSelectValuesBuilder<TEnum>(AnyElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
-            => CreateSelectBuilder<SelectManyInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
+            => CreateSelectValuesBuilder<TEnum>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
 
         public virtual SelectValues<TDatabase, TEnum?> CreateSelectValuesBuilder<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable
-            => CreateSelectBuilder<SelectManyInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
+            => CreateSelectValuesBuilder<TEnum?>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
 
         public virtual SelectValues<TDatabase, object> CreateSelectValuesBuilder(ObjectElement element)
-            => CreateSelectBuilder<SelectManyInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element)!;
+            => CreateSelectValuesBuilder<object>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element)!;
 
         public virtual SelectValues<TDatabase, object?> CreateSelectValuesBuilder(NullableObjectElement element)
-            => CreateSelectBuilder<SelectManyInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
+            => CreateSelectValuesBuilder<object?>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
 
         public virtual SelectObjects<TDatabase, T> CreateSelectValuesBuilder<T>(ObjectElement<T> element)
             where T : class?
-            => CreateSelectBuilder<SelectManyInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany<T>(element);
+            => CreateSelectValuesBuilder<T>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany<T>(element);
 
         public virtual SelectValues<TDatabase, T> CreateSelectValuesBuilder<T>(AliasedElement<T> element)
-            => CreateSelectBuilder<SelectManyInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany<T>(element);
+            => CreateSelectValuesBuilder<T>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany<T>(element);
         
         public virtual SelectValues<TDatabase, bool> CreateSelectValuesBuilder(AnyElement<bool> element)
-            => CreateSelectBuilder<SelectManyInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
+            => CreateSelectValuesBuilder<bool>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
 
         public virtual SelectValues<TDatabase, bool?> CreateSelectValuesBuilder(AnyElement<bool?> element)
-            => CreateSelectBuilder<SelectManyInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
+            => CreateSelectValuesBuilder<bool?>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
 
         public virtual SelectValues<TDatabase, byte> CreateSelectValuesBuilder(AnyElement<byte> element)
-            => CreateSelectBuilder<SelectManyInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
+            => CreateSelectValuesBuilder<byte>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
 
         public virtual SelectValues<TDatabase, byte?> CreateSelectValuesBuilder(AnyElement<byte?> element)
-            => CreateSelectBuilder<SelectManyInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
+            => CreateSelectValuesBuilder<byte?>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
 
         public virtual SelectValues<TDatabase, byte[]> CreateSelectValuesBuilder(AnyElement<byte[]> element)
-            => CreateSelectBuilder<SelectManyInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
+            => CreateSelectValuesBuilder<byte[]>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
 
         public virtual SelectValues<TDatabase, DateTime> CreateSelectValuesBuilder(AnyElement<DateTime> element)
-            => CreateSelectBuilder<SelectManyInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
+            => CreateSelectValuesBuilder<DateTime>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
 
         public virtual SelectValues<TDatabase, DateTime?> CreateSelectValuesBuilder(AnyElement<DateTime?> element)
-            => CreateSelectBuilder<SelectManyInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
+            => CreateSelectValuesBuilder<DateTime?>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
 
         public virtual SelectValues<TDatabase, DateTimeOffset> CreateSelectValuesBuilder(AnyElement<DateTimeOffset> element)
-            => CreateSelectBuilder<SelectManyInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
+            => CreateSelectValuesBuilder<DateTimeOffset>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
 
         public virtual SelectValues<TDatabase, DateTimeOffset?> CreateSelectValuesBuilder(AnyElement<DateTimeOffset?> element)
-            => CreateSelectBuilder<SelectManyInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
+            => CreateSelectValuesBuilder<DateTimeOffset?>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
 
         public virtual SelectValues<TDatabase, decimal> CreateSelectValuesBuilder(AnyElement<decimal> element)
-            => CreateSelectBuilder<SelectManyInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
+            => CreateSelectValuesBuilder<decimal>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
 
         public virtual SelectValues<TDatabase, decimal?> CreateSelectValuesBuilder(AnyElement<decimal?> element)
-            => CreateSelectBuilder<SelectManyInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
+            => CreateSelectValuesBuilder<decimal?>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
 
         public virtual SelectValues<TDatabase, double> CreateSelectValuesBuilder(AnyElement<double> element)
-            => CreateSelectBuilder<SelectManyInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
+            => CreateSelectValuesBuilder<double>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
 
         public virtual SelectValues<TDatabase, double?> CreateSelectValuesBuilder(AnyElement<double?> element)
-            => CreateSelectBuilder<SelectManyInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
+            => CreateSelectValuesBuilder<double?>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
 
         public virtual SelectValues<TDatabase, Guid> CreateSelectValuesBuilder(AnyElement<Guid> element)
-            => CreateSelectBuilder<SelectManyInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
+            => CreateSelectValuesBuilder<Guid>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
 
         public virtual SelectValues<TDatabase, Guid?> CreateSelectValuesBuilder(AnyElement<Guid?> element)
-            => CreateSelectBuilder<SelectManyInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
+            => CreateSelectValuesBuilder<Guid?>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
 
         public virtual SelectValues<TDatabase, short> CreateSelectValuesBuilder(AnyElement<short> element)
-            => CreateSelectBuilder<SelectManyInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
+            => CreateSelectValuesBuilder<short>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
 
         public virtual SelectValues<TDatabase, short?> CreateSelectValuesBuilder(AnyElement<short?> element)
-            => CreateSelectBuilder<SelectManyInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
+            => CreateSelectValuesBuilder<short?>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
 
         public virtual SelectValues<TDatabase, int> CreateSelectValuesBuilder(AnyElement<int> element)
-            => CreateSelectBuilder<SelectManyInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
+            => CreateSelectValuesBuilder<int>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
 
         public virtual SelectValues<TDatabase, int?> CreateSelectValuesBuilder(AnyElement<int?> element)
-            => CreateSelectBuilder<SelectManyInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
+            => CreateSelectValuesBuilder<int?>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
 
         public virtual SelectValues<TDatabase, long> CreateSelectValuesBuilder(AnyElement<long> element)
-            => CreateSelectBuilder<SelectManyInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
+            => CreateSelectValuesBuilder<long>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
 
         public virtual SelectValues<TDatabase, long?> CreateSelectValuesBuilder(AnyElement<long?> element)
-            => CreateSelectBuilder<SelectManyInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
+            => CreateSelectValuesBuilder<long?>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
 
         public virtual SelectValues<TDatabase, float> CreateSelectValuesBuilder(AnyElement<float> element)
-            => CreateSelectBuilder<SelectManyInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
+            => CreateSelectValuesBuilder<float>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
 
         public virtual SelectValues<TDatabase, float?> CreateSelectValuesBuilder(AnyElement<float?> element)
-            => CreateSelectBuilder<SelectManyInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
+            => CreateSelectValuesBuilder<float?>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
 
         public virtual SelectValues<TDatabase, string> CreateSelectValuesBuilder(StringElement element)
-            => CreateSelectBuilder<SelectManyInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
+            => CreateSelectValuesBuilder<string>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
 
         public virtual SelectValues<TDatabase, string?> CreateSelectValuesBuilder(NullableStringElement element)
-            => CreateSelectBuilder<SelectManyInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
+            => CreateSelectValuesBuilder<string?>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
 
         public virtual SelectValues<TDatabase, TimeSpan> CreateSelectValuesBuilder(AnyElement<TimeSpan> element)
-            => CreateSelectBuilder<SelectManyInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
+            => CreateSelectValuesBuilder<TimeSpan>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
 
         public virtual SelectValues<TDatabase, TimeSpan?> CreateSelectValuesBuilder(AnyElement<TimeSpan?> element)
-            => CreateSelectBuilder<SelectManyInitiation<TDatabase>>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
+            => CreateSelectValuesBuilder<TimeSpan?>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
 
-        private TReturn CreateSelectBuilder<TReturn>(Func<SelectQueryExpression> queryExpressionFactory)
-            where TReturn : class
+
+        private SelectOneInitiation<TDatabase> CreateSelectValueBuilder<TValue>(Func<SelectQueryExpression> queryExpressionFactory)
         {
-            return (new SelectSetQueryExpressionBuilder<TDatabase>(
+            return new SelectValueSelectQueryExpressionBuilder<TDatabase, TValue>(
                 queryExpressionFactory,
-                executionPipelineFactory.CreateSelectSetQueryExecutionPipeline,
                 executionPipelineFactory.CreateSelectQueryExecutionPipeline
-            ) as TReturn) ?? throw new DbExpressionException($"Expected query builder to implement interface {typeof(TReturn)}, but it does not.");
+            );
+        }
+
+        private SelectManyInitiation<TDatabase> CreateSelectValuesBuilder<TValue>(Func<SelectQueryExpression> queryExpressionFactory)
+        {
+            return new SelectValuesSelectQueryExpressionBuilder<TDatabase, TValue>(
+                queryExpressionFactory,
+                executionPipelineFactory.CreateSelectQueryExecutionPipeline
+            );
         }
         #endregion
 

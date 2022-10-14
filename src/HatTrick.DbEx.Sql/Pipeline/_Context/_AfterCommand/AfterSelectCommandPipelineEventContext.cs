@@ -19,15 +19,20 @@
 using HatTrick.DbEx.Sql.Expression;
 using System.Data;
 using System;
+using HatTrick.DbEx.Sql.Assembler;
 
 namespace HatTrick.DbEx.Sql.Pipeline
 {
     public class AfterSelectCommandPipelineEventContext : AfterCommandPipelineEventContext, IPipelineEventContext
     {
-        public AfterSelectCommandPipelineEventContext(QueryExpression expression, IDbCommand command)
+        private readonly SelectQueryExpression _expression;
+
+        public new SelectQueryExpression Expression => _expression;
+
+        public AfterSelectCommandPipelineEventContext(SelectQueryExpression expression, IDbCommand command)
             : base(expression, command)
         {
-
+            _expression = expression ?? throw new ArgumentNullException(nameof(expression));
         }
     }
 }

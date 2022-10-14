@@ -24,7 +24,6 @@ namespace HatTrick.DbEx.Sql.Pipeline
         IUpdateQueryExpressionExecutionPipeline CreateUpdateQueryExecutionPipeline();
         IDeleteQueryExpressionExecutionPipeline CreateDeleteQueryExecutionPipeline();
         ISelectQueryExpressionExecutionPipeline CreateSelectQueryExecutionPipeline();
-        ISelectSetQueryExpressionExecutionPipeline CreateSelectSetQueryExecutionPipeline();
         IStoredProcedureExpressionExecutionPipeline CreateStoredProcedureExecutionPipeline();
     }
 }

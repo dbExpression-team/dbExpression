@@ -16,25 +16,19 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using System.Collections.Generic;
-using System.Text;
+using HatTrick.DbEx.Sql.Expression;
+using System;
 
-namespace HatTrick.DbEx.Sql.Expression
+namespace HatTrick.DbEx.Sql.Assembler
 {
-    public class SelectSetQueryExpression : QueryExpression
+    public class QueryExpressionContinuationExpressionAppender : ExpressionElementAppender<QueryExpressionContinuationExpression>
     {
-        #region interface
-        public IList<SelectQueryConcatenationExpression> Expressions { get; private set; } = new List<SelectQueryConcatenationExpression>();
-        #endregion
-
-        #region to string
-        public override string? ToString()
+        public override void AppendElement(QueryExpressionContinuationExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            var sb = new StringBuilder();
-            foreach (var expression in Expressions)
-                sb.Append(expression);
-            return sb.ToString();
+            builder.Appender.LineBreak();
+            builder.AppendElement(expression.ContinuationExpression, context);
+            builder.Appender.LineBreak();
+            builder.AppendElement(expression.Expression, context);
         }
-        #endregion
     }
 }
