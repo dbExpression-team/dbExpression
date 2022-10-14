@@ -24,10 +24,14 @@ namespace HatTrick.DbEx.Sql.Pipeline
 {
     public class AfterSelectAssemblyPipelineEventContext : AfterAssemblyPipelineEventContext, IPipelineEventContext
     {
-        public AfterSelectAssemblyPipelineEventContext(QueryExpression expression, ISqlParameterBuilder parameterBuilder, SqlStatement statement)
+        private readonly SelectQueryExpression _expression;
+
+        public new SelectQueryExpression Expression => _expression;
+
+        public AfterSelectAssemblyPipelineEventContext(SelectQueryExpression expression, ISqlParameterBuilder parameterBuilder, SqlStatement statement)
             : base(expression, parameterBuilder, statement)
         {
-
+            _expression = expression ?? throw new ArgumentNullException(nameof(expression));
         }
     }
 }

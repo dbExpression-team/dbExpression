@@ -9,12 +9,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Pipeline\_Context\_AfterQuery\**" />
-	  <EmbeddedResource Remove="Pipeline\_Context\_AfterQuery\**" />
-	  <None Remove="Pipeline\_Context\_AfterQuery\**" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />

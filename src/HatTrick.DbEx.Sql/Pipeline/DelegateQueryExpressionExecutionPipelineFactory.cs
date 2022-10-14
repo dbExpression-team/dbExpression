@@ -41,9 +41,6 @@ namespace HatTrick.DbEx.Sql.Pipeline
         public ISelectQueryExpressionExecutionPipeline CreateSelectQueryExecutionPipeline()
             => (factory(typeof(ISelectQueryExpressionExecutionPipeline))! as ISelectQueryExpressionExecutionPipeline)!;
 
-        public ISelectSetQueryExpressionExecutionPipeline CreateSelectSetQueryExecutionPipeline()
-            => (factory(typeof(ISelectSetQueryExpressionExecutionPipeline))! as ISelectSetQueryExpressionExecutionPipeline)!;
-
         public IStoredProcedureExpressionExecutionPipeline CreateStoredProcedureExecutionPipeline()
             => (factory(typeof(IStoredProcedureExpressionExecutionPipeline))! as IStoredProcedureExpressionExecutionPipeline)!;
     }

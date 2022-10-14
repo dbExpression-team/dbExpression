@@ -40,9 +40,19 @@ namespace HatTrick.DbEx.Sql.Builder
     {
         #region constructors
         public SelectDynamicsSelectQueryExpressionBuilder(
+            Func<SelectQueryExpression> queryExpressionFactory,
+            Func<ISelectQueryExpressionExecutionPipeline> executionPipelineFactory
+        ) : base(queryExpressionFactory, executionPipelineFactory)
+        {
+
+        }
+
+        public SelectDynamicsSelectQueryExpressionBuilder(
+            Func<SelectQueryExpression> queryExpressionFactory,
             Func<ISelectQueryExpressionExecutionPipeline> executionPipelineFactory,
-            SelectSetQueryExpressionBuilder<TDatabase> controller
-        ) : base(executionPipelineFactory, controller)
+            SelectQueryExpression rootExpression,
+            SelectQueryExpression currentExpression
+        ) : base(queryExpressionFactory, executionPipelineFactory, rootExpression, currentExpression)
         {
 
         }
@@ -52,13 +62,13 @@ namespace HatTrick.DbEx.Sql.Builder
         #region UnionSelectDynamicsInitiation<TDatabase>
         UnionSelectDynamicsContinuation<TDatabase> UnionSelectDynamicsInitiation<TDatabase>.Union()
         {
-            Controller.ApplyUnion();
+            ApplyUnion();
             return this;
         }
 
         UnionSelectDynamicsContinuation<TDatabase> UnionSelectDynamicsInitiation<TDatabase>.UnionAll()
         {
-            Controller.ApplyUnionAll();
+            ApplyUnionAll();
             return this;
         }
         #endregion
@@ -67,45 +77,42 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc>
         SelectDynamics<TDatabase> UnionSelectDynamicsContinuation<TDatabase>.SelectOne(IEnumerable<AnyElement> elements)
         {
-            var exp = Controller.StartNew();
-            exp.Select = new(new List<SelectExpression>(elements.Select(element => element.ToSelectExpression() ?? throw new ArgumentNullException(nameof(element)))));
-            exp.Top = 1;
+            ApplyTop(1);
+            Current.Select = new(new List<SelectExpression>(elements.Select(element => element.ToSelectExpression() ?? throw new ArgumentNullException(nameof(element)))));
             return this;
         }
 
         /// <inheritdoc>
         SelectDynamics<TDatabase> UnionSelectDynamicsContinuation<TDatabase>.SelectOne(AnyElement element1, AnyElement element2, params AnyElement[] elements)
         {
-            var exp = Controller.StartNew();
-            exp.Select = new(new List<SelectExpression>(elements.Length + 2)
+            ApplyTop(1);
+            Current.Select = new(new List<SelectExpression>(elements.Length + 2)
             {
                 element1?.ToSelectExpression() ?? throw new ArgumentNullException(nameof(element1)),
                 element2?.ToSelectExpression() ?? throw new ArgumentNullException(nameof(element2))
             }.Concat(elements.Select(x => x.ToSelectExpression())));
-            exp.Top = 1;
             return this;
         }
 
         /// <inheritdoc>
         SelectDynamics<TDatabase> UnionSelectDynamicsContinuation<TDatabase>.SelectOne(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
         {
-            var exp = Controller.StartNew();
-            exp.Select = new(elements.Concat(additionalElements).Select(element => element.ToSelectExpression() ?? throw new ArgumentNullException(nameof(element))));
-            exp.Top = 1;
+            ApplyTop(1);
+            Current.Select = new(elements.Concat(additionalElements).Select(element => element.ToSelectExpression() ?? throw new ArgumentNullException(nameof(element))));
             return this;
         }
 
         /// <inheritdoc>
         SelectDynamics<TDatabase> UnionSelectDynamicsContinuation<TDatabase>.SelectMany(IEnumerable<AnyElement> elements)
         {
-            Controller.StartNew().Select = new(new List<SelectExpression>(elements.Select(element => element.ToSelectExpression() ?? throw new ArgumentNullException(nameof(element)))));
+            Current.Select = new(new List<SelectExpression>(elements.Select(element => element.ToSelectExpression() ?? throw new ArgumentNullException(nameof(element)))));
             return this;
         }
 
         /// <inheritdoc>
         SelectDynamics<TDatabase> UnionSelectDynamicsContinuation<TDatabase>.SelectMany(AnyElement element1, AnyElement element2, params AnyElement[] elements)
         {
-            Controller.StartNew().Select = new(new List<SelectExpression>(elements.Length + 2)
+            Current.Select = new(new List<SelectExpression>(elements.Length + 2)
             {
                 element1?.ToSelectExpression() ?? throw new ArgumentNullException(nameof(element1)),
                 element2?.ToSelectExpression() ?? throw new ArgumentNullException(nameof(element2))
@@ -116,7 +123,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc>
         SelectDynamics<TDatabase> UnionSelectDynamicsContinuation<TDatabase>.SelectMany(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
         {
-            Controller.StartNew().Select = new(elements.Concat(additionalElements).Select(element => element.ToSelectExpression() ?? throw new ArgumentNullException(nameof(element))));
+            Current.Select = new(elements.Concat(additionalElements).Select(element => element.ToSelectExpression() ?? throw new ArgumentNullException(nameof(element))));
             return this;
         }
         #endregion
@@ -175,35 +182,35 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <inheritdoc />
         JoinOn<SelectDynamicsContinuation<TDatabase>> SelectDynamicsContinuation<TDatabase>.InnerJoin(AnyEntity entity)
-            => new SelectDynamicsJoinExpressionBuilder<TDatabase>(Controller.Current, entity, JoinOperationExpressionOperator.INNER, this);
+            => new SelectDynamicsJoinExpressionBuilder<TDatabase>(Current, entity, JoinOperationExpressionOperator.INNER, this);
 
         /// <inheritdoc />
         WithAlias<JoinOn<SelectDynamicsContinuation<TDatabase>>> SelectDynamicsContinuation<TDatabase>.InnerJoin(AnySelectSubquery subquery)
-            => new SelectDynamicsJoinExpressionBuilder<TDatabase>(Controller.Current, subquery.Expression, JoinOperationExpressionOperator.INNER, this);
+            => new SelectDynamicsJoinExpressionBuilder<TDatabase>(Current, subquery.Expression, JoinOperationExpressionOperator.INNER, this);
 
         /// <inheritdoc />
         JoinOn<SelectDynamicsContinuation<TDatabase>> SelectDynamicsContinuation<TDatabase>.LeftJoin(AnyEntity entity)
-            => new SelectDynamicsJoinExpressionBuilder<TDatabase>(Controller.Current, entity, JoinOperationExpressionOperator.LEFT, this);
+            => new SelectDynamicsJoinExpressionBuilder<TDatabase>(Current, entity, JoinOperationExpressionOperator.LEFT, this);
 
         /// <inheritdoc />
         WithAlias<JoinOn<SelectDynamicsContinuation<TDatabase>>> SelectDynamicsContinuation<TDatabase>.LeftJoin(AnySelectSubquery subquery)
-            => new SelectDynamicsJoinExpressionBuilder<TDatabase>(Controller.Current, subquery.Expression, JoinOperationExpressionOperator.LEFT, this);
+            => new SelectDynamicsJoinExpressionBuilder<TDatabase>(Current, subquery.Expression, JoinOperationExpressionOperator.LEFT, this);
 
         /// <inheritdoc />
         JoinOn<SelectDynamicsContinuation<TDatabase>> SelectDynamicsContinuation<TDatabase>.RightJoin(AnyEntity entity)
-            => new SelectDynamicsJoinExpressionBuilder<TDatabase>(Controller.Current, entity, JoinOperationExpressionOperator.RIGHT, this);
+            => new SelectDynamicsJoinExpressionBuilder<TDatabase>(Current, entity, JoinOperationExpressionOperator.RIGHT, this);
 
         /// <inheritdoc />
         WithAlias<JoinOn<SelectDynamicsContinuation<TDatabase>>> SelectDynamicsContinuation<TDatabase>.RightJoin(AnySelectSubquery subquery)
-            => new SelectDynamicsJoinExpressionBuilder<TDatabase>(Controller.Current, subquery.Expression, JoinOperationExpressionOperator.RIGHT, this);
+            => new SelectDynamicsJoinExpressionBuilder<TDatabase>(Current, subquery.Expression, JoinOperationExpressionOperator.RIGHT, this);
 
         /// <inheritdoc />
         JoinOn<SelectDynamicsContinuation<TDatabase>> SelectDynamicsContinuation<TDatabase>.FullJoin(AnyEntity entity)
-            => new SelectDynamicsJoinExpressionBuilder<TDatabase>(Controller.Current, entity, JoinOperationExpressionOperator.FULL, this);
+            => new SelectDynamicsJoinExpressionBuilder<TDatabase>(Current, entity, JoinOperationExpressionOperator.FULL, this);
 
         /// <inheritdoc />
         WithAlias<JoinOn<SelectDynamicsContinuation<TDatabase>>> SelectDynamicsContinuation<TDatabase>.FullJoin(AnySelectSubquery subquery)
-            => new SelectDynamicsJoinExpressionBuilder<TDatabase>(Controller.Current, subquery.Expression, JoinOperationExpressionOperator.FULL, this);
+            => new SelectDynamicsJoinExpressionBuilder<TDatabase>(Current, subquery.Expression, JoinOperationExpressionOperator.FULL, this);
 
         /// <inheritdoc />
         SelectDynamicsContinuation<TDatabase> SelectDynamicsContinuation<TDatabase>.CrossJoin(AnyEntity entity)
@@ -215,7 +222,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         SelectDynamicsContinuation<TDatabase> WithAlias<SelectDynamicsContinuation<TDatabase>>.As(string alias)
         {
-            Controller.Current.From!.As(alias);
+            Current.From!.As(alias);
             return this;
         }
 
@@ -620,25 +627,25 @@ namespace HatTrick.DbEx.Sql.Builder
 
         #region execute pipeline
         private IList<dynamic> ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand)
-            => Controller.CreateExecutionPipeline().ExecuteSelectDynamicList(Controller.SelectSetQueryExpression, connection, configureCommand);
+            => CreateExecutionPipeline().ExecuteSelectDynamicList(SelectQueryExpression, connection, configureCommand);
 
         private void ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> read)
-            => Controller.CreateExecutionPipeline().ExecuteSelectDynamicList(Controller.SelectSetQueryExpression, connection, configureCommand, read);
+            => CreateExecutionPipeline().ExecuteSelectDynamicList(SelectQueryExpression, connection, configureCommand, read);
 
         private IList<T> ExecutePipeline<T>(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, T> map)
-            => Controller.CreateExecutionPipeline().ExecuteSelectObjectList(Controller.SelectSetQueryExpression, connection, configureCommand, map);
+            => CreateExecutionPipeline().ExecuteSelectObjectList(SelectQueryExpression, connection, configureCommand, map);
 
         private Task<IList<dynamic>> ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken cancellationToken)
-            => Controller.CreateExecutionPipeline().ExecuteSelectDynamicListAsync(Controller.SelectSetQueryExpression, connection, configureCommand, cancellationToken);
+            => CreateExecutionPipeline().ExecuteSelectDynamicListAsync(SelectQueryExpression, connection, configureCommand, cancellationToken);
 
         private Task ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> read, CancellationToken cancellationToken)
-            => Controller.CreateExecutionPipeline().ExecuteSelectDynamicListAsync(Controller.SelectSetQueryExpression, connection, configureCommand, read, cancellationToken);
+            => CreateExecutionPipeline().ExecuteSelectDynamicListAsync(SelectQueryExpression, connection, configureCommand, read, cancellationToken);
 
         private Task ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, Task> map, CancellationToken cancellationToken)
-            => Controller.CreateExecutionPipeline().ExecuteSelectDynamicListAsync(Controller.SelectSetQueryExpression, connection, configureCommand, map, cancellationToken);
+            => CreateExecutionPipeline().ExecuteSelectDynamicListAsync(SelectQueryExpression, connection, configureCommand, map, cancellationToken);
 
         private Task<IList<T>> ExecutePipelineAsync<T>(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, T> read, CancellationToken cancellationToken)
-            => Controller.CreateExecutionPipeline().ExecuteSelectObjectListAsync(Controller.SelectSetQueryExpression, connection, configureCommand, read, cancellationToken);
+            => CreateExecutionPipeline().ExecuteSelectObjectListAsync(SelectQueryExpression, connection, configureCommand, read, cancellationToken);
         #endregion
         #endregion
         #endregion
