@@ -17,6 +17,7 @@
 #endregion
 
 using System;
+using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Expression;
 
 #nullable enable
@@ -97,74 +98,132 @@ namespace HatTrick.DbEx.MsSql.Expression
 
         #region alias
         public static DateTimeOffsetExpressionMediator operator +(SysDateTimeOffsetFunctionExpression a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        
         public static DateTimeOffsetExpressionMediator operator -(SysDateTimeOffsetFunctionExpression a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        
         public static DateTimeOffsetExpressionMediator operator +(SysDateTimeOffsetFunctionExpression a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression<DateTimeOffset>(b), ArithmeticExpressionOperator.Add));
+        
         public static DateTimeOffsetExpressionMediator operator -(SysDateTimeOffsetFunctionExpression a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression<DateTimeOffset>(b), ArithmeticExpressionOperator.Subtract));
+        
         #endregion
         #endregion
 
         #region filter operators
+        #region null
+        public static FilterExpression<bool?> operator ==(SysDateTimeOffsetFunctionExpression a, NullElement b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(SysDateTimeOffsetFunctionExpression a, NullElement b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullElement a, SysDateTimeOffsetFunctionExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullElement a, SysDateTimeOffsetFunctionExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        #endregion
+
         #region data types
         #region DateTimeOffset
-        public static FilterExpression operator ==(SysDateTimeOffsetFunctionExpression a, DateTimeOffset b) => new FilterExpression<bool>(a, new LiteralExpression<DateTimeOffset>(b), FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(SysDateTimeOffsetFunctionExpression a, DateTimeOffset b) => new FilterExpression<bool>(a, new LiteralExpression<DateTimeOffset>(b), FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator <(SysDateTimeOffsetFunctionExpression a, DateTimeOffset b) => new FilterExpression<bool>(a, new LiteralExpression<DateTimeOffset>(b), FilterExpressionOperator.LessThan);
-        public static FilterExpression operator >(SysDateTimeOffsetFunctionExpression a, DateTimeOffset b) => new FilterExpression<bool>(a, new LiteralExpression<DateTimeOffset>(b), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression operator <=(SysDateTimeOffsetFunctionExpression a, DateTimeOffset b) => new FilterExpression<bool>(a, new LiteralExpression<DateTimeOffset>(b), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression operator >=(SysDateTimeOffsetFunctionExpression a, DateTimeOffset b) => new FilterExpression<bool>(a, new LiteralExpression<DateTimeOffset>(b), FilterExpressionOperator.GreaterThanOrEqual);
-
-        public static FilterExpression operator ==(DateTimeOffset a, SysDateTimeOffsetFunctionExpression b) => new FilterExpression<bool>(new LiteralExpression<DateTimeOffset>(a), b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(DateTimeOffset a, SysDateTimeOffsetFunctionExpression b) => new FilterExpression<bool>(new LiteralExpression<DateTimeOffset>(a), b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator <(DateTimeOffset a, SysDateTimeOffsetFunctionExpression b) => new FilterExpression<bool>(new LiteralExpression<DateTimeOffset>(a), b, FilterExpressionOperator.LessThan);
-        public static FilterExpression operator >(DateTimeOffset a, SysDateTimeOffsetFunctionExpression b) => new FilterExpression<bool>(new LiteralExpression<DateTimeOffset>(a), b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression operator <=(DateTimeOffset a, SysDateTimeOffsetFunctionExpression b) => new FilterExpression<bool>(new LiteralExpression<DateTimeOffset>(a), b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression operator >=(DateTimeOffset a, SysDateTimeOffsetFunctionExpression b) => new FilterExpression<bool>(new LiteralExpression<DateTimeOffset>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
-
-        public static FilterExpression operator ==(SysDateTimeOffsetFunctionExpression a, DateTimeOffset? b) => new FilterExpression<bool>(a, new LiteralExpression<DateTimeOffset?>(b), FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(SysDateTimeOffsetFunctionExpression a, DateTimeOffset? b) => new FilterExpression<bool>(a, new LiteralExpression<DateTimeOffset?>(b), FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator <(SysDateTimeOffsetFunctionExpression a, DateTimeOffset? b) => new FilterExpression<bool>(a, new LiteralExpression<DateTimeOffset?>(b), FilterExpressionOperator.LessThan);
-        public static FilterExpression operator >(SysDateTimeOffsetFunctionExpression a, DateTimeOffset? b) => new FilterExpression<bool>(a, new LiteralExpression<DateTimeOffset?>(b), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression operator <=(SysDateTimeOffsetFunctionExpression a, DateTimeOffset? b) => new FilterExpression<bool>(a, new LiteralExpression<DateTimeOffset?>(b), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression operator >=(SysDateTimeOffsetFunctionExpression a, DateTimeOffset? b) => new FilterExpression<bool>(a, new LiteralExpression<DateTimeOffset?>(b), FilterExpressionOperator.GreaterThanOrEqual);
-
-        public static FilterExpression operator ==(DateTimeOffset? a, SysDateTimeOffsetFunctionExpression b) => new FilterExpression<bool>(new LiteralExpression<DateTimeOffset?>(a), b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(DateTimeOffset? a, SysDateTimeOffsetFunctionExpression b) => new FilterExpression<bool>(new LiteralExpression<DateTimeOffset?>(a), b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator <(DateTimeOffset? a, SysDateTimeOffsetFunctionExpression b) => new FilterExpression<bool>(new LiteralExpression<DateTimeOffset?>(a), b, FilterExpressionOperator.LessThan);
-        public static FilterExpression operator >(DateTimeOffset? a, SysDateTimeOffsetFunctionExpression b) => new FilterExpression<bool>(new LiteralExpression<DateTimeOffset?>(a), b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression operator <=(DateTimeOffset? a, SysDateTimeOffsetFunctionExpression b) => new FilterExpression<bool>(new LiteralExpression<DateTimeOffset?>(a), b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression operator >=(DateTimeOffset? a, SysDateTimeOffsetFunctionExpression b) => new FilterExpression<bool>(new LiteralExpression<DateTimeOffset?>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpression<bool> operator ==(SysDateTimeOffsetFunctionExpression a, DateTimeOffset b) => new FilterExpression<bool>(a, new LiteralExpression<DateTimeOffset>(b), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool> operator !=(SysDateTimeOffsetFunctionExpression a, DateTimeOffset b) => new FilterExpression<bool>(a, new LiteralExpression<DateTimeOffset>(b), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool> operator <(SysDateTimeOffsetFunctionExpression a, DateTimeOffset b) => new FilterExpression<bool>(a, new LiteralExpression<DateTimeOffset>(b), FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool> operator >(SysDateTimeOffsetFunctionExpression a, DateTimeOffset b) => new FilterExpression<bool>(a, new LiteralExpression<DateTimeOffset>(b), FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool> operator <=(SysDateTimeOffsetFunctionExpression a, DateTimeOffset b) => new FilterExpression<bool>(a, new LiteralExpression<DateTimeOffset>(b), FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool> operator >=(SysDateTimeOffsetFunctionExpression a, DateTimeOffset b) => new FilterExpression<bool>(a, new LiteralExpression<DateTimeOffset>(b), FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool> operator ==(DateTimeOffset a, SysDateTimeOffsetFunctionExpression b) => new FilterExpression<bool>(new LiteralExpression<DateTimeOffset>(a), b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool> operator !=(DateTimeOffset a, SysDateTimeOffsetFunctionExpression b) => new FilterExpression<bool>(new LiteralExpression<DateTimeOffset>(a), b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool> operator <(DateTimeOffset a, SysDateTimeOffsetFunctionExpression b) => new FilterExpression<bool>(new LiteralExpression<DateTimeOffset>(a), b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool> operator >(DateTimeOffset a, SysDateTimeOffsetFunctionExpression b) => new FilterExpression<bool>(new LiteralExpression<DateTimeOffset>(a), b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool> operator <=(DateTimeOffset a, SysDateTimeOffsetFunctionExpression b) => new FilterExpression<bool>(new LiteralExpression<DateTimeOffset>(a), b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool> operator >=(DateTimeOffset a, SysDateTimeOffsetFunctionExpression b) => new FilterExpression<bool>(new LiteralExpression<DateTimeOffset>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(SysDateTimeOffsetFunctionExpression a, DateTimeOffset? b) => new FilterExpression<bool?>(a, new LiteralExpression<DateTimeOffset?>(b), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(SysDateTimeOffsetFunctionExpression a, DateTimeOffset? b) => new FilterExpression<bool?>(a, new LiteralExpression<DateTimeOffset?>(b), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(SysDateTimeOffsetFunctionExpression a, DateTimeOffset? b) => new FilterExpression<bool?>(a, new LiteralExpression<DateTimeOffset?>(b), FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(SysDateTimeOffsetFunctionExpression a, DateTimeOffset? b) => new FilterExpression<bool?>(a, new LiteralExpression<DateTimeOffset?>(b), FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(SysDateTimeOffsetFunctionExpression a, DateTimeOffset? b) => new FilterExpression<bool?>(a, new LiteralExpression<DateTimeOffset?>(b), FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(SysDateTimeOffsetFunctionExpression a, DateTimeOffset? b) => new FilterExpression<bool?>(a, new LiteralExpression<DateTimeOffset?>(b), FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(DateTimeOffset? a, SysDateTimeOffsetFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<DateTimeOffset?>(a), b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(DateTimeOffset? a, SysDateTimeOffsetFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<DateTimeOffset?>(a), b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(DateTimeOffset? a, SysDateTimeOffsetFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<DateTimeOffset?>(a), b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(DateTimeOffset? a, SysDateTimeOffsetFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<DateTimeOffset?>(a), b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(DateTimeOffset? a, SysDateTimeOffsetFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<DateTimeOffset?>(a), b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(DateTimeOffset? a, SysDateTimeOffsetFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<DateTimeOffset?>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+        
         #endregion
         #endregion
 
         #region mediators
-        public static FilterExpression operator ==(SysDateTimeOffsetFunctionExpression a, DateTimeOffsetExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(SysDateTimeOffsetFunctionExpression a, DateTimeOffsetExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator <(SysDateTimeOffsetFunctionExpression a, DateTimeOffsetExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.LessThan);
-        public static FilterExpression operator >(SysDateTimeOffsetFunctionExpression a, DateTimeOffsetExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression operator <=(SysDateTimeOffsetFunctionExpression a, DateTimeOffsetExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression operator >=(SysDateTimeOffsetFunctionExpression a, DateTimeOffsetExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
-
-        public static FilterExpression operator ==(SysDateTimeOffsetFunctionExpression a, NullableDateTimeOffsetExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(SysDateTimeOffsetFunctionExpression a, NullableDateTimeOffsetExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator <(SysDateTimeOffsetFunctionExpression a, NullableDateTimeOffsetExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
-        public static FilterExpression operator >(SysDateTimeOffsetFunctionExpression a, NullableDateTimeOffsetExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression operator <=(SysDateTimeOffsetFunctionExpression a, NullableDateTimeOffsetExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression operator >=(SysDateTimeOffsetFunctionExpression a, NullableDateTimeOffsetExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpression<bool> operator ==(SysDateTimeOffsetFunctionExpression a, DateTimeOffsetExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool> operator !=(SysDateTimeOffsetFunctionExpression a, DateTimeOffsetExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool> operator <(SysDateTimeOffsetFunctionExpression a, DateTimeOffsetExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool> operator >(SysDateTimeOffsetFunctionExpression a, DateTimeOffsetExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool> operator <=(SysDateTimeOffsetFunctionExpression a, DateTimeOffsetExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool> operator >=(SysDateTimeOffsetFunctionExpression a, DateTimeOffsetExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(SysDateTimeOffsetFunctionExpression a, NullableDateTimeOffsetExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(SysDateTimeOffsetFunctionExpression a, NullableDateTimeOffsetExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(SysDateTimeOffsetFunctionExpression a, NullableDateTimeOffsetExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(SysDateTimeOffsetFunctionExpression a, NullableDateTimeOffsetExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(SysDateTimeOffsetFunctionExpression a, NullableDateTimeOffsetExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(SysDateTimeOffsetFunctionExpression a, NullableDateTimeOffsetExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
         #endregion
 
         #region alias
-        public static FilterExpression operator ==(SysDateTimeOffsetFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(SysDateTimeOffsetFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator <(SysDateTimeOffsetFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
-        public static FilterExpression operator >(SysDateTimeOffsetFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression operator <=(SysDateTimeOffsetFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression operator >=(SysDateTimeOffsetFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
-        public static FilterExpression operator ==(SysDateTimeOffsetFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<object>(b), FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(SysDateTimeOffsetFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<object>(b), FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator <(SysDateTimeOffsetFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<object>(b), FilterExpressionOperator.LessThan);
-        public static FilterExpression operator >(SysDateTimeOffsetFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<object>(b), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression operator <=(SysDateTimeOffsetFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<object>(b), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression operator >=(SysDateTimeOffsetFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<object>(b), FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpression<bool?> operator ==(SysDateTimeOffsetFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(SysDateTimeOffsetFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(SysDateTimeOffsetFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(SysDateTimeOffsetFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(SysDateTimeOffsetFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(SysDateTimeOffsetFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(SysDateTimeOffsetFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<object>(b), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(SysDateTimeOffsetFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<object>(b), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(SysDateTimeOffsetFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<object>(b), FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(SysDateTimeOffsetFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<object>(b), FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(SysDateTimeOffsetFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<object>(b), FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(SysDateTimeOffsetFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<object>(b), FilterExpressionOperator.GreaterThanOrEqual);
+        
         #endregion
         #endregion
     }

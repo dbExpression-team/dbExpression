@@ -33,79 +33,46 @@ namespace HatTrick.DbEx.Sql.Expression
         #region arithmetic operators
         #region data types
         #region bool
-
-
-
         
         #endregion
         
         #region byte
-
-
-
         
         #endregion
         
         #region decimal
-
-
-
         
         #endregion
         
         #region DateTime
-
-
-
         
         #endregion
         
         #region DateTimeOffset
-
-
-
         
         #endregion
         
         #region double
-
-
-
         
         #endregion
         
         #region float
-
-
-
         
         #endregion
         
         #region Guid
-
-
-
         
         #endregion
         
         #region short
-
-
-
         
         #endregion
         
         #region int
-
-
-
         
         #endregion
         
         #region long
-
-
-
         
         #endregion
         
@@ -114,9 +81,6 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
         
         #region TimeSpan
-
-
-
         
         #endregion
         
@@ -124,44 +88,44 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region fields
         #region bool
+        #endregion
 
-        #endregion        
         #region byte
+        #endregion
 
-        #endregion        
         #region decimal
+        #endregion
 
-        #endregion        
         #region DateTime
+        #endregion
 
-        #endregion        
         #region DateTimeOffset
+        #endregion
 
-        #endregion        
         #region double
+        #endregion
 
-        #endregion        
         #region float
+        #endregion
 
-        #endregion        
         #region Guid
+        #endregion
 
-        #endregion        
         #region short
+        #endregion
 
-        #endregion        
         #region int
+        #endregion
 
-        #endregion        
         #region long
+        #endregion
 
-        #endregion        
         #region string?
+        #endregion
 
-        #endregion        
         #region TimeSpan
+        #endregion
 
-        #endregion        
         #endregion
 
         #region mediator
@@ -209,50 +173,74 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region filter operators
         #region null
-        public static FilterExpression operator ==(NullableBooleanCastFunctionExpression a, NullElement b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullableBooleanCastFunctionExpression a, NullElement b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator ==(NullElement a, NullableBooleanCastFunctionExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullElement a, NullableBooleanCastFunctionExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator ==(NullableBooleanCastFunctionExpression a, NullElement b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableBooleanCastFunctionExpression a, NullElement b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullElement a, NullableBooleanCastFunctionExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullElement a, NullableBooleanCastFunctionExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
         #endregion
 
         #region data type
         #region bool
-        public static FilterExpression operator ==(NullableBooleanCastFunctionExpression a, bool b) => new FilterExpression<bool?>(a, new LiteralExpression<bool>(b), FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullableBooleanCastFunctionExpression a, bool b) => new FilterExpression<bool?>(a, new LiteralExpression<bool>(b), FilterExpressionOperator.NotEqual);
-
-        public static FilterExpression operator ==(bool a, NullableBooleanCastFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<bool>(a), b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(bool a, NullableBooleanCastFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<bool>(a), b, FilterExpressionOperator.NotEqual);
-
-        public static FilterExpression operator ==(NullableBooleanCastFunctionExpression a, bool? b) => new FilterExpression<bool?>(a, new LiteralExpression<bool?>(b), FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullableBooleanCastFunctionExpression a, bool? b) => new FilterExpression<bool?>(a, new LiteralExpression<bool?>(b), FilterExpressionOperator.NotEqual);
-
-        public static FilterExpression operator ==(bool? a, NullableBooleanCastFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<bool?>(a), b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(bool? a, NullableBooleanCastFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<bool?>(a), b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator ==(NullableBooleanCastFunctionExpression a, bool b) => new FilterExpression<bool?>(a, new LiteralExpression<bool>(b), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableBooleanCastFunctionExpression a, bool b) => new FilterExpression<bool?>(a, new LiteralExpression<bool>(b), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator ==(bool a, NullableBooleanCastFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<bool>(a), b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(bool a, NullableBooleanCastFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<bool>(a), b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullableBooleanCastFunctionExpression a, bool? b) => new FilterExpression<bool?>(a, new LiteralExpression<bool?>(b), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableBooleanCastFunctionExpression a, bool? b) => new FilterExpression<bool?>(a, new LiteralExpression<bool?>(b), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator ==(bool? a, NullableBooleanCastFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<bool?>(a), b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(bool? a, NullableBooleanCastFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<bool?>(a), b, FilterExpressionOperator.NotEqual);
+        
         #endregion
+
         #endregion
 
         #region fields
-        public static FilterExpression operator ==(NullableBooleanCastFunctionExpression a, BooleanFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullableBooleanCastFunctionExpression a, BooleanFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        #region bool
+        public static FilterExpression<bool?> operator ==(NullableBooleanCastFunctionExpression a, BooleanFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
         
-        public static FilterExpression operator ==(NullableBooleanCastFunctionExpression a, NullableBooleanFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullableBooleanCastFunctionExpression a, NullableBooleanFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator !=(NullableBooleanCastFunctionExpression a, BooleanFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullableBooleanCastFunctionExpression a, NullableBooleanFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableBooleanCastFunctionExpression a, NullableBooleanFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        #endregion
 
         #endregion
 
         #region mediators
-        public static FilterExpression operator ==(NullableBooleanCastFunctionExpression a, BooleanExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullableBooleanCastFunctionExpression a, BooleanExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        #region bool
+        public static FilterExpression<bool?> operator ==(NullableBooleanCastFunctionExpression a, BooleanExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableBooleanCastFunctionExpression a, BooleanExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullableBooleanCastFunctionExpression a, NullableBooleanExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableBooleanCastFunctionExpression a, NullableBooleanExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        #endregion
 
-        public static FilterExpression operator ==(NullableBooleanCastFunctionExpression a, NullableBooleanExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullableBooleanCastFunctionExpression a, NullableBooleanExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
         #endregion
 
         #region alias
-        public static FilterExpression operator ==(NullableBooleanCastFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullableBooleanCastFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator ==(NullableBooleanCastFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<bool?>(b), FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullableBooleanCastFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<bool?>(b), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator ==(NullableBooleanCastFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableBooleanCastFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullableBooleanCastFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<bool?>(b), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableBooleanCastFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<bool?>(b), FilterExpressionOperator.NotEqual);
+        
         #endregion
 
         #endregion

@@ -25,8 +25,16 @@ namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
             ngin.LambdaRepo.Register("IsNotTypeOfObject", (Func<Type, bool>)((type) => type != typeof(object)));
             ngin.LambdaRepo.Register("IsSameType", (Func<TypeModel, TypeModel, bool>)((t1, t2) => t1.Type == t2.Type));
             ngin.LambdaRepo.Register("IsNotSameType", (Func<TypeModel, TypeModel, bool>)((t1, t2) => t1.Type != t2.Type));
-            //ngin.ProgressListener = (i, s) => Console.WriteLine($"{i}: {s}");
-            var output = ngin.Merge(data);
+
+            string output = string.Empty;
+            try
+            {
+                output = ngin.Merge(data);
+            }
+            catch (Exception e)
+            {
+                var msg = e.Message;
+            }
             FileService.WriteFile(fileService.GetOutputPath(fileName), output);
         }
 
@@ -65,9 +73,15 @@ namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
                 }).ToList();
             }
 
-            model.Filters = TypeBuilder.CreateBuilder().Add(model.Type!).ToList().Select(@type => new FilterOperationsTemplateModel
+            model.Filters.ThisTypeOnlyFilters = TypeBuilder.CreateBuilder().Add(model.Type!).ToList().Select(@type => new FilterOperationsTemplateModel
             {
                 Type = type,
+                Operations = FilterBuilder.CreateBuilder().InferFilterOperations(model.Type!, @type).ToList()
+            }).ToList();
+
+            model.Filters.AllDataTypeFilters = TypeBuilder.CreateBuilder().AddAllTypes().Except(typeof(object)).ToList().Select(@type => new FilterOperationsTemplateModel
+            {
+                Type = @type,
                 Operations = FilterBuilder.CreateBuilder().InferFilterOperations(model.Type!, @type).ToList()
             }).ToList();
         }

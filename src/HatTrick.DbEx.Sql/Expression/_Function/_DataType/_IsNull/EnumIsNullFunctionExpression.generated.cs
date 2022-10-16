@@ -29,16 +29,29 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region filter operators
-        #region TEnum
-        #region 
-        #endregion
-        #endregion
+        public static FilterExpression<bool?> operator ==(EnumIsNullFunctionExpression<TEnum> a, NullElement b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
 
-        #region mediator
-        #endregion
+        public static FilterExpression<bool?> operator !=(EnumIsNullFunctionExpression<TEnum> a, NullElement b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
 
-        #region alias
-        #endregion
+        public static FilterExpression<bool?> operator ==(NullElement a, EnumIsNullFunctionExpression<TEnum> b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+
+        public static FilterExpression<bool?> operator !=(NullElement a, EnumIsNullFunctionExpression<TEnum> b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);       
+        
+        public static FilterExpression<bool> operator ==(EnumIsNullFunctionExpression<TEnum> a, TEnum b) => new FilterExpression<bool>(a, new LiteralExpression<TEnum>(b), FilterExpressionOperator.Equal);
+
+        public static FilterExpression<bool> operator !=(EnumIsNullFunctionExpression<TEnum> a, TEnum b) => new FilterExpression<bool>(a, new LiteralExpression<TEnum>(b), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool> operator ==(TEnum a, EnumIsNullFunctionExpression<TEnum> b) => new FilterExpression<bool>(new LiteralExpression<TEnum>(a), b, FilterExpressionOperator.Equal);
+
+        public static FilterExpression<bool> operator !=(TEnum a, EnumIsNullFunctionExpression<TEnum> b) => new FilterExpression<bool>(new LiteralExpression<TEnum>(a), b, FilterExpressionOperator.NotEqual);
+ 
+        public static FilterExpression<bool?> operator ==(EnumIsNullFunctionExpression<TEnum> a, TEnum? b) => new FilterExpression<bool?>(a, new LiteralExpression<TEnum?>(b), FilterExpressionOperator.Equal);
+
+        public static FilterExpression<bool?> operator !=(EnumIsNullFunctionExpression<TEnum> a, TEnum? b) => new FilterExpression<bool?>(a, new LiteralExpression<TEnum?>(b), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator ==(TEnum? a, EnumIsNullFunctionExpression<TEnum> b) => new FilterExpression<bool?>(new LiteralExpression<TEnum?>(a), b, FilterExpressionOperator.Equal);
+
+        public static FilterExpression<bool?> operator !=(TEnum? a, EnumIsNullFunctionExpression<TEnum> b) => new FilterExpression<bool?>(new LiteralExpression<TEnum?>(a), b, FilterExpressionOperator.NotEqual);
         #endregion
     }
 }

@@ -29,6 +29,7 @@ namespace {Namespace}
     {{
         #region in value set
         public override FilterExpression In(params {:fieldExpressionType.Alias}[] value) => new FilterExpression<bool>(this, new InExpression<{:fieldExpressionType.Alias}>(this, value), FilterExpressionOperator.None);
+        
         public override FilterExpression In(IEnumerable<{:fieldExpressionType.Alias}> value) => new FilterExpression<bool>(this, new InExpression<{:fieldExpressionType.Alias}>(this, value), FilterExpressionOperator.None);
         #endregion
 
@@ -127,72 +128,95 @@ namespace {Namespace}
 
         #region filter operators
         #region null
-        public static FilterExpression operator ==({:fieldExpressionType.Name}FieldExpression a, NullElement b) => new FilterExpression<bool?>(a, new LiteralExpression<{:fieldExpressionType.NullableAlias}>(b, a), FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=({:fieldExpressionType.Name}FieldExpression a, NullElement b) => new FilterExpression<bool?>(a, new LiteralExpression<{:fieldExpressionType.NullableAlias}>(b, a), FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator ==(NullElement a, {:fieldExpressionType.Name}FieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<{:fieldExpressionType.NullableAlias}>(a, b), b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullElement a, {:fieldExpressionType.Name}FieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<{:fieldExpressionType.NullableAlias}>(a, b), b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator ==({:fieldExpressionType.Name}FieldExpression a, NullElement b) => new FilterExpression<bool?>(a, new LiteralExpression<{:fieldExpressionType.NullableAlias}>(b, a), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=({:fieldExpressionType.Name}FieldExpression a, NullElement b) => new FilterExpression<bool?>(a, new LiteralExpression<{:fieldExpressionType.NullableAlias}>(b, a), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullElement a, {:fieldExpressionType.Name}FieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<{:fieldExpressionType.NullableAlias}>(a, b), b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullElement a, {:fieldExpressionType.Name}FieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<{:fieldExpressionType.NullableAlias}>(a, b), b, FilterExpressionOperator.NotEqual);
         #endregion
 
         #region data types
-        {-#each Filters-}
-        {-?var:dataType = Type-}
-        #region {:dataType.Alias}
+        {-#each Filters.AllDataTypeFilters-}
+        {-?var:otherType = Type-}
+        {-#if Operations-}
+        #region {:otherType.Alias}
         {-#each Operations-}
-        public static FilterExpression operator {FilterOperatorSymbol}({:dataType.Name}FieldExpression a, {:fieldExpressionType.Alias} b) => new FilterExpression<bool>(a, new LiteralExpression<{:dataType.Alias}>(b, a), FilterExpressionOperator.{FilterOperatorName});
+        public static FilterExpression<bool> operator {FilterOperatorSymbol}({:fieldExpressionType.Name}FieldExpression a, {:otherType.Alias} b) => new FilterExpression<bool>(a, new LiteralExpression<{:otherType.Alias}>(b, a), FilterExpressionOperator.{FilterOperatorName});
+        
         {-/each-}
-
         {-#each Operations-}
-        public static FilterExpression operator {FilterOperatorSymbol}({:dataType.Alias} a, {:fieldExpressionType.Name}FieldExpression b) => new FilterExpression<bool>(new LiteralExpression<{:dataType.Alias}>(a, b), b, FilterExpressionOperator.{FilterOperatorName});
+        public static FilterExpression<bool> operator {FilterOperatorSymbol}({:otherType.Alias} a, {:fieldExpressionType.Name}FieldExpression b) => new FilterExpression<bool>(new LiteralExpression<{:otherType.Alias}>(a, b), b, FilterExpressionOperator.{FilterOperatorName});
+        
         {-/each-}
-
         {-#if :fieldExpressionType.IsNullable-}
         {-#each Operations-}
-        public static FilterExpression operator {FilterOperatorSymbol}({:fieldExpressionType.Name}FieldExpression a, {:dataType.NullableAlias} b) => new FilterExpression<bool?>(a, new LiteralExpression<{:dataType.NullableAlias}>(b, a), FilterExpressionOperator.{FilterOperatorName});
+        public static FilterExpression<bool?> operator {FilterOperatorSymbol}({:fieldExpressionType.Name}FieldExpression a, {:otherType.NullableAlias} b) => new FilterExpression<bool?>(a, new LiteralExpression<{:otherType.NullableAlias}>(b, a), FilterExpressionOperator.{FilterOperatorName});
+        
         {-/each-}
-
         {-#each Operations-}
-        public static FilterExpression operator {FilterOperatorSymbol}({:fieldExpressionType.NullableAlias} a, {:dataType.Name}FieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<{:dataType.NullableAlias}>(a, b), b, FilterExpressionOperator.{FilterOperatorName});
+        public static FilterExpression<bool?> operator {FilterOperatorSymbol}({:otherType.NullableAlias} a, {:fieldExpressionType.Name}FieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<{:otherType.NullableAlias}>(a, b), b, FilterExpressionOperator.{FilterOperatorName});
+        
         {-/each-}
+        {-/if-}
+        #endregion
+
         {-/if-}
         {-/each-}
         #endregion
-        #endregion
 
         #region fields
-        {-#each Filters-}
+        {-#each Filters.AllDataTypeFilters-}
+        {-?var:otherType = Type-}
+        {-#if Operations-}
+        #region {:otherType.Alias}
         {-#each Operations-}
-        public static FilterExpression operator {FilterOperatorSymbol}({:fieldExpressionType.Name}FieldExpression a, {:fieldExpressionType.Name}FieldExpression b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.{FilterOperatorName});
+        public static FilterExpression<bool> operator {FilterOperatorSymbol}({:fieldExpressionType.Name}FieldExpression a, {:otherType.Name}FieldExpression b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.{FilterOperatorName});
+        
         {-/each-}
-
         {-#if :fieldExpressionType.IsNullable-}
         {-#each Operations-}
-        public static FilterExpression operator {FilterOperatorSymbol}({:fieldExpressionType.Name}FieldExpression a, Nullable{:fieldExpressionType.Name}FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.{FilterOperatorName});
+        public static FilterExpression<bool?> operator {FilterOperatorSymbol}({:fieldExpressionType.Name}FieldExpression a, Nullable{:otherType.Name}FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.{FilterOperatorName});
+        
         {-/each-}
+        {-/if-}
+        #endregion
+
         {-/if-}
         {-/each-}
         #endregion
         
         #region mediators
-        {-#each Filters-}
+        {-#each Filters.AllDataTypeFilters-}
+        {-?var:otherType = Type-}
+        {-#if Operations-}
+        #region {:otherType.Alias}
         {-#each Operations-}
-        public static FilterExpression operator {FilterOperatorSymbol}({:fieldExpressionType.Name}FieldExpression a, {:fieldExpressionType.Name}ExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.{FilterOperatorName});
+        public static FilterExpression<bool> operator {FilterOperatorSymbol}({:fieldExpressionType.Name}FieldExpression a, {:otherType.Name}ExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.{FilterOperatorName});
+        
         {-/each-}
-
         {-#if :fieldExpressionType.IsNullable-}
         {-#each Operations-}
-        public static FilterExpression operator {FilterOperatorSymbol}({:fieldExpressionType.Name}FieldExpression a, Nullable{:fieldExpressionType.Name}ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.{FilterOperatorName});
+        public static FilterExpression<bool?> operator {FilterOperatorSymbol}({:fieldExpressionType.Name}FieldExpression a, Nullable{:otherType.Name}ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.{FilterOperatorName});
+        
         {-/each-}
+        {-/if-}
+        #endregion
+
         {-/if-}
         {-/each-}
         #endregion
 
         #region alias
-        {-#each Filters-}
+        {-#each Filters.ThisTypeOnlyFilters-}
         {-#each Operations-}
-        public static FilterExpression operator {FilterOperatorSymbol}({:fieldExpressionType.Name}FieldExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.{FilterOperatorName});
+        public static FilterExpression<bool?> operator {FilterOperatorSymbol}({:fieldExpressionType.Name}FieldExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.{FilterOperatorName});
+        
         {-/each-}
         {-#each Operations-}
-        public static FilterExpression operator {FilterOperatorSymbol}({:fieldExpressionType.Name}FieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<{:fieldExpressionType.Alias}>(b), FilterExpressionOperator.{FilterOperatorName});
+        public static FilterExpression<bool?> operator {FilterOperatorSymbol}({:fieldExpressionType.Name}FieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<{:fieldExpressionType.Alias}>(b), FilterExpressionOperator.{FilterOperatorName});
+        
         {-/each-}
         {-/each-}
         #endregion

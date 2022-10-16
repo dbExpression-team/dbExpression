@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
                     Operations = ArithmeticBuilder.CreateBuilder().InferArithmeticOperations(@type, TypeBuilder.Get<DateTime>()).ToList()
                 }
             };
-            model.Filters = new List<FilterOperationsTemplateModel>
+            model.Filters.ThisTypeOnlyFilters = new List<FilterOperationsTemplateModel>
             {
                 new FilterOperationsTemplateModel
                 {

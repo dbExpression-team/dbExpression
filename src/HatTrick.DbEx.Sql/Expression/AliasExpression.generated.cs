@@ -1248,17 +1248,9 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region data types
         #region bool
-        public static FilterExpression operator ==(AliasExpression<T> a, bool b) => new FilterExpression<bool>(a, new LiteralExpression<bool>(b), FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(AliasExpression<T> a, bool b) => new FilterExpression<bool>(a, new LiteralExpression<bool>(b), FilterExpressionOperator.NotEqual);
 
-        public static FilterExpression operator ==(bool a, AliasExpression<T> b) => new FilterExpression<bool>(new LiteralExpression<bool>(a), b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(bool a, AliasExpression<T> b) => new FilterExpression<bool>(new LiteralExpression<bool>(a), b, FilterExpressionOperator.NotEqual);
 
-        public static FilterExpression operator ==(AliasExpression<T> a, bool? b) => new FilterExpression<bool?>(a, new LiteralExpression<bool?>(b), FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(AliasExpression<T> a, bool? b) => new FilterExpression<bool?>(a, new LiteralExpression<bool?>(b), FilterExpressionOperator.NotEqual);
 
-        public static FilterExpression operator ==(bool? a, AliasExpression<T> b) => new FilterExpression<bool?>(new LiteralExpression<bool?>(a), b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(bool? a, AliasExpression<T> b) => new FilterExpression<bool?>(new LiteralExpression<bool?>(a), b, FilterExpressionOperator.NotEqual);
         #endregion
 
         #region byte
@@ -1442,17 +1434,9 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region Guid
-        public static FilterExpression operator ==(AliasExpression<T> a, Guid b) => new FilterExpression<bool>(a, new LiteralExpression<Guid>(b), FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(AliasExpression<T> a, Guid b) => new FilterExpression<bool>(a, new LiteralExpression<Guid>(b), FilterExpressionOperator.NotEqual);
 
-        public static FilterExpression operator ==(Guid a, AliasExpression<T> b) => new FilterExpression<bool>(new LiteralExpression<Guid>(a), b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(Guid a, AliasExpression<T> b) => new FilterExpression<bool>(new LiteralExpression<Guid>(a), b, FilterExpressionOperator.NotEqual);
 
-        public static FilterExpression operator ==(AliasExpression<T> a, Guid? b) => new FilterExpression<bool?>(a, new LiteralExpression<Guid?>(b), FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(AliasExpression<T> a, Guid? b) => new FilterExpression<bool?>(a, new LiteralExpression<Guid?>(b), FilterExpressionOperator.NotEqual);
 
-        public static FilterExpression operator ==(Guid? a, AliasExpression<T> b) => new FilterExpression<bool?>(new LiteralExpression<Guid?>(a), b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(Guid? a, AliasExpression<T> b) => new FilterExpression<bool?>(new LiteralExpression<Guid?>(a), b, FilterExpressionOperator.NotEqual);
         #endregion
 
         #region short
@@ -1546,19 +1530,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region string?
-        public static FilterExpression operator ==(AliasExpression<T> a, string? b) => new FilterExpression<bool>(a, new LiteralExpression<string?>(b), FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(AliasExpression<T> a, string? b) => new FilterExpression<bool>(a, new LiteralExpression<string?>(b), FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator <(AliasExpression<T> a, string? b) => new FilterExpression<bool>(a, new LiteralExpression<string?>(b), FilterExpressionOperator.LessThan);
-        public static FilterExpression operator >(AliasExpression<T> a, string? b) => new FilterExpression<bool>(a, new LiteralExpression<string?>(b), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression operator <=(AliasExpression<T> a, string? b) => new FilterExpression<bool>(a, new LiteralExpression<string?>(b), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression operator >=(AliasExpression<T> a, string? b) => new FilterExpression<bool>(a, new LiteralExpression<string?>(b), FilterExpressionOperator.GreaterThanOrEqual);
 
-        public static FilterExpression operator ==(string? a, AliasExpression<T> b) => new FilterExpression<bool>(new LiteralExpression<string?>(a), b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(string? a, AliasExpression<T> b) => new FilterExpression<bool>(new LiteralExpression<string?>(a), b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator <(string? a, AliasExpression<T> b) => new FilterExpression<bool>(new LiteralExpression<string?>(a), b, FilterExpressionOperator.LessThan);
-        public static FilterExpression operator >(string? a, AliasExpression<T> b) => new FilterExpression<bool>(new LiteralExpression<string?>(a), b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression operator <=(string? a, AliasExpression<T> b) => new FilterExpression<bool>(new LiteralExpression<string?>(a), b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression operator >=(string? a, AliasExpression<T> b) => new FilterExpression<bool>(new LiteralExpression<string?>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
 
         #endregion
 
@@ -1600,11 +1572,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region fields
         #region bool
-        public static FilterExpression operator ==(AliasExpression<T> a, BooleanFieldExpression b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(AliasExpression<T> a, BooleanFieldExpression b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.NotEqual);
 
-        public static FilterExpression operator ==(AliasExpression<T> a, NullableBooleanFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(AliasExpression<T> a, NullableBooleanFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
         #endregion
 
         #region byte
@@ -1704,11 +1672,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region Guid
-        public static FilterExpression operator ==(AliasExpression<T> a, GuidFieldExpression b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(AliasExpression<T> a, GuidFieldExpression b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.NotEqual);
 
-        public static FilterExpression operator ==(AliasExpression<T> a, NullableGuidFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(AliasExpression<T> a, NullableGuidFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
         #endregion
 
         #region short
@@ -1760,12 +1724,6 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region string?
-        public static FilterExpression operator ==(AliasExpression<T> a, StringFieldExpression b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(AliasExpression<T> a, StringFieldExpression b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator <(AliasExpression<T> a, StringFieldExpression b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.LessThan);
-        public static FilterExpression operator >(AliasExpression<T> a, StringFieldExpression b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression operator <=(AliasExpression<T> a, StringFieldExpression b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression operator >=(AliasExpression<T> a, StringFieldExpression b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
 
         #endregion
 
@@ -1793,11 +1751,7 @@ namespace HatTrick.DbEx.Sql.Expression
         
         #region mediators
         #region bool
-        public static FilterExpression operator ==(AliasExpression<T> a, BooleanExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(AliasExpression<T> a, BooleanExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.NotEqual);
 
-        public static FilterExpression operator ==(AliasExpression<T> a, NullableBooleanExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(AliasExpression<T> a, NullableBooleanExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
         #endregion
 
         #region byte
@@ -1897,11 +1851,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region Guid
-        public static FilterExpression operator ==(AliasExpression<T> a, GuidExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(AliasExpression<T> a, GuidExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.NotEqual);
 
-        public static FilterExpression operator ==(AliasExpression<T> a, NullableGuidExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(AliasExpression<T> a, NullableGuidExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
         #endregion
 
         #region short
@@ -1953,12 +1903,6 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region string?
-        public static FilterExpression operator ==(AliasExpression<T> a, StringExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(AliasExpression<T> a, StringExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator <(AliasExpression<T> a, StringExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.LessThan);
-        public static FilterExpression operator >(AliasExpression<T> a, StringExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression operator <=(AliasExpression<T> a, StringExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression operator >=(AliasExpression<T> a, StringExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
 
         #endregion
 
