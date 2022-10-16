@@ -17,6 +17,7 @@
 #endregion
 
 using System;
+using HatTrick.DbEx.Sql;
 
 #nullable enable
 
@@ -31,89 +32,54 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region arithmetic operators
         #region data types
-        #region byte
-
-
-
-        #endregion
         
-        #region decimal
-
-
-
-        #endregion
         
-        #region double
-
-
-
-        #endregion
         
-        #region float
-
-
-
-        #endregion
         
-        #region short
-
-
-
-        #endregion
         
-        #region int
-
-
-
-        #endregion
         
-        #region long
-
-
-
-        #endregion
         
         #endregion
 
         #region fields
         #region byte
-
         #endregion        
         #region decimal
-
         #endregion        
         #region double
-
         #endregion        
         #region float
-
         #endregion        
         #region short
-
         #endregion        
         #region int
-
         #endregion        
         #region long
-
         #endregion        
         #endregion
 
         #region mediators
         #region byte
-        #endregion        
+        #endregion
+ 
         #region decimal
-        #endregion        
+        #endregion
+ 
         #region double
-        #endregion        
+        #endregion
+ 
         #region float
-        #endregion        
+        #endregion
+ 
         #region short
-        #endregion        
+        #endregion
+ 
         #region int
-        #endregion        
+        #endregion
+ 
         #region long
-        #endregion        
+        #endregion
+ 
         #endregion
 
         #region alias
@@ -121,44 +87,72 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region filter operators
+        #region null
+        public static FilterExpression<bool?> operator ==(GuidMinimumFunctionExpression a, NullElement b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(GuidMinimumFunctionExpression a, NullElement b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullElement a, GuidMinimumFunctionExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullElement a, GuidMinimumFunctionExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        #endregion
+
         #region data types
         #region Guid
-        public static FilterExpression operator ==(GuidMinimumFunctionExpression a, Guid b) => new FilterExpression<bool>(a, new LiteralExpression<Guid>(b), FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(GuidMinimumFunctionExpression a, Guid b) => new FilterExpression<bool>(a, new LiteralExpression<Guid>(b), FilterExpressionOperator.NotEqual);
-
-        public static FilterExpression operator ==(Guid a, GuidMinimumFunctionExpression b) => new FilterExpression<bool>(new LiteralExpression<Guid>(a), b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(Guid a, GuidMinimumFunctionExpression b) => new FilterExpression<bool>(new LiteralExpression<Guid>(a), b, FilterExpressionOperator.NotEqual);
-
-        public static FilterExpression operator ==(GuidMinimumFunctionExpression a, Guid? b) => new FilterExpression<bool?>(a, new LiteralExpression<Guid?>(b), FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(GuidMinimumFunctionExpression a, Guid? b) => new FilterExpression<bool?>(a, new LiteralExpression<Guid?>(b), FilterExpressionOperator.NotEqual);
-
-        public static FilterExpression operator ==(Guid? a, GuidMinimumFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<Guid?>(a), b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(Guid? a, GuidMinimumFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<Guid?>(a), b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool> operator ==(GuidMinimumFunctionExpression a, Guid b) => new FilterExpression<bool>(a, new LiteralExpression<Guid>(b), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool> operator !=(GuidMinimumFunctionExpression a, Guid b) => new FilterExpression<bool>(a, new LiteralExpression<Guid>(b), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool> operator ==(Guid a, GuidMinimumFunctionExpression b) => new FilterExpression<bool>(new LiteralExpression<Guid>(a), b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool> operator !=(Guid a, GuidMinimumFunctionExpression b) => new FilterExpression<bool>(new LiteralExpression<Guid>(a), b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator ==(GuidMinimumFunctionExpression a, Guid? b) => new FilterExpression<bool?>(a, new LiteralExpression<Guid?>(b), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(GuidMinimumFunctionExpression a, Guid? b) => new FilterExpression<bool?>(a, new LiteralExpression<Guid?>(b), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator ==(Guid? a, GuidMinimumFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<Guid?>(a), b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(Guid? a, GuidMinimumFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<Guid?>(a), b, FilterExpressionOperator.NotEqual);
+        
         #endregion
+
         #endregion
 
         #region fields
-        public static FilterExpression operator ==(GuidMinimumFunctionExpression a, GuidFieldExpression b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(GuidMinimumFunctionExpression a, GuidFieldExpression b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool> operator ==(GuidMinimumFunctionExpression a, GuidFieldExpression b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.Equal);
         
-        public static FilterExpression operator ==(GuidMinimumFunctionExpression a, NullableGuidFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(GuidMinimumFunctionExpression a, NullableGuidFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
-
+        public static FilterExpression<bool> operator !=(GuidMinimumFunctionExpression a, GuidFieldExpression b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator ==(GuidMinimumFunctionExpression a, NullableGuidFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(GuidMinimumFunctionExpression a, NullableGuidFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
         #endregion
 
         #region mediators
-        public static FilterExpression operator ==(GuidMinimumFunctionExpression a, GuidExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(GuidMinimumFunctionExpression a, GuidExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.NotEqual);
+        #region Guid
+        public static FilterExpression<bool> operator ==(GuidMinimumFunctionExpression a, GuidExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool> operator !=(GuidMinimumFunctionExpression a, GuidExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator ==(GuidMinimumFunctionExpression a, NullableGuidExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(GuidMinimumFunctionExpression a, NullableGuidExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        #endregion
 
-        public static FilterExpression operator ==(GuidMinimumFunctionExpression a, NullableGuidExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(GuidMinimumFunctionExpression a, NullableGuidExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
         #endregion
 
         #region alias
-        public static FilterExpression operator ==(GuidMinimumFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(GuidMinimumFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator ==(GuidMinimumFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<Guid>(b), FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(GuidMinimumFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<Guid>(b), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator ==(GuidMinimumFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(GuidMinimumFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator ==(GuidMinimumFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<Guid>(b), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(GuidMinimumFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<Guid>(b), FilterExpressionOperator.NotEqual);
+        
         #endregion
         #endregion
     }

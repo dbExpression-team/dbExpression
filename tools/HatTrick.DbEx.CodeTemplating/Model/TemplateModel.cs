@@ -8,6 +8,6 @@ namespace HatTrick.DbEx.CodeTemplating.Model
         public string? Namespace { get; set; }
         public TypeModel? Type { get; set; }
         public IList<ArithmeticOperationsTemplateModel> ArithmeticOperations { get; set; } = new List<ArithmeticOperationsTemplateModel>();
-        public IList<FilterOperationsTemplateModel> Filters { get; set; } = new List<FilterOperationsTemplateModel>();
+        public FiltersTemplateModel Filters { get; set; } = new FiltersTemplateModel();
     }
 }

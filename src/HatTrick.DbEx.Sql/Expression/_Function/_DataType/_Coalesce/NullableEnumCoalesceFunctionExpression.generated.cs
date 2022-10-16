@@ -30,21 +30,29 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
         
         #region filter operators
-        #region null
-        public static FilterExpression operator ==(NullableEnumCoalesceFunctionExpression<TEnum> a, NullElement b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullableEnumCoalesceFunctionExpression<TEnum> a, NullElement b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator ==(NullElement a, NullableEnumCoalesceFunctionExpression<TEnum> b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullElement a, NullableEnumCoalesceFunctionExpression<TEnum> b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
-        #endregion
+        public static FilterExpression<bool?> operator ==(NullableEnumCoalesceFunctionExpression<TEnum> a, NullElement b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
 
-        #region TEnum
-        #endregion
+        public static FilterExpression<bool?> operator !=(NullableEnumCoalesceFunctionExpression<TEnum> a, NullElement b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
 
-        #region mediator
-        #endregion
+        public static FilterExpression<bool?> operator ==(NullElement a, NullableEnumCoalesceFunctionExpression<TEnum> b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
 
-        #region alias
-        #endregion
+        public static FilterExpression<bool?> operator !=(NullElement a, NullableEnumCoalesceFunctionExpression<TEnum> b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);       
+        
+        public static FilterExpression<bool?> operator ==(NullableEnumCoalesceFunctionExpression<TEnum> a, TEnum? b) => new FilterExpression<bool?>(a, new LiteralExpression<TEnum?>(b), FilterExpressionOperator.Equal);
+
+        public static FilterExpression<bool?> operator !=(NullableEnumCoalesceFunctionExpression<TEnum> a, TEnum? b) => new FilterExpression<bool?>(a, new LiteralExpression<TEnum?>(b), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator ==(TEnum? a, NullableEnumCoalesceFunctionExpression<TEnum> b) => new FilterExpression<bool?>(new LiteralExpression<TEnum?>(a), b, FilterExpressionOperator.Equal);
+
+        public static FilterExpression<bool?> operator !=(TEnum? a, NullableEnumCoalesceFunctionExpression<TEnum> b) => new FilterExpression<bool?>(new LiteralExpression<TEnum?>(a), b, FilterExpressionOperator.NotEqual);
+
+        public static FilterExpression<bool?> operator ==(NullableEnumCoalesceFunctionExpression<TEnum> a, TEnum b) => new FilterExpression<bool?>(a, new LiteralExpression<TEnum>(b), FilterExpressionOperator.Equal);
+
+        public static FilterExpression<bool?> operator !=(NullableEnumCoalesceFunctionExpression<TEnum> a, TEnum b) => new FilterExpression<bool?>(a, new LiteralExpression<TEnum>(b), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator ==(TEnum a, NullableEnumCoalesceFunctionExpression<TEnum> b) => new FilterExpression<bool?>(new LiteralExpression<TEnum>(a), b, FilterExpressionOperator.Equal);
+
+        public static FilterExpression<bool?> operator !=(TEnum a, NullableEnumCoalesceFunctionExpression<TEnum> b) => new FilterExpression<bool?>(new LiteralExpression<TEnum>(a), b, FilterExpressionOperator.NotEqual);
         #endregion
     }
 }

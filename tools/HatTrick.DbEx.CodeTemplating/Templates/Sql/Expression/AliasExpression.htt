@@ -155,7 +155,7 @@ namespace {Namespace}
         #endregion
 
         #region data types
-        {-#each Filters-}
+        {-#each Filters.ThisTypeOnlyFilters-}
         {-?var:dataType = Type-}
         #region {:dataType.Alias}
         {-#if !:dataType.Type => IsTypeOfObject-}
@@ -184,7 +184,7 @@ namespace {Namespace}
         {-/each-}
 
         #region fields
-        {-#each Filters-}
+        {-#each Filters.ThisTypeOnlyFilters-}
         {-?var:dataType = Type-}
         #region {:dataType.Alias}
         {-#if !:dataType.Type => IsTypeOfObject-}
@@ -204,7 +204,7 @@ namespace {Namespace}
         #endregion
         
         #region mediators
-        {-#each Filters-}
+        {-#each Filters.ThisTypeOnlyFilters-}
         {-?var:dataType = Type-}
         #region {:dataType.Alias}
         {-#if !:dataType.Type => IsTypeOfObject-}

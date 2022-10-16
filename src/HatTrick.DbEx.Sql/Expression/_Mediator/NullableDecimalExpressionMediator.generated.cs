@@ -3356,101 +3356,784 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region filter operators
         #region null
-        public static FilterExpression operator ==(NullableDecimalExpressionMediator a, NullElement b) => new FilterExpression<bool?>(a, a.Expression is FieldExpression field ? new LiteralExpression<decimal?>(b, field) : b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullableDecimalExpressionMediator a, NullElement b) => new FilterExpression<bool?>(a, a.Expression is FieldExpression field ? new LiteralExpression<decimal?>(b, field) : b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator ==(NullElement a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<decimal?>(a), b.Expression is FieldExpression field ? new LiteralExpression<decimal?>(a, field) : a, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullElement a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<decimal?>(a), b.Expression is FieldExpression field ? new LiteralExpression<decimal?>(a, field) : a, FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, NullElement b) => new FilterExpression<bool?>(a, a.Expression is FieldExpression field ? new LiteralExpression<decimal?>(b, field) : b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, NullElement b) => new FilterExpression<bool?>(a, a.Expression is FieldExpression field ? new LiteralExpression<decimal?>(b, field) : b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullElement a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<decimal?>(a), b.Expression is FieldExpression field ? new LiteralExpression<decimal?>(a, field) : a, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullElement a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<decimal?>(a), b.Expression is FieldExpression field ? new LiteralExpression<decimal?>(a, field) : a, FilterExpressionOperator.NotEqual);
         #endregion
 
         #region data type
-        #region decimal
-        public static FilterExpression operator ==(NullableDecimalExpressionMediator a, decimal b) => new FilterExpression<bool?>(a, new LiteralExpression<decimal>(b), FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullableDecimalExpressionMediator a, decimal b) => new FilterExpression<bool?>(a, new LiteralExpression<decimal>(b), FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator <(NullableDecimalExpressionMediator a, decimal b) => new FilterExpression<bool?>(a, new LiteralExpression<decimal>(b), FilterExpressionOperator.LessThan);
-        public static FilterExpression operator >(NullableDecimalExpressionMediator a, decimal b) => new FilterExpression<bool?>(a, new LiteralExpression<decimal>(b), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression operator <=(NullableDecimalExpressionMediator a, decimal b) => new FilterExpression<bool?>(a, new LiteralExpression<decimal>(b), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression operator >=(NullableDecimalExpressionMediator a, decimal b) => new FilterExpression<bool?>(a, new LiteralExpression<decimal>(b), FilterExpressionOperator.GreaterThanOrEqual);
-
-        public static FilterExpression operator ==(decimal a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<decimal>(a), b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(decimal a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<decimal>(a), b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator <(decimal a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<decimal>(a), b, FilterExpressionOperator.LessThan);
-        public static FilterExpression operator >(decimal a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<decimal>(a), b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression operator <=(decimal a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<decimal>(a), b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression operator >=(decimal a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<decimal>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
-
-        public static FilterExpression operator ==(NullableDecimalExpressionMediator a, decimal? b) => new FilterExpression<bool?>(a, new LiteralExpression<decimal?>(b), FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullableDecimalExpressionMediator a, decimal? b) => new FilterExpression<bool?>(a, new LiteralExpression<decimal?>(b), FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator <(NullableDecimalExpressionMediator a, decimal? b) => new FilterExpression<bool?>(a, new LiteralExpression<decimal?>(b), FilterExpressionOperator.LessThan);
-        public static FilterExpression operator >(NullableDecimalExpressionMediator a, decimal? b) => new FilterExpression<bool?>(a, new LiteralExpression<decimal?>(b), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression operator <=(NullableDecimalExpressionMediator a, decimal? b) => new FilterExpression<bool?>(a, new LiteralExpression<decimal?>(b), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression operator >=(NullableDecimalExpressionMediator a, decimal? b) => new FilterExpression<bool?>(a, new LiteralExpression<decimal?>(b), FilterExpressionOperator.GreaterThanOrEqual);
-
-        public static FilterExpression operator ==(decimal? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<decimal?>(a), b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(decimal? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<decimal?>(a), b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator <(decimal? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<decimal?>(a), b, FilterExpressionOperator.LessThan);
-        public static FilterExpression operator >(decimal? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<decimal?>(a), b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression operator <=(decimal? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<decimal?>(a), b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression operator >=(decimal? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<decimal?>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+        #region byte
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, byte b) => new FilterExpression<bool?>(a, new LiteralExpression<byte>(b), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, byte b) => new FilterExpression<bool?>(a, new LiteralExpression<byte>(b), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, byte b) => new FilterExpression<bool?>(a, new LiteralExpression<byte>(b), FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, byte b) => new FilterExpression<bool?>(a, new LiteralExpression<byte>(b), FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, byte b) => new FilterExpression<bool?>(a, new LiteralExpression<byte>(b), FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, byte b) => new FilterExpression<bool?>(a, new LiteralExpression<byte>(b), FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(byte a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<byte>(a), b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(byte a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<byte>(a), b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(byte a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<byte>(a), b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(byte a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<byte>(a), b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(byte a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<byte>(a), b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(byte a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<byte>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, byte? b) => new FilterExpression<bool?>(a, new LiteralExpression<byte?>(b), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, byte? b) => new FilterExpression<bool?>(a, new LiteralExpression<byte?>(b), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, byte? b) => new FilterExpression<bool?>(a, new LiteralExpression<byte?>(b), FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, byte? b) => new FilterExpression<bool?>(a, new LiteralExpression<byte?>(b), FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, byte? b) => new FilterExpression<bool?>(a, new LiteralExpression<byte?>(b), FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, byte? b) => new FilterExpression<bool?>(a, new LiteralExpression<byte?>(b), FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(byte? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<byte?>(a), b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(byte? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<byte?>(a), b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(byte? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<byte?>(a), b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(byte? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<byte?>(a), b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(byte? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<byte?>(a), b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(byte? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<byte?>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+        
         #endregion
+
+        #region decimal
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, decimal b) => new FilterExpression<bool?>(a, new LiteralExpression<decimal>(b), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, decimal b) => new FilterExpression<bool?>(a, new LiteralExpression<decimal>(b), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, decimal b) => new FilterExpression<bool?>(a, new LiteralExpression<decimal>(b), FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, decimal b) => new FilterExpression<bool?>(a, new LiteralExpression<decimal>(b), FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, decimal b) => new FilterExpression<bool?>(a, new LiteralExpression<decimal>(b), FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, decimal b) => new FilterExpression<bool?>(a, new LiteralExpression<decimal>(b), FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(decimal a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<decimal>(a), b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(decimal a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<decimal>(a), b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(decimal a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<decimal>(a), b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(decimal a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<decimal>(a), b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(decimal a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<decimal>(a), b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(decimal a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<decimal>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, decimal? b) => new FilterExpression<bool?>(a, new LiteralExpression<decimal?>(b), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, decimal? b) => new FilterExpression<bool?>(a, new LiteralExpression<decimal?>(b), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, decimal? b) => new FilterExpression<bool?>(a, new LiteralExpression<decimal?>(b), FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, decimal? b) => new FilterExpression<bool?>(a, new LiteralExpression<decimal?>(b), FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, decimal? b) => new FilterExpression<bool?>(a, new LiteralExpression<decimal?>(b), FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, decimal? b) => new FilterExpression<bool?>(a, new LiteralExpression<decimal?>(b), FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(decimal? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<decimal?>(a), b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(decimal? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<decimal?>(a), b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(decimal? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<decimal?>(a), b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(decimal? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<decimal?>(a), b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(decimal? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<decimal?>(a), b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(decimal? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<decimal?>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        #endregion
+
+        #region double
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, double b) => new FilterExpression<bool?>(a, new LiteralExpression<double>(b), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, double b) => new FilterExpression<bool?>(a, new LiteralExpression<double>(b), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, double b) => new FilterExpression<bool?>(a, new LiteralExpression<double>(b), FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, double b) => new FilterExpression<bool?>(a, new LiteralExpression<double>(b), FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, double b) => new FilterExpression<bool?>(a, new LiteralExpression<double>(b), FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, double b) => new FilterExpression<bool?>(a, new LiteralExpression<double>(b), FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(double a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<double>(a), b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(double a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<double>(a), b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(double a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<double>(a), b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(double a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<double>(a), b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(double a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<double>(a), b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(double a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<double>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, double? b) => new FilterExpression<bool?>(a, new LiteralExpression<double?>(b), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, double? b) => new FilterExpression<bool?>(a, new LiteralExpression<double?>(b), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, double? b) => new FilterExpression<bool?>(a, new LiteralExpression<double?>(b), FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, double? b) => new FilterExpression<bool?>(a, new LiteralExpression<double?>(b), FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, double? b) => new FilterExpression<bool?>(a, new LiteralExpression<double?>(b), FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, double? b) => new FilterExpression<bool?>(a, new LiteralExpression<double?>(b), FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(double? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<double?>(a), b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(double? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<double?>(a), b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(double? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<double?>(a), b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(double? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<double?>(a), b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(double? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<double?>(a), b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(double? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<double?>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        #endregion
+
+        #region float
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, float b) => new FilterExpression<bool?>(a, new LiteralExpression<float>(b), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, float b) => new FilterExpression<bool?>(a, new LiteralExpression<float>(b), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, float b) => new FilterExpression<bool?>(a, new LiteralExpression<float>(b), FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, float b) => new FilterExpression<bool?>(a, new LiteralExpression<float>(b), FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, float b) => new FilterExpression<bool?>(a, new LiteralExpression<float>(b), FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, float b) => new FilterExpression<bool?>(a, new LiteralExpression<float>(b), FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(float a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<float>(a), b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(float a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<float>(a), b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(float a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<float>(a), b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(float a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<float>(a), b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(float a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<float>(a), b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(float a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<float>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, float? b) => new FilterExpression<bool?>(a, new LiteralExpression<float?>(b), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, float? b) => new FilterExpression<bool?>(a, new LiteralExpression<float?>(b), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, float? b) => new FilterExpression<bool?>(a, new LiteralExpression<float?>(b), FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, float? b) => new FilterExpression<bool?>(a, new LiteralExpression<float?>(b), FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, float? b) => new FilterExpression<bool?>(a, new LiteralExpression<float?>(b), FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, float? b) => new FilterExpression<bool?>(a, new LiteralExpression<float?>(b), FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(float? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<float?>(a), b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(float? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<float?>(a), b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(float? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<float?>(a), b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(float? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<float?>(a), b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(float? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<float?>(a), b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(float? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<float?>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        #endregion
+
+        #region short
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, short b) => new FilterExpression<bool?>(a, new LiteralExpression<short>(b), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, short b) => new FilterExpression<bool?>(a, new LiteralExpression<short>(b), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, short b) => new FilterExpression<bool?>(a, new LiteralExpression<short>(b), FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, short b) => new FilterExpression<bool?>(a, new LiteralExpression<short>(b), FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, short b) => new FilterExpression<bool?>(a, new LiteralExpression<short>(b), FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, short b) => new FilterExpression<bool?>(a, new LiteralExpression<short>(b), FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(short a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<short>(a), b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(short a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<short>(a), b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(short a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<short>(a), b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(short a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<short>(a), b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(short a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<short>(a), b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(short a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<short>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, short? b) => new FilterExpression<bool?>(a, new LiteralExpression<short?>(b), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, short? b) => new FilterExpression<bool?>(a, new LiteralExpression<short?>(b), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, short? b) => new FilterExpression<bool?>(a, new LiteralExpression<short?>(b), FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, short? b) => new FilterExpression<bool?>(a, new LiteralExpression<short?>(b), FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, short? b) => new FilterExpression<bool?>(a, new LiteralExpression<short?>(b), FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, short? b) => new FilterExpression<bool?>(a, new LiteralExpression<short?>(b), FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(short? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<short?>(a), b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(short? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<short?>(a), b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(short? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<short?>(a), b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(short? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<short?>(a), b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(short? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<short?>(a), b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(short? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<short?>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        #endregion
+
+        #region int
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, int b) => new FilterExpression<bool?>(a, new LiteralExpression<int>(b), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, int b) => new FilterExpression<bool?>(a, new LiteralExpression<int>(b), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, int b) => new FilterExpression<bool?>(a, new LiteralExpression<int>(b), FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, int b) => new FilterExpression<bool?>(a, new LiteralExpression<int>(b), FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, int b) => new FilterExpression<bool?>(a, new LiteralExpression<int>(b), FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, int b) => new FilterExpression<bool?>(a, new LiteralExpression<int>(b), FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(int a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<int>(a), b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(int a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<int>(a), b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(int a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<int>(a), b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(int a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<int>(a), b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(int a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<int>(a), b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(int a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<int>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, int? b) => new FilterExpression<bool?>(a, new LiteralExpression<int?>(b), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, int? b) => new FilterExpression<bool?>(a, new LiteralExpression<int?>(b), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, int? b) => new FilterExpression<bool?>(a, new LiteralExpression<int?>(b), FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, int? b) => new FilterExpression<bool?>(a, new LiteralExpression<int?>(b), FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, int? b) => new FilterExpression<bool?>(a, new LiteralExpression<int?>(b), FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, int? b) => new FilterExpression<bool?>(a, new LiteralExpression<int?>(b), FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(int? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<int?>(a), b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(int? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<int?>(a), b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(int? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<int?>(a), b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(int? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<int?>(a), b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(int? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<int?>(a), b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(int? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<int?>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        #endregion
+
+        #region long
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, long b) => new FilterExpression<bool?>(a, new LiteralExpression<long>(b), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, long b) => new FilterExpression<bool?>(a, new LiteralExpression<long>(b), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, long b) => new FilterExpression<bool?>(a, new LiteralExpression<long>(b), FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, long b) => new FilterExpression<bool?>(a, new LiteralExpression<long>(b), FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, long b) => new FilterExpression<bool?>(a, new LiteralExpression<long>(b), FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, long b) => new FilterExpression<bool?>(a, new LiteralExpression<long>(b), FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(long a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<long>(a), b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(long a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<long>(a), b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(long a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<long>(a), b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(long a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<long>(a), b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(long a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<long>(a), b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(long a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<long>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, long? b) => new FilterExpression<bool?>(a, new LiteralExpression<long?>(b), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, long? b) => new FilterExpression<bool?>(a, new LiteralExpression<long?>(b), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, long? b) => new FilterExpression<bool?>(a, new LiteralExpression<long?>(b), FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, long? b) => new FilterExpression<bool?>(a, new LiteralExpression<long?>(b), FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, long? b) => new FilterExpression<bool?>(a, new LiteralExpression<long?>(b), FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, long? b) => new FilterExpression<bool?>(a, new LiteralExpression<long?>(b), FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(long? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<long?>(a), b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(long? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<long?>(a), b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(long? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<long?>(a), b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(long? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<long?>(a), b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(long? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<long?>(a), b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(long? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<long?>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        #endregion
+
         #endregion
 
         #region fields
+        #region byte
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, ByteFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
 
-        public static FilterExpression operator ==(NullableDecimalExpressionMediator a, DecimalFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, ByteFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
 
-        public static FilterExpression operator !=(NullableDecimalExpressionMediator a, DecimalFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, ByteFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
 
-        public static FilterExpression operator <(NullableDecimalExpressionMediator a, DecimalFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, ByteFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
 
-        public static FilterExpression operator >(NullableDecimalExpressionMediator a, DecimalFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, ByteFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
 
-        public static FilterExpression operator <=(NullableDecimalExpressionMediator a, DecimalFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, ByteFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
 
-        public static FilterExpression operator >=(NullableDecimalExpressionMediator a, DecimalFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, NullableByteFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
 
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, NullableByteFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
 
-        public static FilterExpression operator ==(NullableDecimalExpressionMediator a, NullableDecimalFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, NullableByteFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
 
-        public static FilterExpression operator !=(NullableDecimalExpressionMediator a, NullableDecimalFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, NullableByteFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
 
-        public static FilterExpression operator <(NullableDecimalExpressionMediator a, NullableDecimalFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, NullableByteFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
 
-        public static FilterExpression operator >(NullableDecimalExpressionMediator a, NullableDecimalFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, NullableByteFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
 
-        public static FilterExpression operator <=(NullableDecimalExpressionMediator a, NullableDecimalFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        #endregion
 
-        public static FilterExpression operator >=(NullableDecimalExpressionMediator a, NullableDecimalFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        #region decimal
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, DecimalFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, DecimalFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, DecimalFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, DecimalFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, DecimalFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, DecimalFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, NullableDecimalFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, NullableDecimalFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, NullableDecimalFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, NullableDecimalFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, NullableDecimalFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, NullableDecimalFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+
+        #endregion
+
+        #region double
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, DoubleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, DoubleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, DoubleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, DoubleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, DoubleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, DoubleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, NullableDoubleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, NullableDoubleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, NullableDoubleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, NullableDoubleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, NullableDoubleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, NullableDoubleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+
+        #endregion
+
+        #region float
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, SingleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, SingleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, SingleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, SingleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, SingleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, SingleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+
+        #endregion
+
+        #region short
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, Int16FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, Int16FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, Int16FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, Int16FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, Int16FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, Int16FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, NullableInt16FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, NullableInt16FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, NullableInt16FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, NullableInt16FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, NullableInt16FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, NullableInt16FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+
+        #endregion
+
+        #region int
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, Int32FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, Int32FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, Int32FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, Int32FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, Int32FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, Int32FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, NullableInt32FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, NullableInt32FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, NullableInt32FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, NullableInt32FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, NullableInt32FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, NullableInt32FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+
+        #endregion
+
+        #region long
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, Int64FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, Int64FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, Int64FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, Int64FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, Int64FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, Int64FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, NullableInt64FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, NullableInt64FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, NullableInt64FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, NullableInt64FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, NullableInt64FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, NullableInt64FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+
+        #endregion
+
         #endregion
         
         #region mediator
-        public static FilterExpression operator ==(NullableDecimalExpressionMediator a, DecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullableDecimalExpressionMediator a, DecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator <(NullableDecimalExpressionMediator a, DecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
-        public static FilterExpression operator >(NullableDecimalExpressionMediator a, DecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression operator <=(NullableDecimalExpressionMediator a, DecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression operator >=(NullableDecimalExpressionMediator a, DecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        #region byte
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, ByteExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, ByteExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, ByteExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, ByteExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, ByteExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, ByteExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, NullableByteExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, NullableByteExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, NullableByteExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, NullableByteExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, NullableByteExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, NullableByteExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        #endregion
 
-        public static FilterExpression operator ==(NullableDecimalExpressionMediator a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullableDecimalExpressionMediator a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator <(NullableDecimalExpressionMediator a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
-        public static FilterExpression operator >(NullableDecimalExpressionMediator a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression operator <=(NullableDecimalExpressionMediator a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression operator >=(NullableDecimalExpressionMediator a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        #region decimal
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, DecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, DecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, DecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, DecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, DecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, DecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        #endregion
+
+        #region double
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, DoubleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, DoubleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, DoubleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, DoubleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, DoubleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, DoubleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, NullableDoubleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, NullableDoubleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, NullableDoubleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, NullableDoubleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, NullableDoubleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, NullableDoubleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        #endregion
+
+        #region float
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, SingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, SingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, SingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, SingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, SingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, SingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        #endregion
+
+        #region short
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, Int16ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, Int16ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, Int16ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, Int16ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, Int16ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, Int16ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, NullableInt16ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, NullableInt16ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, NullableInt16ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, NullableInt16ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, NullableInt16ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, NullableInt16ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        #endregion
+
+        #region int
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, Int32ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, Int32ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, Int32ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, Int32ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, Int32ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, Int32ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, NullableInt32ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, NullableInt32ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, NullableInt32ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, NullableInt32ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, NullableInt32ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, NullableInt32ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        #endregion
+
+        #region long
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, Int64ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, Int64ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, Int64ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, Int64ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, Int64ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, Int64ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, NullableInt64ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, NullableInt64ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, NullableInt64ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, NullableInt64ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, NullableInt64ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, NullableInt64ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        #endregion
+
         #endregion
 
         #region alias
-        public static FilterExpression operator ==(NullableDecimalExpressionMediator a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullableDecimalExpressionMediator a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator <(NullableDecimalExpressionMediator a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
-        public static FilterExpression operator >(NullableDecimalExpressionMediator a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression operator <=(NullableDecimalExpressionMediator a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression operator >=(NullableDecimalExpressionMediator a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
-        public static FilterExpression operator ==(NullableDecimalExpressionMediator a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<decimal?>(b), FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullableDecimalExpressionMediator a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<decimal?>(b), FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator <(NullableDecimalExpressionMediator a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<decimal?>(b), FilterExpressionOperator.LessThan);
-        public static FilterExpression operator >(NullableDecimalExpressionMediator a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<decimal?>(b), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression operator <=(NullableDecimalExpressionMediator a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<decimal?>(b), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression operator >=(NullableDecimalExpressionMediator a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<decimal?>(b), FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<decimal?>(b), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<decimal?>(b), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<decimal?>(b), FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<decimal?>(b), FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<decimal?>(b), FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<decimal?>(b), FilterExpressionOperator.GreaterThanOrEqual);
+        
         #endregion
         #endregion
     }

@@ -20,7 +20,7 @@ namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
             model.Namespace = @namespace;
             model.Usings.Add("HatTrick.DbEx.Sql.Expression");
             model.ArithmeticOperations = new List<ArithmeticOperationsTemplateModel>();
-            model.Filters = new List<FilterOperationsTemplateModel>
+            model.Filters.ThisTypeOnlyFilters = new List<FilterOperationsTemplateModel>
             {
                 new FilterOperationsTemplateModel
                 {

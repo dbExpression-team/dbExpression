@@ -28,6 +28,7 @@ namespace HatTrick.DbEx.Sql.Expression
     {
         #region in value set
         public override FilterExpression In(params float?[] value) => new FilterExpression<bool?>(this, new InExpression<float?>(this, value), FilterExpressionOperator.None);
+        
         public override FilterExpression In(IEnumerable<float?> value) => new FilterExpression<bool?>(this, new InExpression<float?>(this, value), FilterExpressionOperator.None);
         #endregion
 
@@ -39,223 +40,347 @@ namespace HatTrick.DbEx.Sql.Expression
         #region data types
         #region byte
         public static NullableSingleExpressionMediator operator +(NullableSingleFieldExpression a, byte b) => new(new ArithmeticExpression(a, new LiteralExpression<byte>(b), ArithmeticExpressionOperator.Add));
+        
         public static NullableSingleExpressionMediator operator -(NullableSingleFieldExpression a, byte b) => new(new ArithmeticExpression(a, new LiteralExpression<byte>(b), ArithmeticExpressionOperator.Subtract));
+        
         public static NullableSingleExpressionMediator operator *(NullableSingleFieldExpression a, byte b) => new(new ArithmeticExpression(a, new LiteralExpression<byte>(b), ArithmeticExpressionOperator.Multiply));
+        
         public static NullableSingleExpressionMediator operator /(NullableSingleFieldExpression a, byte b) => new(new ArithmeticExpression(a, new LiteralExpression<byte>(b), ArithmeticExpressionOperator.Divide));
+        
         public static NullableSingleExpressionMediator operator %(NullableSingleFieldExpression a, byte b) => new(new ArithmeticExpression(a, new LiteralExpression<byte>(b), ArithmeticExpressionOperator.Modulo));
-
+        
         public static NullableSingleExpressionMediator operator +(byte a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<byte>(a), b, ArithmeticExpressionOperator.Add));
+        
         public static NullableSingleExpressionMediator operator -(byte a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<byte>(a), b, ArithmeticExpressionOperator.Subtract));
+        
         public static NullableSingleExpressionMediator operator *(byte a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<byte>(a), b, ArithmeticExpressionOperator.Multiply));
+        
         public static NullableSingleExpressionMediator operator /(byte a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<byte>(a), b, ArithmeticExpressionOperator.Divide));
+        
         public static NullableSingleExpressionMediator operator %(byte a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<byte>(a), b, ArithmeticExpressionOperator.Modulo));
-
+        
         public static NullableSingleExpressionMediator operator +(NullableSingleFieldExpression a, byte? b) => new(new ArithmeticExpression(a, new LiteralExpression<byte?>(b), ArithmeticExpressionOperator.Add));
+        
         public static NullableSingleExpressionMediator operator -(NullableSingleFieldExpression a, byte? b) => new(new ArithmeticExpression(a, new LiteralExpression<byte?>(b), ArithmeticExpressionOperator.Subtract));
+        
         public static NullableSingleExpressionMediator operator *(NullableSingleFieldExpression a, byte? b) => new(new ArithmeticExpression(a, new LiteralExpression<byte?>(b), ArithmeticExpressionOperator.Multiply));
+        
         public static NullableSingleExpressionMediator operator /(NullableSingleFieldExpression a, byte? b) => new(new ArithmeticExpression(a, new LiteralExpression<byte?>(b), ArithmeticExpressionOperator.Divide));
+        
         public static NullableSingleExpressionMediator operator %(NullableSingleFieldExpression a, byte? b) => new(new ArithmeticExpression(a, new LiteralExpression<byte?>(b), ArithmeticExpressionOperator.Modulo));
-
+        
         public static NullableSingleExpressionMediator operator +(byte? a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<byte?>(a), b, ArithmeticExpressionOperator.Add));
+        
         public static NullableSingleExpressionMediator operator -(byte? a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<byte?>(a), b, ArithmeticExpressionOperator.Subtract));
+        
         public static NullableSingleExpressionMediator operator *(byte? a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<byte?>(a), b, ArithmeticExpressionOperator.Multiply));
+        
         public static NullableSingleExpressionMediator operator /(byte? a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<byte?>(a), b, ArithmeticExpressionOperator.Divide));
+        
         public static NullableSingleExpressionMediator operator %(byte? a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<byte?>(a), b, ArithmeticExpressionOperator.Modulo));
+        
         #endregion        
 
         #region decimal
         public static NullableDecimalExpressionMediator operator +(NullableSingleFieldExpression a, decimal b) => new(new ArithmeticExpression(a, new LiteralExpression<decimal>(b), ArithmeticExpressionOperator.Add));
+        
         public static NullableDecimalExpressionMediator operator -(NullableSingleFieldExpression a, decimal b) => new(new ArithmeticExpression(a, new LiteralExpression<decimal>(b), ArithmeticExpressionOperator.Subtract));
+        
         public static NullableDecimalExpressionMediator operator *(NullableSingleFieldExpression a, decimal b) => new(new ArithmeticExpression(a, new LiteralExpression<decimal>(b), ArithmeticExpressionOperator.Multiply));
+        
         public static NullableDecimalExpressionMediator operator /(NullableSingleFieldExpression a, decimal b) => new(new ArithmeticExpression(a, new LiteralExpression<decimal>(b), ArithmeticExpressionOperator.Divide));
+        
         public static NullableDecimalExpressionMediator operator %(NullableSingleFieldExpression a, decimal b) => new(new ArithmeticExpression(a, new LiteralExpression<decimal>(b), ArithmeticExpressionOperator.Modulo));
-
+        
         public static NullableDecimalExpressionMediator operator +(decimal a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<decimal>(a), b, ArithmeticExpressionOperator.Add));
+        
         public static NullableDecimalExpressionMediator operator -(decimal a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<decimal>(a), b, ArithmeticExpressionOperator.Subtract));
+        
         public static NullableDecimalExpressionMediator operator *(decimal a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<decimal>(a), b, ArithmeticExpressionOperator.Multiply));
+        
         public static NullableDecimalExpressionMediator operator /(decimal a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<decimal>(a), b, ArithmeticExpressionOperator.Divide));
+        
         public static NullableDecimalExpressionMediator operator %(decimal a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<decimal>(a), b, ArithmeticExpressionOperator.Modulo));
-
+        
         public static NullableDecimalExpressionMediator operator +(NullableSingleFieldExpression a, decimal? b) => new(new ArithmeticExpression(a, new LiteralExpression<decimal?>(b), ArithmeticExpressionOperator.Add));
+        
         public static NullableDecimalExpressionMediator operator -(NullableSingleFieldExpression a, decimal? b) => new(new ArithmeticExpression(a, new LiteralExpression<decimal?>(b), ArithmeticExpressionOperator.Subtract));
+        
         public static NullableDecimalExpressionMediator operator *(NullableSingleFieldExpression a, decimal? b) => new(new ArithmeticExpression(a, new LiteralExpression<decimal?>(b), ArithmeticExpressionOperator.Multiply));
+        
         public static NullableDecimalExpressionMediator operator /(NullableSingleFieldExpression a, decimal? b) => new(new ArithmeticExpression(a, new LiteralExpression<decimal?>(b), ArithmeticExpressionOperator.Divide));
+        
         public static NullableDecimalExpressionMediator operator %(NullableSingleFieldExpression a, decimal? b) => new(new ArithmeticExpression(a, new LiteralExpression<decimal?>(b), ArithmeticExpressionOperator.Modulo));
-
+        
         public static NullableDecimalExpressionMediator operator +(decimal? a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<decimal?>(a), b, ArithmeticExpressionOperator.Add));
+        
         public static NullableDecimalExpressionMediator operator -(decimal? a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<decimal?>(a), b, ArithmeticExpressionOperator.Subtract));
+        
         public static NullableDecimalExpressionMediator operator *(decimal? a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<decimal?>(a), b, ArithmeticExpressionOperator.Multiply));
+        
         public static NullableDecimalExpressionMediator operator /(decimal? a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<decimal?>(a), b, ArithmeticExpressionOperator.Divide));
+        
         public static NullableDecimalExpressionMediator operator %(decimal? a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<decimal?>(a), b, ArithmeticExpressionOperator.Modulo));
+        
         #endregion        
 
         #region DateTime
         public static NullableDateTimeExpressionMediator operator +(NullableSingleFieldExpression a, DateTime b) => new(new ArithmeticExpression(a, new LiteralExpression<DateTime>(b), ArithmeticExpressionOperator.Add));
+        
         public static NullableDateTimeExpressionMediator operator -(NullableSingleFieldExpression a, DateTime b) => new(new ArithmeticExpression(a, new LiteralExpression<DateTime>(b), ArithmeticExpressionOperator.Subtract));
-
+        
         public static NullableDateTimeExpressionMediator operator +(DateTime a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<DateTime>(a), b, ArithmeticExpressionOperator.Add));
+        
         public static NullableDateTimeExpressionMediator operator -(DateTime a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<DateTime>(a), b, ArithmeticExpressionOperator.Subtract));
-
+        
         public static NullableDateTimeExpressionMediator operator +(NullableSingleFieldExpression a, DateTime? b) => new(new ArithmeticExpression(a, new LiteralExpression<DateTime?>(b), ArithmeticExpressionOperator.Add));
+        
         public static NullableDateTimeExpressionMediator operator -(NullableSingleFieldExpression a, DateTime? b) => new(new ArithmeticExpression(a, new LiteralExpression<DateTime?>(b), ArithmeticExpressionOperator.Subtract));
-
+        
         public static NullableDateTimeExpressionMediator operator +(DateTime? a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<DateTime?>(a), b, ArithmeticExpressionOperator.Add));
+        
         public static NullableDateTimeExpressionMediator operator -(DateTime? a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<DateTime?>(a), b, ArithmeticExpressionOperator.Subtract));
+        
         #endregion        
 
         #region DateTimeOffset
         public static NullableDateTimeOffsetExpressionMediator operator +(NullableSingleFieldExpression a, DateTimeOffset b) => new(new ArithmeticExpression(a, new LiteralExpression<DateTimeOffset>(b), ArithmeticExpressionOperator.Add));
+        
         public static NullableDateTimeOffsetExpressionMediator operator -(NullableSingleFieldExpression a, DateTimeOffset b) => new(new ArithmeticExpression(a, new LiteralExpression<DateTimeOffset>(b), ArithmeticExpressionOperator.Subtract));
-
+        
         public static NullableDateTimeOffsetExpressionMediator operator +(DateTimeOffset a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<DateTimeOffset>(a), b, ArithmeticExpressionOperator.Add));
+        
         public static NullableDateTimeOffsetExpressionMediator operator -(DateTimeOffset a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<DateTimeOffset>(a), b, ArithmeticExpressionOperator.Subtract));
-
+        
         public static NullableDateTimeOffsetExpressionMediator operator +(NullableSingleFieldExpression a, DateTimeOffset? b) => new(new ArithmeticExpression(a, new LiteralExpression<DateTimeOffset?>(b), ArithmeticExpressionOperator.Add));
+        
         public static NullableDateTimeOffsetExpressionMediator operator -(NullableSingleFieldExpression a, DateTimeOffset? b) => new(new ArithmeticExpression(a, new LiteralExpression<DateTimeOffset?>(b), ArithmeticExpressionOperator.Subtract));
-
+        
         public static NullableDateTimeOffsetExpressionMediator operator +(DateTimeOffset? a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<DateTimeOffset?>(a), b, ArithmeticExpressionOperator.Add));
+        
         public static NullableDateTimeOffsetExpressionMediator operator -(DateTimeOffset? a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<DateTimeOffset?>(a), b, ArithmeticExpressionOperator.Subtract));
+        
         #endregion        
 
         #region double
         public static NullableDoubleExpressionMediator operator +(NullableSingleFieldExpression a, double b) => new(new ArithmeticExpression(a, new LiteralExpression<double>(b), ArithmeticExpressionOperator.Add));
+        
         public static NullableDoubleExpressionMediator operator -(NullableSingleFieldExpression a, double b) => new(new ArithmeticExpression(a, new LiteralExpression<double>(b), ArithmeticExpressionOperator.Subtract));
+        
         public static NullableDoubleExpressionMediator operator *(NullableSingleFieldExpression a, double b) => new(new ArithmeticExpression(a, new LiteralExpression<double>(b), ArithmeticExpressionOperator.Multiply));
+        
         public static NullableDoubleExpressionMediator operator /(NullableSingleFieldExpression a, double b) => new(new ArithmeticExpression(a, new LiteralExpression<double>(b), ArithmeticExpressionOperator.Divide));
+        
         public static NullableDoubleExpressionMediator operator %(NullableSingleFieldExpression a, double b) => new(new ArithmeticExpression(a, new LiteralExpression<double>(b), ArithmeticExpressionOperator.Modulo));
-
+        
         public static NullableDoubleExpressionMediator operator +(double a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<double>(a), b, ArithmeticExpressionOperator.Add));
+        
         public static NullableDoubleExpressionMediator operator -(double a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<double>(a), b, ArithmeticExpressionOperator.Subtract));
+        
         public static NullableDoubleExpressionMediator operator *(double a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<double>(a), b, ArithmeticExpressionOperator.Multiply));
+        
         public static NullableDoubleExpressionMediator operator /(double a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<double>(a), b, ArithmeticExpressionOperator.Divide));
+        
         public static NullableDoubleExpressionMediator operator %(double a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<double>(a), b, ArithmeticExpressionOperator.Modulo));
-
+        
         public static NullableDoubleExpressionMediator operator +(NullableSingleFieldExpression a, double? b) => new(new ArithmeticExpression(a, new LiteralExpression<double?>(b), ArithmeticExpressionOperator.Add));
+        
         public static NullableDoubleExpressionMediator operator -(NullableSingleFieldExpression a, double? b) => new(new ArithmeticExpression(a, new LiteralExpression<double?>(b), ArithmeticExpressionOperator.Subtract));
+        
         public static NullableDoubleExpressionMediator operator *(NullableSingleFieldExpression a, double? b) => new(new ArithmeticExpression(a, new LiteralExpression<double?>(b), ArithmeticExpressionOperator.Multiply));
+        
         public static NullableDoubleExpressionMediator operator /(NullableSingleFieldExpression a, double? b) => new(new ArithmeticExpression(a, new LiteralExpression<double?>(b), ArithmeticExpressionOperator.Divide));
+        
         public static NullableDoubleExpressionMediator operator %(NullableSingleFieldExpression a, double? b) => new(new ArithmeticExpression(a, new LiteralExpression<double?>(b), ArithmeticExpressionOperator.Modulo));
-
+        
         public static NullableDoubleExpressionMediator operator +(double? a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<double?>(a), b, ArithmeticExpressionOperator.Add));
+        
         public static NullableDoubleExpressionMediator operator -(double? a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<double?>(a), b, ArithmeticExpressionOperator.Subtract));
+        
         public static NullableDoubleExpressionMediator operator *(double? a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<double?>(a), b, ArithmeticExpressionOperator.Multiply));
+        
         public static NullableDoubleExpressionMediator operator /(double? a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<double?>(a), b, ArithmeticExpressionOperator.Divide));
+        
         public static NullableDoubleExpressionMediator operator %(double? a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<double?>(a), b, ArithmeticExpressionOperator.Modulo));
+        
         #endregion        
 
         #region float
         public static NullableSingleExpressionMediator operator +(NullableSingleFieldExpression a, float b) => new(new ArithmeticExpression(a, new LiteralExpression<float>(b), ArithmeticExpressionOperator.Add));
+        
         public static NullableSingleExpressionMediator operator -(NullableSingleFieldExpression a, float b) => new(new ArithmeticExpression(a, new LiteralExpression<float>(b), ArithmeticExpressionOperator.Subtract));
+        
         public static NullableSingleExpressionMediator operator *(NullableSingleFieldExpression a, float b) => new(new ArithmeticExpression(a, new LiteralExpression<float>(b), ArithmeticExpressionOperator.Multiply));
+        
         public static NullableSingleExpressionMediator operator /(NullableSingleFieldExpression a, float b) => new(new ArithmeticExpression(a, new LiteralExpression<float>(b), ArithmeticExpressionOperator.Divide));
+        
         public static NullableSingleExpressionMediator operator %(NullableSingleFieldExpression a, float b) => new(new ArithmeticExpression(a, new LiteralExpression<float>(b), ArithmeticExpressionOperator.Modulo));
-
+        
         public static NullableSingleExpressionMediator operator +(float a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<float>(a), b, ArithmeticExpressionOperator.Add));
+        
         public static NullableSingleExpressionMediator operator -(float a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<float>(a), b, ArithmeticExpressionOperator.Subtract));
+        
         public static NullableSingleExpressionMediator operator *(float a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<float>(a), b, ArithmeticExpressionOperator.Multiply));
+        
         public static NullableSingleExpressionMediator operator /(float a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<float>(a), b, ArithmeticExpressionOperator.Divide));
+        
         public static NullableSingleExpressionMediator operator %(float a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<float>(a), b, ArithmeticExpressionOperator.Modulo));
-
+        
         public static NullableSingleExpressionMediator operator +(NullableSingleFieldExpression a, float? b) => new(new ArithmeticExpression(a, new LiteralExpression<float?>(b), ArithmeticExpressionOperator.Add));
+        
         public static NullableSingleExpressionMediator operator -(NullableSingleFieldExpression a, float? b) => new(new ArithmeticExpression(a, new LiteralExpression<float?>(b), ArithmeticExpressionOperator.Subtract));
+        
         public static NullableSingleExpressionMediator operator *(NullableSingleFieldExpression a, float? b) => new(new ArithmeticExpression(a, new LiteralExpression<float?>(b), ArithmeticExpressionOperator.Multiply));
+        
         public static NullableSingleExpressionMediator operator /(NullableSingleFieldExpression a, float? b) => new(new ArithmeticExpression(a, new LiteralExpression<float?>(b), ArithmeticExpressionOperator.Divide));
+        
         public static NullableSingleExpressionMediator operator %(NullableSingleFieldExpression a, float? b) => new(new ArithmeticExpression(a, new LiteralExpression<float?>(b), ArithmeticExpressionOperator.Modulo));
-
+        
         public static NullableSingleExpressionMediator operator +(float? a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<float?>(a), b, ArithmeticExpressionOperator.Add));
+        
         public static NullableSingleExpressionMediator operator -(float? a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<float?>(a), b, ArithmeticExpressionOperator.Subtract));
+        
         public static NullableSingleExpressionMediator operator *(float? a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<float?>(a), b, ArithmeticExpressionOperator.Multiply));
+        
         public static NullableSingleExpressionMediator operator /(float? a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<float?>(a), b, ArithmeticExpressionOperator.Divide));
+        
         public static NullableSingleExpressionMediator operator %(float? a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<float?>(a), b, ArithmeticExpressionOperator.Modulo));
+        
         #endregion        
 
         #region short
         public static NullableSingleExpressionMediator operator +(NullableSingleFieldExpression a, short b) => new(new ArithmeticExpression(a, new LiteralExpression<short>(b), ArithmeticExpressionOperator.Add));
+        
         public static NullableSingleExpressionMediator operator -(NullableSingleFieldExpression a, short b) => new(new ArithmeticExpression(a, new LiteralExpression<short>(b), ArithmeticExpressionOperator.Subtract));
+        
         public static NullableSingleExpressionMediator operator *(NullableSingleFieldExpression a, short b) => new(new ArithmeticExpression(a, new LiteralExpression<short>(b), ArithmeticExpressionOperator.Multiply));
+        
         public static NullableSingleExpressionMediator operator /(NullableSingleFieldExpression a, short b) => new(new ArithmeticExpression(a, new LiteralExpression<short>(b), ArithmeticExpressionOperator.Divide));
+        
         public static NullableSingleExpressionMediator operator %(NullableSingleFieldExpression a, short b) => new(new ArithmeticExpression(a, new LiteralExpression<short>(b), ArithmeticExpressionOperator.Modulo));
-
+        
         public static NullableSingleExpressionMediator operator +(short a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<short>(a), b, ArithmeticExpressionOperator.Add));
+        
         public static NullableSingleExpressionMediator operator -(short a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<short>(a), b, ArithmeticExpressionOperator.Subtract));
+        
         public static NullableSingleExpressionMediator operator *(short a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<short>(a), b, ArithmeticExpressionOperator.Multiply));
+        
         public static NullableSingleExpressionMediator operator /(short a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<short>(a), b, ArithmeticExpressionOperator.Divide));
+        
         public static NullableSingleExpressionMediator operator %(short a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<short>(a), b, ArithmeticExpressionOperator.Modulo));
-
+        
         public static NullableSingleExpressionMediator operator +(NullableSingleFieldExpression a, short? b) => new(new ArithmeticExpression(a, new LiteralExpression<short?>(b), ArithmeticExpressionOperator.Add));
+        
         public static NullableSingleExpressionMediator operator -(NullableSingleFieldExpression a, short? b) => new(new ArithmeticExpression(a, new LiteralExpression<short?>(b), ArithmeticExpressionOperator.Subtract));
+        
         public static NullableSingleExpressionMediator operator *(NullableSingleFieldExpression a, short? b) => new(new ArithmeticExpression(a, new LiteralExpression<short?>(b), ArithmeticExpressionOperator.Multiply));
+        
         public static NullableSingleExpressionMediator operator /(NullableSingleFieldExpression a, short? b) => new(new ArithmeticExpression(a, new LiteralExpression<short?>(b), ArithmeticExpressionOperator.Divide));
+        
         public static NullableSingleExpressionMediator operator %(NullableSingleFieldExpression a, short? b) => new(new ArithmeticExpression(a, new LiteralExpression<short?>(b), ArithmeticExpressionOperator.Modulo));
-
+        
         public static NullableSingleExpressionMediator operator +(short? a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<short?>(a), b, ArithmeticExpressionOperator.Add));
+        
         public static NullableSingleExpressionMediator operator -(short? a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<short?>(a), b, ArithmeticExpressionOperator.Subtract));
+        
         public static NullableSingleExpressionMediator operator *(short? a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<short?>(a), b, ArithmeticExpressionOperator.Multiply));
+        
         public static NullableSingleExpressionMediator operator /(short? a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<short?>(a), b, ArithmeticExpressionOperator.Divide));
+        
         public static NullableSingleExpressionMediator operator %(short? a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<short?>(a), b, ArithmeticExpressionOperator.Modulo));
+        
         #endregion        
 
         #region int
         public static NullableSingleExpressionMediator operator +(NullableSingleFieldExpression a, int b) => new(new ArithmeticExpression(a, new LiteralExpression<int>(b), ArithmeticExpressionOperator.Add));
+        
         public static NullableSingleExpressionMediator operator -(NullableSingleFieldExpression a, int b) => new(new ArithmeticExpression(a, new LiteralExpression<int>(b), ArithmeticExpressionOperator.Subtract));
+        
         public static NullableSingleExpressionMediator operator *(NullableSingleFieldExpression a, int b) => new(new ArithmeticExpression(a, new LiteralExpression<int>(b), ArithmeticExpressionOperator.Multiply));
+        
         public static NullableSingleExpressionMediator operator /(NullableSingleFieldExpression a, int b) => new(new ArithmeticExpression(a, new LiteralExpression<int>(b), ArithmeticExpressionOperator.Divide));
+        
         public static NullableSingleExpressionMediator operator %(NullableSingleFieldExpression a, int b) => new(new ArithmeticExpression(a, new LiteralExpression<int>(b), ArithmeticExpressionOperator.Modulo));
-
+        
         public static NullableSingleExpressionMediator operator +(int a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<int>(a), b, ArithmeticExpressionOperator.Add));
+        
         public static NullableSingleExpressionMediator operator -(int a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<int>(a), b, ArithmeticExpressionOperator.Subtract));
+        
         public static NullableSingleExpressionMediator operator *(int a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<int>(a), b, ArithmeticExpressionOperator.Multiply));
+        
         public static NullableSingleExpressionMediator operator /(int a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<int>(a), b, ArithmeticExpressionOperator.Divide));
+        
         public static NullableSingleExpressionMediator operator %(int a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<int>(a), b, ArithmeticExpressionOperator.Modulo));
-
+        
         public static NullableSingleExpressionMediator operator +(NullableSingleFieldExpression a, int? b) => new(new ArithmeticExpression(a, new LiteralExpression<int?>(b), ArithmeticExpressionOperator.Add));
+        
         public static NullableSingleExpressionMediator operator -(NullableSingleFieldExpression a, int? b) => new(new ArithmeticExpression(a, new LiteralExpression<int?>(b), ArithmeticExpressionOperator.Subtract));
+        
         public static NullableSingleExpressionMediator operator *(NullableSingleFieldExpression a, int? b) => new(new ArithmeticExpression(a, new LiteralExpression<int?>(b), ArithmeticExpressionOperator.Multiply));
+        
         public static NullableSingleExpressionMediator operator /(NullableSingleFieldExpression a, int? b) => new(new ArithmeticExpression(a, new LiteralExpression<int?>(b), ArithmeticExpressionOperator.Divide));
+        
         public static NullableSingleExpressionMediator operator %(NullableSingleFieldExpression a, int? b) => new(new ArithmeticExpression(a, new LiteralExpression<int?>(b), ArithmeticExpressionOperator.Modulo));
-
+        
         public static NullableSingleExpressionMediator operator +(int? a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<int?>(a), b, ArithmeticExpressionOperator.Add));
+        
         public static NullableSingleExpressionMediator operator -(int? a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<int?>(a), b, ArithmeticExpressionOperator.Subtract));
+        
         public static NullableSingleExpressionMediator operator *(int? a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<int?>(a), b, ArithmeticExpressionOperator.Multiply));
+        
         public static NullableSingleExpressionMediator operator /(int? a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<int?>(a), b, ArithmeticExpressionOperator.Divide));
+        
         public static NullableSingleExpressionMediator operator %(int? a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<int?>(a), b, ArithmeticExpressionOperator.Modulo));
+        
         #endregion        
 
         #region long
         public static NullableSingleExpressionMediator operator +(NullableSingleFieldExpression a, long b) => new(new ArithmeticExpression(a, new LiteralExpression<long>(b), ArithmeticExpressionOperator.Add));
+        
         public static NullableSingleExpressionMediator operator -(NullableSingleFieldExpression a, long b) => new(new ArithmeticExpression(a, new LiteralExpression<long>(b), ArithmeticExpressionOperator.Subtract));
+        
         public static NullableSingleExpressionMediator operator *(NullableSingleFieldExpression a, long b) => new(new ArithmeticExpression(a, new LiteralExpression<long>(b), ArithmeticExpressionOperator.Multiply));
+        
         public static NullableSingleExpressionMediator operator /(NullableSingleFieldExpression a, long b) => new(new ArithmeticExpression(a, new LiteralExpression<long>(b), ArithmeticExpressionOperator.Divide));
+        
         public static NullableSingleExpressionMediator operator %(NullableSingleFieldExpression a, long b) => new(new ArithmeticExpression(a, new LiteralExpression<long>(b), ArithmeticExpressionOperator.Modulo));
-
+        
         public static NullableSingleExpressionMediator operator +(long a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<long>(a), b, ArithmeticExpressionOperator.Add));
+        
         public static NullableSingleExpressionMediator operator -(long a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<long>(a), b, ArithmeticExpressionOperator.Subtract));
+        
         public static NullableSingleExpressionMediator operator *(long a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<long>(a), b, ArithmeticExpressionOperator.Multiply));
+        
         public static NullableSingleExpressionMediator operator /(long a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<long>(a), b, ArithmeticExpressionOperator.Divide));
+        
         public static NullableSingleExpressionMediator operator %(long a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<long>(a), b, ArithmeticExpressionOperator.Modulo));
-
+        
         public static NullableSingleExpressionMediator operator +(NullableSingleFieldExpression a, long? b) => new(new ArithmeticExpression(a, new LiteralExpression<long?>(b), ArithmeticExpressionOperator.Add));
+        
         public static NullableSingleExpressionMediator operator -(NullableSingleFieldExpression a, long? b) => new(new ArithmeticExpression(a, new LiteralExpression<long?>(b), ArithmeticExpressionOperator.Subtract));
+        
         public static NullableSingleExpressionMediator operator *(NullableSingleFieldExpression a, long? b) => new(new ArithmeticExpression(a, new LiteralExpression<long?>(b), ArithmeticExpressionOperator.Multiply));
+        
         public static NullableSingleExpressionMediator operator /(NullableSingleFieldExpression a, long? b) => new(new ArithmeticExpression(a, new LiteralExpression<long?>(b), ArithmeticExpressionOperator.Divide));
+        
         public static NullableSingleExpressionMediator operator %(NullableSingleFieldExpression a, long? b) => new(new ArithmeticExpression(a, new LiteralExpression<long?>(b), ArithmeticExpressionOperator.Modulo));
-
+        
         public static NullableSingleExpressionMediator operator +(long? a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<long?>(a), b, ArithmeticExpressionOperator.Add));
+        
         public static NullableSingleExpressionMediator operator -(long? a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<long?>(a), b, ArithmeticExpressionOperator.Subtract));
+        
         public static NullableSingleExpressionMediator operator *(long? a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<long?>(a), b, ArithmeticExpressionOperator.Multiply));
+        
         public static NullableSingleExpressionMediator operator /(long? a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<long?>(a), b, ArithmeticExpressionOperator.Divide));
+        
         public static NullableSingleExpressionMediator operator %(long? a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<long?>(a), b, ArithmeticExpressionOperator.Modulo));
+        
         #endregion        
 
         #region string?
-
-
         #endregion        
 
         #region TimeSpan
-
-
-
         #endregion        
 
         #endregion
@@ -263,116 +388,185 @@ namespace HatTrick.DbEx.Sql.Expression
         #region fields
         #region byte
         public static NullableSingleExpressionMediator operator +(NullableSingleFieldExpression a, ByteFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        
         public static NullableSingleExpressionMediator operator -(NullableSingleFieldExpression a, ByteFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        
         public static NullableSingleExpressionMediator operator *(NullableSingleFieldExpression a, ByteFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        
         public static NullableSingleExpressionMediator operator /(NullableSingleFieldExpression a, ByteFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        
         public static NullableSingleExpressionMediator operator %(NullableSingleFieldExpression a, ByteFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
-
+        
         public static NullableSingleExpressionMediator operator +(NullableSingleFieldExpression a, NullableByteFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        
         public static NullableSingleExpressionMediator operator -(NullableSingleFieldExpression a, NullableByteFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        
         public static NullableSingleExpressionMediator operator *(NullableSingleFieldExpression a, NullableByteFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        
         public static NullableSingleExpressionMediator operator /(NullableSingleFieldExpression a, NullableByteFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        
         public static NullableSingleExpressionMediator operator %(NullableSingleFieldExpression a, NullableByteFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        
         #endregion
 
         #region decimal
         public static NullableDecimalExpressionMediator operator +(NullableSingleFieldExpression a, DecimalFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        
         public static NullableDecimalExpressionMediator operator -(NullableSingleFieldExpression a, DecimalFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        
         public static NullableDecimalExpressionMediator operator *(NullableSingleFieldExpression a, DecimalFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        
         public static NullableDecimalExpressionMediator operator /(NullableSingleFieldExpression a, DecimalFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        
         public static NullableDecimalExpressionMediator operator %(NullableSingleFieldExpression a, DecimalFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
-
+        
         public static NullableDecimalExpressionMediator operator +(NullableSingleFieldExpression a, NullableDecimalFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        
         public static NullableDecimalExpressionMediator operator -(NullableSingleFieldExpression a, NullableDecimalFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        
         public static NullableDecimalExpressionMediator operator *(NullableSingleFieldExpression a, NullableDecimalFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        
         public static NullableDecimalExpressionMediator operator /(NullableSingleFieldExpression a, NullableDecimalFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        
         public static NullableDecimalExpressionMediator operator %(NullableSingleFieldExpression a, NullableDecimalFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        
         #endregion
 
         #region DateTime
         public static NullableDateTimeExpressionMediator operator +(NullableSingleFieldExpression a, DateTimeFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        
         public static NullableDateTimeExpressionMediator operator -(NullableSingleFieldExpression a, DateTimeFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-
+        
         public static NullableDateTimeExpressionMediator operator +(NullableSingleFieldExpression a, NullableDateTimeFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        
         public static NullableDateTimeExpressionMediator operator -(NullableSingleFieldExpression a, NullableDateTimeFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        
         #endregion
 
         #region DateTimeOffset
         public static NullableDateTimeOffsetExpressionMediator operator +(NullableSingleFieldExpression a, DateTimeOffsetFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        
         public static NullableDateTimeOffsetExpressionMediator operator -(NullableSingleFieldExpression a, DateTimeOffsetFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
-
+        
         public static NullableDateTimeOffsetExpressionMediator operator +(NullableSingleFieldExpression a, NullableDateTimeOffsetFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        
         public static NullableDateTimeOffsetExpressionMediator operator -(NullableSingleFieldExpression a, NullableDateTimeOffsetFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        
         #endregion
 
         #region double
         public static NullableDoubleExpressionMediator operator +(NullableSingleFieldExpression a, DoubleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        
         public static NullableDoubleExpressionMediator operator -(NullableSingleFieldExpression a, DoubleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        
         public static NullableDoubleExpressionMediator operator *(NullableSingleFieldExpression a, DoubleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        
         public static NullableDoubleExpressionMediator operator /(NullableSingleFieldExpression a, DoubleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        
         public static NullableDoubleExpressionMediator operator %(NullableSingleFieldExpression a, DoubleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
-
+        
         public static NullableDoubleExpressionMediator operator +(NullableSingleFieldExpression a, NullableDoubleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        
         public static NullableDoubleExpressionMediator operator -(NullableSingleFieldExpression a, NullableDoubleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        
         public static NullableDoubleExpressionMediator operator *(NullableSingleFieldExpression a, NullableDoubleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        
         public static NullableDoubleExpressionMediator operator /(NullableSingleFieldExpression a, NullableDoubleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        
         public static NullableDoubleExpressionMediator operator %(NullableSingleFieldExpression a, NullableDoubleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        
         #endregion
 
         #region float
         public static NullableSingleExpressionMediator operator +(NullableSingleFieldExpression a, SingleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        
         public static NullableSingleExpressionMediator operator -(NullableSingleFieldExpression a, SingleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        
         public static NullableSingleExpressionMediator operator *(NullableSingleFieldExpression a, SingleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        
         public static NullableSingleExpressionMediator operator /(NullableSingleFieldExpression a, SingleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        
         public static NullableSingleExpressionMediator operator %(NullableSingleFieldExpression a, SingleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
-
+        
         public static NullableSingleExpressionMediator operator +(NullableSingleFieldExpression a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        
         public static NullableSingleExpressionMediator operator -(NullableSingleFieldExpression a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        
         public static NullableSingleExpressionMediator operator *(NullableSingleFieldExpression a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        
         public static NullableSingleExpressionMediator operator /(NullableSingleFieldExpression a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        
         public static NullableSingleExpressionMediator operator %(NullableSingleFieldExpression a, NullableSingleFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        
         #endregion
 
         #region short
         public static NullableSingleExpressionMediator operator +(NullableSingleFieldExpression a, Int16FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        
         public static NullableSingleExpressionMediator operator -(NullableSingleFieldExpression a, Int16FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        
         public static NullableSingleExpressionMediator operator *(NullableSingleFieldExpression a, Int16FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        
         public static NullableSingleExpressionMediator operator /(NullableSingleFieldExpression a, Int16FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        
         public static NullableSingleExpressionMediator operator %(NullableSingleFieldExpression a, Int16FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
-
+        
         public static NullableSingleExpressionMediator operator +(NullableSingleFieldExpression a, NullableInt16FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        
         public static NullableSingleExpressionMediator operator -(NullableSingleFieldExpression a, NullableInt16FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        
         public static NullableSingleExpressionMediator operator *(NullableSingleFieldExpression a, NullableInt16FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        
         public static NullableSingleExpressionMediator operator /(NullableSingleFieldExpression a, NullableInt16FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        
         public static NullableSingleExpressionMediator operator %(NullableSingleFieldExpression a, NullableInt16FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        
         #endregion
 
         #region int
         public static NullableSingleExpressionMediator operator +(NullableSingleFieldExpression a, Int32FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        
         public static NullableSingleExpressionMediator operator -(NullableSingleFieldExpression a, Int32FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        
         public static NullableSingleExpressionMediator operator *(NullableSingleFieldExpression a, Int32FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        
         public static NullableSingleExpressionMediator operator /(NullableSingleFieldExpression a, Int32FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        
         public static NullableSingleExpressionMediator operator %(NullableSingleFieldExpression a, Int32FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
-
+        
         public static NullableSingleExpressionMediator operator +(NullableSingleFieldExpression a, NullableInt32FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        
         public static NullableSingleExpressionMediator operator -(NullableSingleFieldExpression a, NullableInt32FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        
         public static NullableSingleExpressionMediator operator *(NullableSingleFieldExpression a, NullableInt32FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        
         public static NullableSingleExpressionMediator operator /(NullableSingleFieldExpression a, NullableInt32FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        
         public static NullableSingleExpressionMediator operator %(NullableSingleFieldExpression a, NullableInt32FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        
         #endregion
 
         #region long
         public static NullableSingleExpressionMediator operator +(NullableSingleFieldExpression a, Int64FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        
         public static NullableSingleExpressionMediator operator -(NullableSingleFieldExpression a, Int64FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        
         public static NullableSingleExpressionMediator operator *(NullableSingleFieldExpression a, Int64FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        
         public static NullableSingleExpressionMediator operator /(NullableSingleFieldExpression a, Int64FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        
         public static NullableSingleExpressionMediator operator %(NullableSingleFieldExpression a, Int64FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
-
+        
         public static NullableSingleExpressionMediator operator +(NullableSingleFieldExpression a, NullableInt64FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        
         public static NullableSingleExpressionMediator operator -(NullableSingleFieldExpression a, NullableInt64FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        
         public static NullableSingleExpressionMediator operator *(NullableSingleFieldExpression a, NullableInt64FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        
         public static NullableSingleExpressionMediator operator /(NullableSingleFieldExpression a, NullableInt64FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        
         public static NullableSingleExpressionMediator operator %(NullableSingleFieldExpression a, NullableInt64FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        
         #endregion
 
 
@@ -1202,103 +1396,808 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region alias
         public static NullableSingleExpressionMediator operator +(NullableSingleFieldExpression a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        
         public static NullableSingleExpressionMediator operator -(NullableSingleFieldExpression a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        
         public static NullableSingleExpressionMediator operator *(NullableSingleFieldExpression a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        
         public static NullableSingleExpressionMediator operator /(NullableSingleFieldExpression a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        
         public static NullableSingleExpressionMediator operator %(NullableSingleFieldExpression a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        
         public static NullableSingleExpressionMediator operator +(NullableSingleFieldExpression a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression<float?>(b), ArithmeticExpressionOperator.Add));
+        
         public static NullableSingleExpressionMediator operator -(NullableSingleFieldExpression a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression<float?>(b), ArithmeticExpressionOperator.Subtract));
+        
         public static NullableSingleExpressionMediator operator *(NullableSingleFieldExpression a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression<float?>(b), ArithmeticExpressionOperator.Multiply));
+        
         public static NullableSingleExpressionMediator operator /(NullableSingleFieldExpression a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression<float?>(b), ArithmeticExpressionOperator.Divide));
+        
         public static NullableSingleExpressionMediator operator %(NullableSingleFieldExpression a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression<float?>(b), ArithmeticExpressionOperator.Modulo));
+        
         #endregion
         #endregion
 
         #region filter operators
         #region null
-        public static FilterExpression operator ==(NullableSingleFieldExpression a, NullElement b) => new FilterExpression<bool?>(a, new LiteralExpression<float?>(b, a), FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullableSingleFieldExpression a, NullElement b) => new FilterExpression<bool?>(a, new LiteralExpression<float?>(b, a), FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator ==(NullElement a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<float?>(a, b), b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullElement a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<float?>(a, b), b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, NullElement b) => new FilterExpression<bool?>(a, new LiteralExpression<float?>(b, a), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, NullElement b) => new FilterExpression<bool?>(a, new LiteralExpression<float?>(b, a), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullElement a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<float?>(a, b), b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullElement a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<float?>(a, b), b, FilterExpressionOperator.NotEqual);
         #endregion
 
         #region data types
-        #region float
-        public static FilterExpression operator ==(NullableSingleFieldExpression a, float b) => new FilterExpression<bool?>(a, new LiteralExpression<float>(b, a), FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullableSingleFieldExpression a, float b) => new FilterExpression<bool?>(a, new LiteralExpression<float>(b, a), FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator <(NullableSingleFieldExpression a, float b) => new FilterExpression<bool?>(a, new LiteralExpression<float>(b, a), FilterExpressionOperator.LessThan);
-        public static FilterExpression operator >(NullableSingleFieldExpression a, float b) => new FilterExpression<bool?>(a, new LiteralExpression<float>(b, a), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression operator <=(NullableSingleFieldExpression a, float b) => new FilterExpression<bool?>(a, new LiteralExpression<float>(b, a), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression operator >=(NullableSingleFieldExpression a, float b) => new FilterExpression<bool?>(a, new LiteralExpression<float>(b, a), FilterExpressionOperator.GreaterThanOrEqual);
-
-        public static FilterExpression operator ==(float a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<float?>(a, b), b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(float a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<float?>(a, b), b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator <(float a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<float?>(a, b), b, FilterExpressionOperator.LessThan);
-        public static FilterExpression operator >(float a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<float?>(a, b), b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression operator <=(float a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<float?>(a, b), b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression operator >=(float a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<float?>(a, b), b, FilterExpressionOperator.GreaterThanOrEqual);
-
-        public static FilterExpression operator ==(NullableSingleFieldExpression a, float? b) => new FilterExpression<bool?>(a, new LiteralExpression<float?>(b, a), FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullableSingleFieldExpression a, float? b) => new FilterExpression<bool?>(a, new LiteralExpression<float?>(b, a), FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator <(NullableSingleFieldExpression a, float? b) => new FilterExpression<bool?>(a, new LiteralExpression<float?>(b, a), FilterExpressionOperator.LessThan);
-        public static FilterExpression operator >(NullableSingleFieldExpression a, float? b) => new FilterExpression<bool?>(a, new LiteralExpression<float?>(b, a), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression operator <=(NullableSingleFieldExpression a, float? b) => new FilterExpression<bool?>(a, new LiteralExpression<float?>(b, a), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression operator >=(NullableSingleFieldExpression a, float? b) => new FilterExpression<bool?>(a, new LiteralExpression<float?>(b, a), FilterExpressionOperator.GreaterThanOrEqual);
-
-        public static FilterExpression operator ==(float? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<float?>(a, b), b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(float? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<float?>(a, b), b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator <(float? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<float?>(a, b), b, FilterExpressionOperator.LessThan);
-        public static FilterExpression operator >(float? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<float?>(a, b), b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression operator <=(float? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<float?>(a, b), b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression operator >=(float? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<float?>(a, b), b, FilterExpressionOperator.GreaterThanOrEqual);
+        #region byte
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, byte b) => new FilterExpression<bool?>(a, new LiteralExpression<byte>(b, a), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, byte b) => new FilterExpression<bool?>(a, new LiteralExpression<byte>(b, a), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, byte b) => new FilterExpression<bool?>(a, new LiteralExpression<byte>(b, a), FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, byte b) => new FilterExpression<bool?>(a, new LiteralExpression<byte>(b, a), FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, byte b) => new FilterExpression<bool?>(a, new LiteralExpression<byte>(b, a), FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, byte b) => new FilterExpression<bool?>(a, new LiteralExpression<byte>(b, a), FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(byte a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<byte?>(a, b), b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(byte a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<byte?>(a, b), b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(byte a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<byte?>(a, b), b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(byte a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<byte?>(a, b), b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(byte a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<byte?>(a, b), b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(byte a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<byte?>(a, b), b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, byte? b) => new FilterExpression<bool?>(a, new LiteralExpression<byte?>(b, a), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, byte? b) => new FilterExpression<bool?>(a, new LiteralExpression<byte?>(b, a), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, byte? b) => new FilterExpression<bool?>(a, new LiteralExpression<byte?>(b, a), FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, byte? b) => new FilterExpression<bool?>(a, new LiteralExpression<byte?>(b, a), FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, byte? b) => new FilterExpression<bool?>(a, new LiteralExpression<byte?>(b, a), FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, byte? b) => new FilterExpression<bool?>(a, new LiteralExpression<byte?>(b, a), FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(byte? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<byte?>(a, b), b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(byte? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<byte?>(a, b), b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(byte? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<byte?>(a, b), b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(byte? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<byte?>(a, b), b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(byte? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<byte?>(a, b), b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(byte? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<byte?>(a, b), b, FilterExpressionOperator.GreaterThanOrEqual);
+        
         #endregion
+
+        #region decimal
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, decimal b) => new FilterExpression<bool?>(a, new LiteralExpression<decimal>(b, a), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, decimal b) => new FilterExpression<bool?>(a, new LiteralExpression<decimal>(b, a), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, decimal b) => new FilterExpression<bool?>(a, new LiteralExpression<decimal>(b, a), FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, decimal b) => new FilterExpression<bool?>(a, new LiteralExpression<decimal>(b, a), FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, decimal b) => new FilterExpression<bool?>(a, new LiteralExpression<decimal>(b, a), FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, decimal b) => new FilterExpression<bool?>(a, new LiteralExpression<decimal>(b, a), FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(decimal a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<decimal?>(a, b), b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(decimal a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<decimal?>(a, b), b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(decimal a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<decimal?>(a, b), b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(decimal a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<decimal?>(a, b), b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(decimal a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<decimal?>(a, b), b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(decimal a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<decimal?>(a, b), b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, decimal? b) => new FilterExpression<bool?>(a, new LiteralExpression<decimal?>(b, a), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, decimal? b) => new FilterExpression<bool?>(a, new LiteralExpression<decimal?>(b, a), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, decimal? b) => new FilterExpression<bool?>(a, new LiteralExpression<decimal?>(b, a), FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, decimal? b) => new FilterExpression<bool?>(a, new LiteralExpression<decimal?>(b, a), FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, decimal? b) => new FilterExpression<bool?>(a, new LiteralExpression<decimal?>(b, a), FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, decimal? b) => new FilterExpression<bool?>(a, new LiteralExpression<decimal?>(b, a), FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(decimal? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<decimal?>(a, b), b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(decimal? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<decimal?>(a, b), b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(decimal? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<decimal?>(a, b), b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(decimal? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<decimal?>(a, b), b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(decimal? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<decimal?>(a, b), b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(decimal? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<decimal?>(a, b), b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        #endregion
+
+        #region double
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, double b) => new FilterExpression<bool?>(a, new LiteralExpression<double>(b, a), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, double b) => new FilterExpression<bool?>(a, new LiteralExpression<double>(b, a), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, double b) => new FilterExpression<bool?>(a, new LiteralExpression<double>(b, a), FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, double b) => new FilterExpression<bool?>(a, new LiteralExpression<double>(b, a), FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, double b) => new FilterExpression<bool?>(a, new LiteralExpression<double>(b, a), FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, double b) => new FilterExpression<bool?>(a, new LiteralExpression<double>(b, a), FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(double a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<double?>(a, b), b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(double a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<double?>(a, b), b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(double a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<double?>(a, b), b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(double a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<double?>(a, b), b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(double a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<double?>(a, b), b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(double a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<double?>(a, b), b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, double? b) => new FilterExpression<bool?>(a, new LiteralExpression<double?>(b, a), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, double? b) => new FilterExpression<bool?>(a, new LiteralExpression<double?>(b, a), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, double? b) => new FilterExpression<bool?>(a, new LiteralExpression<double?>(b, a), FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, double? b) => new FilterExpression<bool?>(a, new LiteralExpression<double?>(b, a), FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, double? b) => new FilterExpression<bool?>(a, new LiteralExpression<double?>(b, a), FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, double? b) => new FilterExpression<bool?>(a, new LiteralExpression<double?>(b, a), FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(double? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<double?>(a, b), b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(double? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<double?>(a, b), b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(double? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<double?>(a, b), b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(double? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<double?>(a, b), b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(double? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<double?>(a, b), b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(double? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<double?>(a, b), b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        #endregion
+
+        #region float
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, float b) => new FilterExpression<bool?>(a, new LiteralExpression<float>(b, a), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, float b) => new FilterExpression<bool?>(a, new LiteralExpression<float>(b, a), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, float b) => new FilterExpression<bool?>(a, new LiteralExpression<float>(b, a), FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, float b) => new FilterExpression<bool?>(a, new LiteralExpression<float>(b, a), FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, float b) => new FilterExpression<bool?>(a, new LiteralExpression<float>(b, a), FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, float b) => new FilterExpression<bool?>(a, new LiteralExpression<float>(b, a), FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(float a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<float?>(a, b), b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(float a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<float?>(a, b), b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(float a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<float?>(a, b), b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(float a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<float?>(a, b), b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(float a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<float?>(a, b), b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(float a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<float?>(a, b), b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, float? b) => new FilterExpression<bool?>(a, new LiteralExpression<float?>(b, a), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, float? b) => new FilterExpression<bool?>(a, new LiteralExpression<float?>(b, a), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, float? b) => new FilterExpression<bool?>(a, new LiteralExpression<float?>(b, a), FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, float? b) => new FilterExpression<bool?>(a, new LiteralExpression<float?>(b, a), FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, float? b) => new FilterExpression<bool?>(a, new LiteralExpression<float?>(b, a), FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, float? b) => new FilterExpression<bool?>(a, new LiteralExpression<float?>(b, a), FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(float? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<float?>(a, b), b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(float? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<float?>(a, b), b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(float? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<float?>(a, b), b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(float? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<float?>(a, b), b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(float? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<float?>(a, b), b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(float? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<float?>(a, b), b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        #endregion
+
+        #region short
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, short b) => new FilterExpression<bool?>(a, new LiteralExpression<short>(b, a), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, short b) => new FilterExpression<bool?>(a, new LiteralExpression<short>(b, a), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, short b) => new FilterExpression<bool?>(a, new LiteralExpression<short>(b, a), FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, short b) => new FilterExpression<bool?>(a, new LiteralExpression<short>(b, a), FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, short b) => new FilterExpression<bool?>(a, new LiteralExpression<short>(b, a), FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, short b) => new FilterExpression<bool?>(a, new LiteralExpression<short>(b, a), FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(short a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<short?>(a, b), b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(short a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<short?>(a, b), b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(short a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<short?>(a, b), b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(short a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<short?>(a, b), b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(short a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<short?>(a, b), b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(short a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<short?>(a, b), b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, short? b) => new FilterExpression<bool?>(a, new LiteralExpression<short?>(b, a), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, short? b) => new FilterExpression<bool?>(a, new LiteralExpression<short?>(b, a), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, short? b) => new FilterExpression<bool?>(a, new LiteralExpression<short?>(b, a), FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, short? b) => new FilterExpression<bool?>(a, new LiteralExpression<short?>(b, a), FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, short? b) => new FilterExpression<bool?>(a, new LiteralExpression<short?>(b, a), FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, short? b) => new FilterExpression<bool?>(a, new LiteralExpression<short?>(b, a), FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(short? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<short?>(a, b), b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(short? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<short?>(a, b), b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(short? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<short?>(a, b), b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(short? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<short?>(a, b), b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(short? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<short?>(a, b), b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(short? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<short?>(a, b), b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        #endregion
+
+        #region int
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, int b) => new FilterExpression<bool?>(a, new LiteralExpression<int>(b, a), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, int b) => new FilterExpression<bool?>(a, new LiteralExpression<int>(b, a), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, int b) => new FilterExpression<bool?>(a, new LiteralExpression<int>(b, a), FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, int b) => new FilterExpression<bool?>(a, new LiteralExpression<int>(b, a), FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, int b) => new FilterExpression<bool?>(a, new LiteralExpression<int>(b, a), FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, int b) => new FilterExpression<bool?>(a, new LiteralExpression<int>(b, a), FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(int a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<int?>(a, b), b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(int a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<int?>(a, b), b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(int a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<int?>(a, b), b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(int a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<int?>(a, b), b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(int a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<int?>(a, b), b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(int a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<int?>(a, b), b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, int? b) => new FilterExpression<bool?>(a, new LiteralExpression<int?>(b, a), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, int? b) => new FilterExpression<bool?>(a, new LiteralExpression<int?>(b, a), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, int? b) => new FilterExpression<bool?>(a, new LiteralExpression<int?>(b, a), FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, int? b) => new FilterExpression<bool?>(a, new LiteralExpression<int?>(b, a), FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, int? b) => new FilterExpression<bool?>(a, new LiteralExpression<int?>(b, a), FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, int? b) => new FilterExpression<bool?>(a, new LiteralExpression<int?>(b, a), FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(int? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<int?>(a, b), b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(int? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<int?>(a, b), b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(int? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<int?>(a, b), b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(int? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<int?>(a, b), b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(int? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<int?>(a, b), b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(int? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<int?>(a, b), b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        #endregion
+
+        #region long
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, long b) => new FilterExpression<bool?>(a, new LiteralExpression<long>(b, a), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, long b) => new FilterExpression<bool?>(a, new LiteralExpression<long>(b, a), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, long b) => new FilterExpression<bool?>(a, new LiteralExpression<long>(b, a), FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, long b) => new FilterExpression<bool?>(a, new LiteralExpression<long>(b, a), FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, long b) => new FilterExpression<bool?>(a, new LiteralExpression<long>(b, a), FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, long b) => new FilterExpression<bool?>(a, new LiteralExpression<long>(b, a), FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(long a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<long?>(a, b), b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(long a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<long?>(a, b), b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(long a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<long?>(a, b), b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(long a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<long?>(a, b), b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(long a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<long?>(a, b), b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(long a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<long?>(a, b), b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, long? b) => new FilterExpression<bool?>(a, new LiteralExpression<long?>(b, a), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, long? b) => new FilterExpression<bool?>(a, new LiteralExpression<long?>(b, a), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, long? b) => new FilterExpression<bool?>(a, new LiteralExpression<long?>(b, a), FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, long? b) => new FilterExpression<bool?>(a, new LiteralExpression<long?>(b, a), FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, long? b) => new FilterExpression<bool?>(a, new LiteralExpression<long?>(b, a), FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, long? b) => new FilterExpression<bool?>(a, new LiteralExpression<long?>(b, a), FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(long? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<long?>(a, b), b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(long? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<long?>(a, b), b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(long? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<long?>(a, b), b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(long? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<long?>(a, b), b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(long? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<long?>(a, b), b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(long? a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(new LiteralExpression<long?>(a, b), b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        #endregion
+
         #endregion
 
         #region fields
-        public static FilterExpression operator ==(NullableSingleFieldExpression a, SingleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullableSingleFieldExpression a, SingleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator <(NullableSingleFieldExpression a, SingleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
-        public static FilterExpression operator >(NullableSingleFieldExpression a, SingleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression operator <=(NullableSingleFieldExpression a, SingleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression operator >=(NullableSingleFieldExpression a, SingleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
-
-        public static FilterExpression operator ==(NullableSingleFieldExpression a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullableSingleFieldExpression a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator <(NullableSingleFieldExpression a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
-        public static FilterExpression operator >(NullableSingleFieldExpression a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression operator <=(NullableSingleFieldExpression a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression operator >=(NullableSingleFieldExpression a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
-        #endregion
+        #region byte
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, ByteFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
         
-        #region mediators
-        public static FilterExpression operator ==(NullableSingleFieldExpression a, SingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullableSingleFieldExpression a, SingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator <(NullableSingleFieldExpression a, SingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
-        public static FilterExpression operator >(NullableSingleFieldExpression a, SingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression operator <=(NullableSingleFieldExpression a, SingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression operator >=(NullableSingleFieldExpression a, SingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, ByteFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, ByteFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, ByteFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, ByteFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, ByteFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, NullableByteFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, NullableByteFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, NullableByteFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, NullableByteFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, NullableByteFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, NullableByteFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        #endregion
 
-        public static FilterExpression operator ==(NullableSingleFieldExpression a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullableSingleFieldExpression a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator <(NullableSingleFieldExpression a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
-        public static FilterExpression operator >(NullableSingleFieldExpression a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression operator <=(NullableSingleFieldExpression a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression operator >=(NullableSingleFieldExpression a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        #region decimal
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, DecimalFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, DecimalFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, DecimalFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, DecimalFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, DecimalFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, DecimalFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, NullableDecimalFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, NullableDecimalFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, NullableDecimalFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, NullableDecimalFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, NullableDecimalFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, NullableDecimalFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        #endregion
+
+        #region double
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, DoubleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, DoubleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, DoubleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, DoubleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, DoubleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, DoubleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, NullableDoubleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, NullableDoubleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, NullableDoubleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, NullableDoubleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, NullableDoubleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, NullableDoubleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        #endregion
+
+        #region float
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, SingleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, SingleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, SingleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, SingleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, SingleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, SingleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        #endregion
+
+        #region short
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, Int16FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, Int16FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, Int16FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, Int16FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, Int16FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, Int16FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, NullableInt16FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, NullableInt16FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, NullableInt16FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, NullableInt16FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, NullableInt16FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, NullableInt16FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        #endregion
+
+        #region int
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, Int32FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, Int32FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, Int32FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, Int32FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, Int32FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, Int32FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, NullableInt32FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, NullableInt32FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, NullableInt32FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, NullableInt32FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, NullableInt32FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, NullableInt32FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        #endregion
+
+        #region long
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, Int64FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, Int64FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, Int64FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, Int64FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, Int64FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, Int64FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, NullableInt64FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, NullableInt64FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, NullableInt64FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, NullableInt64FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, NullableInt64FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, NullableInt64FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        #endregion
+
+        #endregion
+
+        #region mediators
+        #region byte
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, ByteExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, ByteExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, ByteExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, ByteExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, ByteExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, ByteExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, NullableByteExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, NullableByteExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, NullableByteExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, NullableByteExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, NullableByteExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, NullableByteExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        #endregion
+
+        #region decimal
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, DecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, DecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, DecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, DecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, DecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, DecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        #endregion
+
+        #region double
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, DoubleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, DoubleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, DoubleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, DoubleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, DoubleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, DoubleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, NullableDoubleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, NullableDoubleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, NullableDoubleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, NullableDoubleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, NullableDoubleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, NullableDoubleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        #endregion
+
+        #region float
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, SingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, SingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, SingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, SingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, SingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, SingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        #endregion
+
+        #region short
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, Int16ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, Int16ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, Int16ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, Int16ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, Int16ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, Int16ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, NullableInt16ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, NullableInt16ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, NullableInt16ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, NullableInt16ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, NullableInt16ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, NullableInt16ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        #endregion
+
+        #region int
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, Int32ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, Int32ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, Int32ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, Int32ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, Int32ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, Int32ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, NullableInt32ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, NullableInt32ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, NullableInt32ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, NullableInt32ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, NullableInt32ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, NullableInt32ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        #endregion
+
+        #region long
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, Int64ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, Int64ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, Int64ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, Int64ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, Int64ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, Int64ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, NullableInt64ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, NullableInt64ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, NullableInt64ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, NullableInt64ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, NullableInt64ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, NullableInt64ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        #endregion
+
         #endregion
 
         #region alias
-        public static FilterExpression operator ==(NullableSingleFieldExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullableSingleFieldExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator <(NullableSingleFieldExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
-        public static FilterExpression operator >(NullableSingleFieldExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression operator <=(NullableSingleFieldExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression operator >=(NullableSingleFieldExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
-        public static FilterExpression operator ==(NullableSingleFieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<float?>(b), FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullableSingleFieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<float?>(b), FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator <(NullableSingleFieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<float?>(b), FilterExpressionOperator.LessThan);
-        public static FilterExpression operator >(NullableSingleFieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<float?>(b), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression operator <=(NullableSingleFieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<float?>(b), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression operator >=(NullableSingleFieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<float?>(b), FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullableSingleFieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<float?>(b), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableSingleFieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<float?>(b), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableSingleFieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<float?>(b), FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableSingleFieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<float?>(b), FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableSingleFieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<float?>(b), FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableSingleFieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<float?>(b), FilterExpressionOperator.GreaterThanOrEqual);
+        
         #endregion
         #endregion
     }

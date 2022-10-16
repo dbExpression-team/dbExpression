@@ -33,51 +33,30 @@ namespace HatTrick.DbEx.Sql.Expression
         #region arithmetic operators
         #region data types
         #region byte
-
-
-
         
         #endregion
         
         #region decimal
-
-
-
         
         #endregion
         
         #region double
-
-
-
         
         #endregion
         
         #region float
-
-
-
         
         #endregion
         
         #region short
-
-
-
         
         #endregion
         
         #region int
-
-
-
         
         #endregion
         
         #region long
-
-
-
         
         #endregion
         
@@ -85,26 +64,26 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region fields
         #region byte
+        #endregion
 
-        #endregion        
         #region decimal
+        #endregion
 
-        #endregion        
         #region double
+        #endregion
 
-        #endregion        
         #region float
+        #endregion
 
-        #endregion        
         #region short
+        #endregion
 
-        #endregion        
         #region int
+        #endregion
 
-        #endregion        
         #region long
+        #endregion
 
-        #endregion        
         #endregion
 
         #region mediator
@@ -137,65 +116,106 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region filter operators
         #region null
-        public static FilterExpression operator ==(NullableStringTrimFunctionExpression a, NullElement b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullableStringTrimFunctionExpression a, NullElement b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator ==(NullElement a, NullableStringTrimFunctionExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullElement a, NullableStringTrimFunctionExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator ==(NullableStringTrimFunctionExpression a, NullElement b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableStringTrimFunctionExpression a, NullElement b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullElement a, NullableStringTrimFunctionExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullElement a, NullableStringTrimFunctionExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
         #endregion
 
         #region data type
         #region string?
-        public static FilterExpression operator ==(NullableStringTrimFunctionExpression a, string? b) => new FilterExpression<bool?>(a, new LiteralExpression<string?>(b), FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullableStringTrimFunctionExpression a, string? b) => new FilterExpression<bool?>(a, new LiteralExpression<string?>(b), FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator <(NullableStringTrimFunctionExpression a, string? b) => new FilterExpression<bool?>(a, new LiteralExpression<string?>(b), FilterExpressionOperator.LessThan);
-        public static FilterExpression operator >(NullableStringTrimFunctionExpression a, string? b) => new FilterExpression<bool?>(a, new LiteralExpression<string?>(b), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression operator <=(NullableStringTrimFunctionExpression a, string? b) => new FilterExpression<bool?>(a, new LiteralExpression<string?>(b), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression operator >=(NullableStringTrimFunctionExpression a, string? b) => new FilterExpression<bool?>(a, new LiteralExpression<string?>(b), FilterExpressionOperator.GreaterThanOrEqual);
-
-        public static FilterExpression operator ==(string? a, NullableStringTrimFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<string?>(a), b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(string? a, NullableStringTrimFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<string?>(a), b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator <(string? a, NullableStringTrimFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<string?>(a), b, FilterExpressionOperator.LessThan);
-        public static FilterExpression operator >(string? a, NullableStringTrimFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<string?>(a), b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression operator <=(string? a, NullableStringTrimFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<string?>(a), b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression operator >=(string? a, NullableStringTrimFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<string?>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
-
+        public static FilterExpression<bool?> operator ==(NullableStringTrimFunctionExpression a, string? b) => new FilterExpression<bool?>(a, new LiteralExpression<string?>(b), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableStringTrimFunctionExpression a, string? b) => new FilterExpression<bool?>(a, new LiteralExpression<string?>(b), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableStringTrimFunctionExpression a, string? b) => new FilterExpression<bool?>(a, new LiteralExpression<string?>(b), FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableStringTrimFunctionExpression a, string? b) => new FilterExpression<bool?>(a, new LiteralExpression<string?>(b), FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableStringTrimFunctionExpression a, string? b) => new FilterExpression<bool?>(a, new LiteralExpression<string?>(b), FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableStringTrimFunctionExpression a, string? b) => new FilterExpression<bool?>(a, new LiteralExpression<string?>(b), FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(string? a, NullableStringTrimFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<string?>(a), b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(string? a, NullableStringTrimFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<string?>(a), b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(string? a, NullableStringTrimFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<string?>(a), b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(string? a, NullableStringTrimFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<string?>(a), b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(string? a, NullableStringTrimFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<string?>(a), b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(string? a, NullableStringTrimFunctionExpression b) => new FilterExpression<bool?>(new LiteralExpression<string?>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+        
         #endregion
+
         #endregion
 
         #region fields
-        public static FilterExpression operator ==(NullableStringTrimFunctionExpression a, StringFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullableStringTrimFunctionExpression a, StringFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator <(NullableStringTrimFunctionExpression a, StringFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
-        public static FilterExpression operator >(NullableStringTrimFunctionExpression a, StringFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression operator <=(NullableStringTrimFunctionExpression a, StringFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression operator >=(NullableStringTrimFunctionExpression a, StringFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        #region string?
+        public static FilterExpression<bool?> operator ==(NullableStringTrimFunctionExpression a, StringFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
         
+        public static FilterExpression<bool?> operator !=(NullableStringTrimFunctionExpression a, StringFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableStringTrimFunctionExpression a, StringFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableStringTrimFunctionExpression a, StringFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableStringTrimFunctionExpression a, StringFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableStringTrimFunctionExpression a, StringFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        #endregion
 
         #endregion
 
         #region mediators
-        public static FilterExpression operator ==(NullableStringTrimFunctionExpression a, StringExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullableStringTrimFunctionExpression a, StringExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator <(NullableStringTrimFunctionExpression a, StringExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
-        public static FilterExpression operator >(NullableStringTrimFunctionExpression a, StringExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression operator <=(NullableStringTrimFunctionExpression a, StringExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression operator >=(NullableStringTrimFunctionExpression a, StringExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        #region string?
+        public static FilterExpression<bool?> operator ==(NullableStringTrimFunctionExpression a, StringExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableStringTrimFunctionExpression a, StringExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableStringTrimFunctionExpression a, StringExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableStringTrimFunctionExpression a, StringExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableStringTrimFunctionExpression a, StringExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableStringTrimFunctionExpression a, StringExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        #endregion
 
         #endregion
 
         #region alias
-        public static FilterExpression operator ==(NullableStringTrimFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullableStringTrimFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator <(NullableStringTrimFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
-        public static FilterExpression operator >(NullableStringTrimFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression operator <=(NullableStringTrimFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression operator >=(NullableStringTrimFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
-        public static FilterExpression operator ==(NullableStringTrimFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<string?>(b), FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullableStringTrimFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<string?>(b), FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator <(NullableStringTrimFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<string?>(b), FilterExpressionOperator.LessThan);
-        public static FilterExpression operator >(NullableStringTrimFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<string?>(b), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression operator <=(NullableStringTrimFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<string?>(b), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression operator >=(NullableStringTrimFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<string?>(b), FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpression<bool?> operator ==(NullableStringTrimFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableStringTrimFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableStringTrimFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableStringTrimFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableStringTrimFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableStringTrimFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        
+        public static FilterExpression<bool?> operator ==(NullableStringTrimFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<string?>(b), FilterExpressionOperator.Equal);
+        
+        public static FilterExpression<bool?> operator !=(NullableStringTrimFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<string?>(b), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator <(NullableStringTrimFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<string?>(b), FilterExpressionOperator.LessThan);
+        
+        public static FilterExpression<bool?> operator >(NullableStringTrimFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<string?>(b), FilterExpressionOperator.GreaterThan);
+        
+        public static FilterExpression<bool?> operator <=(NullableStringTrimFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<string?>(b), FilterExpressionOperator.LessThanOrEqual);
+        
+        public static FilterExpression<bool?> operator >=(NullableStringTrimFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<string?>(b), FilterExpressionOperator.GreaterThanOrEqual);
+        
         #endregion
 
         #endregion
