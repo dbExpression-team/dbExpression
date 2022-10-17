@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.Sql.Builder
     {
         /// <summary>
         /// Construct an expression for the TAN transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/tangent-transact-sql">Microsoft docs on TAN</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/tan?version=0.9.4">read the docs on TAN</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="Int16Element"/>, the value to use for calculating the tangent value.</param>
         /// <returns><see cref="SingleTanFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the TAN transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/tangent-transact-sql">Microsoft docs on TAN</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/tan?version=0.9.4">read the docs on TAN</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableInt16Element"/>, the value to use for calculating the tangent value.</param>
         /// <returns><see cref="NullableSingleTanFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>?.</returns>
@@ -45,7 +45,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the TAN transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/tangent-transact-sql">Microsoft docs on TAN</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/tan?version=0.9.4">read the docs on TAN</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="Int32Element"/>, the value to use for calculating the tangent value.</param>
         /// <returns><see cref="SingleTanFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
@@ -54,7 +54,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the TAN transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/tangent-transact-sql">Microsoft docs on TAN</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/tan?version=0.9.4">read the docs on TAN</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableInt32Element"/>, the value to use for calculating the tangent value.</param>
         /// <returns><see cref="NullableSingleTanFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>?.</returns>
@@ -63,7 +63,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the TAN transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/tangent-transact-sql">Microsoft docs on TAN</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/tan?version=0.9.4">read the docs on TAN</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="Int64Element"/>, the value to use for calculating the tangent value.</param>
         /// <returns><see cref="SingleTanFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
@@ -72,7 +72,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the TAN transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/tangent-transact-sql">Microsoft docs on TAN</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/tan?version=0.9.4">read the docs on TAN</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableInt64Element"/>, the value to use for calculating the tangent value.</param>
         /// <returns><see cref="NullableSingleTanFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>?.</returns>
@@ -81,7 +81,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the TAN transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/tangent-transact-sql">Microsoft docs on TAN</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/tan?version=0.9.4">read the docs on TAN</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="SingleElement"/>, the value to use for calculating the tangent value.</param>
         /// <returns><see cref="SingleTanFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
@@ -90,7 +90,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the TAN transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/tangent-transact-sql">Microsoft docs on TAN</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/tan?version=0.9.4">read the docs on TAN</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableSingleElement"/>, the value to use for calculating the tangent value.</param>
         /// <returns><see cref="NullableSingleTanFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>?.</returns>
@@ -99,7 +99,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the TAN transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/tangent-transact-sql">Microsoft docs on TAN</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/tan?version=0.9.4">read the docs on TAN</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Double}"/>, the value to use for calculating the tangent value.</param>
         /// <returns><see cref="SingleTanFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
@@ -108,7 +108,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the TAN transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/tangent-transact-sql">Microsoft docs on TAN</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/tan?version=0.9.4">read the docs on TAN</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableDoubleElement"/>, the value to use for calculating the tangent value.</param>
         /// <returns><see cref="NullableSingleTanFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>?.</returns>
@@ -117,7 +117,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the TAN transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/tangent-transact-sql">Microsoft docs on TAN</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/tan?version=0.9.4">read the docs on TAN</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="DecimalElement"/>, the value to use for calculating the tangent value.</param>
         /// <returns><see cref="SingleTanFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
@@ -126,7 +126,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the TAN transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/tangent-transact-sql">Microsoft docs on TAN</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/tan?version=0.9.4">read the docs on TAN</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableDecimalElement"/>, the value to use for calculating the tangent value.</param>
         /// <returns><see cref="NullableSingleTanFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>?.</returns>

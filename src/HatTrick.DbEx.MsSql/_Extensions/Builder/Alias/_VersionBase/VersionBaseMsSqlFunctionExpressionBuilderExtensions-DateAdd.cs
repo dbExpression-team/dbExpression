@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
     {
         /// <summary>
         /// Construct an expression for the DATEADD transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/dateadd-transact-sql">Microsoft docs on DATEADD</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/dateadd?version=0.9.4">read the docs on DATEADD</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date to add <paramref name="value"/> to.</param>
         /// <param name="value">An alias expression of a value to add to <paramref name="element"/> to add to <paramref name="element"/>.</param>
@@ -38,7 +38,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the DATEADD transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/dateadd-transact-sql">Microsoft docs on DATEADD</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/dateadd?version=0.9.4">read the docs on DATEADD</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date to add <paramref name="value"/> to.</param>
         /// <param name="value">An alias expression of a value to add to <paramref name="element"/> to add to <paramref name="element"/>.</param>
@@ -49,7 +49,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the DATEADD transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/dateadd-transact-sql">Microsoft docs on DATEADD</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/dateadd?version=0.9.4">read the docs on DATEADD</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date to add <paramref name="value"/> to.</param>
         /// <param name="value">The value to add to <paramref name="element"/> to add to <paramref name="element"/>.</param>
@@ -60,7 +60,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the DATEADD transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/dateadd-transact-sql">Microsoft docs on DATEADD</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/dateadd?version=0.9.4">read the docs on DATEADD</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date to add <paramref name="value"/> to.</param>
         /// <param name="value">The value to add to <paramref name="element"/> to add to <paramref name="element"/>.</param>
@@ -71,7 +71,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the DATEADD transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/dateadd-transact-sql">Microsoft docs on DATEADD</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/dateadd?version=0.9.4">read the docs on DATEADD</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date to add <paramref name="value"/> to.</param>
         /// <param name="value">An alias of the value to add to <paramref name="element"/> to add to <paramref name="element"/>.</param>

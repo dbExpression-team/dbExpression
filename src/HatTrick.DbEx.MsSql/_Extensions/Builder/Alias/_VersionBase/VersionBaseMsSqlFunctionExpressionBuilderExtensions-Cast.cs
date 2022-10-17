@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
     {
         /// <summary>
         /// Construct an expression for the CAST transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql">Microsoft docs on CAST</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/convertion/cast?version=0.9.4">read the docs on CAST</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression to convert to a different sql data type.</param>
         /// <returns><see cref="MsSqlCast"/> to specify the sql data type to convert to.</returns>

@@ -60,7 +60,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// To retrieve a <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboData.AccessAuditLog" />, use a type param of <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboData.AccessAuditLog" />
         /// </para>
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="${DOCS_URL}/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <returns><see cref="SelectEntity{BenchmarkDatabase, TEntity}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>

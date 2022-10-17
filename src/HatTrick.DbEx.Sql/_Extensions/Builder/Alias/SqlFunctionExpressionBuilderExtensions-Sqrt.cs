@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
     {
         /// <summary>
         /// Construct an expression for the SQRT transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/sqrt-transact-sql">Microsoft docs on SQRT</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/sqrt?version=0.9.4">read the docs on SQRT</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression, the value to use for calculating the square root function result.</param>
         /// <returns><see cref="NullableSingleSinFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>?.</returns>

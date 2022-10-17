@@ -28,7 +28,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #region bool
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">An expression of type <see cref="AnyElement{Boolean}"/>, the returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -38,7 +38,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">An expression of type <see cref="AnyElement{Boolean}"/>?, the returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -48,7 +48,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned <see cref="Boolean"/> value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -58,7 +58,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned <see cref="Boolean"/>? value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -70,7 +70,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #region byte
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">An expression of type <see cref="AnyElement{Byte}"/>, the returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -80,7 +80,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">An expression of type <see cref="AnyElement{Byte}"/>?, the returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -90,7 +90,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned <see cref="Byte"/> value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -100,7 +100,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned <see cref="Byte"/>? value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -112,7 +112,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #region DateTime
         // <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{DateTime}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">An expression of type <see cref="AnyElement{DateTime}"/>, the returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -122,7 +122,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{DateTime}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">An expression of type <see cref="AnyElement{DateTime}"/>?, the returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -132,7 +132,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{DateTime}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned <see cref="DateTime"/> value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -142,7 +142,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{DateTime}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned <see cref="DateTime"/>? value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -154,7 +154,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #region DateTimeOffset
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">An expression of type <see cref="AnyElement{DateTimeOffset}"/>, the returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -164,7 +164,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">An expression of type <see cref="AnyElement{DateTimeOffset}"/>?, the returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -174,7 +174,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned <see cref="DateTimeOffset"/> value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -184,7 +184,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned <see cref="DateTimeOffset"/>? value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -196,7 +196,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #region decimal
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">An expression of type <see cref="AnyElement{Decimal}"/>, the returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -206,7 +206,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">An expression of type <see cref="AnyElement{Decimal}"/>?, the returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -216,7 +216,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned <see cref="Decimal"/> value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -226,7 +226,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned <see cref="Decimal"/>? value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -238,7 +238,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #region double
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Double}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">An expression of type <see cref="AnyElement{Double}"/>, the returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -248,7 +248,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Double}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">An expression of type <see cref="AnyElement{Double}"/>?, the returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -258,7 +258,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Double}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned <see cref="Double"/> value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -268,7 +268,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Double}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned <see cref="Double"/>? value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -280,7 +280,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #region Enum
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{TEnum}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">An expression of type <see cref="AnyElement{TEnum}"/>, the returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -291,7 +291,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{TEnum}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">An expression of type <see cref="AnyElement{TEnum}"/>?, the returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -302,7 +302,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{TEnum}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned <see cref="TEnum"/> value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -313,7 +313,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{TEnum}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned <see cref="TEnum"/>? value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -326,7 +326,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #region float
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">An expression of type <see cref="AnyElement{Single}"/>, the returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -336,7 +336,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">An expression of type <see cref="AnyElement{Single}"/>?, the returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -346,7 +346,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned <see cref="Single"/> value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -356,7 +356,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned <see cref="Single"/>? value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -368,7 +368,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #region Guid
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Guid}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">An expression of type <see cref="AnyElement{Guid}"/>, the returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -378,7 +378,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Guid}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">An expression of type <see cref="AnyElement{Guid}"/>?, the returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -388,7 +388,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Guid}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned <see cref="Guid"/> value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -398,7 +398,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Guid}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned <see cref="Guid"/>? value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -410,7 +410,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #region short
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">An expression of type <see cref="AnyElement{Int16}"/>, the returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -420,7 +420,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">An expression of type <see cref="AnyElement{Int16}"/>?, the returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -430,7 +430,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned <see cref="Int16"/> value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -440,7 +440,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned <see cref="Int16"/>? value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -452,7 +452,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #region int
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">An expression of type <see cref="AnyElement{Int32}"/>, the returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -462,7 +462,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">An expression of type <see cref="AnyElement{Int32}"/>?, the returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -472,7 +472,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned <see cref="Int32"/> value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -482,7 +482,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned <see cref="Int32"/>? value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -494,7 +494,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #region long
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">An expression of type <see cref="AnyElement{Int64}"/>, the returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -504,7 +504,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">An expression of type <see cref="AnyElement{Int64}"/>?, the returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -514,7 +514,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned <see cref="Int64"/> value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -524,7 +524,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned <see cref="Int64"/>? value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -536,7 +536,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #region string
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="StringElement"/>, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">An expression of type <see cref="String"/>, the returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -546,7 +546,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="StringElement"/>, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">An expression of type <see cref="StringElement"/>, the returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -556,7 +556,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableStringElement"/>, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">An expression of type <see cref="StringElement"/>, the returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -566,7 +566,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableStringElement"/>, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">An expression of type <see cref="AnyStringElement"/>, the returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -576,7 +576,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableStringElement"/>, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned <see cref="String"/> value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -588,7 +588,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #region TimeSpan
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">An expression of type <see cref="AnyElement{TimeSpan}"/>, the returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -598,7 +598,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">An expression of type <see cref="AnyElement{TimeSpan}"/>?, the returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -608,7 +608,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned <see cref="TimeSpan"/> value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -618,7 +618,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/isnull-transact-sql">Microsoft docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned <see cref="TimeSpan"/>? value if <paramref name="element"/> evaluates to a (database) NULL.</param>

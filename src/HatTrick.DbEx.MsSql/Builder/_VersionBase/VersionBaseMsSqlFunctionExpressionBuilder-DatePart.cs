@@ -28,7 +28,7 @@ namespace HatTrick.DbEx.MsSql.Builder
     {
         /// <summary>
         /// Construct an expression for the DATEPART transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/datepart-transact-sql">Microsoft docs on DATEPART</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datepart?version=0.9.4">read the docs on DATEPART</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the date value to extract from <paramref name="element"/>.</param>
         /// <param name="element">Any expression of type <see cref="AnyElement{DateTime}"/> to return the <paramref name="datePart"/> from.</param>
@@ -38,7 +38,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEPART transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/datepart-transact-sql">Microsoft docs on DATEPART</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datepart?version=0.9.4">read the docs on DATEPART</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the date value to extract from <paramref name="element"/>.</param>
         /// <param name="element">Any expression of type <see cref="AnyElement{DateTime}"/>? to return the <paramref name="datePart"/> from.</param>
@@ -48,7 +48,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEPART transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/datepart-transact-sql">Microsoft docs on DATEPART</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datepart?version=0.9.4">read the docs on DATEPART</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the date value to extract from <paramref name="element"/>.</param>
         /// <param name="element">Any expression of type <see cref="AnyElement{DateTimeOffset}"/> to return the <paramref name="datePart"/> from.</param>
@@ -58,7 +58,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEPART transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/datepart-transact-sql">Microsoft docs on DATEPART</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datepart?version=0.9.4">read the docs on DATEPART</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the date value to extract from <paramref name="element"/>.</param>
         /// <param name="element">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>? to return the <paramref name="datePart"/> from.</param>

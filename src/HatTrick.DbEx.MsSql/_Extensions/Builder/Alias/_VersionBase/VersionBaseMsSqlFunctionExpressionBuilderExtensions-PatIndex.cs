@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
     {
         /// <summary>
         /// Construct an expression for the PATINDEX transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/patindex-transact-sql">Microsoft docs on PATINDEX</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/patindex?version=0.9.4">read the docs on PATINDEX</see></para>
         /// </summary>
         /// <param name="pattern">A <see cref="StringElement"/> that contains the expression to be found in <paramref name="element"/>.</param>
         /// <param name="element">An alias of an expression to search for <paramref name="pattern"/>.</param>
@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the PATINDEX transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/patindex-transact-sql">Microsoft docs on PATINDEX</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/patindex?version=0.9.4">read the docs on PATINDEX</see></para>
         /// </summary>
         /// <param name="pattern">An alias of an expression that contains the expression to be found in <paramref name="element"/>.</param>
         /// <param name="element">A <see cref="AnyElement{String}"/> the expression to search for <paramref name="pattern"/>.</param>
@@ -46,7 +46,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the PATINDEX transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/patindex-transact-sql">Microsoft docs on PATINDEX</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/patindex?version=0.9.4">read the docs on PATINDEX</see></para>
         /// </summary>
         /// <param name="pattern">A <see cref="StringElement"/> that contains the expression to be found in <paramref name="element"/>.</param>
         /// <param name="element">An alias of an expression to search for <paramref name="pattern"/>.</param>
@@ -56,7 +56,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the PATINDEX transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/patindex-transact-sql">Microsoft docs on PATINDEX</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/patindex?version=0.9.4">read the docs on PATINDEX</see></para>
         /// </summary>
         /// <param name="pattern">A <see cref="StringElement"/> that contains the expression to be found in <paramref name="element"/>.</param>
         /// <param name="element">A <see cref="AnyElement{String}"/> the expression to search for <paramref name="pattern"/>.</param>
@@ -66,7 +66,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the PATINDEX transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/patindex-transact-sql">Microsoft docs on PATINDEX</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/patindex?version=0.9.4">read the docs on PATINDEX</see></para>
         /// </summary>
         /// <param name="pattern">A <see cref="StringElement"/> that contains the expression to be found in <paramref name="element"/>.</param>
         /// <param name="element">An alias of an expression to search for <paramref name="pattern"/>.</param>

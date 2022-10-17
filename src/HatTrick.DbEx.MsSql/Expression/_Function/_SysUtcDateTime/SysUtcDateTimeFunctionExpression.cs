@@ -22,7 +22,7 @@ using System;
 
 namespace HatTrick.DbEx.MsSql.Expression
 {
-    public partial class SysUtcDateTimeFunctionExpression : DataTypeFunctionExpression,
+    public partial class SysUtcDateTimeFunctionExpression : DateAndTimeFunctionExpression,
         IExpressionElement<DateTime>,
         DateTimeElement,
         IEquatable<SysUtcDateTimeFunctionExpression>

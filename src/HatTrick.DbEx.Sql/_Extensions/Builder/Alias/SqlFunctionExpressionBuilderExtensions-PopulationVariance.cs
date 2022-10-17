@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
     {
         /// <summary>
         /// Construct an expression for the VARP transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/var-transact-sql">Microsoft docs on VARP</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/varp?version=0.9.4">read the docs on VARP</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression, the value to use for calculating the population variance function result.</param>
         /// <returns><see cref="NullableSinglePopulationVarianceFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>?.</returns>
