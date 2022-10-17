@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
     {
         /// <summary>
         /// Construct an expression for the LEN transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/len-transact-sql">Microsoft docs on LEN</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/len?version=0.9.4">read the docs on LEN</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression for determining the number of characters, excluding trailing spaces.</param>
         /// <returns><see cref="Int64LengthFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>.</returns>

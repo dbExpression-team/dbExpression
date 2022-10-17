@@ -28,7 +28,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #region object
         /// <summary>
         /// Construct an expression for the COALESCE transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/language-elements/coalesce-transact-sql">Microsoft docs on COALESCE</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/coalesce?version=0.9.4">read the docs on COALESCE</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement"/>, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -38,7 +38,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the COALESCE transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/language-elements/coalesce-transact-sql">Microsoft docs on COALESCE</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/coalesce?version=0.9.4">read the docs on COALESCE</see></para>
         /// </summary>
         /// <param name="element1">An expression of type <see cref="AnyElement"/>, if this value evaluates to a (database) NULL, <paramref name="element2"/> value will be evaluated.</param>
         /// <param name="element2">An expression of type <see cref="AnyElement"/>, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
@@ -49,7 +49,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the COALESCE transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/language-elements/coalesce-transact-sql">Microsoft docs on COALESCE</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/coalesce?version=0.9.4">read the docs on COALESCE</see></para>
         /// </summary>
         /// <param name="element1">An expression of type <see cref="AnyElement"/>, if this value evaluates to a (database) NULL, <paramref name="element2"/> value will be evaluated.</param>
         /// <param name="element2">An expression of type <see cref="AnyElement"/>, if this value evaluates to a (database) NULL, <paramref name="element3"/> value will be evaluated.</param>
@@ -61,7 +61,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the COALESCE transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/language-elements/coalesce-transact-sql">Microsoft docs on COALESCE</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/coalesce?version=0.9.4">read the docs on COALESCE</see></para>
         /// </summary>
         /// <param name="element1">An expression of type <see cref="AnyElement"/>, if this value evaluates to a (database) NULL, <paramref name="element2"/> value will be evaluated.</param>
         /// <param name="element2">An expression of type <see cref="AnyElement"/>, if this value evaluates to a (database) NULL, <paramref name="element3"/> value will be evaluated.</param>
@@ -74,7 +74,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the COALESCE transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/language-elements/coalesce-transact-sql">Microsoft docs on COALESCE</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/coalesce?version=0.9.4">read the docs on COALESCE</see></para>
         /// </summary>
         /// <param name="element1">An expression of type <see cref="AnyElement"/>, if this value evaluates to a (database) NULL, <paramref name="element2"/> value will be evaluated.</param>
         /// <param name="element2">An expression of type <see cref="AnyElement"/>, if this value evaluates to a (database) NULL, <paramref name="element3"/> value will be evaluated.</param>
@@ -88,7 +88,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the COALESCE transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/language-elements/coalesce-transact-sql">Microsoft docs on COALESCE</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/coalesce?version=0.9.4">read the docs on COALESCE</see></para>
         /// </summary>
         /// <param name="elements">A list of expressions of type <see cref="AnyElement"/>, the first non (database) NULL value will be returned.</param>
         /// <returns><see cref="NullableObjectCoalesceFunctionExpression"/> for use with any operation accepting a <see cref="NullableObjectElement"/>.</returns>
@@ -99,7 +99,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #region generic data type
         /// <summary>
         /// Construct an expression for the COALESCE transact sql function.  Use this generic version to specify the resulting value type the function is expected to return.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/language-elements/coalesce-transact-sql">Microsoft docs on COALESCE</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/coalesce?version=0.9.4">read the docs on COALESCE</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement"/>, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -109,7 +109,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the COALESCE transact sql function.  Use this generic version to specify the resulting value type the function is expected to return.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/language-elements/coalesce-transact-sql">Microsoft docs on COALESCE</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/coalesce?version=0.9.4">read the docs on COALESCE</see></para>
         /// </summary>
         /// <param name="element1">An expression of type <see cref="AnyElement"/>, if this value evaluates to a (database) NULL, <paramref name="element2"/> value will be evaluated.</param>
         /// <param name="element2">An expression of type <see cref="AnyElement"/>, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
@@ -120,7 +120,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the COALESCE transact sql function.  Use this generic version to specify the resulting value type the function is expected to return.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/language-elements/coalesce-transact-sql">Microsoft docs on COALESCE</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/coalesce?version=0.9.4">read the docs on COALESCE</see></para>
         /// </summary>
         /// <param name="element1">An expression of type <see cref="AnyElement"/>, if this value evaluates to a (database) NULL, <paramref name="element2"/> value will be evaluated.</param>
         /// <param name="element2">An expression of type <see cref="AnyElement"/>, if this value evaluates to a (database) NULL, <paramref name="element3"/> value will be evaluated.</param>
@@ -132,7 +132,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the COALESCE transact sql function.  Use this generic version to specify the resulting value type the function is expected to return.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/language-elements/coalesce-transact-sql">Microsoft docs on COALESCE</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/coalesce?version=0.9.4">read the docs on COALESCE</see></para>
         /// </summary>
         /// <param name="element1">An expression of type <see cref="AnyElement"/>, if this value evaluates to a (database) NULL, <paramref name="element2"/> value will be evaluated.</param>
         /// <param name="element2">An expression of type <see cref="AnyElement"/>, if this value evaluates to a (database) NULL, <paramref name="element3"/> value will be evaluated.</param>
@@ -145,7 +145,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the COALESCE transact sql function.  Use this generic version to specify the resulting value type the function is expected to return.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/language-elements/coalesce-transact-sql">Microsoft docs on COALESCE</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/coalesce?version=0.9.4">read the docs on COALESCE</see></para>
         /// </summary>
         /// <param name="element1">An expression of type <see cref="AnyElement"/>, if this value evaluates to a (database) NULL, <paramref name="element2"/> value will be evaluated.</param>
         /// <param name="element2">An expression of type <see cref="AnyElement"/>, if this value evaluates to a (database) NULL, <paramref name="element3"/> value will be evaluated.</param>
@@ -159,7 +159,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the COALESCE transact sql function.  Use this generic version to specify the resulting value type the function is expected to return.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/language-elements/coalesce-transact-sql">Microsoft docs on COALESCE</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/coalesce?version=0.9.4">read the docs on COALESCE</see></para>
         /// </summary>
         /// <param name="elements">A list of expressions of type <see cref="AnyElement"/>, the first non (database) NULL value will be returned.</param>
         /// <returns><see cref="CoalesceFunctionExpression{TValue}"/> for use with any operation accepting a <see cref="AnyElement"/>.</returns>
@@ -170,7 +170,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #region enum
         /// <summary>
         /// Construct an expression for the COALESCE transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/language-elements/coalesce-transact-sql">Microsoft docs on COALESCE</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/coalesce?version=0.9.4">read the docs on COALESCE</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="EnumElement{TEnum}"/>, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -181,7 +181,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the COALESCE transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/language-elements/coalesce-transact-sql">Microsoft docs on COALESCE</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/coalesce?version=0.9.4">read the docs on COALESCE</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableEnumElement{TEnum}"/>, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -192,7 +192,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the COALESCE transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/language-elements/coalesce-transact-sql">Microsoft docs on COALESCE</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/coalesce?version=0.9.4">read the docs on COALESCE</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableEnumElement{TEnum}"/>, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -203,7 +203,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the COALESCE transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/language-elements/coalesce-transact-sql">Microsoft docs on COALESCE</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/coalesce?version=0.9.4">read the docs on COALESCE</see></para>
         /// </summary>
         /// <param name="element1">An expression of type <see cref="NullableEnumElement{TEnum}"/>, if this value evaluates to a (database) NULL, <paramref name="element2"/> will be returned.</param>
         /// <param name="element2">An expression of type <see cref="EnumElement{TEnum}"/>, the returned value if <paramref name="element1"/> evaluates to a (database) NULL.</param>
@@ -214,7 +214,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the COALESCE transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/language-elements/coalesce-transact-sql">Microsoft docs on COALESCE</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/coalesce?version=0.9.4">read the docs on COALESCE</see></para>
         /// </summary>
         /// <param name="element1">An expression of type <see cref="NullableEnumElement{TEnum}"/>, if this value evaluates to a (database) NULL, <paramref name="element2"/> will be returned.</param>
         /// <param name="element2">An expression of type <see cref="NullableEnumElement{TEnum}"/>, if <paramref name="element1"/> and this evaluate to a (database) NULL, <paramref name="value"/> will be returned.</param>
@@ -226,7 +226,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the COALESCE transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/language-elements/coalesce-transact-sql">Microsoft docs on COALESCE</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/coalesce?version=0.9.4">read the docs on COALESCE</see></para>
         /// </summary>
         /// <param name="element1">An expression of type <see cref="NullableEnumElement{TEnum}"/>, if this value evaluates to a (database) NULL, <paramref name="element2"/> will be returned.</param>
         /// <param name="element2">An expression of type <see cref="NullableEnumElement{TEnum}"/>, if <paramref name="element1"/> and this evaluate to a (database) NULL, <paramref name="value"/> will be returned.</param>
@@ -238,7 +238,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the COALESCE transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/language-elements/coalesce-transact-sql">Microsoft docs on COALESCE</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/coalesce?version=0.9.4">read the docs on COALESCE</see></para>
         /// </summary>
         /// <param name="element1">An expression of type <see cref="NullableEnumElement{TEnum}"/>, if this value evaluates to a (database) NULL, <paramref name="element2"/> will be returned.</param>
         /// <param name="element2">An expression of type <see cref="NullableEnumElement{TEnum}"/>, if <paramref name="element1"/> and this evaluate to a (database) NULL, <paramref name="value"/> will be returned.</param>
@@ -250,7 +250,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the COALESCE transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/language-elements/coalesce-transact-sql">Microsoft docs on COALESCE</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/coalesce?version=0.9.4">read the docs on COALESCE</see></para>
         /// </summary>
         /// <param name="element1">An expression of type <see cref="NullableEnumElement{TEnum}"/>, if this value evaluates to a (database) NULL, the first non (database) NULL of <paramref name="element2"/>, <paramref name="element3"/> and <paramref name="value"/> will be returned.</param>
         /// <param name="element2">An expression of type <see cref="NullableEnumElement{TEnum}"/>, if <paramref name="element1"/> and this evaluate to a (database) NULL, the first non (database) NULL of <paramref name="element3"/>, <paramref name="element4"/> and <paramref name="value"/> will be returned.</param>
@@ -263,7 +263,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the COALESCE transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/language-elements/coalesce-transact-sql">Microsoft docs on COALESCE</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/coalesce?version=0.9.4">read the docs on COALESCE</see></para>
         /// </summary>
         /// <param name="element1">An expression of type <see cref="NullableEnumElement{TEnum}"/>, if this value evaluates to a (database) NULL, the first non (database) NULL of <paramref name="element2"/>, <paramref name="element3"/> and <paramref name="value"/> will be returned.</param>
         /// <param name="element2">An expression of type <see cref="NullableEnumElement{TEnum}"/>, if <paramref name="element1"/> and this evaluate to a (database) NULL, the first non (database) NULL of <paramref name="element3"/>, <paramref name="element4"/> and <paramref name="value"/> will be returned.</param>
@@ -276,7 +276,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the COALESCE transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/language-elements/coalesce-transact-sql">Microsoft docs on COALESCE</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/coalesce?version=0.9.4">read the docs on COALESCE</see></para>
         /// </summary>
         /// <param name="elements">A list of expressions of type <see cref="NullableEnumElement{TEnum}"/>, the first non (database) NULL value in this list will be returned.</param>
         /// <returns><see cref="NullableEnumCoalesceFunctionExpression{TEnum}"/> for use with any operation accepting a <see cref="AnyElement{TEnum}"/>?.</returns>

@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         private static readonly NewIdFunctionExpression newId = new();
         /// <summary>
         /// Construct an expression for the NEWID transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/sysutcdatetimeoffset-transact-sql">Microsoft docs on NEWID</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/system/newid?version=0.9.4">read the docs on NEWID</see></para>
         /// </summary>
         /// <returns><see cref="NewIdFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Guid}"/>.</returns>
         public NewIdFunctionExpression NewId()

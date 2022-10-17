@@ -65,7 +65,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             var version = typeof(TDatabase).GetCustomAttribute<PlatformVersionAttribute>()!.PlatformVersion!;
 #endif
             if (string.IsNullOrWhiteSpace(version))
-                throw new DbExpressionConfigurationException($"An MsSql version cannot be resolved.  Ensure you have provided a supported version in the Platform property of your scaffolding configuration (see https://docs.dbexpression.com/rtd/reference/mssql/versions).");
+                throw new DbExpressionConfigurationException($"An MsSql version cannot be resolved.  Ensure you have provided a supported version in the Platform property of your scaffolding configuration (see https://dbexpression.com/rtd/reference/mssql/versions).");
 
             builder.AddDatabase(configureRuntime, version);
         }
@@ -97,7 +97,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
                 case "2017": builder.AddMsSql2017Database<TDatabase>(configureRuntime); break;
                 case "2019": builder.AddMsSql2019Database<TDatabase>(configureRuntime); break;
                 case "2022": builder.AddMsSql2022Database<TDatabase>(configureRuntime); break;
-                default: throw new NotImplementedException($"MsSql version {platformVersionOverride} has not been implemented.  Ensure you have provided a supported version in the Platform property of your scaffolding configuration (see https://docs.dbexpression.com/MsSql/Versions).");
+                default: throw new NotImplementedException($"MsSql version {platformVersionOverride} has not been implemented.  Ensure you have provided a supported version in the Platform property of your scaffolding configuration (see https://dbexpression.com/mssql/versions).");
             };
         }
 

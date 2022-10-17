@@ -28,7 +28,7 @@ namespace HatTrick.DbEx.MsSql.Builder
     {
         /// <summary>
         /// Construct an expression for the TRIM transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/trim-transact-sql">Microsoft docs on TRIM</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/trim?version=0.9.4">read the docs onTRIM</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="StringElement"/> to trim leading and trailing spaces from.</param>
         /// <returns><see cref="StringTrimFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
@@ -37,7 +37,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the TRIM transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/trim-transact-sql">Microsoft docs on TRIM</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/trim?version=0.9.4">read the docs onTRIM</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableStringElement"/> to trim leading and trailing spaces from.</param>
         /// <returns><see cref="NullableStringTrimFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>

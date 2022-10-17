@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         #region object
         /// <summary>
         /// Construct an expression for the CAST transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql">Microsoft docs on CAST</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/convertion/cast?version=0.9.4">read the docs on CAST</see></para>
         /// </summary>
         /// <param name="element">Any expression of type <see cref="ObjectElement{T}"/> to convert to a different sql data type.</param>
         /// <returns><see cref="MsSqlCast"/> to specify the sql data type to convert to.</returns>
@@ -39,7 +39,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CAST transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql">Microsoft docs on CAST</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/convertion/cast?version=0.9.4">read the docs on CAST</see></para>
         /// </summary>
         /// <param name="element">Any expression of type <see cref="ObjectElement"/> to convert to a different sql data type.</param>
         /// <returns><see cref="MsSqlCast"/> to specify the sql data type to convert to.</returns>
@@ -48,7 +48,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CAST transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql">Microsoft docs on CAST</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/convertion/cast?version=0.9.4">read the docs on CAST</see></para>
         /// </summary>
         /// <param name="element">Any expression of type <see cref="NullableObjectElement"/> to convert to a different sql data type.</param>
         /// <returns><see cref="MsSqlCast"/> to specify the sql data type to convert to.</returns>
@@ -59,7 +59,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         #region bool
         /// <summary>
         /// Construct an expression for the CAST transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql">Microsoft docs on CAST</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/convertion/cast?version=0.9.4">read the docs on CAST</see></para>
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{Boolean}"/> to convert to a different sql data type.</param>
         /// <returns><see cref="MsSqlCast"/> to specify the sql data type to convert to.</returns>
@@ -68,7 +68,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CAST transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql">Microsoft docs on CAST</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/convertion/cast?version=0.9.4">read the docs on CAST</see></para>
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{Boolean}"/>? to convert to a different sql data type.</param>
         /// <returns><see cref="NullableCast"/> to specify the sql data type to convert to.</returns>
@@ -79,7 +79,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         #region byte
         /// <summary>
         /// Construct an expression for the CAST transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql">Microsoft docs on CAST</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/convertion/cast?version=0.9.4">read the docs on CAST</see></para>
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{Byte}"/> to convert to a different sql data type.</param>
         /// <returns><see cref="MsSqlCast"/> to specify the sql data type to convert to.</returns>
@@ -88,7 +88,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CAST transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql">Microsoft docs on CAST</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/convertion/cast?version=0.9.4">read the docs on CAST</see></para>
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{Byte}"/>? to convert to a different sql data type.</param>
         /// <returns><see cref="NullableCast"/> to specify the sql data type to convert to.</returns>
@@ -99,7 +99,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         #region DateTime
         /// <summary>
         /// Construct an expression for the CAST transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql">Microsoft docs on CAST</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/convertion/cast?version=0.9.4">read the docs on CAST</see></para>
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{DateTime}"/> to convert to a different sql data type.</param>
         /// <returns><see cref="MsSqlCast"/> to specify the sql data type to convert to.</returns>
@@ -108,7 +108,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CAST transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql">Microsoft docs on CAST</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/convertion/cast?version=0.9.4">read the docs on CAST</see></para>
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{DateTime}"/>? to convert to a different sql data type.</param>
         /// <returns><see cref="NullableCast"/> to specify the sql data type to convert to.</returns>
@@ -119,7 +119,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         #region DateTimeOffset
         /// <summary>
         /// Construct an expression for the CAST transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql">Microsoft docs on CAST</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/convertion/cast?version=0.9.4">read the docs on CAST</see></para>
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{DateTimeOffset}"/> to convert to a different sql data type.</param>
         /// <returns><see cref="MsSqlCast"/> to specify the sql data type to convert to.</returns>
@@ -128,7 +128,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CAST transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql">Microsoft docs on CAST</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/convertion/cast?version=0.9.4">read the docs on CAST</see></para>
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>? to convert to a different sql data type.</param>
         /// <returns><see cref="NullableCast"/> to specify the sql data type to convert to.</returns>
@@ -139,7 +139,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         #region decimal
         /// <summary>
         /// Construct an expression for the CAST transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql">Microsoft docs on CAST</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/convertion/cast?version=0.9.4">read the docs on CAST</see></para>
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{Decimal}"/> to convert to a different sql data type.</param>
         /// <returns><see cref="MsSqlCast"/> to specify the sql data type to convert to.</returns>
@@ -148,7 +148,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CAST transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql">Microsoft docs on CAST</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/convertion/cast?version=0.9.4">read the docs on CAST</see></para>
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{Decimal}"/>? to convert to a different sql data type.</param>
         /// <returns><see cref="NullableCast"/> to specify the sql data type to convert to.</returns>
@@ -159,7 +159,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         #region double
         /// <summary>
         /// Construct an expression for the CAST transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql">Microsoft docs on CAST</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/convertion/cast?version=0.9.4">read the docs on CAST</see></para>
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{Double}"/> to convert to a different sql data type.</param>
         /// <returns><see cref="MsSqlCast"/> to specify the sql data type to convert to.</returns>
@@ -168,7 +168,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CAST transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql">Microsoft docs on CAST</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/convertion/cast?version=0.9.4">read the docs on CAST</see></para>
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{Double}"/>? to convert to a different sql data type.</param>
         /// <returns><see cref="NullableCast"/> to specify the sql data type to convert to.</returns>
@@ -179,7 +179,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         #region enum
         /// <summary>
         /// Construct an expression for the CAST transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql">Microsoft docs on CAST</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/convertion/cast?version=0.9.4">read the docs on CAST</see></para>
         /// </summary>
         /// <param name="element">Any expression of type <see cref="EnumElement{TEnum}"/> to convert to a different sql data type.</param>
         /// <returns><see cref="MsSqlCast"/> to specify the sql data type to convert to.</returns>
@@ -189,7 +189,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CAST transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql">Microsoft docs on CAST</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/convertion/cast?version=0.9.4">read the docs on CAST</see></para>
         /// </summary>
         /// <param name="element">Any expression of type <see cref="NullableEnumElement{TEnum}"/> to convert to a different sql data type.</param>
         /// <returns><see cref="NullableCast"/> to specify the sql data type to convert to.</returns>
@@ -201,7 +201,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         #region float
         /// <summary>
         /// Construct an expression for the CAST transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql">Microsoft docs on CAST</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/convertion/cast?version=0.9.4">read the docs on CAST</see></para>
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{Single}"/> to convert to a different sql data type.</param>
         /// <returns><see cref="MsSqlCast"/> to specify the sql data type to convert to.</returns>
@@ -210,7 +210,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CAST transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql">Microsoft docs on CAST</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/convertion/cast?version=0.9.4">read the docs on CAST</see></para>
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{Single}"/>? to convert to a different sql data type.</param>
         /// <returns><see cref="NullableCast"/> to specify the sql data type to convert to.</returns>
@@ -221,7 +221,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         #region Guid
         /// <summary>
         /// Construct an expression for the CAST transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql">Microsoft docs on CAST</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/convertion/cast?version=0.9.4">read the docs on CAST</see></para>
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{Guid}"/> to convert to a different sql data type.</param>
         /// <returns><see cref="MsSqlCast"/> to specify the sql data type to convert to.</returns>
@@ -230,7 +230,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CAST transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql">Microsoft docs on CAST</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/convertion/cast?version=0.9.4">read the docs on CAST</see></para>
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{Guid}"/>? to convert to a different sql data type.</param>
         /// <returns><see cref="NullableCast"/> to specify the sql data type to convert to.</returns>
@@ -241,7 +241,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         #region short
         /// <summary>
         /// Construct an expression for the CAST transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql">Microsoft docs on CAST</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/convertion/cast?version=0.9.4">read the docs on CAST</see></para>
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{Int16}"/> to convert to a different sql data type.</param>
         /// <returns><see cref="MsSqlCast"/> to specify the sql data type to convert to.</returns>
@@ -250,7 +250,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CAST transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql">Microsoft docs on CAST</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/convertion/cast?version=0.9.4">read the docs on CAST</see></para>
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{Int16}"/>? to convert to a different sql data type.</param>
         /// <returns><see cref="NullableCast"/> to specify the sql data type to convert to.</returns>
@@ -261,7 +261,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         #region int
         /// <summary>
         /// Construct an expression for the CAST transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql">Microsoft docs on CAST</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/convertion/cast?version=0.9.4">read the docs on CAST</see></para>
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{Int32}"/> to convert to a different sql data type.</param>
         /// <returns><see cref="MsSqlCast"/> to specify the sql data type to convert to.</returns>
@@ -270,7 +270,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CAST transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql">Microsoft docs on CAST</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/convertion/cast?version=0.9.4">read the docs on CAST</see></para>
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{Int32}"/>? to convert to a different sql data type.</param>
         /// <returns><see cref="NullableCast"/> to specify the sql data type to convert to.</returns>
@@ -281,7 +281,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         #region long
         /// <summary>
         /// Construct an expression for the CAST transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql">Microsoft docs on CAST</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/convertion/cast?version=0.9.4">read the docs on CAST</see></para>
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{Int64}"/> to convert to a different sql data type.</param>
         /// <returns><see cref="MsSqlCast"/> to specify the sql data type to convert to.</returns>
@@ -290,7 +290,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CAST transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql">Microsoft docs on CAST</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/convertion/cast?version=0.9.4">read the docs on CAST</see></para>
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{Int64}"/>? to convert to a different sql data type.</param>
         /// <returns><see cref="NullableCast"/> to specify the sql data type to convert to.</returns>
@@ -301,7 +301,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         #region string
         /// <summary>
         /// Construct an expression for the CAST transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql">Microsoft docs on CAST</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/convertion/cast?version=0.9.4">read the docs on CAST</see></para>
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{String}"/> to convert to a different sql data type.</param>
         /// <returns><see cref="NullableCast"/> to specify the sql data type to convert to.</returns>
@@ -310,7 +310,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CAST transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql">Microsoft docs on CAST</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/convertion/cast?version=0.9.4">read the docs on CAST</see></para>
         /// </summary>
         /// <param name="element">Any expression of type <see cref="NullableStringElement"/> to convert to a different sql data type.</param>
         /// <returns><see cref="NullableCast"/> to specify the sql data type to convert to.</returns>
@@ -321,7 +321,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         #region TimeSpan
         /// <summary>
         /// Construct an expression for the CAST transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql">Microsoft docs on CAST</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/convertion/cast?version=0.9.4">read the docs on CAST</see></para>
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{TimeSpan}"/> to convert to a different sql data type.</param>
         /// <returns><see cref="MsSqlCast"/> to specify the sql data type to convert to.</returns>
@@ -330,7 +330,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CAST transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql">Microsoft docs on CAST</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/convertion/cast?version=0.9.4">read the docs on CAST</see></para>
         /// </summary>
         /// <param name="element">Any expression of type <see cref="AnyElement{TimeSpan}"/>? to convert to a different sql data type.</param>
         /// <returns><see cref="NullableCast"/> to specify the sql data type to convert to.</returns>

@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
     {
         /// <summary>
         /// Construct an expression for the FLOOR transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/floor-transact-sql">Microsoft docs on FLOOR</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/floor?version=0.9.4">read the docs on FLOOR</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression, the value to use for calculating the floor function result.</param>
         /// <returns><see cref="NullableObjectFloorFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Byte}"/>.</returns>
