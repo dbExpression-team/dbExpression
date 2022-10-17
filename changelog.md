@@ -1,14 +1,80 @@
 # Changelog
 
-## [0.9.4]
+## [0.9.4] - 2022-10-18
 
 ### Added
+
+- Added new functions:
+	- ACos
+	- ASin
+	- ATan
+	- Cos
+	- Cot
+	- Exp
+	- Log
+	- Rand
+	- Sin
+	- Sqrt
+	- Square
+	- Tan
+	
+- Added new pipeline events:
+	- Common:
+		- OnAfterComplete
+	- Select:
+		- OnBeforeSelectStart
+		- OnAfterSelectAssembly
+		- OnAfterSelectComplete
+	- Insert:
+		- OnAfterInsertAssembly
+		- OnAfterInsertComplete
+	- Update:
+		- OnAfterUpdateAssembly
+		- OnAfterUpdateComplete
+	- Delete:
+		- OnBeforeDeleteStart
+		- OnAfterDeleteAssembly
+		- OnAfterDeleteComplete
+	- Stored Procedure:
+		- OnBeforeStoredProcedureStart
+		- OnAfterStoredProcedureAssembly
+		- OnAfterStoredProcedureComplete
 	
 ### Changed
+- Deprecated SelectSetQueryExpression
+- Changed SelectQueryExpression to have a "link" expression, allowing it to have a reference to continuation expresions like Union and UnionAll.
+- Enumerated FilterExpressions for additional data types that support implicit conversion (i.e. .Where(schema.Table.IntField < schema.Table.DecimalField)).
 
 ### Fixed
 
 ### Breaking Changes
+- TOOLS UPDATE IS REQUIRED
+- Runtime configuration syntax changed:
+	- .ConfigureOutputSettings -> .ConfigureAssemblyOptions
+	- .ConfigureLoggingSettings -> .ConfigureLoggingOptions
+- Fluent event subscription configuration method names changed:
+	- Common:
+		- OnBeforeSqlStatementAssembly -> OnBeforeStart
+		- OnAfterSqlStatementAssembly -> OnAfterAssembly
+		- OnBeforeSqlStatementExecution -> OnBeforeCommand
+		- OnAfterSqlStatementExecution -> OnAfterCommand
+	- Select:
+		- OnBeforeSelectQueryExecution -> OnBeforeSelectCommand
+		- OnAfterSelectQueryExecution -> OnAfterSelectCommand
+	- Insert:
+		- OnBeforeInsertSqlStatementAssembly -> OnBeforeInsertStart
+		- OnBeforeInsertQueryExecution -> OnBeforeInsertCommand
+		- OnAfterInsertQueryExecution -> OnAfterInsertCommand
+	- Update:
+		- OnBeforeUpdateSqlStatementAssembly -> OnBeforeUpdateStart
+		- OnBeforeUpdateQueryExecution -> OnBeforeUpdateCommand
+		- OnBeforeUpdateQueryExecution -> OnAfterUpdateCommand
+	- Delete:
+		- OnBeforeDeleteQueryExecution -> OnBeforeDeleteCommand
+		- OnAfterDeleteQueryExecution -> OnAfterDeleteCommand
+	- Stored Procedure:
+		- OnBeforeStoredProcedureQueryExecution -> OnBeforeStoredProcedureCommand
+		- OnAfterStoredProcedureQueryExecution -> OnAfterStoredProcedureCommand
 
 ## [0.9.3] - 2022-09-08
 
