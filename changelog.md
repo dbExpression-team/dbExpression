@@ -44,6 +44,7 @@
 - Deprecated SelectSetQueryExpression
 - Changed SelectQueryExpression to have a "link" expression, allowing it to have a reference to continuation expresions like Union and UnionAll.
 - Enumerated FilterExpressions for additional data types that support implicit conversion (i.e. .Where(schema.Table.IntField < schema.Table.DecimalField)).
+- Moved from System.Data.SqlClient to Microsoft.Data.SqlClient
 
 ### Fixed
 

@@ -114,20 +114,20 @@ Intel Core i9-9980HK CPU 2.40GHz, 1 CPU, 8 logical and 8 physical cores
 
 
 ```
-|          ORM |                                                             Method |        Return |     Mean |   StdDev |    Error | Rank |   Gen0 |   Gen1 | Allocated |
-|------------- |------------------------------------------------------------------- |-------------- |---------:|---------:|---------:|-----:|-------:|-------:|----------:|
-| dbExpression |                           &#39;Select First Record With Scalar Return&#39; |         Int32 | 110.1 μs |  5.62 μs |  8.50 μs |    1 | 0.8750 |      - |   7.54 KB |
-| dbExpression |        &#39;Select First Record With Dynamic Return (aliased columns)&#39; |       dynamic | 126.1 μs |  3.32 μs |  5.02 μs |    2 | 1.1250 | 0.3750 |  10.15 KB |
-| dbExpression |                          &#39;Select First Record With Dynamic Return&#39; |       dynamic | 131.5 μs |  8.38 μs | 12.67 μs |    2 | 1.0000 | 0.2500 |  10.04 KB |
-| dbExpression |                                              &#39;Select First Record&#39; |        Person | 164.9 μs |  8.01 μs | 12.11 μs |    3 | 2.0000 | 0.5000 |   16.7 KB |
-| dbExpression |                            &#39;Select First Record With Where Clause&#39; |        Person | 170.1 μs |  8.64 μs | 13.06 μs |    3 | 2.2500 | 0.5000 |  18.54 KB |
-| dbExpression |                     &#39;Async Select First Record With Scalar Return&#39; |   Task&lt;Int32&gt; | 184.2 μs | 15.20 μs | 25.54 μs |    4 | 1.0000 |      - |    9.8 KB |
-| dbExpression |                          &#39;Select First Record With Join Condition&#39; |        Person | 232.8 μs |  7.28 μs | 11.00 μs |    5 | 2.0000 | 0.5000 |  17.89 KB |
-| dbExpression |   &#39;Async Select First Record With Where Clause With Entity Return&#39; |  Task&lt;Person&gt; | 236.5 μs | 15.93 μs | 24.08 μs |    5 | 3.0000 | 0.5000 |  24.75 KB |
-| dbExpression |  &#39;Async Select First Record With Dynamic Return (aliased columns)&#39; | Task&lt;dynamic&gt; | 242.0 μs | 20.93 μs | 31.64 μs |    5 | 1.5000 | 0.5000 |  13.91 KB |
-| dbExpression |                     &#39;Async Select First Record With Entity Return&#39; |  Task&lt;Person&gt; | 247.1 μs | 20.39 μs | 30.83 μs |    5 | 2.0000 | 0.5000 |  18.97 KB |
-| dbExpression |                    &#39;Async Select First Record With Dynamic Return&#39; | Task&lt;dynamic&gt; | 253.7 μs | 26.23 μs | 39.65 μs |    5 | 1.5000 | 0.5000 |   13.8 KB |
-| dbExpression | &#39;Async Select First Record With Join Condition With Entity Return&#39; |  Task&lt;Person&gt; | 300.1 μs | 15.89 μs | 24.03 μs |    6 | 2.0000 | 0.5000 |  20.16 KB |
+|          ORM |                                                             Method |        Return |     Mean |   StdDev |     Error | Rank |   Gen0 |   Gen1 | Allocated |
+|------------- |------------------------------------------------------------------- |-------------- |---------:|---------:|----------:|-----:|-------:|-------:|----------:|
+| dbExpression |                           &#39;Select First Record With Scalar Return&#39; |         Int32 | 198.3 μs | 19.07 μs |  28.82 μs |    1 | 0.7500 |      - |   7.61 KB |
+| dbExpression |        &#39;Select First Record With Dynamic Return (aliased columns)&#39; |       dynamic | 210.3 μs | 17.04 μs |  25.76 μs |    1 | 1.0000 | 0.2500 |   10.2 KB |
+| dbExpression |                          &#39;Select First Record With Dynamic Return&#39; |       dynamic | 221.3 μs | 25.49 μs |  38.53 μs |    1 | 1.0000 | 0.2500 |  10.09 KB |
+| dbExpression |                            &#39;Select First Record With Where Clause&#39; |        Person | 284.7 μs | 18.10 μs |  27.37 μs |    2 | 2.0000 | 0.5000 |  18.71 KB |
+| dbExpression |                     &#39;Async Select First Record With Scalar Return&#39; |   Task&lt;Int32&gt; | 329.4 μs | 17.71 μs |  29.76 μs |    3 | 1.0000 |      - |   9.77 KB |
+| dbExpression |                                              &#39;Select First Record&#39; |        Person | 336.6 μs | 35.99 μs |  60.49 μs |    3 | 2.0000 | 0.5000 |  16.84 KB |
+| dbExpression |  &#39;Async Select First Record With Dynamic Return (aliased columns)&#39; | Task&lt;dynamic&gt; | 358.4 μs | 27.47 μs |  46.16 μs |    3 | 1.5000 | 0.5000 |  12.51 KB |
+| dbExpression |                    &#39;Async Select First Record With Dynamic Return&#39; | Task&lt;dynamic&gt; | 378.0 μs | 34.86 μs |  52.71 μs |    3 | 1.5000 | 0.5000 |   12.4 KB |
+| dbExpression |                          &#39;Select First Record With Join Condition&#39; |        Person | 398.5 μs | 17.74 μs |  29.82 μs |    3 | 2.0000 | 0.5000 |  18.03 KB |
+| dbExpression |                     &#39;Async Select First Record With Entity Return&#39; |  Task&lt;Person&gt; | 400.3 μs | 26.88 μs |  40.64 μs |    3 | 2.0000 | 0.5000 |  19.02 KB |
+| dbExpression |   &#39;Async Select First Record With Where Clause With Entity Return&#39; |  Task&lt;Person&gt; | 443.6 μs | 72.04 μs | 108.92 μs |    3 | 2.5000 | 0.5000 |  20.98 KB |
+| dbExpression | &#39;Async Select First Record With Join Condition With Entity Return&#39; |  Task&lt;Person&gt; | 518.6 μs | 47.72 μs |  72.14 μs |    4 | 2.0000 | 0.5000 |  20.21 KB |
 
 
 ``` ini
@@ -140,20 +140,21 @@ Intel Core i9-9980HK CPU 2.40GHz, 1 CPU, 8 logical and 8 physical cores
 
 
 ```
-|    ORM |                                                             Method |        Return |     Mean |   StdDev |    Error | Rank |   Gen0 |   Gen1 | Allocated |
-|------- |------------------------------------------------------------------- |-------------- |---------:|---------:|---------:|-----:|-------:|-------:|----------:|
-| EFCore |                                              &#39;Select First Record&#39; |        Person | 154.4 μs | 16.91 μs | 25.57 μs |    1 | 1.0000 |      - |   8.33 KB |
-| EFCore |                          &#39;Select First Record With Join Condition&#39; |        Person | 180.4 μs | 14.69 μs | 22.21 μs |    2 | 1.2500 |      - |  12.06 KB |
-| EFCore |                           &#39;Select First Record With Scalar Return&#39; |         Int32 | 181.1 μs | 14.17 μs | 21.43 μs |    2 | 0.7500 |      - |   7.61 KB |
-| EFCore |        &#39;Select First Record With Dynamic Return (aliased columns)&#39; |       dynamic | 182.3 μs |  7.38 μs | 11.16 μs |    2 | 1.0000 | 0.2500 |  10.02 KB |
-| EFCore |                          &#39;Select First Record With Dynamic Return&#39; |       dynamic | 183.9 μs | 10.68 μs | 16.14 μs |    2 | 1.0000 | 0.2500 |   9.98 KB |
-| EFCore |                            &#39;Select First Record With Where Clause&#39; |        Person | 186.6 μs |  8.72 μs | 13.18 μs |    2 | 1.2500 |      - |  11.95 KB |
-| EFCore |                     &#39;Async Select First Record With Entity Return&#39; |  Task&lt;Person&gt; | 243.2 μs | 26.05 μs | 43.78 μs |    3 | 1.0000 |      - |  11.72 KB |
-| EFCore |                    &#39;Async Select First Record With Dynamic Return&#39; | Task&lt;dynamic&gt; | 248.3 μs | 17.04 μs | 25.76 μs |    3 | 1.5000 |      - |  12.95 KB |
-| EFCore |   &#39;Async Select First Record With Where Clause With Entity Return&#39; |  Task&lt;Person&gt; | 249.9 μs | 15.36 μs | 25.82 μs |    3 | 1.5000 |      - |  14.65 KB |
-| EFCore |  &#39;Async Select First Record With Dynamic Return (aliased columns)&#39; | Task&lt;dynamic&gt; | 250.7 μs | 13.46 μs | 25.74 μs |    3 | 1.5000 |      - |  12.99 KB |
-| EFCore |                     &#39;Async Select First Record With Scalar Return&#39; | Task&lt;dynamic&gt; | 259.6 μs | 17.83 μs | 26.95 μs |    3 | 1.0000 |      - |  10.85 KB |
-| EFCore | &#39;Async Select First Record With Join Condition With Entity Return&#39; |  Task&lt;Person&gt; | 269.8 μs | 11.81 μs | 17.86 μs |    3 | 1.5000 |      - |  15.63 KB |
+|    ORM |                                                             Method |        Return |     Mean |   StdDev |     Error | Rank |   Gen0 | Allocated |
+|------- |------------------------------------------------------------------- |-------------- |---------:|---------:|----------:|-----:|-------:|----------:|
+| EFCore |                                              &#39;Select First Record&#39; |        Person | 254.0 μs | 22.16 μs |  33.50 μs |    1 | 1.0000 |   8.29 KB |
+| EFCore |                           &#39;Select First Record With Scalar Return&#39; |         Int32 | 328.2 μs | 29.65 μs |  49.82 μs |    2 |      - |   7.62 KB |
+| EFCore |        &#39;Select First Record With Dynamic Return (aliased columns)&#39; |       dynamic | 335.6 μs | 34.78 μs |  52.59 μs |    2 | 1.0000 |   9.98 KB |
+| EFCore |                          &#39;Select First Record With Dynamic Return&#39; |       dynamic | 357.4 μs | 30.92 μs |  46.74 μs |    2 | 1.0000 |   9.94 KB |
+| EFCore |                            &#39;Select First Record With Where Clause&#39; |        Person | 382.8 μs | 34.58 μs |  58.10 μs |    2 | 1.0000 |  11.91 KB |
+| EFCore |                          &#39;Select First Record With Join Condition&#39; |        Person | 383.6 μs | 43.41 μs |  72.94 μs |    2 | 1.0000 |  12.02 KB |
+| EFCore |                     &#39;Async Select First Record With Entity Return&#39; |  Task&lt;Person&gt; | 396.8 μs | 27.85 μs |  42.11 μs |    2 | 1.0000 |  11.79 KB |
+| EFCore | &#39;Async Select First Record With Join Condition With Entity Return&#39; |  Task&lt;Person&gt; | 434.8 μs | 33.50 μs |  50.65 μs |    3 | 1.0000 |  15.53 KB |
+| EFCore |   &#39;Async Select First Record With Where Clause With Entity Return&#39; |  Task&lt;Person&gt; | 444.7 μs | 62.23 μs | 104.58 μs |    3 |      - |  14.55 KB |
+| EFCore |                    &#39;Async Select First Record With Dynamic Return&#39; | Task&lt;dynamic&gt; | 457.0 μs | 33.26 μs |  50.28 μs |    3 | 1.0000 |  13.02 KB |
+| EFCore |                     &#39;Async Select First Record With Scalar Return&#39; | Task&lt;dynamic&gt; | 457.3 μs | 82.23 μs | 124.32 μs |    3 | 1.0000 |   10.8 KB |
+| EFCore |  &#39;Async Select First Record With Dynamic Return (aliased columns)&#39; | Task&lt;dynamic&gt; | 485.6 μs | 49.15 μs |  74.30 μs |    3 | 1.0000 |  12.89 KB |
+
 
 
 ``` ini
@@ -168,18 +169,18 @@ Intel Core i9-9980HK CPU 2.40GHz, 1 CPU, 8 logical and 8 physical cores
 ```
 |                  ORM |                                                             Method |        Return |     Mean |   StdDev |    Error | Rank |   Gen0 |   Gen1 | Allocated |
 |--------------------- |------------------------------------------------------------------- |-------------- |---------:|---------:|---------:|-----:|-------:|-------:|----------:|
-| EFCore (No Tracking) |                                              &#39;Select First Record&#39; |        Person | 150.2 μs | 12.33 μs | 18.63 μs |    1 | 1.0000 | 0.2500 |   8.62 KB |
-| EFCore (No Tracking) |                           &#39;Select First Record With Scalar Return&#39; |         Int32 | 171.5 μs | 12.75 μs | 19.27 μs |    2 | 0.7500 |      - |   7.61 KB |
-| EFCore (No Tracking) |        &#39;Select First Record With Dynamic Return (aliased columns)&#39; |       dynamic | 180.9 μs |  5.73 μs | 10.95 μs |    2 | 1.0000 |      - |  10.02 KB |
-| EFCore (No Tracking) |                          &#39;Select First Record With Dynamic Return&#39; |       dynamic | 181.2 μs |  7.38 μs | 12.40 μs |    2 | 1.0000 | 0.2500 |   9.98 KB |
-| EFCore (No Tracking) |                            &#39;Select First Record With Where Clause&#39; |        Person | 190.5 μs | 16.90 μs | 25.56 μs |    2 | 1.0000 |      - |  11.55 KB |
-| EFCore (No Tracking) |                          &#39;Select First Record With Join Condition&#39; |        Person | 197.8 μs | 21.81 μs | 32.97 μs |    2 | 1.5000 | 0.5000 |  12.53 KB |
-| EFCore (No Tracking) |                     &#39;Async Select First Record With Entity Return&#39; |  Task&lt;Person&gt; | 228.7 μs |  8.71 μs | 14.63 μs |    3 | 1.0000 |      - |  11.94 KB |
-| EFCore (No Tracking) |                    &#39;Async Select First Record With Dynamic Return&#39; | Task&lt;dynamic&gt; | 248.4 μs |  2.99 μs |  5.71 μs |    4 | 1.5000 |      - |  13.13 KB |
-| EFCore (No Tracking) |                     &#39;Async Select First Record With Scalar Return&#39; | Task&lt;dynamic&gt; | 252.5 μs |  9.22 μs | 15.49 μs |    4 | 1.0000 |      - |  11.02 KB |
-| EFCore (No Tracking) |  &#39;Async Select First Record With Dynamic Return (aliased columns)&#39; | Task&lt;dynamic&gt; | 280.0 μs | 23.76 μs | 35.92 μs |    5 | 1.5000 |      - |  13.17 KB |
-| EFCore (No Tracking) |   &#39;Async Select First Record With Where Clause With Entity Return&#39; |  Task&lt;Person&gt; | 292.8 μs | 14.93 μs | 22.58 μs |    5 | 1.5000 | 0.5000 |  14.87 KB |
-| EFCore (No Tracking) | &#39;Async Select First Record With Join Condition With Entity Return&#39; |  Task&lt;Person&gt; | 309.5 μs | 25.30 μs | 38.25 μs |    5 | 1.5000 | 0.5000 |  15.96 KB |
+| EFCore (No Tracking) |        &#39;Select First Record With Dynamic Return (aliased columns)&#39; |       dynamic | 238.9 μs | 16.87 μs | 25.51 μs |    1 | 1.0000 |      - |   9.98 KB |
+| EFCore (No Tracking) |                           &#39;Select First Record With Scalar Return&#39; |         Int32 | 239.7 μs | 11.65 μs | 17.62 μs |    1 | 0.7500 |      - |   7.62 KB |
+| EFCore (No Tracking) |                          &#39;Select First Record With Dynamic Return&#39; |       dynamic | 248.9 μs | 24.17 μs | 36.54 μs |    1 | 1.0000 |      - |   9.94 KB |
+| EFCore (No Tracking) |                                              &#39;Select First Record&#39; |        Person | 260.6 μs | 58.61 μs | 98.49 μs |    1 | 1.0000 | 0.2500 |   8.58 KB |
+| EFCore (No Tracking) |                            &#39;Select First Record With Where Clause&#39; |        Person | 264.1 μs | 17.40 μs | 26.31 μs |    2 | 1.0000 |      - |  11.51 KB |
+| EFCore (No Tracking) |                          &#39;Select First Record With Join Condition&#39; |        Person | 292.0 μs | 24.33 μs | 40.89 μs |    3 | 1.5000 | 0.5000 |  12.32 KB |
+| EFCore (No Tracking) |  &#39;Async Select First Record With Dynamic Return (aliased columns)&#39; | Task&lt;dynamic&gt; | 310.8 μs | 23.52 μs | 35.56 μs |    3 | 1.5000 |      - |  13.06 KB |
+| EFCore (No Tracking) |                     &#39;Async Select First Record With Entity Return&#39; |  Task&lt;Person&gt; | 327.7 μs | 22.46 μs | 37.74 μs |    3 | 1.0000 |      - |  11.84 KB |
+| EFCore (No Tracking) |                     &#39;Async Select First Record With Scalar Return&#39; | Task&lt;dynamic&gt; | 365.6 μs | 40.73 μs | 61.57 μs |    3 | 1.0000 |      - |  10.97 KB |
+| EFCore (No Tracking) |                    &#39;Async Select First Record With Dynamic Return&#39; | Task&lt;dynamic&gt; | 378.9 μs | 44.67 μs | 75.07 μs |    3 | 1.5000 |      - |  13.02 KB |
+| EFCore (No Tracking) |   &#39;Async Select First Record With Where Clause With Entity Return&#39; |  Task&lt;Person&gt; | 386.5 μs | 35.48 μs | 53.63 μs |    3 | 1.0000 |      - |  14.77 KB |
+| EFCore (No Tracking) | &#39;Async Select First Record With Join Condition With Entity Return&#39; |  Task&lt;Person&gt; | 416.8 μs | 47.50 μs | 71.81 μs |    3 | 2.0000 |      - |  16.72 KB |
 
 
 
@@ -193,20 +194,21 @@ Intel Core i9-9980HK CPU 2.40GHz, 1 CPU, 8 logical and 8 physical cores
 
 
 ```
-|    ORM |                                                             Method |        Return |      Mean |    StdDev |     Error | Rank |   Gen0 |   Gen1 | Allocated |
-|------- |------------------------------------------------------------------- |-------------- |----------:|----------:|----------:|-----:|-------:|-------:|----------:|
-| Dapper |                                              &#39;Select First Record&#39; |        Person |  96.25 μs |  3.830 μs |  5.791 μs |    1 | 0.5000 | 0.1250 |   4.52 KB |
-| Dapper |                           &#39;Select First Record With Scalar Return&#39; |         Int32 |  99.05 μs |  4.975 μs |  8.361 μs |    1 | 0.2500 |      - |   2.35 KB |
-| Dapper |        &#39;Select First Record With Dynamic Return (aliased columns)&#39; |       dynamic | 102.45 μs |  4.540 μs |  6.864 μs |    1 | 0.3750 |      - |   3.13 KB |
-| Dapper |                          &#39;Select First Record With Join Condition&#39; |        Person | 105.80 μs |  2.127 μs |  3.215 μs |    1 | 0.6250 | 0.1250 |   5.61 KB |
-| Dapper |                          &#39;Select First Record With Dynamic Return&#39; |       dynamic | 108.50 μs |  5.077 μs |  7.676 μs |    1 | 0.3750 |      - |   3.09 KB |
-| Dapper |                            &#39;Select First Record With Where Clause&#39; |        Person | 110.55 μs |  6.871 μs | 10.388 μs |    1 | 0.6250 | 0.1250 |   5.51 KB |
-| Dapper |                     &#39;Async Select First Record With Entity Return&#39; |  Task&lt;Person&gt; | 152.29 μs |  6.240 μs | 10.487 μs |    2 | 0.7500 |      - |   7.16 KB |
-| Dapper | &#39;Async Select First Record With Join Condition With Entity Return&#39; |  Task&lt;Person&gt; | 165.19 μs |  8.799 μs | 13.303 μs |    3 | 1.0000 | 0.2500 |   8.25 KB |
-| Dapper |                    &#39;Async Select First Record With Dynamic Return&#39; | Task&lt;dynamic&gt; | 174.40 μs | 12.227 μs | 18.486 μs |    4 | 0.5000 |      - |   4.74 KB |
-| Dapper |  &#39;Async Select First Record With Dynamic Return (aliased columns)&#39; | Task&lt;dynamic&gt; | 177.56 μs |  5.409 μs |  8.177 μs |    4 | 0.5000 |      - |   5.84 KB |
-| Dapper |                     &#39;Async Select First Record With Scalar Return&#39; |   Task&lt;Int32&gt; | 184.51 μs |  9.453 μs | 15.885 μs |    4 | 0.5000 |      - |   5.06 KB |
-| Dapper |   &#39;Async Select First Record With Where Clause With Entity Return&#39; |  Task&lt;Person&gt; | 204.80 μs | 19.120 μs | 28.906 μs |    5 | 1.0000 | 0.2500 |   8.21 KB |
+|    ORM |                                                             Method |        Return |     Mean |   StdDev |    Error | Rank |   Gen0 | Allocated |
+|------- |------------------------------------------------------------------- |-------------- |---------:|---------:|---------:|-----:|-------:|----------:|
+| Dapper |                                              &#39;Select First Record&#39; |        Person | 125.9 μs |  6.38 μs |  9.64 μs |    1 | 0.5000 |   4.66 KB |
+| Dapper |                           &#39;Select First Record With Scalar Return&#39; |         Int32 | 129.3 μs |  6.74 μs | 11.33 μs |    1 | 0.2500 |   2.45 KB |
+| Dapper |                          &#39;Select First Record With Dynamic Return&#39; |       dynamic | 135.1 μs |  8.34 μs | 12.62 μs |    2 | 0.2500 |   3.17 KB |
+| Dapper |                          &#39;Select First Record With Join Condition&#39; |        Person | 138.8 μs |  6.64 μs | 11.16 μs |    2 | 0.5000 |    5.8 KB |
+| Dapper |        &#39;Select First Record With Dynamic Return (aliased columns)&#39; |       dynamic | 142.6 μs | 11.51 μs | 22.01 μs |    2 | 0.2500 |   3.21 KB |
+| Dapper |                            &#39;Select First Record With Where Clause&#39; |        Person | 152.9 μs |  9.13 μs | 13.80 μs |    3 | 0.5000 |   5.68 KB |
+| Dapper |                    &#39;Async Select First Record With Dynamic Return&#39; | Task&lt;dynamic&gt; | 212.7 μs | 21.10 μs | 31.90 μs |    4 |      - |   3.84 KB |
+| Dapper |                     &#39;Async Select First Record With Entity Return&#39; |  Task&lt;Person&gt; | 214.0 μs | 12.42 μs | 20.87 μs |    4 | 0.5000 |   6.34 KB |
+| Dapper |   &#39;Async Select First Record With Where Clause With Entity Return&#39; |  Task&lt;Person&gt; | 220.4 μs |  5.46 μs | 10.45 μs |    5 | 0.5000 |   7.43 KB |
+| Dapper | &#39;Async Select First Record With Join Condition With Entity Return&#39; |  Task&lt;Person&gt; | 222.4 μs |  9.90 μs | 14.97 μs |    5 | 0.7500 |   7.48 KB |
+| Dapper |                     &#39;Async Select First Record With Scalar Return&#39; |   Task&lt;Int32&gt; | 229.9 μs | 16.14 μs | 24.41 μs |    5 | 0.5000 |   4.21 KB |
+| Dapper |  &#39;Async Select First Record With Dynamic Return (aliased columns)&#39; | Task&lt;dynamic&gt; | 250.5 μs | 29.24 μs | 49.13 μs |    5 | 0.5000 |   4.96 KB |
+
 
 
 
