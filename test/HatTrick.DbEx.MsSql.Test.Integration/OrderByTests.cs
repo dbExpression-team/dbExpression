@@ -256,7 +256,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where(dbo.Purchase.Id == 1);
 
             //when & then
-            Assert.Throws<System.Data.SqlClient.SqlException>(() => exp.Execute());
+            Assert.Throws<Microsoft.Data.SqlClient.SqlException>(() => exp.Execute());
         }
     }
 }
