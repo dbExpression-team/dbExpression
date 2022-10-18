@@ -7,9 +7,9 @@ namespace HatTrick.DbEx.MsSql.Test.Executor
     /// Base class when the database data is affected by one or more tests in the class.  Inherting from
     /// this class ensures the database data is reset only after every test in the class has executed (once per class).
     /// </summary>
-    public abstract class ResetDatabaseAfterEveryTestInThisClass : ExecutorTestBase, IClassFixture<Seeder>
+    public abstract class ResetDatabaseAfterAllTestsInThisClass : ExecutorTestBase, IClassFixture<Seeder>
     {
-        public ResetDatabaseAfterEveryTestInThisClass(Seeder fixture) : base(fixture)
+        public ResetDatabaseAfterAllTestsInThisClass(Seeder fixture) : base(fixture)
         {
 
         }

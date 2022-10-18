@@ -8,7 +8,7 @@ namespace HatTrick.DbEx.MsSql.Test.Executor
     /// <summary>
     /// Base class that performs startup operations regardless of whether the tests effect data or not.
     /// Use one of the types that derive from this when adding/modifying test classes, 
-    /// i.e. one of <see cref="ResetDatabaseAfterEveryTest"/>, <see cref="ResetDatabaseAfterEveryTestInThisClass"/>, or <see cref="ResetDatabaseNotRequired"/>.
+    /// i.e. one of <see cref="ResetDatabaseAfterEveryTest"/>, <see cref="ResetDatabaseAfterAllTestsInThisClass"/>, or <see cref="ResetDatabaseNotRequired"/>.
     /// </summary>
     [Collection("Sequential")]
     public abstract class ExecutorTestBase : TestBase

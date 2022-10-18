@@ -45,7 +45,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where(dbo.Purchase.Id == 2);
 
             //when & then
-            Assert.Throws<System.Data.SqlClient.SqlException>(() => exp.Execute());
+            Assert.Throws<Microsoft.Data.SqlClient.SqlException>(() => exp.Execute());
         }
 
         [Theory]
@@ -61,7 +61,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where(dbo.PurchaseLine.Id == 1);
 
             //when & then
-            Assert.Throws<System.Data.SqlClient.SqlException>(() => exp.Execute());
+            Assert.Throws<Microsoft.Data.SqlClient.SqlException>(() => exp.Execute());
         }
 
         [Theory]
@@ -82,7 +82,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).As("lines").On(dbo.Purchase.Id == ("lines", "PurchaseId"));
 
             //when & then
-            Assert.Throws<System.Data.SqlClient.SqlException>(() => exp.Execute());
+            Assert.Throws<Microsoft.Data.SqlClient.SqlException>(() => exp.Execute());
         }
     }
 }
