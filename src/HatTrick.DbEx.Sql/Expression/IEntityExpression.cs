@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,12 +20,6 @@ using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public interface IEntityExpression<T> : IEntityExpression
-        where T : class, IDbEntity
-    {
-
-    }
-
     public interface IEntityExpression : IExpressionElement 
     {
         IEnumerable<IExpressionElement> Expressions { get; }

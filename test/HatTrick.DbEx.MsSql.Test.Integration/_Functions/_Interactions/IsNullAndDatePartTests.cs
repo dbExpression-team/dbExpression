@@ -11,7 +11,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     [Trait("Function", "ISNULL")]
     [Trait("Function", "DATEPART")]
-    public partial class IsNullAndDatePartTests : ExecutorTestBase
+    public partial class IsNullAndDatePartTests : ResetDatabaseNotRequired
     {
         [Theory]
         [MsSqlVersions.AllVersions]

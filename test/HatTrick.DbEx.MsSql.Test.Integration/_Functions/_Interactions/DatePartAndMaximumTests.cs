@@ -10,7 +10,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     [Trait("Function", "DATEPART")]
     [Trait("Function", "MAX")]
-    public partial class DatePartAndMaximumTests : ExecutorTestBase
+    public partial class DatePartAndMaximumTests : ResetDatabaseNotRequired
     {
         [Theory]
         [MsSqlVersions.AllVersions]

@@ -21,7 +21,8 @@ namespace HatTrick.DbEx.Sql
 #pragma warning disable IDE1006 // Naming Styles
     public interface AliasedElement : 
 #pragma warning restore IDE1006 // Naming Styles
-        AnyElement, 
+        AnyElement,
+        AnyNumericElement,
         AnyOrderByExpression,
         AnyGroupByExpression
     {

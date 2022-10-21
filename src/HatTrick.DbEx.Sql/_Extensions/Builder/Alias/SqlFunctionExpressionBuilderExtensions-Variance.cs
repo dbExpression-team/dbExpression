@@ -24,11 +24,11 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
     {
         /// <summary>
         /// Construct an expression for the VAR transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/var-transact-sql">Microsoft docs on VAR</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/aggregate/var?version=0.9.4">read the docs on VAR</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression, the value to use for calculating the variance function result.</param>
         /// <returns><see cref="NullableSingleVarianceFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>?.</returns>
         public static NullableSingleVarianceFunctionExpression Var(this SqlFunctionExpressionBuilder _, (string TableName, string FieldName) element)
-            => new(new NullableSingleExpressionMediator(new AliasExpression<float?>(element)));
+            => new(new AliasExpression<float?>(element));
     }
 }

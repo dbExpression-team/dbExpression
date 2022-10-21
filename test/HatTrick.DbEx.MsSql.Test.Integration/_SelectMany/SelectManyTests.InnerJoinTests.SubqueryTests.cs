@@ -14,7 +14,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class SelectManyTests
     {
         [Trait("Operation", "Subquery")]
-        public class SubqueryTests : ExecutorTestBase
+        public class SubqueryTests : ResetDatabaseNotRequired
         {
             [Theory]
             [MsSqlVersions.AllVersions]

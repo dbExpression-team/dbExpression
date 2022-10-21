@@ -30,7 +30,7 @@ namespace HatTrick.DbEx.Sql.Builder
     {
         #region internals
         private readonly UpdateQueryExpression _expression;
-        protected Func<IUpdateQueryExecutionPipeline> ExecutionPipelineFactory { get; private set; }
+        protected Func<IUpdateQueryExpressionExecutionPipeline> ExecutionPipelineFactory { get; private set; }
         protected override QueryExpression Expression => UpdateQueryExpression;
         public UpdateQueryExpression UpdateQueryExpression => _expression;
         #endregion
@@ -38,7 +38,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #region constructors
         public UpdateQueryExpressionBuilder(
             UpdateQueryExpression expression,
-            Func<IUpdateQueryExecutionPipeline> executionPipelineFactory
+            Func<IUpdateQueryExpressionExecutionPipeline> executionPipelineFactory
         )
         {
             _expression = expression ?? throw new ArgumentNullException(nameof(expression));

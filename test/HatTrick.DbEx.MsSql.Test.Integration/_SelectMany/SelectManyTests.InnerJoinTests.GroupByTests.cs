@@ -15,7 +15,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     {
         public partial class InnerJoinTests
         {
-            public partial class GroupByTests : ExecutorTestBase
+            public partial class GroupByTests : ResetDatabaseNotRequired
             {
                 [Theory]
                 [Trait("Function", "COUNT")]

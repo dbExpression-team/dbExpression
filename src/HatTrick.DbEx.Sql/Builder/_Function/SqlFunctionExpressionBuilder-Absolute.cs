@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.Sql.Builder
     {
         /// <summary>
         /// Construct an expression for the ABS transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on ABS</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/abs?ver=0.9.4">Microsoft docs on ABS</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}"/>, the value to use for calculating the absolute value.</param>
         /// <returns><see cref="ByteAbsFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Byte}"/>.</returns>
@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ABS transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on ABS</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/abs?ver=0.9.4">Microsoft docs on ABS</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}"/>?, the value to use for calculating the absolute value.</param>
         /// <returns><see cref="NullableByteAbsFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Byte}"/>?.</returns>
@@ -45,7 +45,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ABS transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on ABS</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/abs?ver=0.9.4">Microsoft docs on ABS</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}"/>, the value to use for calculating the absolute value.</param>
         /// <returns><see cref="Int16AbsFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int16}"/>.</returns>
@@ -54,7 +54,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ABS transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on ABS</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/abs?ver=0.9.4">Microsoft docs on ABS</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}"/>?, the value to use for calculating the absolute value.</param>
         /// <returns><see cref="NullableInt16AbsFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int16}"/>?.</returns>
@@ -63,7 +63,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ABS transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on ABS</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/abs?ver=0.9.4">Microsoft docs on ABS</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}"/>, the value to use for calculating the absolute value.</param>
         /// <returns><see cref="Int32AbsFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>.</returns>
@@ -72,7 +72,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ABS transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on ABS</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/abs?ver=0.9.4">Microsoft docs on ABS</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}"/>?, the value to use for calculating the absolute value.</param>
         /// <returns><see cref="NullableInt32AbsFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
@@ -81,7 +81,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ABS transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on ABS</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/abs?ver=0.9.4">Microsoft docs on ABS</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}"/>, the value to use for calculating the absolute value.</param>
         /// <returns><see cref="Int64AbsFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>.</returns>
@@ -90,7 +90,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ABS transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on ABS</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/abs?ver=0.9.4">Microsoft docs on ABS</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}"/>?, the value to use for calculating the absolute value.</param>
         /// <returns><see cref="NullableInt64AbsFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>?.</returns>
@@ -99,7 +99,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ABS transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on ABS</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/abs?ver=0.9.4">Microsoft docs on ABS</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}"/>, the value to use for calculating the absolute value.</param>
         /// <returns><see cref="SingleAbsFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
@@ -108,7 +108,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ABS transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on ABS</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/abs?ver=0.9.4">Microsoft docs on ABS</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableSingleElement"/>, the value to use for calculating the absolute value.</param>
         /// <returns><see cref="NullableSingleAbsFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>?.</returns>
@@ -117,7 +117,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ABS transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on ABS</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/abs?ver=0.9.4">Microsoft docs on ABS</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Double}"/>, the value to use for calculating the absolute value.</param>
         /// <returns><see cref="DoubleAbsFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Double}"/>.</returns>
@@ -126,7 +126,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ABS transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on ABS</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/abs?ver=0.9.4">Microsoft docs on ABS</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Double}"/>?, the value to use for calculating the absolute value.</param>
         /// <returns><see cref="NullableDoubleAbsFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Double}"/>?.</returns>
@@ -135,7 +135,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ABS transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on ABS</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/abs?ver=0.9.4">Microsoft docs on ABS</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}"/>, the value to use for calculating the absolute value.</param>
         /// <returns><see cref="DecimalAbsFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Decimal}"/>.</returns>
@@ -144,7 +144,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the ABS transact sql function.
-        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on ABS</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/abs?ver=0.9.4">Microsoft docs on ABS</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}"/>?, the value to use for calculating the absolute value.</param>
         /// <returns><see cref="NullableDecimalAbsFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Decimal}"/>?.</returns>

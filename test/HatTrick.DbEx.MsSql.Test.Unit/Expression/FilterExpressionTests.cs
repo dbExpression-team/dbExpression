@@ -1,6 +1,7 @@
 ﻿using DbEx.DataService;
 using DbEx.dboDataService;
 using DbEx.secDataService;
+using DbEx.unit_testDataService;
 using FluentAssertions;
 using HatTrick.DbEx.Sql.Expression;
 using System;
@@ -48,7 +49,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             FilterExpressionSet exp = sec.Person.Id > 0 & sec.Person.SocialSecurityNumber == "XXX";
 
             //then
-            FilterExpressionSet.FilterExpressionSetElements leftArg = (exp as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>)!.Expression;
+            FilterExpressionSet.FilterExpressionSetElements leftArg = (exp as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>)!.Expression!;
 
             FilterExpression idFilter = (leftArg.Args[0] as FilterExpression)!;
             FilterExpression ssnFilter = (leftArg.Args[1] as FilterExpression)!;
@@ -90,7 +91,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             FilterExpressionSet exp = sec.Person.Id > 0 & sec.Person.SocialSecurityNumber == "XXX" & sec.Person.DateCreated != now;
 
             //then
-            FilterExpressionSet.FilterExpressionSetElements leftArg = (exp as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>).Expression;
+            FilterExpressionSet.FilterExpressionSetElements leftArg = (exp as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>).Expression!;
 
             FilterExpression idFilter = (leftArg.Args[0]! as FilterExpression)!;
             FilterExpression ssnFilter = (leftArg.Args[1]! as FilterExpression)!;
@@ -144,7 +145,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
 
             //then
             var whereClause = exp as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>;
-            var args = whereClause.Expression.Args!;
+            var args = whereClause.Expression!.Args!;
 
             whereClause.Expression.ConditionalOperator.Should().Be(ConditionalExpressionOperator.And);
             args.Count.Should().Be(5);
@@ -172,7 +173,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
 
             // (dbo.Person.FirstName == "Kyle" | dbo.Person.LastName == "Stan")
             var arg3 = (args[3] as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>)!;
-            arg3.Expression.ConditionalOperator.Should().Be(ConditionalExpressionOperator.Or);
+            arg3.Expression!.ConditionalOperator.Should().Be(ConditionalExpressionOperator.Or);
             var arg3_0 = (arg3!.Expression.Args[0] as FilterExpression)!;
             arg3_0.Negate.Should().BeFalse();
             arg3_0.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
@@ -205,7 +206,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
 
             //then
             var whereClause = exp as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>;
-            var andArgs = whereClause.Expression.Args!;
+            var andArgs = whereClause.Expression!.Args!;
 
             whereClause.Expression.ConditionalOperator.Should().Be(ConditionalExpressionOperator.And);
             andArgs.Count.Should().Be(4);
@@ -219,7 +220,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
 
             // !(dbo.Person.LastName == "Cartman" | !(dbo.Person.CreditLimit == 10000))
             var arg1 = (andArgs[1] as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>)!;
-            arg1.Expression.ConditionalOperator.Should().Be(ConditionalExpressionOperator.Or);
+            arg1.Expression!.ConditionalOperator.Should().Be(ConditionalExpressionOperator.Or);
             arg1.Expression.Negate.Should().BeTrue();
             var arg1_0 = (arg1!.Expression.Args[0] as FilterExpression)!;
             arg1_0.Negate.Should().BeFalse();
@@ -235,7 +236,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
 
             // (dbo.Person.FirstName == "Kyle" | dbo.Person.LastName == "Stan")
             var arg2 = (andArgs[2] as IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements>)!;
-            arg2.Expression.ConditionalOperator.Should().Be(ConditionalExpressionOperator.Or);
+            arg2.Expression!.ConditionalOperator.Should().Be(ConditionalExpressionOperator.Or);
             arg2.Expression.Negate.Should().BeFalse();
             var arg2_0 = (arg2!.Expression.Args[0] as FilterExpression)!;
             arg2_0.Negate.Should().BeFalse();
@@ -256,5 +257,11289 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             arg3.LeftArg.Should().BeOfType<dboPersonEntity.BirthDateField>();
             arg3.RightArg.Should().BeOfType<LiteralExpression<DateTime>>().Which.Expression.Should().Be(DateTime.Today);
         }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_greater_than_byte_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            byte value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte > value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<byte>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_greater_than_or_equal_to_byte_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            byte value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte >= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<byte>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_less_than_byte_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            byte value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte < value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<byte>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_less_than_or_equal_to_byte_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            byte value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte <= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<byte>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_equal_to_byte_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            byte value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte == value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<byte>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_not_equal_to_byte_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            byte value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte != value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<byte>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_greater_than_short_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            short value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte > value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<short>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_greater_than_or_equal_to_short_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            short value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte >= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<short>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_less_than_short_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            short value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte < value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<short>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_less_than_or_equal_to_short_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            short value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte <= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<short>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_equal_to_short_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            short value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte == value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<short>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_not_equal_to_short_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            short value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte != value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<short>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_greater_than_int_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            int value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte > value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<int>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_greater_than_or_equal_to_int_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            int value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte >= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<int>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_less_than_int_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            int value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte < value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<int>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_less_than_or_equal_to_int_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            int value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte <= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<int>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_equal_to_int_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            int value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte == value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<int>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_not_equal_to_int_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            int value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte != value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<int>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_greater_than_long_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            long value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte > value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<long>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_greater_than_or_equal_to_long_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            long value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte >= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<long>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_less_than_long_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            long value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte < value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<long>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_less_than_or_equal_to_long_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            long value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte <= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<long>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_equal_to_long_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            long value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte == value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<long>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_not_equal_to_long_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            long value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte != value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<long>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_greater_than_decimal_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            decimal value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte > value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<decimal>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_greater_than_or_equal_to_decimal_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            decimal value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte >= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<decimal>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_less_than_decimal_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            decimal value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte < value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<decimal>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_less_than_or_equal_to_decimal_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            decimal value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte <= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<decimal>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_equal_to_decimal_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            decimal value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte == value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<decimal>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_not_equal_to_decimal_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            decimal value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte != value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<decimal>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_greater_than_double_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            double value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte > value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<double>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_greater_than_or_equal_to_double_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            double value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte >= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<double>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_less_than_double_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            double value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte < value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<double>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_less_than_or_equal_to_double_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            double value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte <= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<double>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_equal_to_double_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            double value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte == value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<double>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_not_equal_to_double_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            double value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte != value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<double>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_greater_than_byte_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            byte value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 > value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<byte>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_greater_than_or_equal_to_byte_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            byte value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 >= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<byte>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_less_than_byte_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            byte value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 < value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<byte>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_less_than_or_equal_to_byte_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            byte value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 <= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<byte>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_equal_to_byte_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            byte value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 == value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<byte>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_not_equal_to_byte_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            byte value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 != value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<byte>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_greater_than_short_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            short value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 > value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<short>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_greater_than_or_equal_to_short_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            short value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 >= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<short>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_less_than_short_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            short value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 < value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<short>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_less_than_or_equal_to_short_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            short value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 <= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<short>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_equal_to_short_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            short value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 == value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<short>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_not_equal_to_short_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            short value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 != value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<short>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_greater_than_int_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            int value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 > value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<int>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_greater_than_or_equal_to_int_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            int value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 >= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<int>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_less_than_int_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            int value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 < value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<int>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_less_than_or_equal_to_int_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            int value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 <= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<int>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_equal_to_int_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            int value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 == value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<int>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_not_equal_to_int_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            int value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 != value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<int>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_greater_than_long_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            long value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 > value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<long>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_greater_than_or_equal_to_long_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            long value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 >= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<long>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_less_than_long_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            long value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 < value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<long>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_less_than_or_equal_to_long_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            long value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 <= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<long>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_equal_to_long_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            long value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 == value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<long>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_not_equal_to_long_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            long value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 != value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<long>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_greater_than_decimal_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            decimal value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 > value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<decimal>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_greater_than_or_equal_to_decimal_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            decimal value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 >= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<decimal>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_less_than_decimal_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            decimal value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 < value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<decimal>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_less_than_or_equal_to_decimal_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            decimal value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 <= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<decimal>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_equal_to_decimal_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            decimal value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 == value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<decimal>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_not_equal_to_decimal_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            decimal value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 != value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<decimal>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_greater_than_double_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            double value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 > value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<double>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_greater_than_or_equal_to_double_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            double value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 >= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<double>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_less_than_double_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            double value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 < value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<double>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_less_than_or_equal_to_double_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            double value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 <= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<double>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_equal_to_double_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            double value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 == value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<double>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_not_equal_to_double_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            double value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 != value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<double>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_greater_than_byte_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            byte value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 > value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<byte>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_greater_than_or_equal_to_byte_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            byte value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 >= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<byte>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_less_than_byte_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            byte value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 < value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<byte>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_less_than_or_equal_to_byte_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            byte value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 <= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<byte>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_equal_to_byte_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            byte value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 == value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<byte>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_not_equal_to_byte_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            byte value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 != value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<byte>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_greater_than_short_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            short value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 > value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<short>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_greater_than_or_equal_to_short_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            short value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 >= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<short>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_less_than_short_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            short value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 < value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<short>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_less_than_or_equal_to_short_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            short value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 <= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<short>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_equal_to_short_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            short value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 == value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<short>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_not_equal_to_short_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            short value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 != value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<short>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_greater_than_int_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            int value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 > value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<int>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_greater_than_or_equal_to_int_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            int value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 >= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<int>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_less_than_int_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            int value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 < value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<int>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_less_than_or_equal_to_int_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            int value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 <= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<int>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_equal_to_int_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            int value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 == value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<int>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_not_equal_to_int_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            int value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 != value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<int>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_greater_than_long_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            long value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 > value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<long>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_greater_than_or_equal_to_long_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            long value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 >= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<long>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_less_than_long_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            long value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 < value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<long>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_less_than_or_equal_to_long_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            long value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 <= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<long>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_equal_to_long_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            long value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 == value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<long>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_not_equal_to_long_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            long value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 != value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<long>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_greater_than_decimal_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            decimal value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 > value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<decimal>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_greater_than_or_equal_to_decimal_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            decimal value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 >= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<decimal>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_less_than_decimal_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            decimal value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 < value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<decimal>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_less_than_or_equal_to_decimal_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            decimal value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 <= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<decimal>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_equal_to_decimal_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            decimal value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 == value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<decimal>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_not_equal_to_decimal_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            decimal value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 != value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<decimal>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_greater_than_double_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            double value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 > value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<double>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_greater_than_or_equal_to_double_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            double value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 >= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<double>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_less_than_double_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            double value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 < value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<double>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_less_than_or_equal_to_double_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            double value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 <= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<double>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_equal_to_double_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            double value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 == value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<double>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_not_equal_to_double_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            double value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 != value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<double>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_greater_than_byte_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            byte value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 > value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<byte>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_greater_than_or_equal_to_byte_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            byte value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 >= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<byte>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_less_than_byte_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            byte value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 < value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<byte>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_less_than_or_equal_to_byte_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            byte value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 <= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<byte>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_equal_to_byte_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            byte value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 == value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<byte>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_not_equal_to_byte_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            byte value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 != value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<byte>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_greater_than_short_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            short value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 > value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<short>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_greater_than_or_equal_to_short_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            short value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 >= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<short>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_less_than_short_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            short value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 < value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<short>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_less_than_or_equal_to_short_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            short value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 <= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<short>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_equal_to_short_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            short value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 == value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<short>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_not_equal_to_short_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            short value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 != value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<short>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_greater_than_int_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            int value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 > value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<int>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_greater_than_or_equal_to_int_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            int value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 >= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<int>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_less_than_int_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            int value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 < value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<int>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_less_than_or_equal_to_int_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            int value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 <= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<int>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_equal_to_int_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            int value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 == value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<int>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_not_equal_to_int_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            int value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 != value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<int>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_greater_than_long_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            long value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 > value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<long>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_greater_than_or_equal_to_long_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            long value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 >= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<long>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_less_than_long_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            long value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 < value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<long>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_less_than_or_equal_to_long_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            long value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 <= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<long>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_equal_to_long_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            long value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 == value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<long>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_not_equal_to_long_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            long value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 != value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<long>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_greater_than_decimal_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            decimal value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 > value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<decimal>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_greater_than_or_equal_to_decimal_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            decimal value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 >= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<decimal>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_less_than_decimal_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            decimal value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 < value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<decimal>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_less_than_or_equal_to_decimal_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            decimal value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 <= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<decimal>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_equal_to_decimal_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            decimal value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 == value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<decimal>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_not_equal_to_decimal_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            decimal value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 != value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<decimal>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_greater_than_double_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            double value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 > value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<double>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_greater_than_or_equal_to_double_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            double value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 >= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<double>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_less_than_double_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            double value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 < value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<double>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_less_than_or_equal_to_double_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            double value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 <= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<double>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_equal_to_double_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            double value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 == value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<double>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_not_equal_to_double_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            double value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 != value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<double>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_greater_than_byte_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            byte value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal > value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<byte>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_greater_than_or_equal_to_byte_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            byte value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal >= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<byte>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_less_than_byte_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            byte value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal < value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<byte>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_less_than_or_equal_to_byte_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            byte value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal <= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<byte>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_equal_to_byte_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            byte value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal == value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<byte>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_not_equal_to_byte_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            byte value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal != value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<byte>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_greater_than_short_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            short value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal > value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<short>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_greater_than_or_equal_to_short_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            short value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal >= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<short>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_less_than_short_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            short value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal < value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<short>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_less_than_or_equal_to_short_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            short value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal <= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<short>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_equal_to_short_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            short value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal == value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<short>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_not_equal_to_short_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            short value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal != value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<short>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_greater_than_int_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            int value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal > value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<int>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_greater_than_or_equal_to_int_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            int value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal >= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<int>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_less_than_int_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            int value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal < value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<int>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_less_than_or_equal_to_int_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            int value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal <= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<int>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_equal_to_int_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            int value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal == value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<int>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_not_equal_to_int_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            int value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal != value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<int>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_greater_than_long_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            long value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal > value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<long>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_greater_than_or_equal_to_long_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            long value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal >= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<long>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_less_than_long_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            long value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal < value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<long>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_less_than_or_equal_to_long_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            long value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal <= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<long>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_equal_to_long_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            long value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal == value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<long>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_not_equal_to_long_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            long value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal != value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<long>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_greater_than_decimal_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            decimal value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal > value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<decimal>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_greater_than_or_equal_to_decimal_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            decimal value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal >= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<decimal>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_less_than_decimal_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            decimal value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal < value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<decimal>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_less_than_or_equal_to_decimal_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            decimal value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal <= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<decimal>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_equal_to_decimal_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            decimal value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal == value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<decimal>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_not_equal_to_decimal_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            decimal value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal != value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<decimal>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_greater_than_double_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            double value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal > value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<double>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_greater_than_or_equal_to_double_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            double value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal >= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<double>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_less_than_double_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            double value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal < value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<double>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_less_than_or_equal_to_double_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            double value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal <= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<double>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_equal_to_double_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            double value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal == value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<double>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_not_equal_to_double_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            double value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal != value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<double>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_greater_than_byte_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            byte value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double > value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<byte>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_greater_than_or_equal_to_byte_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            byte value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double >= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<byte>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_less_than_byte_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            byte value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double < value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<byte>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_less_than_or_equal_to_byte_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            byte value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double <= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<byte>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_equal_to_byte_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            byte value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double == value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<byte>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_not_equal_to_byte_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            byte value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double != value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<byte>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_greater_than_short_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            short value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double > value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<short>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_greater_than_or_equal_to_short_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            short value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double >= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<short>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_less_than_short_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            short value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double < value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<short>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_less_than_or_equal_to_short_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            short value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double <= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<short>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_equal_to_short_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            short value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double == value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<short>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_not_equal_to_short_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            short value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double != value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<short>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_greater_than_int_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            int value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double > value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<int>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_greater_than_or_equal_to_int_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            int value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double >= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<int>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_less_than_int_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            int value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double < value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<int>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_less_than_or_equal_to_int_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            int value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double <= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<int>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_equal_to_int_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            int value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double == value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<int>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_not_equal_to_int_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            int value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double != value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<int>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_greater_than_long_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            long value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double > value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<long>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_greater_than_or_equal_to_long_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            long value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double >= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<long>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_less_than_long_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            long value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double < value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<long>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_less_than_or_equal_to_long_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            long value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double <= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<long>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_equal_to_long_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            long value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double == value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<long>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_not_equal_to_long_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            long value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double != value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<long>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_greater_than_decimal_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            decimal value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double > value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<decimal>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_greater_than_or_equal_to_decimal_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            decimal value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double >= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<decimal>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_less_than_decimal_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            decimal value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double < value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<decimal>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_less_than_or_equal_to_decimal_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            decimal value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double <= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<decimal>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_equal_to_decimal_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            decimal value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double == value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<decimal>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_not_equal_to_decimal_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            decimal value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double != value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<decimal>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_greater_than_double_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            double value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double > value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<double>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_greater_than_or_equal_to_double_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            double value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double >= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<double>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_less_than_double_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            double value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double < value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<double>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_less_than_or_equal_to_double_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            double value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double <= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<double>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_equal_to_double_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            double value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double == value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<double>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_not_equal_to_double_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            double value = 100;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double != value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<double>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTime_field_greater_than_DateTime_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            DateTime value = DateTime.Now;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTime > value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeField>()
+                .And.Be(unit_test.ExpressionElementType.DateTime);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<DateTime>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTime_field_greater_than_or_equal_to_DateTime_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            DateTime value = DateTime.Now;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTime >= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeField>()
+                .And.Be(unit_test.ExpressionElementType.DateTime);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<DateTime>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTime_field_less_than_DateTime_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            DateTime value = DateTime.Now;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTime < value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeField>()
+                .And.Be(unit_test.ExpressionElementType.DateTime);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<DateTime>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTime_field_less_than_or_equal_to_DateTime_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            DateTime value = DateTime.Now;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTime <= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeField>()
+                .And.Be(unit_test.ExpressionElementType.DateTime);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<DateTime>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTime_field_equal_to_DateTime_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            DateTime value = DateTime.Now;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTime == value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeField>()
+                .And.Be(unit_test.ExpressionElementType.DateTime);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<DateTime>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTime_field_not_equal_to_DateTime_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            DateTime value = DateTime.Now;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTime != value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeField>()
+                .And.Be(unit_test.ExpressionElementType.DateTime);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<DateTime>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTime_field_greater_than_DateTimeOffset_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            DateTimeOffset value = DateTimeOffset.Now;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTime > value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeField>()
+                .And.Be(unit_test.ExpressionElementType.DateTime);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<DateTimeOffset>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTime_field_greater_than_or_equal_to_DateTimeOffset_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            DateTimeOffset value = DateTimeOffset.Now;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTime >= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeField>()
+                .And.Be(unit_test.ExpressionElementType.DateTime);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<DateTimeOffset>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTime_field_less_than_DateTimeOffset_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            DateTimeOffset value = DateTimeOffset.Now;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTime < value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeField>()
+                .And.Be(unit_test.ExpressionElementType.DateTime);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<DateTimeOffset>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTime_field_less_than_or_equal_to_DateTimeOffset_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            DateTimeOffset value = DateTimeOffset.Now;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTime <= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeField>()
+                .And.Be(unit_test.ExpressionElementType.DateTime);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<DateTimeOffset>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTime_field_equal_to_DateTimeOffset_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            DateTimeOffset value = DateTimeOffset.Now;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTime == value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeField>()
+                .And.Be(unit_test.ExpressionElementType.DateTime);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<DateTimeOffset>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTime_field_not_equal_to_DateTimeOffset_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            DateTimeOffset value = DateTimeOffset.Now;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTime != value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeField>()
+                .And.Be(unit_test.ExpressionElementType.DateTime);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<DateTimeOffset>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTimeOffset_field_greater_than_DateTime_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            DateTime value = DateTime.Now;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTimeOffset > value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeOffsetField>()
+                .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<DateTime>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTimeOffset_field_greater_than_or_equal_to_DateTime_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            DateTime value = DateTime.Now;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTimeOffset >= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeOffsetField>()
+                .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<DateTime>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTimeOffset_field_less_than_DateTime_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            DateTime value = DateTime.Now;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTimeOffset < value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeOffsetField>()
+                .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<DateTime>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTimeOffset_field_less_than_or_equal_to_DateTime_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            DateTime value = DateTime.Now;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTimeOffset <= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeOffsetField>()
+                .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<DateTime>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTimeOffset_field_equal_to_DateTime_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            DateTime value = DateTime.Now;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTimeOffset == value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeOffsetField>()
+                .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<DateTime>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTimeOffset_field_not_equal_to_DateTime_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            DateTime value = DateTime.Now;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTimeOffset != value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeOffsetField>()
+                .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<DateTime>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTimeOffset_field_greater_than_DateTimeOffset_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            DateTimeOffset value = DateTimeOffset.Now;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTimeOffset > value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeOffsetField>()
+                .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<DateTimeOffset>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTimeOffset_field_greater_than_or_equal_to_DateTimeOffset_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            DateTimeOffset value = DateTimeOffset.Now;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTimeOffset >= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeOffsetField>()
+                .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<DateTimeOffset>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTimeOffset_field_less_than_DateTimeOffset_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            DateTimeOffset value = DateTimeOffset.Now;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTimeOffset < value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeOffsetField>()
+                .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<DateTimeOffset>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTimeOffset_field_less_than_or_equal_to_DateTimeOffset_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            DateTimeOffset value = DateTimeOffset.Now;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTimeOffset <= value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeOffsetField>()
+                .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<DateTimeOffset>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTimeOffset_field_equal_to_DateTimeOffset_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            DateTimeOffset value = DateTimeOffset.Now;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTimeOffset == value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeOffsetField>()
+                .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<DateTimeOffset>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTimeOffset_field_not_equal_to_DateTimeOffset_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            DateTimeOffset value = DateTimeOffset.Now;
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTimeOffset != value;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeOffsetField>()
+                .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
+
+            exp.RightArg
+                .Should().BeOfType<LiteralExpression<DateTimeOffset>>()
+                .Which.Expression.Should().Be(value);
+        }
+
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_greater_than_byte_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte > unit_test.ExpressionElementType.Byte;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_greater_than_or_equal_to_byte_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte >= unit_test.ExpressionElementType.Byte;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_less_than_byte_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte < unit_test.ExpressionElementType.Byte;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_less_than_or_equal_to_byte_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte <= unit_test.ExpressionElementType.Byte;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_equal_to_byte_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte == unit_test.ExpressionElementType.Byte;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_not_equal_to_byte_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte != unit_test.ExpressionElementType.Byte;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_greater_than_byte_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 > unit_test.ExpressionElementType.Byte;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_greater_than_or_equal_to_byte_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 >= unit_test.ExpressionElementType.Byte;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_less_than_byte_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 < unit_test.ExpressionElementType.Byte;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_less_than_or_equal_to_byte_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 <= unit_test.ExpressionElementType.Byte;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_equal_to_byte_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 == unit_test.ExpressionElementType.Byte;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_not_equal_to_byte_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 != unit_test.ExpressionElementType.Byte;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_greater_than_byte_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 > unit_test.ExpressionElementType.Byte;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_greater_than_or_equal_to_byte_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 >= unit_test.ExpressionElementType.Byte;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_less_than_byte_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 < unit_test.ExpressionElementType.Byte;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_less_than_or_equal_to_byte_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 <= unit_test.ExpressionElementType.Byte;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_equal_to_byte_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 == unit_test.ExpressionElementType.Byte;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_not_equal_to_byte_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 != unit_test.ExpressionElementType.Byte;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_greater_than_byte_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 > unit_test.ExpressionElementType.Byte;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_greater_than_or_equal_to_byte_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 >= unit_test.ExpressionElementType.Byte;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_less_than_byte_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 < unit_test.ExpressionElementType.Byte;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_less_than_or_equal_to_byte_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 <= unit_test.ExpressionElementType.Byte;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_equal_to_byte_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 == unit_test.ExpressionElementType.Byte;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_not_equal_to_byte_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 != unit_test.ExpressionElementType.Byte;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_greater_than_byte_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal > unit_test.ExpressionElementType.Byte;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_greater_than_or_equal_to_byte_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal >= unit_test.ExpressionElementType.Byte;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_less_than_byte_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal < unit_test.ExpressionElementType.Byte;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_less_than_or_equal_to_byte_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal <= unit_test.ExpressionElementType.Byte;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_equal_to_byte_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal == unit_test.ExpressionElementType.Byte;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_not_equal_to_byte_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal != unit_test.ExpressionElementType.Byte;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_greater_than_byte_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double > unit_test.ExpressionElementType.Byte;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_greater_than_or_equal_to_byte_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double >= unit_test.ExpressionElementType.Byte;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_less_than_byte_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double < unit_test.ExpressionElementType.Byte;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_less_than_or_equal_to_byte_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double <= unit_test.ExpressionElementType.Byte;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_equal_to_byte_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double == unit_test.ExpressionElementType.Byte;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_not_equal_to_byte_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double != unit_test.ExpressionElementType.Byte;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_greater_than_short_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte > unit_test.ExpressionElementType.Int16;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_greater_than_or_equal_to_short_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte >= unit_test.ExpressionElementType.Int16;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_less_than_short_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte < unit_test.ExpressionElementType.Int16;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_less_than_or_equal_to_short_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte <= unit_test.ExpressionElementType.Int16;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_equal_to_short_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte == unit_test.ExpressionElementType.Int16;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_not_equal_to_short_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte != unit_test.ExpressionElementType.Int16;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_greater_than_short_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 > unit_test.ExpressionElementType.Int16;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_greater_than_or_equal_to_short_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 >= unit_test.ExpressionElementType.Int16;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_less_than_short_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 < unit_test.ExpressionElementType.Int16;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_less_than_or_equal_to_short_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 <= unit_test.ExpressionElementType.Int16;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_equal_to_short_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 == unit_test.ExpressionElementType.Int16;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_not_equal_to_short_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 != unit_test.ExpressionElementType.Int16;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_greater_than_short_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 > unit_test.ExpressionElementType.Int16;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_greater_than_or_equal_to_short_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 >= unit_test.ExpressionElementType.Int16;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_less_than_short_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 < unit_test.ExpressionElementType.Int16;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_less_than_or_equal_to_short_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 <= unit_test.ExpressionElementType.Int16;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_equal_to_short_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 == unit_test.ExpressionElementType.Int16;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_not_equal_to_short_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 != unit_test.ExpressionElementType.Int16;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_greater_than_short_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 > unit_test.ExpressionElementType.Int16;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_greater_than_or_equal_to_short_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 >= unit_test.ExpressionElementType.Int16;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_less_than_short_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 < unit_test.ExpressionElementType.Int16;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_less_than_or_equal_to_short_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 <= unit_test.ExpressionElementType.Int16;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_equal_to_short_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 == unit_test.ExpressionElementType.Int16;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_not_equal_to_short_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 != unit_test.ExpressionElementType.Int16;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_greater_than_short_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal > unit_test.ExpressionElementType.Int16;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_greater_than_or_equal_to_short_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal >= unit_test.ExpressionElementType.Int16;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_less_than_short_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal < unit_test.ExpressionElementType.Int16;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_less_than_or_equal_to_short_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal <= unit_test.ExpressionElementType.Int16;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_equal_to_short_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal == unit_test.ExpressionElementType.Int16;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_not_equal_to_short_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal != unit_test.ExpressionElementType.Int16;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_greater_than_short_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double > unit_test.ExpressionElementType.Int16;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_greater_than_or_equal_to_short_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double >= unit_test.ExpressionElementType.Int16;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_less_than_short_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double < unit_test.ExpressionElementType.Int16;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_less_than_or_equal_to_short_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double <= unit_test.ExpressionElementType.Int16;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_equal_to_short_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double == unit_test.ExpressionElementType.Int16;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_not_equal_to_short_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double != unit_test.ExpressionElementType.Int16;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_greater_than_int_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte > unit_test.ExpressionElementType.Int32;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_greater_than_or_equal_to_int_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte >= unit_test.ExpressionElementType.Int32;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_less_than_int_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte < unit_test.ExpressionElementType.Int32;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_less_than_or_equal_to_int_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte <= unit_test.ExpressionElementType.Int32;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_equal_to_int_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte == unit_test.ExpressionElementType.Int32;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_not_equal_to_int_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte != unit_test.ExpressionElementType.Int32;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_greater_than_int_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 > unit_test.ExpressionElementType.Int32;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_greater_than_or_equal_to_int_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 >= unit_test.ExpressionElementType.Int32;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_less_than_int_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 < unit_test.ExpressionElementType.Int32;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_less_than_or_equal_to_int_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 <= unit_test.ExpressionElementType.Int32;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_equal_to_int_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 == unit_test.ExpressionElementType.Int32;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_not_equal_to_int_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 != unit_test.ExpressionElementType.Int32;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_greater_than_int_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 > unit_test.ExpressionElementType.Int32;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_greater_than_or_equal_to_int_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 >= unit_test.ExpressionElementType.Int32;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_less_than_int_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 < unit_test.ExpressionElementType.Int32;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_less_than_or_equal_to_int_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 <= unit_test.ExpressionElementType.Int32;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_equal_to_int_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 == unit_test.ExpressionElementType.Int32;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_not_equal_to_int_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 != unit_test.ExpressionElementType.Int32;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_greater_than_int_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 > unit_test.ExpressionElementType.Int32;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_greater_than_or_equal_to_int_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 >= unit_test.ExpressionElementType.Int32;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_less_than_int_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 < unit_test.ExpressionElementType.Int32;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_less_than_or_equal_to_int_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 <= unit_test.ExpressionElementType.Int32;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_equal_to_int_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 == unit_test.ExpressionElementType.Int32;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_not_equal_to_int_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 != unit_test.ExpressionElementType.Int32;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_greater_than_int_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal > unit_test.ExpressionElementType.Int32;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_greater_than_or_equal_to_int_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal >= unit_test.ExpressionElementType.Int32;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_less_than_int_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal < unit_test.ExpressionElementType.Int32;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_less_than_or_equal_to_int_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal <= unit_test.ExpressionElementType.Int32;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_equal_to_int_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal == unit_test.ExpressionElementType.Int32;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_not_equal_to_int_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal != unit_test.ExpressionElementType.Int32;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_greater_than_int_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double > unit_test.ExpressionElementType.Int32;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_greater_than_or_equal_to_int_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double >= unit_test.ExpressionElementType.Int32;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_less_than_int_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double < unit_test.ExpressionElementType.Int32;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_less_than_or_equal_to_int_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double <= unit_test.ExpressionElementType.Int32;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_equal_to_int_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double == unit_test.ExpressionElementType.Int32;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_not_equal_to_int_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double != unit_test.ExpressionElementType.Int32;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_greater_than_long_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte > unit_test.ExpressionElementType.Int64;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_greater_than_or_equal_to_long_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte >= unit_test.ExpressionElementType.Int64;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_less_than_long_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte < unit_test.ExpressionElementType.Int64;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_less_than_or_equal_to_long_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte <= unit_test.ExpressionElementType.Int64;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_equal_to_long_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte == unit_test.ExpressionElementType.Int64;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_not_equal_to_long_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte != unit_test.ExpressionElementType.Int64;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_greater_than_long_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 > unit_test.ExpressionElementType.Int64;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_greater_than_or_equal_to_long_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 >= unit_test.ExpressionElementType.Int64;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_less_than_long_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 < unit_test.ExpressionElementType.Int64;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_less_than_or_equal_to_long_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 <= unit_test.ExpressionElementType.Int64;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_equal_to_long_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 == unit_test.ExpressionElementType.Int64;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_not_equal_to_long_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 != unit_test.ExpressionElementType.Int64;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_greater_than_long_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 > unit_test.ExpressionElementType.Int64;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_greater_than_or_equal_to_long_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 >= unit_test.ExpressionElementType.Int64;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_less_than_long_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 < unit_test.ExpressionElementType.Int64;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_less_than_or_equal_to_long_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 <= unit_test.ExpressionElementType.Int64;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_equal_to_long_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 == unit_test.ExpressionElementType.Int64;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_not_equal_to_long_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 != unit_test.ExpressionElementType.Int64;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_greater_than_long_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 > unit_test.ExpressionElementType.Int64;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_greater_than_or_equal_to_long_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 >= unit_test.ExpressionElementType.Int64;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_less_than_long_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 < unit_test.ExpressionElementType.Int64;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_less_than_or_equal_to_long_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 <= unit_test.ExpressionElementType.Int64;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_equal_to_long_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 == unit_test.ExpressionElementType.Int64;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_not_equal_to_long_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 != unit_test.ExpressionElementType.Int64;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_greater_than_long_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal > unit_test.ExpressionElementType.Int64;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_greater_than_or_equal_to_long_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal >= unit_test.ExpressionElementType.Int64;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_less_than_long_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal < unit_test.ExpressionElementType.Int64;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_less_than_or_equal_to_long_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal <= unit_test.ExpressionElementType.Int64;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_equal_to_long_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal == unit_test.ExpressionElementType.Int64;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_not_equal_to_long_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal != unit_test.ExpressionElementType.Int64;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_greater_than_long_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double > unit_test.ExpressionElementType.Int64;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_greater_than_or_equal_to_long_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double >= unit_test.ExpressionElementType.Int64;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_less_than_long_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double < unit_test.ExpressionElementType.Int64;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_less_than_or_equal_to_long_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double <= unit_test.ExpressionElementType.Int64;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_equal_to_long_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double == unit_test.ExpressionElementType.Int64;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_not_equal_to_long_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double != unit_test.ExpressionElementType.Int64;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_greater_than_decimal_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte > unit_test.ExpressionElementType.Decimal;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_greater_than_or_equal_to_decimal_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte >= unit_test.ExpressionElementType.Decimal;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_less_than_decimal_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte < unit_test.ExpressionElementType.Decimal;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_less_than_or_equal_to_decimal_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte <= unit_test.ExpressionElementType.Decimal;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_equal_to_decimal_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte == unit_test.ExpressionElementType.Decimal;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_not_equal_to_decimal_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte != unit_test.ExpressionElementType.Decimal;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_greater_than_decimal_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 > unit_test.ExpressionElementType.Decimal;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_greater_than_or_equal_to_decimal_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 >= unit_test.ExpressionElementType.Decimal;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_less_than_decimal_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 < unit_test.ExpressionElementType.Decimal;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_less_than_or_equal_to_decimal_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 <= unit_test.ExpressionElementType.Decimal;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_equal_to_decimal_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 == unit_test.ExpressionElementType.Decimal;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_not_equal_to_decimal_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 != unit_test.ExpressionElementType.Decimal;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_greater_than_decimal_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 > unit_test.ExpressionElementType.Decimal;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_greater_than_or_equal_to_decimal_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 >= unit_test.ExpressionElementType.Decimal;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_less_than_decimal_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 < unit_test.ExpressionElementType.Decimal;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_less_than_or_equal_to_decimal_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 <= unit_test.ExpressionElementType.Decimal;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_equal_to_decimal_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 == unit_test.ExpressionElementType.Decimal;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_not_equal_to_decimal_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 != unit_test.ExpressionElementType.Decimal;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_greater_than_decimal_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 > unit_test.ExpressionElementType.Decimal;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_greater_than_or_equal_to_decimal_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 >= unit_test.ExpressionElementType.Decimal;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_less_than_decimal_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 < unit_test.ExpressionElementType.Decimal;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_less_than_or_equal_to_decimal_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 <= unit_test.ExpressionElementType.Decimal;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_equal_to_decimal_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 == unit_test.ExpressionElementType.Decimal;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_not_equal_to_decimal_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 != unit_test.ExpressionElementType.Decimal;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_greater_than_decimal_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal > unit_test.ExpressionElementType.Decimal;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_greater_than_or_equal_to_decimal_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal >= unit_test.ExpressionElementType.Decimal;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_less_than_decimal_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal < unit_test.ExpressionElementType.Decimal;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_less_than_or_equal_to_decimal_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal <= unit_test.ExpressionElementType.Decimal;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_equal_to_decimal_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal == unit_test.ExpressionElementType.Decimal;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_not_equal_to_decimal_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal != unit_test.ExpressionElementType.Decimal;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_greater_than_decimal_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double > unit_test.ExpressionElementType.Decimal;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_greater_than_or_equal_to_decimal_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double >= unit_test.ExpressionElementType.Decimal;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_less_than_decimal_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double < unit_test.ExpressionElementType.Decimal;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_less_than_or_equal_to_decimal_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double <= unit_test.ExpressionElementType.Decimal;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_equal_to_decimal_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double == unit_test.ExpressionElementType.Decimal;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_not_equal_to_decimal_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double != unit_test.ExpressionElementType.Decimal;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_greater_than_double_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte > unit_test.ExpressionElementType.Double;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_greater_than_or_equal_to_double_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte >= unit_test.ExpressionElementType.Double;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_less_than_double_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte < unit_test.ExpressionElementType.Double;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_less_than_or_equal_to_double_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte <= unit_test.ExpressionElementType.Double;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_equal_to_double_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte == unit_test.ExpressionElementType.Double;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_byte_field_not_equal_to_double_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Byte != unit_test.ExpressionElementType.Double;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.ByteField>()
+                .And.Be(unit_test.ExpressionElementType.Byte);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_greater_than_double_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 > unit_test.ExpressionElementType.Double;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_greater_than_or_equal_to_double_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 >= unit_test.ExpressionElementType.Double;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_less_than_double_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 < unit_test.ExpressionElementType.Double;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_less_than_or_equal_to_double_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 <= unit_test.ExpressionElementType.Double;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_equal_to_double_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 == unit_test.ExpressionElementType.Double;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_short_field_not_equal_to_double_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int16 != unit_test.ExpressionElementType.Double;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int16Field>()
+                .And.Be(unit_test.ExpressionElementType.Int16);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_greater_than_double_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 > unit_test.ExpressionElementType.Double;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_greater_than_or_equal_to_double_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 >= unit_test.ExpressionElementType.Double;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_less_than_double_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 < unit_test.ExpressionElementType.Double;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_less_than_or_equal_to_double_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 <= unit_test.ExpressionElementType.Double;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_equal_to_double_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 == unit_test.ExpressionElementType.Double;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_int_field_not_equal_to_double_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int32 != unit_test.ExpressionElementType.Double;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int32Field>()
+                .And.Be(unit_test.ExpressionElementType.Int32);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_greater_than_double_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 > unit_test.ExpressionElementType.Double;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_greater_than_or_equal_to_double_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 >= unit_test.ExpressionElementType.Double;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_less_than_double_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 < unit_test.ExpressionElementType.Double;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_less_than_or_equal_to_double_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 <= unit_test.ExpressionElementType.Double;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_equal_to_double_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 == unit_test.ExpressionElementType.Double;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_long_field_not_equal_to_double_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Int64 != unit_test.ExpressionElementType.Double;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.Int64Field>()
+                .And.Be(unit_test.ExpressionElementType.Int64);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_greater_than_double_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal > unit_test.ExpressionElementType.Double;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_greater_than_or_equal_to_double_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal >= unit_test.ExpressionElementType.Double;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_less_than_double_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal < unit_test.ExpressionElementType.Double;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_less_than_or_equal_to_double_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal <= unit_test.ExpressionElementType.Double;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_equal_to_double_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal == unit_test.ExpressionElementType.Double;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_decimal_field_not_equal_to_double_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Decimal != unit_test.ExpressionElementType.Double;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DecimalField>()
+                .And.Be(unit_test.ExpressionElementType.Decimal);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_greater_than_double_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double > unit_test.ExpressionElementType.Double;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_greater_than_or_equal_to_double_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double >= unit_test.ExpressionElementType.Double;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_less_than_double_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double < unit_test.ExpressionElementType.Double;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_less_than_or_equal_to_double_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double <= unit_test.ExpressionElementType.Double;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_equal_to_double_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double == unit_test.ExpressionElementType.Double;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_double_field_not_equal_to_double_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.Double != unit_test.ExpressionElementType.Double;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DoubleField>()
+                .And.Be(unit_test.ExpressionElementType.Double);
+        }
+
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTime_field_greater_than_DateTime_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTime > unit_test.ExpressionElementType.DateTime;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeField>()
+                .And.Be(unit_test.ExpressionElementType.DateTime);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DateTimeField>()
+                .And.Be(unit_test.ExpressionElementType.DateTime);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTime_field_greater_than_or_equal_to_DateTime_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTime >= unit_test.ExpressionElementType.DateTime;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeField>()
+                .And.Be(unit_test.ExpressionElementType.DateTime);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DateTimeField>()
+                .And.Be(unit_test.ExpressionElementType.DateTime);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTime_field_less_than_DateTime_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTime < unit_test.ExpressionElementType.DateTime;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeField>()
+                .And.Be(unit_test.ExpressionElementType.DateTime);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DateTimeField>()
+                .And.Be(unit_test.ExpressionElementType.DateTime);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTime_field_less_than_or_equal_to_DateTime_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTime <= unit_test.ExpressionElementType.DateTime;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeField>()
+                .And.Be(unit_test.ExpressionElementType.DateTime);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DateTimeField>()
+                .And.Be(unit_test.ExpressionElementType.DateTime);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTime_field_equal_to_DateTime_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTime == unit_test.ExpressionElementType.DateTime;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeField>()
+                .And.Be(unit_test.ExpressionElementType.DateTime);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DateTimeField>()
+                .And.Be(unit_test.ExpressionElementType.DateTime);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTime_field_not_equal_to_DateTime_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTime != unit_test.ExpressionElementType.DateTime;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeField>()
+                .And.Be(unit_test.ExpressionElementType.DateTime);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DateTimeField>()
+                .And.Be(unit_test.ExpressionElementType.DateTime);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTimeOffset_field_greater_than_DateTime_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTimeOffset > unit_test.ExpressionElementType.DateTime;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeOffsetField>()
+                .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DateTimeField>()
+                .And.Be(unit_test.ExpressionElementType.DateTime);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTimeOffset_field_greater_than_or_equal_to_DateTime_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTimeOffset >= unit_test.ExpressionElementType.DateTime;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeOffsetField>()
+                .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DateTimeField>()
+                .And.Be(unit_test.ExpressionElementType.DateTime);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTimeOffset_field_less_than_DateTime_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTimeOffset < unit_test.ExpressionElementType.DateTime;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeOffsetField>()
+                .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DateTimeField>()
+                .And.Be(unit_test.ExpressionElementType.DateTime);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTimeOffset_field_less_than_or_equal_to_DateTime_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTimeOffset <= unit_test.ExpressionElementType.DateTime;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeOffsetField>()
+                .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DateTimeField>()
+                .And.Be(unit_test.ExpressionElementType.DateTime);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTimeOffset_field_equal_to_DateTime_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTimeOffset == unit_test.ExpressionElementType.DateTime;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeOffsetField>()
+                .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DateTimeField>()
+                .And.Be(unit_test.ExpressionElementType.DateTime);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTimeOffset_field_not_equal_to_DateTime_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTimeOffset != unit_test.ExpressionElementType.DateTime;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeOffsetField>()
+                .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DateTimeField>()
+                .And.Be(unit_test.ExpressionElementType.DateTime);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTime_field_greater_than_DateTimeOffset_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTime > unit_test.ExpressionElementType.DateTimeOffset;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeField>()
+                .And.Be(unit_test.ExpressionElementType.DateTime);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DateTimeOffsetField>()
+                .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTime_field_greater_than_or_equal_to_DateTimeOffset_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTime >= unit_test.ExpressionElementType.DateTimeOffset;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeField>()
+                .And.Be(unit_test.ExpressionElementType.DateTime);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DateTimeOffsetField>()
+                .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTime_field_less_than_DateTimeOffset_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTime < unit_test.ExpressionElementType.DateTimeOffset;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeField>()
+                .And.Be(unit_test.ExpressionElementType.DateTime);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DateTimeOffsetField>()
+                .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTime_field_less_than_or_equal_to_DateTimeOffset_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTime <= unit_test.ExpressionElementType.DateTimeOffset;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeField>()
+                .And.Be(unit_test.ExpressionElementType.DateTime);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DateTimeOffsetField>()
+                .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTime_field_equal_to_DateTimeOffset_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTime == unit_test.ExpressionElementType.DateTimeOffset;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeField>()
+                .And.Be(unit_test.ExpressionElementType.DateTime);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DateTimeOffsetField>()
+                .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTime_field_not_equal_to_DateTimeOffset_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTime != unit_test.ExpressionElementType.DateTimeOffset;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeField>()
+                .And.Be(unit_test.ExpressionElementType.DateTime);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DateTimeOffsetField>()
+                .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTimeOffset_field_greater_than_DateTimeOffset_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTimeOffset > unit_test.ExpressionElementType.DateTimeOffset;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeOffsetField>()
+                .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DateTimeOffsetField>()
+                .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTimeOffset_field_greater_than_or_equal_to_DateTimeOffset_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTimeOffset >= unit_test.ExpressionElementType.DateTimeOffset;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeOffsetField>()
+                .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DateTimeOffsetField>()
+                .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTimeOffset_field_less_than_DateTimeOffset_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTimeOffset < unit_test.ExpressionElementType.DateTimeOffset;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThan);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeOffsetField>()
+                .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DateTimeOffsetField>()
+                .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTimeOffset_field_less_than_or_equal_to_DateTimeOffset_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTimeOffset <= unit_test.ExpressionElementType.DateTimeOffset;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.LessThanOrEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeOffsetField>()
+                .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DateTimeOffsetField>()
+                .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTimeOffset_field_equal_to_DateTimeOffset_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTimeOffset == unit_test.ExpressionElementType.DateTimeOffset;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeOffsetField>()
+                .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DateTimeOffsetField>()
+                .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_single_filter_of_DateTimeOffset_field_not_equal_to_DateTimeOffset_field_construct_correctly(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            FilterExpression exp = unit_test.ExpressionElementType.DateTimeOffset != unit_test.ExpressionElementType.DateTimeOffset;
+
+            //then
+            exp.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
+
+            exp.LeftArg
+                .Should().NotBeNull()
+                .And.BeOfType<ExpressionElementTypeEntity.DateTimeOffsetField>()
+                .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
+
+            exp.RightArg
+                .Should().BeOfType<ExpressionElementTypeEntity.DateTimeOffsetField>()
+                .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
+        }
+
     }
 }

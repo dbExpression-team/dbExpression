@@ -58,7 +58,7 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         #region methods
         /// <inheritdoc />
-        public ISqlStatementAssemblyGroupingConfigurationBuilders<TDatabase> ConfigureOutputSettings(Action<SqlStatementAssemblyOptions> config)
+        public ISqlStatementAssemblyGroupingConfigurationBuilders<TDatabase> ConfigureAssemblyOptions(Action<SqlStatementAssemblyOptions> config)
         {
             if (config is null)
                 throw new ArgumentNullException(nameof(config));

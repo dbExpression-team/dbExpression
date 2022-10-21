@@ -65,7 +65,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             var version = typeof(TDatabase).GetCustomAttribute<PlatformVersionAttribute>()!.PlatformVersion!;
 #endif
             if (string.IsNullOrWhiteSpace(version))
-                throw new DbExpressionConfigurationException($"An MsSql version cannot be resolved.  Ensure you have provided a supported version in the Platform property of your scaffolding configuration (see https://docs.dbexpression.com/MsSql/Versions).");
+                throw new DbExpressionConfigurationException($"An MsSql version cannot be resolved.  Ensure you have provided a supported version in the Platform property of your scaffolding configuration (see https://dbexpression.com/rtd/reference/mssql/versions).");
 
             builder.AddDatabase(configureRuntime, version);
         }
@@ -97,7 +97,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
                 case "2017": builder.AddMsSql2017Database<TDatabase>(configureRuntime); break;
                 case "2019": builder.AddMsSql2019Database<TDatabase>(configureRuntime); break;
                 case "2022": builder.AddMsSql2022Database<TDatabase>(configureRuntime); break;
-                default: throw new NotImplementedException($"MsSql version {platformVersionOverride} has not been implemented.  Ensure you have provided a supported version in the Platform property of your scaffolding configuration (see https://docs.dbexpression.com/MsSql/Versions).");
+                default: throw new NotImplementedException($"MsSql version {platformVersionOverride} has not been implemented.  Ensure you have provided a supported version in the Platform property of your scaffolding configuration (see https://dbexpression.com/mssql/versions).");
             };
         }
 
@@ -123,7 +123,6 @@ namespace HatTrick.DbEx.MsSql.Configuration
                 b.SqlStatements.Assembly.ElementAppender.ForElementTypes(x => x
                     .ForElementType<InsertQueryExpression>().Use<HatTrick.DbEx.MsSql.Assembler.v2005.MsSqlInsertQueryExpressionAppender>()
                     .ForElementType<SelectQueryExpression>().Use<HatTrick.DbEx.MsSql.Assembler.v2005.MsSqlSelectQueryExpressionAppender>()
-                    .ForElementType<TrimFunctionExpression>().Use<HatTrick.DbEx.MsSql.Assembler.v2005.TrimFunctionExpressionAppender>()
                 );
             });
         }
@@ -150,7 +149,6 @@ namespace HatTrick.DbEx.MsSql.Configuration
                 configureRuntime.Invoke(b);
                 b.SqlStatements.Assembly.ElementAppender.ForElementTypes(x => x
                     .ForElementType<SelectQueryExpression>().Use<HatTrick.DbEx.MsSql.Assembler.v2008.MsSqlSelectQueryExpressionAppender>()
-                    .ForElementType<TrimFunctionExpression>().Use<HatTrick.DbEx.MsSql.Assembler.v2008.TrimFunctionExpressionAppender>()
                 );
             });
         }
@@ -171,12 +169,8 @@ namespace HatTrick.DbEx.MsSql.Configuration
 
             var dbRegistrar = builder as ISqlDatabaseRuntimeServicesRegistrar
                 ?? throw new DbExpressionConfigurationException($"Expected builder to also be of type {typeof(ISqlDatabaseRuntimeServicesRegistrar)}.");
-            
-            dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase>(b =>
-            {
-                configureRuntime.Invoke(b);
-                b.SqlStatements.Assembly.ElementAppender.ForElementTypes(x => x.ForElementType<TrimFunctionExpression>().Use<HatTrick.DbEx.MsSql.Assembler.v2012.TrimFunctionExpressionAppender>());
-            });
+
+            dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase>(configureRuntime);
         }
         #endregion
 
@@ -196,11 +190,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             var dbRegistrar = builder as ISqlDatabaseRuntimeServicesRegistrar
                 ?? throw new DbExpressionConfigurationException($"Expected builder to also be of type {typeof(ISqlDatabaseRuntimeServicesRegistrar)}.");
 
-            dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase>(b =>
-            {
-                configureRuntime.Invoke(b);
-                b.SqlStatements.Assembly.ElementAppender.ForElementTypes(x => x.ForElementType<TrimFunctionExpression>().Use<HatTrick.DbEx.MsSql.Assembler.v2014.TrimFunctionExpressionAppender>());
-            });
+            dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase>(configureRuntime);
         }
         #endregion
 
@@ -220,11 +210,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             var dbRegistrar = builder as ISqlDatabaseRuntimeServicesRegistrar
                 ?? throw new DbExpressionConfigurationException($"Expected builder to also be of type {typeof(ISqlDatabaseRuntimeServicesRegistrar)}.");
 
-            dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase>(b =>
-            {
-                configureRuntime.Invoke(b);
-                b.SqlStatements.Assembly.ElementAppender.ForElementTypes(x => x.ForElementType<TrimFunctionExpression>().Use<HatTrick.DbEx.MsSql.Assembler.v2016.TrimFunctionExpressionAppender>());
-            });
+            dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase>(configureRuntime);
         }
         #endregion
 
@@ -343,7 +329,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             dbServices.TryAddSingleton<IDbTypeMapFactory<SqlDbType>, MsSqlTypeMapFactory>();
             dbServices.TryAddSingleton<IQueryExpressionBuilderFactory<TDatabase>, MsSqlQueryExpressionBuilderFactory<TDatabase>>();
             dbServices.TryAddTransient<AssemblyContext>(sp => sp.GetRequiredService<SqlStatementAssemblyOptions>().ToAssemblyContext());
-            dbServices.TryAddSingleton<PipelineEventHooks>();
+            dbServices.TryAddSingleton<PipelineEventSubscriptions>();
             dbServices.TryAddSingleton<IExpandoObjectMapper, ExpandoObjectMapper>();
             dbServices.TryAddSingleton<ISqlDatabaseMetadataProvider>(sp => sp.GetRequiredService<TDatabase>().MetadataProvider);
 
@@ -475,8 +461,8 @@ namespace HatTrick.DbEx.MsSql.Configuration
         private static ISqlStatementsConfigurationBuilderGrouping<TDatabase> UseDelegateQueryExecutionPipelineFactoryWithDefaults<TDatabase>(this ISqlStatementsConfigurationBuilderGrouping<TDatabase> builder)
             where TDatabase : class, ISqlDatabaseRuntime
         {
-            builder.Assembly.QueryExecution.Pipeline.Use(sp => new DelegateQueryExecutionPipelineFactory(
-                t => sp.GetService(t) as IQueryExecutionPipeline
+            builder.Assembly.QueryExecution.Pipeline.Use(sp => new DelegateQueryExpressionExecutionPipelineFactory(
+                t => sp.GetService(t) as IQueryExpressionExecutionPipeline
                         ?? throw CreateNullServiceException(nameof(builder.Assembly.QueryExecution.Pipeline), t)
                 ),
                 x => x.WithDefaults()

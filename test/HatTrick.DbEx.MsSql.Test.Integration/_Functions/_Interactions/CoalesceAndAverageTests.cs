@@ -11,7 +11,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     [Trait("Function", "COALESCE")]
     [Trait("Function", "AVG")]
-    public partial class CoalesceAndAverageTests : ExecutorTestBase
+    public partial class CoalesceAndAverageTests : ResetDatabaseNotRequired
     {
         [Theory]
         [MsSqlVersions.AllVersions]

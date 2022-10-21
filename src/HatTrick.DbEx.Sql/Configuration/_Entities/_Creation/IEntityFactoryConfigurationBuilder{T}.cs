@@ -38,6 +38,11 @@ namespace HatTrick.DbEx.Sql.Configuration
         /// <summary>
         /// Use a custom factory to create an entity prior to mapping data retrieved from the target database.
         /// </summary>
+        IEntitiesConfigurationBuilderMappingGrouping<TDatabase> Use(Func<IEntityFactory> factory);
+
+        /// <summary>
+        /// Use a custom factory to create an entity prior to mapping data retrieved from the target database.
+        /// </summary>
         /// <param name="factory">A delegate responsible for creating an <see cref="IDbEntity"/>.</param>
         IEntitiesConfigurationBuilderMappingGrouping<TDatabase> Use(Func<Type, IDbEntity> factory);
 

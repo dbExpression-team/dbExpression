@@ -67,12 +67,12 @@ namespace NetCoreConsoleApp
                     database =>
                     {
                         database.ConnectionString.Use(config.GetConnectionString("dbex_mssql_test"));
-                        database.SqlStatements.Assembly.ConfigureOutputSettings(x => x.PrependCommaOnSelectClause = false);
+                        database.SqlStatements.Assembly.ConfigureAssemblyOptions(x => x.PrependCommaOnSelectClause = false);
                         database.Conversions.ForTypes(x =>
                             x.ForEnumType<PaymentMethodType>().PersistAsString()
                              .ForEnumType<PaymentSourceType>().PersistAsString()
                         );
-                        database.Logging.ConfigureLoggingSettings(l => l.LogParameterValues = true);
+                        database.Logging.ConfigureLoggingOptions(l => l.LogParameterValues = true);
                     }
                 );
 

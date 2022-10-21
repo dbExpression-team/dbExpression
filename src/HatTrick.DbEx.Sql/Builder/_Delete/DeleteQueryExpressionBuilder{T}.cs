@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.Sql.Builder
     {
         #region internals
         private readonly DeleteQueryExpression _expression;
-        protected Func<IDeleteQueryExecutionPipeline> ExecutionPipelineFactory { get; private set; }
+        protected Func<IDeleteQueryExpressionExecutionPipeline> ExecutionPipelineFactory { get; private set; }
         protected override QueryExpression Expression => DeleteQueryExpression;
         public DeleteQueryExpression DeleteQueryExpression => _expression;
         #endregion
@@ -37,7 +37,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #region constructors
         public DeleteQueryExpressionBuilder(
             DeleteQueryExpression expression,
-            Func<IDeleteQueryExecutionPipeline> executionPipelineFactory
+            Func<IDeleteQueryExpressionExecutionPipeline> executionPipelineFactory
         )
         {
             _expression = expression ?? throw new ArgumentNullException(nameof(expression));

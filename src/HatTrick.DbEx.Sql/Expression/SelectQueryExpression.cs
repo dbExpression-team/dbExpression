@@ -35,6 +35,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public OrderByExpressionSet? OrderBy { get; set; }
         public GroupByExpressionSet? GroupBy { get; set; }
         public HavingExpression? Having { get; set; }
+        public QueryExpressionContinuationExpression? ContinuationExpression { get; set; }
         #endregion
 
         #region to string

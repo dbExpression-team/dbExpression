@@ -7,7 +7,7 @@ using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Integration
 {
-    public class ConnectionPoolTests : ExecutorTestBase
+    public class ConnectionPoolTests : ResetDatabaseNotRequired
     {
         [Theory]
         [MsSqlVersions.AllVersions]

@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
                     Operations = ArithmeticBuilder.CreateBuilder().AddArithmeticAdd().ToList()
                 }
             };
-            model.Filters = new List<FilterOperationsTemplateModel>
+            model.Filters.ThisTypeOnlyFilters = new List<FilterOperationsTemplateModel>
             { 
                 new FilterOperationsTemplateModel 
                 {

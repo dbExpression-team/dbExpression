@@ -41,7 +41,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #region internals
         private readonly InsertQueryExpression _expression;
         private readonly IEnumerable<TEntity> _instances;
-        protected Func<IInsertQueryExecutionPipeline> ExecutionPipelineFactory { get; private set; }
+        protected Func<IInsertQueryExpressionExecutionPipeline> ExecutionPipelineFactory { get; private set; }
         protected override QueryExpression Expression => InsertQueryExpression;
         public InsertQueryExpression InsertQueryExpression => _expression;
         #endregion
@@ -50,7 +50,7 @@ namespace HatTrick.DbEx.Sql.Builder
         public InsertQueryExpressionBuilder(
             InsertQueryExpression expression,
             IEnumerable<TEntity> instances,
-            Func<IInsertQueryExecutionPipeline> executionPipelineFactory
+            Func<IInsertQueryExpressionExecutionPipeline> executionPipelineFactory
         )
         {
             _expression = expression ?? throw new ArgumentNullException(nameof(expression));

@@ -14,7 +14,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     [Trait("Statement", "SELECT")]
     [Trait("Function", "ISNULL")]
-    public partial class IsNullTests : ExecutorTestBase
+    public partial class IsNullTests : ResetDatabaseNotRequired
     {
         [Theory]
         [MsSqlVersions.AllVersions]
@@ -300,31 +300,6 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             //then
             result.Should().Be(expected);
-        }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        [Trait("Operation", "SUBQUERY")]
-        public void Can_isnull_of_aliased_field_succeed(int version, decimal expected = 0m)
-        {
-            //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-
-            var exp = db.SelectOne(
-                    db.fx.IsNull(("lines", "PurchasePrice"), 0m).As("alias")
-                ).From(dbo.Purchase)
-                .LeftJoin(
-                    db.SelectOne<PurchaseLine>()
-                    .From(dbo.PurchaseLine)
-                    .OrderBy(dbo.PurchaseLine.PurchasePrice.Desc)
-                ).As("lines").On(dbo.Purchase.Id == ("lines", "PurchaseId"))
-                .Where(dbo.Purchase.Id == 1);
-
-            //when               
-            decimal result = exp.Execute();
-
-            //then
-            result.Should().BeApproximately(expected, 0.001m, "Rounding errors in isnull");
         }
     }
 }

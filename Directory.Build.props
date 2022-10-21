@@ -1,10 +1,30 @@
 <?xml version="1.0"?>
 <Project>
 	<PropertyGroup>
-		<VersionPrefix>0.9.3</VersionPrefix>
-		<PackageIcon>images/htl-nuget-logo.png</PackageIcon>
-		<PackageReleaseNotes>See release notes at https://github.com/HatTrickLabs/dbExpression/releases/tag/v0.9.3</PackageReleaseNotes>
+		<VersionPrefix>0.9.4</VersionPrefix>
+		<PackageReleaseNotes>See release notes at https://github.com/HatTrickLabs/dbExpression/releases/tag/v0.9.4</PackageReleaseNotes>	
 	</PropertyGroup>
+	
+	<PropertyGroup>
+		<PackageIcon>images/htl-nuget-logo.png</PackageIcon>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+		<Company>HatTrick Labs, LLC</Company>
+		<Authors>gwgrubbs,jerrod.eiman</Authors>
+		<Copyright>HatTrick Labs, LLC</Copyright>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <DebugType>embedded</DebugType>
+		<PackageProjectUrl>https://www.dbexpression.com</PackageProjectUrl>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>https://github.com/HatTrickLabs/dbExpression</RepositoryUrl>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(TF_BUILD)' == 'true'">
+		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<None Include="../../build/htl-nuget-logo.png" Pack="true" Visible="false" PackagePath="images/htl-nuget-logo.png" />
 	</ItemGroup>

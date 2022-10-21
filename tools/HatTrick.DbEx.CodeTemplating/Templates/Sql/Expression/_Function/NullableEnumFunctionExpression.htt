@@ -34,51 +34,29 @@ namespace {Namespace}
         #endregion
         
         #region filter operators
-        #region null
-        public static FilterExpression operator ==(NullableEnum{:functionName}FunctionExpression<TEnum> a, NullElement b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullableEnum{:functionName}FunctionExpression<TEnum> a, NullElement b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression operator ==(NullElement a, NullableEnum{:functionName}FunctionExpression<TEnum> b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression operator !=(NullElement a, NullableEnum{:functionName}FunctionExpression<TEnum> b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
-        #endregion
+        public static FilterExpression<bool?> operator ==(NullableEnum{:functionName}FunctionExpression<TEnum> a, NullElement b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
 
-        #region TEnum
-        {-#each Filters-}
-        {-#each Operations-}
-        public static FilterExpression operator {FilterOperatorSymbol}(NullableEnum{:functionName}FunctionExpression<TEnum> a, TEnum b) => new FilterExpression<bool?>(a, new LiteralExpression<TEnum>(b), FilterExpressionOperator.{FilterOperatorName});
-        {-/each-}
+        public static FilterExpression<bool?> operator !=(NullableEnum{:functionName}FunctionExpression<TEnum> a, NullElement b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
 
-        {-#each Operations-}
-        public static FilterExpression operator {FilterOperatorSymbol}(TEnum a, NullableEnum{:functionName}FunctionExpression<TEnum> b) => new FilterExpression<bool?>(new LiteralExpression<TEnum>(a), b, FilterExpressionOperator.{FilterOperatorName});
-        {-/each-}
+        public static FilterExpression<bool?> operator ==(NullElement a, NullableEnum{:functionName}FunctionExpression<TEnum> b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
 
-        {-#each Operations-}
-        public static FilterExpression operator {FilterOperatorSymbol}(TEnum? a, NullableEnum{:functionName}FunctionExpression<TEnum> b) => new FilterExpression<bool?>(new LiteralExpression<TEnum?>(a), b, FilterExpressionOperator.{FilterOperatorName});
-        {-/each-}
-        {-/each-}
-        #endregion
+        public static FilterExpression<bool?> operator !=(NullElement a, NullableEnum{:functionName}FunctionExpression<TEnum> b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);       
+        
+        public static FilterExpression<bool?> operator ==(NullableEnum{:functionName}FunctionExpression<TEnum> a, TEnum? b) => new FilterExpression<bool?>(a, new LiteralExpression<TEnum?>(b), FilterExpressionOperator.Equal);
 
-        #region mediator
-        {-#each Filters-}
-        {-#each Operations-}
-        public static FilterExpression operator {FilterOperatorSymbol}(NullableEnum{:functionName}FunctionExpression<TEnum> a, EnumExpressionMediator<TEnum> b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.{FilterOperatorName});
-        {-/each-}
+        public static FilterExpression<bool?> operator !=(NullableEnum{:functionName}FunctionExpression<TEnum> a, TEnum? b) => new FilterExpression<bool?>(a, new LiteralExpression<TEnum?>(b), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator ==(TEnum? a, NullableEnum{:functionName}FunctionExpression<TEnum> b) => new FilterExpression<bool?>(new LiteralExpression<TEnum?>(a), b, FilterExpressionOperator.Equal);
 
-        {-#each Operations-}
-        public static FilterExpression operator {FilterOperatorSymbol}(NullableEnum{:functionName}FunctionExpression<TEnum> a, NullableEnumExpressionMediator<TEnum> b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.{FilterOperatorName});
-        {-/each-}
-        {-/each-}
-        #endregion
+        public static FilterExpression<bool?> operator !=(TEnum? a, NullableEnum{:functionName}FunctionExpression<TEnum> b) => new FilterExpression<bool?>(new LiteralExpression<TEnum?>(a), b, FilterExpressionOperator.NotEqual);
 
-        #region alias
-        {-#each Filters-}
-        {-#each Operations-}
-        public static FilterExpression operator {FilterOperatorSymbol}(NullableEnum{:functionName}FunctionExpression<TEnum> a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.{FilterOperatorName});
-        {-/each-}
-        {-#each Operations-}
-        public static FilterExpression operator {FilterOperatorSymbol}(NullableEnum{:functionName}FunctionExpression<TEnum> a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.{FilterOperatorName});
-        {-/each-}
-        {-/each-}
-        #endregion
+        public static FilterExpression<bool?> operator ==(NullableEnum{:functionName}FunctionExpression<TEnum> a, TEnum b) => new FilterExpression<bool?>(a, new LiteralExpression<TEnum>(b), FilterExpressionOperator.Equal);
+
+        public static FilterExpression<bool?> operator !=(NullableEnum{:functionName}FunctionExpression<TEnum> a, TEnum b) => new FilterExpression<bool?>(a, new LiteralExpression<TEnum>(b), FilterExpressionOperator.NotEqual);
+        
+        public static FilterExpression<bool?> operator ==(TEnum a, NullableEnum{:functionName}FunctionExpression<TEnum> b) => new FilterExpression<bool?>(new LiteralExpression<TEnum>(a), b, FilterExpressionOperator.Equal);
+
+        public static FilterExpression<bool?> operator !=(TEnum a, NullableEnum{:functionName}FunctionExpression<TEnum> b) => new FilterExpression<bool?>(new LiteralExpression<TEnum>(a), b, FilterExpressionOperator.NotEqual);
         #endregion
     }}
 }}

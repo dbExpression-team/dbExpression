@@ -42,10 +42,21 @@ namespace HatTrick.DbEx.Sql.Builder
 
         #region constructors
         public SelectEntitySelectQueryExpressionBuilder(
-            Func<ISelectQueryExecutionPipeline> executionPipelineFactory,
-            SelectSetQueryExpressionBuilder<TDatabase> controller,
+            Func<SelectQueryExpression> queryExpressionFactory,
+            Func<ISelectQueryExpressionExecutionPipeline> executionPipelineFactory,
             Table<TEntity> table
-        ) : base(executionPipelineFactory, controller)
+        ) : base(queryExpressionFactory, executionPipelineFactory)
+        {
+            this.table = table ?? throw new ArgumentNullException(nameof(table));
+        }
+
+        public SelectEntitySelectQueryExpressionBuilder(
+            Func<SelectQueryExpression> queryExpressionFactory,
+            Func<ISelectQueryExpressionExecutionPipeline> executionPipelineFactory,
+            Table<TEntity> table,
+            SelectQueryExpression rootExpression,
+            SelectQueryExpression currentExpression
+        ) : base(queryExpressionFactory, executionPipelineFactory, rootExpression, currentExpression)
         {
             this.table = table ?? throw new ArgumentNullException(nameof(table));
         }
@@ -55,21 +66,27 @@ namespace HatTrick.DbEx.Sql.Builder
         #region UnionSelectEntitiesInitiation<TDatabase>
         UnionSelectEntitiesContinuation<TDatabase, TEntity> UnionSelectEntitiesInitiation<TDatabase, TEntity>.Union()
         {
-            Controller.ApplyUnion();
+            ApplyUnion();
+            Current.Select = table.BuildInclusiveSelectExpression() ?? throw new DbExpressionException($"Select expressions for entity {typeof(TEntity)} were not provided.");
             return new SelectEntitiesSelectQueryExpressionBuilder<TDatabase, TEntity>(
+                QueryExpressionFactory,
                 ExecutionPipelineFactory,
-                Controller,
-                table
+                table,
+                SelectQueryExpression,
+                Current
             );
         }
 
         UnionSelectEntitiesContinuation<TDatabase, TEntity> UnionSelectEntitiesInitiation<TDatabase, TEntity>.UnionAll()
         {
-            Controller.ApplyUnionAll();
+            ApplyUnionAll();
+            Current.Select = table.BuildInclusiveSelectExpression() ?? throw new DbExpressionException($"Select expressions for entity {typeof(TEntity)} were not provided.");
             return new SelectEntitiesSelectQueryExpressionBuilder<TDatabase, TEntity>(
+                QueryExpressionFactory,
                 ExecutionPipelineFactory,
-                Controller,
-                table
+                table,
+                SelectQueryExpression,
+                Current
             );
         }
         #endregion
@@ -128,35 +145,35 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <inheritdoc />
         JoinOn<SelectEntityContinuation<TDatabase, TEntity>> SelectEntityContinuation<TDatabase, TEntity>.InnerJoin(AnyEntity entity)
-            => new SelectEntityJoinExpressionBuilder<TDatabase, TEntity>(Controller.Current, entity, JoinOperationExpressionOperator.INNER, this);
+            => new SelectEntityJoinExpressionBuilder<TDatabase, TEntity>(Current, entity, JoinOperationExpressionOperator.INNER, this);
 
         /// <inheritdoc />
         WithAlias<JoinOn<SelectEntityContinuation<TDatabase, TEntity>>> SelectEntityContinuation<TDatabase, TEntity>.InnerJoin(AnySelectSubquery subquery)
-            => new SelectEntityJoinExpressionBuilder<TDatabase, TEntity>(Controller.Current, subquery.Expression, JoinOperationExpressionOperator.INNER, this);
+            => new SelectEntityJoinExpressionBuilder<TDatabase, TEntity>(Current, subquery.Expression, JoinOperationExpressionOperator.INNER, this);
 
         /// <inheritdoc />
         JoinOn<SelectEntityContinuation<TDatabase, TEntity>> SelectEntityContinuation<TDatabase, TEntity>.LeftJoin(AnyEntity entity)
-            => new SelectEntityJoinExpressionBuilder<TDatabase, TEntity>(Controller.Current, entity, JoinOperationExpressionOperator.LEFT, this);
+            => new SelectEntityJoinExpressionBuilder<TDatabase, TEntity>(Current, entity, JoinOperationExpressionOperator.LEFT, this);
 
         /// <inheritdoc />
         WithAlias<JoinOn<SelectEntityContinuation<TDatabase, TEntity>>> SelectEntityContinuation<TDatabase, TEntity>.LeftJoin(AnySelectSubquery subquery)
-            => new SelectEntityJoinExpressionBuilder<TDatabase, TEntity>(Controller.Current, subquery.Expression, JoinOperationExpressionOperator.LEFT, this);
+            => new SelectEntityJoinExpressionBuilder<TDatabase, TEntity>(Current, subquery.Expression, JoinOperationExpressionOperator.LEFT, this);
 
         /// <inheritdoc />
         JoinOn<SelectEntityContinuation<TDatabase, TEntity>> SelectEntityContinuation<TDatabase, TEntity>.RightJoin(AnyEntity entity)
-            => new SelectEntityJoinExpressionBuilder<TDatabase, TEntity>(Controller.Current, entity, JoinOperationExpressionOperator.RIGHT, this);
+            => new SelectEntityJoinExpressionBuilder<TDatabase, TEntity>(Current, entity, JoinOperationExpressionOperator.RIGHT, this);
 
         /// <inheritdoc />
         WithAlias<JoinOn<SelectEntityContinuation<TDatabase, TEntity>>> SelectEntityContinuation<TDatabase, TEntity>.RightJoin(AnySelectSubquery subquery)
-            => new SelectEntityJoinExpressionBuilder<TDatabase, TEntity>(Controller.Current, subquery.Expression, JoinOperationExpressionOperator.RIGHT, this);
+            => new SelectEntityJoinExpressionBuilder<TDatabase, TEntity>(Current, subquery.Expression, JoinOperationExpressionOperator.RIGHT, this);
 
         /// <inheritdoc />
         JoinOn<SelectEntityContinuation<TDatabase, TEntity>> SelectEntityContinuation<TDatabase, TEntity>.FullJoin(AnyEntity entity)
-            => new SelectEntityJoinExpressionBuilder<TDatabase, TEntity>(Controller.Current, entity, JoinOperationExpressionOperator.FULL, this);
+            => new SelectEntityJoinExpressionBuilder<TDatabase, TEntity>(Current, entity, JoinOperationExpressionOperator.FULL, this);
 
         /// <inheritdoc />
         WithAlias<JoinOn<SelectEntityContinuation<TDatabase, TEntity>>> SelectEntityContinuation<TDatabase, TEntity>.FullJoin(AnySelectSubquery subquery)
-            => new SelectEntityJoinExpressionBuilder<TDatabase, TEntity>(Controller.Current, subquery.Expression, JoinOperationExpressionOperator.FULL, this); 
+            => new SelectEntityJoinExpressionBuilder<TDatabase, TEntity>(Current, subquery.Expression, JoinOperationExpressionOperator.FULL, this); 
 
         /// <inheritdoc />
         SelectEntityContinuation<TDatabase, TEntity> SelectEntityContinuation<TDatabase, TEntity>.CrossJoin(AnyEntity entity)
@@ -168,7 +185,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         SelectEntityContinuation<TDatabase, TEntity> WithAlias<SelectEntityContinuation<TDatabase, TEntity>>.As(string alias)
         {
-            Controller.Current.From!.As(alias);
+            Current.From!.As(alias);
             return this;
         }
         #endregion
@@ -651,34 +668,34 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         private TEntity? ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand)
-            => ExecutionPipelineFactory().ExecuteSelectEntity<TEntity>(Controller.Current, table, connection, configureCommand);
+            => ExecutionPipelineFactory().ExecuteSelectEntity<TEntity>(Current, table, connection, configureCommand);
 
         private TEntity? ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, TEntity> map)
-            => ExecutionPipelineFactory().ExecuteSelectEntity<TEntity>(Controller.Current, table, connection, configureCommand, map);
+            => ExecutionPipelineFactory().ExecuteSelectEntity<TEntity>(Current, table, connection, configureCommand, map);
 
         private void ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> read)
-            => ExecutionPipelineFactory().ExecuteSelectEntity<TEntity>(Controller.Current, table, connection, configureCommand, read);
+            => ExecutionPipelineFactory().ExecuteSelectEntity<TEntity>(Current, table, connection, configureCommand, read);
 
         private TEntity? ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader, TEntity> map)
-            => ExecutionPipelineFactory().ExecuteSelectEntity<TEntity>(Controller.Current, table, connection, configureCommand, map);
+            => ExecutionPipelineFactory().ExecuteSelectEntity<TEntity>(Current, table, connection, configureCommand, map);
 
         private Task<TEntity?> ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken cancellationToken)
-            => ExecutionPipelineFactory().ExecuteSelectEntityAsync<TEntity>(Controller.Current, table, connection, configureCommand, cancellationToken);
+            => ExecutionPipelineFactory().ExecuteSelectEntityAsync<TEntity>(Current, table, connection, configureCommand, cancellationToken);
 
         private Task ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> read, CancellationToken cancellationToken)
-            => ExecutionPipelineFactory().ExecuteSelectEntityAsync<TEntity>(Controller.Current, table, connection, configureCommand, read, cancellationToken);
+            => ExecutionPipelineFactory().ExecuteSelectEntityAsync<TEntity>(Current, table, connection, configureCommand, read, cancellationToken);
 
         private Task<TEntity?> ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken)
-            => ExecutionPipelineFactory().ExecuteSelectEntityAsync<TEntity>(Controller.Current, table, connection, configureCommand, map, cancellationToken);
+            => ExecutionPipelineFactory().ExecuteSelectEntityAsync<TEntity>(Current, table, connection, configureCommand, map, cancellationToken);
 
         private Task<TEntity?> ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken)
-            => ExecutionPipelineFactory().ExecuteSelectEntityAsync<TEntity>(Controller.Current, table, connection, configureCommand, map, cancellationToken);
+            => ExecutionPipelineFactory().ExecuteSelectEntityAsync<TEntity>(Current, table, connection, configureCommand, map, cancellationToken);
 
         private Task ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, Task> read, CancellationToken cancellationToken)
-            => ExecutionPipelineFactory().ExecuteSelectEntityAsync<TEntity>(Controller.Current, table, connection, configureCommand, read, cancellationToken);
+            => ExecutionPipelineFactory().ExecuteSelectEntityAsync<TEntity>(Current, table, connection, configureCommand, read, cancellationToken);
 
         private Task<TEntity?> ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, TEntity, Task> map, CancellationToken cancellationToken)
-            => ExecutionPipelineFactory().ExecuteSelectEntityAsync<TEntity>(Controller.Current, table, connection, configureCommand, map, cancellationToken);
+            => ExecutionPipelineFactory().ExecuteSelectEntityAsync<TEntity>(Current, table, connection, configureCommand, map, cancellationToken);
         #endregion
         #endregion
     }

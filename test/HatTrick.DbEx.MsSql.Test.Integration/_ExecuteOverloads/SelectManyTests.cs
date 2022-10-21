@@ -14,7 +14,7 @@ using System;
 
 namespace HatTrick.DbEx.MsSql.Test.Integration
 {
-    public partial class SelectManyTests : ExecutorTestBase
+    public partial class SelectManyTests : ResetDatabaseNotRequired
     {
         #region value list
         [Theory]
@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //given
             var usedCommandTimeout = 0;
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
-                c => c.Events.OnAfterSqlStatementExecution(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
+                c => c.Events.OnAfterCommand(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
             );
 
             var exp = db.SelectMany(dbo.Person.Id)
@@ -61,7 +61,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //given
             IDbConnection? usedConnection = null;
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
-                c => c.Events.OnBeforeSqlStatementExecution(e => usedConnection = e.DbCommand.Connection)
+                c => c.Events.OnBeforeCommand(e => usedConnection = e.DbCommand.Connection)
             );
             var conn = db.GetConnection();
 
@@ -101,7 +101,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             IDbConnection? usedConnection = null;
             var usedCommandTimeout = 0;
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
-                c => c.Events.OnAfterSqlStatementExecution(e =>
+                c => c.Events.OnAfterCommand(e =>
                 {
                     usedConnection = e.DbCommand.Connection;
                     usedCommandTimeout = e.DbCommand.CommandTimeout;
@@ -148,7 +148,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //given
             var usedCommandTimeout = 0;
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
-                c => c.Events.OnAfterSqlStatementExecution(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
+                c => c.Events.OnAfterCommand(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
             );
 
             var exp = db.SelectMany<Person>()
@@ -185,7 +185,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //given
             IDbConnection? usedConnection = null;
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
-                c => c.Events.OnBeforeSqlStatementExecution(e => usedConnection = e.DbCommand.Connection)
+                c => c.Events.OnBeforeCommand(e => usedConnection = e.DbCommand.Connection)
             );
             var conn = db.GetConnection();
 
@@ -225,7 +225,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             IDbConnection? usedConnection = null;
             var usedCommandTimeout = 0;
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
-                c => c.Events.OnAfterSqlStatementExecution(e =>
+                c => c.Events.OnAfterCommand(e =>
                 {
                     usedConnection = e.DbCommand.Connection;
                     usedCommandTimeout = e.DbCommand.CommandTimeout;
@@ -383,7 +383,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //given
             var usedCommandTimeout = 0;
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
-                c => c.Events.OnAfterSqlStatementExecution(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
+                c => c.Events.OnAfterCommand(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
             );
 
             var exp = db.SelectMany(
@@ -426,7 +426,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //given
             IDbConnection? usedConnection = null;
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
-                c => c.Events.OnBeforeSqlStatementExecution(e => usedConnection = e.DbCommand.Connection)
+                c => c.Events.OnBeforeCommand(e => usedConnection = e.DbCommand.Connection)
             );
             var conn = db.GetConnection();
 
@@ -472,7 +472,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             IDbConnection? usedConnection = null;
             var usedCommandTimeout = 0;
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
-                c => c.Events.OnAfterSqlStatementExecution(e =>
+                c => c.Events.OnAfterCommand(e =>
                 {
                     usedConnection = e.DbCommand.Connection;
                     usedCommandTimeout = e.DbCommand.CommandTimeout;
@@ -545,7 +545,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //given
             var usedCommandTimeout = 0;
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
-                c => c.Events.OnAfterSqlStatementExecution(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
+                c => c.Events.OnAfterCommand(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
             );
 
             var exp = db.SelectMany(
@@ -573,7 +573,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             IDbConnection? usedConnection = null;
             var usedCommandTimeout = 0;
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
-                c => c.Events.OnBeforeSqlStatementExecution(e =>
+                c => c.Events.OnBeforeCommand(e =>
                 {
                     usedConnection = e.DbCommand.Connection;
                     usedCommandTimeout = e.DbCommand.CommandTimeout;
@@ -626,7 +626,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             IDbConnection? usedConnection = null;
             var usedCommandTimeout = 0;
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
-                c => c.Events.OnAfterSqlStatementExecution(e =>
+                c => c.Events.OnAfterCommand(e =>
                 {
                     usedConnection = e.DbCommand.Connection;
                     usedCommandTimeout = e.DbCommand.CommandTimeout;
@@ -681,7 +681,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //given
             var usedCommandTimeout = 0;
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
-                c => c.Events.OnAfterSqlStatementExecution(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
+                c => c.Events.OnAfterCommand(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
             );
 
             var exp = db.SelectMany(dbo.Person.Id)
@@ -718,7 +718,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //given
             IDbConnection? usedConnection = null;
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
-                c => c.Events.OnBeforeSqlStatementExecution(e => usedConnection = e.DbCommand.Connection)
+                c => c.Events.OnBeforeCommand(e => usedConnection = e.DbCommand.Connection)
             );
             var conn = db.GetConnection();
 
@@ -758,7 +758,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             IDbConnection? usedConnection = null;
             var usedCommandTimeout = 0;
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
-                c => c.Events.OnAfterSqlStatementExecution(e =>
+                c => c.Events.OnAfterCommand(e =>
                 {
                     usedConnection = e.DbCommand.Connection;
                     usedCommandTimeout = e.DbCommand.CommandTimeout;
@@ -804,7 +804,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //given
             var usedCommandTimeout = 0;
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
-                c => c.Events.OnAfterSqlStatementExecution(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
+                c => c.Events.OnAfterCommand(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
             );
 
             var exp = db.SelectMany<Person>()
@@ -841,7 +841,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //given
             IDbConnection? usedConnection = null;
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
-                c => c.Events.OnBeforeSqlStatementExecution(e => usedConnection = e.DbCommand.Connection)
+                c => c.Events.OnBeforeCommand(e => usedConnection = e.DbCommand.Connection)
             );
             var conn = db.GetConnection();
 
@@ -881,7 +881,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             IDbConnection? usedConnection = null;
             var usedCommandTimeout = 0;
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
-                c => c.Events.OnAfterSqlStatementExecution(e =>
+                c => c.Events.OnAfterCommand(e =>
                 {
                     usedConnection = e.DbCommand.Connection;
                     usedCommandTimeout = e.DbCommand.CommandTimeout;
@@ -1392,7 +1392,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //given
             var usedCommandTimeout = 0;
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
-                c => c.Events.OnAfterSqlStatementExecution(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
+                c => c.Events.OnAfterCommand(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
             );
 
             var exp = db.SelectMany(
@@ -1435,7 +1435,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //given
             IDbConnection? usedConnection = null;
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
-                c => c.Events.OnBeforeSqlStatementExecution(e => usedConnection = e.DbCommand.Connection)
+                c => c.Events.OnBeforeCommand(e => usedConnection = e.DbCommand.Connection)
             );
             var conn = db.GetConnection();
 
@@ -1524,7 +1524,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //given
             var usedCommandTimeout = 0;
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
-                c => c.Events.OnAfterSqlStatementExecution(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
+                c => c.Events.OnAfterCommand(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
             );
 
             var exp = db.SelectMany(
@@ -1599,7 +1599,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             IDbConnection? usedConnection = null;
             var usedCommandTimeout = 0;
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
-                c => c.Events.OnAfterSqlStatementExecution(e =>
+                c => c.Events.OnAfterCommand(e =>
                 {
                     usedConnection = e.DbCommand.Connection;
                     usedCommandTimeout = e.DbCommand.CommandTimeout;

@@ -11,7 +11,7 @@ using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Integration
 {
-    public partial class dbex_GetDefaultMappingTests : ExecutorTestBase
+    public partial class dbex_GetDefaultMappingTests : ResetDatabaseNotRequired
     {
         [Theory]
         [MsSqlVersions.AllVersions]

@@ -21,7 +21,7 @@ using HatTrick.DbEx.Sql.Builder;
 namespace HatTrick.DbEx.MsSql.Builder.v2012
 {
     /// <inheritdoc/>
-    public partial class MsSqlFunctionExpressionBuilder : FirstGenerationMsSqlFunctionExpressionBuilder
+    public partial class MsSqlFunctionExpressionBuilder : Builder.VersionBaseMsSqlFunctionExpressionBuilder
     {
 
     }

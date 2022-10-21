@@ -5,30 +5,14 @@
 		<LangVersion>preview</LangVersion>
 		<Nullable>enable</Nullable>
 		<IsPackable>true</IsPackable>
-		<Company>HatTrick Labs, LLC</Company>
-		<Authors>gwgrubbs,jerrod.eiman</Authors>
 		<Description>dbExpression is a database connector that enables fluent composition and execution of type safe SQL queries directly from Microsoft .NET.  This package is an abstract package not meant for direct references.  To use dbExpression, reference platform specific packages (i.e. HatTrick.DbEx.MsSql).</Description>
-		<IncludeSymbols>true</IncludeSymbols>
-		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
-		<PackageProjectUrl>https://www.dbexpression.com</PackageProjectUrl>
-		<RepositoryUrl>https://github.com/HatTrickLabs/dbExpression</RepositoryUrl>
-		<RepositoryType>git</RepositoryType>
-		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-		<Copyright>HatTrick Labs, LLC</Copyright>
-		<PublishRepositoryUrl>true</PublishRepositoryUrl>
-		<EmbedUntrackedSources>true</EmbedUntrackedSources>
-		<DebugType>embedded</DebugType>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(TF_BUILD)' == 'true'">
-		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.1" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.2" />
 		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
 	</ItemGroup>
 

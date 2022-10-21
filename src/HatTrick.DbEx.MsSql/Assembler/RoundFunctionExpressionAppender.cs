@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
         #region methods
         public override void AppendElement(RoundFunctionExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            var elements = (expression as IExpressionProvider<RoundFunctionExpression.RoundFunctionExpressionElements>).Expression;
+            var elements = (expression as IExpressionProvider<RoundFunctionExpression.RoundFunctionExpressionElements>).Expression!;
             builder.Appender.Write("ROUND(");
             builder.AppendElement(elements.Expression, context);
             builder.Appender.Write(", ");

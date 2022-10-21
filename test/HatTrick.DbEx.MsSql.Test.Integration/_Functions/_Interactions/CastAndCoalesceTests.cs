@@ -13,7 +13,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     [Trait("Function", "CAST")]
     [Trait("Function", "COALESCE")]
-    public partial class CastAndCoalesceTests : ExecutorTestBase
+    public partial class CastAndCoalesceTests : ResetDatabaseNotRequired
     {
         [Theory]
         [MsSqlVersions.AllVersions]

@@ -5,14 +5,14 @@ using HatTrick.DbEx.MsSql.Expression;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
 using System;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     [Trait("Function", "DATEDIFF")]
     [Trait("Function", "CEILING")]
-    public partial class DateDiffAndCeilingTests : ExecutorTestBase
+    public partial class DateDiffAndCeilingTests : ResetDatabaseNotRequired
     {
         [Theory]
         [MsSqlVersions.AllVersions]

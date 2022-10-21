@@ -3,7 +3,6 @@
 {?var:nameArgName = ("name", $.FieldExpression) => GetFieldArgName}
 {?var:entityArgName = ("entity", $.FieldExpression) => GetFieldArgName}
 {?var:aliasArgName = ("alias", $.FieldExpression) => GetFieldArgName}
-{?var:identifierInterpolationArgName = ("{{x}}", "x", :identifierArgName) => Replace}
         #region {($.FieldExpression.Name) => InsertSpaceOnCapitalizationAndToLower} field expression
         public partial class {$.FieldExpression.Name}Field : {$.FieldExpression.FieldExpressionTypeName}
         {{

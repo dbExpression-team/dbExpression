@@ -13,7 +13,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     [Trait("Statement", "SELECT")]
     [Trait("Function", "ROUND")]
-    public partial class RoundTests : ExecutorTestBase
+    public partial class RoundTests : ResetDatabaseNotRequired
     {
         [Theory]
         [MsSqlVersions.AllVersions]

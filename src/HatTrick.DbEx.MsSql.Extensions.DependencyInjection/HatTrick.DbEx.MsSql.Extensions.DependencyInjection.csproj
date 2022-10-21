@@ -6,26 +6,10 @@
 		<Nullable>enable</Nullable>
         <RootNamespace>Microsoft.Extensions.DependencyInjection</RootNamespace>
         <IsPackable>true</IsPackable>
-        <Company>HatTrick Labs, LLC</Company>
-        <Authors>gwgrubbs,jerrod.eiman</Authors>
         <Description>Extensions for configuring dbExpression for use with ASP.NET Core.
         </Description>
-        <IncludeSymbols>true</IncludeSymbols>
-        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-        <PackageProjectUrl>https://www.dbexpression.com</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/HatTrickLabs/dbExpression</RepositoryUrl>
-		<RepositoryType>git</RepositoryType>
 		<PackageTags>microsoft sqlserver sql sql-server orm dependency-injection</PackageTags>
-		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-		<Copyright>HatTrick Labs, LLC</Copyright>
-		<PublishRepositoryUrl>true</PublishRepositoryUrl>
-		<EmbedUntrackedSources>true</EmbedUntrackedSources>
-		<DebugType>embedded</DebugType>
     </PropertyGroup>
-
-	<PropertyGroup Condition="'$(TF_BUILD)' == 'true'">
-		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-	</PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />

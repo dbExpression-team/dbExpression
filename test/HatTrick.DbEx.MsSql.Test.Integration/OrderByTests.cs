@@ -13,7 +13,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     [Trait("Statement", "SELECT")]
     [Trait("Operation", "ORDER BY")]
-    public partial class OrderByTests : ExecutorTestBase
+    public partial class OrderByTests : ResetDatabaseNotRequired
     {
         [Theory]
         [MsSqlVersions.AllVersions]
@@ -235,6 +235,28 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             //then
             person!.Id.Should().NotBe(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Operation", "SUBQUERY")]
+        public void Does_order_by_in_subquery_fail_with_expected_exception(int version, double expected = 0)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            var exp = db.SelectOne(
+                    dbex.Alias<double>("lines", "PurchasePrice").As("alias")
+                ).From(dbo.Purchase)
+                .LeftJoin(
+                    db.SelectOne<PurchaseLine>()
+                    .From(dbo.PurchaseLine)
+                    .OrderBy(dbo.PurchaseLine.PurchasePrice.Desc)
+                ).As("lines").On(dbo.Purchase.Id == ("lines", "PurchaseId"))
+                .Where(dbo.Purchase.Id == 1);
+
+            //when & then
+            Assert.Throws<Microsoft.Data.SqlClient.SqlException>(() => exp.Execute());
         }
     }
 }

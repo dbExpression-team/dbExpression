@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         #region methods
         public override void AppendElement(ReplaceFunctionExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            var elements = (expression as IExpressionProvider<ReplaceFunctionExpression.ReplaceFunctionExpressionElements>).Expression;
+            var elements = (expression as IExpressionProvider<ReplaceFunctionExpression.ReplaceFunctionExpressionElements>).Expression!;
 
             builder.Appender.Write("REPLACE(");
             builder.AppendElement(elements.Expression, context);

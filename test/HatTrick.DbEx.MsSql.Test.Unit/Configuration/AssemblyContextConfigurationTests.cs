@@ -30,7 +30,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_for_appender_factory_using_null_configuration_action_throw_expected_exception(int version)
         {
             //given & when & then
-            Assert.Throws<DbExpressionConfigurationException>(() => Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.SqlStatements.Assembly.ConfigureOutputSettings(null!)));
+            Assert.Throws<DbExpressionConfigurationException>(() => Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.SqlStatements.Assembly.ConfigureAssemblyOptions(null!)));
         }
 
         [Theory]
@@ -38,7 +38,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Does_configuration_for_appender_output_settings_with_configuration_action_succeed(int version)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.SqlStatements.Assembly.ConfigureOutputSettings(a => a.IdentifierDelimiter.Begin = '&'));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.SqlStatements.Assembly.ConfigureAssemblyOptions(a => a.IdentifierDelimiter.Begin = '&'));
 
             //when & then
             serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>().IdentifierDelimiter.Begin.Should().Be('&');
@@ -64,7 +64,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         public void Assembly_context_with_custom_configuration_should_be_transient_when_resolved(int version)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.SqlStatements.Assembly.ConfigureOutputSettings(a => a.IdentifierDelimiter.Begin = '&'));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.SqlStatements.Assembly.ConfigureAssemblyOptions(a => a.IdentifierDelimiter.Begin = '&'));
 
             //when
             var a1 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();

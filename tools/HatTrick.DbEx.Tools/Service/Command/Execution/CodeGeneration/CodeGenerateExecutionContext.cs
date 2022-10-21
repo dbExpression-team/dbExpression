@@ -375,7 +375,7 @@ namespace HatTrick.DbEx.Tools.Service
             if (!mssqlVersions.Contains(config?.Source?.Platform?.Version!))
                 throw new CommandException($"dbex.config error: source.platform.version: dbExpression only supports MsSql versions {String.Join(',', mssqlVersions)}.");
 
-            if (config.Overrides is null)
+            if (config?.Overrides is null)
                 return;
 
             if (!config.Overrides.Any(ov => ov.Apply.To.Path == "."))
@@ -639,9 +639,9 @@ namespace HatTrick.DbEx.Tools.Service
             repo.Register(nameof(helpers.InsertSpaceOnCapitalization), (Func<string?, string?>)helpers.InsertSpaceOnCapitalization);
             repo.Register(nameof(helpers.InsertSpaceOnCapitalizationAndToLower), (Func<string?, string?>)helpers.InsertSpaceOnCapitalizationAndToLower);
             repo.Register(nameof(helpers.FirstOrDefault), (Func<IEnumerable, object?>)helpers.FirstOrDefault);
-            repo.Register(nameof(helpers.Concat), (Func<string?, string?, string?>)helpers.Concat);
+            //repo.Register(nameof(helpers.Concat), (Func<string?, string?, string?>)helpers.Concat);
             repo.Register(nameof(helpers.Join), (Func<string?, object[], string>)helpers.Join);
-            repo.Register(nameof(helpers.Replace), (Func<string?, string?, string?, string?>)helpers.Replace);
+            //repo.Register(nameof(helpers.Replace), (Func<string?, string?, string?, string?>)helpers.Replace);
             repo.Register(nameof(helpers.GetTemplatePartial), (Func<string?, string?>)helpers.GetTemplatePartial);
             repo.Register(nameof(helpers.TrimStart), (Func<string?, string?, string?>)helpers.TrimStart);
             repo.Register(nameof(helpers.TrimEnd), (Func<string?, string?, string?>)helpers.TrimEnd);

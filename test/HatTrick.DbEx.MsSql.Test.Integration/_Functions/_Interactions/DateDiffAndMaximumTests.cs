@@ -5,14 +5,14 @@ using HatTrick.DbEx.MsSql.Expression;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
 using System;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     [Trait("Function", "DATEDIFF")]
     [Trait("Function", "MAX")]
-    public partial class DateDiffAndMaximumTests : ExecutorTestBase
+    public partial class DateDiffAndMaximumTests : ResetDatabaseNotRequired
     {
         [Theory]
         [MsSqlVersions.AllVersions]

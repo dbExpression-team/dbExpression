@@ -20,6 +20,7 @@
 using System.IO;
 using Newtonsoft.Json;
 using HatTrick.DbEx.Tools.Service;
+using HatTrick.Text.Templating;
 using svc = HatTrick.DbEx.Tools.Service.ServiceDispatch;
 
 namespace HatTrick.DbEx.Tools
@@ -45,6 +46,10 @@ namespace HatTrick.DbEx.Tools
             catch (CommandException cex)
             {
                 svc.Feedback.Push(To.Error, cex.Message);
+            }
+            catch (MergeException mex)
+            {
+                svc.Feedback.Push(To.Error, $"Inner Exception: {mex.GetBaseException().Message}{Environment.NewLine}{mex.Context.ToString()}");
             }
             catch (Exception ex)
             {

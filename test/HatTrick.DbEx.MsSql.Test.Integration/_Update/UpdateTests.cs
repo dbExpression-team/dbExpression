@@ -6,7 +6,7 @@ using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
 using System;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -14,7 +14,7 @@ using Xunit;
 namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     [Trait("Statement", "UPDATE")]
-    public partial class UpdateTests : ExecutorTestBase
+    public partial class UpdateTests : ResetDatabaseAfterEveryTest
     {
         [Theory]
         [MsSqlVersions.AllVersions]
@@ -315,7 +315,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_try_to_set_field_value_before_update_assembly_event(int version, string expected = "XXX")
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeUpdateSqlStatementAssembly(context => context.TrySetFieldValue(nameof(dbo.Person.FirstName), expected)));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeUpdateStart(context => context.TrySetFieldValue(nameof(dbo.Person.FirstName), expected)));
 
             //when
             await db.Update(dbo.Person.LastName.Set("YYY")).From(dbo.Person).Where(dbo.Person.Id == 1).ExecuteAsync();
@@ -331,7 +331,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Can_set_field_value_before_update_assembly_event(int version, string expected = "XXX")
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeUpdateSqlStatementAssembly(context => context.SetFieldValue(nameof(dbo.Person.FirstName), expected)));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeUpdateStart(context => context.SetFieldValue(nameof(dbo.Person.FirstName), expected)));
 
             //when
             await db.Update(dbo.Person.LastName.Set("YYY")).From(dbo.Person).Where(dbo.Person.Id == 1).ExecuteAsync();

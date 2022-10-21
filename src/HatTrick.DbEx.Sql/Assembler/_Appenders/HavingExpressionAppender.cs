@@ -24,8 +24,17 @@ namespace HatTrick.DbEx.Sql.Assembler
     {
         public override void AppendElement(HavingExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
+            var originalTryShareParameterSetting = context.TrySharingExistingParameter;
             builder.Appender.Indent();
-            builder.AppendElement((expression as IExpressionProvider<FilterExpressionSet>).Expression!, context);
+            context.TrySharingExistingParameter = true;
+            try
+            {
+                builder.AppendElement((expression as IExpressionProvider<FilterExpressionSet>).Expression!, context);
+            }
+            finally
+            {
+                context.TrySharingExistingParameter = originalTryShareParameterSetting;
+            }
         }
     }
 }

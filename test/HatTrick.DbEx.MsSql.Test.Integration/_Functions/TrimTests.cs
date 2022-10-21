@@ -2,17 +2,19 @@ using DbEx.DataService;
 using DbEx.dboData;
 using DbEx.dboDataService;
 using FluentAssertions;
+using HatTrick.DbEx.MsSql.Builder.Alias;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Builder.Alias;
 using System;
+using v2016DbEx.DataService;
 using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     [Trait("Statement", "SELECT")]
     [Trait("Function", "TRIM")]
-    public partial class TrimTests : ExecutorTestBase
+    public partial class TrimTests : ResetDatabaseNotRequired
     {
         [Theory]
         [MsSqlVersions.AllVersions]

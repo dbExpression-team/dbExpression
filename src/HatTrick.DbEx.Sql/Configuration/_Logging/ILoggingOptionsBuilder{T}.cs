@@ -23,6 +23,6 @@ namespace HatTrick.DbEx.Sql.Configuration
     public interface ILoggingOptionsBuilder<TDatabase>
         where TDatabase : class, ISqlDatabaseRuntime
     {
-        ISqlDatabaseRuntimeConfigurationBuilder<TDatabase> ConfigureLoggingSettings(Action<LoggingOptions> configure);
+        ISqlDatabaseRuntimeConfigurationBuilder<TDatabase> ConfigureLoggingOptions(Action<LoggingOptions> configure);
     }
 }

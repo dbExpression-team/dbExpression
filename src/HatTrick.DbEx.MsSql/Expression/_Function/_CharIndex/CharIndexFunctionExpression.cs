@@ -21,7 +21,7 @@ using HatTrick.DbEx.Sql.Expression;
 
 namespace HatTrick.DbEx.MsSql.Expression
 {
-    public abstract class CharIndexFunctionExpression : ConversionFunctionExpression,
+    public abstract class CharIndexFunctionExpression : StringFunctionExpression,
         IExpressionProvider<CharIndexFunctionExpression.CharIndexFunctionExpressionElements>,
         IEquatable<CharIndexFunctionExpression>
     {

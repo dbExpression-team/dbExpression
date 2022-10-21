@@ -22,9 +22,9 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             Int32ExpressionMediator exp = dbo.Person.Id + 0;
 
             //then
-            ArithmeticExpression.ArithmeticExpressionElements ae = exp.Expression.Should().BeOfType<ArithmeticExpression>()
+            ArithmeticExpression.ArithmeticExpressionElements ae = exp.Expression!.Should().BeOfType<ArithmeticExpression>()
                 .Which.As<IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements>>()
-                .Expression;
+                .Expression!;
                 
             ae.Should().NotBeNull();
             ae.ArithmeticOperator.Should().Be(ArithmeticExpressionOperator.Add);
@@ -49,9 +49,9 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             Int32ExpressionMediator exp = 0 + dbo.Person.Id;
 
             //then
-            ArithmeticExpression.ArithmeticExpressionElements ae = exp.Expression.Should().BeOfType<ArithmeticExpression>()
+            ArithmeticExpression.ArithmeticExpressionElements ae = exp.Expression!.Should().BeOfType<ArithmeticExpression>()
                 .Which.As<IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements>>()
-                .Expression;
+                .Expression!;
 
             ae.Should().NotBeNull();
             ae.ArithmeticOperator.Should().Be(ArithmeticExpressionOperator.Add);
@@ -76,9 +76,9 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             Int32ExpressionMediator exp = 0 + dbo.Person.Id + 3;
 
             //then
-            ArithmeticExpression.ArithmeticExpressionElements ae = exp.Expression.Should().BeOfType<ArithmeticExpression>()
+            ArithmeticExpression.ArithmeticExpressionElements ae = exp.Expression!.Should().BeOfType<ArithmeticExpression>()
                 .Which.As<IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements>>()
-                .Expression;
+                .Expression!;
 
             ae.Should().NotBeNull();
             ae.ArithmeticOperator.Should().Be(ArithmeticExpressionOperator.Add);
@@ -109,9 +109,9 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             Int32ExpressionMediator exp = 0 + 3 + dbo.Person.Id;
 
             //then
-            ArithmeticExpression.ArithmeticExpressionElements ae = exp.Expression.Should().BeOfType<ArithmeticExpression>()
+            ArithmeticExpression.ArithmeticExpressionElements ae = exp.Expression!.Should().BeOfType<ArithmeticExpression>()
                 .Which.As<IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements>>()
-                .Expression;
+                .Expression!;
 
             ae.Should().NotBeNull();
             ae.ArithmeticOperator.Should().Be(ArithmeticExpressionOperator.Add);
@@ -137,9 +137,9 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             Int32ExpressionMediator exp = 0 + dbo.Person.Id - 3;
 
             //then
-            ArithmeticExpression.ArithmeticExpressionElements ae = exp.Expression.Should().BeOfType<ArithmeticExpression>()
+            ArithmeticExpression.ArithmeticExpressionElements ae = exp.Expression!.Should().BeOfType<ArithmeticExpression>()
                 .Which.As<IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements>>()
-                .Expression;
+                .Expression!;
 
             ae.Should().NotBeNull();
             ae.ArithmeticOperator.Should().Be(ArithmeticExpressionOperator.Subtract);
@@ -149,7 +149,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             var add = ae.Args.First().Should().BeOfType<Int32ExpressionMediator>()
                 .Which.Expression.Should().BeOfType<ArithmeticExpression>()
                 .Subject.As<IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements>>()
-                .Expression;
+                .Expression!;
 
             add.ArithmeticOperator.Should().Be(ArithmeticExpressionOperator.Add);
 
@@ -177,9 +177,9 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             Int32ExpressionMediator exp = 0 + (dbo.Person.Id - 3);
 
             //then
-            ArithmeticExpression.ArithmeticExpressionElements ae = exp.Expression.Should().BeOfType<ArithmeticExpression>()
+            ArithmeticExpression.ArithmeticExpressionElements ae = exp.Expression!.Should().BeOfType<ArithmeticExpression>()
                 .Which.As<IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements>>()
-                .Expression;
+                .Expression!;
 
             ae.Should().NotBeNull();
             ae.ArithmeticOperator.Should().Be(ArithmeticExpressionOperator.Add);
@@ -193,7 +193,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             var subtract = ae.Args.Last().Should().BeOfType<Int32ExpressionMediator>()
                 .Which.Expression.Should().BeOfType<ArithmeticExpression>()
                 .Subject.As<IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements>>()
-                .Expression;
+                .Expression!;
 
             subtract.ArithmeticOperator.Should().Be(ArithmeticExpressionOperator.Subtract);
 
@@ -216,9 +216,9 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             Int32ExpressionMediator exp = 0 + (dbo.Person.Id - 3) * 20;
 
             //then
-            ArithmeticExpression.ArithmeticExpressionElements ae = exp.Expression.Should().BeOfType<ArithmeticExpression>()
+            ArithmeticExpression.ArithmeticExpressionElements ae = exp.Expression!.Should().BeOfType<ArithmeticExpression>()
                 .Which.As<IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements>>()
-                .Expression;
+                .Expression!;
 
             // 0 + (inner)
             ae.Should().NotBeNull();
@@ -234,7 +234,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             var multiply = ae.Args.Last().Should().BeOfType<Int32ExpressionMediator>()
                 .Which.Expression.Should().BeOfType<ArithmeticExpression>()
                 .Subject.As<IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements>>()
-                .Expression;
+                .Expression!;
 
             multiply.ArithmeticOperator.Should().Be(ArithmeticExpressionOperator.Multiply);
 
@@ -242,7 +242,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             var subtract = multiply.Args.First().Should().BeOfType<Int32ExpressionMediator>()
                 .Which.Expression.Should().BeOfType<ArithmeticExpression>()
                 .Subject.As<IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements>>()
-                .Expression;
+                .Expression!;
 
             subtract.ArithmeticOperator.Should().Be(ArithmeticExpressionOperator.Subtract);
 
@@ -270,9 +270,9 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             DoubleExpressionMediator exp = 0 + (dbo.Person.Id - 3.25d) * 20;
 
             //then
-            ArithmeticExpression.ArithmeticExpressionElements ae = exp.Expression.Should().BeOfType<ArithmeticExpression>()
+            ArithmeticExpression.ArithmeticExpressionElements ae = exp.Expression!.Should().BeOfType<ArithmeticExpression>()
                 .Which.As<IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements>>()
-                .Expression;
+                .Expression!;
 
             // 0 + (inner)
             ae.Should().NotBeNull();
@@ -288,7 +288,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             var multiply = ae.Args.Last().Should().BeOfType<DoubleExpressionMediator>()
                 .Which.Expression.Should().BeOfType<ArithmeticExpression>()
                 .Subject.As<IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements>>()
-                .Expression;
+                .Expression!;
 
             multiply.ArithmeticOperator.Should().Be(ArithmeticExpressionOperator.Multiply);
 
@@ -296,7 +296,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             var subtract = multiply.Args.First().Should().BeOfType<DoubleExpressionMediator>()
                 .Which.Expression.Should().BeOfType<ArithmeticExpression>()
                 .Subject.As<IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements>>()
-                .Expression;
+                .Expression!;
 
             subtract.ArithmeticOperator.Should().Be(ArithmeticExpressionOperator.Subtract);
 

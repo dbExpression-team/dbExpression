@@ -10,11 +10,10 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     [Trait("Statement", "SELECT")]
     [Trait("Function", "CAST")]
-    [Trait("Function", "LIKE")]
-    public partial class CastAndLikeTests : ExecutorTestBase
+    [Trait("Operation", "LIKE")]
+    public partial class CastAndLikeTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [Trait("Operation", "LIKE")]
         [MsSqlVersions.AllVersions]
         public void Does_where_clause_using_cast_of_decimal_and_like_succeed(int version, int expected = 1)
         {
@@ -34,7 +33,6 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [Trait("Operation", "LIKE")]
         [MsSqlVersions.AllVersions]
         public void Does_where_clause_using_cast_of_nullable_decimal_and_like_succeed(int version, int expected = 2)
         {

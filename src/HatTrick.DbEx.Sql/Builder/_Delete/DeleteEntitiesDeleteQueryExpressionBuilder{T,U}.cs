@@ -35,7 +35,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #region constructors
         public DeleteEntitiesDeleteQueryExpressionBuilder(
             DeleteQueryExpression expression,
-            Func<IDeleteQueryExecutionPipeline> executionPipelineFactory,
+            Func<IDeleteQueryExpressionExecutionPipeline> executionPipelineFactory,
             Table<TEntity> entity
         ) : base(expression, executionPipelineFactory)
         {

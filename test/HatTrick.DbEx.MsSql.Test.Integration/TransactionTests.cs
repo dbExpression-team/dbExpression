@@ -4,7 +4,7 @@ using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
 using System;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -12,7 +12,7 @@ using Xunit;
 namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     [Trait("Statement", "UPDATE")]
-    public partial class TransactionTests : ExecutorTestBase
+    public partial class TransactionTests : ResetDatabaseAfterEveryTest
     {
         [Theory]
         [MsSqlVersions.AllVersions]

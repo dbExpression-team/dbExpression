@@ -22,7 +22,7 @@ namespace HatTrick.DbEx.Sql.Expression
     public static class QueryExpressionExtensions
     {
         public static bool IsSelectQueryExpression(this QueryExpression expression)
-            => expression is SelectQueryExpression || expression is SelectSetQueryExpression;
+            => expression is QueryExpression;
 
         public static bool IsInsertQueryExpression(this QueryExpression expression)
             => expression is InsertQueryExpression;

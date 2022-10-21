@@ -20,6 +20,7 @@ using HatTrick.DbEx.Sql.Assembler;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Configuration
 {

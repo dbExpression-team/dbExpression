@@ -27,30 +27,30 @@ namespace HatTrick.DbEx.Sql.Configuration
         /// Use the execution pipeline type <typeparamref name="TQuery"/> to assemble and execute queries.
         /// </summary>
         IQueryExecutionPipelineFactoryContinuationConfigurationBuilder<TDatabase, TPipeline> ForPipelineType<TPipeline>()
-            where TPipeline : class, IQueryExecutionPipeline;
+            where TPipeline : class, IQueryExpressionExecutionPipeline;
 
         /// <summary>
         /// Use a different query expression type for SELECT queries.
         /// </summary>
         /// <remarks>This method is shorthand for <see cref="ForQueryType{TQuery}"/>.</remarks>
-        IQueryExecutionPipelineFactoryContinuationConfigurationBuilder<TDatabase, ISelectQueryExecutionPipeline> ForSelect();
+        IQueryExecutionPipelineFactoryContinuationConfigurationBuilder<TDatabase, ISelectQueryExpressionExecutionPipeline> ForSelect();
 
         /// <summary>
         /// Use the execution pipeline type to assemble and execute INSERT queries.
         /// </summary>
         /// <remarks>This method is shorthand for <see cref="ForPipelineType{TPipeline}"/>.</remarks>
-        IQueryExecutionPipelineFactoryContinuationConfigurationBuilder<TDatabase, IInsertQueryExecutionPipeline> ForInsert();
+        IQueryExecutionPipelineFactoryContinuationConfigurationBuilder<TDatabase, IInsertQueryExpressionExecutionPipeline> ForInsert();
 
         /// <summary>
         /// Use the execution pipeline type to assemble and execute UPDATE queries.
         /// </summary>
         /// <remarks>This method is shorthand for <see cref="ForPipelineType{TPipeline}"/>.</remarks>
-        IQueryExecutionPipelineFactoryContinuationConfigurationBuilder<TDatabase, IUpdateQueryExecutionPipeline> ForUpdate();
+        IQueryExecutionPipelineFactoryContinuationConfigurationBuilder<TDatabase, IUpdateQueryExpressionExecutionPipeline> ForUpdate();
 
         /// <summary>
         /// Use the execution pipeline type to assemble and execute DELETE queries.
         /// </summary>
         /// <remarks>This method is shorthand for <see cref="ForPipelineType{TPipeline}"/>.</remarks>
-        IQueryExecutionPipelineFactoryContinuationConfigurationBuilder<TDatabase, IDeleteQueryExecutionPipeline> ForDelete();
+        IQueryExecutionPipelineFactoryContinuationConfigurationBuilder<TDatabase, IDeleteQueryExpressionExecutionPipeline> ForDelete();
     }
 }

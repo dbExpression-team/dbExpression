@@ -89,7 +89,7 @@ namespace {Namespace}
         {-#each Operations-}
         public static ObjectExpressionMediator operator {ArithmeticOperatorSymbol}(AliasExpression<T> a, {:operationType.Name}ExpressionMediator b) 
         {{
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.{ArithmeticOperatorName})
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.{ArithmeticOperatorName})
             {{
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -104,7 +104,7 @@ namespace {Namespace}
         {-#if :operationType.IsNullable-}
         public static ObjectExpressionMediator operator {ArithmeticOperatorSymbol}(AliasExpression<T> a, Nullable{:operationType.Name}ExpressionMediator b) 
         {{
-            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression.ArithmeticOperator == ArithmeticExpressionOperator.{ArithmeticOperatorName})
+            if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.{ArithmeticOperatorName})
             {{
                 be.Expression.Args.Insert(0, a);
                 return new(b.Expression);
@@ -155,7 +155,7 @@ namespace {Namespace}
         #endregion
 
         #region data types
-        {-#each Filters-}
+        {-#each Filters.ThisTypeOnlyFilters-}
         {-?var:dataType = Type-}
         #region {:dataType.Alias}
         {-#if !:dataType.Type => IsTypeOfObject-}
@@ -184,7 +184,7 @@ namespace {Namespace}
         {-/each-}
 
         #region fields
-        {-#each Filters-}
+        {-#each Filters.ThisTypeOnlyFilters-}
         {-?var:dataType = Type-}
         #region {:dataType.Alias}
         {-#if !:dataType.Type => IsTypeOfObject-}
@@ -204,7 +204,7 @@ namespace {Namespace}
         #endregion
         
         #region mediators
-        {-#each Filters-}
+        {-#each Filters.ThisTypeOnlyFilters-}
         {-?var:dataType = Type-}
         #region {:dataType.Alias}
         {-#if !:dataType.Type => IsTypeOfObject-}

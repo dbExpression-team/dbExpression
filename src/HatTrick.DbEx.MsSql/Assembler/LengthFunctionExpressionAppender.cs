@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
         public override void AppendElement(LengthFunctionExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             builder.Appender.Write("LEN(");
-            builder.AppendElement((expression as IExpressionProvider<IExpressionElement>).Expression, context);
+            builder.AppendElement((expression as IExpressionProvider<IExpressionElement>).Expression!, context);
             builder.Appender.Write(")");
         }
         #endregion

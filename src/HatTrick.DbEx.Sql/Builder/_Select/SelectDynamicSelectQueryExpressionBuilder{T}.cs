@@ -37,9 +37,19 @@ namespace HatTrick.DbEx.Sql.Builder
     {
         #region constructors
         public SelectDynamicSelectQueryExpressionBuilder(
-            Func<ISelectQueryExecutionPipeline> executionPipelineFactory,
-            SelectSetQueryExpressionBuilder<TDatabase> controller
-        ) : base(executionPipelineFactory, controller)
+            Func<SelectQueryExpression> queryExpressionFactory,
+            Func<ISelectQueryExpressionExecutionPipeline> executionPipelineFactory
+        ) : base(queryExpressionFactory, executionPipelineFactory)
+        {
+
+        }
+
+        public SelectDynamicSelectQueryExpressionBuilder(
+            Func<SelectQueryExpression> queryExpressionFactory,
+            Func<ISelectQueryExpressionExecutionPipeline> executionPipelineFactory,
+            SelectQueryExpression rootExpression,
+            SelectQueryExpression currentExpression
+        ) : base(queryExpressionFactory, executionPipelineFactory, rootExpression, currentExpression)
         {
 
         }
@@ -49,19 +59,23 @@ namespace HatTrick.DbEx.Sql.Builder
         #region UnionSelectDynamicsInitiation<TDatabase>
         UnionSelectDynamicsContinuation<TDatabase> UnionSelectDynamicsInitiation<TDatabase>.Union()
         {
-            Controller.ApplyUnion();
+            ApplyUnion();
             return new SelectDynamicsSelectQueryExpressionBuilder<TDatabase>(
+                QueryExpressionFactory,
                 ExecutionPipelineFactory,
-                Controller
+                SelectQueryExpression,
+                Current
             );
         }
 
         UnionSelectDynamicsContinuation<TDatabase> UnionSelectDynamicsInitiation<TDatabase>.UnionAll()
         {
-            Controller.ApplyUnionAll();
+            ApplyUnionAll();
             return new SelectDynamicsSelectQueryExpressionBuilder<TDatabase>(
+                QueryExpressionFactory,
                 ExecutionPipelineFactory,
-                Controller
+                SelectQueryExpression,
+                Current
             );
         }
         #endregion
@@ -106,35 +120,35 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <inheritdoc />
         JoinOn<SelectDynamicContinuation<TDatabase>> SelectDynamicContinuation<TDatabase>.InnerJoin(AnyEntity entity)
-            => new SelectDynamicJoinExpressionBuilder<TDatabase>(Controller.Current, entity, JoinOperationExpressionOperator.INNER, this);
+            => new SelectDynamicJoinExpressionBuilder<TDatabase>(Current, entity, JoinOperationExpressionOperator.INNER, this);
 
         /// <inheritdoc />
         WithAlias<JoinOn<SelectDynamicContinuation<TDatabase>>> SelectDynamicContinuation<TDatabase>.InnerJoin(AnySelectSubquery subquery)
-            => new SelectDynamicJoinExpressionBuilder<TDatabase>(Controller.Current, subquery.Expression, JoinOperationExpressionOperator.INNER, this); 
+            => new SelectDynamicJoinExpressionBuilder<TDatabase>(Current, subquery.Expression, JoinOperationExpressionOperator.INNER, this); 
 
         /// <inheritdoc />
         JoinOn<SelectDynamicContinuation<TDatabase>> SelectDynamicContinuation<TDatabase>.LeftJoin(AnyEntity entity)
-            => new SelectDynamicJoinExpressionBuilder<TDatabase>(Controller.Current, entity, JoinOperationExpressionOperator.LEFT, this);
+            => new SelectDynamicJoinExpressionBuilder<TDatabase>(Current, entity, JoinOperationExpressionOperator.LEFT, this);
 
         /// <inheritdoc />
         WithAlias<JoinOn<SelectDynamicContinuation<TDatabase>>> SelectDynamicContinuation<TDatabase>.LeftJoin(AnySelectSubquery subquery)
-            => new SelectDynamicJoinExpressionBuilder<TDatabase>(Controller.Current, subquery.Expression, JoinOperationExpressionOperator.LEFT, this);
+            => new SelectDynamicJoinExpressionBuilder<TDatabase>(Current, subquery.Expression, JoinOperationExpressionOperator.LEFT, this);
 
         /// <inheritdoc />
         JoinOn<SelectDynamicContinuation<TDatabase>> SelectDynamicContinuation<TDatabase>.RightJoin(AnyEntity entity)
-            => new SelectDynamicJoinExpressionBuilder<TDatabase>(Controller.Current, entity, JoinOperationExpressionOperator.RIGHT, this);
+            => new SelectDynamicJoinExpressionBuilder<TDatabase>(Current, entity, JoinOperationExpressionOperator.RIGHT, this);
 
         /// <inheritdoc />
         WithAlias<JoinOn<SelectDynamicContinuation<TDatabase>>> SelectDynamicContinuation<TDatabase>.RightJoin(AnySelectSubquery subquery)
-            => new SelectDynamicJoinExpressionBuilder<TDatabase>(Controller.Current, subquery.Expression, JoinOperationExpressionOperator.RIGHT, this);
+            => new SelectDynamicJoinExpressionBuilder<TDatabase>(Current, subquery.Expression, JoinOperationExpressionOperator.RIGHT, this);
 
         /// <inheritdoc />
         JoinOn<SelectDynamicContinuation<TDatabase>> SelectDynamicContinuation<TDatabase>.FullJoin(AnyEntity entity)
-            => new SelectDynamicJoinExpressionBuilder<TDatabase>(Controller.Current, entity, JoinOperationExpressionOperator.FULL, this);
+            => new SelectDynamicJoinExpressionBuilder<TDatabase>(Current, entity, JoinOperationExpressionOperator.FULL, this);
 
         /// <inheritdoc />
         WithAlias<JoinOn<SelectDynamicContinuation<TDatabase>>> SelectDynamicContinuation<TDatabase>.FullJoin(AnySelectSubquery subquery)
-            => new SelectDynamicJoinExpressionBuilder<TDatabase>(Controller.Current, subquery.Expression, JoinOperationExpressionOperator.FULL, this);
+            => new SelectDynamicJoinExpressionBuilder<TDatabase>(Current, subquery.Expression, JoinOperationExpressionOperator.FULL, this);
 
         /// <inheritdoc />
         SelectDynamicContinuation<TDatabase> SelectDynamicContinuation<TDatabase>.CrossJoin(AnyEntity entity)
@@ -146,7 +160,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         SelectDynamicContinuation<TDatabase> WithAlias<SelectDynamicContinuation<TDatabase>>.As(string alias)
         {
-            Controller.Current.From!.As(alias);
+            Current.From!.As(alias);
             return this;
         }
 
@@ -504,28 +518,28 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         private dynamic? ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand)
-            => ExecutionPipelineFactory().ExecuteSelectDynamic(Controller.Current, connection, configureCommand);
+            => ExecutionPipelineFactory().ExecuteSelectDynamic(Current, connection, configureCommand);
 
         private dynamic? ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, dynamic> map)
-            => ExecutionPipelineFactory().ExecuteSelectObject(Controller.Current, connection, configureCommand, map);
+            => ExecutionPipelineFactory().ExecuteSelectObject(Current, connection, configureCommand, map);
 
         private void ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> read)
-            => ExecutionPipelineFactory().ExecuteSelectDynamic(Controller.Current, connection, configureCommand, read);
+            => ExecutionPipelineFactory().ExecuteSelectDynamic(Current, connection, configureCommand, read);
 
         private T? ExecutPipeline<T>(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, T> map)
-            => ExecutionPipelineFactory().ExecuteSelectObject(Controller.Current, connection, configureCommand, map);
+            => ExecutionPipelineFactory().ExecuteSelectObject(Current, connection, configureCommand, map);
 
         private Task<dynamic?> ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken cancellationToken)
-            => ExecutionPipelineFactory().ExecuteSelectDynamicAsync(Controller.Current, connection, configureCommand, cancellationToken);
+            => ExecutionPipelineFactory().ExecuteSelectDynamicAsync(Current, connection, configureCommand, cancellationToken);
 
         private Task ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> read, CancellationToken cancellationToken)
-            => ExecutionPipelineFactory().ExecuteSelectDynamicAsync(Controller.Current, connection, configureCommand, read, cancellationToken);
+            => ExecutionPipelineFactory().ExecuteSelectDynamicAsync(Current, connection, configureCommand, read, cancellationToken);
 
         private Task ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, Task> read, CancellationToken cancellationToken)
-            => ExecutionPipelineFactory().ExecuteSelectDynamicAsync(Controller.Current, connection, configureCommand, read, cancellationToken);
+            => ExecutionPipelineFactory().ExecuteSelectDynamicAsync(Current, connection, configureCommand, read, cancellationToken);
 
         private Task<dynamic?> ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, dynamic> map, CancellationToken cancellationToken)
-            => ExecutionPipelineFactory().ExecuteSelectObjectAsync(Controller.Current, connection, configureCommand, map, cancellationToken);
+            => ExecutionPipelineFactory().ExecuteSelectObjectAsync(Current, connection, configureCommand, map, cancellationToken);
         #endregion
         #endregion
     }

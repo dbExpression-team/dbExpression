@@ -12,7 +12,7 @@ using Xunit;
 namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     [Trait("Statement", "INSERT")]
-    public partial class InsertTests : ExecutorTestBase
+    public partial class InsertTests : ResetDatabaseAfterEveryTest
     {
         [Theory]
         [MsSqlVersions.AllVersions]

@@ -14,7 +14,7 @@ using Xunit;
 namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     [Trait("Operation", "UNION")]
-    public partial class UnionTests : ExecutorTestBase
+    public partial class UnionTests : ResetDatabaseNotRequired
     {
         [Theory]
         [MsSqlVersions.AllVersions]
@@ -450,6 +450,28 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
         [Theory]
         [MsSqlVersions.AllVersions]
+        public void Can_union_two_select_one_queries_successfully(int version, int personId = 1)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            IList<Person> persons = db.SelectOne<Person>()
+             .From(dbo.Person)
+             .Where(dbo.Person.Id == personId)
+             .UnionAll()
+             .SelectOne()
+             .From(dbo.Person)
+             .Where(dbo.Person.Id == personId)
+             .Execute();
+
+            //then
+            persons.Count().Should().Be(2);
+            persons.Should().Match(p => p.All(x => x.Id == personId));
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
         public void Can_union_two_enums_successfully(int version, int expected = 2)
         {
             //given
@@ -614,6 +636,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
         [Theory]
         [MsSqlVersions.AllVersions]
+        [Trait("Operation", "SUBQUERY")]
         public void Can_select_with_union_all_of_value_subquery_with_ordering_execute_successfully(int version, int expected = 100)
         {
             //given
@@ -648,6 +671,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
         [Theory]
         [MsSqlVersions.AllVersions]
+        [Trait("Operation", "SUBQUERY")]
         public void Can_pivot_select_statements_using_union_all_and_aggregation_execute_successfully(int version, int expected = 16)
         {
             //given

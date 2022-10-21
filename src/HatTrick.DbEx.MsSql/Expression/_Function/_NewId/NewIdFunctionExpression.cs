@@ -22,7 +22,7 @@ using System;
 
 namespace HatTrick.DbEx.MsSql.Expression
 {
-    public partial class NewIdFunctionExpression : DataTypeFunctionExpression,
+    public partial class NewIdFunctionExpression : SystemFunctionExpression,
         IExpressionElement<Guid>,
         GuidElement,
         IEquatable<NewIdFunctionExpression>

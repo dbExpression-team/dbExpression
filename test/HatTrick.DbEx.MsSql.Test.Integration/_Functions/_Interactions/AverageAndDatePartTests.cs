@@ -10,7 +10,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     [Trait("Function", "AVG")]
     [Trait("Function", "DATEPART")]
-    public partial class AverageAndPartDiffTests : ExecutorTestBase
+    public partial class AverageAndPartDiffTests : ResetDatabaseNotRequired
     {
         [Theory]
         [MsSqlVersions.AllVersions]

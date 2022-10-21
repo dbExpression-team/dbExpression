@@ -36,9 +36,19 @@ namespace HatTrick.DbEx.Sql.Builder
     {
         #region constructors
         public SelectValueSelectQueryExpressionBuilder(
-            Func<ISelectQueryExecutionPipeline> executionPipelineFactory,
-            SelectSetQueryExpressionBuilder<TDatabase> controller
-        ) : base(executionPipelineFactory, controller)
+            Func<SelectQueryExpression> queryExpressionFactory,
+            Func<ISelectQueryExpressionExecutionPipeline> executionPipelineFactory
+        ) : base(queryExpressionFactory, executionPipelineFactory)
+        {
+
+        }
+
+        public SelectValueSelectQueryExpressionBuilder(
+            Func<SelectQueryExpression> queryExpressionFactory,
+            Func<ISelectQueryExpressionExecutionPipeline> executionPipelineFactory,
+            SelectQueryExpression rootExpression,
+            SelectQueryExpression currentExpression
+        ) : base(queryExpressionFactory, executionPipelineFactory, rootExpression, currentExpression)
         {
 
         }
@@ -48,19 +58,23 @@ namespace HatTrick.DbEx.Sql.Builder
         #region UnionSelectValuesInitiation<TDatabase>
         UnionSelectValuesContinuation<TDatabase, TValue> UnionSelectValuesInitiation<TDatabase, TValue>.Union()
         {
-            Controller.ApplyUnion();
+            ApplyUnion();
             return new SelectValuesSelectQueryExpressionBuilder<TDatabase, TValue>(
+                QueryExpressionFactory,
                 ExecutionPipelineFactory,
-                Controller
+                SelectQueryExpression,
+                Current
             );
         }
 
         UnionSelectValuesContinuation<TDatabase, TValue> UnionSelectValuesInitiation<TDatabase, TValue>.UnionAll()
         {
-            Controller.ApplyUnionAll();
+            ApplyUnionAll();
             return new SelectValuesSelectQueryExpressionBuilder<TDatabase, TValue>(
+                QueryExpressionFactory,
                 ExecutionPipelineFactory,
-                Controller
+                SelectQueryExpression,
+                Current
             );
         }
         #endregion
@@ -126,35 +140,35 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <inheritdoc />
         JoinOn<SelectValueContinuation<TDatabase, TValue>> SelectValueContinuation<TDatabase, TValue>.InnerJoin(AnyEntity entity)
-            => new SelectValueJoinExpressionBuilder<TDatabase, TValue>(Controller.Current, entity, JoinOperationExpressionOperator.INNER, this);
+            => new SelectValueJoinExpressionBuilder<TDatabase, TValue>(Current, entity, JoinOperationExpressionOperator.INNER, this);
 
         /// <inheritdoc />
         WithAlias<JoinOn<SelectValueContinuation<TDatabase, TValue>>> SelectValueContinuation<TDatabase, TValue>.InnerJoin(AnySelectSubquery subquery)
-            => new SelectValueJoinExpressionBuilder<TDatabase, TValue>(Controller.Current, subquery.Expression, JoinOperationExpressionOperator.INNER, this);
+            => new SelectValueJoinExpressionBuilder<TDatabase, TValue>(Current, subquery.Expression, JoinOperationExpressionOperator.INNER, this);
 
         /// <inheritdoc />
         JoinOn<SelectValueContinuation<TDatabase, TValue>> SelectValueContinuation<TDatabase, TValue>.LeftJoin(AnyEntity entity)
-            => new SelectValueJoinExpressionBuilder<TDatabase, TValue>(Controller.Current, entity, JoinOperationExpressionOperator.LEFT, this);
+            => new SelectValueJoinExpressionBuilder<TDatabase, TValue>(Current, entity, JoinOperationExpressionOperator.LEFT, this);
 
         /// <inheritdoc />
         WithAlias<JoinOn<SelectValueContinuation<TDatabase, TValue>>> SelectValueContinuation<TDatabase, TValue>.LeftJoin(AnySelectSubquery subquery)
-            => new SelectValueJoinExpressionBuilder<TDatabase, TValue>(Controller.Current, subquery.Expression, JoinOperationExpressionOperator.LEFT, this);
+            => new SelectValueJoinExpressionBuilder<TDatabase, TValue>(Current, subquery.Expression, JoinOperationExpressionOperator.LEFT, this);
 
         /// <inheritdoc />
         JoinOn<SelectValueContinuation<TDatabase, TValue>> SelectValueContinuation<TDatabase, TValue>.RightJoin(AnyEntity entity)
-            => new SelectValueJoinExpressionBuilder<TDatabase, TValue>(Controller.Current, entity, JoinOperationExpressionOperator.RIGHT, this);
+            => new SelectValueJoinExpressionBuilder<TDatabase, TValue>(Current, entity, JoinOperationExpressionOperator.RIGHT, this);
 
         /// <inheritdoc />
         WithAlias<JoinOn<SelectValueContinuation<TDatabase, TValue>>> SelectValueContinuation<TDatabase, TValue>.RightJoin(AnySelectSubquery subquery)
-            => new SelectValueJoinExpressionBuilder<TDatabase, TValue>(Controller.Current, subquery.Expression, JoinOperationExpressionOperator.RIGHT, this);
+            => new SelectValueJoinExpressionBuilder<TDatabase, TValue>(Current, subquery.Expression, JoinOperationExpressionOperator.RIGHT, this);
 
         /// <inheritdoc />
         JoinOn<SelectValueContinuation<TDatabase, TValue>> SelectValueContinuation<TDatabase, TValue>.FullJoin(AnyEntity entity)
-            => new SelectValueJoinExpressionBuilder<TDatabase, TValue>(Controller.Current, entity, JoinOperationExpressionOperator.FULL, this);
+            => new SelectValueJoinExpressionBuilder<TDatabase, TValue>(Current, entity, JoinOperationExpressionOperator.FULL, this);
 
         /// <inheritdoc />
         WithAlias<JoinOn<SelectValueContinuation<TDatabase, TValue>>> SelectValueContinuation<TDatabase, TValue>.FullJoin(AnySelectSubquery subquery)
-            => new SelectValueJoinExpressionBuilder<TDatabase, TValue>(Controller.Current, subquery.Expression, JoinOperationExpressionOperator.FULL, this);
+            => new SelectValueJoinExpressionBuilder<TDatabase, TValue>(Current, subquery.Expression, JoinOperationExpressionOperator.FULL, this);
 
         /// <inheritdoc />
         SelectValueContinuation<TDatabase, TValue> SelectValueContinuation<TDatabase, TValue>.CrossJoin(AnyEntity entity)
@@ -166,7 +180,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         SelectValueContinuation<TDatabase, TValue> WithAlias<SelectValueContinuation<TDatabase, TValue>>.As(string alias)
         {
-            Controller.Current.From!.As(alias);
+            Current.From!.As(alias);
             return this;
         }
         #endregion
@@ -261,10 +275,10 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         private TValue? ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand)
-            => ExecutionPipelineFactory().ExecuteSelectValue<TValue>(Controller.Current, connection, configureCommand);
+            => ExecutionPipelineFactory().ExecuteSelectValue<TValue>(Current, connection, configureCommand);
 
         private Task<TValue?> ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken cancellationToken)
-            => ExecutionPipelineFactory().ExecuteSelectValueAsync<TValue>(Controller.Current, connection, configureCommand, cancellationToken);
+            => ExecutionPipelineFactory().ExecuteSelectValueAsync<TValue>(Current, connection, configureCommand, cancellationToken);
         #endregion
         #endregion
     }
