@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.Sql.Expression
     /// MUST inherit directly from FieldExpression{Byte[]}, not NullableFieldExpression{Byte[],Byte[]?}.
     /// </remarks>
     public abstract partial class NullableByteArrayFieldExpression :
-        FieldExpression<byte[]>,
+        FieldExpression<byte[]?>,
         NullableByteArrayElement,
         IEquatable<NullableByteArrayFieldExpression>
     {

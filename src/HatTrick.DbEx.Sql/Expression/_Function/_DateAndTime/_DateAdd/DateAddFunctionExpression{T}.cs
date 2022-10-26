@@ -17,11 +17,13 @@
 #endregion
 
 ﻿using System;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class DateAddFunctionExpression<TValue> : DateAddFunctionExpression,
-        IExpressionElement<TValue>
+        IExpressionElement<TValue>,
+        AnyElement<TValue>
         where TValue : IComparable
     {
         #region constructors
@@ -36,6 +38,14 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
+        #endregion
+
+        #region in
+        public FilterExpression In(params TValue[] values)
+           => new FilterExpression<bool>(this, new InExpression<TValue>(this, values), FilterExpressionOperator.None);
+
+        public FilterExpression In(IEnumerable<TValue> values)
+            => new FilterExpression<bool>(this, new InExpression<TValue>(this, values), FilterExpressionOperator.None);
         #endregion
 
         #region as

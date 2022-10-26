@@ -26,12 +26,6 @@ namespace HatTrick.DbEx.Sql.Expression
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public partial class NullableDecimalFieldExpression
     {
-        #region in value set
-        public override FilterExpression In(params decimal?[] value) => new FilterExpression<bool?>(this, new InExpression<decimal?>(this, value), FilterExpressionOperator.None);
-        
-        public override FilterExpression In(IEnumerable<decimal?> value) => new FilterExpression<bool?>(this, new InExpression<decimal?>(this, value), FilterExpressionOperator.None);
-        #endregion
-
         #region implicit operators
         public static implicit operator NullableDecimalExpressionMediator(NullableDecimalFieldExpression a) => new(a);
         #endregion

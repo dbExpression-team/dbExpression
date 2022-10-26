@@ -17,11 +17,13 @@
 #endregion
 
 ﻿using System;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class ExpressionMediator<TValue> : ExpressionMediator,
-        IExpressionElement<TValue>
+        IExpressionElement<TValue>,
+        AnyElement<TValue>
     {
         #region constructors
         protected ExpressionMediator()
@@ -31,6 +33,14 @@ namespace HatTrick.DbEx.Sql.Expression
         public ExpressionMediator(IExpressionElement expression) : base(expression, expression is IExpressionTypeProvider p ? p.DeclaredType : typeof(TValue))
         {
         }
+        #endregion
+
+        #region in
+        public FilterExpression In(params TValue[] values)
+           => new FilterExpression<bool>(this, new InExpression<TValue>(this, values), FilterExpressionOperator.None);
+
+        public FilterExpression In(IEnumerable<TValue> values)
+            => new FilterExpression<bool>(this, new InExpression<TValue>(this, values), FilterExpressionOperator.None);
         #endregion
 
         #region as

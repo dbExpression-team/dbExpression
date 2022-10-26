@@ -16,6 +16,10 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
+using HatTrick.DbEx.Sql.Expression;
+using System.Collections;
+using System.Collections.Generic;
+
 namespace HatTrick.DbEx.Sql
 {
 #pragma warning disable IDE1006 // Naming Styles
@@ -23,5 +27,7 @@ namespace HatTrick.DbEx.Sql
 #pragma warning restore IDE1006 // Naming Styles
     {
         AliasedElement<T> As(string alias);
+        FilterExpression In(params T[] values);
+        FilterExpression In(IEnumerable<T> values);
     }
 }

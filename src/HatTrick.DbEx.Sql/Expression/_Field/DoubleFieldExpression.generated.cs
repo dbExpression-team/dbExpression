@@ -26,12 +26,6 @@ namespace HatTrick.DbEx.Sql.Expression
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public partial class DoubleFieldExpression
     {
-        #region in value set
-        public override FilterExpression In(params double[] value) => new FilterExpression<bool>(this, new InExpression<double>(this, value), FilterExpressionOperator.None);
-        
-        public override FilterExpression In(IEnumerable<double> value) => new FilterExpression<bool>(this, new InExpression<double>(this, value), FilterExpressionOperator.None);
-        #endregion
-
         #region implicit operators
         public static implicit operator DoubleExpressionMediator(DoubleFieldExpression a) => new(a);
         #endregion

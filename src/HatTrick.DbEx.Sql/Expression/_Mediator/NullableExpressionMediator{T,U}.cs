@@ -17,11 +17,13 @@
 #endregion
 
 ﻿using System;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class NullableExpressionMediator<TValue,TNullableValue> : ExpressionMediator,
-        IExpressionElement<TValue, TNullableValue>
+        IExpressionElement<TValue, TNullableValue>,
+        AnyElement<TNullableValue>
     {
         #region constructors
         protected NullableExpressionMediator()
@@ -31,6 +33,14 @@ namespace HatTrick.DbEx.Sql.Expression
         protected NullableExpressionMediator(IExpressionElement expression) : base(expression, typeof(TNullableValue))
         {
         }
+        #endregion
+
+        #region in
+        public FilterExpression In(params TNullableValue[] values)
+           => new FilterExpression<bool>(this, new InExpression<TNullableValue>(this, values), FilterExpressionOperator.None);
+
+        public FilterExpression In(IEnumerable<TNullableValue> values)
+            => new FilterExpression<bool>(this, new InExpression<TNullableValue>(this, values), FilterExpressionOperator.None);
         #endregion
 
         #region as

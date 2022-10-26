@@ -26,12 +26,6 @@ namespace HatTrick.DbEx.Sql.Expression
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public partial class NullableInt32FieldExpression
     {
-        #region in value set
-        public override FilterExpression In(params int?[] value) => new FilterExpression<bool?>(this, new InExpression<int?>(this, value), FilterExpressionOperator.None);
-        
-        public override FilterExpression In(IEnumerable<int?> value) => new FilterExpression<bool?>(this, new InExpression<int?>(this, value), FilterExpressionOperator.None);
-        #endregion
-
         #region implicit operators
         public static implicit operator NullableInt32ExpressionMediator(NullableInt32FieldExpression a) => new(a);
         #endregion

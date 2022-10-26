@@ -17,6 +17,8 @@
 #endregion
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -49,6 +51,12 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
         #endregion
+
+        public FilterExpression In(params T[] values)
+            => new FilterExpression<bool>(this, new InExpression<T>(this, values), FilterExpressionOperator.None);
+
+        public FilterExpression In(IEnumerable<T> values)
+            => new FilterExpression<bool>(this, new InExpression<T>(this, values), FilterExpressionOperator.None);
 
         #region as
         public AliasedElement<T> As(string alias)

@@ -26,12 +26,6 @@ namespace HatTrick.DbEx.Sql.Expression
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public partial class ByteFieldExpression
     {
-        #region in value set
-        public override FilterExpression In(params byte[] value) => new FilterExpression<bool>(this, new InExpression<byte>(this, value), FilterExpressionOperator.None);
-        
-        public override FilterExpression In(IEnumerable<byte> value) => new FilterExpression<bool>(this, new InExpression<byte>(this, value), FilterExpressionOperator.None);
-        #endregion
-
         #region implicit operators
         public static implicit operator ByteExpressionMediator(ByteFieldExpression a) => new(a);
         #endregion

@@ -17,11 +17,13 @@
 #endregion
 
 ﻿using System;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class NullableLogFunctionExpression<TValue, TNullableValue> : LogFunctionExpression,
-        IExpressionElement<TValue, TNullableValue>
+        IExpressionElement<TValue, TNullableValue>,
+        AnyElement<TNullableValue>
         where TValue : IComparable
     {
         #region constructors
@@ -42,6 +44,14 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
+        #endregion
+
+        #region in
+        public FilterExpression In(params TNullableValue[] values)
+           => new FilterExpression<bool>(this, new InExpression<TNullableValue>(this, values), FilterExpressionOperator.None);
+
+        public FilterExpression In(IEnumerable<TNullableValue> values)
+            => new FilterExpression<bool>(this, new InExpression<TNullableValue>(this, values), FilterExpressionOperator.None);
         #endregion
 
         #region as

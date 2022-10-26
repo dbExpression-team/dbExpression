@@ -26,12 +26,6 @@ namespace HatTrick.DbEx.Sql.Expression
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public partial class SingleFieldExpression
     {
-        #region in value set
-        public override FilterExpression In(params float[] value) => new FilterExpression<bool>(this, new InExpression<float>(this, value), FilterExpressionOperator.None);
-        
-        public override FilterExpression In(IEnumerable<float> value) => new FilterExpression<bool>(this, new InExpression<float>(this, value), FilterExpressionOperator.None);
-        #endregion
-
         #region implicit operators
         public static implicit operator SingleExpressionMediator(SingleFieldExpression a) => new(a);
         #endregion

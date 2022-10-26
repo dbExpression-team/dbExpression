@@ -26,12 +26,6 @@ namespace HatTrick.DbEx.Sql.Expression
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public partial class Int64FieldExpression
     {
-        #region in value set
-        public override FilterExpression In(params long[] value) => new FilterExpression<bool>(this, new InExpression<long>(this, value), FilterExpressionOperator.None);
-        
-        public override FilterExpression In(IEnumerable<long> value) => new FilterExpression<bool>(this, new InExpression<long>(this, value), FilterExpressionOperator.None);
-        #endregion
-
         #region implicit operators
         public static implicit operator Int64ExpressionMediator(Int64FieldExpression a) => new(a);
         #endregion

@@ -34,12 +34,17 @@ namespace HatTrick.DbEx.Sql.Assembler
         private static void AddParametersFromList(InExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             var hasElements = false;
-            var enumerator = expression.Expression.GetEnumerator();
+            var enumerator = expression.Values.GetEnumerator();
             var firstElement = true;
+            Type? valueType = (expression.Expression as IExpressionTypeProvider)?.DeclaredType;
+            FieldExpression? field = expression.Expression.AsFieldExpression();
             while (enumerator.MoveNext())
             {
                 if (enumerator.Current is null)
                     continue;
+
+                if (valueType is null)
+                    valueType = enumerator.Current.GetType();
 
                 if (!firstElement)
                 {
@@ -49,13 +54,26 @@ namespace HatTrick.DbEx.Sql.Assembler
                 {
                     firstElement = false;
                 }
-                
-                var param = builder.Parameters.CreateInputParameter(
-                       enumerator.Current is null || enumerator.Current is NullElement ? DBNull.Value : enumerator.Current,
-                       (expression.Field as IExpressionTypeProvider).DeclaredType,
-                       builder.GetPlatformMetadata(expression.Field) ?? throw new DbExpressionException($"Expected to find metadata for {expression.Field}, but metadata is actually null."),
-                       context
-                );
+
+                ParameterizedExpression? param = null;
+                if (field is not null)
+                {
+                    param = builder.Parameters.CreateInputParameter(
+                           enumerator.Current is NullElement ? DBNull.Value : enumerator.Current,
+                           valueType,
+                           builder.GetPlatformMetadata(field) ?? throw new DbExpressionException($"Expected to find metadata for {field}, but metadata is actually null."),
+                           context
+                    );
+                }
+                else
+                {
+                    param = builder.Parameters.CreateInputParameter(
+                           enumerator.Current is NullElement ? DBNull.Value : enumerator.Current,
+                           valueType,
+                           context
+                    );
+                }
+
                 builder.Parameters.AddParameter(param);
                 builder.Appender.Write(param.Parameter.ParameterName);
 

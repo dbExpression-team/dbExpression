@@ -44,10 +44,5 @@ namespace HatTrick.DbEx.Sql.Expression
         public override int GetHashCode()
             => base.GetHashCode();
         #endregion
-
-        #region in
-        public override FilterExpression In(params TType[] value) => new FilterExpression<bool>(this, new InExpression<TType>(this, value), FilterExpressionOperator.None);
-        public override FilterExpression In(IEnumerable<TType> value) => new FilterExpression<bool>(this, new InExpression<TType>(this, value), FilterExpressionOperator.None);
-        #endregion
     }
 }
