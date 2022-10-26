@@ -26,12 +26,6 @@ namespace HatTrick.DbEx.Sql.Expression
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public partial class NullableDateTimeFieldExpression
     {
-        #region in value set
-        public override FilterExpression In(params DateTime?[] value) => new FilterExpression<bool?>(this, new InExpression<DateTime?>(this, value), FilterExpressionOperator.None);
-        
-        public override FilterExpression In(IEnumerable<DateTime?> value) => new FilterExpression<bool?>(this, new InExpression<DateTime?>(this, value), FilterExpressionOperator.None);
-        #endregion
-
         #region implicit operators
         public static implicit operator NullableDateTimeExpressionMediator(NullableDateTimeFieldExpression a) => new(a);
         #endregion

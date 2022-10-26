@@ -19,6 +19,7 @@
 ﻿using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Expression;
 using System;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.MsSql.Expression
 {
@@ -34,7 +35,14 @@ namespace HatTrick.DbEx.MsSql.Expression
         }
         #endregion
 
-        #region methods
+        #region in
+        public FilterExpression In(params DateTime[] values)
+           => new FilterExpression<bool>(this, new InExpression<DateTime>(this, values), FilterExpressionOperator.None);
+
+        public FilterExpression In(IEnumerable<DateTime> values)
+            => new FilterExpression<bool>(this, new InExpression<DateTime>(this, values), FilterExpressionOperator.None);
+        #endregion
+
         #region as
         public AliasedElement<DateTime> As(string alias)
             => new SelectExpression<DateTime>(this, alias);
@@ -53,7 +61,6 @@ namespace HatTrick.DbEx.MsSql.Expression
 
         public override int GetHashCode()
             => base.GetHashCode();
-        #endregion
         #endregion
     }
 }

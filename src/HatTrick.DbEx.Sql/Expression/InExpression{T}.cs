@@ -31,7 +31,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        public InExpression(FieldExpression field, IEnumerable<TValue> values) : base(field, values)
+        public InExpression(AnyElement<TValue> expression, IEnumerable<TValue> values) : base(expression, values)
         {
             enumerable = values;
             ordered = new Lazy<List<TValue>>(() => enumerable.OrderBy(x => x).ToList());
@@ -44,9 +44,9 @@ namespace HatTrick.DbEx.Sql.Expression
             if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
 
-            if (Field is null && obj.Field is not null) return false;
-            if (Field is not null && obj.Field is null) return false;
-            if (Field is not null && !Field.Equals(obj.Field)) return false;
+            if (Expression is null && obj.Expression is not null) return false;
+            if (Expression is not null && obj.Expression is null) return false;
+            if (Expression is not null && !Expression.Equals(obj.Expression)) return false;
 
             if (!ordered.Value.SequenceEqual(obj.ordered.Value)) return false;
 
@@ -64,7 +64,7 @@ namespace HatTrick.DbEx.Sql.Expression
                 const int multiplier = 16777619;
 
                 int hash = @base;
-                hash = (hash * multiplier) ^ (Field is not null ? Field.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (Expression is not null ? Expression.GetHashCode() : 0);
                 foreach (var item in ordered.Value)
                     hash = (hash * multiplier) ^ (item is not null ? item.GetHashCode() : 0);
 

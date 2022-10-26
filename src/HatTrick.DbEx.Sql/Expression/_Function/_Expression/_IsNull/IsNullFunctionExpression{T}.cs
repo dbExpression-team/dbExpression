@@ -16,7 +16,9 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿namespace HatTrick.DbEx.Sql.Expression
+using System.Collections.Generic;
+
+namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class IsNullFunctionExpression<TValue> : IsNullFunctionExpression,
         IExpressionElement<TValue>,
@@ -27,6 +29,14 @@
         {
 
         }
+        #endregion
+
+        #region in
+        public FilterExpression In(params TValue[] values)
+           => new FilterExpression<bool>(this, new InExpression<TValue>(this, values), FilterExpressionOperator.None);
+
+        public FilterExpression In(IEnumerable<TValue> values)
+            => new FilterExpression<bool>(this, new InExpression<TValue>(this, values), FilterExpressionOperator.None);
         #endregion
 
         #region as

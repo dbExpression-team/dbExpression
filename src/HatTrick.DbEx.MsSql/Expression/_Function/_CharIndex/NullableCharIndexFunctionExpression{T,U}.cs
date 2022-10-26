@@ -17,13 +17,15 @@
 #endregion
 
 ﻿using System;
+using System.Collections.Generic;
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Expression;
 
 namespace HatTrick.DbEx.MsSql.Expression
 {
     public abstract class NullableCharIndexFunctionExpression<TValue, TNullableValue> : CharIndexFunctionExpression,
-        IExpressionElement<TValue, TNullableValue>
+        IExpressionElement<TValue, TNullableValue>,
+        AnyElement<TNullableValue>
         where TValue : IComparable
     {
         #region constructors
@@ -36,6 +38,14 @@ namespace HatTrick.DbEx.MsSql.Expression
         {
 
         }
+        #endregion
+
+        #region in
+        public FilterExpression In(params TNullableValue[] values)
+           => new FilterExpression<bool>(this, new InExpression<TNullableValue>(this, values), FilterExpressionOperator.None);
+
+        public FilterExpression In(IEnumerable<TNullableValue> values)
+            => new FilterExpression<bool>(this, new InExpression<TNullableValue>(this, values), FilterExpressionOperator.None);
         #endregion
 
         #region as

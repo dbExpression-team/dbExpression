@@ -3,8 +3,10 @@
 ## [0.9.5]
 
 ### Added
+- In expression support for any element, not just field expressions
 	
 ### Changed
+- Concrete typed expressions implement AnyElement<> as well as IExpressionElement<>
 
 ### Fixed
 

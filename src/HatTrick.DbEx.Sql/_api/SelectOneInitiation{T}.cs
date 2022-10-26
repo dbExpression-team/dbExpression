@@ -171,7 +171,18 @@ namespace HatTrick.DbEx.Sql
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         /// </param>
         /// <returns><see cref="SelectValue{TDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        SelectValue<TDatabase, byte[]> SelectOne(AnyElement<byte[]> element);
+        SelectValue<TDatabase, byte[]> SelectOne(ByteArrayElement element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[]? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />?
+        /// </param>
+        /// <returns><see cref="SelectValue{TDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        SelectValue<TDatabase, byte[]?> SelectOne(NullableByteArrayElement element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTime" /> value.

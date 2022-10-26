@@ -26,12 +26,6 @@ namespace HatTrick.DbEx.Sql.Expression
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public partial class GuidFieldExpression
     {
-        #region in value set
-        public override FilterExpression In(params Guid[] value) => new FilterExpression<bool>(this, new InExpression<Guid>(this, value), FilterExpressionOperator.None);
-        
-        public override FilterExpression In(IEnumerable<Guid> value) => new FilterExpression<bool>(this, new InExpression<Guid>(this, value), FilterExpressionOperator.None);
-        #endregion
-
         #region implicit operators
         public static implicit operator GuidExpressionMediator(GuidFieldExpression a) => new(a);
         #endregion

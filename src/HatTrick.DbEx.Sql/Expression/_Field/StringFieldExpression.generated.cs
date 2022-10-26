@@ -26,12 +26,6 @@ namespace HatTrick.DbEx.Sql.Expression
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public partial class StringFieldExpression
     {
-        #region in value set
-        public override FilterExpression In(params string?[] value) => new FilterExpression<bool>(this, new InExpression<string?>(this, value), FilterExpressionOperator.None);
-        
-        public override FilterExpression In(IEnumerable<string?> value) => new FilterExpression<bool>(this, new InExpression<string?>(this, value), FilterExpressionOperator.None);
-        #endregion
-
         #region implicit operators
         public static implicit operator StringExpressionMediator(StringFieldExpression a) => new(a);
         #endregion

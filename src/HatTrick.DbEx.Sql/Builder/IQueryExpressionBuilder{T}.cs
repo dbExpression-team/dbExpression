@@ -56,10 +56,14 @@ namespace HatTrick.DbEx.Sql.Builder
 
         SelectValue<TDatabase, byte?> CreateSelectValueBuilder(AnyElement<byte?> element);
 
-        SelectValue<TDatabase, byte[]> CreateSelectValueBuilder(AnyElement<byte[]> element);
+        SelectValue<TDatabase, byte[]> CreateSelectValueBuilder(ByteArrayElement element);
+
+        SelectValue<TDatabase, byte[]?> CreateSelectValueBuilder(NullableByteArrayElement element);
 
         SelectValue<TDatabase, DateTime> CreateSelectValueBuilder(AnyElement<DateTime> element);
+
         SelectValue<TDatabase, DateTime?> CreateSelectValueBuilder(AnyElement<DateTime?> element);
+
         SelectValue<TDatabase, DateTimeOffset> CreateSelectValueBuilder(AnyElement<DateTimeOffset> element);
 
         SelectValue<TDatabase, DateTimeOffset?> CreateSelectValueBuilder(AnyElement<DateTimeOffset?> element);
@@ -71,69 +75,114 @@ namespace HatTrick.DbEx.Sql.Builder
         SelectValue<TDatabase, double> CreateSelectValueBuilder(AnyElement<double> element);
 
         SelectValue<TDatabase, double?> CreateSelectValueBuilder(AnyElement<double?> element);
+
         SelectValue<TDatabase, Guid> CreateSelectValueBuilder(AnyElement<Guid> element);
 
         SelectValue<TDatabase, Guid?> CreateSelectValueBuilder(AnyElement<Guid?> element);
+
         SelectValue<TDatabase, short> CreateSelectValueBuilder(AnyElement<short> element);
 
         SelectValue<TDatabase, short?> CreateSelectValueBuilder(AnyElement<short?> element);
 
         SelectValue<TDatabase, int> CreateSelectValueBuilder(AnyElement<int> element);
+
         SelectValue<TDatabase, int?> CreateSelectValueBuilder(AnyElement<int?> element);
 
         SelectValue<TDatabase, long> CreateSelectValueBuilder(AnyElement<long> element);
 
         SelectValue<TDatabase, long?> CreateSelectValueBuilder(AnyElement<long?> element);
+
         SelectValue<TDatabase, float> CreateSelectValueBuilder(AnyElement<float> element);
+
         SelectValue<TDatabase, float?> CreateSelectValueBuilder(AnyElement<float?> element);
+
         SelectValue<TDatabase, string> CreateSelectValueBuilder(StringElement element);
+
         SelectValue<TDatabase, string?> CreateSelectValueBuilder(NullableStringElement element);
+
         SelectValue<TDatabase, TimeSpan> CreateSelectValueBuilder(AnyElement<TimeSpan> element);
+
         SelectValue<TDatabase, TimeSpan?> CreateSelectValueBuilder(AnyElement<TimeSpan?> element);
         #endregion
 
         #region select many
         SelectEntities<TDatabase, TEntity> CreateSelectEntitiesBuilder<TEntity>(Table<TEntity> table)
             where TEntity : class, IDbEntity, new();
+
         SelectDynamics<TDatabase> CreateSelectDynamicsBuilder(AnyElement element1, AnyElement element2, params AnyElement[] elements);
+
         SelectDynamics<TDatabase> CreateSelectDynamicsBuilder(IEnumerable<AnyElement> elements);
+
         SelectValues<TDatabase, TEnum> CreateSelectValuesBuilder<TEnum>(AnyElement<TEnum> element)
             where TEnum : struct, Enum, IComparable;
+
         SelectValues<TDatabase, TEnum?> CreateSelectValuesBuilder<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable;
+
         SelectValues<TDatabase, object> CreateSelectValuesBuilder(ObjectElement element);
+
         SelectValues<TDatabase, object?> CreateSelectValuesBuilder(NullableObjectElement element);
+
         SelectObjects<TDatabase, T> CreateSelectValuesBuilder<T>(ObjectElement<T> element)
             where T : class?;
-        SelectValues<TDatabase, T> CreateSelectValuesBuilder<T>(AliasedElement<T> element);
-        SelectValues<TDatabase, bool> CreateSelectValuesBuilder(AnyElement<bool> element);
-        SelectValues<TDatabase, bool?> CreateSelectValuesBuilder(AnyElement<bool?> element);
-        SelectValues<TDatabase, byte> CreateSelectValuesBuilder(AnyElement<byte> element);
-        SelectValues<TDatabase, byte?> CreateSelectValuesBuilder(AnyElement<byte?> element);
-        SelectValues<TDatabase, byte[]> CreateSelectValuesBuilder(AnyElement<byte[]> element);
-        SelectValues<TDatabase, DateTime> CreateSelectValuesBuilder(AnyElement<DateTime> element);
-        SelectValues<TDatabase, DateTime?> CreateSelectValuesBuilder(AnyElement<DateTime?> element);
-        SelectValues<TDatabase, DateTimeOffset> CreateSelectValuesBuilder(AnyElement<DateTimeOffset> element);
-        SelectValues<TDatabase, DateTimeOffset?> CreateSelectValuesBuilder(AnyElement<DateTimeOffset?> element);
-        SelectValues<TDatabase, decimal> CreateSelectValuesBuilder(AnyElement<decimal> element);
-        SelectValues<TDatabase, decimal?> CreateSelectValuesBuilder(AnyElement<decimal?> element);
-        SelectValues<TDatabase, double> CreateSelectValuesBuilder(AnyElement<double> element);
-        SelectValues<TDatabase, double?> CreateSelectValuesBuilder(AnyElement<double?> element);
-        SelectValues<TDatabase, Guid> CreateSelectValuesBuilder(AnyElement<Guid> element);
-        SelectValues<TDatabase, Guid?> CreateSelectValuesBuilder(AnyElement<Guid?> element);
-        SelectValues<TDatabase, short> CreateSelectValuesBuilder(AnyElement<short> element);
-        SelectValues<TDatabase, short?> CreateSelectValuesBuilder(AnyElement<short?> element);
-        SelectValues<TDatabase, int> CreateSelectValuesBuilder(AnyElement<int> element);
-        SelectValues<TDatabase, int?> CreateSelectValuesBuilder(AnyElement<int?> element);
-        SelectValues<TDatabase, long> CreateSelectValuesBuilder(AnyElement<long> element);
-        SelectValues<TDatabase, long?> CreateSelectValuesBuilder(AnyElement<long?> element);
-        SelectValues<TDatabase, float> CreateSelectValuesBuilder(AnyElement<float> element);
-        SelectValues<TDatabase, float?> CreateSelectValuesBuilder(AnyElement<float?> element);
-        SelectValues<TDatabase, string> CreateSelectValuesBuilder(StringElement element);
-        SelectValues<TDatabase, string?> CreateSelectValuesBuilder(NullableStringElement element);
-        SelectValues<TDatabase, TimeSpan> CreateSelectValuesBuilder(AnyElement<TimeSpan> element);
-        SelectValues<TDatabase, TimeSpan?> CreateSelectValuesBuilder(AnyElement<TimeSpan?> element);
 
+        SelectValues<TDatabase, T> CreateSelectValuesBuilder<T>(AliasedElement<T> element);
+
+        SelectValues<TDatabase, bool> CreateSelectValuesBuilder(AnyElement<bool> element);
+
+        SelectValues<TDatabase, bool?> CreateSelectValuesBuilder(AnyElement<bool?> element);
+
+        SelectValues<TDatabase, byte> CreateSelectValuesBuilder(AnyElement<byte> element);
+
+        SelectValues<TDatabase, byte?> CreateSelectValuesBuilder(AnyElement<byte?> element);
+
+        SelectValues<TDatabase, byte[]> CreateSelectValuesBuilder(ByteArrayElement element);
+
+        SelectValues<TDatabase, byte[]?> CreateSelectValuesBuilder(NullableByteArrayElement element);
+
+        SelectValues<TDatabase, DateTime> CreateSelectValuesBuilder(AnyElement<DateTime> element);
+
+        SelectValues<TDatabase, DateTime?> CreateSelectValuesBuilder(AnyElement<DateTime?> element);
+
+        SelectValues<TDatabase, DateTimeOffset> CreateSelectValuesBuilder(AnyElement<DateTimeOffset> element);
+
+        SelectValues<TDatabase, DateTimeOffset?> CreateSelectValuesBuilder(AnyElement<DateTimeOffset?> element);
+
+        SelectValues<TDatabase, decimal> CreateSelectValuesBuilder(AnyElement<decimal> element);
+
+        SelectValues<TDatabase, decimal?> CreateSelectValuesBuilder(AnyElement<decimal?> element);
+
+        SelectValues<TDatabase, double> CreateSelectValuesBuilder(AnyElement<double> element);
+
+        SelectValues<TDatabase, double?> CreateSelectValuesBuilder(AnyElement<double?> element);
+
+        SelectValues<TDatabase, Guid> CreateSelectValuesBuilder(AnyElement<Guid> element);
+
+        SelectValues<TDatabase, Guid?> CreateSelectValuesBuilder(AnyElement<Guid?> element);
+
+        SelectValues<TDatabase, short> CreateSelectValuesBuilder(AnyElement<short> element);
+
+        SelectValues<TDatabase, short?> CreateSelectValuesBuilder(AnyElement<short?> element);
+
+        SelectValues<TDatabase, int> CreateSelectValuesBuilder(AnyElement<int> element);
+
+        SelectValues<TDatabase, int?> CreateSelectValuesBuilder(AnyElement<int?> element);
+
+        SelectValues<TDatabase, long> CreateSelectValuesBuilder(AnyElement<long> element);
+
+        SelectValues<TDatabase, long?> CreateSelectValuesBuilder(AnyElement<long?> element);
+
+        SelectValues<TDatabase, float> CreateSelectValuesBuilder(AnyElement<float> element);
+
+        SelectValues<TDatabase, float?> CreateSelectValuesBuilder(AnyElement<float?> element);
+
+        SelectValues<TDatabase, string> CreateSelectValuesBuilder(StringElement element);
+
+        SelectValues<TDatabase, string?> CreateSelectValuesBuilder(NullableStringElement element);
+
+        SelectValues<TDatabase, TimeSpan> CreateSelectValuesBuilder(AnyElement<TimeSpan> element);
+
+        SelectValues<TDatabase, TimeSpan?> CreateSelectValuesBuilder(AnyElement<TimeSpan?> element);
         #endregion
 
         #region update

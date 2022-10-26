@@ -26,12 +26,6 @@ namespace HatTrick.DbEx.Sql.Expression
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public partial class NullableBooleanFieldExpression
     {
-        #region in value set
-        public override FilterExpression In(params bool?[] value) => new FilterExpression<bool?>(this, new InExpression<bool?>(this, value), FilterExpressionOperator.None);
-        
-        public override FilterExpression In(IEnumerable<bool?> value) => new FilterExpression<bool?>(this, new InExpression<bool?>(this, value), FilterExpressionOperator.None);
-        #endregion
-
         #region implicit operators
         public static implicit operator NullableBooleanExpressionMediator(NullableBooleanFieldExpression a) => new(a);
         #endregion

@@ -207,7 +207,19 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         ///</param>
         /// <returns><see cref="SelectValue{BenchmarkDatabase, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<BenchmarkDatabase, byte[]> SelectOne(AnyElement<byte[]> element)
+        public static SelectValue<BenchmarkDatabase, byte[]> SelectOne(ByteArrayElement element)
+            => BenchmarkDatabase.SelectOne(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[]? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />?
+        ///</param>
+        /// <returns><see cref="SelectValue{BenchmarkDatabase, Byte[]}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<BenchmarkDatabase, byte[]?> SelectOne(NullableByteArrayElement element)
             => BenchmarkDatabase.SelectOne(element);
 
         /// <summary>
@@ -678,7 +690,19 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         ///</param>
         /// <returns><see cref="SelectValues{BenchmarkDatabase, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<BenchmarkDatabase, byte[]> SelectMany(AnyElement<byte[]> element)
+        public static SelectValues<BenchmarkDatabase, byte[]> SelectMany(ByteArrayElement element)
+            => BenchmarkDatabase.SelectMany(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[]? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />?
+        ///</param>
+        /// <returns><see cref="SelectValues{BenchmarkDatabase, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<BenchmarkDatabase, byte[]?> SelectMany(NullableByteArrayElement element)
             => BenchmarkDatabase.SelectMany(element);
 
         /// <summary>
@@ -1319,7 +1343,19 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         /// </param>
         /// <returns><see cref="SelectValue{BenchmarkDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<BenchmarkDatabase, byte[]> SelectOne(AnyElement<byte[]> element)
+        public SelectValue<BenchmarkDatabase, byte[]> SelectOne(ByteArrayElement element)
+            => GetBuilder().CreateSelectValueBuilder(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[]? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />?
+        /// </param>
+        /// <returns><see cref="SelectValue{BenchmarkDatabase, TValue}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<BenchmarkDatabase, byte[]?> SelectOne(NullableByteArrayElement element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1789,7 +1825,19 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         /// </param>
         /// <returns><see cref="SelectValues{BenchmarkDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<BenchmarkDatabase, byte[]> SelectMany(AnyElement<byte[]> element)
+        public SelectValues<BenchmarkDatabase, byte[]> SelectMany(ByteArrayElement element)
+            => GetBuilder().CreateSelectValuesBuilder(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[]? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />?
+        /// </param>
+        /// <returns><see cref="SelectValues{BenchmarkDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<BenchmarkDatabase, byte[]?> SelectMany(NullableByteArrayElement element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>

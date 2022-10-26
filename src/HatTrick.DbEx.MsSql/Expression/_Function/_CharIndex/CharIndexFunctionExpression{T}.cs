@@ -18,11 +18,13 @@
 
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Expression;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.MsSql.Expression
 {
     public abstract class CharIndexFunctionExpression<TValue> : CharIndexFunctionExpression,
-        IExpressionElement<TValue>
+        IExpressionElement<TValue>,
+        AnyElement<TValue>
     {
         #region constructors
         protected CharIndexFunctionExpression(AnyElement<string> pattern, AnyElement<string> expression) : base(pattern, expression, typeof(TValue))
@@ -84,6 +86,14 @@ namespace HatTrick.DbEx.MsSql.Expression
         {
 
         }
+        #endregion
+
+        #region in
+        public FilterExpression In(params TValue[] values)
+           => new FilterExpression<bool>(this, new InExpression<TValue>(this, values), FilterExpressionOperator.None);
+
+        public FilterExpression In(IEnumerable<TValue> values)
+            => new FilterExpression<bool>(this, new InExpression<TValue>(this, values), FilterExpressionOperator.None);
         #endregion
 
         #region as

@@ -240,7 +240,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Operation", "SUBQUERY")]
-        public void Does_order_by_in_subquery_fail_with_expected_exception(int version, double expected = 0)
+        public void Does_order_by_in_subquery_fail_with_expected_exception(int version)
         {
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);

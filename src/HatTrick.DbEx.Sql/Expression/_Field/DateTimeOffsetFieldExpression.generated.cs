@@ -26,12 +26,6 @@ namespace HatTrick.DbEx.Sql.Expression
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public partial class DateTimeOffsetFieldExpression
     {
-        #region in value set
-        public override FilterExpression In(params DateTimeOffset[] value) => new FilterExpression<bool>(this, new InExpression<DateTimeOffset>(this, value), FilterExpressionOperator.None);
-        
-        public override FilterExpression In(IEnumerable<DateTimeOffset> value) => new FilterExpression<bool>(this, new InExpression<DateTimeOffset>(this, value), FilterExpressionOperator.None);
-        #endregion
-
         #region implicit operators
         public static implicit operator DateTimeOffsetExpressionMediator(DateTimeOffsetFieldExpression a) => new(a);
         #endregion

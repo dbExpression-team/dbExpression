@@ -26,12 +26,6 @@ namespace HatTrick.DbEx.Sql.Expression
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public partial class NullableTimeSpanFieldExpression
     {
-        #region in value set
-        public override FilterExpression In(params TimeSpan?[] value) => new FilterExpression<bool?>(this, new InExpression<TimeSpan?>(this, value), FilterExpressionOperator.None);
-        
-        public override FilterExpression In(IEnumerable<TimeSpan?> value) => new FilterExpression<bool?>(this, new InExpression<TimeSpan?>(this, value), FilterExpressionOperator.None);
-        #endregion
-
         #region implicit operators
         public static implicit operator NullableTimeSpanExpressionMediator(NullableTimeSpanFieldExpression a) => new(a);
         #endregion

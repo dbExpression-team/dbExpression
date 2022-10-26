@@ -26,9 +26,6 @@ namespace HatTrick.DbEx.Sql.Expression
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public partial class NullableStringFieldExpression
     {
-        #region in value set
-        #endregion
-
         #region implicit operators
         public static implicit operator NullableStringExpressionMediator(NullableStringFieldExpression a) => new(a);
         #endregion
