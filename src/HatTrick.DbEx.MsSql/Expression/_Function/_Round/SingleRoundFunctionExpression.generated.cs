@@ -1990,16 +1990,28 @@ namespace HatTrick.DbEx.MsSql.Expression
         
         public static FilterExpression<bool?> operator ==(SingleRoundFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<float>(b), FilterExpressionOperator.Equal);
         
+        public static FilterExpression<bool?> operator ==((string TableName, string FieldName) a, SingleRoundFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<float>(a), b, FilterExpressionOperator.Equal);
+
         public static FilterExpression<bool?> operator !=(SingleRoundFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<float>(b), FilterExpressionOperator.NotEqual);
         
+        public static FilterExpression<bool?> operator !=((string TableName, string FieldName) a, SingleRoundFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<float>(a), b, FilterExpressionOperator.NotEqual);
+
         public static FilterExpression<bool?> operator <(SingleRoundFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<float>(b), FilterExpressionOperator.LessThan);
         
+        public static FilterExpression<bool?> operator <((string TableName, string FieldName) a, SingleRoundFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<float>(a), b, FilterExpressionOperator.LessThan);
+
         public static FilterExpression<bool?> operator >(SingleRoundFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<float>(b), FilterExpressionOperator.GreaterThan);
         
+        public static FilterExpression<bool?> operator >((string TableName, string FieldName) a, SingleRoundFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<float>(a), b, FilterExpressionOperator.GreaterThan);
+
         public static FilterExpression<bool?> operator <=(SingleRoundFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<float>(b), FilterExpressionOperator.LessThanOrEqual);
         
+        public static FilterExpression<bool?> operator <=((string TableName, string FieldName) a, SingleRoundFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<float>(a), b, FilterExpressionOperator.LessThanOrEqual);
+
         public static FilterExpression<bool?> operator >=(SingleRoundFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<float>(b), FilterExpressionOperator.GreaterThanOrEqual);
         
+        public static FilterExpression<bool?> operator >=((string TableName, string FieldName) a, SingleRoundFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<float>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+
         #endregion
         #endregion
     }

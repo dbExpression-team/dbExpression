@@ -1989,16 +1989,28 @@ namespace HatTrick.DbEx.Sql.Expression
         
         public static FilterExpression<bool?> operator ==(Int32CountFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<int>(b), FilterExpressionOperator.Equal);
         
+        public static FilterExpression<bool?> operator ==((string TableName, string FieldName) a, Int32CountFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<int>(a), b, FilterExpressionOperator.Equal);
+
         public static FilterExpression<bool?> operator !=(Int32CountFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<int>(b), FilterExpressionOperator.NotEqual);
         
+        public static FilterExpression<bool?> operator !=((string TableName, string FieldName) a, Int32CountFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<int>(a), b, FilterExpressionOperator.NotEqual);
+
         public static FilterExpression<bool?> operator <(Int32CountFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<int>(b), FilterExpressionOperator.LessThan);
         
+        public static FilterExpression<bool?> operator <((string TableName, string FieldName) a, Int32CountFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<int>(a), b, FilterExpressionOperator.LessThan);
+
         public static FilterExpression<bool?> operator >(Int32CountFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<int>(b), FilterExpressionOperator.GreaterThan);
         
+        public static FilterExpression<bool?> operator >((string TableName, string FieldName) a, Int32CountFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<int>(a), b, FilterExpressionOperator.GreaterThan);
+
         public static FilterExpression<bool?> operator <=(Int32CountFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<int>(b), FilterExpressionOperator.LessThanOrEqual);
         
+        public static FilterExpression<bool?> operator <=((string TableName, string FieldName) a, Int32CountFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<int>(a), b, FilterExpressionOperator.LessThanOrEqual);
+
         public static FilterExpression<bool?> operator >=(Int32CountFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<int>(b), FilterExpressionOperator.GreaterThanOrEqual);
         
+        public static FilterExpression<bool?> operator >=((string TableName, string FieldName) a, Int32CountFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<int>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+
         #endregion
         #endregion
     }

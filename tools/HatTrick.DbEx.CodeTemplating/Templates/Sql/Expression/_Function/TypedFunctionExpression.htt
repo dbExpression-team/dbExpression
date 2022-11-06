@@ -229,6 +229,8 @@ namespace {Namespace}
         {-#each Operations-}
         public static FilterExpression<bool?> operator {FilterOperatorSymbol}({:dataType.Name}{:functionName}FunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<{:dataType.Alias}>(b), FilterExpressionOperator.{FilterOperatorName});
         
+        public static FilterExpression<bool?> operator {FilterOperatorSymbol}((string TableName, string FieldName) a, {:dataType.Name}{:functionName}FunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<{:dataType.Alias}>(a), b, FilterExpressionOperator.{FilterOperatorName});
+
         {-/each-}
         {-/each-}
         #endregion

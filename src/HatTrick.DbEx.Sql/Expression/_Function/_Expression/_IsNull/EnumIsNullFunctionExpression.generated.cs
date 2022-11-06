@@ -53,5 +53,15 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static FilterExpression<bool?> operator !=(TEnum? a, EnumIsNullFunctionExpression<TEnum> b) => new FilterExpression<bool?>(new LiteralExpression<TEnum?>(a), b, FilterExpressionOperator.NotEqual);
         #endregion
+
+        #region alias
+        public static FilterExpression<bool?> operator ==((string TableName, string FieldName) a, EnumIsNullFunctionExpression<TEnum> b) => new FilterExpression<bool?>(new AliasExpression<TEnum?>(a), b, FilterExpressionOperator.Equal);
+
+        public static FilterExpression<bool?> operator !=((string TableName, string FieldName) a, EnumIsNullFunctionExpression<TEnum> b) => new FilterExpression<bool?>(new AliasExpression<TEnum?>(a), b, FilterExpressionOperator.NotEqual);
+
+        public static FilterExpression<bool?> operator ==(EnumIsNullFunctionExpression<TEnum> a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<TEnum?>(b), FilterExpressionOperator.Equal);
+
+        public static FilterExpression<bool?> operator !=(EnumIsNullFunctionExpression<TEnum> a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<TEnum?>(b), FilterExpressionOperator.NotEqual);
+        #endregion
     }
 }

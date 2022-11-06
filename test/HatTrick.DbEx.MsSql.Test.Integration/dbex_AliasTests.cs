@@ -589,7 +589,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Can_use_alias_of_subquery_string_field(int version, int expected = 9)
+        public void Can_use_alias_of_subquery_string_field_as_right_arg_of_join_condition(int version, int expected = 9)
         {
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
@@ -607,6 +607,32 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                     dbo.Product.Name
                 ).From(dbo.Product)
             ).As("inner").On(dbo.Product.Id == ("inner", "Id"))
+            .Execute();
+
+            //then
+            values.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_use_alias_of_subquery_string_field_as_left_arg_of_join_condition(int version, int expected = 9)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            //when
+            IList<dynamic> values = db.SelectMany(
+                dbo.Product.Id,
+                dbo.Product.Name,
+                dbex.Alias<string?>("inner", "Name").As("inner_name")
+            )
+            .From(dbo.Product)
+            .InnerJoin(
+                db.SelectMany(
+                    dbo.Product.Id,
+                    dbo.Product.Name
+                ).From(dbo.Product)
+            ).As("inner").On(("inner", "Id") == dbo.Product.Id)
             .Execute();
 
             //then

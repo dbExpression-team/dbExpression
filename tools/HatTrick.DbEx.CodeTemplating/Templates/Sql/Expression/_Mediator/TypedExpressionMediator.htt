@@ -326,6 +326,8 @@ namespace {Namespace}
         {-#each Operations-}
         public static FilterExpression<bool?> operator {FilterOperatorSymbol}({:mediatorType.Name}ExpressionMediator a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<{:mediatorType.Alias}>(b), FilterExpressionOperator.{FilterOperatorName});
         
+        public static FilterExpression<bool?> operator {FilterOperatorSymbol}((string TableName, string FieldName) a, {:mediatorType.Name}ExpressionMediator b) => new FilterExpression<bool?>(new AliasExpression<{:mediatorType.Alias}>(a), b, FilterExpressionOperator.{FilterOperatorName});
+
         {-/each-}
         {-/each-}
         #endregion
