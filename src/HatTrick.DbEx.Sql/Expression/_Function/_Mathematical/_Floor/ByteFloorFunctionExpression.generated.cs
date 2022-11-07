@@ -1989,16 +1989,28 @@ namespace HatTrick.DbEx.Sql.Expression
         
         public static FilterExpression<bool?> operator ==(ByteFloorFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<byte>(b), FilterExpressionOperator.Equal);
         
+        public static FilterExpression<bool?> operator ==((string TableName, string FieldName) a, ByteFloorFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<byte>(a), b, FilterExpressionOperator.Equal);
+
         public static FilterExpression<bool?> operator !=(ByteFloorFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<byte>(b), FilterExpressionOperator.NotEqual);
         
+        public static FilterExpression<bool?> operator !=((string TableName, string FieldName) a, ByteFloorFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<byte>(a), b, FilterExpressionOperator.NotEqual);
+
         public static FilterExpression<bool?> operator <(ByteFloorFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<byte>(b), FilterExpressionOperator.LessThan);
         
+        public static FilterExpression<bool?> operator <((string TableName, string FieldName) a, ByteFloorFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<byte>(a), b, FilterExpressionOperator.LessThan);
+
         public static FilterExpression<bool?> operator >(ByteFloorFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<byte>(b), FilterExpressionOperator.GreaterThan);
         
+        public static FilterExpression<bool?> operator >((string TableName, string FieldName) a, ByteFloorFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<byte>(a), b, FilterExpressionOperator.GreaterThan);
+
         public static FilterExpression<bool?> operator <=(ByteFloorFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<byte>(b), FilterExpressionOperator.LessThanOrEqual);
         
+        public static FilterExpression<bool?> operator <=((string TableName, string FieldName) a, ByteFloorFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<byte>(a), b, FilterExpressionOperator.LessThanOrEqual);
+
         public static FilterExpression<bool?> operator >=(ByteFloorFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<byte>(b), FilterExpressionOperator.GreaterThanOrEqual);
         
+        public static FilterExpression<bool?> operator >=((string TableName, string FieldName) a, ByteFloorFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<byte>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+
         #endregion
         #endregion
     }

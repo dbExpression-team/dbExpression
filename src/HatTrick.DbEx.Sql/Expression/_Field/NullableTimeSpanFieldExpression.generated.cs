@@ -167,8 +167,12 @@ namespace HatTrick.DbEx.Sql.Expression
         
         public static FilterExpression<bool?> operator ==(NullableTimeSpanFieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<TimeSpan?>(b), FilterExpressionOperator.Equal);
         
+        public static FilterExpression<bool?> operator ==((string TableName, string FieldName) a, NullableTimeSpanFieldExpression b) => new FilterExpression<bool?>(new AliasExpression<TimeSpan?>(a), b, FilterExpressionOperator.Equal);
+
         public static FilterExpression<bool?> operator !=(NullableTimeSpanFieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<TimeSpan?>(b), FilterExpressionOperator.NotEqual);
         
+        public static FilterExpression<bool?> operator !=((string TableName, string FieldName) a, NullableTimeSpanFieldExpression b) => new FilterExpression<bool?>(new AliasExpression<TimeSpan?>(a), b, FilterExpressionOperator.NotEqual);
+
         #endregion
         #endregion
     }

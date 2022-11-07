@@ -187,8 +187,12 @@ namespace HatTrick.DbEx.Sql.Expression
         
         public static FilterExpression<bool?> operator ==(BooleanCastFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<bool>(b), FilterExpressionOperator.Equal);
         
+        public static FilterExpression<bool?> operator ==((string TableName, string FieldName) a, BooleanCastFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<bool>(a), b, FilterExpressionOperator.Equal);
+
         public static FilterExpression<bool?> operator !=(BooleanCastFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<bool>(b), FilterExpressionOperator.NotEqual);
         
+        public static FilterExpression<bool?> operator !=((string TableName, string FieldName) a, BooleanCastFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<bool>(a), b, FilterExpressionOperator.NotEqual);
+
         #endregion
         #endregion
     }

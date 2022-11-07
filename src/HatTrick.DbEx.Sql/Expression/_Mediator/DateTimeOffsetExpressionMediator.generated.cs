@@ -1985,16 +1985,28 @@ namespace HatTrick.DbEx.Sql.Expression
         
         public static FilterExpression<bool?> operator ==(DateTimeOffsetExpressionMediator a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<DateTimeOffset>(b), FilterExpressionOperator.Equal);
         
+        public static FilterExpression<bool?> operator ==((string TableName, string FieldName) a, DateTimeOffsetExpressionMediator b) => new FilterExpression<bool?>(new AliasExpression<DateTimeOffset>(a), b, FilterExpressionOperator.Equal);
+
         public static FilterExpression<bool?> operator !=(DateTimeOffsetExpressionMediator a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<DateTimeOffset>(b), FilterExpressionOperator.NotEqual);
         
+        public static FilterExpression<bool?> operator !=((string TableName, string FieldName) a, DateTimeOffsetExpressionMediator b) => new FilterExpression<bool?>(new AliasExpression<DateTimeOffset>(a), b, FilterExpressionOperator.NotEqual);
+
         public static FilterExpression<bool?> operator <(DateTimeOffsetExpressionMediator a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<DateTimeOffset>(b), FilterExpressionOperator.LessThan);
         
+        public static FilterExpression<bool?> operator <((string TableName, string FieldName) a, DateTimeOffsetExpressionMediator b) => new FilterExpression<bool?>(new AliasExpression<DateTimeOffset>(a), b, FilterExpressionOperator.LessThan);
+
         public static FilterExpression<bool?> operator >(DateTimeOffsetExpressionMediator a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<DateTimeOffset>(b), FilterExpressionOperator.GreaterThan);
         
+        public static FilterExpression<bool?> operator >((string TableName, string FieldName) a, DateTimeOffsetExpressionMediator b) => new FilterExpression<bool?>(new AliasExpression<DateTimeOffset>(a), b, FilterExpressionOperator.GreaterThan);
+
         public static FilterExpression<bool?> operator <=(DateTimeOffsetExpressionMediator a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<DateTimeOffset>(b), FilterExpressionOperator.LessThanOrEqual);
         
+        public static FilterExpression<bool?> operator <=((string TableName, string FieldName) a, DateTimeOffsetExpressionMediator b) => new FilterExpression<bool?>(new AliasExpression<DateTimeOffset>(a), b, FilterExpressionOperator.LessThanOrEqual);
+
         public static FilterExpression<bool?> operator >=(DateTimeOffsetExpressionMediator a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<DateTimeOffset>(b), FilterExpressionOperator.GreaterThanOrEqual);
         
+        public static FilterExpression<bool?> operator >=((string TableName, string FieldName) a, DateTimeOffsetExpressionMediator b) => new FilterExpression<bool?>(new AliasExpression<DateTimeOffset>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+
         #endregion
         #endregion
     }

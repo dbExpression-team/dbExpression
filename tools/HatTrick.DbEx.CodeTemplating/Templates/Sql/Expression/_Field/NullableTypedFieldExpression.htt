@@ -223,6 +223,8 @@ namespace {Namespace}
         {-#each Operations-}
         public static FilterExpression<bool?> operator {FilterOperatorSymbol}(Nullable{:fieldExpressionType.Name}FieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<{:fieldExpressionType.NullableAlias}>(b), FilterExpressionOperator.{FilterOperatorName});
         
+        public static FilterExpression<bool?> operator {FilterOperatorSymbol}((string TableName, string FieldName) a, Nullable{:fieldExpressionType.Name}FieldExpression b) => new FilterExpression<bool?>(new AliasExpression<{:fieldExpressionType.NullableAlias}>(a), b, FilterExpressionOperator.{FilterOperatorName});
+
         {-/each-}
         {-/each-}
         #endregion
