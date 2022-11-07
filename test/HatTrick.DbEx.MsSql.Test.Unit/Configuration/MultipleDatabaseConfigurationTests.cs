@@ -76,8 +76,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
             mssqldbAltServiceProvider.UseStaticRuntimeFor<MsSqlDbAlt>();
 
             //when
-            var p1 = db.SelectOne<Person>().From(dbo.Person).OrderBy(dbo.Person.Id.Asc);
-            var p2 = dbAlt.SelectOne<PersonAlt>().From(dboAlt.PersonAlt).OrderBy(dboAlt.PersonAlt.Id.Asc);
+            var p1 = db.SelectOne<Person>().From(dbo.Person).OrderBy(dbo.Person.Id.Asc());
+            var p2 = dbAlt.SelectOne<PersonAlt>().From(dboAlt.PersonAlt).OrderBy(dboAlt.PersonAlt.Id.Asc());
 
             //then
             p1.Should().NotBeNull();

@@ -55,8 +55,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 )
             ).As("vips").On(dbo.Person.Id == ("vips", "PersonId"))
             .OrderBy(
-                (dbo.Person.Id + dbo.Person.Id).Asc,
-                dbex.Alias<int>("vips", "PurchaseCount").Desc
+                (dbo.Person.Id + dbo.Person.Id).Asc(),
+                ("vips", "PurchaseCount").Desc()
             )
             .Execute();
 
@@ -104,8 +104,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 )
             ).As("vips").On(dbo.Person.Id == ("vips", "PersonId"))
             .OrderBy(
-                (dbo.Person.Id + dbo.Person.Id).Asc,
-                dbex.Alias<int>("vips", "PurchaseCount").Desc
+                (dbo.Person.Id + dbo.Person.Id).Asc(),
+                ("vips", "PurchaseCount").Desc()
             )
             .Execute();
 
@@ -152,8 +152,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 )
             ).As("vips").On(dbo.Person.Id == ("vips", "PersonId"))
             .OrderBy(
-                (dbo.Person.Id + dbo.Person.Id).Asc,
-                dbex.Alias<int>("vips", "PurchaseCount").Desc
+                (dbo.Person.Id + dbo.Person.Id).Asc(),
+                ("vips", "PurchaseCount").Desc()
             )
             .Execute();
 
@@ -216,8 +216,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 )
             ).As("not_vips").On(dbo.Person.Id == ("not_vips", "PersonId"))
             .OrderBy(
-                (dbo.Person.Id + dbo.Person.Id).Asc,
-                dbex.Alias<int>("vips", "PurchaseCount").Desc
+                (dbo.Person.Id + dbo.Person.Id).Asc(),
+                ("vips", "PurchaseCount").Desc()
             )
             .Execute();
 
@@ -388,8 +388,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 )
             ).As("not_vips").On(dbo.Person.Id == ("not_vips", "PersonId"))
             .OrderBy(
-                (dbo.Person.Id + dbo.Person.Id).Asc,
-                dbex.Alias("vips", "PurchaseCount").Desc
+                (dbo.Person.Id + dbo.Person.Id).Asc(),
+                ("vips", "PurchaseCount").Desc()
             )
             .Execute();
 
@@ -442,8 +442,8 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 )
             ).As("not_vips").On(dbo.Person.Id == ("not_vips", "PersonId"))
             .OrderBy(
-                (dbo.Person.Id + dbo.Person.Id).Asc,
-                dbex.Alias("vips", "PurchaseCount").Desc
+                (dbo.Person.Id + dbo.Person.Id).Asc(),
+                ("vips", "PurchaseCount").Desc()
             )
             .Execute(row =>
                 {

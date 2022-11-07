@@ -20,7 +20,7 @@ namespace NetCoreConsoleApp
             IList<Person> page;
             do
 			{
-				page = GetPeople(pageSize, pageNum++, dbo.Person.Id.Desc);
+				page = GetPeople(pageSize, pageNum++, dbo.Person.Id.Desc());
 			} while (page.Count > 0);
 		}
 		#endregion
@@ -36,7 +36,7 @@ namespace NetCoreConsoleApp
 			//fetch next {pageSize} rows only;
 			IList<Person> people = db.SelectMany<Person>()
 				.From(dbo.Person)
-				.OrderBy(orderBy ?? dbo.Person.Id.Desc)
+				.OrderBy(orderBy ?? dbo.Person.Id.Desc())
 				.Offset(pageSize * pageNum)
 				.Limit(pageSize)
 				.Execute();

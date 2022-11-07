@@ -43,7 +43,7 @@ namespace NetCoreConsoleApp
 			IList<Person> people = db.SelectMany<Person>()
 				.Top(10)
 				.From(dbo.Person)
-				.OrderBy(dbo.Person.CreditLimit.Desc)
+				.OrderBy(dbo.Person.CreditLimit.Desc())
 				.Execute();
 
 			return people;
