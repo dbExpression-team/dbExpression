@@ -50,9 +50,29 @@ namespace HatTrick.DbEx.Sql
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-group-by-transact-sql">Microsoft docs on GROUP BY</see>
         /// </para>
         /// </summary>
+        /// <param name="groupBy">A list of expressions of type <see cref="GroupByExpression"/> specifying how to group the selected results.</param>
+        /// <returns><see cref="SelectValuesOrderByContinuation{TDatabase, TValue}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="TValue"/> values.</returns>
+        SelectValuesOrderByContinuation<TDatabase, TValue> GroupBy(params GroupByExpression[] groupBy);
+
+        /// <summary>
+        /// Construct the GROUP BY clause of a sql SELECT query expression for a list of <typeparamref name="TValue"/> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-group-by-transact-sql">Microsoft docs on GROUP BY</see>
+        /// </para>
+        /// </summary>
         /// <param name="groupBy">A list of expressions of type <see cref="AnyGroupByExpression"/> specifying how to group the selected results.</param>
         /// <returns><see cref="SelectValuesOrderByContinuation{TDatabase, TValue}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="TValue"/> values.</returns>
         SelectValuesOrderByContinuation<TDatabase, TValue> GroupBy(IEnumerable<AnyGroupByExpression>? groupBy);
+
+        /// <summary>
+        /// Construct the GROUP BY clause of a sql SELECT query expression for a list of <typeparamref name="TValue"/> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-group-by-transact-sql">Microsoft docs on GROUP BY</see>
+        /// </para>
+        /// </summary>
+        /// <param name="groupBy">A list of expressions of type <see cref="GroupByExpression"/> specifying how to group the selected results.</param>
+        /// <returns><see cref="SelectValuesOrderByContinuation{TDatabase, TValue}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="TValue"/> values.</returns>
+        SelectValuesOrderByContinuation<TDatabase, TValue> GroupBy(IEnumerable<GroupByExpression>? groupBy);
 
         /// <summary>
         /// Construct the HAVING clause of a sql SELECT query expression for a list of <typeparamref name="TValue"/> values.

@@ -16,6 +16,7 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
+using HatTrick.DbEx.Sql.Expression;
 using System.Collections.Generic;
 using System.Dynamic;
 
@@ -31,11 +32,11 @@ namespace HatTrick.DbEx.Sql
         /// Specify a number of records to ignore while reading before beginning to return records.
         /// </summary>
         /// <param name="value">The number of records to ignore.</param>
-        /// <returns><see cref="SelectValuesOffsetContinuation{TDatabase}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="dynamic"/> values.</returns>
+        /// <returns><see cref="SelectDynamicsOffsetContinuation{TDatabase}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="dynamic"/> values.</returns>
         SelectDynamicsOffsetContinuation<TDatabase> Offset(int value);
 
         /// <summary>
-        /// Construct the GROUP BY clause of a sql SELECT query expression for a list of <typeparamref name="TValue"/> values.
+        /// Construct the GROUP BY clause of a sql SELECT query expression for a list of <typeparamref name="dynamic"/> objects.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-group-by-transact-sql">Microsoft docs on GROUP BY</see>
         /// </para>
@@ -44,8 +45,18 @@ namespace HatTrick.DbEx.Sql
         /// <returns><see cref="SelectDynamicsOrderByContinuation{TDatabase}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="dynamic"/> values.</returns>
         SelectDynamicsOrderByContinuation<TDatabase> GroupBy(params AnyGroupByExpression[] groupBy);
 
+        // <summary>
+        /// Construct the GROUP BY clause of a sql SELECT query expression for a list of <typeparamref name="dynamic"/> objects.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-group-by-transact-sql">Microsoft docs on GROUP BY</see>
+        /// </para>
+        /// </summary>
+        /// <param name="groupBy">A list of expressions of type <see cref="GroupByExpression"/> specifying how to group the selected results.</param>
+        /// <returns><see cref="SelectDynamicsOrderByContinuation{TDatabase}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="dynamic"/> values.</returns>
+        SelectDynamicsOrderByContinuation<TDatabase> GroupBy(params GroupByExpression[] groupBy);
+
         /// <summary>
-        /// Construct the GROUP BY clause of a sql SELECT query expression for a list of <typeparamref name="TValue"/> values.
+        /// Construct the GROUP BY clause of a sql SELECT query expression for a list of <typeparamref name="dynamic"/> objects.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-group-by-transact-sql">Microsoft docs on GROUP BY</see>
         /// </para>
@@ -55,7 +66,17 @@ namespace HatTrick.DbEx.Sql
         SelectDynamicsOrderByContinuation<TDatabase> GroupBy(IEnumerable<AnyGroupByExpression> groupBy);
 
         /// <summary>
-        /// Construct the HAVING clause of a sql SELECT query expression for a list of <typeparamref name="TValue"/> values.
+        /// Construct the GROUP BY clause of a sql SELECT query expression for a list of <typeparamref name="dynamic"/> objects.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-group-by-transact-sql">Microsoft docs on GROUP BY</see>
+        /// </para>
+        /// </summary>
+        /// <param name="groupBy">A list of expressions of type <see cref="GroupByExpression"/> specifying how to group the selected results.</param>
+        /// <returns><see cref="SelectDynamicsOrderByContinuation{TDatabase}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="dynamic"/> values.</returns>
+        SelectDynamicsOrderByContinuation<TDatabase> GroupBy(IEnumerable<GroupByExpression> groupBy);
+
+        /// <summary>
+        /// Construct the HAVING clause of a sql SELECT query expression for a list of <typeparamref name="dynamic"/> objects.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-having-transact-sql">Microsoft docs on HAVING</see>
         /// </para>

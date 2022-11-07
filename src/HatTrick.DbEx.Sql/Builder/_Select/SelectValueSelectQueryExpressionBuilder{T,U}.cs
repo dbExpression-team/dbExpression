@@ -118,7 +118,21 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
+        SelectValueContinuation<TDatabase, TValue> SelectValueContinuation<TDatabase, TValue>.GroupBy(params GroupByExpression[] groupBy)
+        {
+            ApplyGroupBy(groupBy);
+            return this;
+        }
+
+        /// <inheritdoc />
         SelectValueContinuation<TDatabase, TValue> SelectValueContinuation<TDatabase, TValue>.GroupBy(IEnumerable<AnyGroupByExpression>? groupBy)
+        {
+            ApplyGroupBy(groupBy);
+            return this;
+        }
+
+        /// <inheritdoc />
+        SelectValueContinuation<TDatabase, TValue> SelectValueContinuation<TDatabase, TValue>.GroupBy(IEnumerable<GroupByExpression>? groupBy)
         {
             ApplyGroupBy(groupBy);
             return this;

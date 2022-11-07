@@ -234,7 +234,21 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
+        SelectDynamicsContinuation<TDatabase> SelectDynamicsContinuation<TDatabase>.GroupBy(params GroupByExpression[] groupBy)
+        {
+            ApplyGroupBy(groupBy);
+            return this;
+        }
+
+        /// <inheritdoc />
         SelectDynamicsContinuation<TDatabase> SelectDynamicsContinuation<TDatabase>.GroupBy(IEnumerable<AnyGroupByExpression>? groupBy)
+        {
+            ApplyGroupBy(groupBy);
+            return this;
+        }
+
+        /// <inheritdoc />
+        SelectDynamicsContinuation<TDatabase> SelectDynamicsContinuation<TDatabase>.GroupBy(IEnumerable<GroupByExpression>? groupBy)
         {
             ApplyGroupBy(groupBy);
             return this;
@@ -264,7 +278,21 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
+        SelectDynamicsOrderByContinuation<TDatabase> SelectDynamicsOrderByContinuation<TDatabase>.GroupBy(params GroupByExpression[] groupBy)
+        {
+            ApplyGroupBy(groupBy);
+            return this;
+        }
+
+        /// <inheritdoc />
         SelectDynamicsOrderByContinuation<TDatabase> SelectDynamicsOrderByContinuation<TDatabase>.GroupBy(IEnumerable<AnyGroupByExpression>? groupBy)
+        {
+            ApplyGroupBy(groupBy);
+            return this;
+        }
+
+        /// <inheritdoc />
+        SelectDynamicsOrderByContinuation<TDatabase> SelectDynamicsOrderByContinuation<TDatabase>.GroupBy(IEnumerable<GroupByExpression>? groupBy)
         {
             ApplyGroupBy(groupBy);
             return this;

@@ -123,7 +123,21 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
+        SelectEntityContinuation<TDatabase, TEntity> SelectEntityContinuation<TDatabase, TEntity>.GroupBy(params GroupByExpression[] groupBy)
+        {
+            ApplyGroupBy(groupBy);
+            return this;
+        }
+
+        /// <inheritdoc />
         SelectEntityContinuation<TDatabase, TEntity> SelectEntityContinuation<TDatabase, TEntity>.GroupBy(IEnumerable<AnyGroupByExpression> groupBy)
+        {
+            ApplyGroupBy(groupBy);
+            return this;
+        }
+
+        /// <inheritdoc />
+        SelectEntityContinuation<TDatabase, TEntity> SelectEntityContinuation<TDatabase, TEntity>.GroupBy(IEnumerable<GroupByExpression> groupBy)
         {
             ApplyGroupBy(groupBy);
             return this;
