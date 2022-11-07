@@ -75,9 +75,11 @@ namespace HatTrick.DbEx.Sql.Expression
         public static OrderByExpressionSet operator &(OrderByExpression a, OrderByExpression b) => new(a, b);
         #endregion
 
-        #region implicit order by expression set operator
+        #region implicit operator
         public static implicit operator OrderByExpressionSet(OrderByExpression a) => new(a);
+
+        public static implicit operator OrderByExpression((string TableName, string FieldName) a) => new(new AliasExpression<object?>(a), OrderExpressionDirection.ASC);
         #endregion
     }
-    
+
 }
