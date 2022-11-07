@@ -172,7 +172,21 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
+        SelectDynamicContinuation<TDatabase> SelectDynamicContinuation<TDatabase>.GroupBy(params GroupByExpression[] groupBy)
+        {
+            ApplyGroupBy(groupBy);
+            return this;
+        }
+
+        /// <inheritdoc />
         SelectDynamicContinuation<TDatabase> SelectDynamicContinuation<TDatabase>.GroupBy(IEnumerable<AnyGroupByExpression> groupBy)
+        {
+            ApplyGroupBy(groupBy);
+            return this;
+        }
+
+        /// <inheritdoc />
+        SelectDynamicContinuation<TDatabase> SelectDynamicContinuation<TDatabase>.GroupBy(IEnumerable<GroupByExpression> groupBy)
         {
             ApplyGroupBy(groupBy);
             return this;

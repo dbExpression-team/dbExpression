@@ -16,6 +16,7 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
+using HatTrick.DbEx.Sql.Expression;
 using System.Collections.Generic;
 using System.Dynamic;
 
@@ -74,9 +75,29 @@ namespace HatTrick.DbEx.Sql
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-group-by-transact-sql">Microsoft docs on GROUP BY</see>
         /// </para>
         /// </summary>
+        /// <param name="groupBy">A list of expressions of type <see cref="GroupByExpression"/> specifying how to group the selected results.</param>
+        /// <returns><see cref="SelectDynamicContinuation{TDatabase}"/>, a fluent continuation for the construction of a sql SELECT query expression for a single <typeparamref name="dynamic"/> value.</returns>
+        SelectDynamicContinuation<TDatabase> GroupBy(params GroupByExpression[] groupBy);
+
+        /// <summary>
+        /// Construct the GROUP BY clause of a sql SELECT query expression for a single <typeparamref name="dynamic"/> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-group-by-transact-sql">Microsoft docs on GROUP BY</see>
+        /// </para>
+        /// </summary>
         /// <param name="groupBy">A list of expressions of type <see cref="AnyGroupByExpression"/> specifying how to group the selected results.</param>
         /// <returns><see cref="SelectDynamicContinuation{TDatabase}"/>, a fluent continuation for the construction of a sql SELECT query expression for a single <typeparamref name="dynamic"/> value.</returns>
         SelectDynamicContinuation<TDatabase> GroupBy(IEnumerable<AnyGroupByExpression> groupBy);
+
+        /// <summary>
+        /// Construct the GROUP BY clause of a sql SELECT query expression for a single <typeparamref name="dynamic"/> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-group-by-transact-sql">Microsoft docs on GROUP BY</see>
+        /// </para>
+        /// </summary>
+        /// <param name="groupBy">A list of expressions of type <see cref="GroupByExpression"/> specifying how to group the selected results.</param>
+        /// <returns><see cref="SelectDynamicContinuation{TDatabase}"/>, a fluent continuation for the construction of a sql SELECT query expression for a single <typeparamref name="dynamic"/> value.</returns>
+        SelectDynamicContinuation<TDatabase> GroupBy(IEnumerable<GroupByExpression> groupBy);
 
         /// <summary>
         /// Construct the HAVING clause of a sql SELECT query expression for a single <typeparamref name="dynamic"/> value.

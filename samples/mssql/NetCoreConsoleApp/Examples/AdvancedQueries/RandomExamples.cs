@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using HatTrick.DbEx.Sql;
 using SimpleConsole.Data;
 using SimpleConsole.DataService;
@@ -121,17 +122,8 @@ namespace NetCoreConsoleApp
 			   .InnerJoin(dbo.PersonAddress).On(dbo.PersonAddress.PersonId == dbo.Person.Id)
 			   .InnerJoin(dbo.Address).On(dbo.Address.Id == dbo.PersonAddress.AddressId)
 			   .GroupBy(
-					dbo.Person.Id,
-					dbo.Person.FirstName,
-					dbo.Person.LastName,
-					dbo.Person.BirthDate,
-					dbo.Person.GenderType,
-					dbo.Person.CreditLimit,
-					dbo.Person.YearOfLastCreditLimitReview,
-					dbo.Person.RegistrationDate,
-					dbo.Person.LastLoginDate,
-					dbo.Person.DateCreated,
-					dbo.Person.DateUpdated)
+                    dbex.SelectAllFor(dbo.Person).Cast<AnyGroupByExpression>()
+				)
 			   .Having(db.fx.Count(dbo.Address.Id) > 1)
 			   .Execute();
 

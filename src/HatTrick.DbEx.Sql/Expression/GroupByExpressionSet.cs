@@ -121,5 +121,5 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
     }
-    
+
 }
