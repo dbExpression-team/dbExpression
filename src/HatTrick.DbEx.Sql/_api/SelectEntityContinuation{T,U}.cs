@@ -55,9 +55,29 @@ namespace HatTrick.DbEx.Sql
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-order-by-clause-transact-sql">Microsoft docs on ORDER BY</see>
         /// </para>
         /// </summary>
+        /// <param name="orderBy">A list of expressions of type <see cref="OrderByExpression"/> indicating the order and direction for sorting.</param>
+        /// <returns><see cref="SelectEntityContinuation{TDatabase, TEntity}"/>, a fluent continuation for the construction of a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
+        SelectEntityContinuation<TDatabase, TEntity> OrderBy(params OrderByExpression[] orderBy);
+
+        /// <summary>
+        /// Construct the ORDER BY clause of a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-order-by-clause-transact-sql">Microsoft docs on ORDER BY</see>
+        /// </para>
+        /// </summary>
         /// <param name="orderBy">A list of expressions of type <see cref="AnyOrderByExpression"/> indicating the order and direction for sorting.</param>
         /// <returns><see cref="SelectEntityContinuation{TDatabase, TEntity}"/>, a fluent continuation for the construction of a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
         SelectEntityContinuation<TDatabase, TEntity> OrderBy(IEnumerable<AnyOrderByExpression> orderBy);
+
+        /// <summary>
+        /// Construct the ORDER BY clause of a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-order-by-clause-transact-sql">Microsoft docs on ORDER BY</see>
+        /// </para>
+        /// </summary>
+        /// <param name="orderBy">A list of expressions of type <see cref="OrderByExpression"/> indicating the order and direction for sorting.</param>
+        /// <returns><see cref="SelectEntityContinuation{TDatabase, TEntity}"/>, a fluent continuation for the construction of a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
+        SelectEntityContinuation<TDatabase, TEntity> OrderBy(IEnumerable<OrderByExpression> orderBy);
 
         /// <summary>
         /// Construct the GROUP BY clause of a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.

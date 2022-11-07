@@ -54,9 +54,29 @@ namespace HatTrick.DbEx.Sql
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-order-by-clause-transact-sql">Microsoft docs on ORDER BY</see>
         /// </para>
         /// </summary>
+        /// <param name="orderBy">A list of expressions of type <see cref="OrderByExpression"/> indicating the order and direction for sorting.</param>
+        /// <returns><see cref="SelectValueContinuation{TDatabase, TValue}"/>, a fluent continuation for the construction of a sql SELECT query expression for a single <typeparamref name="TValue"/> value.</returns>
+        SelectValueContinuation<TDatabase, TValue> OrderBy(params OrderByExpression[] orderBy);
+
+        /// <summary>
+        /// Construct the ORDER BY clause of a sql SELECT query expression for a single <typeparamref name="TValue"/> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-order-by-clause-transact-sql">Microsoft docs on ORDER BY</see>
+        /// </para>
+        /// </summary>
         /// <param name="orderBy">A list of expressions of type <see cref="AnyOrderByExpression"/> indicating the order and direction for sorting.</param>
         /// <returns><see cref="SelectValueContinuation{TDatabase, TValue}"/>, a fluent continuation for the construction of a sql SELECT query expression for a single <typeparamref name="TValue"/> value.</returns>
         SelectValueContinuation<TDatabase, TValue> OrderBy(IEnumerable<AnyOrderByExpression>? orderBy);
+
+        /// <summary>
+        /// Construct the ORDER BY clause of a sql SELECT query expression for a single <typeparamref name="TValue"/> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-order-by-clause-transact-sql">Microsoft docs on ORDER BY</see>
+        /// </para>
+        /// </summary>
+        /// <param name="orderBy">A list of expressions of type <see cref="OrderByExpression"/> indicating the order and direction for sorting.</param>
+        /// <returns><see cref="SelectValueContinuation{TDatabase, TValue}"/>, a fluent continuation for the construction of a sql SELECT query expression for a single <typeparamref name="TValue"/> value.</returns>
+        SelectValueContinuation<TDatabase, TValue> OrderBy(IEnumerable<OrderByExpression>? orderBy);
 
         /// <summary>
         /// Construct the GROUP BY clause of a sql SELECT query expression for a single <typeparamref name="TValue"/> value.

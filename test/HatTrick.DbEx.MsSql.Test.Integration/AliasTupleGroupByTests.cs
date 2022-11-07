@@ -15,7 +15,7 @@ using HatTrick.DbEx.Sql.Builder.Alias;
 
 namespace HatTrick.DbEx.MsSql.Test.Integration
 {
-    public class AliasTupleTests : ResetDatabaseNotRequired
+    public class AliasTupleGroupByTests : ResetDatabaseNotRequired
     {        
         [Theory]
         [Trait("Operation", "ORDER BY")]

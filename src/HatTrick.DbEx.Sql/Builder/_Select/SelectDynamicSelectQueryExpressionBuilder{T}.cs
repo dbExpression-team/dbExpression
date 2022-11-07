@@ -105,7 +105,21 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
+        SelectDynamicContinuation<TDatabase> SelectDynamicContinuation<TDatabase>.OrderBy(params OrderByExpression[] orderBy)
+        {
+            ApplyOrderBy(orderBy);
+            return this;
+        }
+
+        /// <inheritdoc />
         SelectDynamicContinuation<TDatabase> SelectDynamicContinuation<TDatabase>.OrderBy(IEnumerable<AnyOrderByExpression> orderBy)
+        {
+            ApplyOrderBy(orderBy);
+            return this;
+        }
+
+        /// <inheritdoc />
+        SelectDynamicContinuation<TDatabase> SelectDynamicContinuation<TDatabase>.OrderBy(IEnumerable<OrderByExpression> orderBy)
         {
             ApplyOrderBy(orderBy);
             return this;
