@@ -90,7 +90,7 @@ namespace NetCoreConsoleApp
 				.InnerJoin(dbo.PersonAddress).On(dbo.PersonAddress.PersonId == dbo.Person.Id)
 				.InnerJoin(dbo.Address).On(dbo.Address.Id == dbo.PersonAddress.AddressId)
 				.Where(dbo.Person.BirthDate < DateTime.Now.AddYears(-18).Date & dbo.Address.Zip.In(zipCodes))
-				.OrderBy(dbo.Person.LastName.Desc)
+				.OrderBy(dbo.Person.LastName.Desc())
 				.Offset(pageIndex * pageCount)
 				.Limit(pageCount)
 				.Execute();

@@ -29,7 +29,7 @@ namespace NetCoreConsoleApp
 			IList<Person> people = db.SelectMany<Person>()
 				.From(dbo.Person)
 				.Where(dbo.Person.CreditLimit >= creditLimit)
-				.OrderBy(dbo.Person.CreditLimit.Desc, dbo.Person.LastName.Asc, dbo.Person.FirstName.Asc)
+				.OrderBy(dbo.Person.CreditLimit.Desc(), dbo.Person.LastName.Asc(), dbo.Person.FirstName.Asc())
 				.Execute();
 
 			return people;

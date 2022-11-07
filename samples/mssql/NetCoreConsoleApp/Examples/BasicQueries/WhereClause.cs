@@ -30,7 +30,7 @@ namespace NetCoreConsoleApp
 			var peopleLastNameStartsWithChar = db.SelectMany<Person>()
 				.From(dbo.Person)
 				.Where(dbo.Person.LastName.Like($"{c}%"))
-				.OrderBy(dbo.Person.LastName.Asc)
+				.OrderBy(dbo.Person.LastName.Asc())
 				.Execute();
 
 			return peopleLastNameStartsWithChar;
@@ -45,7 +45,7 @@ namespace NetCoreConsoleApp
 			var result = db.SelectMany(dbo.Person.LastName)
 				.From(dbo.Person)
 				.Where(dbo.Person.LastName.Like($"_{c}%"))
-				.OrderBy(dbo.Person.BirthDate.Asc)
+				.OrderBy(dbo.Person.BirthDate.Asc())
 				.Execute();
 
 			return result;
@@ -79,7 +79,7 @@ namespace NetCoreConsoleApp
 						(dbo.Person.GenderType == GenderType.Female & (dbo.Address.Zip == "10002" | dbo.Address.Zip == "02801"))
 					)
 				)
-				.OrderBy(dbo.Person.GenderType.Asc)
+				.OrderBy(dbo.Person.GenderType.Asc())
 				.Execute();
 
 			return result;

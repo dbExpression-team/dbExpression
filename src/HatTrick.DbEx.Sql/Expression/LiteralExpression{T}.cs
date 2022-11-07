@@ -64,8 +64,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region order by
-        OrderByExpression AnyElement.Asc => new(this, OrderExpressionDirection.ASC);
-        OrderByExpression AnyElement.Desc => new(this, OrderExpressionDirection.DESC);        
+        OrderByExpression AnyElement.Asc() => new(this, OrderExpressionDirection.ASC);
+        OrderByExpression AnyElement.Desc() => new(this, OrderExpressionDirection.DESC);        
         #endregion
 
         #region equals

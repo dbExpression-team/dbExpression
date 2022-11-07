@@ -65,7 +65,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectOne(
                     db.fx.DateDiff(DateParts.Day, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
                 ).From(dbo.Purchase)
-                .OrderBy(db.fx.DateDiff(DateParts.Day, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate).Desc);
+                .OrderBy(db.fx.DateDiff(DateParts.Day, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate).Desc());
 
             //when               
             int? result = exp.Execute();
@@ -105,7 +105,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectOne(
                     db.fx.DateDiff(DateParts.Day, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate).As("alias")
                 ).From(dbo.Purchase)
-                .OrderBy(db.fx.DateDiff(DateParts.Day, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate).Desc);
+                .OrderBy(db.fx.DateDiff(DateParts.Day, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate).Desc());
 
             //when               
             int? result = exp.Execute();
@@ -168,7 +168,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .InnerJoin(
                     db.SelectMany<PurchaseLine>().Top(100)
                     .From(dbo.PurchaseLine)
-                    .OrderBy(dbo.PurchaseLine.PurchasePrice.Desc)
+                    .OrderBy(dbo.PurchaseLine.PurchasePrice.Desc())
                 ).As("lines").On(dbo.Purchase.Id == ("lines", "PurchaseId"));
 
             //when               

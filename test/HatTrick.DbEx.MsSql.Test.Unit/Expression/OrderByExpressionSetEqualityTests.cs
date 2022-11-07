@@ -14,8 +14,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            var exp1 = dbo.Person.CreditLimit.Asc;
-            var exp2 = dbo.Person.CreditLimit.Asc;
+            var exp1 = dbo.Person.CreditLimit.Asc();
+            var exp2 = dbo.Person.CreditLimit.Asc();
 
             //then
             Assert.True(exp1.Equals(exp2));
@@ -28,8 +28,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            var exp1 = dbo.Person.CreditLimit.Asc;
-            var exp2 = dbo.Person.CreditLimit.Desc;
+            var exp1 = dbo.Person.CreditLimit.Asc();
+            var exp2 = dbo.Person.CreditLimit.Desc();
 
             //then
             Assert.False(exp1.Equals(exp2));
@@ -42,8 +42,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            var exp1 = dbo.Person.CreditLimit.Asc & dbo.Person.Id.Desc;
-            var exp2 = dbo.Person.CreditLimit.Asc & dbo.Person.Id.Desc;
+            var exp1 = dbo.Person.CreditLimit.Asc() & dbo.Person.Id.Desc();
+            var exp2 = dbo.Person.CreditLimit.Asc() & dbo.Person.Id.Desc();
 
             //then
             Assert.True(exp1.Equals(exp2));
@@ -56,8 +56,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            var exp1 = dbo.Person.CreditLimit.Asc & dbo.Person.Id.Desc;
-            var exp2 = dbo.Person.CreditLimit.Desc & dbo.Person.Id.Asc;
+            var exp1 = dbo.Person.CreditLimit.Asc() & dbo.Person.Id.Desc();
+            var exp2 = dbo.Person.CreditLimit.Desc() & dbo.Person.Id.Asc();
 
             //then
             Assert.False(exp1.Equals(exp2));
@@ -70,8 +70,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            var exp1 = dbo.Person.CreditLimit.Asc & dbo.Person.Id.Desc;
-            var exp2 = dbo.Person.Id.Desc & dbo.Person.CreditLimit.Asc;
+            var exp1 = dbo.Person.CreditLimit.Asc() & dbo.Person.Id.Desc();
+            var exp2 = dbo.Person.Id.Desc() & dbo.Person.CreditLimit.Asc();
 
             //then
             Assert.False(exp1.Equals(exp2));
@@ -84,8 +84,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            var exp1 = dbo.Person.CreditLimit.Asc;
-            var exp2 = dbo.Person.CreditLimit.Asc;
+            var exp1 = dbo.Person.CreditLimit.Asc();
+            var exp2 = dbo.Person.CreditLimit.Asc();
 
             //when
             var hc1 = exp1.GetHashCode();
@@ -102,8 +102,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            var exp1 = dbo.Person.CreditLimit.Asc;
-            var exp2 = dbo.Person.CreditLimit.Desc;
+            var exp1 = dbo.Person.CreditLimit.Asc();
+            var exp2 = dbo.Person.CreditLimit.Desc();
 
             //when
             var hc1 = exp1.GetHashCode();
@@ -120,8 +120,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            var exp1 = dbo.Person.CreditLimit.Asc & dbo.Person.Id.Desc;
-            var exp2 = dbo.Person.CreditLimit.Asc & dbo.Person.Id.Desc;
+            var exp1 = dbo.Person.CreditLimit.Asc() & dbo.Person.Id.Desc();
+            var exp2 = dbo.Person.CreditLimit.Asc() & dbo.Person.Id.Desc();
 
             //when
             var hc1 = exp1.GetHashCode();
@@ -138,8 +138,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            var exp1 = dbo.Person.CreditLimit.Asc & dbo.Person.Id.Desc;
-            var exp2 = dbo.Person.CreditLimit.Desc & dbo.Person.Id.Asc;
+            var exp1 = dbo.Person.CreditLimit.Asc() & dbo.Person.Id.Desc();
+            var exp2 = dbo.Person.CreditLimit.Desc() & dbo.Person.Id.Asc();
 
             //when
             var hc1 = exp1.GetHashCode();
@@ -156,8 +156,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            var exp1 = dbo.Person.CreditLimit.Asc & dbo.Person.Id.Desc;
-            var exp2 = dbo.Person.Id.Desc & dbo.Person.CreditLimit.Asc;
+            var exp1 = dbo.Person.CreditLimit.Asc() & dbo.Person.Id.Desc();
+            var exp2 = dbo.Person.Id.Desc() & dbo.Person.CreditLimit.Asc();
 
             //when
             var hc1 = exp1.GetHashCode();

@@ -210,7 +210,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 )
                 .OrderBy(
                     dbo.Person.LastName,
-                    dbo.Person.FirstName.Desc
+                    dbo.Person.FirstName.Desc()
                 )
                 .Execute();
 
@@ -348,7 +348,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 )
                 .OrderBy(
                     dbo.Person.LastName,
-                    dbo.Person.FirstName.Desc
+                    dbo.Person.FirstName.Desc()
                 )
                 .Execute();
 
@@ -376,7 +376,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             .From(dbo.Purchase)
             .InnerJoin(dbo.Person).On(dbo.Purchase.PersonId == dbo.Person.Id)
             .OrderBy(
-                db.fx.Count(dbo.Purchase.PurchaseDate).Asc
+                db.fx.Count(dbo.Purchase.PurchaseDate).Asc()
             )
             .GroupBy(
                 dbo.Person.Id,
@@ -478,7 +478,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 )
                 .Top(expected)
                 .From(dbo.Person)
-                .OrderBy(dbo.Person.LastName.Asc, dbo.Person.FirstName.Asc);
+                .OrderBy(dbo.Person.LastName.Asc(), dbo.Person.FirstName.Asc());
 
             //when               
             IList<dynamic> persons = exp.Execute();
@@ -503,7 +503,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Top(expected)
                 .Distinct()
                 .From(dbo.Person)
-                .OrderBy(dbo.Person.LastName.Asc, dbo.Person.FirstName.Asc);
+                .OrderBy(dbo.Person.LastName.Asc(), dbo.Person.FirstName.Asc());
 
             //when               
             IList<dynamic> persons = exp.Execute();
