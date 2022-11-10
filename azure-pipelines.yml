@@ -19,7 +19,7 @@ variables:
   solution: 'DbEx.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-  netCoreVersion: '6.0'
+  netCoreVersion: '7.0'
   system.debug: true
   stageLocationName: db-ex
   disable.coverage.autogenerate: 'true'
@@ -37,6 +37,11 @@ stages:
     - job:
       displayName: 'Build, Test, and Publish'
       steps:
+      - task: UseDotNet@2
+        displayName: 'Install .NET 7 SDK'
+        inputs:
+         packageType: 'sdk'
+         version: '7.0.x'
       - task: PowerShell@2
         displayName: 'Build and Package Solution'
         inputs:
@@ -80,7 +85,7 @@ stages:
         buildTemplatesPath: $(Pipeline.Workspace)/$(stageLocationName)/build/mssql
         buildConfiguration: $(buildConfiguration)
         targetFrameworkMoniker: net$(netCoreVersion)
-        mssqlVersions: ['2017','2019','2022'] 
+        mssqlVersions: ['2017','2019','2022']
     
   - stage: Publish_Reports
     dependsOn:
