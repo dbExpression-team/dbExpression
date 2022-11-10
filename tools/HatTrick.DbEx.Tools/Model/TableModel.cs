@@ -17,6 +17,7 @@
 #endregion
 
 ﻿using HatTrick.Model.MsSql;
+using HatTrick.Model.Sql;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,11 +50,11 @@ namespace HatTrick.DbEx.Tools.Model
                 foreach (var index in table.Indexes)
                 {
                     var attributes = new Dictionary<string, string>();
-                    if (index.Value.IsPrimaryKey)
+                    if (index.IsPrimaryKey)
                         attributes.Add("primary key", "yes");
-                    attributes.Add("columns", index.Value.IndexedColumns.Aggregate(string.Empty, (s, column) => $"{s}{column.ColumnName}{(column != index.Value.IndexedColumns.Last() ? ", " : string.Empty)}"));
+                    attributes.Add("columns", index.IndexedColumns.Aggregate(string.Empty, (s, column) => $"{s}{column.Name}{(column != index.IndexedColumns.Last() ? ", " : string.Empty)}"));
 
-                    yield return (index.Key, attributes);
+                    yield return (index.Name, attributes);
                 }
             }
             yield break;

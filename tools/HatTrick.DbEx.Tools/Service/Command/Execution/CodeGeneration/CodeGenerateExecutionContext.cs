@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using Newtonsoft.Json;
+using HatTrick.Model.Sql;
 using HatTrick.Model.MsSql;
 using HatTrick.Text.Templating;
 using HatTrick.DbEx.Tools.Configuration;
@@ -313,7 +314,7 @@ namespace HatTrick.DbEx.Tools.Service
         #region build sql model
         protected static MsSqlModel BuildSqlModel(DbExConfig config)
         {
-            MsSqlModelBuilder sqlMdlBlder = new(config.Source?.ConnectionString!.Value);
+            MsSqlModelBuilder sqlMdlBlder = new(config.Source?.ConnectionString!.Value!);
             bool failed = false;
             sqlMdlBlder.OnError += (ex) =>
             {
@@ -430,7 +431,7 @@ namespace HatTrick.DbEx.Tools.Service
 
             return true;
         }
-		#endregion
+        #endregion
 
         #region resolve override target
         private static IList<INamedMeta> ResolveOverrideTarget(MsSqlModel model, Override o)
@@ -439,38 +440,38 @@ namespace HatTrick.DbEx.Tools.Service
             switch (o.Apply.To.ObjectType)
             {
                 case ObjectType.Any:
-                    SqlModelAccessor accessor = new(model);
+                    MsSqlModelAccessor accessor = new(model);
                     set = accessor.ResolveItemSet(o.Apply.To.Path);
                     break;
                 case ObjectType.Schema:
-                    set = ResolveOverrideTarget<MsSqlSchema>(model, o);
+                    set = ResolveOverrideTarget<ISqlSchema>(model, o);
                     break;
                 case ObjectType.Table:
-                    set = ResolveOverrideTarget<MsSqlTable>(model, o);
+                    set = ResolveOverrideTarget<ISqlTable>(model, o);
                     break;
                 case ObjectType.View:
-                    set = ResolveOverrideTarget<MsSqlView>(model, o);
+                    set = ResolveOverrideTarget<ISqlView>(model, o);
                     break;
                 case ObjectType.Procedure:
-                    set = ResolveOverrideTarget<MsSqlProcedure>(model, o);
+                    set = ResolveOverrideTarget<ISqlProcedure>(model, o);
                     break;
                 case ObjectType.Relationship:
-                    set = ResolveOverrideTarget<MsSqlRelationship>(model, o);
+                    set = ResolveOverrideTarget<ISqlRelationship>(model, o);
                     break;
                 case ObjectType.Index:
-                    set = ResolveOverrideTarget<MsSqlIndex>(model, o);
+                    set = ResolveOverrideTarget<ISqlIndex>(model, o);
                     break;
                 case ObjectType.Column:
-                    set = ResolveOverrideTarget<MsSqlColumn>(model, o);
+                    set = ResolveOverrideTarget<ISqlColumn>(model, o);
                     break;
                 case ObjectType.TableColumn:
-                    set = ResolveOverrideTarget<MsSqlTableColumn>(model, o);
+                    set = ResolveOverrideTarget<ISqlTableColumn>(model, o);
                     break;
                 case ObjectType.ViewColumn:
-                    set = ResolveOverrideTarget<MsSqlViewColumn>(model, o);
+                    set = ResolveOverrideTarget<ISqlViewColumn>(model, o);
                     break;
                 case ObjectType.Parameter:
-                    set = ResolveOverrideTarget<MsSqlParameter>(model, o);
+                    set = ResolveOverrideTarget<ISqlParameter>(model, o);
                     break;
                 default:
                     ServiceDispatch.Feedback.Push(To.Error, $"encountered unknown ObjectType: {o.Apply.To.ObjectType}");
@@ -481,9 +482,9 @@ namespace HatTrick.DbEx.Tools.Service
 
         public static IList<INamedMeta> ResolveOverrideTarget<T>(MsSqlModel model, Override o) where T : INamedMeta
         {
-            Predicate<T>? predicate = BuildMatchPredicate<T>(o);
+            Predicate<T> predicate = BuildMatchPredicate<T>(o);
 
-            SqlModelAccessor accessor = new(model);
+            MsSqlModelAccessor accessor = new(model);
 
             IList<T> set = accessor.ResolveItemSet<T>(o.Apply.To.Path, predicate);
 
@@ -526,14 +527,12 @@ namespace HatTrick.DbEx.Tools.Service
 		#endregion
 
 		#region build match predicate
-		private static Predicate<T>? BuildMatchPredicate<T>(Override o)
+		private static Predicate<T> BuildMatchPredicate<T>(Override o)
         {
-            Predicate<T>? predicate = null;
-
+            List<Predicate<T>> predicateSet = new();
             Dictionary<string, object>? match = o.Apply.To.Match;
             if (match != null && match.Count > 0)
             {
-                List<Predicate<T>> predicateSet = new();
                 foreach (string key in match.Keys)
                 {
                     Type t = typeof(T);
@@ -593,19 +592,15 @@ namespace HatTrick.DbEx.Tools.Service
 
                     predicateSet.Add(p);
                 }
-
-                if (predicateSet.Count > 0)
-                {
-                    predicate = (obj) => predicateSet.All(p => p(obj));
-                }
             }
 
-            return predicate;
+            return predicateSet.Count > 0 
+                ? (obj) => predicateSet.All(p => p(obj)) : (obj) => true;
         }
-		#endregion
+        #endregion
 
-		#region render outputs
-		protected void RenderOutputs(MsSqlModel sqlModel, DbExConfig config)
+        #region render outputs
+        protected void RenderOutputs(MsSqlModel sqlModel, DbExConfig config)
         {
             string[] names = ResourceAccessor.GetTemplateShortNames();
             TemplateModelService templateService = new(config);

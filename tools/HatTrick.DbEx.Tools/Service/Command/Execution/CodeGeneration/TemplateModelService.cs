@@ -19,6 +19,7 @@
 using HatTrick.DbEx.Tools.Configuration;
 using HatTrick.DbEx.Tools.Model;
 using HatTrick.Model.MsSql;
+using HatTrick.Model.Sql;
 using HatTrick.Reflection;
 using Newtonsoft.Json;
 using System;
@@ -59,7 +60,7 @@ namespace HatTrick.DbEx.Tools.Service
                     features
                 );
 
-            foreach (var schema in database.Schemas.Values.Where(c => !helpers.IsIgnored(c)))
+            foreach (var schema in database.Schemas.Where(c => !helpers.IsIgnored(c)))
             {
                 var schemaPair = new SchemaPairModel(
                         _currentIdentifier++,
@@ -73,7 +74,7 @@ namespace HatTrick.DbEx.Tools.Service
                         )
                     );
 
-                foreach (var entity in schema.Tables.Values.Cast<INamedMeta>().Concat(schema.Views.Values.Cast<INamedMeta>()))
+                foreach (var entity in schema.Tables.Cast<INamedMeta>().Concat(schema.Views.Cast<INamedMeta>()))
                 {
                     if (helpers.IsIgnored(entity))
                         continue;
@@ -93,7 +94,7 @@ namespace HatTrick.DbEx.Tools.Service
                                 )
                             );
 
-                        foreach (var column in table.Columns.Values.Where(c => !helpers.IsIgnored(c)))
+                        foreach (var column in table.Columns.Where(c => !helpers.IsIgnored(c)))
                         {
                             var columnPair = new ColumnPairModel(
                                 _currentIdentifier++,
@@ -126,7 +127,7 @@ namespace HatTrick.DbEx.Tools.Service
                                 )
                             );
 
-                        foreach (var column in view.Columns.Values.Where(c => !helpers.IsIgnored(c)))
+                        foreach (var column in view.Columns.Where(c => !helpers.IsIgnored(c)))
                         {
                             var columnPair = new ColumnPairModel(
                                 _currentIdentifier++,
@@ -155,13 +156,13 @@ namespace HatTrick.DbEx.Tools.Service
                     }
                 }
 
-                foreach (var procedure in schema.Procedures.Values.Where(p => !helpers.IsIgnored(p)))
+                foreach (var procedure in schema.Procedures.Where(p => !helpers.IsIgnored(p)))
                 {
                     StoredProcedureModel procedureModel = new(schemaPair.Schema, procedure);
                     StoredProcedureExpressionModel procedureExpression = new(schemaPair.SchemaExpression, helpers.ResolveName(procedure));
                     StoredProcedurePairModel procedurePair = new(_currentIdentifier++, procedureModel, procedureExpression);
 
-                    foreach (var parameter in procedure.Parameters.Values.Where(p => !helpers.IsIgnored(p)))
+                    foreach (var parameter in procedure.Parameters.Where(p => !helpers.IsIgnored(p)))
                     {
                         ParameterModel parameterModel = new(procedureModel, parameter);
                         ParameterExpressionModel parameterExpression = new(
