@@ -11,7 +11,7 @@ IConfiguration configuration = new ConfigurationBuilder()
     .AddEnvironmentVariables()
     .Build();
 
-string connectionString = configuration.GetConnectionString("hattrick_dbex_mssql_test");
+string connectionString = configuration.GetConnectionString("hattrick_dbex_mssql_test")!;
 
 using IProfileTarget sut = new SelectOneQueryExpressionProfileTarget();
 

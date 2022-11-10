@@ -29,14 +29,10 @@ namespace ServerSideBlazorApp.DataService
 	using _secDataService = ServerSideBlazorApp.secDataService;
 
     #region db
-#if NET7_0_OR_GREATER
 #pragma warning disable CS8981 // The type name only contains lower-cased ascii characters
-#endif
 
     public static class db
-#if NET7_0_OR_GREATER
 #pragma warning disable CS8981 // The type name only contains lower-cased ascii characters
-#endif
 
     {
         #region internals

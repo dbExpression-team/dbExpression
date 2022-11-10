@@ -235,14 +235,10 @@ namespace DbEx.secData
 namespace DbEx.unit_testData
 {
     #region alias
-#if NET7_0_OR_GREATER
 #pragma warning disable CS8981 // The type name only contains lower-cased ascii characters
-#endif
 
     public partial class alias : IDbEntity
-#if NET7_0_OR_GREATER
 #pragma warning disable CS8981 // The type name only contains lower-cased ascii characters
-#endif
 
     {
         #region interface
@@ -271,14 +267,10 @@ namespace DbEx.unit_testData
     #endregion
 
     #region entity
-#if NET7_0_OR_GREATER
 #pragma warning disable CS8981 // The type name only contains lower-cased ascii characters
-#endif
 
     public partial class entity : IDbEntity
-#if NET7_0_OR_GREATER
 #pragma warning disable CS8981 // The type name only contains lower-cased ascii characters
-#endif
 
     {
         #region interface
@@ -352,14 +344,10 @@ namespace DbEx.unit_testData
     #endregion
 
     #region identifier
-#if NET7_0_OR_GREATER
 #pragma warning disable CS8981 // The type name only contains lower-cased ascii characters
-#endif
 
     public partial class identifier : IDbEntity
-#if NET7_0_OR_GREATER
 #pragma warning disable CS8981 // The type name only contains lower-cased ascii characters
-#endif
 
     {
         #region interface
@@ -388,14 +376,10 @@ namespace DbEx.unit_testData
     #endregion
 
     #region name
-#if NET7_0_OR_GREATER
 #pragma warning disable CS8981 // The type name only contains lower-cased ascii characters
-#endif
 
     public partial class name : IDbEntity
-#if NET7_0_OR_GREATER
 #pragma warning disable CS8981 // The type name only contains lower-cased ascii characters
-#endif
 
     {
         #region interface
@@ -424,14 +408,10 @@ namespace DbEx.unit_testData
     #endregion
 
     #region schema
-#if NET7_0_OR_GREATER
 #pragma warning disable CS8981 // The type name only contains lower-cased ascii characters
-#endif
 
     public partial class schema : IDbEntity
-#if NET7_0_OR_GREATER
 #pragma warning disable CS8981 // The type name only contains lower-cased ascii characters
-#endif
 
     {
         #region interface

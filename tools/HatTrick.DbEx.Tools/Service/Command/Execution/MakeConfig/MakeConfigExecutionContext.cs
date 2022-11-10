@@ -20,7 +20,6 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Text;
-using svc = HatTrick.DbEx.Tools.Service.ServiceDispatch;
 using HatTrick.DbEx.Tools.Resources;
 
 namespace HatTrick.DbEx.Tools.Service
@@ -64,9 +63,9 @@ namespace HatTrick.DbEx.Tools.Service
             }
             else
             {
-                svc.Feedback.Push(To.Info, $"Executing make config");
-                svc.Feedback.Push(To.ConsoleOnly, "«Current working directory:  »Green");
-                svc.Feedback.Push(To.ConsoleOnly, base.WorkingDirectory);
+                ServiceDispatch.Feedback.Push(To.Info, $"Executing make config");
+                ServiceDispatch.Feedback.Push(To.ConsoleOnly, "«Current working directory:  »Green");
+                ServiceDispatch.Feedback.Push(To.ConsoleOnly, base.WorkingDirectory);
 
                 string path = this.ResolveOutputDirectory();
 
@@ -82,7 +81,7 @@ namespace HatTrick.DbEx.Tools.Service
         {
             if (base.TryGetOption(out string? path, out string? keyUsed, "--directory", "--dir", "-d"))
             {
-                if (!svc.IO.DirectoryExists(path!))
+                if (!ServiceDispatch.IO.DirectoryExists(path!))
                 {
                     throw new CommandException($"Command option '{keyUsed}' does not point to an existing directory: {path}");
                 }
@@ -94,7 +93,7 @@ namespace HatTrick.DbEx.Tools.Service
                 path = Path.Combine(DEFAULT_OUTPUT_PATH, SAMPLE_CONFIG_NAME);
             }
 
-            if (svc.IO.FileExists(path))
+            if (ServiceDispatch.IO.FileExists(path))
             {
                 throw new CommandException($"File already exists.  Path: {path}");
             }
@@ -108,46 +107,46 @@ namespace HatTrick.DbEx.Tools.Service
             string resourcePath = $"{typeof(ResourceAccessor).Namespace}.DbExConfig.DbEx.Config.Example.json";
             Resource config = ResourceAccessor.GetResource(resourcePath);
 
-            svc.Feedback.Push(To.Info, $"Writing dbex.config.json file to: {path}");
+            ServiceDispatch.Feedback.Push(To.Info, $"Writing dbex.config.json file to: {path}");
             if (!Path.IsPathFullyQualified(path))
             {
-                svc.Feedback.Push(To.ConsoleOnly, $"«Absolute path:  »Green");
-                svc.Feedback.Push(To.ConsoleOnly,Path.GetFullPath(path));
+                ServiceDispatch.Feedback.Push(To.ConsoleOnly, $"«Absolute path:  »Green");
+                ServiceDispatch.Feedback.Push(To.ConsoleOnly, Path.GetFullPath(path));
             }
 
-            svc.IO.WriteFile(path, config.Value!, Encoding.UTF8);
+            ServiceDispatch.IO.WriteFile(path, config.Value!, Encoding.UTF8);
         }
         #endregion
 
         #region push help feedback
         private void PushHelpFeedback()
         {
-            svc.Feedback.Push(To.ConsoleOnly, "«Usage:  »Green");
-            svc.Feedback.Push(To.ConsoleOnly, "dbex makeconfig [options]");
-            svc.Feedback.Push(To.ConsoleOnly, string.Empty);
-            svc.Feedback.Push(To.ConsoleOnly, "Options:»Green");
-            svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}-d|--dir|--directory: <output directory for sample config json file>");
-            svc.Feedback.Push(To.ConsoleOnly, string.Empty);
-            svc.Feedback.Push(To.ConsoleOnly, "Notes:»Green");
-            svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}Directory option value defaults to current working directory if the option is not provided.");
-            svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}Directory option value can be absolute or relative.");
-            svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}the output config file name is always {SAMPLE_CONFIG_NAME}");
-            svc.Feedback.Push(To.ConsoleOnly, string.Empty);
-            svc.Feedback.Push(To.ConsoleOnly, "Usage example(s):»Green");
-            svc.Feedback.Push(To.ConsoleOnly, string.Empty);
-            svc.Feedback.Push(To.ConsoleOnly, $"The following two commands produce the same results (output file written to current working directory):»Green");
-            svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}dbex makeconfig -d ./");
-            svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}{base.Tab}or");
-            svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}dbex makeconfig");
-            svc.Feedback.Push(To.ConsoleOnly, string.Empty);
-            svc.Feedback.Push(To.ConsoleOnly, $"Usage for an absolute output directory path:»Green");
-            svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}dbex makeconfig -d c:/git/my-project");
-            svc.Feedback.Push(To.ConsoleOnly, string.Empty);
-            svc.Feedback.Push(To.ConsoleOnly, $"Usage for a relative output directory path:»Green");
-            svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}dbex makeconfig -d ../../my-project");
-            svc.Feedback.Push(To.ConsoleOnly, string.Empty);
-            svc.Feedback.Push(To.ConsoleOnly, $"Usage for a output directory path containing spaces:»Green");
-            svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}dbex makeconfig -d \"../../my project\"");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, "«Usage:  »Green");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, "dbex makeconfig [options]");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, string.Empty);
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, "Options:»Green");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, $"{base.Tab}-d|--dir|--directory: <output directory for sample config json file>");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, string.Empty);
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, "Notes:»Green");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, $"{base.Tab}Directory option value defaults to current working directory if the option is not provided.");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, $"{base.Tab}Directory option value can be absolute or relative.");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, $"{base.Tab}the output config file name is always {SAMPLE_CONFIG_NAME}");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, string.Empty);
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, "Usage example(s):»Green");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, string.Empty);
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, $"The following two commands produce the same results (output file written to current working directory):»Green");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, $"{base.Tab}dbex makeconfig -d ./");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, $"{base.Tab}{base.Tab}or");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, $"{base.Tab}dbex makeconfig");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, string.Empty);
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, $"Usage for an absolute output directory path:»Green");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, $"{base.Tab}dbex makeconfig -d c:/git/my-project");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, string.Empty);
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, $"Usage for a relative output directory path:»Green");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, $"{base.Tab}dbex makeconfig -d ../../my-project");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, string.Empty);
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, $"Usage for a output directory path containing spaces:»Green");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, $"{base.Tab}dbex makeconfig -d \"../../my project\"");
         }
         #endregion
     }
