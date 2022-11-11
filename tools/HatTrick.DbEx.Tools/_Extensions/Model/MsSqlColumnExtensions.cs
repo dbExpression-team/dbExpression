@@ -8,7 +8,7 @@ namespace HatTrick.DbEx.Tools.Model
 {
     public static class MsSqlColumnExtensions
     {
-        public static string ToFriendlyName(this SqlDbType type, int maxLength, int precision, int scale)
+        public static string ToFriendlyName(this SqlDbType type, long? maxLength, byte? precision, byte? scale)
         {
             switch (type)
             {

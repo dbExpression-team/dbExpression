@@ -30,7 +30,7 @@ namespace HatTrick.DbEx.Tools.Model
         public bool IsNullable { get; }
         public bool IsIdentity { get; }
         public bool IsComputed { get; }
-        public short? Size { get; }
+        public long? Size { get; }
         public byte? Precision { get; }
         public byte? Scale { get; }
         public IDictionary<string, string> Properties { get; }

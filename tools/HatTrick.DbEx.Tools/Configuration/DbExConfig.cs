@@ -105,7 +105,7 @@ namespace HatTrick.DbEx.Tools.Configuration
 
     public class ApplyTo
     {
-        public string? Path { get; set; }
+        public string Path { get; set; } = string.Empty;
 
         public ObjectType ObjectType { get; set; } = Configuration.ObjectType.Any;
 
