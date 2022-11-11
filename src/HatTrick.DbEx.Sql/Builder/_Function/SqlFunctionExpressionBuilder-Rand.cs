@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.Sql.Builder
     {
         /// <summary>
         /// Construct an expression for the RAND transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/rand?version=0.9.4">read the docs on RAND</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/rand?version=0.9.5">read the docs on RAND</see></para>
         /// </summary>
         /// <returns><see cref="SingleRandFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
         public SingleRandFunctionExpression Rand()
@@ -35,7 +35,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the RAND transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/rand?version=0.9.4">read the docs on RAND</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/rand?version=0.9.5">read the docs on RAND</see></para>
         /// </summary>
         /// <param name="seed">An expression of type <see cref="Byte"/>, the seed to use for calculating the random value.</param>
         /// <returns><see cref="SingleRandFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
@@ -44,7 +44,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the RAND transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/rand?version=0.9.4">read the docs on RAND</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/rand?version=0.9.5">read the docs on RAND</see></para>
         /// </summary>
         /// <param name="seed">An expression of type <see cref="Int16"/>, the seed to use for calculating the random value.</param>
         /// <returns><see cref="SingleRandFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
@@ -53,7 +53,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the RAND transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/rand?version=0.9.4">read the docs on RAND</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/rand?version=0.9.5">read the docs on RAND</see></para>
         /// </summary>
         /// <param name="seed">An expression of type <see cref="Int32"/>, the seed to use for calculating the random value.</param>
         /// <returns><see cref="SingleRandFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
@@ -62,7 +62,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the RAND transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/rand?version=0.9.4">read the docs on RAND</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/rand?version=0.9.5">read the docs on RAND</see></para>
         /// </summary>
         /// <param name="seed">An expression of type <see cref="ByteElement"/>, the seed to use for calculating the random value.</param>
         /// <returns><see cref="SingleRandFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
@@ -71,7 +71,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the RAND transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/rand?version=0.9.4">read the docs on RAND</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/rand?version=0.9.5">read the docs on RAND</see></para>
         /// </summary>
         /// <param name="seed">An expression of type <see cref="NullableByteElement"/>, the seed to use for calculating the random value.</param>
         /// <returns><see cref="NullableSingleRandFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>?.</returns>
@@ -80,7 +80,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the RAND transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/rand?version=0.9.4">read the docs on RAND</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/rand?version=0.9.5">read the docs on RAND</see></para>
         /// </summary>
         /// <param name="seed">An expression of type <see cref="Int16Element"/>, the seed to use for calculating the random value.</param>
         /// <returns><see cref="SingleRandFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
@@ -89,7 +89,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the RAND transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/rand?version=0.9.4">read the docs on RAND</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/rand?version=0.9.5">read the docs on RAND</see></para>
         /// </summary>
         /// <param name="seed">An expression of type <see cref="NullableInt16Element"/>, the seed to use for calculating the random value.</param>
         /// <returns><see cref="NullableSingleRandFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>?.</returns>
@@ -98,7 +98,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the RAND transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/rand?version=0.9.4">read the docs on RAND</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/rand?version=0.9.5">read the docs on RAND</see></para>
         /// </summary>
         /// <param name="seed">An expression of type <see cref="Int32Element"/>, the seed to use for calculating the random value.</param>
         /// <returns><see cref="SingleRandFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
@@ -107,7 +107,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the RAND transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/rand?version=0.9.4">read the docs on RAND</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/rand?version=0.9.5">read the docs on RAND</see></para>
         /// </summary>
         /// <param name="seed">An expression of type <see cref="NullableInt32Element"/>, the seed to use for calculating the random value.</param>
         /// <returns><see cref="NullableSingleRandFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>?.</returns>

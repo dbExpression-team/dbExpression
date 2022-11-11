@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
     {
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">An alias of an expression that specifies the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -38,7 +38,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">An alias of an expression that specifies the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -49,7 +49,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">An alias of an expression that specifies the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -60,7 +60,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">An alias of an expression that specifies the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -71,7 +71,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">An alias of an expression that specifies the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -82,7 +82,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">An alias of an expression that specifies the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -93,7 +93,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">An alias of an expression that specifies the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -104,7 +104,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int32}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -115,7 +115,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int32}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -126,7 +126,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">An alias of an expression that specifies the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -137,7 +137,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">An alias of an expression that specifies the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -148,7 +148,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">An alias of an expression that specifies the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -159,7 +159,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">An alias of an expression that specifies the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -170,7 +170,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">An alias of an expression that specifies the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -181,7 +181,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -192,7 +192,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int64}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -203,7 +203,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
@@ -214,7 +214,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int32}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -225,7 +225,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
@@ -236,7 +236,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int32}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -247,7 +247,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
@@ -258,7 +258,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -269,7 +269,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
@@ -280,7 +280,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -291,7 +291,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
@@ -302,7 +302,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int32}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -313,7 +313,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
@@ -324,7 +324,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int32}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -335,7 +335,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
@@ -346,7 +346,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -357,7 +357,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
@@ -368,7 +368,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -379,7 +379,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
@@ -391,7 +391,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
@@ -402,7 +402,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
@@ -413,7 +413,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int32}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -424,7 +424,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int32}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -435,7 +435,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int32}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -446,7 +446,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
@@ -457,7 +457,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
@@ -468,7 +468,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
@@ -479,7 +479,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int32}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -490,7 +490,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int32}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -501,7 +501,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int32}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -512,7 +512,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
@@ -523,7 +523,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
@@ -534,7 +534,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
@@ -545,7 +545,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int64}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -556,7 +556,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -567,7 +567,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int64}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -578,7 +578,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
@@ -589,7 +589,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
@@ -600,7 +600,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
@@ -611,7 +611,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int64}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -622,7 +622,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -633,7 +633,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int64}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -644,7 +644,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
@@ -655,7 +655,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
@@ -666,7 +666,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
@@ -677,7 +677,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int32}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -688,7 +688,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int32}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -699,7 +699,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int32}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -710,7 +710,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
@@ -721,7 +721,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
@@ -732,7 +732,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
@@ -743,7 +743,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int32}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -754,7 +754,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int32}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -765,7 +765,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int32}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -776,7 +776,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
@@ -787,7 +787,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
@@ -798,7 +798,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
@@ -809,7 +809,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -820,7 +820,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -831,7 +831,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -842,7 +842,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
@@ -853,7 +853,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
@@ -864,7 +864,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
@@ -875,7 +875,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int64}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -886,7 +886,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int64}"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
@@ -897,7 +897,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the SUBSTRING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.4">read the docs on SUBSTRING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/substring?version=0.9.5">read the docs on SUBSTRING</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to take a portion of.</param>
         /// <param name="start">A <see cref="AnyElement{Int64}"/>?, the start position in <paramref name="expression"/> to start taking characters.</param>

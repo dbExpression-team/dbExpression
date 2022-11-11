@@ -30,7 +30,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the SYSDATETIMEOFFSET transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/sysdatetimeoffset?version=0.9.4">read the docs on SYSDATETIMEOFFSET</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/sysdatetimeoffset?version=0.9.5">read the docs on SYSDATETIMEOFFSET</see></para>
         /// </summary>
         /// <returns><see cref="SysDateTimeOffsetFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{DateTime}"/>.</returns>
         public SysDateTimeOffsetFunctionExpression SysDateTimeOffset()

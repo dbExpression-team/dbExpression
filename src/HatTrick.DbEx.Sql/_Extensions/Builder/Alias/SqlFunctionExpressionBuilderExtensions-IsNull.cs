@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
         #region bool
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.5">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression , if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -37,7 +37,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.5">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression , if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -49,7 +49,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
         #region byte
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.5">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression , if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -60,7 +60,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.5">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression , if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -72,7 +72,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
         #region DateTime
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.5">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression , if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -83,7 +83,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.5">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression , if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -95,7 +95,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
         #region DateTimeOffset
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.5">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression , if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -105,7 +105,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.5">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression , if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -117,7 +117,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
         #region decimal
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.5">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression , if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -127,7 +127,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.5">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression , if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -139,7 +139,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
         #region double
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.5">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression , if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -149,7 +149,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.5">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression , if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -161,7 +161,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
         #region Enum
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.5">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{TEnum}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned <see cref="TEnum"/> value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -172,7 +172,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.5">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{TEnum}"/>?, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned <see cref="TEnum"/>? value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -185,7 +185,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
         #region Guid
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.5">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression , if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -195,7 +195,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.5">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression , if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -207,7 +207,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
         #region short
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.5">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression , if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -217,7 +217,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.5">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression , if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -229,7 +229,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
         #region int
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.5">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression , if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -239,7 +239,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.5">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression , if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -251,7 +251,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
         #region long
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.5">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression , if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -261,7 +261,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.5">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression , if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -273,7 +273,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
         #region float
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.5">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression , if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -283,7 +283,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.5">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression , if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -295,7 +295,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
         #region string
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.5">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="StringElement"/>, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">An expression of type <see cref="String"/>, the returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -307,7 +307,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
         #region TimeSpan
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.5">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression , if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -317,7 +317,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.5">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression , if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">The returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -329,7 +329,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
         #region any element
         /// <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.5">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression , if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">An expression of type <see cref="AnyElement{Boolean}"/>?, the returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>
@@ -339,7 +339,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
 
         // <summary>
         /// Construct an expression for the ISNULL transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.4">read the docs on ISNULL</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/expressions/isnull?version=0.9.5">read the docs on ISNULL</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement"/>, if this value evaluates to a (database) NULL, <paramref name="value"/> will be returned.</param>
         /// <param name="value">An alias of an expression, the returned value if <paramref name="element"/> evaluates to a (database) NULL.</param>

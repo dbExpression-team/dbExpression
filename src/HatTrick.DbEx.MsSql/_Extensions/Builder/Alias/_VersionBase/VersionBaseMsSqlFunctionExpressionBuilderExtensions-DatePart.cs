@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
     {
         /// <summary>
         /// Construct an expression for the DATEPART transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datepart?version=0.9.4">read the docs on DATEPART</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datepart?version=0.9.5">read the docs on DATEPART</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the date value to extract from <paramref name="element"/>.</param>
         /// <param name="element">An alias of an expression to return the <paramref name="datePart"/> from.</param>
