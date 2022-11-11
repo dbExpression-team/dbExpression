@@ -57,6 +57,28 @@ namespace HatTrick.DbEx.Sql.Configuration
         }
 
         /// <inheritdoc />
+        public IValueConverterFactoryContinuationConfigurationBuilder<TDatabase> Use(Func<IValueConverter<TEnum>> factory)
+        {
+            if (factory is null)
+                throw new ArgumentNullException(nameof(factory));
+
+            services.TryAddSingleton<IValueConverter<TEnum>>(sp => factory());
+
+            return caller;
+        }
+
+        /// <inheritdoc />
+        public IValueConverterFactoryContinuationConfigurationBuilder<TDatabase> Use(Func<IServiceProvider, IValueConverter<TEnum>> factory)
+        {
+            if (factory is null)
+                throw new ArgumentNullException(nameof(factory));
+
+            services.TryAddSingleton<IValueConverter<TEnum>>(factory);
+
+            return caller;
+        }
+
+        /// <inheritdoc />
         public IValueConverterFactoryContinuationConfigurationBuilder<TDatabase> Use<TConverter>()
             where TConverter : class, IValueConverter<TEnum>, new()
         {

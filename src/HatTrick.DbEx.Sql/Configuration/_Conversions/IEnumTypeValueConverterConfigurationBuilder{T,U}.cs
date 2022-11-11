@@ -34,6 +34,18 @@ namespace HatTrick.DbEx.Sql.Configuration
         /// <summary>
         /// Override the default behaviour of converting <typeparamref name="TEnum"/> values to and from a different type using the specified value converter. 
         /// </summary>
+        /// <param name="factory">The custom converter that will convert data to and from the database.</param>
+        IValueConverterFactoryContinuationConfigurationBuilder<TDatabase> Use(Func<IValueConverter<TEnum>> factory);
+
+        /// <summary>
+        /// Override the default behaviour of converting <typeparamref name="TEnum"/> values to and from a different type using the specified value converter. 
+        /// </summary>
+        /// <param name="factory">The custom converter that will convert data to and from the database.</param>
+        IValueConverterFactoryContinuationConfigurationBuilder<TDatabase> Use(Func<IServiceProvider, IValueConverter<TEnum>> factory);
+
+        /// <summary>
+        /// Override the default behaviour of converting <typeparamref name="TEnum"/> values to and from a different type using the specified value converter. 
+        /// </summary>
         /// <typeparam name="TConverter">The custom converter that will convert data to and from the database.</param>
         IValueConverterFactoryContinuationConfigurationBuilder<TDatabase> Use<TConverter>()
             where TConverter : class, IValueConverter<TEnum>, new();
@@ -41,15 +53,15 @@ namespace HatTrick.DbEx.Sql.Configuration
         /// <summary>
         /// Override the default behaviour of converting <typeparamref name="TEnum"/> values to and from a different type using provided delegates. 
         /// </summary>
-        /// <typeparam name="convertToDatabase">A custom delegate that will convert a <typeparamref name="TEnum"/>? into an <see cref="object"/> for persistence in the database.</param>
-        /// <typeparam name="convertFromDatabase">A custom delegate that will convert an <see cref="object"/> read from the database into the type <typeparamref name="TEnum"/>?.</param>
+        /// <param name="convertToDatabase">A custom delegate that will convert a <typeparamref name="TEnum"/>? into an <see cref="object"/> for persistence in the database.</param>
+        /// <param name="convertFromDatabase">A custom delegate that will convert an <see cref="object"/> read from the database into the type <typeparamref name="TEnum"/>?.</param>
         IValueConverterFactoryContinuationConfigurationBuilder<TDatabase> Use(Func<TEnum?, object?> convertToDatabase, Func<object?, TEnum?> convertFromDatabase);
 
         /// <summary>
         /// Override the default behaviour of converting <typeparamref name="TEnum"/> values to and from a different type using provided delegates. 
         /// </summary>
-        /// <typeparam name="convertToDatabase">A custom delegate that will convert a <typeparamref name="TEnum"/>? into an <see cref="object"/> for persistence in the database.</param>
-        /// <typeparam name="convertFromDatabase">A custom delegate that will convert an <see cref="object"/> read from the database into the type <typeparamref name="TEnum"/>?.</param>
+        /// <param name="convertToDatabase">A custom delegate that will convert a <typeparamref name="TEnum"/>? into an <see cref="object"/> for persistence in the database.</param>
+        /// <param name="convertFromDatabase">A custom delegate that will convert an <see cref="object"/> read from the database into the type <typeparamref name="TEnum"/>?.</param>
         IValueConverterFactoryContinuationConfigurationBuilder<TDatabase> Use(Func<IServiceProvider, TEnum?, object?> convertToDatabase, Func<IServiceProvider, object?, TEnum?> convertFromDatabase);
 
         /// <summary>
