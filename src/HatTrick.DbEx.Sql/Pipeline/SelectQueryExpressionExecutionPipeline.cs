@@ -27,13 +27,13 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Dynamic;
-using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql.Pipeline
 {
-    public sealed class SelectQueryExpressionExecutionPipeline : 
+    public sealed class SelectQueryExpressionExecutionPipeline :
         ISelectQueryExpressionExecutionPipeline
     {
         #region internals
@@ -141,7 +141,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     var row = reader.ReadRow();
                     reader.Close();
                     if (row is null)
-                        return;                    
+                        return;
 
                     try
                     {
@@ -169,7 +169,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     var row = reader.ReadRow();
                     reader.Close();
                     if (row is null)
-                        return;                    
+                        return;
 
                     try
                     {
@@ -201,7 +201,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
                     reader.Close();
                     if (row is null)
-                        return;                    
+                        return;
 
                     try
                     {
@@ -234,7 +234,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
                     reader.Close();
                     if (row is null)
-                        return;                    
+                        return;
 
                     try
                     {
@@ -263,11 +263,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
                     reader.Close();
                     if (row is null)
-                        return;                    
+                        return;
 
                     try
                     {
-                        entity = entityFactory.CreateEntity<TEntity>() 
+                        entity = entityFactory.CreateEntity<TEntity>()
                             ?? throw new DbExpressionException($"Expected entity factory to provide an entity of type {typeof(TEntity)}.");
                         map(row, entity);
                     }
@@ -295,7 +295,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
                     reader.Close();
                     if (row is null)
-                        return;                    
+                        return;
 
                     try
                     {
@@ -324,7 +324,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
                     reader.Close();
                     if (row is null)
-                        return;                    
+                        return;
 
                     try
                     {
@@ -353,7 +353,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
                     reader.Close();
                     if (row is null)
-                        return;                    
+                        return;
 
                     try
                     {
@@ -376,7 +376,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             where TEntity : class, IDbEntity, new()
         {
             var entities = new List<TEntity>();
-            var mapper = mapperFactory.CreateEntityMapper(table ?? throw new ArgumentNullException(nameof(table))); 
+            var mapper = mapperFactory.CreateEntityMapper(table ?? throw new ArgumentNullException(nameof(table)));
             ExecuteSelectQuery(
                 expression,
                 new SqlStatementValueConverterProvider(valueConverterFactory, expression.Select),
@@ -573,7 +573,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return values;
         }
 
-        public async Task<IEnumerable<TEntity>> ExecuteSelectEntityListAsync<TEntity>(SelectQueryExpression expression, Table<TEntity> table, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, TEntity?> map, CancellationToken ct)
+        public async Task<IEnumerable<TEntity>> ExecuteSelectEntityListAsync<TEntity>(SelectQueryExpression expression, Table<TEntity> table, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, TEntity> map, CancellationToken ct)
             where TEntity : class, IDbEntity, new()
         {
             var entities = new List<TEntity>();
@@ -591,8 +591,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         try
                         {
                             var entity = map(row);
-                            if (entity is not null)
-                                entities.Add(entity);
+                            entities.Add(entity);
                         }
                         catch (Exception e)
                         {
@@ -664,6 +663,85 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 ct
             ).ConfigureAwait(false);
             return entities;
+        }
+
+        public async IAsyncEnumerable<TEntity> ExecuteSelectEntityListAsyncEnumerable<TEntity>(SelectQueryExpression expression, Table<TEntity> table, ISqlConnection? connection, Action<IDbCommand>? configureCommand, [EnumeratorCancellation] CancellationToken ct)
+            where TEntity : class, IDbEntity, new()
+        {
+            IEntityMapper<TEntity>? mapper = null;
+            await foreach (ISqlFieldReader row in ExecuteSelectQueryAsyncEnumerable(
+                expression,
+                new SqlStatementValueConverterProvider(valueConverterFactory, expression.Select),
+                connection,
+                configureCommand,
+                ct
+            ))
+            {
+                var entity = entityFactory.CreateEntity<TEntity>() ?? throw new DbExpressionException($"Expected entity factory to provide an entity of type {typeof(TEntity)}.");
+                if (mapper is null)
+                    mapper = mapperFactory.CreateEntityMapper(table ?? throw new ArgumentNullException(nameof(table)));
+                mapper.Map(row, entity);
+                yield return entity;
+            }
+        }
+
+        public async IAsyncEnumerable<TEntity> ExecuteSelectEntityListAsyncEnumerable<TEntity>(SelectQueryExpression expression, Table<TEntity> table, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader, TEntity> map, [EnumeratorCancellation] CancellationToken ct)
+            where TEntity : class, IDbEntity, new()
+        {
+            IEntityMapper<TEntity>? mapper = null;
+            await foreach (ISqlFieldReader row in ExecuteSelectQueryAsyncEnumerable(
+                expression,
+                new SqlStatementValueConverterProvider(valueConverterFactory, expression.Select),
+                connection,
+                configureCommand,
+                ct
+            ))
+            {
+                var entity = entityFactory.CreateEntity<TEntity>() ?? throw new DbExpressionException($"Expected entity factory to provide an entity of type {typeof(TEntity)}.");
+                if (mapper is null)
+                    mapper = mapperFactory.CreateEntityMapper(table ?? throw new ArgumentNullException(nameof(table)));
+                map(row, entity);
+                yield return entity;
+            }
+        }
+
+        public async IAsyncEnumerable<TEntity> ExecuteSelectEntityListAsyncEnumerable<TEntity>(SelectQueryExpression expression, Table<TEntity> table, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, TEntity> map, [EnumeratorCancellation] CancellationToken ct)
+            where TEntity : class, IDbEntity, new()
+        {
+            IEntityMapper<TEntity>? mapper = null;
+            await foreach (ISqlFieldReader row in ExecuteSelectQueryAsyncEnumerable(
+                expression,
+                new SqlStatementValueConverterProvider(valueConverterFactory, expression.Select),
+                connection,
+                configureCommand,
+                ct
+            ))
+            {
+                if (mapper is null)
+                    mapper = mapperFactory.CreateEntityMapper(table ?? throw new ArgumentNullException(nameof(table)));
+                var entity = map(row);
+                yield return entity;
+            }
+        }
+
+        public async IAsyncEnumerable<TEntity> ExecuteSelectEntityListAsyncEnumerable<TEntity>(SelectQueryExpression expression, Table<TEntity> table, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, TEntity, Task> map, [EnumeratorCancellation] CancellationToken ct)
+            where TEntity : class, IDbEntity, new()
+        {
+            IEntityMapper<TEntity>? mapper = null;
+            await foreach (ISqlFieldReader row in ExecuteSelectQueryAsyncEnumerable(
+                expression,
+                new SqlStatementValueConverterProvider(valueConverterFactory, expression.Select),
+                connection,
+                configureCommand,
+                ct
+            ))
+            {
+                var entity = entityFactory.CreateEntity<TEntity>() ?? throw new DbExpressionException($"Expected entity factory to provide an entity of type {typeof(TEntity)}.");
+                if (mapper is null)
+                    mapper = mapperFactory.CreateEntityMapper(table ?? throw new ArgumentNullException(nameof(table)));
+                await map(row, entity).ConfigureAwait(false);
+                yield return entity;
+            }
         }
         #endregion
 
@@ -917,6 +995,23 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 ct
             ).ConfigureAwait(false);
         }
+
+        public async IAsyncEnumerable<T> ExecuteSelectValueListAsyncEnumerable<T>(SelectQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, [EnumeratorCancellation] CancellationToken ct)
+        {
+            await foreach (ISqlFieldReader row in ExecuteSelectQueryAsyncEnumerable(
+                expression,
+                new SqlStatementValueConverterProvider(valueConverterFactory, expression.Select),
+                connection,
+                configureCommand,
+                ct
+            ))
+            {
+                var field = row.ReadField();
+                if (field is not null)
+                    yield return field.GetValue<T>();
+            }
+        }
+
         #endregion
 
         #region dynamic
@@ -933,7 +1028,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     var row = reader.ReadRow();
                     reader.Close();
                     if (row is null)
-                        return;                    
+                        return;
 
                     value = new ExpandoObject();
                     var mapper = mapperFactory.CreateExpandoObjectMapper();
@@ -955,7 +1050,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     var row = reader.ReadRow();
                     reader.Close();
                     if (row is null)
-                        return;                    
+                        return;
 
                     try
                     {
@@ -982,7 +1077,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
                     if (row is null)
                         return;
-                    
+
                     reader.Close();
 
                     value = new ExpandoObject();
@@ -1006,7 +1101,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
                     reader.Close();
                     if (row is null)
-                        return;                    
+                        return;
 
                     try
                     {
@@ -1033,7 +1128,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
                     reader.Close();
                     if (row is null)
-                        return;                    
+                        return;
 
                     try
                     {
@@ -1125,6 +1220,25 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return values;
         }
 
+        public async IAsyncEnumerable<dynamic> ExecuteSelectDynamicListAsyncEnumerable(SelectQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, [EnumeratorCancellation] CancellationToken ct)
+        {
+            IExpandoObjectMapper? mapper = null;
+            await foreach (ISqlFieldReader row in ExecuteSelectQueryAsyncEnumerable(
+                expression,
+                new SqlStatementValueConverterProvider(valueConverterFactory, expression.Select),
+                connection,
+                configureCommand,
+                ct
+            ))
+            {
+                var value = new ExpandoObject();
+                if (mapper is null)
+                    mapper = mapperFactory.CreateExpandoObjectMapper() ?? throw new DbExpressionException("Could not resolve a mapper for mapping dynamic objects.");
+                mapper.Map(value, row);
+                yield return value;
+            }
+        }
+
         public async Task ExecuteSelectDynamicListAsync(SelectQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> read, CancellationToken ct)
         {
             await ExecuteSelectQueryAsync(
@@ -1195,7 +1309,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     var row = reader.ReadRow();
                     reader.Close();
                     if (row is null)
-                        return;                    
+                        return;
 
                     try
                     {
@@ -1223,7 +1337,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
                     reader.Close();
                     if (row is null)
-                        return;                    
+                        return;
 
                     try
                     {
@@ -1252,7 +1366,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
                     reader.Close();
                     if (row is null)
-                        return;                    
+                        return;
 
                     try
                     {
@@ -1331,6 +1445,22 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return values;
         }
 
+        public async IAsyncEnumerable<T> ExecuteSelectObjectListAsyncEnumerable<T>(SelectQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, T?> map, [EnumeratorCancellation] CancellationToken ct)
+        {
+            await foreach (ISqlFieldReader row in ExecuteSelectQueryAsyncEnumerable(
+                expression,
+                new SqlStatementValueConverterProvider(valueConverterFactory, expression.Select),
+                connection,
+                configureCommand,
+                ct
+            ))
+            {
+                var value = map(row);
+                if (value is not null)
+                    yield return value;
+            }
+        }
+
         public async Task<IEnumerable<T>> ExecuteSelectObjectListAsync<T>(SelectQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, Task<T?>> map, CancellationToken ct)
         {
             var values = new List<T>();
@@ -1360,6 +1490,22 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 ct
             ).ConfigureAwait(false);
             return values;
+        }
+
+        public async IAsyncEnumerable<T> ExecuteSelectObjectListAsyncEnumerable<T>(SelectQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, Task<T?>> map, [EnumeratorCancellation] CancellationToken ct)
+        {
+            await foreach (ISqlFieldReader row in ExecuteSelectQueryAsyncEnumerable(
+                expression,
+                new SqlStatementValueConverterProvider(valueConverterFactory, expression.Select),
+                connection,
+                configureCommand,
+                ct
+            ))
+            {
+                var value = await map(row).ConfigureAwait(false);
+                if (value is not null)
+                    yield return value;
+            }
         }
         #endregion
 
@@ -1446,7 +1592,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         if (!ct.IsCancellationRequested)
                             configureCommand?.Invoke(cmd);
                     },
-                    async cmd => await OnAfterCommandAsync(expression, cmd, ct).ConfigureAwait (false),
+                    async cmd => await OnAfterCommandAsync(expression, cmd, ct).ConfigureAwait(false),
                     ct
                 ).ConfigureAwait(false);
 
@@ -1456,6 +1602,55 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 ct.ThrowIfCancellationRequested();
 
                 await transform(reader).ConfigureAwait(false);
+            }
+            finally
+            {
+                if (connection is null) //was not provided
+                    local.Dispose();
+            }
+
+            await OnAfterCompleteAsync(expression, ct).ConfigureAwait(false);
+        }
+
+        private async IAsyncEnumerable<ISqlFieldReader> ExecuteSelectQueryAsyncEnumerable(
+            SelectQueryExpression expression,
+            IValueConverterProvider valueConverterProvider,
+            ISqlConnection? connection,
+            Action<IDbCommand>? configureCommand,
+            [EnumeratorCancellation] CancellationToken ct
+        )
+        {
+            if (expression is null)
+                throw new ArgumentNullException(nameof(expression));
+
+            await OnBeforeStartAsync(expression, ct).ConfigureAwait(false);
+
+            if (logger.IsEnabled(LogLevel.Trace))
+                logger.LogTrace("Creating sql statement for select query.");
+            var statement = statementBuilder.CreateSqlStatement(expression) ?? throw new DbExpressionException("The sql statement builder returned a null value, cannot execute a select query without a sql statement.");
+
+            await OnAfterAssemblyAsync(expression, statementBuilder, statement, ct).ConfigureAwait(false);
+
+            var local = connection ?? new SqlConnector(connectionFactory);
+            try
+            {
+                await foreach (ISqlFieldReader row in await statementExecutor.ExecuteQueryAsyncEnumerable(
+                    statement,
+                    local,
+                    valueConverterProvider,
+                    async cmd =>
+                    {
+                        await OnBeforeCommandAsync(expression, cmd, statement, ct).ConfigureAwait(false);
+
+                        if (!ct.IsCancellationRequested)
+                            configureCommand?.Invoke(cmd);
+                    },
+                    async cmd => await OnAfterCommandAsync(expression, cmd, ct).ConfigureAwait(false),
+                    ct
+                ))
+                {
+                    yield return row;
+                };
             }
             finally
             {
@@ -1640,6 +1835,6 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
         #endregion
         #endregion
+        #endregion
     }
-    #endregion
 }

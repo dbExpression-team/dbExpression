@@ -426,12 +426,35 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
+        IAsyncEnumerable<TValue> SelectValuesTermination<TDatabase, TValue>.ExecuteAsyncEnumerable(CancellationToken cancellationToken)
+        {
+            return ExecutePipelineAsyncEnumerable(
+                null,
+                null,
+                cancellationToken
+            );
+        }
+
+        /// <inheritdoc />
         Task<IEnumerable<TValue>> SelectValuesTermination<TDatabase, TValue>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             return ExecutePipelineAsync(
+                null,
+                command => command.CommandTimeout = commandTimeout,
+                cancellationToken
+            );
+        }
+
+        /// <inheritdoc />
+        IAsyncEnumerable<TValue> SelectValuesTermination<TDatabase, TValue>.ExecuteAsyncEnumerable(int commandTimeout, CancellationToken cancellationToken)
+        {
+            if (commandTimeout <= 0)
+                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            return ExecutePipelineAsyncEnumerable(
                 null,
                 command => command.CommandTimeout = commandTimeout,
                 cancellationToken
@@ -449,12 +472,35 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
+        IAsyncEnumerable<TValue> SelectValuesTermination<TDatabase, TValue>.ExecuteAsyncEnumerable(ISqlConnection connection, CancellationToken cancellationToken)
+        {
+            return ExecutePipelineAsyncEnumerable(
+                connection ?? throw new ArgumentNullException(nameof(connection)),
+                null,
+                cancellationToken
+            );
+        }
+
+        /// <inheritdoc />
         Task<IEnumerable<TValue>> SelectValuesTermination<TDatabase, TValue>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             return ExecutePipelineAsync(
+                connection ?? throw new ArgumentNullException(nameof(connection)),
+                command => command.CommandTimeout = commandTimeout,
+                cancellationToken
+            );
+        }
+
+        /// <inheritdoc />
+        IAsyncEnumerable<TValue> SelectValuesTermination<TDatabase, TValue>.ExecuteAsyncEnumerable(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
+        {
+            if (commandTimeout <= 0)
+                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            return ExecutePipelineAsyncEnumerable(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 command => command.CommandTimeout = commandTimeout,
                 cancellationToken
@@ -566,6 +612,9 @@ namespace HatTrick.DbEx.Sql.Builder
 
         private Task<IEnumerable<TValue>> ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken cancellationToken)
             => CreateExecutionPipeline().ExecuteSelectValueListAsync<TValue>(SelectQueryExpression, connection, configureCommand, cancellationToken);
+
+        private IAsyncEnumerable<TValue> ExecutePipelineAsyncEnumerable(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken cancellationToken)
+            => CreateExecutionPipeline().ExecuteSelectValueListAsyncEnumerable<TValue>(SelectQueryExpression, connection, configureCommand, cancellationToken);
 
         private void ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Action<TValue?> read)
             => CreateExecutionPipeline().ExecuteSelectValueList<TValue>(SelectQueryExpression, connection, configureCommand, read);

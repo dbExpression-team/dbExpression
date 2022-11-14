@@ -664,7 +664,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
         #endregion
 
-        public ISelectQueryExpressionExecutionPipeline CreateExecutionPipeline()
+        protected ISelectQueryExpressionExecutionPipeline CreateExecutionPipeline()
             => ExecutionPipelineFactory() 
                     ?? throw new DbExpressionConfigurationException($"Could not resolve/create an execution pipeline for type '{SelectQueryExpression.GetType()}'.");
         #endregion

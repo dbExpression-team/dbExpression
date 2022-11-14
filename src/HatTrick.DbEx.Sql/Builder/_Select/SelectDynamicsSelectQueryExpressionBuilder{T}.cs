@@ -390,12 +390,35 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
+        IAsyncEnumerable<dynamic> SelectDynamicsTermination<TDatabase>.ExecuteAsyncEnumerable(CancellationToken cancellationToken)
+        {
+            return ExecutePipelineAsyncEnumerable(
+                null,
+                null,
+                cancellationToken
+            );
+        }
+
+        /// <inheritdoc />
         Task<IEnumerable<dynamic>> SelectDynamicsTermination<TDatabase>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             return ExecutePipelineAsync(
+                null,
+                command => command.CommandTimeout = commandTimeout,
+                cancellationToken
+            );
+        }
+
+        /// <inheritdoc />
+        IAsyncEnumerable<dynamic> SelectDynamicsTermination<TDatabase>.ExecuteAsyncEnumerable(int commandTimeout, CancellationToken cancellationToken)
+        {
+            if (commandTimeout <= 0)
+                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            return ExecutePipelineAsyncEnumerable(
                 null,
                 command => command.CommandTimeout = commandTimeout,
                 cancellationToken
@@ -413,12 +436,35 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
+        IAsyncEnumerable<dynamic> SelectDynamicsTermination<TDatabase>.ExecuteAsyncEnumerable(ISqlConnection connection, CancellationToken cancellationToken)
+        {
+            return ExecutePipelineAsyncEnumerable(
+                connection ?? throw new ArgumentNullException(nameof(connection)),
+                null,
+                cancellationToken
+            );
+        }
+
+        /// <inheritdoc />
         Task<IEnumerable<dynamic>> SelectDynamicsTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             return ExecutePipelineAsync(
+                connection ?? throw new ArgumentNullException(nameof(connection)),
+                command => command.CommandTimeout = commandTimeout,
+                cancellationToken
+            );
+        }
+
+        /// <inheritdoc />
+        IAsyncEnumerable<dynamic> SelectDynamicsTermination<TDatabase>.ExecuteAsyncEnumerable(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
+        {
+            if (commandTimeout <= 0)
+                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            return ExecutePipelineAsyncEnumerable(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 command => command.CommandTimeout = commandTimeout,
                 cancellationToken
@@ -529,12 +575,37 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
+        IAsyncEnumerable<T> SelectDynamicsTermination<TDatabase>.ExecuteAsyncEnumerable<T>(Func<ISqlFieldReader, T> map, CancellationToken cancellationToken)
+        {
+            return ExecutePipelineAsyncEnumerable(
+                null,
+                null,
+                map ?? throw new ArgumentNullException(nameof(map)),
+                cancellationToken
+            );
+        }
+
+        /// <inheritdoc />
         Task<IEnumerable<T>> SelectDynamicsTermination<TDatabase>.ExecuteAsync<T>(int commandTimeout, Func<ISqlFieldReader, T> map, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             return ExecutePipelineAsync(
+                null,
+                command => command.CommandTimeout = commandTimeout,
+                map ?? throw new ArgumentNullException(nameof(map)),
+                cancellationToken
+            );
+        }
+
+        /// <inheritdoc />
+        IAsyncEnumerable<T> SelectDynamicsTermination<TDatabase>.ExecuteAsyncEnumerable<T>(int commandTimeout, Func<ISqlFieldReader, T> map, CancellationToken cancellationToken)
+        {
+            if (commandTimeout <= 0)
+                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            return ExecutePipelineAsyncEnumerable(
                 null,
                 command => command.CommandTimeout = commandTimeout,
                 map ?? throw new ArgumentNullException(nameof(map)),
@@ -554,12 +625,37 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
+        IAsyncEnumerable<T> SelectDynamicsTermination<TDatabase>.ExecuteAsyncEnumerable<T>(ISqlConnection? connection, Func<ISqlFieldReader, T> map, CancellationToken cancellationToken)
+        {
+            return ExecutePipelineAsyncEnumerable(
+                connection ?? throw new ArgumentNullException(nameof(connection)),
+                null,
+                map ?? throw new ArgumentNullException(nameof(map)),
+                cancellationToken
+            );
+        }
+
+        /// <inheritdoc />
         Task<IEnumerable<T>> SelectDynamicsTermination<TDatabase>.ExecuteAsync<T>(ISqlConnection? connection, int commandTimeout, Func<ISqlFieldReader, T> map, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             return ExecutePipelineAsync<T>(
+                connection ?? throw new ArgumentNullException(nameof(connection)),
+                command => command.CommandTimeout = commandTimeout,
+                map ?? throw new ArgumentNullException(nameof(map)),
+                cancellationToken
+            );
+        }
+
+        /// <inheritdoc />
+        IAsyncEnumerable<T> SelectDynamicsTermination<TDatabase>.ExecuteAsyncEnumerable<T>(ISqlConnection? connection, int commandTimeout, Func<ISqlFieldReader, T> map, CancellationToken cancellationToken)
+        {
+            if (commandTimeout <= 0)
+                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            return ExecutePipelineAsyncEnumerable<T>(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 command => command.CommandTimeout = commandTimeout,
                 map ?? throw new ArgumentNullException(nameof(map)),
@@ -680,6 +776,9 @@ namespace HatTrick.DbEx.Sql.Builder
         private Task<IEnumerable<dynamic>> ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken cancellationToken)
             => CreateExecutionPipeline().ExecuteSelectDynamicListAsync(SelectQueryExpression, connection, configureCommand, cancellationToken);
 
+        private IAsyncEnumerable<dynamic> ExecutePipelineAsyncEnumerable(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken cancellationToken)
+            => CreateExecutionPipeline().ExecuteSelectDynamicListAsyncEnumerable(SelectQueryExpression, connection, configureCommand, cancellationToken);
+
         private Task ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> read, CancellationToken cancellationToken)
             => CreateExecutionPipeline().ExecuteSelectDynamicListAsync(SelectQueryExpression, connection, configureCommand, read, cancellationToken);
 
@@ -688,6 +787,9 @@ namespace HatTrick.DbEx.Sql.Builder
 
         private Task<IEnumerable<T>> ExecutePipelineAsync<T>(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, T> read, CancellationToken cancellationToken)
             => CreateExecutionPipeline().ExecuteSelectObjectListAsync(SelectQueryExpression, connection, configureCommand, read, cancellationToken);
+
+        private IAsyncEnumerable<T> ExecutePipelineAsyncEnumerable<T>(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, T> read, CancellationToken cancellationToken)
+            => CreateExecutionPipeline().ExecuteSelectObjectListAsyncEnumerable(SelectQueryExpression, connection, configureCommand, read, cancellationToken);
         #endregion
         #endregion
         #endregion

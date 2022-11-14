@@ -41,7 +41,7 @@ namespace HatTrick.DbEx.Sql.Configuration
             where TDatabase : class, ISqlDatabaseRuntime
         {
             builder
-                .ForPipelineType<IStoredProcedureExpressionExecutionPipeline>().Use<StoredProcedureQueryExpressionExecutionPipeline>()
+                .ForPipelineType<IStoredProcedureQueryExpressionExecutionPipeline>().Use<StoredProcedureQueryExpressionExecutionPipeline>()
                 .ForSelect().Use<SelectQueryExpressionExecutionPipeline>()
                 .ForInsert().Use<InsertQueryExpressionExecutionPipeline>()
                 .ForUpdate().Use<UpdateQueryExpressionExecutionPipeline>()

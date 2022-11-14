@@ -11,6 +11,8 @@ using DbEx.dboData;
 using HatTrick.DbEx.Sql.Connection;
 using System.Data;
 using System;
+using System.Threading;
+using Newtonsoft.Json.Linq;
 
 namespace HatTrick.DbEx.MsSql.Test.Integration
 {
@@ -354,7 +356,6 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             persons.Should().NotContain(x => x.Id <= 0);
         }
 
-
         [Theory]
         [MsSqlVersions.AllVersions]
         public void Does_execute_type_list_with_connection_and_commandTimeout_and_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
@@ -696,6 +697,26 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
         [Theory]
         [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_enumerable_value_list_with_commandTimeout_override_have_correct_commandTimeout_on_execution(int version, int expected = 50)
+        {
+            //given
+            var usedCommandTimeout = 0;
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+                c => c.Events.OnAfterCommand(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
+            );
+
+            var exp = db.SelectMany(dbo.Person.Id)
+                .From(dbo.Person);
+
+            //when               
+            await foreach(var _ in exp.ExecuteAsyncEnumerable(expected));
+
+            //then
+            usedCommandTimeout.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
         public async Task Does_execute_async_value_list_with_commandTimeout_override_succeed(int version, int expected = 50)
         {
             //given
@@ -706,6 +727,25 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             //when               
             var values = await exp.ExecuteAsync(45);
+
+            //then
+            values.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_enumerable_value_list_with_commandTimeout_override_succeed(int version, int expected = 50)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            List<int> values = new();
+
+            var exp = db.SelectMany(dbo.Person.Id)
+                .From(dbo.Person);
+
+            //when
+            await foreach (var id in exp.ExecuteAsyncEnumerable(45))
+                values.Add(id);
 
             //then
             values.Should().HaveCount(expected);
@@ -734,6 +774,27 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
         [Theory]
         [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_enumerable_value_list_with_connection_override_have_correct_connection_on_execution(int version)
+        {
+            //given
+            IDbConnection? usedConnection = null;
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+                c => c.Events.OnBeforeCommand(e => usedConnection = e.DbCommand.Connection)
+            );
+            var conn = db.GetConnection();
+
+            var exp = db.SelectMany(dbo.Person.Id)
+                .From(dbo.Person);
+
+            //when               
+            await foreach (var id in exp.ExecuteAsyncEnumerable(conn));
+
+            //then
+            usedConnection.Should().Be(conn.DbConnection);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
         public async Task Does_execute_async_value_list_with_connection_override_succeed(int version, int expected = 50)
         {
             //given
@@ -745,6 +806,26 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             //when               
             var values = await exp.ExecuteAsync(conn);
+
+            //then
+            values.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_enumerable_value_list_with_connection_override_succeed(int version, int expected = 50)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
+            List<int> values = new();
+
+            var exp = db.SelectMany(dbo.Person.Id)
+                .From(dbo.Person);
+
+            //when               
+            await foreach (var id in exp.ExecuteAsyncEnumerable(conn))
+                values.Add(id);
 
             //then
             values.Should().HaveCount(expected);
@@ -779,6 +860,33 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
         [Theory]
         [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_enumerable_value_list_with_connection_and_commandTimeout_overrides_have_correct_connection_and_commandTimeout_on_execution(int version, int expected = 50)
+        {
+            //given
+            IDbConnection? usedConnection = null;
+            var usedCommandTimeout = 0;
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+                c => c.Events.OnAfterCommand(e =>
+                {
+                    usedConnection = e.DbCommand.Connection;
+                    usedCommandTimeout = e.DbCommand.CommandTimeout;
+                })
+            );
+            var conn = db.GetConnection();
+
+            var exp = db.SelectMany(dbo.Person.Id)
+                .From(dbo.Person);
+
+            //when               
+            await foreach(var _ in exp.ExecuteAsyncEnumerable(conn, expected));
+
+            //then
+            usedConnection.Should().Be(conn.DbConnection);
+            usedCommandTimeout.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
         public async Task Does_execute_async_value_list_with_connection_and_commandTimeout_overrides_succeed(int version, int expected = 50)
         {
             //given
@@ -790,6 +898,26 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             //when               
             var values = await exp.ExecuteAsync(conn, 45);
+
+            //then
+            values.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_enumerable_value_list_with_connection_and_commandTimeout_overrides_succeed(int version, int expected = 50)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
+            List<int> values = new();
+
+            var exp = db.SelectMany(dbo.Person.Id)
+                .From(dbo.Person);
+
+            //when               
+            await foreach (var id in exp.ExecuteAsyncEnumerable(conn, 45))
+                values.Add(id);
 
             //then
             values.Should().HaveCount(expected);
@@ -1383,6 +1511,421 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
         #endregion
 
+        #region type/entity list async enumerable
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_enumerable_type_list_with_commandTimeout_override_have_correct_commandTimeout_on_execution(int version, int expected = 50)
+        {
+            //given
+            var usedCommandTimeout = 0;
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+                c => c.Events.OnAfterCommand(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
+            );
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            await foreach(var _ in exp.ExecuteAsyncEnumerable(expected));
+
+            //then
+            usedCommandTimeout.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_enumerable_type_list_with_commandTimeout_override_succeed(int version, int expected = 50)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            List<Person> persons = new();
+            await foreach (var person in exp.ExecuteAsyncEnumerable(expected))
+                persons.Add(person);
+
+            //then
+            persons.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_enumerable_type_list_with_connection_override_have_correct_connection_on_execution(int version)
+        {
+            //given
+            IDbConnection? usedConnection = null;
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+                c => c.Events.OnBeforeCommand(e => usedConnection = e.DbCommand.Connection)
+            );
+            var conn = db.GetConnection();
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            List<Person> persons = new();
+            await foreach (var person in exp.ExecuteAsyncEnumerable(conn))
+                persons.Add(person);
+
+            //then
+            usedConnection.Should().Be(conn.DbConnection);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_enumerable_type_list_with_connection_override_succeed(int version, int expected = 50)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            List<Person> persons = new();
+            await foreach (var person in exp.ExecuteAsyncEnumerable(conn))
+                persons.Add(person);
+
+            //then
+            persons.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_enumerable_type_list_with_connection_and_commandTimeout_overrides_have_correct_connection_and_commandTimeout_on_execution(int version, int expected = 50)
+        {
+            //given
+            IDbConnection? usedConnection = null;
+            var usedCommandTimeout = 0;
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+                c => c.Events.OnAfterCommand(e =>
+                {
+                    usedConnection = e.DbCommand.Connection;
+                    usedCommandTimeout = e.DbCommand.CommandTimeout;
+                })
+            );
+            var conn = db.GetConnection();
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            List<Person> persons = new();
+            await foreach (var person in exp.ExecuteAsyncEnumerable(conn, expected))
+                persons.Add(person);
+
+            //then
+            usedConnection.Should().Be(conn.DbConnection);
+            usedCommandTimeout.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_enumerable_type_list_with_connection_and_commandTimeout_overrides_succeed(int version, int expected = 50)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            List<Person> persons = new();
+            await foreach (var person in exp.ExecuteAsyncEnumerable(conn, 45))
+                persons.Add(person);
+
+            //then
+            persons.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_enumerable_type_list_with_map_to_entity_delegate_override_succeed(int version, int expected = 50)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            List<Person> persons = new();
+            await foreach (var person in exp.ExecuteAsyncEnumerable((row, person) => person.Id = row.ReadField()!.GetValue<int>()))
+                persons.Add(person);
+
+            //then
+            persons.Should().HaveCount(expected);
+            persons.Should().NotContain(x => x.Id <= 0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_enumerable_type_list_with_commandTimeout_and_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            List<Person> persons = new();
+            await foreach (var person in exp.ExecuteAsyncEnumerable(45, (row, person) => person.Id = row.ReadField()!.GetValue<int>()))
+                persons.Add(person);
+
+            //then
+            persons.Should().HaveCount(expected);
+            persons.Should().NotContain(x => x.Id <= 0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_enumerable_type_list_with_connection_and_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            List<Person> persons = new();
+            await foreach (var person in exp.ExecuteAsyncEnumerable(conn, (row, person) => person.Id = row.ReadField()!.GetValue<int>()))
+                persons.Add(person);
+
+            //then
+            persons.Should().HaveCount(expected);
+            persons.Should().NotContain(x => x.Id <= 0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_enumerable_type_list_with_connection_and_commandTimeout_and_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            List<Person> persons = new();
+            await foreach (var person in exp.ExecuteAsyncEnumerable(conn, 45, (row, person) => person.Id = row.ReadField()!.GetValue<int>()))
+                persons.Add(person);
+
+            //then
+            persons.Should().HaveCount(expected);
+            persons.Should().NotContain(x => x.Id <= 0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_enumerable_type_list_with_async_map_to_entity_delegate_override_succeed(int version, int expected = 50)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            List<Person> persons = new();
+            await foreach (var p in exp.ExecuteAsyncEnumerable(row =>
+            {
+                Person person = new()
+                {
+                    Id = row.ReadField()!.GetValue<int>()
+                };
+                return person;
+            })) persons.Add(p);
+
+            //then
+            persons.Should().HaveCount(expected);
+            persons.Should().NotContain(x => x.Id <= 0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_enumerable_type_list_with_commandTimeout_and_async_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            List<Person> persons = new();
+            await foreach (var p in exp.ExecuteAsyncEnumerable(45, row =>
+            {
+                Person person = new()
+                {
+                    Id = row.ReadField()!.GetValue<int>()
+                };
+                return person;
+            })) persons.Add(p);
+
+            //then
+            persons.Should().HaveCount(expected);
+            persons.Should().NotContain(x => x.Id <= 0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_enumerable_type_list_with_connection_and_async_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when
+            List<Person> persons = new();
+            await foreach (var p in exp.ExecuteAsyncEnumerable(conn, row =>
+            {
+                Person person = new()
+                {
+                    Id = row.ReadField()!.GetValue<int>()
+                };
+                return person;
+            })) persons.Add(p);
+
+            //then
+            persons.Should().HaveCount(expected);
+            persons.Should().NotContain(x => x.Id <= 0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_enumerable_type_list_with_connection_and_commandTimeout_and_async_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when
+            List<Person> persons = new();
+            await foreach (var p in exp.ExecuteAsyncEnumerable(conn, 45, row =>
+            {
+                Person person = new()
+                {
+                    Id = row.ReadField()!.GetValue<int>()
+                };
+                return person;
+            })) persons.Add(p);
+
+            //then
+            persons.Should().HaveCount(expected);
+            persons.Should().NotContain(x => x.Id <= 0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_enumerable_type_list_with_async_map_to_factory_created_entity_delegate_override_succeed(int version, int expected = 50)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var persons = new List<Person>();
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            await foreach (var p in exp.ExecuteAsyncEnumerable(async (row, person) =>
+            {
+                person.Id = row.ReadField()!.GetValue<int>();
+                await Task.Delay(TimeSpan.Zero);
+            })) persons.Add(p);
+
+            //then
+            persons.Should().HaveCount(expected);
+            persons.Should().NotContain(x => x.Id <= 0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_enumerable_type_list_with_commandTimeout_and_async_map_to_factory_created_entity_delegate_overrides_succeed(int version, int expected = 50)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var persons = new List<Person>();
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            await foreach (var p in exp.ExecuteAsyncEnumerable(45, async (row, person) =>
+            {
+                person.Id = row.ReadField()!.GetValue<int>();
+                await Task.Delay(TimeSpan.Zero);
+            })) persons.Add(p);
+
+            //then
+            persons.Should().HaveCount(expected);
+            persons.Should().NotContain(x => x.Id <= 0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_enumerable_type_list_with_connection_and_async_map_to_factory_created_entity_delegate_overrides_succeed(int version, int expected = 50)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
+            var persons = new List<Person>();
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            await foreach (var p in exp.ExecuteAsyncEnumerable(conn, async (row, person) =>
+            {
+                person.Id = row.ReadField()!.GetValue<int>();
+                await Task.Delay(TimeSpan.Zero);
+            })) persons.Add(p);
+
+            //then
+            persons.Should().HaveCount(expected);
+            persons.Should().NotContain(x => x.Id <= 0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_enumerable_type_list_with_connection_and_commandTimeout_and_async_map_to_factory_created_entity_delegate_overrides_succeed(int version, int expected = 50)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
+            var persons = new List<Person>();
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            await foreach (var p in exp.ExecuteAsyncEnumerable(conn, 45, async (row, person) =>
+            {
+                person.Id = row.ReadField()!.GetValue<int>();
+                await Task.Delay(TimeSpan.Zero);
+            })) persons.Add(p);
+
+            //then
+            persons.Should().HaveCount(expected);
+            persons.Should().NotContain(x => x.Id <= 0);
+        }
+        #endregion
+
         #region dynamic list async
         [Theory]
         [MsSqlVersions.AllVersions]
@@ -1410,6 +1953,30 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
         [Theory]
         [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_enumerable_dynamic_list_with_commandTimeout_override_have_correct_commandTimeout_on_execution(int version, int expected = 50)
+        {
+
+            //given
+            var usedCommandTimeout = 0;
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+                c => c.Events.OnAfterCommand(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
+            );
+
+            var exp = db.SelectMany(
+                    dbo.Person.Id,
+                    dbo.Person.FirstName
+                )
+                .From(dbo.Person);
+
+            //when               
+            await foreach (var _ in exp.ExecuteAsyncEnumerable(expected));
+
+            //then
+            usedCommandTimeout.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
         public async Task Does_execute_async_dynamic_list_with_commandTimeout_override_succeed(int version, int expected = 50)
         {
             //given
@@ -1423,6 +1990,28 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             //when               
             var dynamics = await exp.ExecuteAsync(45);
+
+            //then
+            dynamics.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_enumerable_dynamic_list_with_commandTimeout_override_succeed(int version, int expected = 50)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            List<dynamic> dynamics = new();
+
+            var exp = db.SelectMany(
+                    dbo.Person.Id,
+                    dbo.Person.FirstName
+                )
+                .From(dbo.Person);
+
+            //when               
+            await foreach (var value in exp.ExecuteAsyncEnumerable(45))
+                dynamics.Add(value);
 
             //then
             dynamics.Should().HaveCount(expected);
@@ -1454,6 +2043,30 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
         [Theory]
         [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_enumerable_dynamic_list_with_connection_override_have_correct_connection_on_execution(int version)
+        {
+            //given
+            IDbConnection? usedConnection = null;
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+                c => c.Events.OnBeforeCommand(e => usedConnection = e.DbCommand.Connection)
+            );
+            var conn = db.GetConnection();
+
+            var exp = db.SelectMany(
+                    dbo.Person.Id,
+                    dbo.Person.FirstName
+                )
+                .From(dbo.Person);
+
+            //when               
+            await foreach (var value in exp.ExecuteAsyncEnumerable(conn))
+
+            //then
+            usedConnection.Should().Be(conn.DbConnection);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
         public async Task Does_execute_async_dynamic_list_with_connection_override_succeed(int version, int expected = 50)
         {
             //given
@@ -1468,6 +2081,29 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             //when               
             var dynamics = await exp.ExecuteAsync(conn);
+
+            //then
+            dynamics.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_enumerable_dynamic_list_with_connection_override_succeed(int version, int expected = 50)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
+            List<dynamic> dynamics = new();
+
+            var exp = db.SelectMany(
+                    dbo.Person.Id,
+                    dbo.Person.FirstName
+                )
+                .From(dbo.Person);
+
+            //when               
+            await foreach (var value in exp.ExecuteAsyncEnumerable(conn))
+                dynamics.Add(value);
 
             //then
             dynamics.Should().HaveCount(expected);
@@ -1496,6 +2132,29 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
         [Theory]
         [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_enumerable_dynamic_list_with_connection_and_commandTimeout_overrides_succeed(int version, int expected = 50)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
+            List<dynamic> dynamics = new();
+
+            var exp = db.SelectMany(
+                    dbo.Person.Id,
+                    dbo.Person.FirstName
+                )
+                .From(dbo.Person);
+
+            //when               
+            await foreach (var value in exp.ExecuteAsyncEnumerable(conn, 45))
+                dynamics.Add(value);
+
+            //then
+            dynamics.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
         public async Task Does_execute_async_dynamic_list_with_map_override_succeed(int version, int expected = 50)
         {
             //given
@@ -1515,6 +2174,27 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             ids.Should().HaveCount(expected);
             @returned.Should().HaveCount(expected);
             ids.Should().Equal(@returned);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_enumerable_dynamic_list_with_map_override_succeed(int version, int expected = 50)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            var exp = db.SelectMany(
+                    dbo.Person.Id,
+                    dbo.Person.FirstName
+                )
+                .From(dbo.Person);
+
+            //when               
+            var ids = new List<int>();
+            await foreach(var value in exp.ExecuteAsyncEnumerable(row => { var id = row.ReadField()!.GetValue<int>(); ids.Add(id); return id; }));
+
+            //then
+            ids.Should().HaveCount(expected);
         }
 
         [Theory]
@@ -1546,6 +2226,31 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
         [Theory]
         [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_enumerable_dynamic_list_with_commandTimeout_and_map_overrides_have_correct_commandTimeout_on_execution(int version, int expectedCommandTimeout = 45, int expectedCount = 50)
+        {
+            //given
+            var usedCommandTimeout = 0;
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+                c => c.Events.OnAfterCommand(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
+            );
+
+            var exp = db.SelectMany(
+                    dbo.Person.Id,
+                    dbo.Person.FirstName
+                )
+                .From(dbo.Person);
+
+            //when               
+            var ids = new List<int>();
+            await foreach (var value in exp.ExecuteAsyncEnumerable(expectedCommandTimeout, row => { var id = row.ReadField()!.GetValue<int>(); ids.Add(id); return id; })) ;
+
+            //then
+            usedCommandTimeout.Should().Be(expectedCommandTimeout);
+            ids.Should().HaveCount(expectedCount);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
         public async Task Does_execute_async_dynamic_list_with_commandTimeout_and_map_overrides_succeed(int version, int expected = 50)
         {
             //given
@@ -1559,12 +2264,33 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             //when               
             var ids = new List<int>();
-            var @returned = await exp.ExecuteAsync(row => { var id = row.ReadField()!.GetValue<int>(); ids.Add(id); return id; });
+            var @returned = await exp.ExecuteAsync(45, row => { var id = row.ReadField()!.GetValue<int>(); ids.Add(id); return id; });
 
             //then
             ids.Should().HaveCount(expected);
             @returned.Should().HaveCount(expected);
             ids.Should().Equal(@returned);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_enumerable_dynamic_list_with_commandTimeout_and_map_overrides_succeed(int version, int expected = 50)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            var exp = db.SelectMany(
+                    dbo.Person.Id,
+                    dbo.Person.FirstName
+                )
+                .From(dbo.Person);
+
+            //when               
+            var ids = new List<int>();
+            await foreach (var value in exp.ExecuteAsyncEnumerable(45, row => { var id = row.ReadField()!.GetValue<int>(); ids.Add(id); return id; })) ;
+
+            //then
+            ids.Should().HaveCount(expected);
         }
 
         [Theory]
@@ -1589,6 +2315,28 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             ids.Should().HaveCount(expected);
             @returned.Should().HaveCount(expected);
             ids.Should().Equal(@returned);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_enumerable_dynamic_list_with_connection_and_map_overrides_succeed(int version, int expected = 50)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
+
+            var exp = db.SelectMany(
+                    dbo.Person.Id,
+                    dbo.Person.FirstName
+                )
+                .From(dbo.Person);
+
+            //when               
+            var ids = new List<int>();
+            await foreach (var value in exp.ExecuteAsyncEnumerable(conn, row => { var id = row.ReadField()!.GetValue<int>(); ids.Add(id); return id; })) ;
+
+            //then
+            ids.Should().HaveCount(expected);
         }
 
         [Theory]
@@ -1623,6 +2371,36 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
         [Theory]
         [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_enumerable_dynamic_list_with_connection_and_commandTimeout_and_map_overrides_have_correct_connection_and_commandTimeout_on_execution(int version, int expected = 45)
+        {
+            //given
+            IDbConnection? usedConnection = null;
+            var usedCommandTimeout = 0;
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+                c => c.Events.OnAfterCommand(e =>
+                {
+                    usedConnection = e.DbCommand.Connection;
+                    usedCommandTimeout = e.DbCommand.CommandTimeout;
+                })
+            );
+            var conn = db.GetConnection();
+
+            var exp = db.SelectMany(
+                    dbo.Person.Id,
+                    dbo.Person.FirstName
+                )
+                .From(dbo.Person);
+
+            //when               
+            await foreach (var value in exp.ExecuteAsyncEnumerable(conn, expected, row => row.ReadField()!.GetValue<int>())) ;
+
+            //then
+            usedConnection.Should().Be(conn.DbConnection);
+            usedCommandTimeout.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
         public async Task Does_execute_async_dynamic_list_with_connection_and_commandTimeout_and_map_overrides_succeed(int version, int expected = 50)
         {
             //given
@@ -1640,6 +2418,25 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             ids.Should().HaveCount(expected);
             @returned.Should().HaveCount(expected);
             ids.Should().Equal(@returned);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_enumerable_dynamic_list_with_connection_and_commandTimeout_and_map_overrides_succeed(int version, int expected = 50)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var conn = db.GetConnection();
+
+            var exp = db.SelectMany(dbo.Person.Id, dbo.Person.FirstName)
+                .From(dbo.Person);
+
+            //when               
+            var ids = new List<int>();
+            await foreach (var value in exp.ExecuteAsyncEnumerable(conn, 45, row => { var id = row.ReadField()!.GetValue<int>(); ids.Add(id); return id; }));
+
+            //then
+            ids.Should().HaveCount(expected);
         }
         #endregion
     }

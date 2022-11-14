@@ -53,6 +53,25 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
         [Theory]
         [MsSqlVersions.AllVersions]
+        public async Task Are_there_50_person_records_async_enumerable(int version, int expected = 50)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            List<Person> persons = new();
+            await foreach (var person in exp.ExecuteAsyncEnumerable().ConfigureAwait(false))
+                persons.Add(person);
+
+            //then
+            persons.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
         public void Are_there_15_purchase_records(int version, int expected = 15)
         {
             //given

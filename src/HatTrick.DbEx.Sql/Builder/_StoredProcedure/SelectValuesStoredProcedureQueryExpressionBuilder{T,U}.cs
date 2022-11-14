@@ -35,7 +35,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #region constructors
         public SelectValuesStoredProcedureQueryExpressionBuilder(
             StoredProcedureQueryExpression expression,
-            Func<IStoredProcedureExpressionExecutionPipeline> executionPipelineFactory
+            Func<IStoredProcedureQueryExpressionExecutionPipeline> executionPipelineFactory
         ) : base(expression, executionPipelineFactory)
         {
 
@@ -87,56 +87,109 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-		async Task<IEnumerable<TValue>> SelectValuesStoredProcedureTermination<TDatabase, TValue>.ExecuteAsync(CancellationToken cancellationToken)
+		Task<IEnumerable<TValue>> SelectValuesStoredProcedureTermination<TDatabase, TValue>.ExecuteAsync(CancellationToken cancellationToken)
         {
-            return await ExecuteValueListPipelineAsync(
+            return ExecuteValueListPipelineAsync(
                 null,
                 null,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-		async Task<IEnumerable<TValue>> SelectValuesStoredProcedureTermination<TDatabase, TValue>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
+		IAsyncEnumerable<TValue> SelectValuesStoredProcedureTermination<TDatabase, TValue>.ExecuteAsyncEnumerable(CancellationToken cancellationToken)
         {
-            return await ExecuteValueListPipelineAsync(
+            return ExecuteValueListPipelineAsyncEnumerable(
+                null,
+                null,
+                cancellationToken
+            );
+        }
+
+        /// <inheritdoc />
+		Task<IEnumerable<TValue>> SelectValuesStoredProcedureTermination<TDatabase, TValue>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
+        {
+            return ExecuteValueListPipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 null,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-		async Task<IEnumerable<TValue>> SelectValuesStoredProcedureTermination<TDatabase, TValue>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
+		IAsyncEnumerable<TValue> SelectValuesStoredProcedureTermination<TDatabase, TValue>.ExecuteAsyncEnumerable(ISqlConnection connection, CancellationToken cancellationToken)
+        {
+            return ExecuteValueListPipelineAsyncEnumerable(
+                connection ?? throw new ArgumentNullException(nameof(connection)),
+                null,
+                cancellationToken
+            );
+        }
+
+        /// <inheritdoc />
+		Task<IEnumerable<TValue>> SelectValuesStoredProcedureTermination<TDatabase, TValue>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            return await ExecuteValueListPipelineAsync(
+            return ExecuteValueListPipelineAsync(
                 null,
                 command => command.CommandTimeout = commandTimeout,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc />
-		async Task<IEnumerable<TValue>> SelectValuesStoredProcedureTermination<TDatabase, TValue>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
+		IAsyncEnumerable<TValue> SelectValuesStoredProcedureTermination<TDatabase, TValue>.ExecuteAsyncEnumerable(int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            return await ExecuteValueListPipelineAsync(
+            return ExecuteValueListPipelineAsyncEnumerable(
+                null,
+                command => command.CommandTimeout = commandTimeout,
+                cancellationToken
+            );
+        }
+
+        /// <inheritdoc />
+		Task<IEnumerable<TValue>> SelectValuesStoredProcedureTermination<TDatabase, TValue>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
+        {
+            if (commandTimeout <= 0)
+                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            return ExecuteValueListPipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 command => command.CommandTimeout = commandTimeout,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
+        }
+
+        /// <inheritdoc />
+		IAsyncEnumerable<TValue> SelectValuesStoredProcedureTermination<TDatabase, TValue>.ExecuteAsyncEnumerable(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
+        {
+            if (commandTimeout <= 0)
+                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            return ExecuteValueListPipelineAsyncEnumerable(
+                connection ?? throw new ArgumentNullException(nameof(connection)),
+                command => command.CommandTimeout = commandTimeout,
+                cancellationToken
+            );
         }
 
         protected virtual IEnumerable<TValue> ExecuteValueListPipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand)
-            => ExecutionPipelineFactory().ExecuteSelectValueList<TValue>(StoredProcedureQueryExpression, connection, configureCommand);
+            => CreateExecutionPipeline().ExecuteSelectValueList<TValue>(StoredProcedureQueryExpression, connection, configureCommand);
 
-        protected virtual async Task<IEnumerable<TValue>> ExecuteValueListPipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
-            => await ExecutionPipelineFactory().ExecuteSelectValueListAsync<TValue>(StoredProcedureQueryExpression, connection, configureCommand, ct).ConfigureAwait(false);
+        protected virtual Task<IEnumerable<TValue>> ExecuteValueListPipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
+            => CreateExecutionPipeline().ExecuteSelectValueListAsync<TValue>(StoredProcedureQueryExpression, connection, configureCommand, ct);
+
+        protected virtual IAsyncEnumerable<TValue> ExecuteValueListPipelineAsyncEnumerable(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
+            => CreateExecutionPipeline().ExecuteSelectValueListAsyncEnumerable<TValue>(StoredProcedureQueryExpression, connection, configureCommand, ct);
+
+        private IStoredProcedureQueryExpressionExecutionPipeline CreateExecutionPipeline()
+            => ExecutionPipelineFactory()
+                    ?? throw new DbExpressionConfigurationException($"Could not resolve/create an execution pipeline for type '{StoredProcedureQueryExpression.GetType()}'.");
 
         #endregion
         #endregion
