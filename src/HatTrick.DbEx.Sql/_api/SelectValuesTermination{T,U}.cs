@@ -99,10 +99,25 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TValue"/> values.
         /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
+        /// <returns>A list of <typeparamref name="TValue"/> values retrieved from execution of the sql SELECT query.</returns>
+        IAsyncEnumerable<TValue> ExecuteAsyncEnumerable(CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TValue"/> values.
+        /// </summary>
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
         /// <returns>A list of <typeparamref name="TValue"/> values retrieved from execution of the sql SELECT query.</returns>
         Task<IEnumerable<TValue>> ExecuteAsync(int commandTimeout, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TValue"/> values.
+        /// </summary>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
+        /// <returns>An enumerator providing asynchronous iteration of <typeparamref name="TValue"/> values retrieved from execution of the sql SELECT query.</returns>
+        IAsyncEnumerable<TValue> ExecuteAsyncEnumerable(int commandTimeout, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TValue"/> values.
@@ -116,10 +131,27 @@ namespace HatTrick.DbEx.Sql
         /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TValue"/> values.
         /// </summary>
         /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql SELECT query.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
+        /// <returns>An enumerator providing asynchronous iteration of <typeparamref name="TValue"/> values retrieved from execution of the sql SELECT query.</returns>
+        IAsyncEnumerable<TValue> ExecuteAsyncEnumerable(ISqlConnection connection, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TValue"/> values.
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql SELECT query.</param>
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
         /// <returns>A list of <typeparamref name="TValue"/> values retrieved from execution of the sql SELECT query.</returns>
         Task<IEnumerable<TValue>> ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TValue"/> values.
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql SELECT query.</param>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
+        /// <returns>An enumerator providing asynchronous iteration of <typeparamref name="TValue"/> values retrieved from execution of the sql SELECT query.</returns>
+        IAsyncEnumerable<TValue> ExecuteAsyncEnumerable(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TValue"/> values.

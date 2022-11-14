@@ -7,6 +7,7 @@ using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Connection;
 using HatTrick.DbEx.Sql.Executor;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -463,6 +464,22 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
         [Theory]
         [MsSqlVersions.AllVersions]
+        public async Task Can_execute_async_enumerable_stored_procedure_with_input_parameter_and_return_dynamic_list(int version, int id = 0, int expected = 50)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            List<int?> persons = new();
+
+            //when               
+            await foreach (var v in db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues<int?>().ExecuteAsyncEnumerable())
+                persons.Add(v);
+
+            //then
+            persons.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
         public async Task Can_execute_async_stored_procedure_with_input_parameter_and_return_list_of_person(int version, int id = 0, int expected = 50)
         {
             //given
@@ -470,6 +487,22 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             //when               
             var persons = await db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues(row => new Person { Id = row.ReadField()!.GetValue<int>() }).ExecuteAsync();
+
+            //then
+            persons.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_execute_async_enumerable_stored_procedure_with_input_parameter_and_return_list_of_person(int version, int id = 0, int expected = 50)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            List<Person> persons = new();
+
+            //when               
+            await foreach (var v in db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues(row => new Person { Id = row.ReadField()!.GetValue<int>() }).ExecuteAsyncEnumerable())
+                persons.Add(v);
 
             //then
             persons.Should().HaveCount(expected);
@@ -493,6 +526,24 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
         [Theory]
         [MsSqlVersions.AllVersions]
+        public async Task Can_execute_async_enumerable_stored_procedure_with_input_parameter_and_command_timeout_and_return_list_of_person(int version, int id = 0, int expectedCommandTimeout = 45, int expected = 50)
+        {
+            //given
+            int commandTimeout = 0;
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.Events.OnAfterCommand(context => commandTimeout = context.DbCommand.CommandTimeout));
+            List<Person> persons = new();
+
+            //when               
+            await foreach (var v in db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues(row => new Person { Id = row.ReadField()!.GetValue<int>() }).ExecuteAsyncEnumerable(expectedCommandTimeout))
+                persons.Add(v);
+
+            //then
+            persons.Should().HaveCount(expected);
+            commandTimeout.Should().Be(expectedCommandTimeout);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
         public async Task Can_execute_async_stored_procedure_with_input_parameter_and_provided_connection_and_return_list_of_person(int version, int id = 0, int expected = 50)
         {
             //given
@@ -501,6 +552,23 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //when               
             using var connection = db.GetConnection();
             var persons = await db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues(row => new Person { Id = row.ReadField()!.GetValue<int>() }).ExecuteAsync(connection);
+
+            //then
+            persons.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_execute_async_enumerable_stored_procedure_with_input_parameter_and_provided_connection_and_return_list_of_person(int version, int id = 0, int expected = 50)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            List<Person> persons = new();
+
+            //when               
+            using var connection = db.GetConnection();
+            await foreach (var v in db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues(row => new Person { Id = row.ReadField()!.GetValue<int>() }).ExecuteAsyncEnumerable(connection))
+                persons.Add(v);
 
             //then
             persons.Should().HaveCount(expected);
@@ -525,6 +593,25 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
         [Theory]
         [MsSqlVersions.AllVersions]
+        public async Task Can_execute_async_enumerable_stored_procedure_with_input_parameter_and_provided_connection_and_command_timeout_and_return_list_of_person(int version, int id = 0, int expectedCommandTimeout = 45, int expected = 50)
+        {
+            //given
+            int commandTimeout = 0;
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.Events.OnAfterCommand(context => commandTimeout = context.DbCommand.CommandTimeout));
+            List<Person> persons = new();
+
+            //when               
+            using var connection = db.GetConnection();
+            await foreach (var v in db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues(row => new Person { Id = row.ReadField()!.GetValue<int>() }).ExecuteAsyncEnumerable(connection, expectedCommandTimeout))
+                persons.Add(v);
+
+            //then
+            persons.Should().HaveCount(expected);
+            commandTimeout.Should().Be(expectedCommandTimeout);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
         public async Task Can_execute_async_stored_procedure_with_null_input_parameter_and_return_dynamic_list(int version, int? id = null)
         {
             //given
@@ -532,6 +619,22 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             //when               
             var persons = await db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues().ExecuteAsync();
+
+            //then
+            persons.Should().BeEmpty();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_execute_async_enumerable_stored_procedure_with_null_input_parameter_and_return_dynamic_list(int version, int? id = null)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            List<Person> persons = new();
+
+            //when               
+            await foreach (var v in db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues().ExecuteAsyncEnumerable())
+                persons.Add(v);
 
             //then
             persons.Should().BeEmpty();
@@ -581,6 +684,22 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
         [Theory]
         [MsSqlVersions.AllVersions]
+        public async Task Can_execute_async_enumerable_stored_procedure_with_input_parameter_and_return_scalar_value_list(int version, int id = 0, int expected = 50)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            List<int> values = new();
+
+            //when               
+            await foreach (var v in db.sp.dbo.SelectPersonId_As_ScalarValueList_With_Input(id).GetValues<int>().ExecuteAsyncEnumerable())
+                values.Add(v);
+
+            //then
+            values.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
         public async Task Can_execute_async_stored_procedure_with_null_input_parameter_and_return_scalar_value_list(int version, int? id = null)
         {
             //given
@@ -588,6 +707,22 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             //when               
             var values = await db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValues<int?>().ExecuteAsync();
+
+            //then
+            values.Should().BeEmpty();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_execute_async_enumerable_stored_procedure_with_null_input_parameter_and_return_scalar_value_list(int version, int? id = null)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            List<int?> values = new();
+
+            //when               
+            await foreach (var v in db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValues<int?>().ExecuteAsyncEnumerable())
+                values.Add(v);
 
             //then
             values.Should().BeEmpty();
@@ -619,6 +754,24 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             //when               
             var persons = await db.sp.dbo.SelectPerson_As_DynamicList_With_Input_And_Output(id, p => count = p[nameof(count)]!.GetValue<int>()).GetValues().ExecuteAsync();
+
+            //then
+            persons.Should().HaveCount(expected);
+            count.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_execute_async_enumerable_stored_procedure_with_input_and_output_parameters_and_return_dynamic_list(int version, int id = 0, int expected = 50)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            List<dynamic> persons = new();
+            var count = 0;
+
+            //when               
+            await foreach (var v in db.sp.dbo.SelectPerson_As_DynamicList_With_Input_And_Output(id, p => count = p[nameof(count)]!.GetValue<int>()).GetValues().ExecuteAsyncEnumerable())
+                persons.Add(v);
 
             //then
             persons.Should().HaveCount(expected);
@@ -659,6 +812,24 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
         [Theory]
         [MsSqlVersions.AllVersions]
+        public async Task Can_execute_async_enumerable_stored_procedure_with_input_and_inputoutput_parameter_and_return_scalar_value_list(int version, int id = 1, int creditLimit = 10000, int expected = 11)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            List<dynamic> persons = new();
+            var outCreditLimit = 0;
+
+            //when               
+            await foreach (var v in db.sp.dbo.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput(id, creditLimit, p => outCreditLimit = p[nameof(creditLimit)]!.GetValue<int>()).GetValues().ExecuteAsyncEnumerable())
+                persons.Add(v);
+
+            //then
+            persons.Should().HaveCount(expected);
+            outCreditLimit.Should().Be(creditLimit * 2);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
         public async Task Can_execute_async_stored_procedure_with_input_and_inputoutput_parameter_and_return_dynamic_value(int version, int id = 1, int creditLimit = 10000)
         {
             //given
@@ -683,6 +854,24 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             //when               
             var persons = await db.sp.dbo.SelectPerson_As_DynamicList_With_Input_And_InputOutput(id, creditLimit, p => outCreditLimit = p[nameof(creditLimit)]!.GetValue<int>()).GetValues().ExecuteAsync();
+
+            //then
+            persons.Should().HaveCount(expected);
+            outCreditLimit.Should().Be(creditLimit * 2);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_execute_async_enumerable_stored_procedure_with_input_and_inputoutput_parameter_and_return_dynamic_list(int version, int id = 1, int creditLimit = 10000, int expected = 11)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            List<dynamic> persons = new();
+            var outCreditLimit = 0;
+
+            //when               
+            await foreach (var v in db.sp.dbo.SelectPerson_As_DynamicList_With_Input_And_InputOutput(id, creditLimit, p => outCreditLimit = p[nameof(creditLimit)]!.GetValue<int>()).GetValues().ExecuteAsyncEnumerable())
+                persons.Add(v);
 
             //then
             persons.Should().HaveCount(expected);

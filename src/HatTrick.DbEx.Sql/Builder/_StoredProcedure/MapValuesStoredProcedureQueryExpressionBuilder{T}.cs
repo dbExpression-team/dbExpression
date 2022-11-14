@@ -43,7 +43,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #region constructors
         public MapValuesStoredProcedureQueryExpressionBuilder(
             StoredProcedureQueryExpression expression,
-            Func<IStoredProcedureExpressionExecutionPipeline> executionPipelineFactory
+            Func<IStoredProcedureQueryExpressionExecutionPipeline> executionPipelineFactory
         ) : base(expression, executionPipelineFactory)
         {
             this.map = _ => { };
@@ -51,7 +51,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         public MapValuesStoredProcedureQueryExpressionBuilder(
             StoredProcedureQueryExpression expression,
-            Func<IStoredProcedureExpressionExecutionPipeline> executionPipelineFactory,
+            Func<IStoredProcedureQueryExpressionExecutionPipeline> executionPipelineFactory,
             Action<ISqlFieldReader> map
         ) : base(expression, executionPipelineFactory)
         {

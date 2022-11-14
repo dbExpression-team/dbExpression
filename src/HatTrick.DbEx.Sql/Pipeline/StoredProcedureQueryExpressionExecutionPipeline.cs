@@ -29,12 +29,13 @@ using System.Data;
 using System.Data.Common;
 using System.Dynamic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql.Pipeline
 {
-    public sealed class StoredProcedureQueryExpressionExecutionPipeline : IStoredProcedureExpressionExecutionPipeline
+    public sealed class StoredProcedureQueryExpressionExecutionPipeline : IStoredProcedureQueryExpressionExecutionPipeline
     {
         #region internals
         private readonly ILogger<StoredProcedureQueryExpressionExecutionPipeline> logger;
@@ -234,6 +235,24 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return values;
         }
 
+        public async IAsyncEnumerable<dynamic> ExecuteSelectDynamicListAsyncEnumerable(StoredProcedureQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, [EnumeratorCancellation] CancellationToken ct)
+        {
+            IExpandoObjectMapper? mapper = null;
+            await foreach (ISqlFieldReader row in ExecuteStoredProcedureAsyncEnumerable(
+                expression,
+                connection,
+                configureCommand,
+                ct
+            ))
+            {
+                var value = new ExpandoObject();
+                if (mapper is null)
+                    mapper = mapperFactory.CreateExpandoObjectMapper() ?? throw new DbExpressionException("Could not resolve a mapper for mapping dynamic objects.");
+                mapper.Map(value, row);
+                yield return value;
+            }
+        }
+
         public T? ExecuteSelectValue<T>(StoredProcedureQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand)
         {
             T? value = default;
@@ -356,6 +375,23 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return values;
         }
 
+        public async IAsyncEnumerable<T> ExecuteSelectValueListAsyncEnumerable<T>(StoredProcedureQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, [EnumeratorCancellation] CancellationToken ct)
+        {
+            await foreach (ISqlFieldReader row in ExecuteStoredProcedureAsyncEnumerable(
+                expression,
+                connection,
+                configureCommand,
+                ct
+            ))
+            {
+                var field = row.ReadField();
+                if (field is null)
+                    yield break;
+
+                yield return field.GetValue<T>()!;
+            }
+        }
+
         public T? ExecuteSelectObject<T>(StoredProcedureQueryExpression expression, Func<ISqlFieldReader, T> map, ISqlConnection? connection, Action<IDbCommand>? configureCommand)
         {
             T? value = default;
@@ -465,6 +501,21 @@ namespace HatTrick.DbEx.Sql.Pipeline
             ).ConfigureAwait(false);
             return values;
         }
+
+        public async IAsyncEnumerable<T> ExecuteSelectObjectListAsyncEnumerable<T>(StoredProcedureQueryExpression expression, Func<ISqlFieldReader, T> map, ISqlConnection? connection, Action<IDbCommand>? configureCommand, [EnumeratorCancellation] CancellationToken ct)
+        {
+            await foreach (ISqlFieldReader row in ExecuteStoredProcedureAsyncEnumerable(
+                expression,
+                connection,
+                configureCommand,
+                ct
+            ))
+            {
+                yield return map(row);
+            }
+        }
+
+
         #endregion
 
         #region exec
@@ -622,6 +673,68 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             finally
             {
+                if (connection is null) //was not provided
+                    local.Dispose();
+            }
+
+            ct.ThrowIfCancellationRequested();
+
+            await OnAfterCompleteAsync(expression, ct).ConfigureAwait(false);
+        }
+
+        private async IAsyncEnumerable<ISqlFieldReader> ExecuteStoredProcedureAsyncEnumerable(
+            StoredProcedureQueryExpression expression,
+            ISqlConnection? connection,
+            Action<IDbCommand>? configureCommand,
+            [EnumeratorCancellation] CancellationToken ct
+        )
+        {
+            if (expression is null)
+                throw new ArgumentNullException(nameof(expression));
+
+            await OnBeforeStartAsync(expression, ct).ConfigureAwait(false);
+
+            if (logger.IsEnabled(LogLevel.Trace))
+                logger.LogTrace("Creating sql statement for stored procedure.");
+            var statement = statementBuilder.CreateSqlStatement(expression) ?? throw new DbExpressionException("The sql statement builder returned a null value, cannot execute a stored procedure without a sql statement.");
+
+            await OnAfterAssemblyAsync(expression, statementBuilder, statement, ct).ConfigureAwait(false);
+
+            var converters = new SqlStatementValueConverterProvider(valueConverterFactory);
+
+            var local = connection ?? new SqlConnector(connectionFactory);
+            IDataParameterCollection? parameters = null;
+            try
+            {
+                await foreach (ISqlFieldReader row in await statementExecutor.ExecuteQueryAsyncEnumerable(
+                    statement,
+                    local,
+                    converters,
+                    async cmd =>
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        await OnBeforeCommandAsync(expression, cmd, statement, ct).ConfigureAwait(false);
+
+                        if (!ct.IsCancellationRequested)
+                            configureCommand?.Invoke(cmd);
+                    },
+                    async cmd =>
+                    {
+                        await OnAfterCommandAsync(expression, cmd, ct).ConfigureAwait(false);
+                        if (logger.IsEnabled(LogLevel.Trace))
+                            logger.LogTrace("Mapping output parameters for stored procedure.");
+                        parameters = cmd.Parameters;
+                    },
+                    ct
+                ))
+                {
+                    yield return row;
+                };
+            }
+            finally
+            {
+                if (parameters is not null)
+                    MapOutputParameters(expression, parameters, statement.Parameters, valueConverterFactory);
                 if (connection is null) //was not provided
                     local.Dispose();
             }
