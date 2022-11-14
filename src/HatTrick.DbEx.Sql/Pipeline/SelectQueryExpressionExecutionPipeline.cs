@@ -1363,6 +1363,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         }
         #endregion
 
+        #region exec
         private void ExecuteSelectQuery(
             SelectQueryExpression expression,
             IValueConverterProvider valueConverterProvider,
@@ -1374,81 +1375,27 @@ namespace HatTrick.DbEx.Sql.Pipeline
             if (expression is null)
                 throw new ArgumentNullException(nameof(expression));
 
-            #region before start events
-            if (events.OnBeforeStart is not null)
-            {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking before start events for select query.");
-                events.OnBeforeStart.Invoke(new Lazy<BeforeStartPipelineEventContext>(() => new BeforeStartPipelineEventContext(expression, statementBuilder.Parameters)));
-            }
-            if (events.OnBeforeSelectStart is not null)
-            {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking before select start events for select query.");
-                events.OnBeforeSelectStart.Invoke(new Lazy<BeforeSelectStartPipelineEventContext>(() => new BeforeSelectStartPipelineEventContext(expression, statementBuilder.Parameters)));
-            }
-            #endregion
+            OnBeforeStart(expression);
 
             if (logger.IsEnabled(LogLevel.Trace))
                 logger.LogTrace("Creating sql statement for select query.");
             var statement = statementBuilder.CreateSqlStatement(expression) ?? throw new DbExpressionException("The sql statement builder returned a null value, cannot execute a select query without a sql statement.");
 
-            #region after assembly events
-            if (events.OnAfterSelectAssembly is not null)
-            {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after select assembly events for select query.");
-                events.OnAfterSelectAssembly?.Invoke(new Lazy<AfterSelectAssemblyPipelineEventContext>(() => new AfterSelectAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement)));
-            }
-            if (events.OnAfterAssembly is not null)
-            {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after assembly events for select query.");
-                events.OnAfterAssembly?.Invoke(new Lazy<AfterAssemblyPipelineEventContext>(() => new AfterAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement)));
-            }
-            #endregion
+            OnAfterAssembly(expression, statementBuilder, statement);
 
             var local = connection ?? new SqlConnector(connectionFactory);
             try
             {
                 var reader = statementExecutor.ExecuteQuery(
-                    statement, 
+                    statement,
                     local,
                     valueConverterProvider,
-                    cmd => {
-                        #region before command events
-                        if (events.OnBeforeCommand is not null)
-                        {
-                            if (logger.IsEnabled(LogLevel.Trace))
-                                logger.LogTrace("Invoking before command events for select query.");
-                            events.OnBeforeCommand?.Invoke(new Lazy<BeforeCommandPipelineEventContext>(() => new BeforeCommandPipelineEventContext(expression, cmd, statement)));
-                        }
-                        if (events.OnBeforeSelectCommand is not null)
-                        {
-                            if (logger.IsEnabled(LogLevel.Trace))
-                                logger.LogTrace("Invoking before select command events for select query.");
-                            events.OnBeforeSelectCommand?.Invoke(new Lazy<BeforeSelectCommandPipelineEventContext>(() => new BeforeSelectCommandPipelineEventContext(expression, cmd, statement)));
-                        }
-                        #endregion
-                        configureCommand?.Invoke(cmd); 
-                    },
                     cmd =>
                     {
-                        #region after command events
-                        if (events.OnAfterSelectCommand is not null)
-                        {
-                            if (logger.IsEnabled(LogLevel.Trace))
-                                logger.LogTrace("Invoking after select command events for select query.");
-                            events.OnAfterSelectCommand?.Invoke(new Lazy<AfterSelectCommandPipelineEventContext>(() => new AfterSelectCommandPipelineEventContext(expression, cmd)));
-                        }
-                        if (events.OnAfterCommand is not null)
-                        {
-                            if (logger.IsEnabled(LogLevel.Trace))
-                                logger.LogTrace("Invoking after command events for select query.");
-                            events.OnAfterCommand?.Invoke(new Lazy<AfterCommandPipelineEventContext>(() => new AfterCommandPipelineEventContext(expression, cmd)));
-                        }
-                        #endregion
-                    }
+                        OnBeforeCommand(expression, cmd, statement);
+                        configureCommand?.Invoke(cmd);
+                    },
+                    cmd => OnAfterCommand(expression, cmd)
                 );
 
                 if (reader is null)
@@ -1462,20 +1409,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     local.Dispose();
             }
 
-            #region after complete events
-            if (events.OnAfterSelectComplete is not null)
-            {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after select complete events for select query.");
-                events.OnAfterSelectComplete?.Invoke(new Lazy<AfterSelectCompletePipelineEventContext>(() => new AfterSelectCompletePipelineEventContext(expression)));
-            }
-            if (events.OnAfterComplete is not null)
-            {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after complete events for select query.");
-                events.OnAfterComplete?.Invoke(new Lazy<AfterCompletePipelineEventContext>(() => new AfterCompletePipelineEventContext(expression)));
-            }
-            #endregion
+            OnAfterComplete(expression);
         }
 
         private async Task ExecuteSelectQueryAsync(
@@ -1490,43 +1424,13 @@ namespace HatTrick.DbEx.Sql.Pipeline
             if (expression is null)
                 throw new ArgumentNullException(nameof(expression));
 
-            #region before start events
-            if (events.OnBeforeStart is not null)
-            {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking before start events for select query.");
-                await events.OnBeforeStart.InvokeAsync(new Lazy<BeforeStartPipelineEventContext>(() => new BeforeStartPipelineEventContext(expression, statementBuilder.Parameters)), ct).ConfigureAwait(false);
-                ct.ThrowIfCancellationRequested();
-            }
-            if (events.OnBeforeSelectStart is not null)
-            {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking before select start events for select query.");
-                await events.OnBeforeSelectStart.InvokeAsync(new Lazy<BeforeSelectStartPipelineEventContext>(() => new BeforeSelectStartPipelineEventContext(expression, statementBuilder.Parameters)), ct).ConfigureAwait(false);
-                ct.ThrowIfCancellationRequested();
-            }
-            #endregion
+            await OnBeforeStartAsync(expression, ct).ConfigureAwait(false);
 
             if (logger.IsEnabled(LogLevel.Trace))
                 logger.LogTrace("Creating sql statement for select query.");
             var statement = statementBuilder.CreateSqlStatement(expression) ?? throw new DbExpressionException("The sql statement builder returned a null value, cannot execute a select query without a sql statement.");
 
-            #region after assembly events
-            if (events.OnAfterSelectAssembly is not null)
-            {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after select assembly events for select query.");
-                await events.OnAfterSelectAssembly.InvokeAsync(new Lazy<AfterSelectAssemblyPipelineEventContext>(() => new AfterSelectAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement)), ct).ConfigureAwait(false);
-                ct.ThrowIfCancellationRequested();
-            }
-            if (events.OnAfterAssembly is not null)
-            {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after assembly events for select query.");
-                await events.OnAfterAssembly.InvokeAsync(new Lazy<AfterAssemblyPipelineEventContext>(() => new AfterAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement)), ct).ConfigureAwait(false);
-                ct.ThrowIfCancellationRequested();
-            }
-            #endregion
+            await OnAfterAssemblyAsync(expression, statementBuilder, statement, ct).ConfigureAwait(false);
 
             var local = connection ?? new SqlConnector(connectionFactory);
             try
@@ -1537,43 +1441,12 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     valueConverterProvider,
                     async cmd =>
                     {
-                        #region before command events
-                        if (events.OnBeforeCommand is not null)
-                        {
-                            if (logger.IsEnabled(LogLevel.Trace))
-                                logger.LogTrace("Invoking before command events for select query.");
-                            await events.OnBeforeCommand.InvokeAsync(new Lazy<BeforeCommandPipelineEventContext>(() => new BeforeCommandPipelineEventContext(expression, cmd, statement)), ct).ConfigureAwait(false);
-                            ct.ThrowIfCancellationRequested();
-                        }
-                        if (events.OnBeforeSelectCommand is not null && !ct.IsCancellationRequested)
-                        {
-                            if (logger.IsEnabled(LogLevel.Trace))
-                                logger.LogTrace("Invoking before select command events for select query.");
-                            await events.OnBeforeSelectCommand.InvokeAsync(new Lazy<BeforeSelectCommandPipelineEventContext>(() => new BeforeSelectCommandPipelineEventContext(expression, cmd, statement)), ct).ConfigureAwait(false);
-                            ct.ThrowIfCancellationRequested();
-                        }
-                        #endregion
+                        await OnBeforeCommandAsync(expression, cmd, statement, ct).ConfigureAwait(false);
 
                         if (!ct.IsCancellationRequested)
                             configureCommand?.Invoke(cmd);
                     },
-                    async cmd =>
-                    {
-                        #region after command events
-                        if (events.OnAfterSelectCommand is not null)
-                        {
-                            if (logger.IsEnabled(LogLevel.Trace))
-                                logger.LogTrace("Invoking after select command events for select query.");
-                            await events.OnAfterSelectCommand.InvokeAsync(new Lazy<AfterSelectCommandPipelineEventContext>(() => new AfterSelectCommandPipelineEventContext(expression, cmd)), ct).ConfigureAwait(false);
-                        }
-                        if (events.OnAfterCommand is not null && !ct.IsCancellationRequested)
-                        {
-                            if (logger.IsEnabled(LogLevel.Trace))
-                                logger.LogTrace("Invoking after command events for select query.");
-                            await events.OnAfterCommand.InvokeAsync(new Lazy<AfterCommandPipelineEventContext>(() => new AfterCommandPipelineEventContext(expression, cmd)), ct).ConfigureAwait(false);
-                        }
-                        #endregion
-                    },
+                    async cmd => await OnAfterCommandAsync(expression, cmd, ct).ConfigureAwait (false),
                     ct
                 ).ConfigureAwait(false);
 
@@ -1590,7 +1463,165 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     local.Dispose();
             }
 
-            #region after complete events
+            await OnAfterCompleteAsync(expression, ct).ConfigureAwait(false);
+        }
+
+        #region events
+        #region sync
+        private void OnBeforeStart(SelectQueryExpression expression)
+        {
+            if (events.OnBeforeStart is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking before start events for select query.");
+                events.OnBeforeStart.Invoke(new Lazy<BeforeStartPipelineEventContext>(() => new BeforeStartPipelineEventContext(expression, statementBuilder.Parameters)));
+            }
+            if (events.OnBeforeSelectStart is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking before select start events for select query.");
+                events.OnBeforeSelectStart.Invoke(new Lazy<BeforeSelectStartPipelineEventContext>(() => new BeforeSelectStartPipelineEventContext(expression, statementBuilder.Parameters)));
+            }
+        }
+
+        private void OnAfterAssembly(SelectQueryExpression expression, ISqlStatementBuilder statementBuilder, SqlStatement statement)
+        {
+            if (events.OnAfterSelectAssembly is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking after select assembly events for select query.");
+                events.OnAfterSelectAssembly?.Invoke(new Lazy<AfterSelectAssemblyPipelineEventContext>(() => new AfterSelectAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement)));
+            }
+            if (events.OnAfterAssembly is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking after assembly events for select query.");
+                events.OnAfterAssembly?.Invoke(new Lazy<AfterAssemblyPipelineEventContext>(() => new AfterAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement)));
+            }
+        }
+
+        private void OnBeforeCommand(SelectQueryExpression expression, IDbCommand command, SqlStatement statement)
+        {
+            if (events.OnBeforeCommand is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking before command events for select query.");
+                events.OnBeforeCommand?.Invoke(new Lazy<BeforeCommandPipelineEventContext>(() => new BeforeCommandPipelineEventContext(expression, command, statement)));
+            }
+            if (events.OnBeforeSelectCommand is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking before select command events for select query.");
+                events.OnBeforeSelectCommand?.Invoke(new Lazy<BeforeSelectCommandPipelineEventContext>(() => new BeforeSelectCommandPipelineEventContext(expression, command, statement)));
+            }
+        }
+
+        private void OnAfterCommand(SelectQueryExpression expression, IDbCommand command)
+        {
+            if (events.OnAfterSelectCommand is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking after select command events for select query.");
+                events.OnAfterSelectCommand?.Invoke(new Lazy<AfterSelectCommandPipelineEventContext>(() => new AfterSelectCommandPipelineEventContext(expression, command)));
+            }
+            if (events.OnAfterCommand is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking after command events for select query.");
+                events.OnAfterCommand?.Invoke(new Lazy<AfterCommandPipelineEventContext>(() => new AfterCommandPipelineEventContext(expression, command)));
+            }
+        }
+
+        private void OnAfterComplete(SelectQueryExpression expression)
+        {
+            if (events.OnAfterSelectComplete is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking after select complete events for select query.");
+                events.OnAfterSelectComplete?.Invoke(new Lazy<AfterSelectCompletePipelineEventContext>(() => new AfterSelectCompletePipelineEventContext(expression)));
+            }
+            if (events.OnAfterComplete is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking after complete events for select query.");
+                events.OnAfterComplete?.Invoke(new Lazy<AfterCompletePipelineEventContext>(() => new AfterCompletePipelineEventContext(expression)));
+            }
+        }
+        #endregion
+
+        #region async
+        private async Task OnBeforeStartAsync(SelectQueryExpression expression, CancellationToken ct)
+        {
+            if (events.OnBeforeStart is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking before start events for select query.");
+                await events.OnBeforeStart.InvokeAsync(new Lazy<BeforeStartPipelineEventContext>(() => new BeforeStartPipelineEventContext(expression, statementBuilder.Parameters)), ct).ConfigureAwait(false);
+                ct.ThrowIfCancellationRequested();
+            }
+            if (events.OnBeforeSelectStart is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking before select start events for select query.");
+                await events.OnBeforeSelectStart.InvokeAsync(new Lazy<BeforeSelectStartPipelineEventContext>(() => new BeforeSelectStartPipelineEventContext(expression, statementBuilder.Parameters)), ct).ConfigureAwait(false);
+                ct.ThrowIfCancellationRequested();
+            }
+        }
+
+        private async Task OnAfterAssemblyAsync(SelectQueryExpression expression, ISqlStatementBuilder statementBuilder, SqlStatement statement, CancellationToken ct)
+        {
+            if (events.OnAfterSelectAssembly is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking after select assembly events for select query.");
+                await events.OnAfterSelectAssembly.InvokeAsync(new Lazy<AfterSelectAssemblyPipelineEventContext>(() => new AfterSelectAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement)), ct).ConfigureAwait(false);
+                ct.ThrowIfCancellationRequested();
+            }
+            if (events.OnAfterAssembly is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking after assembly events for select query.");
+                await events.OnAfterAssembly.InvokeAsync(new Lazy<AfterAssemblyPipelineEventContext>(() => new AfterAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement)), ct).ConfigureAwait(false);
+                ct.ThrowIfCancellationRequested();
+            }
+        }
+
+        private async Task OnBeforeCommandAsync(SelectQueryExpression expression, IDbCommand command, SqlStatement statement, CancellationToken ct)
+        {
+            if (events.OnBeforeCommand is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking before command events for select query.");
+                await events.OnBeforeCommand.InvokeAsync(new Lazy<BeforeCommandPipelineEventContext>(() => new BeforeCommandPipelineEventContext(expression, command, statement)), ct).ConfigureAwait(false);
+                ct.ThrowIfCancellationRequested();
+            }
+            if (events.OnBeforeSelectCommand is not null && !ct.IsCancellationRequested)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking before select command events for select query.");
+                await events.OnBeforeSelectCommand.InvokeAsync(new Lazy<BeforeSelectCommandPipelineEventContext>(() => new BeforeSelectCommandPipelineEventContext(expression, command, statement)), ct).ConfigureAwait(false);
+                ct.ThrowIfCancellationRequested();
+            }
+        }
+
+        private async Task OnAfterCommandAsync(SelectQueryExpression expression, IDbCommand command, CancellationToken ct)
+        {
+            if (events.OnAfterSelectCommand is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking after select command events for select query.");
+                await events.OnAfterSelectCommand.InvokeAsync(new Lazy<AfterSelectCommandPipelineEventContext>(() => new AfterSelectCommandPipelineEventContext(expression, command)), ct).ConfigureAwait(false);
+            }
+            if (events.OnAfterCommand is not null && !ct.IsCancellationRequested)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking after command events for select query.");
+                await events.OnAfterCommand.InvokeAsync(new Lazy<AfterCommandPipelineEventContext>(() => new AfterCommandPipelineEventContext(expression, command)), ct).ConfigureAwait(false);
+            }
+        }
+
+        private async Task OnAfterCompleteAsync(SelectQueryExpression expression, CancellationToken ct)
+        {
             if (events.OnAfterSelectComplete is not null)
             {
                 if (logger.IsEnabled(LogLevel.Trace))
@@ -1605,8 +1636,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 await events.OnAfterComplete.InvokeAsync(new Lazy<AfterCompletePipelineEventContext>(() => new AfterCompletePipelineEventContext(expression)), ct).ConfigureAwait(false);
                 ct.ThrowIfCancellationRequested();
             }
-            #endregion
         }
+        #endregion
+        #endregion
+        #endregion
     }
     #endregion
 }
