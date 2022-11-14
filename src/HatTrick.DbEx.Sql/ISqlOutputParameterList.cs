@@ -20,7 +20,7 @@ using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql
 {
-    public interface ISqlOutputParameterList : IList<ISqlOutputParameter>
+    public interface ISqlOutputParameterList : IEnumerable<ISqlOutputParameter>
     {
         /// <summary>
         /// Gets the output parameter with the name provided by <paramref name="parameterName"/>.

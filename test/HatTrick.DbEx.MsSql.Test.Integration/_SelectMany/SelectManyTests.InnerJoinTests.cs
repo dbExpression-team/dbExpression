@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                     .InnerJoin(dbo.PersonAddress).On(dbo.Person.Id == dbo.PersonAddress.PersonId);
 
                 //when               
-                IList<int> persons = exp.Execute();
+                IEnumerable<int> persons = exp.Execute();
 
                 //then
                 persons.Should().HaveCount(52);
@@ -45,7 +45,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                     .InnerJoin(dbo.Person).On(dbo.PersonAddress.PersonId == dbo.Person.Id);
 
                 //when               
-                IList<int> persons = exp.Execute();
+                IEnumerable<int> persons = exp.Execute();
 
                 //then
                 persons.Should().HaveCount(52);
@@ -64,7 +64,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                     .InnerJoin(dbo.Person).On(dbo.PersonAddress.PersonId == dbo.Person.Id);
 
                 //when               
-                IList<Person> persons = exp.Execute();
+                IEnumerable<Person> persons = exp.Execute();
 
                 //then
                 persons.Should().HaveCount(52);

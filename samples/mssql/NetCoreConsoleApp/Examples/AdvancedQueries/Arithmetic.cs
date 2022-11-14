@@ -7,6 +7,7 @@ using SimpleConsole.DataService;
 using SimpleConsole.dboData;
 using SimpleConsole.dboDataService;
 using SimpleConsole.secDataService;
+using System.Linq;
 
 namespace NetCoreConsoleApp
 {
@@ -16,7 +17,7 @@ namespace NetCoreConsoleApp
 		public void Execute()
 		{
 			double value = this.GetTotalValueOfProductOnHandById(1);
-			IList<double> values = this.GetTotalValueOfAllProductsOnHandForIdSet(1, 2, 3, 4, 5);
+			IEnumerable<double> values = this.GetTotalValueOfAllProductsOnHandForIdSet(1, 2, 3, 4, 5);
 			InventoryStats[] stats = this.GetBasicInventoryStats();
 			this.DecrementQuantityOnHand(8);
 			this.IncreaseCreditLimit(5, 20);
@@ -48,13 +49,13 @@ namespace NetCoreConsoleApp
 			return value;
 		}
 
-		public IList<double> GetTotalValueOfAllProductsOnHandForIdSet(params int[] productIds)
+		public IEnumerable<double> GetTotalValueOfAllProductsOnHandForIdSet(params int[] productIds)
 		{
 			//select
 			//(dbo.Product.Quantity * dbo.Product.Price)
 			//from dbo.Product
 			//where dbo.Product.Id in ({productIds});
-			IList<double> values = db.SelectMany(dbo.Product.Quantity * dbo.Product.Price)
+			IEnumerable<double> values = db.SelectMany(dbo.Product.Quantity * dbo.Product.Price)
 				.From(dbo.Product)
 				.Where(dbo.Product.Id.In(productIds))
 				.Execute();
@@ -79,10 +80,11 @@ namespace NetCoreConsoleApp
 					((dbo.Product.Quantity * dbo.Product.ListPrice) - (dbo.Product.Quantity * dbo.Product.Price)).As("ProjectedMargin")
 				)
 				.From(dbo.Product)
-				.Execute();
+				.Execute()
+				.ToList();
 
-			var inventory = new InventoryStats[stats.Count];
-			for (int i = 0; i < stats.Count; i++)
+			var inventory = new InventoryStats[stats.Count()];
+			for (int i = 0; i < stats.Count(); i++)
 			{
 				var s = stats[i];
 				var x = new InventoryStats();

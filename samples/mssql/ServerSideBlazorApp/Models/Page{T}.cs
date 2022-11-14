@@ -9,7 +9,7 @@ namespace ServerSideBlazorApp.Models
         {
         }
 
-        public Page(PagingParameters parameters, IList<T> page, int totalCount) : base(parameters, page, totalCount)
+        public Page(PagingParameters parameters, IEnumerable<T> page, int totalCount) : base(parameters, page, totalCount)
         {
         }
 

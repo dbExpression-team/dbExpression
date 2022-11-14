@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Limit(limit);
 
             //when               
-            IList<int> ids = exp.Execute();
+            IEnumerable<int> ids = exp.Execute();
 
             //then
             ids.Should().HaveCount(expectedCount);
@@ -55,7 +55,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Limit(limit);
 
             //when               
-            IList<int> ids = exp.Execute();
+            IEnumerable<int> ids = exp.Execute();
 
             //then
             ids.Should().HaveCount(expectedCount);
@@ -70,7 +70,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(o => o.PrependCommaOnSelectClause = prependCommanOnSelect));
 
             //when
-            IList<string> persons = db.SelectMany(db.fx.Trim(dbo.Person.FirstName))
+            IEnumerable<string> persons = db.SelectMany(db.fx.Trim(dbo.Person.FirstName))
                 .From(dbo.Person)
                 .Execute();
 

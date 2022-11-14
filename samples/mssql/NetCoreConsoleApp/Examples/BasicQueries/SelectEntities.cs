@@ -69,7 +69,7 @@ namespace NetCoreConsoleApp
 		#endregion
 
 		#region select many table based entities
-		public IList<Person> GetPeopleOverAge(int age)
+		public IEnumerable<Person> GetPeopleOverAge(int age)
 		{
 			//select * from dbo.Person where dbo.Person.BirthDate < DATEADD(yy, -{age}, GETDATE());
 			var people = db.SelectMany<Person>()
@@ -80,7 +80,7 @@ namespace NetCoreConsoleApp
 			return people;
 		}
 
-		public IList<Product> GetProductsWithinPriceRange(double min, double max)
+		public IEnumerable<Product> GetProductsWithinPriceRange(double min, double max)
 		{
 			//select * from dbo.Product where dbo.Product.ListPrice >= {min} and dbo.Product.ListPrice <= {max};
 			var products = db.SelectMany<Product>()
@@ -90,7 +90,7 @@ namespace NetCoreConsoleApp
 			return products;
 		}
 
-		public IList<Address> GetAllAddressesWithinZip(string zip)
+		public IEnumerable<Address> GetAllAddressesWithinZip(string zip)
 		{
 			//select * from dbo.Address where dbo.Address.Zip = {zip};
 			var addresses = db.SelectMany<Address>()

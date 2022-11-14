@@ -22,7 +22,7 @@ namespace NetCoreConsoleApp
 
 		private void UpdatePersonCreditLimitWithOutputParametersAndReturnPerson()
 		{
-			Action<IList<ISqlOutputParameter>> map = values =>
+			Action<IEnumerable<ISqlOutputParameter>> map = values =>
 			{
 				foreach (var param in values)
 					Console.WriteLine(param.Name + "\t" + param.RawValue);

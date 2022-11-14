@@ -21,13 +21,13 @@ namespace NetCoreConsoleApp
 			int count = this.GetCountOfPurchaseLinesForProductId(1);
 			Stats stats = this.GetPurchaseStatistics(DateTime.Parse("2018-01-01"), DateTime.Parse("2021-03-01"));
 			string fullName = this.GetFullName(6);
-			IList<(int, int)> personIdCreditLimit = this.GetCreditLimitForPersonSet(1, 2, 3, 4, 5, 6, 8, 9, 10);
+			IEnumerable<(int, int)> personIdCreditLimit = this.GetCreditLimitForPersonSet(1, 2, 3, 4, 5, 6, 8, 9, 10);
 			DateTimeOffset lastActivity = this.GetLastActivityTimestamp(5);
 			(decimal, decimal) maxAndMin = this.GetMaxAndMinProductHeightsRoundedToNearestTenth(9);
 			this.SetYearOfLastCreditReviewToCurrentYear(5);
 			decimal avgPrice = this.GetAvgProductListPrice();
 			decimal? difference = this.GetAbsoluteDifferenceBetweenProductWidthAndHeight(1);
-			IList<Person> persons = this.GetPersonsWithFirstNameStartingWith("K");
+			IEnumerable<Person> persons = this.GetPersonsWithFirstNameStartingWith("K");
 			this.UpdateAddressLine2WithAbbreviation("Apartment", "Apt.");
 			var lines = this.GetFormattedAddressLinesUsingTrim();
 			lines = this.GetFormattedAddressLinesUsingLTrim();
@@ -161,14 +161,14 @@ namespace NetCoreConsoleApp
 		#endregion
 
 		#region isnull, coalesce
-		public IList<(int, int)> GetCreditLimitForPersonSet(params int[] personIds)
+		public IEnumerable<(int, int)> GetCreditLimitForPersonSet(params int[] personIds)
 		{
 			//select
 			//dbo.Person.Id,
 			//ISNULL(dbo.Person.CreditLimit, 0) as CreditLimit
 			//from dbo.Person
 			//where dbo.Person.Id in ({personIds});
-			IList<dynamic> creditLimits = db.SelectMany(
+			IEnumerable<dynamic> creditLimits = db.SelectMany(
 					dbo.Person.Id,
 					db.fx.IsNull(dbo.Person.CreditLimit, 0).As("CreditLimit"))
 				.From(dbo.Person)
@@ -283,7 +283,7 @@ namespace NetCoreConsoleApp
 			return difference;
 		}
 
-		public IList<Person> GetPersonsWithFirstNameStartingWith(string startsWith)
+		public IEnumerable<Person> GetPersonsWithFirstNameStartingWith(string startsWith)
 		{
 			/*
 			SELECT
@@ -294,7 +294,7 @@ namespace NetCoreConsoleApp
 				SUBSTRING([dbo].[Person].[FirstName], 1, 1) = 'K'
 			 */
 
-			IList<Person> persons = db.SelectMany<Person>()
+			IEnumerable<Person> persons = db.SelectMany<Person>()
 				.From(dbo.Person)
 				.Where(db.fx.Substring(dbo.Person.FirstName, 1, startsWith.Length) == startsWith)
 				.Execute();
@@ -323,7 +323,7 @@ namespace NetCoreConsoleApp
 				.Execute();
 		}
 
-		public IList<string> GetFormattedAddressLinesUsingTrim()
+		public IEnumerable<string> GetFormattedAddressLinesUsingTrim()
 		{
 			/*
 			SELECT
@@ -341,7 +341,7 @@ namespace NetCoreConsoleApp
 			return formatted;
 		}
 
-		public IList<string> GetFormattedAddressLinesUsingLTrim()
+		public IEnumerable<string> GetFormattedAddressLinesUsingLTrim()
 		{
 			/*
 			SELECT
@@ -359,7 +359,7 @@ namespace NetCoreConsoleApp
 			return formatted;
 		}
 
-		public IList<string> GetFormattedAddressLinesUsingRTrim()
+		public IEnumerable<string> GetFormattedAddressLinesUsingRTrim()
 		{
 			/*
 			SELECT

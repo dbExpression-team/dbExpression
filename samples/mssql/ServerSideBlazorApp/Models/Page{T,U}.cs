@@ -7,10 +7,10 @@ namespace ServerSideBlazorApp.Models
         where U : PagingParameters, new()
     {
         public U PagingParameters { get; set; }
-        public IList<T> Data { get; set; } = new List<T>();
+        public IEnumerable<T> Data { get; set; } = new List<T>();
         public int? TotalCount { get; set; }
 
-        public Page(U parameters, IList<T> page, int totalCount)
+        public Page(U parameters, IEnumerable<T> page, int totalCount)
         {
             PagingParameters = parameters;
             Data = page;

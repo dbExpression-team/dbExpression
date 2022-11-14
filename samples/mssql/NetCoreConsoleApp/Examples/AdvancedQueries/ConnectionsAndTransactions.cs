@@ -155,7 +155,7 @@ namespace NetCoreConsoleApp
 
 			//drop table #AddressIds;
 
-			IList<int> addressIds = db.SelectMany(dbo.Address.Id)
+			IEnumerable<int> addressIds = db.SelectMany(dbo.Address.Id)
 				.From(dbo.Address)
 				.InnerJoin(dbo.PersonAddress).On(dbo.PersonAddress.AddressId == dbo.Address.Id)
 				.Where(dbo.PersonAddress.PersonId == personId)

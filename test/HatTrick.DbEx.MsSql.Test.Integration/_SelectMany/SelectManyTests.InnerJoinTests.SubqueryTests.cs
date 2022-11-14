@@ -38,7 +38,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                     ).As("t1").On(dbo.Person.Id == dbo.PersonAddress.As("t1").PersonId);
 
                 //when               
-                IList<dynamic> persons = exp.Execute();
+                IEnumerable<dynamic> persons = exp.Execute();
 
                 //then
                 persons.Should().HaveCount(expected);
@@ -69,7 +69,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                     ).As("t1").On(dbo.Person.Id == t1.PersonId);
 
                 //when               
-                IList<dynamic> persons = exp.Execute();
+                IEnumerable<dynamic> persons = exp.Execute();
 
                 //then
                 persons.Should().HaveCount(expected);
@@ -109,7 +109,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                     ).As("t2").On(dbo.Person.Id == dbo.Purchase.As("t2").PersonId);
 
                 //when               
-                IList<dynamic> persons = exp.Execute();
+                IEnumerable<dynamic> persons = exp.Execute();
 
                 //then
                 persons.Should().HaveCount(expected);
@@ -154,7 +154,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                     ).As("t2").On(dbo.Person.Id == purchase_t2.PersonId);
 
                 //when               
-                IList<dynamic> persons = exp.Execute();
+                IEnumerable<dynamic> persons = exp.Execute();
 
                 //then
                 persons.Should().HaveCount(expected);
@@ -204,7 +204,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                     ).As("t3").On(dbo.Person.Id == dbo.Purchase.As("t3").PersonId);
 
                 //when               
-                IList<dynamic> persons = exp.Execute();
+                IEnumerable<dynamic> persons = exp.Execute();
 
                 //then
                 persons.Should().HaveCount(expected);
@@ -237,7 +237,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                     ).As("foo").On(dbo.Purchase.PersonId == dbo.Person.As("foo").Id);
 
                 //when               
-                IList<dynamic> purchases = exp.Execute();
+                IEnumerable<dynamic> purchases = exp.Execute();
 
                 //then
                 purchases.Should().HaveCount(expected);

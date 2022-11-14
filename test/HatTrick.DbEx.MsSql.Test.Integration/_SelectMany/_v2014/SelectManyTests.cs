@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             //when
-            IList<string> persons = db.SelectMany(db.fx.Trim(dbo.Person.FirstName))
+            IEnumerable<string> persons = db.SelectMany(db.fx.Trim(dbo.Person.FirstName))
                 .From(dbo.Person)
                 .Execute();
 
