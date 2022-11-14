@@ -37,7 +37,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                         .GroupBy(dbo.Person.Id);
 
                     //when               
-                    IList<dynamic> persons = exp.Execute();
+                    IEnumerable<dynamic> persons = exp.Execute();
 
                     //then
                     persons.Should().HaveCount(expected);
@@ -67,7 +67,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                         .Having(db.fx.Count(dbo.Address.Id) > 1);
 
                     //when               
-                    IList<dynamic> persons = exp.Execute();
+                    IEnumerable<dynamic> persons = exp.Execute();
 
                     //then
                     persons.Should().HaveCount(expected);
@@ -97,7 +97,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                         .Having(db.fx.Count(dbo.Address.Id) > 1 & db.fx.Count(dbo.Address.Id) < 3);
 
                     //when               
-                    IList<dynamic> persons = exp.Execute();
+                    IEnumerable<dynamic> persons = exp.Execute();
 
                     //then
                     persons.Should().HaveCount(expected);
@@ -127,7 +127,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                         .Having(db.fx.Count(dbo.Address.Id) == 1 | db.fx.Count(dbo.Address.Id) == 2 | db.fx.Count(dbo.Address.Id) == 3);
 
                     //when               
-                    IList<dynamic> persons = exp.Execute();
+                    IEnumerable<dynamic> persons = exp.Execute();
 
                     //then
                     persons.Should().HaveCount(expected);
@@ -167,7 +167,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                         );
 
                     //when               
-                    IList<dynamic> persons = exp.Execute();
+                    IEnumerable<dynamic> persons = exp.Execute();
 
                     //then
                     persons.Should().HaveCount(expected);

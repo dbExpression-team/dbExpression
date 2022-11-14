@@ -45,7 +45,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #region methods
         #region SelectValuesStoredProcedureTermination
         /// <inheritdoc />
-        IList<TValue> SelectValuesStoredProcedureTermination<TDatabase, TValue>.Execute()
+        IEnumerable<TValue> SelectValuesStoredProcedureTermination<TDatabase, TValue>.Execute()
         {
             return ExecuteValueListPipeline(
                 null,
@@ -54,7 +54,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-		IList<TValue> SelectValuesStoredProcedureTermination<TDatabase, TValue>.Execute(ISqlConnection connection)
+		IEnumerable<TValue> SelectValuesStoredProcedureTermination<TDatabase, TValue>.Execute(ISqlConnection connection)
         {
             return ExecuteValueListPipeline(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
@@ -63,7 +63,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-		IList<TValue> SelectValuesStoredProcedureTermination<TDatabase, TValue>.Execute(int commandTimeout)
+		IEnumerable<TValue> SelectValuesStoredProcedureTermination<TDatabase, TValue>.Execute(int commandTimeout)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -75,7 +75,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-		IList<TValue> SelectValuesStoredProcedureTermination<TDatabase, TValue>.Execute(ISqlConnection connection, int commandTimeout)
+		IEnumerable<TValue> SelectValuesStoredProcedureTermination<TDatabase, TValue>.Execute(ISqlConnection connection, int commandTimeout)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -87,7 +87,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-		async Task<IList<TValue>> SelectValuesStoredProcedureTermination<TDatabase, TValue>.ExecuteAsync(CancellationToken cancellationToken)
+		async Task<IEnumerable<TValue>> SelectValuesStoredProcedureTermination<TDatabase, TValue>.ExecuteAsync(CancellationToken cancellationToken)
         {
             return await ExecuteValueListPipelineAsync(
                 null,
@@ -97,7 +97,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-		async Task<IList<TValue>> SelectValuesStoredProcedureTermination<TDatabase, TValue>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
+		async Task<IEnumerable<TValue>> SelectValuesStoredProcedureTermination<TDatabase, TValue>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
         {
             return await ExecuteValueListPipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
@@ -107,7 +107,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-		async Task<IList<TValue>> SelectValuesStoredProcedureTermination<TDatabase, TValue>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
+		async Task<IEnumerable<TValue>> SelectValuesStoredProcedureTermination<TDatabase, TValue>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -120,7 +120,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-		async Task<IList<TValue>> SelectValuesStoredProcedureTermination<TDatabase, TValue>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
+		async Task<IEnumerable<TValue>> SelectValuesStoredProcedureTermination<TDatabase, TValue>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -132,10 +132,10 @@ namespace HatTrick.DbEx.Sql.Builder
             ).ConfigureAwait(false);
         }
 
-        protected virtual IList<TValue> ExecuteValueListPipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand)
+        protected virtual IEnumerable<TValue> ExecuteValueListPipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand)
             => ExecutionPipelineFactory().ExecuteSelectValueList<TValue>(StoredProcedureQueryExpression, connection, configureCommand);
 
-        protected virtual async Task<IList<TValue>> ExecuteValueListPipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
+        protected virtual async Task<IEnumerable<TValue>> ExecuteValueListPipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
             => await ExecutionPipelineFactory().ExecuteSelectValueListAsync<TValue>(StoredProcedureQueryExpression, connection, configureCommand, ct).ConfigureAwait(false);
 
         #endregion

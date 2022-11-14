@@ -14,14 +14,14 @@ namespace NetCoreConsoleApp
 		#region execute
 		public void Execute()
 		{
-			IList<Person> people = this.FindAllPeopleWithLastNameStartingWith('P');
-			IList<string> names = this.GetAllLastNamesOfPeopleWhereSecondPositionOfLastNameIsChar('t');
-			IList<Person> byZip = this.GetPeopleByComplexGenderAndZipFilter();
+			IEnumerable<Person> people = this.FindAllPeopleWithLastNameStartingWith('P');
+			IEnumerable<string> names = this.GetAllLastNamesOfPeopleWhereSecondPositionOfLastNameIsChar('t');
+			IEnumerable<Person> byZip = this.GetPeopleByComplexGenderAndZipFilter();
 		}
 		#endregion
 
 		#region like
-		public IList<Person> FindAllPeopleWithLastNameStartingWith(char c)//P
+		public IEnumerable<Person> FindAllPeopleWithLastNameStartingWith(char c)//P
 		{
 			//select * 
 			//from dbo.Person 
@@ -36,7 +36,7 @@ namespace NetCoreConsoleApp
 			return peopleLastNameStartsWithChar;
 		}
 
-		public IList<string> GetAllLastNamesOfPeopleWhereSecondPositionOfLastNameIsChar(char c)//t
+		public IEnumerable<string> GetAllLastNamesOfPeopleWhereSecondPositionOfLastNameIsChar(char c)//t
 		{
 			//select *
 			//from dbo.Person 
@@ -53,7 +53,7 @@ namespace NetCoreConsoleApp
 		#endregion
 
 		#region precedence control with (parenthesis)
-		public IList<Person> GetPeopleByComplexGenderAndZipFilter()
+		public IEnumerable<Person> GetPeopleByComplexGenderAndZipFilter()
 		{
 			//select
 			//dbo.Person.*
@@ -67,7 +67,7 @@ namespace NetCoreConsoleApp
 			//	(dbo.Person.GenderType = 2 and(dbo.[Address].Zip = '10002' or dbo.[Address].Zip = '02801'))
 			//)
 			//order by dbo.Person.GenderType Asc;
-			IList<Person> result = db.SelectMany<Person>()
+			IEnumerable<Person> result = db.SelectMany<Person>()
 				.From(dbo.Person)
 				.InnerJoin(dbo.PersonAddress).On(dbo.PersonAddress.PersonId == dbo.Person.Id)
 				.InnerJoin(dbo.Address).On(dbo.Address.Id == dbo.PersonAddress.AddressId)

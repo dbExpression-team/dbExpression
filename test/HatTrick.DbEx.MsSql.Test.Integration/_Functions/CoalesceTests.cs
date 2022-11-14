@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Purchase);
 
             //when               
-            IList<object?> dates = exp.Execute();
+            IEnumerable<object?> dates = exp.Execute();
 
             //then
             dates.Should().HaveCount(expected);
@@ -47,7 +47,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Purchase);
 
             //when               
-            IList<object?> dates = exp.Execute();
+            IEnumerable<object?> dates = exp.Execute();
 
             //then
             dates.Should().HaveCount(expected);
@@ -70,7 +70,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Purchase);
 
             //when               
-            IList<dynamic> dates = exp.Execute();
+            IEnumerable<dynamic> dates = exp.Execute();
 
             //then
             dates.Should().HaveCount(expected);
@@ -91,7 +91,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Purchase);
 
             //when               
-            IList<object?> dates = exp.Execute();
+            IEnumerable<object?> dates = exp.Execute();
 
             //then
             dates.Should().HaveCount(expected);
@@ -113,7 +113,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Purchase);
 
             //when               
-            IList<object?> dates = exp.Execute();
+            IEnumerable<object?> dates = exp.Execute();
 
             //then
             dates.Should().HaveCount(expected);
@@ -135,7 +135,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Purchase);
 
             //when               
-            IList<object?> dates = exp.Execute();
+            IEnumerable<object?> dates = exp.Execute();
 
             //then
             dates.Should().HaveCount(expected);
@@ -157,7 +157,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Purchase);
 
             //when               
-            IList<object?> dates = exp.Execute();
+            IEnumerable<object?> dates = exp.Execute();
 
             //then
             dates.Should().HaveCount(expected);
@@ -295,7 +295,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .GroupBy(db.fx.Coalesce(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate));
 
             //when               
-            IList<object?> dates = exp.Execute();
+            IEnumerable<object?> dates = exp.Execute();
 
             //then
             dates.Should().HaveCount(expected);
@@ -314,7 +314,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .GroupBy(db.fx.Coalesce(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate));
 
             //when               
-            IList<object?> dates = exp.Execute();
+            IEnumerable<object?> dates = exp.Execute();
 
             //then
             dates.Should().HaveCount(expected);
@@ -332,7 +332,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Purchase);
 
             //when               
-            IList<object?> dates = exp.Execute();
+            IEnumerable<object?> dates = exp.Execute();
 
             //then
             dates.Should().HaveCount(expected);
@@ -350,7 +350,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Purchase);
 
             //when               
-            IList<object?> dates = exp.Execute();
+            IEnumerable<object?> dates = exp.Execute();
 
             //then
             dates.Should().HaveCount(expected);
@@ -369,7 +369,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where(dbo.Product.ValidStartTimeOfDayForPurchase == dbex.Null & dbo.Product.ValidEndTimeOfDayForPurchase == dbex.Null);
 
             //when               
-            IList<object?> dates = exp.Execute();
+            IEnumerable<object?> dates = exp.Execute();
 
             //then
             dates.Should().OnlyContain(x => (TimeSpan?)x == TimeSpan.FromHours(expected));
@@ -388,7 +388,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where(dbo.Product.ValidStartTimeOfDayForPurchase == dbex.Null & dbo.Product.ValidEndTimeOfDayForPurchase == dbex.Null);
 
             //when               
-            IList<object?> dates = exp.Execute();
+            IEnumerable<object?> dates = exp.Execute();
 
             //then
             dates.Should().OnlyContain(x => x == null);
@@ -407,7 +407,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where(dbo.Product.ProductCategoryType == dbex.Null);
 
             //when               
-            IList<ProductCategoryType?> types = exp.Execute();
+            IEnumerable<ProductCategoryType?> types = exp.Execute();
 
             //then
             types.Should().OnlyContain(x => x == null).And.HaveCount(expectedCount);
@@ -426,7 +426,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where(dbo.Product.ProductCategoryType == dbex.Null);
 
             //when               
-            IList<ProductCategoryType> types = exp.Execute();
+            IEnumerable<ProductCategoryType> types = exp.Execute();
 
             //then
             types.Should().OnlyContain(x => x == ProductCategoryType.Books).And.HaveCount(expectedCount);
@@ -445,7 +445,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where(dbo.Product.ProductCategoryType == dbex.Null);
 
             //when               
-            IList<ProductCategoryType?> types = exp.Execute();
+            IEnumerable<ProductCategoryType?> types = exp.Execute();
 
             //then
             types.Should().OnlyContain(x => x == null).And.HaveCount(expectedCount);

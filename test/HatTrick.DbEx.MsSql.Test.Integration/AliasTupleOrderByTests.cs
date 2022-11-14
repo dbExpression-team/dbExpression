@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             //when
-            IList<AccessAuditLog> results = db.SelectMany<AccessAuditLog>(
+            IEnumerable<AccessAuditLog> results = db.SelectMany<AccessAuditLog>(
                 ).From(dbo.AccessAuditLog)
                 .OrderBy(
                     ("AccessAuditLog", "Id"),
@@ -49,7 +49,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             //when
-            IList<AccessAuditLog> results = db.SelectMany<AccessAuditLog>(
+            IEnumerable<AccessAuditLog> results = db.SelectMany<AccessAuditLog>(
                 ).From(dbo.AccessAuditLog)
                 .OrderBy(
                     ("AccessAuditLog", "Id"),
@@ -118,7 +118,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             //when
-            IList<dynamic> results = db.SelectMany(
+            IEnumerable<dynamic> results = db.SelectMany(
                     dbo.Person.LastName,
                     dbo.Person.FirstName
                 ).From(dbo.Person)
@@ -138,7 +138,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             //when
-            IList<dynamic> results = db.SelectMany(
+            IEnumerable<dynamic> results = db.SelectMany(
                     dbo.Person.GenderType,
                     dbo.Person.LastName
                 ).From(dbo.Person)
@@ -161,7 +161,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             //when
-            IList<dynamic> results = db.SelectMany(
+            IEnumerable<dynamic> results = db.SelectMany(
                     dbo.Person.GenderType,
                     dbo.Person.LastName
                 ).From(dbo.Person)
@@ -250,7 +250,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             //when
-            IList<string> results = db.SelectMany(
+            IEnumerable<string> results = db.SelectMany(
                     dbo.Person.LastName
                 ).From(dbo.Person)
                 .OrderBy(("Person", "LastName"))

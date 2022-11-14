@@ -14,12 +14,12 @@ namespace NetCoreConsoleApp
 		#region execute
 		public void Execute()
 		{
-			IList<dynamic> vips = this.GetPeopleWithTotalSalesAboveLimit(40.00);
+			IEnumerable<dynamic> vips = this.GetPeopleWithTotalSalesAboveLimit(40.00);
 		}
 		#endregion
 
 		#region having
-		public IList<dynamic> GetPeopleWithTotalSalesAboveLimit(double limit)
+		public IEnumerable<dynamic> GetPeopleWithTotalSalesAboveLimit(double limit)
 		{
 			//select
 			//dbo.Person.Id as PersonId,
@@ -32,7 +32,7 @@ namespace NetCoreConsoleApp
 			//	dbo.Person.FirstName, 
 			//	dbo.Person.LastName
 			//Having SUM(dbo.Purchase.TotalPurchaseAmount) > {limit};
-			IList<dynamic> vip = db.SelectMany(
+			IEnumerable<dynamic> vip = db.SelectMany(
 					dbo.Person.Id.As("PersonId"),
 					db.fx.Concat(dbo.Person.FirstName, " ", dbo.Person.LastName).As("FullName"),
 					db.fx.Sum(dbo.Purchase.TotalPurchaseAmount).As("TotalPurchaseAmount")

@@ -16,7 +16,7 @@ namespace NetCoreConsoleApp
 		{
 			string name = this.SelectProductNameByid(1);
 			string desc = this.GetProductDescriptionByNameAndPrice("LEGO City Advent Calendar", 22.99);
-			IList<string> distinctZips = this.SelectDistinctZipCodes();
+			IEnumerable<string> distinctZips = this.SelectDistinctZipCodes();
 		}
 		#endregion
 
@@ -45,13 +45,13 @@ namespace NetCoreConsoleApp
 		#endregion
 
 		#region select many scalar values
-		public IList<string> SelectDistinctZipCodes()
+		public IEnumerable<string> SelectDistinctZipCodes()
 		{
 			//select
 			//distinct
 			//dbo.Address.Zip
 			//from dbo.Address;
-			IList<string> zips = db.SelectMany(dbo.Address.Zip)
+			IEnumerable<string> zips = db.SelectMany(dbo.Address.Zip)
 				.Distinct()
 				.From(dbo.Address)
 				.Execute();

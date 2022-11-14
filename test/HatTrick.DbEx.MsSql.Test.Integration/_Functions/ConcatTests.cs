@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Person);
 
             //when               
-            IList<string> names = exp.Execute();
+            IEnumerable<string> names = exp.Execute();
 
             //then
             names.Should().HaveCount(expected);
@@ -42,7 +42,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Person);
 
             //when               
-            IList<string> names = exp.Execute();
+            IEnumerable<string> names = exp.Execute();
 
             //then
             names.Should().HaveCount(expected);

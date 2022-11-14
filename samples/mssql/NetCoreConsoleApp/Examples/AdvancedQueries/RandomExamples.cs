@@ -75,7 +75,7 @@ namespace NetCoreConsoleApp
 		#endregion
 
 		#region select many entity, offset/limit, inner join, order by, complex filter
-		public IList<Person> GetPageOfPeopleGreaterThan18YrsOldWithinZipCodeSet(int pageIndex, int pageCount, params string[] zipCodes)//(2, 5)
+		public IEnumerable<Person> GetPageOfPeopleGreaterThan18YrsOldWithinZipCodeSet(int pageIndex, int pageCount, params string[] zipCodes)//(2, 5)
 		{
 			//select
 			//dbo.Person.*
@@ -100,7 +100,7 @@ namespace NetCoreConsoleApp
 		#endregion
 
 		#region select many entity, inner join, group by, having
-		public IList<Person> FindAllPeopleHavingMoreThanOneAddress()
+		public IEnumerable<Person> FindAllPeopleHavingMoreThanOneAddress()
 		{
 			//select
 			//dbo.Person.*
@@ -132,7 +132,7 @@ namespace NetCoreConsoleApp
 		#endregion
 
 		#region select many projection, concat, inner join, complex filter
-		public IList<string> GetFullNameOfPeopleWithinZipCode(string zip) //80456
+		public IEnumerable<string> GetFullNameOfPeopleWithinZipCode(string zip) //80456
 		{
 			//select
 			//CONCAT(dbo.Person.FirstName, ' ', dbo.Person.LastName)
@@ -140,7 +140,7 @@ namespace NetCoreConsoleApp
 			//inner join dbo.Person_Address on dbo.Person_Address.PersonId = dbo.Person.Id
 			//inner join dbo.[Address] on dbo.[Address].Id = dbo.Person_Address.AddressId
 			//where dbo.[Address].Zip = {zip};
-			IList<string> namesInZip = db.SelectMany(
+			IEnumerable<string> namesInZip = db.SelectMany(
 					db.fx.Concat(
 						dbo.Person.FirstName, " ", dbo.Person.LastName
 					)
@@ -155,7 +155,7 @@ namespace NetCoreConsoleApp
 		#endregion
 
 		#region select many projection, aggregate count, column aliasing, inner join, group by, having
-		public IList<dynamic> FindAllPeopleInfoHavingMoreThanOneAddress()
+		public IEnumerable<dynamic> FindAllPeopleInfoHavingMoreThanOneAddress()
 		{
 			//select
 			//dbo.Person.Id,
@@ -215,7 +215,7 @@ namespace NetCoreConsoleApp
 		#endregion
 
 		#region select many projection, concat, aggregate count, aggregate sum, column aliasing, inner join, group by
-		public IList<dynamic> GetAllPersonPurchaseCountAndTotalPurchasePriceInfoByZipCode(string zip)
+		public IEnumerable<dynamic> GetAllPersonPurchaseCountAndTotalPurchasePriceInfoByZipCode(string zip)
 		{
 			//select
 			//dbo.Person.Id,

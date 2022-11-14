@@ -30,7 +30,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                     .InnerJoin(sec.Person).On(dbo.Person.As("dboPerson").Id == sec.Person.Id);
 
                 //when               
-                IList<dynamic> persons = exp.Execute();
+                IEnumerable<dynamic> persons = exp.Execute();
 
                 //then
                 persons.Should().HaveCount(expected);
@@ -52,7 +52,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                     .InnerJoin(sec.Person).On(sec.Person.Id == dbo.Person.As("dboPerson").Id);
 
                 //when               
-                IList<dynamic> persons = exp.Execute();
+                IEnumerable<dynamic> persons = exp.Execute();
 
                 //then
                 persons.Should().HaveCount(expected);

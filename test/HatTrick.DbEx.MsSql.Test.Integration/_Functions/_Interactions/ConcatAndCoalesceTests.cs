@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Purchase);
 
             //when               
-            IList<string> purchases = exp.Execute();
+            IEnumerable<string> purchases = exp.Execute();
 
             //then
             purchases.Should().HaveCount(expectedCount);
@@ -43,7 +43,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Purchase);
 
             //when               
-            IList<string> purchases = exp.Execute();
+            IEnumerable<string> purchases = exp.Execute();
 
             //then
             purchases.Should().HaveCount(expectedCount);
@@ -64,7 +64,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where(dbo.Purchase.PaymentSourceType == PaymentSourceType.Web);
 
             //when               
-            IList<string> values = exp.Execute();
+            IEnumerable<string> values = exp.Execute();
 
             //then
             values.Should().HaveCount(expected);

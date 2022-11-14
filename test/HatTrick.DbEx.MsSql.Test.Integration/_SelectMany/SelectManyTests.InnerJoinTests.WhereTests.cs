@@ -28,7 +28,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where(dbo.Address.AddressType == AddressType.Billing);
 
             //when               
-            IList<int> persons = exp.Execute();
+            IEnumerable<int> persons = exp.Execute();
 
             //then
             persons.Should().HaveCount(expected);
@@ -48,7 +48,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where(dbo.Address.Id == 1);
 
             //when               
-            IList<int> persons = exp.Execute();
+            IEnumerable<int> persons = exp.Execute();
 
             //then
             persons.Should().HaveCount(expected);
@@ -68,7 +68,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where(dbo.Address.AddressType == AddressType.Billing & dbo.Address.Id != 1);
 
             //when               
-            IList<int> persons = exp.Execute();
+            IEnumerable<int> persons = exp.Execute();
 
             //then
             persons.Should().HaveCount(expected);

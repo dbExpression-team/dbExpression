@@ -31,7 +31,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             int year = 2019;
             int purchaseCount = 3;  //any person making 3 or more purchases (in a calendar year are considered VIP customers
 
-            IList<dynamic> vipStatistics = db.SelectMany(
+            IEnumerable<dynamic> vipStatistics = db.SelectMany(
                 dbo.Person.Id.As("PersonId"),
                 dbex.Alias<int>("vips", "PurchaseCount"),
                 dbex.Alias<int>("vips", "PurchaseYear"),
@@ -80,7 +80,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             int year = 2019;
             int purchaseCount = 3;  //any person making 3 or more purchases (in a calendar year are considered VIP customers
 
-            IList<dynamic> vipStatistics = db.SelectMany(
+            IEnumerable<dynamic> vipStatistics = db.SelectMany(
                 dbo.Person.Id.As("PersonId"),
                 (dbex.Alias<int>("vips", "PurchaseCount") + dbo.Person.Id).As("PurchaseCount"),
                 dbex.Alias<int>("vips", "PurchaseYear"),
@@ -129,7 +129,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             int year = 2019;
             int purchaseCount = 3;  //any person making 3 or more purchases (in a calendar year are considered VIP customers
 
-            IList<dynamic> vipStatistics = db.SelectMany(
+            IEnumerable<dynamic> vipStatistics = db.SelectMany(
                 dbo.Person.Id.As("PersonId"),
                 dbex.Alias<int>("vips", "PurchaseCount"),
                 (dbo.Person.FirstName + " " + dbo.Person.LastName).As("FullName")
@@ -177,7 +177,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             int year = 2017;
             int purchaseCount = 3;  //any person making 3 or more purchases (in a calendar year are considered VIP customers
 
-            IList<dynamic> vipStatistics = db.SelectMany(
+            IEnumerable<dynamic> vipStatistics = db.SelectMany(
                 dbo.Person.Id.As("PersonId"),
                 db.fx.Coalesce(dbex.Alias<int?>("vips", "PurchaseCount"), dbex.Alias<int?>("not_vips", "PurchaseCount"), 1).As("PurchaseCount"),
                 (dbo.Person.FirstName + " " + dbo.Person.LastName).As("FullName")
@@ -266,7 +266,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            IList<dynamic> persons = db.SelectMany(
+            IEnumerable<dynamic> persons = db.SelectMany(
                 dbo.Person.Id,
                 (dbo.Person.FirstName + " " + dbo.Person.LastName).As("CustomerName"),
                 (dbex.Alias<int?>("person_address", "Id") + 2).As("AddressId")
@@ -297,7 +297,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            IList<string?> persons = db.SelectMany(
+            IEnumerable<string?> persons = db.SelectMany(
                 dbex.Alias<string?>("person_address", "Line1").As("Foo")
             )
             .From(dbo.Person)
@@ -327,7 +327,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            IList<Person> persons = db.SelectMany<Person>()
+            IEnumerable<Person> persons = db.SelectMany<Person>()
                 .From(dbo.Person)
                 .LeftJoin(
                     db.SelectMany(
@@ -355,7 +355,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             int purchaseCount = 3;  //any person making 3 or more purchases (in a calendar year are considered VIP customers
 
-            IList<int> values = db.SelectMany(
+            IEnumerable<int> values = db.SelectMany(
                 db.fx.Coalesce<int>(dbex.Alias<int>("vips", "PurchaseCount"), dbex.Alias<int>("not_vips", "PurchaseCount"), 1).As("PurchaseCount")
             )
             .From(dbo.Person)
@@ -408,7 +408,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             int purchaseCount = 3;  //any person making 3 or more purchases (in a calendar year are considered VIP customers
 
-            IList<dynamic> values = db.SelectMany(
+            IEnumerable<dynamic> values = db.SelectMany(
                 dbo.Person.Id,
                 db.fx.Coalesce(dbex.Alias<int>("vips", "PurchaseCount"), dbex.Alias<int>("not_vips", "PurchaseCount"), int.MinValue)
             )
@@ -595,7 +595,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             //when
-            IList<dynamic> values = db.SelectMany(
+            IEnumerable<dynamic> values = db.SelectMany(
                 dbo.Product.Id,
                 dbo.Product.Name,
                 dbex.Alias<string?>("inner", "Name").As("inner_name")
@@ -621,7 +621,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             //when
-            IList<dynamic> values = db.SelectMany(
+            IEnumerable<dynamic> values = db.SelectMany(
                 dbo.Product.Id,
                 dbo.Product.Name,
                 dbex.Alias<string?>("inner", "Name").As("inner_name")
