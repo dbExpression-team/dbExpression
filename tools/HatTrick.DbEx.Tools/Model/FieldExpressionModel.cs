@@ -30,7 +30,7 @@ namespace HatTrick.DbEx.Tools.Model
         private string? _selectName;
         private IList<FieldExpressionAssignmentMethodParameters>? _assignmentParameters;
 
-        public LanguageFeatures LanguageFeatures { get; }
+        public LanguageFeaturesModel LanguageFeatures { get; }
         public EntityExpressionModel EntityExpression { get; }
         public string Name { get; }
         public TypeModel Type { get; }
@@ -62,7 +62,7 @@ namespace HatTrick.DbEx.Tools.Model
             { "entity", "entity" }
         };
 
-        public FieldExpressionModel(LanguageFeatures features, EntityExpressionModel entity, MsSqlColumn column, string name, string? clrTypeOverride, bool isEnum, bool allowInsert, bool allowUpdate)
+        public FieldExpressionModel(LanguageFeaturesModel features, EntityExpressionModel entity, MsSqlColumn column, string name, string? clrTypeOverride, bool isEnum, bool allowInsert, bool allowUpdate)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException($"{nameof(name)} is required.");

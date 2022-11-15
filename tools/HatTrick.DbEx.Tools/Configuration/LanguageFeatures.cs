@@ -17,15 +17,10 @@
 #endregion
 
 
-namespace HatTrick.DbEx.Tools.Model
+namespace HatTrick.DbEx.Tools.Configuration
 {
     public class LanguageFeatures
     {
-        public NullableLanguageFeature Nullable { get; set; }
-
-        public LanguageFeatures(NullableFeature? nullableFeature)
-        {
-            Nullable = new NullableLanguageFeature(nullableFeature);
-        }
+        public NullableFeatureTypeCode? Nullable { get; set; }
     }
 }

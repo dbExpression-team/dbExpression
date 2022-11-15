@@ -15,7 +15,7 @@ namespace HatTrick.DbEx.Tools.Model
 		public ParameterDirection Direction { get; }
 		public bool RequiresInput => (Direction == ParameterDirection.Input || Direction == ParameterDirection.InputOutput);
 
-		public ParameterExpressionModel(LanguageFeatures features, StoredProcedureExpressionModel procedureExpression, MsSqlParameter parameter, string name, string? clrTypeOverride, bool isEnum, ParameterDirection direction)
+		public ParameterExpressionModel(LanguageFeaturesModel features, StoredProcedureExpressionModel procedureExpression, MsSqlParameter parameter, string name, string? clrTypeOverride, bool isEnum, ParameterDirection direction)
 		{
 			ProcedureExpression = procedureExpression;
 			Name = name;

@@ -3,6 +3,7 @@ using HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService;
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Executor;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Field = HatTrick.DbEx.Sql.Executor.Field;
@@ -43,10 +44,18 @@ namespace HatTrick.DbEx.MsSql.Benchmark
         public Task<ISqlFieldReader> ReadRowAsync()
             => Task.FromResult(CreateRow());
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+        public async IAsyncEnumerable<ISqlFieldReader> ReadRowAsyncEnumerable()
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+        {
+            yield return CreateRow();
+        }
+
         private ISqlFieldReader CreateRow()
         {
-            if (fieldReader is object)
-                return default;
+            if (fieldReader is not null)
+                return null; //ensure this method returns only 1 row when invoked
+
             fieldReader = new Row(0, new ISqlField[11]
                 {
                     new Field(0, nameof(dbo.Person.Id), typeof(int), person.Id, (f, t) => valueConverterProvider.FindConverter(0, t, f.RawValue)),

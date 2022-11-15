@@ -1,5 +1,7 @@
 {
-	"nullable": "enable",
+	"languageFeatures": {
+		"nullable": "enable"
+	},
 	"source": {
 		"platform": {
 			"key": "MsSql",
