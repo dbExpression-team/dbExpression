@@ -45,7 +45,7 @@ namespace HatTrick.DbEx.Tools.Service
         }
         #endregion
 
-        public DatabasePairModel CreateModel(PlatformModel platform, MsSqlModel database, TemplateModelService helpers, LanguageFeatures features)
+        public DatabasePairModel CreateModel(PlatformModel platform, MsSqlModel database, TemplateModelService helpers, LanguageFeaturesModel features)
         {
             var databasePair = new DatabasePairModel(
                     _currentIdentifier++,
@@ -293,7 +293,7 @@ namespace HatTrick.DbEx.Tools.Service
             => _config.Enums;
 
         public bool NullableEnabled
-            => _config.Nullable == NullableFeature.Enable;
+            => _config.LanguageFeatures.Nullable == NullableFeatureTypeCode.Enable;
 
         private void AlterArgPsuedonym(SchemaPairModel schema)
             => AlterArgPsuedonym(schema.Entities.Select(x => x.EntityExpression.Name).ToList(), schema.SchemaExpression.ArgNamePsuedonyms);

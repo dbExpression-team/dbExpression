@@ -605,7 +605,7 @@ namespace HatTrick.DbEx.Tools.Service
             string[] names = ResourceAccessor.GetTemplateShortNames();
             TemplateModelService templateService = new(config);
             TemplateHelpers lambdaService = new(templateService);
-            LanguageFeatures languageFeatures = new(config.Nullable);
+            LanguageFeaturesModel languageFeatures = new(config.LanguageFeatures.Nullable);
             DatabasePairModel databaseModel = templateService.CreateModel(new PlatformModel(config.Source!.Platform!.Key!, config.Source!.Platform!.Version!), sqlModel, templateService, languageFeatures);
 
             for (int i = 0; i < names.Length; i++)

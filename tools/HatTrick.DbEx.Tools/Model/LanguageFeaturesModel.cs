@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,30 +16,16 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using System;
-using System.Text;
-using System.Xml.Serialization;
-using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Serialization;
 
-namespace HatTrick.DbEx.Tools.Configuration
+namespace HatTrick.DbEx.Tools.Model
 {
-    public class DbExConfig
+    public class LanguageFeaturesModel
     {
-        public Source? Source { get; set; }
+        public NullableLanguageFeatureModel Nullable { get; set; }
 
-        public string? RootNamespace { get; set; }
-
-        public string DatabaseAccessor { get; set; } = "db";
-
-        public string? WorkingDirectory { get; set; }
-
-        public string? OutputDirectory { get; set; }
-
-        public LanguageFeatures LanguageFeatures { get; set; } = new();
-
-        public string[] Enums { get; set; } = Array.Empty<string>();
-
-        public Override[] Overrides { get; set; } = Array.Empty<Override>();
+        public LanguageFeaturesModel(NullableFeatureTypeCode? nullableFeature)
+        {
+            Nullable = new NullableLanguageFeatureModel(nullableFeature);
+        }
     }
 }

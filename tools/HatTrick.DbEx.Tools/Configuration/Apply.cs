@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,29 +17,37 @@
 #endregion
 
 using System;
-using System.Text;
-using System.Xml.Serialization;
-using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace HatTrick.DbEx.Tools.Configuration
 {
-    public class DbExConfig
+    public class Apply
     {
-        public Source? Source { get; set; }
+        public bool Ignore { get; set; }
 
-        public string? RootNamespace { get; set; }
+        public string? Name { get; set; }
 
-        public string DatabaseAccessor { get; set; } = "db";
+        public string? ClrType { get; set; }
 
-        public string? WorkingDirectory { get; set; }
+        public string[] Interfaces { get; set; } = Array.Empty<string>();
 
-        public string? OutputDirectory { get; set; }
+        public bool? AllowInsert { get; set; }
 
-        public LanguageFeatures LanguageFeatures { get; set; } = new();
+        public bool? AllowUpdate { get; set; }
 
-        public string[] Enums { get; set; } = Array.Empty<string>();
+        public string? Direction { get; set; }
 
-        public Override[] Overrides { get; set; } = Array.Empty<Override>();
+        public ApplyTo To { get; set; } = new();
+
+        public string ToJson()
+        {
+            string json = JsonConvert.SerializeObject(this);
+            return json;
+        }
+
+        public override string? ToString()
+        {
+            return $"{To}, name: {Name}";
+        }
     }
 }

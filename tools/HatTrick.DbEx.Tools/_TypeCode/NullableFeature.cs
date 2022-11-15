@@ -4,7 +4,7 @@ using System.Text;
 
 namespace HatTrick.DbEx.Tools
 {
-    public enum NullableFeature
+    public enum NullableFeatureTypeCode
     {
         Enable,
         Disable

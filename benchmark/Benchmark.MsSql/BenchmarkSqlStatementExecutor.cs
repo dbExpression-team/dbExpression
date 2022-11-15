@@ -5,7 +5,9 @@ using HatTrick.DbEx.Sql.Converter;
 using HatTrick.DbEx.Sql.Executor;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -36,6 +38,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark
 
         public Task<IAsyncSqlRowReader> ExecuteQueryAsync(SqlStatement statement, ISqlConnection connection, IValueConverterProvider finder, Action<IDbCommand> beforeExecution, Action<IDbCommand> afterExecution, CancellationToken ct)
             => Task.FromResult(asyncReader);
+
+        public Task<IAsyncEnumerable<ISqlFieldReader>> ExecuteQueryAsyncEnumerable(SqlStatement statement, ISqlConnection connection, IValueConverterProvider finder, Action<IDbCommand> beforeExecution, Action<IDbCommand> afterExecution, CancellationToken ct)
+            => Task.FromResult(asyncReader.ReadRowAsyncEnumerable());
 
         public T ExecuteScalar<T>(SqlStatement statement, ISqlConnection connection, Action<IDbCommand> beforeExecution, Action<IDbCommand> afterExecution)
             => default;

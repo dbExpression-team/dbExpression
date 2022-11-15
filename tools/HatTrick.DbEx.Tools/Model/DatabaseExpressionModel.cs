@@ -22,12 +22,12 @@ namespace HatTrick.DbEx.Tools.Model
 {
     public class DatabaseExpressionModel
     {
-        public LanguageFeatures LanguageFeatures { get; }
+        public LanguageFeaturesModel LanguageFeatures { get; }
         public string NamespaceRoot { get; }
         public string Name { get; }
         public string AccessorName { get; }
 
-        public DatabaseExpressionModel(LanguageFeatures features, string name, string namespaceRoot, string accessorName)
+        public DatabaseExpressionModel(LanguageFeaturesModel features, string name, string namespaceRoot, string accessorName)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException($"{nameof(name)} is required.");

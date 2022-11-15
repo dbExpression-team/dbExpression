@@ -3,15 +3,24 @@
 ## [0.9.5]
 
 ### Added
+- Target .NET 7
+- IAsyncEnumerable
+	- Added support for async list returns for all execute methods via `ExecuteAsyncEnumerable`
 - In expression support for any element, not just field expressions
+- Ability to use tuple version of aliases in order by clauses
+	- .OrderBy(("foo", "bar").Desc())
+- Ability to use tuple version of aliases in group by clauses
+	- .GroupBy(("foo", "bar"))
 	
 ### Changed
 - Concrete typed expressions implement AnyElement<> as well as IExpressionElement<>
 
 ### Fixed
+- Value conversion for converting a DateTimeOffset to a DateTime did not work.  Created value converters specifically for these types to correctly handle conversion.
 
 ### Breaking Changes
-
+- Application of OrderBy direction is now performed via a method instead of a property
+	- .OrderBy(dbo.Foo.Id.Desc) -> .OrderBy(dbo.Foo.Id.Desc())
 
 ## [0.9.4] - 2022-10-21
 
