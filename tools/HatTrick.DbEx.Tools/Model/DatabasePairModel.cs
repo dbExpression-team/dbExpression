@@ -26,13 +26,13 @@ namespace HatTrick.DbEx.Tools.Model
     {
         public int Identifier { get; }
         public PlatformModel Platform { get; set; }
-        public LanguageFeatures LanguageFeatures { get; set; }
+        public LanguageFeaturesModel LanguageFeatures { get; set; }
         public MsSqlModel Database { get; set; }
         public DatabaseExpressionModel DatabaseExpression { get; set; }
         public IList<SchemaPairModel> Schemas { get; set; } = new List<SchemaPairModel>();
         public DocumentationItemsModel? Documentation { get; set; }
 
-        public DatabasePairModel(int identifier, PlatformModel platform, MsSqlModel database, DatabaseExpressionModel databaseExpression, LanguageFeatures features)
+        public DatabasePairModel(int identifier, PlatformModel platform, MsSqlModel database, DatabaseExpressionModel databaseExpression, LanguageFeaturesModel features)
         {
             Identifier = identifier;
             Platform = platform ?? throw new ArgumentNullException(nameof(platform));

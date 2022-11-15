@@ -17,19 +17,12 @@
 #endregion
 
 
-namespace HatTrick.DbEx.Tools.Model
+namespace HatTrick.DbEx.Tools.Configuration
 {
-    public class NullableLanguageFeature
+    public enum SourceTypeCode
     {
-        private NullableFeature? _nullableFeature;
-        public bool IsFeatureEnabled => _nullableFeature == NullableFeature.Enable;
-        public string Directive => _nullableFeature is not null ? $"#nullable {_nullableFeature.Value.ToString().ToLower()}" : string.Empty;
-        public string Annotation => _nullableFeature == NullableFeature.Enable ? "?" : string.Empty;
-        public string ForgivingOperator => _nullableFeature == NullableFeature.Enable ? "!" : string.Empty;
-
-        public NullableLanguageFeature(NullableFeature? nullableFeature)
-        {
-            _nullableFeature = nullableFeature;
-        }
+        Unknown = 0,
+        MsSqlDb = 1,
+        //MySqlDb = 2,
     }
 }

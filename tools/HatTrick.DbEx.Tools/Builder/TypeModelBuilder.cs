@@ -56,7 +56,7 @@ namespace HatTrick.DbEx.Tools.Builder
             { SqlDbType.Time, nameof(TimeSpan) }
         };
 
-        public static TypeModel CreateTypeModel(LanguageFeatures features, SqlDbType sqlType, string? clrTypeOverride, bool isDbNullable, bool isEnum)
+        public static TypeModel CreateTypeModel(LanguageFeaturesModel features, SqlDbType sqlType, string? clrTypeOverride, bool isDbNullable, bool isEnum)
         {
             string typeName = ResolveTypeName(sqlType, clrTypeOverride) ?? throw new NotImplementedException($"The sql database type {sqlType} is not compatible with dbExpression.");
 
