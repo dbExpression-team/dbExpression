@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -106,7 +107,7 @@ namespace HatTrick.DbEx.Sql.Executor
             return @return;
         }
 
-        public virtual ISqlRowReader ExecuteQuery(SqlStatement statement, ISqlConnection connection, IValueConverterProvider finder, Action<IDbCommand>? beforeExecution, Action<IDbCommand>? afterExecution)
+        public virtual ISqlRowReader ExecuteQuery(SqlStatement statement, ISqlConnection connection, IValueConverterProvider provider, Action<IDbCommand>? beforeExecution, Action<IDbCommand>? afterExecution)
         {
             if (statement is null)
                 throw new ArgumentNullException(nameof(statement));
@@ -114,8 +115,8 @@ namespace HatTrick.DbEx.Sql.Executor
             if (connection is null)
                 throw new ArgumentNullException(nameof(connection));
 
-            if (finder is null)
-                throw new ArgumentNullException(nameof(finder));
+            if (provider is null)
+                throw new ArgumentNullException(nameof(provider));
 
             using IDbCommand cmd = connection.CreateCommand();
             cmd.Connection = connection.DbConnection;
@@ -134,10 +135,10 @@ namespace HatTrick.DbEx.Sql.Executor
             connection.EnsureOpen();
             var reader = cmd.ExecuteReader();
             afterExecution?.Invoke(cmd);
-            return new DataReaderWrapper(connection, reader, finder);
+            return new DataReaderWrapper(connection, reader, provider);
         }
 
-        public virtual async Task<IAsyncSqlRowReader> ExecuteQueryAsync(SqlStatement statement, ISqlConnection connection, IValueConverterProvider finder, Action<IDbCommand>? beforeExecution, Action<IDbCommand>? afterExecution, CancellationToken ct)
+        public virtual async Task<IAsyncSqlRowReader> ExecuteQueryAsync(SqlStatement statement, ISqlConnection connection, IValueConverterProvider provider, Action<IDbCommand>? beforeExecution, Action<IDbCommand>? afterExecution, CancellationToken ct)
         {
             if (statement is null)
                 throw new ArgumentNullException(nameof(statement));
@@ -145,8 +146,8 @@ namespace HatTrick.DbEx.Sql.Executor
             if (connection is null)
                 throw new ArgumentNullException(nameof(connection));
 
-            if (finder is null)
-                throw new ArgumentNullException(nameof(finder));
+            if (provider is null)
+                throw new ArgumentNullException(nameof(provider));
 
             using IDbCommand cmd = connection.CreateCommand();
             cmd.Connection = connection.DbConnection;
@@ -169,10 +170,10 @@ namespace HatTrick.DbEx.Sql.Executor
 
             afterExecution?.Invoke(cmd);
             ct.ThrowIfCancellationRequested();
-            return new AsyncDataReaderWrapper(connection, reader, finder, ct);
+            return new AsyncDataReaderWrapper(connection, reader, provider, ct);
         }
 
-        public virtual async Task<IAsyncEnumerable<ISqlFieldReader>> ExecuteQueryAsyncEnumerable(SqlStatement statement, ISqlConnection connection, IValueConverterProvider finder, Action<IDbCommand>? beforeExecution, Action<IDbCommand>? afterExecution, CancellationToken ct)
+        public virtual async IAsyncEnumerable<ISqlFieldReader> ExecuteQueryAsyncEnumerable(SqlStatement statement, ISqlConnection connection, IValueConverterProvider provider, Action<IDbCommand>? beforeExecution, Action<IDbCommand>? afterExecution, [EnumeratorCancellation] CancellationToken ct)
         {
             if (statement is null)
                 throw new ArgumentNullException(nameof(statement));
@@ -180,8 +181,8 @@ namespace HatTrick.DbEx.Sql.Executor
             if (connection is null)
                 throw new ArgumentNullException(nameof(connection));
 
-            if (finder is null)
-                throw new ArgumentNullException(nameof(finder));
+            if (provider is null)
+                throw new ArgumentNullException(nameof(provider));
 
             using IDbCommand cmd = connection.CreateCommand();
             cmd.Connection = connection.DbConnection;
@@ -204,8 +205,8 @@ namespace HatTrick.DbEx.Sql.Executor
 
             afterExecution?.Invoke(cmd);
             ct.ThrowIfCancellationRequested();
-            var wrapper = new AsyncDataReaderWrapper(connection, reader, finder, ct);
-            return wrapper.ReadRowAsyncEnumerable();
+            await foreach (var row in (new AsyncDataReaderWrapper(connection, reader, provider)).ReadRowAsyncEnumerable(ct))
+                yield return row;
         }
 
         public virtual T? ExecuteScalar<T>(SqlStatement statement, ISqlConnection connection, Action<IDbCommand>? beforeExecution, Action<IDbCommand>? afterExecution)

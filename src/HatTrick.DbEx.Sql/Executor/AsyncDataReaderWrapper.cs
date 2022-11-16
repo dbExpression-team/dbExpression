@@ -21,6 +21,7 @@ using HatTrick.DbEx.Sql.Converter;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -86,14 +87,13 @@ namespace HatTrick.DbEx.Sql.Executor
             return default;
         }
 
-        public async IAsyncEnumerable<ISqlFieldReader> ReadRowAsyncEnumerable()
+        public async IAsyncEnumerable<ISqlFieldReader> ReadRowAsyncEnumerable([EnumeratorCancellation] CancellationToken cancellationToken)
         {
-            CancellationToken.ThrowIfCancellationRequested();
-
             try
             {
                 while (await DataReader.ReadAsync())
                 {
+                    cancellationToken.ThrowIfCancellationRequested();
                     var row = new ISqlField[DataReader.FieldCount];
                     var values = new object[DataReader.FieldCount];
                     DataReader.GetValues(values);

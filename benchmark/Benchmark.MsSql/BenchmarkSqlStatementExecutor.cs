@@ -33,14 +33,17 @@ namespace HatTrick.DbEx.MsSql.Benchmark
         public Task<int> ExecuteNonQueryAsync(SqlStatement statement, ISqlConnection connection, Action<IDbCommand> beforeExecution, Action<IDbCommand> afterExecution, CancellationToken ct)
             => Task.FromResult(0);
 
-        public ISqlRowReader ExecuteQuery(SqlStatement statement, ISqlConnection connection, IValueConverterProvider finder, Action<IDbCommand> beforeExecution, Action<IDbCommand> afterExecution)
+        public ISqlRowReader ExecuteQuery(SqlStatement statement, ISqlConnection connection, IValueConverterProvider provider, Action<IDbCommand> beforeExecution, Action<IDbCommand> afterExecution)
             => reader;
 
-        public Task<IAsyncSqlRowReader> ExecuteQueryAsync(SqlStatement statement, ISqlConnection connection, IValueConverterProvider finder, Action<IDbCommand> beforeExecution, Action<IDbCommand> afterExecution, CancellationToken ct)
+        public Task<IAsyncSqlRowReader> ExecuteQueryAsync(SqlStatement statement, ISqlConnection connection, IValueConverterProvider provider, Action<IDbCommand> beforeExecution, Action<IDbCommand> afterExecution, CancellationToken ct)
             => Task.FromResult(asyncReader);
 
-        public Task<IAsyncEnumerable<ISqlFieldReader>> ExecuteQueryAsyncEnumerable(SqlStatement statement, ISqlConnection connection, IValueConverterProvider finder, Action<IDbCommand> beforeExecution, Action<IDbCommand> afterExecution, CancellationToken ct)
-            => Task.FromResult(asyncReader.ReadRowAsyncEnumerable());
+        public async IAsyncEnumerable<ISqlFieldReader> ExecuteQueryAsyncEnumerable(SqlStatement statement, ISqlConnection connection, IValueConverterProvider provider, Action<IDbCommand> beforeExecution, Action<IDbCommand> afterExecution, [EnumeratorCancellation] CancellationToken ct)
+        {
+            await foreach (var row in asyncReader.ReadRowAsyncEnumerable(ct))
+                yield return row;
+        }
 
         public T ExecuteScalar<T>(SqlStatement statement, ISqlConnection connection, Action<IDbCommand> beforeExecution, Action<IDbCommand> afterExecution)
             => default;

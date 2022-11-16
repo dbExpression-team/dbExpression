@@ -4,6 +4,8 @@ using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Executor;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Field = HatTrick.DbEx.Sql.Executor.Field;
@@ -45,7 +47,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark
             => Task.FromResult(CreateRow());
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        public async IAsyncEnumerable<ISqlFieldReader> ReadRowAsyncEnumerable()
+        public async IAsyncEnumerable<ISqlFieldReader> ReadRowAsyncEnumerable([EnumeratorCancellation] CancellationToken cancellationToken)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             yield return CreateRow();

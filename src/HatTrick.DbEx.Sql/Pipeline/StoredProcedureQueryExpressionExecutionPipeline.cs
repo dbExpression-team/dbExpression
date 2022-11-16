@@ -706,7 +706,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             IDataParameterCollection? parameters = null;
             try
             {
-                await foreach (ISqlFieldReader row in await statementExecutor.ExecuteQueryAsyncEnumerable(
+                await foreach (ISqlFieldReader row in statementExecutor.ExecuteQueryAsyncEnumerable(
                     statement,
                     local,
                     converters,
@@ -920,7 +920,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
         private static void MapOutputParameters(StoredProcedureQueryExpression expression, IDataParameterCollection executedParameters, IEnumerable<ParameterizedExpression> statementParameters, IValueConverterFactory valueConverterFactory)
         {
-            IValueConverter finder(ISqlOutputParameter p, Type t)
+            IValueConverter findValueConverter(ISqlOutputParameter p, Type t)
             {
                 if (p.RawValue is DBNull && !t.IsNullableType() && t.IsConvertibleToNullableType())
                     return valueConverterFactory.CreateConverter(typeof(Nullable<>).MakeGenericType(t));
@@ -949,7 +949,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
                 var statementParameter = statementParameters.Single(x => x.Parameter.ParameterName == parameter.ParameterName);
 
-                var outputParameter = new OutputParameter(index, parameter.ParameterName, statementParameter.DeclaredType, parameter.Value, finder);
+                var outputParameter = new OutputParameter(index, parameter.ParameterName, statementParameter.DeclaredType, parameter.Value, findValueConverter);
 
                 values.Add(outputParameter);
 

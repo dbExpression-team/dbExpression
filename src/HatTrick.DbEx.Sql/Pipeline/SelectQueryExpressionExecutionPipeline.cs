@@ -1634,7 +1634,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             var local = connection ?? new SqlConnector(connectionFactory);
             try
             {
-                await foreach (ISqlFieldReader row in await statementExecutor.ExecuteQueryAsyncEnumerable(
+                await foreach (ISqlFieldReader row in statementExecutor.ExecuteQueryAsyncEnumerable(
                     statement,
                     local,
                     valueConverterProvider,
