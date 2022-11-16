@@ -7,7 +7,7 @@
 ### Changed
 
 ### Fixed
-- Added TFM's to tools project to fix incompatibility issues with net7.0
+- Added older TFM's to projects to fix incompatibility issues with net7.0
 
 ## [0.9.5] - 2022-11-15
 
