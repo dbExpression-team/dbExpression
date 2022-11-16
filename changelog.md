@@ -1,6 +1,15 @@
 # Changelog
 
-## [0.9.5]
+## [0.9.6] - 2022-11-15
+
+### Added
+	
+### Changed
+
+### Fixed
+- Added TFM's to tools project to fix incompatibility issues with net7.0
+
+## [0.9.5] - 2022-11-15
 
 ### Added
 - Target .NET 7

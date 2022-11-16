@@ -1,24 +1,25 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-		<TargetFrameworks>netstandard2.0;net7.0</TargetFrameworks>
-		<LangVersion>latest</LangVersion>
-		<Nullable>enable</Nullable>
+        <TargetFrameworks>netstandard2.0;net6.0;net7.0</TargetFrameworks>
+        <LangVersion>latest</LangVersion>
+        <Nullable>enable</Nullable>
         <IsPackable>true</IsPackable>
-        <Description>dbExpression is a Microsoft SQL Server database connector that enables fluent composition and execution of type safe SQL queries directly from Microsoft .NET.  dbExpression tooling and workflows provide efficiencies, uniformity and consistency between database schema and your application code.
+        <Description>
+            dbExpression is a Microsoft SQL Server database connector that enables fluent composition and execution of type safe SQL queries directly from Microsoft .NET.  dbExpression tooling and workflows provide efficiencies, uniformity and consistency between database schema and your application code.
         </Description>
-		<PackageTags>microsoft sqlserver sql sql-server orm</PackageTags>
+        <PackageTags>microsoft sqlserver sql sql-server orm</PackageTags>
     </PropertyGroup>
 
-	<ItemGroup>
-	  <None Include="..\..\.editorconfig" Link=".editorconfig" />
-	</ItemGroup>
+    <ItemGroup>
+        <None Include="..\..\.editorconfig" Link=".editorconfig" />
+    </ItemGroup>
 
-	<ItemGroup>
-		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-			<_Parameter1>HatTrick.DbEx.MsSql.Test</_Parameter1>
-		</AssemblyAttribute>
-	</ItemGroup>
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+            <_Parameter1>HatTrick.DbEx.MsSql.Test</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Microsoft.Data.SqlClient" Version="5.0.1" />
